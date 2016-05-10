@@ -59,6 +59,22 @@
       "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
+    "RDSSubnetCidrA" : {
+      "Type": "String",
+      "Description": "Network CIDR block for first RDS subnet",
+      "Default": "10.99.20.0/24",
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
+    },
+
+    "RDSSubnetCidrB" : {
+      "Type": "String",
+      "Description": "Network CIDR block for second RDS subnet",
+      "Default": "10.99.21.0/24",
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
+    },
+
     "Zone1AZ": {
       "Type": "AWS::EC2::AvailabilityZone::Name",
       "Description": "Availability Zone for this private subnet",
@@ -148,6 +164,34 @@
         "AvailabilityZone" : { "Ref": "Zone2AZ" },
         "VpcId" : { "Ref" : "mainVPC" },
         "CidrBlock" : { "Ref": "Zone2PrivateNetworkCidr" },
+        "Tags" : [
+          {"Key" : "Application", "Value" : { "Ref" : "AWS::StackName"} },
+          {"Key" : "Network", "Value" : "Private" },
+          {"Key" : "Description", "Value" : { "Ref": "DescriptionTag" } }
+        ]
+      }
+    },
+
+    "PrivateSubnetRDSA" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : { "Ref": "Zone1AZ" },
+        "VpcId" : { "Ref" : "mainVPC" },
+        "CidrBlock" : { "Ref": "RDSSubnetCidrA" },
+        "Tags" : [
+          {"Key" : "Application", "Value" : { "Ref" : "AWS::StackName"} },
+          {"Key" : "Network", "Value" : "Private" },
+          {"Key" : "Description", "Value" : { "Ref": "DescriptionTag" } }
+        ]
+      }
+    },
+
+    "PrivateSubnetRDSB" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : { "Ref": "Zone2AZ" },
+        "VpcId" : { "Ref" : "mainVPC" },
+        "CidrBlock" : { "Ref": "RDSSubnetCidrB" },
         "Tags" : [
           {"Key" : "Application", "Value" : { "Ref" : "AWS::StackName"} },
           {"Key" : "Network", "Value" : "Private" },
@@ -448,6 +492,22 @@
     "Zone2AZ": {
       "Value": { "Ref": "Zone2AZ" },
       "Description": "Second AZ"
+    },
+
+    "RDSSubnet1ID": {
+      "Value": { "Ref": "PrivateSubnetRDSA" },
+      "Description": "First RDS subnet"
+    },
+
+    "RDSSubnet2ID": {
+      "Value": { "Ref": "PrivateSubnetRDSB" },
+      "Description": "Second RDS subnet"
+    },
+
+    "VPCSecurityGroup": {
+      "Value": { "Ref": "LocalTrafficSecurityGroup" },
+      "Description": "VPC CIDR block security group"
     }
+
   }
 }
