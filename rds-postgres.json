@@ -102,5 +102,11 @@
                 "VPCSecurityGroups": [{"Ref": "DBSecurityGroup" }]
             }
         }
+    },
+    "Outputs": {
+        "RDSHost" : {
+            "Value" : { "Fn::GetAtt" : [ "DatabaseServer", "Endpoint.Address" ]},
+            "Description" : "RDS database hostname"
+        }
     }
 }
