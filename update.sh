@@ -1,15 +1,16 @@
 #!/bin/bash
 
-if [ $# -eq 0 ] || \
+if [ $# -ne 2 ] || \
    [ "$AWS_ACCESS_KEY_ID" == "" ] || \
    [ "$AWS_SECRET_ACCESS_KEY" == "" ] || \
    [ "$AWS_DEFAULT_REGION" == "" ] || \
    [ "$AWS_S3_BUCKET" == "" ] || \
    [ "$(which aws)" == "" ]
 then
-    echo "Usage $0 <stack name>"
+    echo "Usage $0 <stack name> <template file>"
     echo
     echo "<stack name> - The name of the stack to update"
+    echo "<template file> - The stack template"
     echo
     echo "The following environnment variables must be set for this script to function:"
     echo "    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION, AWS_S3_BUCKET"
@@ -30,65 +31,35 @@ S3_BASE="https://s3-${AWS_DEFAULT_REGION}.amazonaws.com"
 VERSION="dev"
 
 # the top level cloud formation template
-TOP="vpc.json"
+TOP="$2"
 
 # bail if anything goes wrong
 set -e
 
 # check to see if the stack exists
 LAST_UPDATED=$(
-    set -o pipefail; 
+    set -o pipefail;
     aws cloudformation describe-stacks --stack-name $STACK_NAME | jq .Stacks[0].LastUpdatedTime
 )
 echo "Updating $STACK_NAME; Last Update: $LAST_UPDATED"
 
 # copy the json up to s3
-for i in *.json; do aws s3 cp "$i" s3://$AWS_S3_BUCKET/$VERSION/; done
-
-# generate a random change set name
-CS_NAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-
-# create the change set, using the parameters from the last version
-aws cloudformation create-change-set \
-    --stack-name $STACK_NAME \
-    --change-set-name "$CS_NAME" \
-    --template-url $S3_BASE/$AWS_S3_BUCKET/$VERSION/$TOP \
-    --parameters "$(aws cloudformation describe-stacks \
-                    --stack-name $STACK_NAME | jq .Stacks[0].Parameters \
-                    )" &>/dev/null
-
-# loop until the change-set is complete or has failed
-STATE="IN_PROGRESS"
-while [[ $STATE == *"IN_PROGRESS"* ]]; do
-    NEW_STATE=$(aws cloudformation describe-change-set \
-                --stack-name $STACK_NAME \
-                --change-set-name "$CS_NAME" | jq .Status)
-    
-    # if our state changes, log it
-    if [ "$NEW_STATE" != "$STATE" ]; then
-        echo "create-change-set($CS_NAME): $STATE"
-        STATE="$NEW_STATE"
-    fi
-
-    sleep 1
+for i in *.json; do
+    aws s3 cp "$i" s3://$AWS_S3_BUCKET/$VERSION/;
+    echo "Uploading: $S3_BASE/$AWS_S3_BUCKET/$VERSION/$TOP"
 done
 
-# show them the output
-aws cloudformation describe-change-set --stack-name $STACK_NAME --change-set-name "$CS_NAME" | jq .
+# create the change set, using the parameters from the last version
+aws cloudformation update-stack \
+    --stack-name $STACK_NAME \
+    --template-url $S3_BASE/$AWS_S3_BUCKET/$VERSION/$TOP \
+    --parameters "$(aws cloudformation describe-stacks \
+                    --stack-name $STACK_NAME \
+                    | jq .Stacks[0].Parameters \
+                    | jq 'map(. + {"UsePreviousValue": true, "ParameterValue": ""})' \
+                    | jq '. + [{"UsePreviousValue": false, "ParameterKey":"S3Path", "ParameterValue": "'"$S3_BASE/$AWS_S3_BUCKET/$VERSION"'"}]' \
+                    )"
 
-# if we've failed, then there's nothing else to do so bounce
-if [[ $STATE == *"FAILED"* ]]; then
-    exit 1;
-fi
-
-# make sure we want to do this?
-read -p "Deploy these changes? " -n 1 -r
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    exit 1
-fi
-
-# execute the change set
-aws cloudformation execute-change-set --stack-name $STACK_NAME --change-set-name "$CS_NAME"
 
 # loop until execution has finished
 STATE="IN_PROGRESS"
@@ -96,10 +67,10 @@ EVENT_ID=""
 while [[ $STATE == *"IN_PROGRESS"* ]]; do
     NEW_STATE=$(aws cloudformation describe-stacks \
                 --stack-name $STACK_NAME | jq .Stacks[0].StackStatus)
-    
+
     # if our state changes, log it
     if [ "$NEW_STATE" != "$STATE" ]; then
-        echo "execute-change-set($CS_NAME): $STATE"
+        echo "update-stack: $STATE"
         STATE="$NEW_STATE"
     fi
 
