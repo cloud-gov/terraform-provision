@@ -4,72 +4,84 @@
   "Parameters" : {
 
     "DescriptionTag": {
+      "Type": "String",
       "Description" : "VPC Tag Name",
       "Default": "cloud",
-      "Type": "String",
       "MinLength": "1",
       "MaxLength": "255",
       "AllowedPattern" : "[\\x20-\\x7E]*",
-      "ConstraintDescription" : "can contain only ASCII characters."
+      "ConstraintDescription": "can contain only ASCII characters."
     },
 
     "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
-      "Default": "bosh",
-      "Type": "AWS::EC2::KeyPair::KeyName"
+      "Default": "bosh"
     },
 
     "VPCNetworkCidr": {
+      "Type": "String",
       "Description": "Network CIDR block for this VPC",
       "Default": "10.99.0.0/16",
-      "Type": "String"
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
     "Zone1PublicNetworkCidr": {
+      "Type": "String",
       "Description": "Network CIDR block for this public subnet",
       "Default": "10.99.100.0/24",
-      "Type": "String"
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
     "Zone2PublicNetworkCidr": {
+      "Type": "String",
       "Description": "Network CIDR block for this public subnet",
       "Default": "10.99.101.0/24",
-      "Type": "String"
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
     "Zone1PrivateNetworkCidr": {
+      "Type": "String",
       "Description": "Network CIDR block for this private subnet",
       "Default": "10.99.1.0/24",
-      "Type": "String"
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
     "Zone2PrivateNetworkCidr": {
+      "Type": "String",
       "Description": "Network CIDR block for this private subnet",
       "Default": "10.99.2.0/24",
-      "Type": "String"
+      "AllowedPattern": "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))",
+      "ConstraintDescription": "can contain only valid CIDR notation (x.x.x.x/yy)"
     },
 
     "Zone1AZ": {
-      "Description": "Availability Zone for this private subnet",
       "Type": "AWS::EC2::AvailabilityZone::Name",
+      "Description": "Availability Zone for this private subnet",
       "Default": "us-gov-west-1a"
     },
 
     "Zone2AZ": {
-      "Description": "Availability Zone for this private subnet",
       "Type": "AWS::EC2::AvailabilityZone::Name",
+      "Description": "Availability Zone for this private subnet",
       "Default": "us-gov-west-1b"
     },
 
     "NATGatewayInstanceType": {
-      "Description": "EC2 instance type for a NAT gateway",
       "Type": "String",
-      "Default": "t2.micro"
+      "Description": "EC2 instance type for a NAT gateway",
+      "Default": "t2.micro",
+      "AllowedValues": ["t2.micro", "m4.large", "m4.xlarge", "m4.10xlarge"]
+
     },
 
     "NATGatewayInstanceAMI": {
-      "Description": "EC2 AMI image for NAT gateway",
       "Type": "AWS::EC2::Image::Id",
+      "Description": "EC2 AMI image for NAT gateway",
       "Default": "ami-e8ab1489"
     }
 
