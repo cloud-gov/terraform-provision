@@ -4,6 +4,7 @@ if [ $# -eq 0 ] || \
    [ "$AWS_ACCESS_KEY_ID" == "" ] || \
    [ "$AWS_SECRET_ACCESS_KEY" == "" ] || \
    [ "$AWS_DEFAULT_REGION" == "" ] || \
+   [ "$AWS_S3_BUCKET" == "" ] || \
    [ "$(which aws)" == "" ]
 then
     echo "Usage $0 <stack name>"
@@ -11,7 +12,7 @@ then
     echo "<stack name> - The name of the stack to update"
     echo
     echo "The following environnment variables must be set for this script to function:"
-    echo "    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION"
+    echo "    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION, AWS_S3_BUCKET"
     echo
     echo "The AWS CLI (https://aws.amazon.com/cli/) must be installed and in your \$PATH"
     exit 1
@@ -24,9 +25,6 @@ STACK_NAME="$1"
 
 # s3 urls
 S3_BASE="https://s3-${AWS_DEFAULT_REGION}.amazonaws.com"
-
-# the bucket
-BUCKET="cf-templates-1v2czdpr8i6tw-us-gov-west-1"
 
 # folder in the bucket
 VERSION="dev"
@@ -45,7 +43,7 @@ LAST_UPDATED=$(
 echo "Updating $STACK_NAME; Last Update: $LAST_UPDATED"
 
 # copy the json up to s3
-for i in *.json; do aws s3 cp "$i" s3://$BUCKET/$VERSION/; done
+for i in *.json; do aws s3 cp "$i" s3://$AWS_S3_BUCKET/$VERSION/; done
 
 # generate a random change set name
 CS_NAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
@@ -54,7 +52,7 @@ CS_NAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 aws cloudformation create-change-set \
     --stack-name $STACK_NAME \
     --change-set-name "$CS_NAME" \
-    --template-url $S3_BASE/$BUCKET/$VERSION/$TOP \
+    --template-url $S3_BASE/$AWS_S3_BUCKET/$VERSION/$TOP \
     --parameters "$(aws cloudformation describe-stacks \
                     --stack-name $STACK_NAME | jq .Stacks[0].Parameters \
                     )" &>/dev/null
