@@ -297,6 +297,68 @@
       }
     },
 
+    "WebSecurityGroup" : {
+     "Type" : "AWS::EC2::SecurityGroup",
+     "Properties" : {
+        "GroupDescription" : "Enable HTTP and HTTPS access",
+        "SecurityGroupIngress" : [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "443",
+            "ToPort" : "443",
+            "CidrIp" : "0.0.0.0/0"
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "4443",
+            "ToPort" : "4443",
+            "CidrIp" : "0.0.0.0/0"
+          }
+        ],
+        "VpcId" : { "Ref" : "mainVPC" }
+      }
+    },
+
+    "BoshSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable access to CF boxes",
+        "SecurityGroupIngress" : [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "4222",
+            "ToPort" : "4222",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "6868",
+            "ToPort" : "6868",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "53",
+            "ToPort" : "53",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          }
+        ],
+        "VpcId" : { "Ref" : "mainVPC" }
+      }
+    },
+
     "NATa" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
@@ -376,6 +438,16 @@
     "Zone2PrivateSubnetID" : {
       "Value" : { "Ref" : "Zone2PrivateSubnet" },
       "Description" : "SubnetB ID"
+    },
+
+    "Zone1AZ": {
+      "Value": { "Ref": "Zone1AZ" },
+      "Description": "First AZ"
+    },
+
+    "Zone2AZ": {
+      "Value": { "Ref": "Zone2AZ" },
+      "Description": "Second AZ"
     }
   }
 }
