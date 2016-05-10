@@ -139,6 +139,10 @@
       "Type": "Number",
       "MinValue": "5",
       "ConstraintDescription" : "must be at least 5 GB."
+    },
+    "S3Path" : {
+      "Type": "String",
+      "Description": "S3 URL path to bucket containing other CF templates"
     }
 
   },
