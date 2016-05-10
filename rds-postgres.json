@@ -91,7 +91,7 @@
                 "AutoMinorVersionUpgrade": true,
                 "BackupRetentionPeriod": 30,
                 "Engine" : "postgres",
-                "EngineVersion" : "9.5",
+                "EngineVersion" : "9.4",
                 "MultiAZ": true,
                 "DBName": {"Ref": "DBName"},
                 "AllocatedStorage": {"Ref": "DBSize"},
