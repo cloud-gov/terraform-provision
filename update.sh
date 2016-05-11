@@ -44,9 +44,9 @@ LAST_UPDATED=$(
 echo "Updating $STACK_NAME; Last Update: $LAST_UPDATED"
 
 # copy the json up to s3
-for i in *.json; do
-    aws s3 cp "$i" s3://$AWS_S3_BUCKET/$VERSION/;
-    echo "Uploading: $S3_BASE/$AWS_S3_BUCKET/$VERSION/$TOP"
+aws s3 cp "$TOP" s3://$AWS_S3_BUCKET/$VERSION/
+for i in templates/*.json; do
+    aws s3 cp "$i" s3://$AWS_S3_BUCKET/$VERSION/
 done
 
 # create the change set, using the parameters from the last version
