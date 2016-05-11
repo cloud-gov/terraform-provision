@@ -2,19 +2,24 @@
 jobs:
 - name: bootstrap
   public: true
-  plan: 
+  plan:
     - get: cg-provision
       trigger: true
     - task: boostrap-tooling
       config:
         platform: linux
-        image: docker:///busybox
+        image: docker:///18fgsa/concourse-task
         inputs:
         - name: cg-provision
         run:
-          path: /bin/sh
-          args: ["./update.sh"]
+          path: /bin/bash
+          args: ["./update.sh", "tooling", "tooling-stack.json"]
           dir: cg-provision
+      params:
+        AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+        AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+        AWS_DEFAULT_REGION: {{aws_default_region}}
+        AWS_S3_BUCKET: {{aws_s3_bucket}}
 
 resources:
 - name: cg-provision

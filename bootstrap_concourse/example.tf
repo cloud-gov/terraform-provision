@@ -1,6 +1,9 @@
 variable "PUBLIC_KEY_PATH" {}
 variable "ACCESS_KEY_ID" {}
 variable "SECRET_ACCESS_KEY" {}
+variable "CF_S3_BUCKET" {
+  default = "cf-templates-1v2czdpr8i6tw-us-gov-west-1"
+}
 variable "DEFAULT_REGION" {
   default = "us-east-1"
 }
@@ -82,7 +85,9 @@ resource "aws_instance" "example" {
 until nc -z ${aws_instance.example.public_ip} 80; do sleep 1; done && \
 fly -t boot login -c http://${aws_instance.example.public_ip} -u ${var.CI_USER} -p ${var.CI_PASS} && \
 until fly -t boot workers 2>&1| grep linux; do sleep 1; done && \
-fly -t boot set-pipeline -n -p bootstrap -c pipeline.yml && \
+fly -t boot set-pipeline -n -p bootstrap -c pipeline.yml -v aws_access_keyid=${var.ACCESS_KEY_ID} \
+  -v aws_secret_access_key=${var.SECRET_ACCESS_KEY} -v aws_default_region=${var.DEFAULT_REGION} \
+  -v aws_s3_bucket=${var.CF_S3_BUCKET} && \
 fly -t boot unpause-pipeline -p bootstrap && \
 fly -t boot trigger-job -j bootstrap/bootstrap
 EOC
