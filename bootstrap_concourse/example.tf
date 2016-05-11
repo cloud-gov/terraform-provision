@@ -6,7 +6,7 @@ variable "DEFAULT_REGION" {
 }
 
 variable "AMI" {
-  default = "ami-64140d0e"
+  default = "ami-f8bbd9db"
 }
 
 variable "CI_USER" {
@@ -24,7 +24,7 @@ provider "aws" {
 }
 
 resource "aws_key_pair" "auth" {
-  key_name = "testkey" 
+  key_name = "testkey"
   public_key = "${file("${var.PUBLIC_KEY_PATH}")}"
 }
 
@@ -38,6 +38,14 @@ resource "aws_security_group" "allow_all_tcp" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port = 0
+    to_port = 65535
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 }
 
 resource "aws_instance" "example" {
@@ -53,20 +61,20 @@ resource "aws_instance" "example" {
   provisioner "remote-exec" {
     inline = [
       "psql -V || sudo apt-get update && sudo apt-get update",
-      "sudo apt-get install -y postgresql screen",
+      "sudo apt-get install -y linux-generic-lts-vivid postgresql screen",
       "sudo -u postgres psql -c \"CREATE USER ubuntu WITH PASSWORD 'ci';\"",
       "sudo -u postgres createdb -O ubuntu atc",
-      "sudo iptables -t nat -F && sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080",
       "test -f host_key || ssh-keygen -t rsa -f host_key -N ''",
       "test -f worker_key || ssh-keygen -t rsa -f worker_key -N ''",
       "test -f session_signing_key || ssh-keygen -t rsa -f session_signing_key -N ''",
       "test -f authorized_worker_keys || cp worker_key.pub authorized_worker_keys",
       "test -f concourse_linux_amd64 || curl -LO https://github.com/concourse/concourse/releases/download/v1.2.0/concourse_linux_amd64",
-      "echo \"sleep 10 && screen -dmS web ./concourse_linux_amd64 web --basic-auth-username ${var.CI_USER} --basic-auth-password ${var.CI_PASS}  --session-signing-key session_signing_key --tsa-host-key host_key --tsa-authorized-keys authorized_worker_keys --postgres-data-source='postgres://ubuntu:ci@127.0.0.1:5432/atc?sslmode=disable' --external-url http://${aws_instance.example.public_ip}\" > start_concourse.sh",
+      "echo \"sudo iptables -t nat -F && sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080\" > start_concourse.sh",
+      "echo \"sleep 10 && screen -dmS web ./concourse_linux_amd64 web --basic-auth-username ${var.CI_USER} --basic-auth-password ${var.CI_PASS}  --session-signing-key session_signing_key --tsa-host-key host_key --tsa-authorized-keys authorized_worker_keys --postgres-data-source='postgres://ubuntu:ci@127.0.0.1:5432/atc?sslmode=disable' --external-url http://${aws_instance.example.public_ip}\" >> start_concourse.sh",
       "echo \"sudo mkdir -p /opt/worker && screen -dmS worker sudo ./concourse_linux_amd64 worker --work-dir /opt/worker --tsa-host 127.0.0.1 --tsa-public-key host_key.pub --tsa-worker-private-key worker_key\" >> start_concourse.sh",
       "chmod 755 concourse_linux_amd64 start_concourse.sh",
-      "./start_concourse.sh",
-      "screen -list; exit 0;"
+      "echo \"cd /home/ubuntu && ./start_concourse.sh\" > /tmp/rc.local && chmod 755 /tmp/rc.local && sudo mv /tmp/rc.local /etc/rc.local",
+      "sudo shutdown -r now"
     ]
   }
   provisioner "local-exec" {
@@ -82,5 +90,5 @@ EOC
 }
 
 output "concourse_url" {
-  value = "http://${var.CI_USER}:${var.CI_PASS}@${aws_instance.example.public_ip}/"
+  value = "http://${var.CI_USER}:${var.CI_PASS}@${aws_instance.example.public_ip}/login/basic"
 }
