@@ -5,7 +5,7 @@ jobs:
   plan:
     - get: cg-provision
       trigger: true
-    - task: boostrap-tooling
+    - task: provision-infrastructure
       config:
         platform: linux
         image: docker:///18fgsa/concourse-task
@@ -21,9 +21,87 @@ jobs:
         AWS_DEFAULT_REGION: {{aws_default_region}}
         AWS_S3_BUCKET: {{aws_s3_bucket}}
 
+- name: deploy-master-bosh
+  serial: true
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: bosh-init-config
+      trigger: true
+    - get: common-masterbosh
+      trigger: true
+  - task: bosh-manifest
+    file: pipeline-tasks/spiff-merge.yml
+    config:
+      inputs:
+        - name: pipeline-tasks
+        - name: bosh-init-config
+        - name: common-masterbosh
+    params:
+      OUTPUT_FILE: spiff-merge/manifest.yml
+      SOURCE_FILE: bosh-init-config/bosh-init-deployment.yml
+      MERGE_FILES: common-masterbosh/secrets.yml
+  - task: decrypt-private-key
+    file: pipeline-tasks/decrypt.yml
+    config:
+      inputs:
+        - name: pipeline-tasks
+        - name: common-masterbosh
+    params:
+      INPUT_FILE: common-masterbosh/boshCA.crt
+      OUTPUT_FILE: decrypt/bosh-init.pem
+      PASSPHRASE: {{passphrase}}
+  - put: masterbosh-deployment
+    params:
+      manifest_file: spiff-merge/manifest.yml
+      key_file: decrypt/bosh-init.pem
+      stats_file_key: master-bosh-state.json
+
 resources:
 - name: cg-provision
   type: git
   source:
     uri: https://github.com/18F/cg-provision
     branch: master
+
+- name: common-masterbosh
+  type: cg-common
+  source:
+    bucket_name: {{aws_secrets_bucket}}
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    secrets_file: master-bosh.yml
+    secrets_passphrase: {{passphrase}}
+    bosh_cert: master-bosh.pem
+
+- name: bosh-init-config
+  type: git
+  source:
+    uri: https://github.com/18F/cg-deploy-bosh.git
+    branch: master
+    paths:
+    - bosh-init-deployment.yml
+
+- name: masterbosh-deployment
+  type: bosh-init-deployment
+  source:
+    bucket_name: {{aws_secrets_bucket}}
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region: {{aws_default_region}}
+
+- name: pipeline-tasks
+  type: git
+  source:
+    uri: https://github.com/18F/cg-pipeline-tasks.git
+    branch: master
+
+resource_types:
+- name: bosh-init-deployment
+  type: docker-image
+  source:
+    repository: teamidefix/bosh-init-deployment-resource
+- name: cg-common
+  type: docker-image
+  source:
+    repository: 18fgsa/cg-common-resource
