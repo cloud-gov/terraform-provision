@@ -28,27 +28,39 @@ jobs:
     - get: pipeline-tasks
     - get: bosh-init-config
       trigger: true
-    - get: common-masterbosh
+    - get: secrets-file
       trigger: true
+    - get: cert-file
+      trigger: true
+  - task: decrypt-secrets
+    file: pipeline-tasks/decrypt.yml
+    config:
+      inputs:
+        - name: pipeline-tasks
+        - name: secrets-file
+    params:
+      INPUT_FILE: secrets-file/master-bosh.yml
+      OUTPUT_FILE: decrypt/secrets.yml
+      PASSPHRASE: {{passphrase}}
   - task: bosh-manifest
     file: pipeline-tasks/spiff-merge.yml
     config:
       inputs:
         - name: pipeline-tasks
         - name: bosh-init-config
-        - name: common-masterbosh
+        - name: decrypt
     params:
       OUTPUT_FILE: spiff-merge/manifest.yml
       SOURCE_FILE: bosh-init-config/bosh-init-deployment.yml
-      MERGE_FILES: common-masterbosh/secrets.yml
+      MERGE_FILES: decrypt/secrets.yml
   - task: decrypt-private-key
     file: pipeline-tasks/decrypt.yml
     config:
       inputs:
         - name: pipeline-tasks
-        - name: common-masterbosh
+        - name: cert-file
     params:
-      INPUT_FILE: common-masterbosh/boshCA.crt
+      INPUT_FILE: cert-file/master-bosh.pem
       OUTPUT_FILE: decrypt/bosh-init.pem
       PASSPHRASE: {{passphrase}}
   - put: masterbosh-deployment
@@ -64,15 +76,23 @@ resources:
     uri: https://github.com/18F/cg-provision
     branch: master
 
-- name: common-masterbosh
-  type: cg-common
+- name: secrets-file
+  type: s3
   source:
-    bucket_name: {{aws_secrets_bucket}}
+    bucket: {{aws_secrets_bucket}}
     access_key_id: {{aws_access_key_id}}
     secret_access_key: {{aws_secret_access_key}}
-    secrets_file: master-bosh.yml
-    secrets_passphrase: {{passphrase}}
-    bosh_cert: master-bosh.pem
+    region_name: {{aws_default_region}}
+    versioned_file: master-bosh.yml
+
+- name: cert-file
+  type: s3
+  source:
+    bucket: {{aws_secrets_bucket}}
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: {{aws_default_region}}
+    versioned_file: master-bosh.pem
 
 - name: bosh-init-config
   type: git
@@ -101,7 +121,3 @@ resource_types:
   type: docker-image
   source:
     repository: teamidefix/bosh-init-deployment-resource
-- name: cg-common
-  type: docker-image
-  source:
-    repository: 18fgsa/cg-common-resource
