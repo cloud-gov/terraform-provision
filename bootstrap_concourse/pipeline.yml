@@ -1,0 +1,24 @@
+---
+jobs:
+- name: bootstrap
+  public: true
+  plan: 
+    - get: cg-provision
+      trigger: true
+    - task: boostrap-tooling
+      config:
+        platform: linux
+        image: docker:///busybox
+        inputs:
+        - name: cg-provision
+        run:
+          path: /bin/sh
+          args: ["./update.sh"]
+          dir: cg-provision
+
+resources:
+- name: cg-provision
+  type: git
+  source:
+    uri: https://github.com/18F/cg-provision
+    branch: master
