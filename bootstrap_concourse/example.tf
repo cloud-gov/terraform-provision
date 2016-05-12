@@ -10,7 +10,7 @@ variable "DEFAULT_REGION" {
 }
 
 variable "AMI" {
-  default = "ami-905fe0f1"
+  default = "ami-7e61de1f"
 }
 
 variable "CI_USER" {
@@ -98,8 +98,8 @@ resource "aws_instance" "example" {
   provisioner "remote-exec" {
     inline = [
       "echo \"CI_USER=${var.CI_USER}\\nCI_PASS=${var.CI_PASS}\\nCI_HOST=${aws_instance.example.public_ip}\" > ~/info.sh",
-      "sudo ./start_concourse.sh",
-      "sudo screen -list; exit 0;"
+      "./start_concourse.sh",
+      "screen -list; exit 0;"
     ]
   }
   provisioner "local-exec" {
