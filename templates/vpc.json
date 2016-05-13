@@ -376,8 +376,20 @@
         "SecurityGroupIngress" : [
           {
             "IpProtocol" : "tcp",
+            "FromPort" : "25555",
+            "ToPort" : "25555",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          },
+          {
+            "IpProtocol" : "tcp",
             "FromPort" : "4222",
             "ToPort" : "4222",
+            "CidrIp" : { "Ref": "VPCNetworkCidr" }
+          },
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "22",
+            "ToPort" : "22",
             "CidrIp" : { "Ref": "VPCNetworkCidr" }
           },
           {
