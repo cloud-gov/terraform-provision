@@ -32,13 +32,21 @@ resource "aws_key_pair" "auth" {
   public_key = "${file("${var.PUBLIC_KEY_PATH}")}"
 }
 
-resource "aws_security_group" "allow_all_tcp" {
-  name = "allow_all_tcp"
-  description = "Allow all inbound traffic"
+resource "aws_security_group" "allow_ssh_and_web" {
+  name = "allow_ssh_and_web"
+  description = "Allow inbound ssh and web traffic"
+  vpc_id = "vpc-4f897b2a"
 
   ingress {
-    from_port = 0
-    to_port = 65535
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -60,11 +68,25 @@ resource "aws_s3_bucket" "secrets_bucket" {
     }
 }
 
+resource "aws_s3_bucket" "tooling_blobstore_bucket" {
+    bucket = "cloud-gov-bosh-tooling-blobstore"
+    acl = "private"
+}
+
+resource "aws_s3_bucket_object" "tooling_bosh_secrets" {
+    depends_on = [ "aws_s3_bucket.secrets_bucket" ]
+    bucket = "${aws_s3_bucket.secrets_bucket.id}"
+    key = "tooling-bosh.yml"
+    source = "./tooling-bosh.enc.yml"
+    etag = "${md5(file("./tooling-bosh.enc.yml"))}"
+}
+
 resource "aws_s3_bucket_object" "master_bosh_secrets" {
     depends_on = [ "aws_s3_bucket.secrets_bucket" ]
     bucket = "${aws_s3_bucket.secrets_bucket.id}"
     key = "master-bosh.yml"
     source = "./master-bosh.enc.yml"
+    etag = "${md5(file("./master-bosh.enc.yml"))}"
 }
 
 resource "aws_s3_bucket_object" "master_bosh_cert" {
@@ -72,6 +94,7 @@ resource "aws_s3_bucket_object" "master_bosh_cert" {
     bucket = "${aws_s3_bucket.secrets_bucket.id}"
     key = "master-bosh.pem"
     source = "./master-bosh.enc.pem"
+    etag = "${md5(file("./master-bosh.enc.pem"))}"
 }
 
 resource "aws_s3_bucket_object" "master_bosh_init_state" {
@@ -89,7 +112,10 @@ resource "aws_instance" "example" {
   ami = "${var.AMI}"
   instance_type = "c1.medium"
   key_name = "${aws_key_pair.auth.id}"
-  security_groups = ["${aws_security_group.allow_all_tcp.name}"]
+  vpc_security_group_ids = [ "sg-2128f844", "${aws_security_group.allow_ssh_and_web.id}" ]
+  subnet_id = "subnet-479a1922"
+
+  associate_public_ip_address = true
 
   connection {
     user = "ubuntu"
