@@ -87,7 +87,7 @@ resource "aws_instance" "example" {
     "aws_s3_bucket_object.master_bosh_init_state"
   ]
   ami = "${var.AMI}"
-  instance_type = "m1.small"
+  instance_type = "c1.medium"
   key_name = "${aws_key_pair.auth.id}"
   security_groups = ["${aws_security_group.allow_all_tcp.name}"]
 
