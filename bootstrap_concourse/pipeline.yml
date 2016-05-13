@@ -1,14 +1,17 @@
 ---
 jobs:
 - name: bootstrap
-  public: true
+  serial: true
   plan:
     - get: cg-provision
       trigger: true
     - task: provision-infrastructure
       config:
         platform: linux
-        image: docker:///18fgsa/concourse-task
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
         inputs:
         - name: cg-provision
         run:
