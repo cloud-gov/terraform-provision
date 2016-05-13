@@ -372,7 +372,7 @@
     "BoshSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "GroupDescription" : "Enable access to CF boxes",
+        "GroupDescription" : "Enable access to CF boxes.",
         "SecurityGroupIngress" : [
           {
             "IpProtocol" : "tcp",
@@ -413,6 +413,15 @@
         ],
         "VpcId" : { "Ref" : "mainVPC" }
       }
+    },
+    "BoshSecurityGroupSelfReference": {
+        "Type" : "AWS::EC2::SecurityGroupIngress",
+        "Properties" : {
+          "GroupId" : { "Ref" : "BoshSecurityGroup" },
+          "IpProtocol": "-1",
+          "SourceSecurityGroupId" : { "Ref" : "BoshSecurityGroup" }
+        },
+        "DependsOn" : "BoshSecurityGroup"
     },
 
     "NATa" : {
