@@ -38,13 +38,13 @@ resource "aws_db_subnet_group" "rds" {
 
 
 output "rds_subnet_az1" {
-    value = "aws_subnet.az1_rds.id"
+    value = "${aws_subnet.az1_rds.id}"
 }
 
 output "rds_subnet_az2" {
-    value = "aws_subnet.az2_rds.id"
+    value = "${aws_subnet.az2_rds.id}"
 }
 
 output "rds_subnet_group" {
-    value = "aws_db_subnet_group.rds.id"
+    value = "${aws_db_subnet_group.rds.id}"
 }
