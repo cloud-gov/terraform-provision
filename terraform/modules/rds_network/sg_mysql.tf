@@ -15,6 +15,10 @@ resource "aws_security_group" "rds_mysql" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags =  {
+    Name = "${var.stack_description} - Incoming MySQL Traffic"
+  }
+
 }
 
 output "rds_mysql_sg_id" {
