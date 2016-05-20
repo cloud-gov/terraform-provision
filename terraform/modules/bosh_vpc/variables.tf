@@ -30,14 +30,6 @@ variable "private_cidr_2" {
   default = "10.99.2.0/24"
 }
 
-variable "rds_private_cidr_1" {
-  default = "10.99.20.0/24"
-}
-
-variable "rds_private_cidr_2" {
-  default = "10.99.21.0/24"
-}
-
 variable "nat_gateway_instance_type" {
   default = "t2.micro"
 }

@@ -1,6 +1,15 @@
+/*
+ * Variables required:
+ *   stack_description
+ *   vpc_id
+ *   rds_private_cidr1
+ *   rds_private_cidr2
+ *   az1
+ *   az2
+ */
 
 resource "aws_subnet" "az1_rds" {
-  vpc_id = "${aws_vpc.main_vpc.id}"
+  vpc_id = "${var.vpc_id}"
   cidr_block = "${var.rds_private_cidr_1}"
   availability_zone = "${var.az1}"
 
@@ -11,7 +20,7 @@ resource "aws_subnet" "az1_rds" {
 }
 
 resource "aws_subnet" "az2_rds" {
-  vpc_id = "${aws_vpc.main_vpc.id}"
+  vpc_id = "${var.vpc_id}"
   cidr_block = "${var.rds_private_cidr_2}"
   availability_zone = "${var.az2}"
 
@@ -21,10 +30,21 @@ resource "aws_subnet" "az2_rds" {
   }
 }
 
+resource "aws_db_subnet_group" "rds" {
+  name = "rds"
+  description = "${var.stack_description} (Multi-AZ Subnet Group)"
+  subnet_ids = ["${aws_subnet.az1_rds.id}", "${aws_subnet.az2_rds.id}"]
+}
+
+
 output "rds_subnet_az1" {
     value = "aws_subnet.az1_rds.id"
 }
 
 output "rds_subnet_az2" {
     value = "aws_subnet.az2_rds.id"
+}
+
+output "rds_subnet_group" {
+    value = "aws_db_subnet_group.rds.id"
 }

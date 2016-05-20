@@ -8,6 +8,8 @@
  *  rds_instance_type
  *  rds_username
  *  rds_password
+ *  rds_subnet_group
+ *  rds_security_groups
  */
 
 resource "aws_db_instance" "rds_database" {
@@ -28,8 +30,8 @@ resource "aws_db_instance" "rds_database" {
   username = "${var.rds_username}"
   password = "${var.rds_password}"
 
-  db_subnet_group_name = "${aws_db_subnet_group.rds.id}"
-  vpc_security_group_ids = ["${aws_security_group.rds_postgres.id}", "${aws_security_group.rds_mysql.id}"]
+  db_subnet_group_name = "${var.rds_subnet_group}"
+  vpc_security_group_ids = ["${split(",", var.rds_security_groups)}"]
 
   tags = {
     Name = "${var.stack_description}"

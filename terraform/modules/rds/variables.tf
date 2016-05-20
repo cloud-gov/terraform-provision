@@ -3,12 +3,6 @@ variable "stack_description" {
   default = "tooling"
 }
 
-variable "rds_subnet_az1" {}
-
-variable "rds_subnet_az2" {}
-
-variable "vpc_id" {}
-
 variable "rds_instance_type" {
     default = "db.t2.medium"
 }
@@ -34,3 +28,7 @@ variable "rds_username" {
 }
 
 variable "rds_password" {}
+
+variable "rds_subnet_group" {}
+
+variable "rds_security_groups" {}
