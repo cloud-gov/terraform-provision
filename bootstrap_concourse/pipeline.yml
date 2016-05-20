@@ -72,6 +72,53 @@ jobs:
       key_file: decrypt/bosh-init.pem
       stats_file_key: master-bosh-state.json
 
+- name: deploy-tooling-bosh
+  serial: true
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: bosh-config
+      trigger: true
+    - get: bosh-release
+      trigger: true
+    - get: uaa-release
+      trigger: true
+    - get: cpi-release
+      trigger: true
+    - get: bosh-stemcell
+    - get: tooling-secrets-file
+      trigger: true
+  - task: decrypt-secrets
+    file: pipeline-tasks/decrypt.yml
+    config:
+      inputs:
+        - name: pipeline-tasks
+        - name: tooling-secrets-file
+    params:
+      INPUT_FILE: tooling-secrets-file/tooling-bosh.yml
+      OUTPUT_FILE: decrypt/secrets.yml
+      PASSPHRASE: {{passphrase}}
+  - task: bosh-manifest
+    file: pipeline-tasks/spiff-merge.yml
+    config:
+      inputs:
+        - name: pipeline-tasks
+        - name: bosh-config
+        - name: decrypt
+    params:
+      OUTPUT_FILE: spiff-merge/manifest.yml
+      SOURCE_FILE: bosh-config/bosh-deployment.yml
+      MERGE_FILES: decrypt/secrets.yml
+  - put: toolingbosh-deployment
+    params:
+      manifest: spiff-merge/manifest.yml
+      releases:
+        - bosh-release/*.tgz
+        - uaa-release/*.tgz
+        - cpi-release/*.tgz
+      stemcells:
+        - bosh-stemcell/*.tgz
+
 resources:
 - name: cg-provision
   type: git
@@ -87,6 +134,15 @@ resources:
     secret_access_key: {{aws_secret_access_key}}
     region_name: {{aws_default_region}}
     versioned_file: master-bosh.yml
+
+- name: tooling-secrets-file
+  type: s3
+  source:
+    bucket: {{aws_secrets_bucket}}
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: {{aws_default_region}}
+    versioned_file: tooling-bosh.yml
 
 - name: cert-file
   type: s3
@@ -105,6 +161,14 @@ resources:
     paths:
     - bosh-init-deployment.yml
 
+- name: bosh-config
+  type: git
+  source:
+    uri: https://github.com/18F/cg-deploy-bosh.git
+    branch: master
+    paths:
+    - bosh-deployment.yml
+
 - name: masterbosh-deployment
   type: bosh-init-deployment
   source:
@@ -112,6 +176,38 @@ resources:
     access_key_id: {{aws_access_key_id}}
     secret_access_key: {{aws_secret_access_key}}
     region: {{aws_default_region}}
+
+- name: toolingbosh-deployment
+  type: 18f-bosh-deployment
+  source:
+    target: 10.99.1.6
+    username: {{master-bosh-username}}
+    password: {{master-bosh-password}}
+    deployment: toolingbosh
+
+- name: bosh-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry/bosh
+
+- name: uaa-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry/uaa-release
+
+- name: cpi-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/bosh-aws-cpi-release
+
+- name: bosh-stemcell
+  type: s3
+  source:
+    bucket: cloud-gov-stemcells
+    access_key_id: {{aws_access_key_id}}
+    secret_access_key: {{aws_secret_access_key}}
+    region_name: {{aws_default_region}}
+    versioned_file: light-bosh-stemcell.tgz
 
 - name: pipeline-tasks
   type: git
@@ -124,3 +220,8 @@ resource_types:
   type: docker-image
   source:
     repository: teamidefix/bosh-init-deployment-resource
+
+- name: 18f-bosh-deployment
+  type: docker-image
+  source:
+    repository: 18fgsa/bosh-deployment-resource
