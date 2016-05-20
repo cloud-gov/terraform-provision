@@ -14,6 +14,10 @@ resource "aws_security_group" "rds_postgres" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags =  {
+    Name = "${var.stack_description} - Incoming PostGreSQL Traffic"
+  }
+
 }
 
 output "rds_postgres_sg_id" {

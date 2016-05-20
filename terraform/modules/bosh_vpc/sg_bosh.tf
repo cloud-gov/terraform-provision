@@ -56,6 +56,10 @@ resource "aws_security_group" "bosh" {
     cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
   }
 
+  tags =  {
+    Name = "${var.stack_description} - BOSH"
+  }
+
 }
 
 output "bosh_sg_id" {

@@ -20,6 +20,10 @@ resource "aws_security_group" "local_subnet_traffic" {
     protocol = "-1"
     cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
   }
+
+  tags =  {
+    Name = "${var.stack_description} - Local Traffic ${aws_vpc.main_vpc.cidr_block}"
+  }
 }
 
 
