@@ -39,7 +39,7 @@ resource "aws_route_table" "az1_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = "${aws_instance.az1_private_nat.id}"
+    instance_id = "${aws_instance.az1_private_nat.id}"
   }
 
   tags {
@@ -51,7 +51,7 @@ resource "aws_route_table" "az2_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = "${aws_instance.az2_private_nat.id}"
+    instance_id = "${aws_instance.az2_private_nat.id}"
   }
 
   tags {
