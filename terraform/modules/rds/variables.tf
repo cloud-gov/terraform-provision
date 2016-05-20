@@ -12,7 +12,7 @@ variable "rds_db_size" {
 }
 
 variable "rds_db_name" {
-    default = "database"
+    default = "bosh"
 }
 
 variable "rds_db_engine" {
