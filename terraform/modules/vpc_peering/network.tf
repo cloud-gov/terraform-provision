@@ -3,6 +3,7 @@
 resource "aws_vpc_peering_connection" "peering" {
     peer_owner_id = "${var.peer_owner_id}"
     peer_vpc_id = "${var.target_vpc_id}"
+    auto_accept = true
     vpc_id = "${var.source_vpc_id}"
 
     tags = {
