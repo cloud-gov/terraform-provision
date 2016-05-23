@@ -78,7 +78,7 @@ resource "aws_instance" "az1_private_nat" {
 
   subnet_id = "${aws_subnet.az1_public.id}"
 
-  vpc_security_group_ids = ["${aws_security_group.local_subnet_traffic.id}"]
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
 
   tags {
     Name = "${var.stack_description} (AZ1 NAT)"
@@ -93,7 +93,7 @@ resource "aws_instance" "az2_private_nat" {
 
   subnet_id = "${aws_subnet.az2_public.id}"
 
-  vpc_security_group_ids = ["${aws_security_group.local_subnet_traffic.id}"]
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
 
   tags {
     Name = "${var.stack_description}  (AZ2 NAT)"

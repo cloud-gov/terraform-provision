@@ -3,8 +3,8 @@
  *   aws_vpc referenced as 'main_vpc'
  */
 
-resource "aws_security_group" "local_subnet_traffic" {
-  description = "Enable access to local ips"
+resource "aws_security_group" "local_vpc_traffic" {
+  description = "Enable access to all VPC CIDR block ips"
   vpc_id = "${aws_vpc.main_vpc.id}"
 
   ingress {
@@ -27,6 +27,6 @@ resource "aws_security_group" "local_subnet_traffic" {
 }
 
 
-output "local_subnet_traffic_sg_id" {
-    value = "${aws_security_group.local_subnet_traffic.id}"
+output "local_vpc_traffic_sg_id" {
+    value = "${aws_security_group.local_vpc_traffic.id}"
 }
