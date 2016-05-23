@@ -49,3 +49,22 @@ resource "aws_route_table" "public_network" {
     Name = "${var.stack_description} (Public Route Table)"
   }
 }
+
+resource "aws_route_table_association" "az1_public_rta" {
+  subnet_id = "${aws_subnet.az1_public.id}"
+  route_table_id = "${aws_route_table.public_network.id}"
+}
+
+resource "aws_route_table_association" "az2_public_rta" {
+  subnet_id = "${aws_subnet.az2_public.id}"
+  route_table_id = "${aws_route_table.public_network.id}"
+}
+
+
+output "public_subnet_az1" {
+  value = "${aws_subnet.az1_public.id}"
+}
+
+output "public_subnet_az2" {
+  value = "${aws_subnet.az2_public.id}"
+}
