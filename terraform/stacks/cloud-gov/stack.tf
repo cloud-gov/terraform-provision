@@ -9,7 +9,7 @@ module "prod_stack" {
     source = "../production"
 
     rds_password = "${var.prod_rds_password}"
-    peer_owner_id = "${var.peer_owner_id}"
+    peer_owner_id = "${var.account_id}"
     target_vpc_id = "${module.tooling_stack.vpc_id}"
     target_az1_private_route_table = "${module.tooling_stack.private_route_table_az1}"
     target_az2_private_route_table = "${module.tooling_stack.private_route_table_az2}"
@@ -19,7 +19,7 @@ module "staging_stack" {
     source = "../staging"
 
     rds_password = "${var.staging_rds_password}"
-    peer_owner_id = "${var.peer_owner_id}"
+    peer_owner_id = "${var.account_id}"
     target_vpc_id = "${module.tooling_stack.vpc_id}"
     target_az1_private_route_table = "${module.tooling_stack.private_route_table_az1}"
     target_az2_private_route_table = "${module.tooling_stack.private_route_table_az2}"

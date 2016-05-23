@@ -16,7 +16,7 @@
 #
 # AWS Account ID of the person running this operation
 #
-TF_VAR_peer_owner_id=""
+TF_VAR_account_id=""
 
 #
 # Tooling VPC settings

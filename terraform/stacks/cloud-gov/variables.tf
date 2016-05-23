@@ -1,5 +1,5 @@
 
-variable "peer_owner_id" {}
+variable "account_id" {}
 
 variable "tooling_rds_password" {}
 
