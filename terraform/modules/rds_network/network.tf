@@ -31,7 +31,7 @@ resource "aws_subnet" "az2_rds" {
 }
 
 resource "aws_db_subnet_group" "rds" {
-  name = "rds"
+  name = "${var.stack_description}"
   description = "${var.stack_description} (Multi-AZ Subnet Group)"
   subnet_ids = ["${aws_subnet.az1_rds.id}", "${aws_subnet.az2_rds.id}"]
 }
