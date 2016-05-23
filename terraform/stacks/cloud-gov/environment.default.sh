@@ -16,19 +16,19 @@
 #
 # AWS Account ID of the person running this operation
 #
-TF_VAR_account_id=""
+export TF_VAR_account_id=""
 
 #
 # Tooling VPC settings
 #
-TF_VAR_tooling_rds_password=""
+export TF_VAR_tooling_rds_password=""
 
 #
 # Production VPC settings
 #
-TF_VAR_prod_rds_password=""
+export TF_VAR_prod_rds_password=""
 
 #
 # Staging VPC settings
 #
-TF_VAR_staging_rds_password=""
+export TF_VAR_staging_rds_password=""
