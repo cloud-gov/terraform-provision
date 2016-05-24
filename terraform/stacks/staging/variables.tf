@@ -40,6 +40,8 @@ variable "target_vpc_cidr" {
     default = "10.99.0.0/16"
 }
 
+variable "target_bosh_security_group" {}
+
 variable "target_az1_private_route_table" {}
 
 variable "target_az2_private_route_table" {}

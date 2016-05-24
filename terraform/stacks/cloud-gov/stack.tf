@@ -13,6 +13,7 @@ module "prod_stack" {
     target_vpc_id = "${module.tooling_stack.vpc_id}"
     target_az1_private_route_table = "${module.tooling_stack.private_route_table_az1}"
     target_az2_private_route_table = "${module.tooling_stack.private_route_table_az2}"
+    target_bosh_security_group = "${module.tooling_stack.bosh_security_group}"
 }
 
 module "staging_stack" {
@@ -23,4 +24,5 @@ module "staging_stack" {
     target_vpc_id = "${module.tooling_stack.vpc_id}"
     target_az1_private_route_table = "${module.tooling_stack.private_route_table_az1}"
     target_az2_private_route_table = "${module.tooling_stack.private_route_table_az2}"
+    target_bosh_security_group = "${module.tooling_stack.bosh_security_group}"
 }

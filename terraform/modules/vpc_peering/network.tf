@@ -1,3 +1,15 @@
+/*
+ * Variables required:
+ *   peer_owner_id
+ *   source_az1_route_table
+ *   source_az2_route_table
+ *   target_az1_route_table
+ *   target_az2_route_table
+ *   target_vpc_id
+ *   target_vpc_cidr
+ *   source_vpc_id
+ *   source_vpc_cidr
+ */
 
 # Create peering connection for source_vpc_id -> target_vpc_id
 resource "aws_vpc_peering_connection" "peering" {

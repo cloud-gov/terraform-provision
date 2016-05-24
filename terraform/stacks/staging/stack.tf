@@ -42,6 +42,20 @@ module "vpc_peering" {
     source_az2_route_table = "${module.vpc.private_route_table_az2}"
 }
 
+module "vpc_security_source_to_target" {
+    source = "../../modules/vpc_peering_sg"
+
+    target_bosh_security_group = "${var.target_bosh_security_group}"
+    source_vpc_cidr = "${module.vpc.vpc_cidr}"
+}
+
+module "vpc_security_target_to_source" {
+    source = "../../modules/vpc_peering_sg"
+
+    target_bosh_security_group = "${module.vpc.bosh_security_group}"
+    source_vpc_cidr = "${var.target_vpc_cidr}"
+}
+
 output "vpc_id" {
     value = "${module.vpc.vpc_id}"
 }
@@ -52,4 +66,8 @@ output "private_route_table_az1" {
 
 output "private_route_table_az2" {
   value = "${module.vpc.private_route_table_az2}"
+}
+
+output "bosh_security_group" {
+  value = "${module.vpc.bosh_security_group}"
 }
