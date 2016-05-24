@@ -22,6 +22,8 @@ export TF_VAR_account_id=""
 # Tooling VPC settings
 #
 export TF_VAR_tooling_rds_password=""
+export TF_VAR_concourse_prod_rds_password=""
+export TF_VAR_concourse_staging_rds_password=""
 
 #
 # Production VPC settings

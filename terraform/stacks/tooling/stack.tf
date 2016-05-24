@@ -23,6 +23,24 @@ module "rds" {
     rds_security_groups = "${module.rds_network.rds_postgres_sg_id},${module.rds_network.rds_mysql_sg_id}"
 }
 
+module "concourse_production" {
+  source = "../../modules/concourse"
+    vpc_id = "${module.vpc.vpc_id}"
+    route_table_id = "${module.vpc.private_route_table_az1}"
+    rds_password = "${var.concourse_prod_rds_password}"
+    rds_subnet_group = "${module.rds_network.rds_subnet_group}"
+    rds_security_groups = "${module.rds_network.rds_postgres_sg_id},${module.rds_network.rds_mysql_sg_id}"
+}
+
+module "concourse_staging" {
+  source = "../../modules/concourse"
+    vpc_id = "${module.vpc.vpc_id}"
+    route_table_id = "${module.vpc.private_route_table_az2}"
+    rds_password = "${var.concourse_staging_rds_password}"
+    rds_subnet_group = "${module.rds_network.rds_subnet_group}"
+    rds_security_groups = "${module.rds_network.rds_postgres_sg_id},${module.rds_network.rds_mysql_sg_id}"
+}
+
 output "vpc_id" {
     value = "${module.vpc.vpc_id}"
 }
