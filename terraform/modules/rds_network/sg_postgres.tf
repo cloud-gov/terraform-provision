@@ -20,7 +20,3 @@ resource "aws_security_group" "rds_postgres" {
   }
 
 }
-
-output "rds_postgres_sg_id" {
-  value = "${aws_security_group.rds_postgres.id}"
-}

@@ -36,7 +36,3 @@ resource "aws_security_group" "web_traffic" {
   }
 
 }
-
-output "web_traffic_sg_id" {
-  value = "${aws_security_group.web_traffic.id}"
-}

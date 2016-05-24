@@ -104,19 +104,3 @@ resource "aws_instance" "az2_private_nat" {
   }
 }
 
-output "private_subnet_az1" {
-  value = "${aws_subnet.az1_private.id}"
-}
-
-output "private_subnet_az2" {
-  value = "${aws_subnet.az2_private.id}"
-}
-
-output "private_route_table_az1" {
-  value = "${aws_route_table.az1_private_route_table.id}"
-}
-
-output "private_route_table_az2" {
-  value = "${aws_route_table.az2_private_route_table.id}"
-}
-

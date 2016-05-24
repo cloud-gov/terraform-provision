@@ -78,7 +78,3 @@ resource "aws_security_group_rule" "bosh_director" {
     cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
     security_group_id = "${aws_security_group.bosh.id}"
 }
-
-output "bosh_security_group" {
-  value = "${aws_security_group.bosh.id}"
-}

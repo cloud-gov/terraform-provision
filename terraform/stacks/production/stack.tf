@@ -25,7 +25,7 @@ module "rds" {
     stack_description = "${var.stack_description}"
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
-    rds_security_groups = "${module.rds_network.rds_postgres_sg_id},${module.rds_network.rds_mysql_sg_id}"
+    rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
 }
 
 module "vpc_peering" {
