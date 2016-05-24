@@ -1,4 +1,7 @@
 /*
+ * Variables required:
+ *  stack_description
+ *
  * Resources required:
  *   aws_vpc referenced as 'main_vpc'
  */

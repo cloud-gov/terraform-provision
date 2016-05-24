@@ -1,5 +1,6 @@
 /*
  * Variables required:
+ *   stack_description
  *   vpc_id
  */
 
