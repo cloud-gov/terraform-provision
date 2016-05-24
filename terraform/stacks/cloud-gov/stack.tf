@@ -2,6 +2,7 @@
 module "tooling_stack" {
     source = "../tooling"
 
+    account_id = "${var.account_id}"
     rds_password = "${var.tooling_rds_password}"
     concourse_prod_rds_password = "${var.concourse_prod_rds_password}"
     concourse_staging_rds_password = "${var.concourse_staging_rds_password}"

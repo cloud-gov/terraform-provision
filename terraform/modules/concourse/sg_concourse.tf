@@ -31,7 +31,3 @@ resource "aws_security_group_rule" "concourse_web" {
     cidr_blocks = ["0.0.0.0/0"]
     security_group_id = "${aws_security_group.concourse.id}"
 }
-
-output "concourse_security_group" {
-  value = "${aws_security_group.concourse.id}"
-}

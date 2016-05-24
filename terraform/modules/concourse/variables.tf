@@ -32,3 +32,11 @@ variable "rds_security_groups" {}
 variable "route_table_id" {}
 
 variable "vpc_id" {}
+
+variable "account_id" {}
+
+variable "elb_cert_name" {}
+
+variable "elb_subnets" {}
+
+variable "elb_security_groups" {}

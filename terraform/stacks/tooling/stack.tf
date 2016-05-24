@@ -32,6 +32,10 @@ module "concourse_production" {
     rds_password = "${var.concourse_prod_rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
+    account_id = "${var.account_id}"
+    elb_cert_name = "${var.concourse_prod_elb_cert_name}"
+    elb_subnets = "${module.vpc.public_subnet_az1}"
+    elb_security_groups = "${module.vpc.web_traffic_security_group}"
 }
 
 module "concourse_staging" {
@@ -43,20 +47,8 @@ module "concourse_staging" {
     rds_password = "${var.concourse_staging_rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
-}
-
-output "vpc_id" {
-    value = "${module.vpc.vpc_id}"
-}
-
-output "private_route_table_az1" {
-  value = "${module.vpc.private_route_table_az1}"
-}
-
-output "private_route_table_az2" {
-  value = "${module.vpc.private_route_table_az2}"
-}
-
-output "bosh_security_group" {
-  value = "${module.vpc.bosh_security_group}"
+    account_id = "${var.account_id}"
+    elb_cert_name = "${var.concourse_staging_elb_cert_name}"
+    elb_subnets = "${module.vpc.public_subnet_az2}"
+    elb_security_groups = "${module.vpc.web_traffic_security_group}"
 }
