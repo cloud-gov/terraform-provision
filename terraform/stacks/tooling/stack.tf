@@ -26,6 +26,7 @@ module "rds" {
 module "concourse_production" {
   source = "../../modules/concourse"
     vpc_id = "${module.vpc.vpc_id}"
+    concourse_cidr = "${var.concourse_prod_cidr}"
     route_table_id = "${module.vpc.private_route_table_az1}"
     rds_password = "${var.concourse_prod_rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
@@ -35,6 +36,7 @@ module "concourse_production" {
 module "concourse_staging" {
   source = "../../modules/concourse"
     vpc_id = "${module.vpc.vpc_id}"
+    concourse_cidr = "${var.concourse_staging_cidr}"
     route_table_id = "${module.vpc.private_route_table_az2}"
     rds_password = "${var.concourse_staging_rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
