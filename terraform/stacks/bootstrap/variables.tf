@@ -1,6 +1,8 @@
 variable "concourse_password" {}
 
-variable "default_region" {}
+variable "default_region" {
+  default = "us-gov-west-1"
+}
 
 variable "concourse_username" {
   default = "ci"
