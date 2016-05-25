@@ -8,7 +8,7 @@ module "tooling_stack" {
     concourse_staging_rds_password = "${var.concourse_staging_rds_password}"
 }
 
-module "prod_stack" {
+module "production_stack" {
     source = "../production"
 
     rds_password = "${var.prod_rds_password}"

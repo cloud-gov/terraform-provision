@@ -56,18 +56,3 @@ module "vpc_security_target_to_source" {
     source_vpc_cidr = "${var.target_vpc_cidr}"
 }
 
-output "vpc_id" {
-    value = "${module.vpc.vpc_id}"
-}
-
-output "private_route_table_az1" {
-  value = "${module.vpc.private_route_table_az1}"
-}
-
-output "private_route_table_az2" {
-  value = "${module.vpc.private_route_table_az2}"
-}
-
-output "bosh_security_group" {
-  value = "${module.vpc.bosh_security_group}"
-}
