@@ -28,7 +28,7 @@ resource "aws_elb" "concourse_elb" {
   }
 
   tags =  {
-    Name = "${var.stack_description} - (Concourse - ${var.concourse_cidr})"
+    Name = "${var.stack_description}-Concourse-${var.concourse_az}"
   }
 
 }
