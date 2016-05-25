@@ -8,12 +8,8 @@ variable "concourse_username" {
   default = "ci"
 }
 
-variable "public_key_path" {
-  default = "~/.ssh/id_rsa.pub"
-}
-
 variable "ami_id" {
-  default = "ami-92338cf3"
+  default = "ami-392c9358"
 }
 
 variable "instance_type" {

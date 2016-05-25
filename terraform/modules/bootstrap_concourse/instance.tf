@@ -10,8 +10,6 @@ resource "aws_instance" "bootstrap_concourse" {
   ami = "${var.ami_id}"
   instance_type = "${var.instance_type}"
 
-  key_name = "${aws_key_pair.auth.id}"
-
   security_groups = ["${aws_security_group.bootstrap.name}"]
 
   iam_instance_profile = "${aws_iam_instance_profile.bootstrap.id}"

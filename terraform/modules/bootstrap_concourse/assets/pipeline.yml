@@ -25,5 +25,5 @@
   - name: pipeline-tasks
     type: git
     source:
-      uri: https://github.com/cnelson/cg-pipeline-tasks
+      uri: https://github.com/18F/cg-pipeline-tasks
       branch: master
