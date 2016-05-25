@@ -1,5 +1,7 @@
 variable "concourse_password" {}
 
+variable "default_region" {}
+
 variable "concourse_username" {
   default = "ci"
 }

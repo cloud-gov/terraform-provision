@@ -1,3 +1,11 @@
+resource "template_file" "pipeline" {
+    template = "${file("${path.module}/assets/pipeline.yml")}"
+
+    vars {
+        aws_default_region = "${var.region}"
+    }
+}
+
 resource "aws_instance" "bootstrap_concourse" {
   ami = "${var.ami_id}"
   instance_type = "${var.instance_type}"
@@ -12,7 +20,7 @@ resource "aws_instance" "bootstrap_concourse" {
 username: ${var.concourse_username}
 password: ${var.concourse_password}
 pipeline: |
-${file("${path.module}/assets/pipeline.yml")}
+${template_file.pipeline.rendered}
 EOF
 
   connection {
