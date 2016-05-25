@@ -1,0 +1,29 @@
+  # This file must be indented at least two spaces, so that when it's
+  # included in the terraform configuration, the indentation is correct
+  jobs:
+  - name: bootstrap
+    plan:
+    - get: cg-provision
+      trigger: true
+    - get: pipeline-tasks
+    - task: apply-test-stack
+      file: pipeline-tasks/terraform-apply.yml
+      input_mapping:
+        terraform-templates: cg-provision
+      params:
+        STACK_NAME: test
+        AWS_DEFAULT_REGION: ${aws_default_region}
+        S3_TFSTATE_BUCKET: terraform-state
+        TEMPLATE_SUBDIR: terraform/stacks/test
+
+  resources:
+  - name: cg-provision
+    type: git
+    source:
+      uri: https://github.com/18F/cg-provision
+      branch: cn-modules
+  - name: pipeline-tasks
+    type: git
+    source:
+      uri: https://github.com/18F/cg-pipeline-tasks
+      branch: master
