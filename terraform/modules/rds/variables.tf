@@ -1,7 +1,5 @@
 
-variable "stack_description" {
-  default = "tooling"
-}
+variable "stack_description" {}
 
 variable "rds_instance_type" {
     default = "db.t2.medium"
@@ -20,7 +18,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-    default = "9.4"
+    default = "9.4.5"
 }
 
 variable "rds_username" {

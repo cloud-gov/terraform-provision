@@ -14,6 +14,11 @@
 #
 
 #
+# For Terraform remote state configuration
+#
+export TF_VAR_remote_state_bucket=""
+
+#
 # AWS Account ID of the person running this operation
 #
 export TF_VAR_account_id=""
@@ -24,20 +29,5 @@ export TF_VAR_account_id=""
 export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
 export AWS_DEFAULT_REGION="us-gov-west-1"
-
-#
-# Tooling VPC settings
-#
-export TF_VAR_tooling_rds_password=""
-export TF_VAR_concourse_prod_rds_password=""
-export TF_VAR_concourse_staging_rds_password=""
-
-#
-# Production VPC settings
-#
-export TF_VAR_prod_rds_password=""
-
-#
-# Staging VPC settings
-#
-export TF_VAR_staging_rds_password=""
+export TF_VAR_az1="us-gov-west-1a"
+export TF_VAR_az2="us-gov-west-1b"

@@ -1,0 +1,115 @@
+jobs:
+- name: bootstrap
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: terraform-example
+
+  - task: create-update-tooling
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: terraform-example }
+    params:
+      STACK_NAME: tooling
+      TEMPLATE_SUBDIR: terraform/stacks/cloud-gov
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_az1: us-gov-west-1a
+      TF_VAR_az2: us-gov-west-1b
+      TF_VAR_account_id: {{aws_account_id}}
+      TF_VAR_rds_password: {{tooling_rds_password}}
+      TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
+      TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
+      TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
+      TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
+      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
+      TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}
+      TF_VAR_public_cidr_1: {{tooling_public_cidr_1}}
+      TF_VAR_public_cidr_2: {{tooling_public_cidr_2}}
+      TF_VAR_private_cidr_1: {{tooling_private_cidr_1}}
+      TF_VAR_private_cidr_2: {{tooling_private_cidr_2}}
+      TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
+      TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
+
+  - task: create-update-staging
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: terraform-example }
+    params:
+      STACK_NAME: staging
+      TEMPLATE_SUBDIR: terraform/stacks/cloud-gov
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_az1: us-gov-west-1a
+      TF_VAR_az2: us-gov-west-1b
+      TF_VAR_account_id: {{aws_account_id}}
+      TF_VAR_rds_password: {{staging_rds_password}}
+      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
+      TF_VAR_vpc_cidr: {{staging_vpc_cidr}}
+      TF_VAR_public_cidr_1: {{staging_public_cidr_1}}
+      TF_VAR_public_cidr_2: {{staging_public_cidr_2}}
+      TF_VAR_private_cidr_1: {{staging_private_cidr_1}}
+      TF_VAR_private_cidr_2: {{staging_private_cidr_2}}
+      TF_VAR_rds_private_cidr_1: {{staging_rds_private_cidr_1}}
+      TF_VAR_rds_private_cidr_2: {{staging_rds_private_cidr_2}}
+
+  - task: create-update-production
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: terraform-example }
+    params:
+      STACK_NAME: production
+      TEMPLATE_SUBDIR: terraform/stacks/cloud-gov
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_az1: us-gov-west-1a
+      TF_VAR_az2: us-gov-west-1b
+      TF_VAR_account_id: {{aws_account_id}}
+      TF_VAR_rds_password: {{production_rds_password}}
+      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
+      TF_VAR_vpc_cidr: {{production_vpc_cidr}}
+      TF_VAR_public_cidr_1: {{production_public_cidr_1}}
+      TF_VAR_public_cidr_2: {{production_public_cidr_2}}
+      TF_VAR_private_cidr_1: {{production_private_cidr_1}}
+      TF_VAR_private_cidr_2: {{production_private_cidr_2}}
+      TF_VAR_rds_private_cidr_1: {{production_rds_private_cidr_1}}
+      TF_VAR_rds_private_cidr_2: {{production_rds_private_cidr_2}}
+
+
+- name: teardown-tooling
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: terraform-example
+  - task: destroy
+    file: pipeline-tasks/terraform-destroy.yml
+    input_mapping: { terraform-templates: terraform-example }
+    params:
+      STACK_NAME: tooling
+      TEMPLATE_SUBDIR: terraform/stacks/cloud-gov
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_account_id: {{aws_account_id}}
+      TF_VAR_tooling_rds_password: {{tooling_rds_password}}
+      TF_VAR_prod_rds_password: {{prod_rds_password}}
+      TF_VAR_staging_rds_password: {{staging_rds_password}}
+      TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
+      TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
+
+resources:
+- name: pipeline-tasks
+  type: git
+  source:
+    uri: https://github.com/18F/cg-pipeline-tasks.git
+    branch: master
+
+- name: terraform-example
+  type: git
+  source:
+    uri: https://github.com/18F/cg-provision.git
+    branch: modules

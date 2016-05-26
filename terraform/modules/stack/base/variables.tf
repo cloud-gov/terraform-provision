@@ -35,3 +35,37 @@ variable "nat_gateway_instance_type" {
 variable "nat_gateway_ami" {
   default = "ami-e8ab1489"
 }
+
+variable "rds_private_cidr_1" {
+  default = "10.0.20.0/24"
+}
+
+variable "rds_private_cidr_2" {
+  default = "10.0.21.0/24"
+}
+
+variable "rds_instance_type" {
+    default = "db.t2.medium"
+}
+
+variable "rds_db_size" {
+    default = 5
+}
+
+variable "rds_db_name" {
+    default = "bosh"
+}
+
+variable "rds_db_engine" {
+    default = "postgres"
+}
+
+variable "rds_db_engine_version" {
+    default = "9.4.5"
+}
+
+variable "rds_username" {
+    default = "postgres"
+}
+
+variable "rds_password" {}

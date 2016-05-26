@@ -1,4 +1,12 @@
 
+variable "az1" {
+    default = "us-gov-west-1a"
+}
+
+variable "az2" {
+    default = "us-gov-west-1b"
+}
+
 variable "account_id" {}
 
 variable "tooling_rds_password" {}

@@ -1,10 +1,8 @@
 
-variable "stack_description" {
-  default = "tooling"
-}
+variable "stack_description" {}
 
 variable "concourse_cidr" {
-  default = "10.99.30.0/24"
+  default = "10.0.30.0/24"
 }
 
 variable "concourse_az" {

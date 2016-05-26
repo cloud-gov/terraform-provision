@@ -1,57 +1,17 @@
-
-module "vpc" {
-    source = "../../modules/bosh_vpc"
+module "stack" {
+    source = "../../modules/stack/spoke"
 
     stack_description = "${var.stack_description}"
     vpc_cidr = "${var.vpc_cidr}"
-    private_cidr_1 = "${var.private_cidr_1}"
-    private_cidr_2 = "${var.private_cidr_2}"
     public_cidr_1 = "${var.public_cidr_1}"
     public_cidr_2 = "${var.public_cidr_2}"
-}
-
-module "rds_network" {
-    source = "../../modules/rds_network"
-
-    stack_description = "${var.stack_description}"
-    vpc_id = "${module.vpc.vpc_id}"
+    private_cidr_1 = "${var.private_cidr_1}"
+    private_cidr_2 = "${var.private_cidr_2}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
-}
-
-module "rds" {
-    source = "../../modules/rds"
-
-    stack_description = "${var.stack_description}"
     rds_password = "${var.rds_password}"
-    rds_subnet_group = "${module.rds_network.rds_subnet_group}"
-    rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
-}
+    account_id = "${var.account_id}"
+    remote_state_bucket = "${var.remote_state_bucket}"
+    target_stack_name = "${var.target_stack_name}"
 
-module "vpc_peering" {
-    source = "../../modules/vpc_peering"
-
-    peer_owner_id = "${var.peer_owner_id}"
-    target_vpc_id = "${var.target_vpc_id}"
-    target_vpc_cidr = "${var.target_vpc_cidr}"
-    target_az1_route_table = "${var.target_az1_private_route_table}"
-    target_az2_route_table = "${var.target_az2_private_route_table}"
-    source_vpc_id = "${module.vpc.vpc_id}"
-    source_vpc_cidr = "${module.vpc.vpc_cidr}"
-    source_az1_route_table = "${module.vpc.private_route_table_az1}"
-    source_az2_route_table = "${module.vpc.private_route_table_az2}"
-}
-
-module "vpc_security_source_to_target" {
-    source = "../../modules/vpc_peering_sg"
-
-    target_bosh_security_group = "${var.target_bosh_security_group}"
-    source_vpc_cidr = "${module.vpc.vpc_cidr}"
-}
-
-module "vpc_security_target_to_source" {
-    source = "../../modules/vpc_peering_sg"
-
-    target_bosh_security_group = "${module.vpc.bosh_security_group}"
-    source_vpc_cidr = "${var.target_vpc_cidr}"
 }
