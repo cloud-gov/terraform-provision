@@ -18,6 +18,11 @@ resource "aws_db_instance" "rds_database" {
 
   multi_az = true
 
+  lifecycle {
+    ignore_changes = ["identifier"]
+  }
+  identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
+
   backup_retention_period = 30
 
   auto_minor_version_upgrade = true
