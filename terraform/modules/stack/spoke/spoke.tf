@@ -36,7 +36,7 @@ module "vpc_peering" {
     target_vpc_id = "${terraform_remote_state.target_vpc.output.vpc_id}"
     target_vpc_cidr = "${terraform_remote_state.target_vpc.output.vpc_cidr}"
     target_az1_route_table = "${terraform_remote_state.target_vpc.output.private_route_table_az1}"
-    target_az2_route_table = "${terraform_remote_state.target_vpc.output.private_route_table_az1}"
+    target_az2_route_table = "${terraform_remote_state.target_vpc.output.private_route_table_az2}"
     source_vpc_id = "${module.base.vpc_id}"
     source_vpc_cidr = "${module.base.vpc_cidr}"
     source_az1_route_table = "${module.base.private_route_table_az1}"
