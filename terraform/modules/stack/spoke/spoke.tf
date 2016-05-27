@@ -33,10 +33,10 @@ module "vpc_peering" {
     source = "../../vpc_peering"
 
     peer_owner_id = "${var.account_id}"
-    target_vpc_id = "${terraform_remote_state.target_vpc.base.vpc_id}"
-    target_vpc_cidr = "${terraform_remote_state.target_vpc.base.vpc_cidr}"
-    target_az1_route_table = "${terraform_remote_state.target_vpc.base.private_route_table_az1}"
-    target_az2_route_table = "${terraform_remote_state.target_vpc.base.private_route_table_az1}"
+    target_vpc_id = "${terraform_remote_state.target_vpc.output.vpc_id}"
+    target_vpc_cidr = "${terraform_remote_state.target_vpc.output.vpc_cidr}"
+    target_az1_route_table = "${terraform_remote_state.target_vpc.output.private_route_table_az1}"
+    target_az2_route_table = "${terraform_remote_state.target_vpc.output.private_route_table_az1}"
     source_vpc_id = "${module.base.vpc_id}"
     source_vpc_cidr = "${module.base.vpc_cidr}"
     source_az1_route_table = "${module.base.private_route_table_az1}"
@@ -46,7 +46,7 @@ module "vpc_peering" {
 module "vpc_security_source_to_target" {
     source = "../../vpc_peering_sg"
 
-    target_bosh_security_group = "${terraform_remote_state.target_vpc.base.bosh_security_group}"
+    target_bosh_security_group = "${terraform_remote_state.target_vpc.output.bosh_security_group}"
     source_vpc_cidr = "${module.base.vpc_cidr}"
 }
 
@@ -54,5 +54,5 @@ module "vpc_security_target_to_source" {
     source = "../../vpc_peering_sg"
 
     target_bosh_security_group = "${module.base.bosh_security_group}"
-    source_vpc_cidr = "${terraform_remote_state.target_vpc.base.vpc_cidr}"
+    source_vpc_cidr = "${terraform_remote_state.target_vpc.output.vpc_cidr}"
 }
