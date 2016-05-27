@@ -2,7 +2,12 @@ resource "template_file" "pipeline" {
     template = "${file("${path.module}/assets/pipeline.yml")}"
 
     vars {
-        aws_default_region = "${var.region}"
+        aws_access_key_id = "${var.aws_access_key_id}"
+        aws_secret_access_key = "${var.aws_secret_access_key}"
+        aws_default_region = "${var.aws_default_region}"
+        credentials_bucket = "${var.credentials_bucket}"
+        concourse_username = "${var.concourse_username}"
+        concourse_password = "${var.concourse_password}"
     }
 }
 
@@ -26,3 +31,4 @@ EOF
   }
 
 }
+

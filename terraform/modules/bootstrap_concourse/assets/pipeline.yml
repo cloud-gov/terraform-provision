@@ -1,29 +1,39 @@
-  # This file must be indented at least two spaces, so that when it's
+  # This file must be indented at least two spaces, so that when it is
   # included in the terraform configuration, the indentation is correct
   jobs:
-  - name: bootstrap
+  - name: bootstrap-terraform-pipeline
     plan:
+    - get: credentials
     - get: cg-provision
-      trigger: true
-    - get: pipeline-tasks
-    - task: apply-test-stack
-      file: pipeline-tasks/terraform-apply.yml
-      input_mapping:
-        terraform-templates: cg-provision
+    - put: pipelines
       params:
-        STACK_NAME: test
-        AWS_DEFAULT_REGION: ${aws_default_region}
-        S3_TFSTATE_BUCKET: terraform-state
-        TEMPLATE_SUBDIR: terraform/stacks/test
+        pipelines:
+        - name: terraform-provision
+          config_file: cg-provision/ci/pipeline.yml
+          var_files:
+          - credentials/cg-provision.yml
 
   resources:
   - name: cg-provision
     type: git
     source:
       uri: https://github.com/18F/cg-provision
-      branch: cn-modules
-  - name: pipeline-tasks
-    type: git
+      branch: modules
+  - name: credentials
+    type: s3
     source:
-      uri: https://github.com/18F/cg-pipeline-tasks
-      branch: master
+      bucket: ${credentials_bucket}
+      versioned_file: cg-provision.yml
+      access_key_id: ${aws_access_key_id}
+      secret_access_key: ${aws_secret_access_key}
+      region_name: ${aws_default_region}
+  - name: pipelines
+    type: concourse-pipeline
+    source:
+      username: ${concourse_username}
+      password: ${concourse_password}
+  resource_types:
+  - name: concourse-pipeline
+    type: docker-image
+    source:
+      repository: cntest/concourse-pipeline-resource

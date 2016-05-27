@@ -31,3 +31,10 @@ export AWS_SECRET_ACCESS_KEY=""
 export AWS_DEFAULT_REGION="us-gov-west-1"
 export TF_VAR_az1="us-gov-west-1a"
 export TF_VAR_az2="us-gov-west-1b"
+export TF_VAR_aws_access_key_id="${AWS_ACCESS_KEY_ID}"
+export TF_VAR_aws_secret_access_key="${AWS_SECRET_ACCESS_KEY}"
+
+#
+# Concourse credentials bucket
+export TF_VAR_credentials_bucket=""
+export TF_VAR_concourse_password="CHANGEME"

@@ -36,7 +36,6 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: terraform-example
-      passed: [bootstrap-tooling]
   - task: create-update-staging
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: terraform-example }
@@ -65,7 +64,6 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: terraform-example
-      passed: [bootstrap-tooling]
   - task: create-update-production
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: terraform-example }
