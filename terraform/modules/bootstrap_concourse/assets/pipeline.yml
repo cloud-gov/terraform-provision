@@ -4,13 +4,14 @@
   - name: bootstrap-terraform-pipeline
     plan:
     - get: credentials
+      trigger: true
     - get: cg-provision
     - put: pipelines
       params:
         pipelines:
         - name: terraform-provision
           config_file: cg-provision/ci/pipeline.yml
-          var_files:
+          vars_files:
           - credentials/cg-provision.yml
 
   resources:
