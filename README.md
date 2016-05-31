@@ -2,6 +2,7 @@
 Scripts and configuration for provisioning infrastructure used in cloud.gov
 
 Manual steps to create the world:
+
 1. Make sure you have terraform installed
 1. Copy `scripts/environment.default.sh` to `scripts/environment.sh` and edit
 1. Create S3 bucket with versioning enabled to store terraform state
