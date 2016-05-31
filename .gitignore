@@ -1,2 +1,12 @@
+# Configurations
+environment.sh
+credentials.yml
+
+# Terraform files
 *.tfstate
 *.tfstate.backup
+.terraform
+*.tfvars
+
+# Eclipse IDE files
+.project
