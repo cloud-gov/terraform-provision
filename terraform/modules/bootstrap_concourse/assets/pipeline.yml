@@ -33,8 +33,10 @@
     source:
       username: ${concourse_username}
       password: ${concourse_password}
+      insecure: "true"
   resource_types:
   - name: concourse-pipeline
     type: docker-image
     source:
-      repository: cntest/concourse-pipeline-resource
+      repository: robdimsdale/concourse-pipeline-resource
+      tag: v0.4.1
