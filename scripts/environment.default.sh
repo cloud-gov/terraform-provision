@@ -33,6 +33,13 @@ export TF_VAR_az1="us-gov-west-1a"
 export TF_VAR_az2="us-gov-west-1b"
 export TF_VAR_aws_access_key_id="${AWS_ACCESS_KEY_ID}"
 export TF_VAR_aws_secret_access_key="${AWS_SECRET_ACCESS_KEY}"
+export TF_VAR_aws_default_region="${AWS_DEFAULT_REGION}"
+
+#
+# Default VPC
+export TF_VAR_default_vpc_id=`aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].VpcId"`
+export TF_VAR_default_vpc_cidr=`aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].CidrBlock"`
+export TF_VAR_default_vpc_route_table=`aws ec2 describe-route-tables --filters Name=vpc-id,Values=${TF_VAR_default_vpc_id} | jq -r ".RouteTables[0].RouteTableId"`
 
 #
 # Concourse credentials bucket
