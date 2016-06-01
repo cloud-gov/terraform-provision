@@ -14,12 +14,55 @@
           vars_files:
           - credentials/cg-provision.yml
 
+  - name: setup-vpc-peering
+    plan:
+    - get: cg-provision
+    - get: pipeline-tasks
+    - task: connect-peer
+      file: pipeline-tasks/terraform-apply.yml
+      input_mapping: { terraform-templates: cg-provision-repo }
+      params:
+        STACK_NAME: bootstrap-peering
+        TEMPLATE_SUBDIR: terraform/stacks/bootstrap/peering
+        S3_TFSTATE_BUCKET: ${remote_state_bucket}
+        AWS_ACCESS_KEY_ID: ${aws_access_key_id}
+        AWS_SECRET_ACCESS_KEY: ${aws_secret_access_key}
+        AWS_DEFAULT_REGION: ${aws_default_region}
+        TF_VAR_account_id: ${account_id}
+        TF_VAR_default_vpc_id: ${default_vpc_id}
+        TF_VAR_default_vpc_cidr: ${default_vpc_cidr}
+        TF_VAR_default_vpc_route_table: ${default_vpc_route_table}
+
+  - name: teardown-vpc-peering
+    plan:
+    - get: cg-provision
+    - get: pipeline-tasks
+    - task: destroy-peer
+      file: pipeline-tasks/terraform-destroy.yml
+      input_mapping: { terraform-templates: cg-provision-repo }
+      params:
+        STACK_NAME: bootstrap-peering
+        TEMPLATE_SUBDIR: terraform/stacks/bootstrap/peering
+        S3_TFSTATE_BUCKET: ${remote_state_bucket}
+        AWS_ACCESS_KEY_ID: ${aws_access_key_id}
+        AWS_SECRET_ACCESS_KEY: ${aws_secret_access_key}
+        AWS_DEFAULT_REGION: ${aws_default_region}
+        TF_VAR_account_id: ${account_id}
+        TF_VAR_default_vpc_id: ${default_vpc_id}
+        TF_VAR_default_vpc_cidr: ${default_vpc_cidr}
+        TF_VAR_default_vpc_route_table: ${default_vpc_route_table}
+
   resources:
   - name: cg-provision
     type: git
     source:
       uri: https://github.com/18F/cg-provision
-      branch: modules
+      branch: master
+  - name: pipeline-tasks
+    type: git
+    source:
+      uri: https://github.com/18F/cg-pipeline-tasks
+      branch: master
   - name: credentials
     type: s3
     source:

@@ -3,10 +3,10 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
   - task: create-update-tooling
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
@@ -35,10 +35,10 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
   - task: create-update-staging
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/staging
@@ -63,10 +63,10 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
   - task: create-update-production
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/production
@@ -92,11 +92,11 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
       passed: [teardown-staging, teardown-production]
   - task: destroy
     file: pipeline-tasks/terraform-destroy.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
@@ -125,11 +125,11 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
       passed: [bootstrap-staging]
   - task: destroy
     file: pipeline-tasks/terraform-destroy.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/staging
@@ -154,11 +154,11 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: terraform-example
+    - get: cg-provision-repo
       passed: [bootstrap-production]
   - task: destroy
     file: pipeline-tasks/terraform-destroy.yml
-    input_mapping: { terraform-templates: terraform-example }
+    input_mapping: { terraform-templates: cg-provision-repo }
     params:
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/production
@@ -186,8 +186,8 @@ resources:
     uri: https://github.com/18F/cg-pipeline-tasks.git
     branch: master
 
-- name: terraform-example
+- name: cg-provision-repo
   type: git
   source:
     uri: https://github.com/18F/cg-provision.git
-    branch: modules
+    branch: master
