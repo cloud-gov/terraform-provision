@@ -54,3 +54,13 @@ module "concourse_staging" {
     elb_subnets = "${module.stack.public_subnet_az2}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
 }
+
+module "tooling_bosh_user" {
+    source = "../../modules/iam_user/bosh_user"
+    username = "bosh-tooling"
+}
+
+module "master_bosh_user" {
+    source = "../../modules/iam_user/bosh_user"
+    username = "bosh-master"
+}

@@ -70,3 +70,14 @@ output "bosh_rds_host" {
 output "bosh_rds_port" {
   value = "${module.base.bosh_rds_port}"
 }
+
+/* bosh user */
+output "bosh_username" {
+  value = "${module.bosh_user.username}"
+}
+output "bosh_access_key_id" {
+  value = "${module.bosh_user.access_key_id}"
+}
+output "bosh_secret_access_key" {
+  value = "${module.bosh_user.secret_access_key}"
+}

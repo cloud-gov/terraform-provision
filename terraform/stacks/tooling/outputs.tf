@@ -101,3 +101,24 @@ output "staging_concourse_elb_dns_name" {
   value = "${module.concourse_staging.concourse_elb_dns_name}"
 }
 
+/* master bosh user */
+output "master_bosh_username" {
+  value = "${module.master_bosh_user.username}"
+}
+output "master_bosh_access_key_id" {
+  value = "${module.master_bosh_user.access_key_id}"
+}
+output "master_bosh_secret_access_key" {
+  value = "${module.master_bosh_user.secret_access_key}"
+}
+
+/* tooling bosh user */
+output "tooling_bosh_username" {
+  value = "${module.tooling_bosh_user.username}"
+}
+output "tooling_bosh_access_key_id" {
+  value = "${module.tooling_bosh_user.access_key_id}"
+}
+output "tooling_bosh_secret_access_key" {
+  value = "${module.tooling_bosh_user.secret_access_key}"
+}

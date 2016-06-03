@@ -1,4 +1,6 @@
 resource "aws_security_group" "bootstrap" {
+  description = "bootstrap concourse 443"
+
   ingress {
     from_port = 443
     to_port = 443

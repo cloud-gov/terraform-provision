@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-if [ "X$1" = "Xapply" ] || [ "X$1" = "Xdestroy" ] ; then
+if [ "X$1" = "Xapply" ] || [ "X$1" = "Xdestroy" ] || [ "X$1" = "Xplan" ]; then
 
     OPTIONS="-refresh"
     if [ "X$1" = "Xdestroy" ]; then
@@ -21,6 +21,6 @@ if [ "X$1" = "Xapply" ] || [ "X$1" = "Xdestroy" ] ; then
       $SCRIPT_DIR/../terraform/stacks/${STACK_NAME}
 
 else
-    echo "Must specify either 'apply' or 'destroy'"
+    echo "Must specify either 'plan', 'apply' or 'destroy'"
     exit 1
 fi

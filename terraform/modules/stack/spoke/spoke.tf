@@ -56,3 +56,8 @@ module "vpc_security_target_to_source" {
     target_bosh_security_group = "${module.base.bosh_security_group}"
     source_vpc_cidr = "${terraform_remote_state.target_vpc.output.vpc_cidr}"
 }
+
+module "bosh_user" {
+    source = "../../iam_user/bosh_user"
+    username = "bosh-${var.stack_description}"
+}
