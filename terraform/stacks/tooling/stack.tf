@@ -64,3 +64,8 @@ module "master_bosh_user" {
     source = "../../modules/iam_user/bosh_user"
     username = "bosh-master"
 }
+
+module "ci_user" {
+    source = "../../modules/iam_user/concourse_user"
+    username = "concourse"
+}

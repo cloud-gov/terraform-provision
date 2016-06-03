@@ -5,8 +5,11 @@ Manual steps to create the world:
 
 1. Make sure you have [terraform](https://www.terraform.io/), awscli, and jq installed
  1. Mac OSX users can install all of these with homebrew
-1. Create S3 bucket with versioning enabled to store terraform state
-1. Create S3 bucket with versioning enabled to store concourse credentials
+1. Create S3 bucket with versioning enabled to store terraform state: `terraform-state`
+1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for tooling and production: `cloud-gov-varz`
+1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for staging: `cloud-gov-varz-staging`
+1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
+1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
   1. Fill out `cg-provision.yml` with proper values
   1. Upload `cg-provision.yml` into the concourse credentials bucket
@@ -14,7 +17,6 @@ Manual steps to create the world:
   1. Copy `cg-deploy-bosh/credentials.example.yml` to `cg-deploy-bosh.yml`.
   1. Fill `cg-deploy-bosh.yml` as much as you can. (You will need to modify this later)
   1. Upload `cg-deploy-bosh.yml` into the concourse credentials bucket
-1. Create S3 bucket with versioning enabled to store BOSH manifest secrets
 1. [Upload any IAM server certificates](https://github.com/18F/https#loading-the-cert-into-amazon-web-services)
 1. Copy `./scripts/environment.default.sh` to `./scripts/environment.sh` and edit as appropriate
 1. Run `./scripts/bootstrap.sh apply`
@@ -27,6 +29,7 @@ Manual steps to create the world:
       1. Modify the `cg-deploy-bosh.yml` you created earlier, and fill in with proper values from the outputs
       1. Re-upload `cg-deploy-bosh.yml` to the concourse credentials bucket
   1. Select `bootstrap` pipeline in the menu
+    1. Run the `bootstrap-bosh-pipeline` job
     1. Run the `setup-vpc-peering` job
   1. Select `deploy-bosh` pipeline in the menu
     1. Unpause the pipeline if paused
