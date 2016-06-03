@@ -122,3 +122,14 @@ output "tooling_bosh_access_key_id" {
 output "tooling_bosh_secret_access_key" {
   value = "${module.tooling_bosh_user.secret_access_key}"
 }
+
+/* ci user to access bosh secrets */
+output "ci_username" {
+  value = "${module.ci_user.username}"
+}
+output "ci_access_key_id" {
+  value = "${module.ci_user.access_key_id}"
+}
+output "ci_secret_access_key" {
+  value = "${module.ci_user.secret_access_key}"
+}
