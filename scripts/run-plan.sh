@@ -5,9 +5,9 @@
 #
 . $(dirname $0)/environment.sh
 
-# for STACK_NAME in `echo "tooling production staging"`
-# do
-STACK_NAME="tooling"
+for STACK_NAME in `echo "tooling production staging"`
+do
+#STACK_NAME="tooling"
     rm -rf .terraform
     terraform remote config \
       -backend=s3 \
@@ -22,4 +22,4 @@ STACK_NAME="tooling"
       -refresh=true \
       -var-file=${STACK_NAME}.tfvars \
       ./terraform/stacks/${STACK_NAME}
-#done
+done

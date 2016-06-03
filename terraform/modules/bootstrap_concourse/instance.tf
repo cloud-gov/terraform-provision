@@ -35,5 +35,9 @@ EOF
     user = "ubuntu"
   }
 
+  tags {
+    Name = "bootstrap-${var.aws_access_key_id}"
+  }
+
 }
 

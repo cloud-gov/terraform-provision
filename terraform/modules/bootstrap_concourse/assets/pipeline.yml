@@ -3,7 +3,7 @@
   jobs:
   - name: bootstrap-terraform-pipeline
     plan:
-    - get: credentials
+    - get: cg-provision-credentials
       trigger: true
     - get: cg-provision
     - put: pipelines
@@ -12,7 +12,20 @@
         - name: terraform-provision
           config_file: cg-provision/ci/pipeline.yml
           vars_files:
-          - credentials/cg-provision.yml
+          - cg-provision-credentials/cg-provision.yml
+
+  - name: bootstrap-bosh-pipeline
+    plan:
+    - get: cg-deploy-bosh-credentials
+      trigger: true
+    - get: cg-deploy-bosh
+    - put: pipelines
+      params:
+        pipelines:
+        - name: deploy-bosh
+          config_file: cg-deploy-bosh/pipeline.yml
+          vars_files:
+          - cg-deploy-bosh-credentials/cg-deploy-bosh.yml
 
   - name: setup-vpc-peering
     plan:
@@ -63,11 +76,24 @@
     source:
       uri: https://github.com/18F/cg-pipeline-tasks
       branch: master
-  - name: credentials
+  - name: cg-provision-credentials
     type: s3
     source:
       bucket: ${credentials_bucket}
       versioned_file: cg-provision.yml
+      access_key_id: ${aws_access_key_id}
+      secret_access_key: ${aws_secret_access_key}
+      region_name: ${aws_default_region}
+  - name: cg-deploy-bosh
+    type: git
+    source:
+      uri: https://github.com/18F/cg-deploy-bosh
+      branch: master
+  - name: cg-deploy-bosh-credentials
+    type: s3
+    source:
+      bucket: ${credentials_bucket}
+      versioned_file: cg-deploy-bosh.yml
       access_key_id: ${aws_access_key_id}
       secret_access_key: ${aws_secret_access_key}
       region_name: ${aws_default_region}
