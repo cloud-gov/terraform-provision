@@ -5,6 +5,7 @@ module "bootstrap_concourse" {
   aws_access_key_id = "${var.aws_access_key_id}"
   aws_secret_access_key = "${var.aws_secret_access_key}"
   account_id = "${var.account_id}"
+  instance_type = "${var.instance_type}"
   remote_state_bucket = "${var.remote_state_bucket}"
   credentials_bucket = "${var.credentials_bucket}"
   aws_default_region = "${var.aws_default_region}"
