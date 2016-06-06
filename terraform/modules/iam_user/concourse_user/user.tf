@@ -34,7 +34,9 @@ module "concourse_user" {
                 "arn:aws-us-gov:s3:::cloud-gov-varz-stage",
                 "arn:aws-us-gov:s3:::cloud-gov-varz-stage/*",
                 "arn:aws-us-gov:s3:::cloud-gov-bosh-releases",
-                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases/*"
+                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases/*",
+                "arn:aws-us-gov:s3:::cg-stemcell-images",
+                "arn:aws-us-gov:s3:::cg-stemcell-images/*",
             ]
         },
         {
