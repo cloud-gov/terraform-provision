@@ -51,4 +51,5 @@ provider "postgresql" {
 resource "postgresql_database" "uaadb" {
     provider = "postgresql.rds"
     name = "bosh_uaadb"
+    ssl_mode = "required"
 }
