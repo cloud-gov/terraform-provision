@@ -55,7 +55,7 @@ resource "aws_security_group" "allow_all_tooling" {
 }
 
 # Add security group to tooling vpc to allow default_vpc traffic
-resource "aws_security_group" "allow_all_tooling" {
+resource "aws_security_group" "allow_all_default" {
     name = "allow_all_default"
     description = "Bootstrap allow all from default vpc"
     vpc_id = "${terraform_remote_state.tooling_vpc.output.vpc_id}"
