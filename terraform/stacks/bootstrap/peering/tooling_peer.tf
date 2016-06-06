@@ -39,32 +39,12 @@ resource "aws_route" "source_az1_to_target_cidr" {
     vpc_peering_connection_id = "${aws_vpc_peering_connection.peering.id}"
 }
 
-# Add security group to default_vpc to allow tooling traffic
-resource "aws_security_group" "allow_all_tooling" {
-    name = "allow_all_tooling"
-    description = "Bootstrap allow all from tooling vpc"
-    vpc_id = "${var.default_vpc_id}"
-
-    ingress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["${terraform_remote_state.tooling_vpc.output.vpc_cidr}"]
-    }
-
-}
-
-# Add security group to tooling vpc to allow default_vpc traffic
-resource "aws_security_group" "allow_all_default" {
-    name = "allow_all_default"
-    description = "Bootstrap allow all from default vpc"
-    vpc_id = "${terraform_remote_state.tooling_vpc.output.vpc_id}"
-
-    ingress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["${var.default_vpc_cidr}"]
-    }
-
+# Add security group rule to tooling vpc to allow default_vpc traffic
+resource "aws_security_group_rule" "allow_all_default" {
+    type = "ingress"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["${var.default_vpc_cidr}"]
+    security_group_id = "${terraform_remote_state.tooling_vpc.output.bosh_security_group}"
 }
