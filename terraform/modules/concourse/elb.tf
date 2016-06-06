@@ -12,7 +12,7 @@ resource "aws_elb" "concourse_elb" {
   }
 
   /* TODO: Make sure we can upload certs for use */
-  /* TODO: Make sure that the cert can ref either "arn:aws" or "arn:aws-us-gov"
+  /* TODO: Make sure that the cert can ref either "arn:aws" or "arn:aws-us-gov" */
   # listener {
   #   instance_port = 8080
   #   instance_protocol = "tcp"
