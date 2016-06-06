@@ -31,8 +31,19 @@ module "concourse_user" {
             "Resource": [
                 "arn:aws-us-gov:s3:::cloud-gov-varz",
                 "arn:aws-us-gov:s3:::cloud-gov-varz/*",
+                "arn:aws-us-gov:s3:::cloud-gov-varz-stage",
                 "arn:aws-us-gov:s3:::cloud-gov-varz-stage/*",
-                "arn:aws-us-gov:s3:::cloud-gov-varz-stage"
+                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases",
+                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws-us-gov:s3:::cloud-gov-varz/master-bosh-state.json"
             ]
         }
     ]
