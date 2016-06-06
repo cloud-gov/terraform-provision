@@ -46,7 +46,7 @@ provider "postgresql" {
     host = "${module.rds.rds_host}"
     username = "${var.rds_username}"
     password = "${var.rds_password}"
-    ssl_mode = "required"
+    ssl_mode = "require"
 }
 
 resource "postgresql_database" "uaadb" {
