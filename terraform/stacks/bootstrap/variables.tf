@@ -13,7 +13,7 @@ variable "ami_id" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "m3.large"
 }
 
 variable "credentials_bucket" {}
