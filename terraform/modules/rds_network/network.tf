@@ -35,3 +35,14 @@ resource "aws_db_subnet_group" "rds" {
   description = "${var.stack_description} (Multi-AZ Subnet Group)"
   subnet_ids = ["${aws_subnet.az1_rds.id}", "${aws_subnet.az2_rds.id}"]
 }
+
+resource "aws_route_table_association" "az1_rds_rta" {
+  subnet_id = "${aws_subnet.az1_rds.id}"
+  route_table_id = "${var.az1_route_table}"
+}
+
+resource "aws_route_table_association" "az2_rds_rta" {
+  subnet_id = "${aws_subnet.az2_rds.id}"
+  route_table_id = "${var.az2_route_table}"
+}
+

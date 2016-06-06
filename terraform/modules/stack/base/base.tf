@@ -23,6 +23,8 @@ module "rds_network" {
     vpc_id = "${module.vpc.vpc_id}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
+    az1_route_table = "${module.vpc.private_route_table_az1}"
+    az2_route_table = "${module.vpc.private_route_table_az2}"
 }
 
 module "rds" {

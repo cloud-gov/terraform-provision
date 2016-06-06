@@ -17,4 +17,8 @@ variable "rds_private_cidr_2" {
   default = "10.0.21.0/24"
 }
 
+variable "az1_route_table" {}
+
+variable "az2_route_table" {}
+
 variable "vpc_id" {}
