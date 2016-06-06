@@ -46,10 +46,10 @@ provider "postgresql" {
     host = "${module.rds.rds_host}"
     username = "${var.rds_username}"
     password = "${var.rds_password}"
+    ssl_mode = "required"
 }
 
 resource "postgresql_database" "uaadb" {
     provider = "postgresql.rds"
     name = "bosh_uaadb"
-    ssl_mode = "required"
 }
