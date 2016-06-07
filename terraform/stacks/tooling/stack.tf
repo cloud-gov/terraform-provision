@@ -86,7 +86,7 @@ module "cloudwatch_user" {
                 "logs:DescribeLogStreams"
             ],
             "Resource": [
-                "arn:aws:logs:*:*:*"
+                "arn:aws-us-gov:logs:*:*:*"
             ]
         }
     ]
