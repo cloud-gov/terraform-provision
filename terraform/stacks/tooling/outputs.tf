@@ -138,3 +138,14 @@ output "ci_access_key_id" {
 output "ci_secret_access_key" {
   value = "${module.ci_user.secret_access_key}"
 }
+
+/* cloudwatch user */
+output "awslogs_username" {
+  value = "${module.cloudwatch_user.username}"
+}
+output "awslogs_access_key_id" {
+  value = "${module.cloudwatch_user.access_key_id}"
+}
+output "awslogs_secret_access_key" {
+  value = "${module.cloudwatch_user.secret_access_key}"
+}

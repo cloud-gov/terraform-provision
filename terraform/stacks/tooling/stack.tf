@@ -69,3 +69,27 @@ module "ci_user" {
     source = "../../modules/iam_user/concourse_user"
     username = "concourse"
 }
+
+module "cloudwatch_user" {
+    source = "../../modules/iam_user"
+    username = "bosh-cloudwatch"
+    iam_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:*:*"
+            ]
+        }
+    ]
+}
+EOF
+}
