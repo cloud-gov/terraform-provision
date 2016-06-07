@@ -39,3 +39,7 @@ variable "concourse_staging_cidr" {}
 variable "concourse_staging_elb_cert_name" {
     default = "star-fr-cloud-gov-06-16"
 }
+
+variable "nessus_elb_cert_name" {
+	default = "star-fr-cloud-gov-06-16"
+}
