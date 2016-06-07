@@ -5,16 +5,25 @@ resource "aws_elb" "cloudfoundry_elb_main" {
 
   listener {
     lb_port = 80
-    lb_protocol = "http"
+    lb_protocol = "HTTP"
     instance_port = 80
-    instance_protocol = "http"
+    instance_protocol = "HTTP"
   }
 
   listener {
     lb_port = 443
-    lb_protocol = "https"
+    lb_protocol = "HTTPS"
     instance_port = 80
-    instance_protocol = "http"
+    instance_protocol = "HTTP"
+
+    ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.elb_main_cert_name}"
+  }
+
+  listener {
+    lb_port = 4443
+    lb_protocol = "SSL"
+    instance_port = 80
+    instance_protocol = "TCP"
 
     ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.elb_main_cert_name}"
   }

@@ -31,5 +31,3 @@ variable "main_cert_name" {
 }
 
 variable "apps_cert_name" {}
-
-variable "cf_elb_security_groups" {}

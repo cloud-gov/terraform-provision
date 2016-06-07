@@ -24,5 +24,5 @@ module "cf" {
     elb_main_cert_name = "${var.main_cert_name}"
     elb_apps_cert_name = "${var.apps_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az1}"
-    elb_security_groups = "${var.cf_elb_security_groups}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
 }
