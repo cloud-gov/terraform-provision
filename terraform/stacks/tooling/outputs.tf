@@ -149,3 +149,14 @@ output "awslogs_access_key_id" {
 output "awslogs_secret_access_key" {
   value = "${module.cloudwatch_user.secret_access_key}"
 }
+
+/* nessus elb */
+output "nessus_elb_dns_name" {
+  value = "${aws_elb.nessus_elb.dns_name}"
+}
+
+output "nessus_elb_name" {
+  value = "${aws_elb.nessus_elb.name}"
+}
+
+
