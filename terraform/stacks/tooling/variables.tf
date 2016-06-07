@@ -31,11 +31,11 @@ variable "account_id" {}
 variable "concourse_prod_rds_password" {}
 variable "concourse_prod_cidr" {}
 variable "concourse_prod_elb_cert_name" {
-    default = "cloud-gov"
+    default = "star-fr-cloud-gov-06-16"
 }
 
 variable "concourse_staging_rds_password" {}
 variable "concourse_staging_cidr" {}
 variable "concourse_staging_elb_cert_name" {
-    default = "cloud-gov"
+    default = "star-fr-cloud-gov-06-16"
 }
