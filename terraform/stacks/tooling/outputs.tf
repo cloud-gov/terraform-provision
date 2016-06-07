@@ -85,7 +85,9 @@ output "production_concourse_rds_url" {
 output "production_concourse_elb_dns_name" {
   value = "${module.concourse_production.concourse_elb_dns_name}"
 }
-
+output "production_concourse_elb_name" {
+  value = "${module.concourse_production.concourse_elb_name}"
+}
 
 /* Staging Concourse */
 output "staging_concourse_subnet" {
@@ -99,6 +101,9 @@ output "staging_concourse_rds_url" {
 }
 output "staging_concourse_elb_dns_name" {
   value = "${module.concourse_staging.concourse_elb_dns_name}"
+}
+output "staging_concourse_elb_name" {
+  value = "${module.concourse_staging.concourse_elb_name}"
 }
 
 /* master bosh user */
