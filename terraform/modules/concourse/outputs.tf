@@ -15,3 +15,8 @@ output "concourse_rds_url" {
 output "concourse_elb_dns_name" {
   value = "${aws_elb.concourse_elb.dns_name}"
 }
+
+output "concourse_elb_name" {
+  value = "${aws_elb.concourse_elb.name}"
+}
+
