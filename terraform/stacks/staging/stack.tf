@@ -15,3 +15,14 @@ module "stack" {
     target_stack_name = "${var.target_stack_name}"
 
 }
+
+module "cf" {
+    source = "../../modules/cloudfoundry"
+
+    account_id = "${var.account_id}"
+    stack_description = "${var.stack_description}"
+    elb_main_cert_name = "${var.main_cert_name}"
+    elb_apps_cert_name = "${var.apps_cert_name}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+}

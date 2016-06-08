@@ -81,3 +81,20 @@ output "bosh_access_key_id" {
 output "bosh_secret_access_key" {
   value = "${module.stack.bosh_secret_access_key}"
 }
+
+/* CloudFoundry ELBs */
+output "cf_main_elb_dns_name" {
+  value = "${module.cf.elb_main_dns_name}"
+}
+output "cf_main_elb_name" {
+  value = "${module.cf.elb_main_name}"
+}
+
+output "cf_apps_elb_dns_name" {
+  value = "${module.cf.elb_apps_dns_name}"
+}
+output "cf_apps_elb_name" {
+  value = "${module.cf.elb_apps_name}"
+}
+
+

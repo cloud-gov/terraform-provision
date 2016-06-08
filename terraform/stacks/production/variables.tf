@@ -25,3 +25,11 @@ variable "remote_state_bucket" {}
 variable "target_stack_name" {
     default = "tooling"
 }
+
+variable "main_cert_name" {
+    default="star-fr-cloud-gov-06-16"
+}
+
+variable "apps_cert_name" {
+    default="star-fr-cloud-gov-06-16"
+}
