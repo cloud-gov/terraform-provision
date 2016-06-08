@@ -13,6 +13,7 @@ Manual steps to create the world:
 1. Create IAM user with privileges to create EC2 volumes, snapshots, AMIs, and the `cloud-gov-stemcell-images` bucket
 1. Create [vmimport](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html#vmimport-service-role) role, using `cloud-gov-stemcell-images` bucket in service role
  1. Upload all custom bosh releases
+1. Create S3 buckets for bosh blobstores: `bosh-tooling-blobstore`, `bosh-staging-blobstore`, `bosh-prod-blobstore`
 1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
   1. Fill out `cg-provision.yml` with proper values
