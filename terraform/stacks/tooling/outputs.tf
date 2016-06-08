@@ -142,6 +142,17 @@ output "ci_secret_access_key" {
   value = "${module.ci_user.secret_access_key}"
 }
 
+/* release user to write release blobs */
+output "release_username" {
+  value = "${module.release_user.username}"
+}
+output "release_access_key_id" {
+  value = "${module.release_user.access_key_id}"
+}
+output "release_secret_access_key" {
+  value = "${module.release_user.secret_access_key}"
+}
+
 /* cloudwatch user */
 output "awslogs_username" {
   value = "${module.cloudwatch_user.username}"
