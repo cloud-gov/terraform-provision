@@ -8,7 +8,7 @@ resource "aws_security_group_rule" "bosh_ssh" {
     security_group_id = "${var.target_bosh_security_group}"
 }
 
-resource "aws_security_group_rule" "dns" {
+resource "aws_security_group_rule" "dns_tcp" {
     type = "ingress"
     from_port = 53
     to_port = 53
@@ -16,8 +16,25 @@ resource "aws_security_group_rule" "dns" {
     cidr_blocks = ["${var.source_vpc_cidr}"]
     security_group_id = "${var.target_bosh_security_group}"
 }
+resource "aws_security_group_rule" "dns_udp" {
+    type = "ingress"
+    from_port = 53
+    to_port = 53
+    protocol = "udp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
 
 resource "aws_security_group_rule" "bosh_nats" {
+    type = "ingress"
+    from_port = 4222
+    to_port = 4222
+    protocol = "tcp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
+resource "aws_security_group_rule" "bosh_agent" {
     type = "ingress"
     from_port = 6868
     to_port = 6868
@@ -30,6 +47,15 @@ resource "aws_security_group_rule" "bosh_director" {
     type = "ingress"
     from_port = 25555
     to_port = 25555
+    protocol = "tcp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
+resource "aws_security_group_rule" "bosh_registry" {
+    type = "ingress"
+    from_port = 25777
+    to_port = 25777
     protocol = "tcp"
     cidr_blocks = ["${var.source_vpc_cidr}"]
     security_group_id = "${var.target_bosh_security_group}"
