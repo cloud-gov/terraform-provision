@@ -3,6 +3,7 @@ resource "aws_elb" "concourse_elb" {
   name = "${var.stack_description}-Concourse-${var.concourse_az}"
   subnets = ["${split(",", var.elb_subnets)}"]
   security_groups = ["${split(",", var.elb_security_groups)}"]
+  idle_timeout = 3600
 
   listener {
     instance_port = 8080
