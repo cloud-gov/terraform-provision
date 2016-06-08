@@ -42,6 +42,9 @@ output "local_vpc_traffic_security_group" {
 output "web_traffic_security_group" {
   value = "${module.stack.web_traffic_security_group}"
 }
+output "nessus_security_group" {
+  value = "${aws_security_group.nessus_traffic.id}"
+}
 
 /* RDS Network */
 output "rds_subnet_az1" {
