@@ -26,7 +26,7 @@ module "base" {
     rds_db_engine = "${var.rds_db_engine}"
     rds_db_engine_version = "${var.rds_db_engine_version}"
     rds_username = "${var.rds_username}"
-    rds_password = "${var.rds_username}"
+    rds_password = "${var.rds_password}"
 }
 
 module "vpc_peering" {
