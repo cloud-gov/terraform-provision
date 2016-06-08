@@ -9,6 +9,9 @@ Manual steps to create the world:
 1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for tooling and production: `cloud-gov-varz`
 1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for staging: `cloud-gov-varz-staging`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
+1. Create S3 bucket to store BOSH stemcell images: `cloud-gov-stemcell-images`
+1. Create IAM user with privileges to create EC2 volumes, snapshots, AMIs, and the `cloud-gov-stemcell-images` bucket
+1. Create [vmimport](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html#vmimport-service-role) role, using `cloud-gov-stemcell-images` bucket in service role
  1. Upload all custom bosh releases
 1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
