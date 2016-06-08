@@ -25,4 +25,8 @@ module "cf" {
     elb_apps_cert_name = "${var.apps_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
+
+    rds_password = "${var.cf_rds_password}"
+    rds_subnet_group = "${module.stack.rds_subnet_group}}"
+    rds_security_groups = "${module.stack.rds_postgres_security_group}"
 }

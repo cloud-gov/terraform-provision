@@ -18,6 +18,8 @@ variable "rds_private_cidr_2" {}
 
 variable "rds_password" {}
 
+variable "cf_rds_password" {}
+
 variable "account_id" {}
 
 variable "remote_state_bucket" {}

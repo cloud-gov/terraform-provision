@@ -98,3 +98,14 @@ output "cf_apps_elb_name" {
 }
 
 
+/* CloudFoundry RDS */
+output "cf_rds_url" {
+    value = "${module.cf.cf_rds_url}"
+}
+output "cf_rds_host" {
+    value = "${module.cf.cf_rds_host}"
+}
+output "cf_rds_port" {
+    value = "${module.cf.cf_rds_port}"
+}
+
