@@ -41,15 +41,15 @@ module "rds" {
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
 }
 
-provider "postgresql" {
-    alias = "rds"
-    host = "${module.rds.rds_host}"
-    username = "${var.rds_username}"
-    password = "${var.rds_password}"
-    ssl_mode = "require"
-}
+# provider "postgresql" {
+#     alias = "rds"
+#     host = "${module.rds.rds_host}"
+#     username = "${var.rds_username}"
+#     password = "${var.rds_password}"
+#     ssl_mode = "require"
+# }
 
-resource "postgresql_database" "uaadb" {
-    provider = "postgresql.rds"
-    name = "bosh_uaadb"
-}
+# resource "postgresql_database" "uaadb" {
+#     provider = "postgresql.rds"
+#     name = "bosh_uaadb"
+# }
