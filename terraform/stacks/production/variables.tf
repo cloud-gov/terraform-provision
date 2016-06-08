@@ -27,7 +27,9 @@ variable "target_stack_name" {
 }
 
 variable "main_cert_name" {
-	default="star-fr-cloud-gov-06-16"
+    default="star-fr-cloud-gov-06-16"
 }
 
-variable "apps_cert_name" {}
+variable "apps_cert_name" {
+    default="star-fr-cloud-gov-06-16"
+}
