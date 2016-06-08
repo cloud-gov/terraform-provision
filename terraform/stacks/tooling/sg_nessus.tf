@@ -8,7 +8,7 @@
 
 resource "aws_security_group" "nessus_traffic" {
   description = "Allow access to incoming nessus traffic"
-  vpc_id = "${aws_vpc.main_vpc.id}"
+  vpc_id = "${module.stack.vpc_id}"
 
   ingress {
     from_port = 8834
