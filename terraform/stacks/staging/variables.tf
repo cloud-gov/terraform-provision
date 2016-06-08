@@ -30,4 +30,6 @@ variable "main_cert_name" {
 	default="star-fr-stage-cloud-gov-06-16"
 }
 
-variable "apps_cert_name" {}
+variable "apps_cert_name" {
+	default="star-fr-stage-cloud-gov-06-16"
+}
