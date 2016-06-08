@@ -27,6 +27,6 @@ module "cf" {
     elb_security_groups = "${module.stack.web_traffic_security_group}"
 
     rds_password = "${var.cf_rds_password}"
-    rds_subnet_group = "${module.stack.rds_subnet_group}}"
+    rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
 }
