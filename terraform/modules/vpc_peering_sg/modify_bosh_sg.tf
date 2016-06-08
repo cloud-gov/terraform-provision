@@ -43,6 +43,24 @@ resource "aws_security_group_rule" "bosh_agent" {
     security_group_id = "${var.target_bosh_security_group}"
 }
 
+resource "aws_security_group_rule" "uaa_http" {
+    type = "ingress"
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
+resource "aws_security_group_rule" "uaa_https" {
+    type = "ingress"
+    from_port = 8443
+    to_port = 8443
+    protocol = "tcp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
 resource "aws_security_group_rule" "bosh_director" {
     type = "ingress"
     from_port = 25555
