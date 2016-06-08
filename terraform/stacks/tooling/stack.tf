@@ -70,6 +70,11 @@ module "ci_user" {
     username = "concourse"
 }
 
+module "release_user" {
+    source = "../../modules/iam_user/release_user"
+    username = "releaser"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
