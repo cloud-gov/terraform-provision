@@ -80,6 +80,11 @@ module "release_user" {
     username = "releaser"
 }
 
+module "s3_broker_user" {
+    source = "../../modules/iam_user/s3_broker_user"
+    username = "s3-broker"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"

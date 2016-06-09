@@ -153,6 +153,17 @@ output "release_secret_access_key" {
   value = "${module.release_user.secret_access_key}"
 }
 
+/* s3 broker user */
+output "s3_broker_username" {
+  value = "${module.s3_broker_user.username}"
+}
+output "s3_broker_access_key_id" {
+  value = "${module.s3_broker_user.access_key_id}"
+}
+output "s3_broker_secret_access_key" {
+  value = "${module.s3_broker_user.secret_access_key}"
+}
+
 /* cf cc user */
 output "cf_username" {
   value = "${module.cf_user.username}"
