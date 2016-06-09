@@ -17,7 +17,7 @@ for db in ccdb uaadb; do
 
   # Enable extensions
   for ext in citext uuid-ossp pgcrypto pg_stat_statements; do
-    psql_adm -d "${db}" -c 'CREATE EXTENSION IF NOT EXISTS "${ext}"'
+    psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
   done
 
 done
