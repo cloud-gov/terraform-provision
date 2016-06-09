@@ -17,8 +17,8 @@ module "s3_broker_user" {
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::cg-*",
-                "arn:aws:s3:::cg-*/*"
+                "arn:aws-us-gov:s3:::cg-*",
+                "arn:aws-us-gov:s3:::cg-*/*"
             ]
         },
         {
