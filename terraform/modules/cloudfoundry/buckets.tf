@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "cc-packages" {
     acl = "private"
 }
 
-resource "aws_s3_bucket" "cc-resoures" {
+resource "aws_s3_bucket" "droplets" {
     bucket = "${var.stack_prefix}-droplets"
     acl = "private"
 }
