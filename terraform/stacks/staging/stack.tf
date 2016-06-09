@@ -29,4 +29,5 @@ module "cf" {
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
+    stack_prefix = "cf-staging"
 }

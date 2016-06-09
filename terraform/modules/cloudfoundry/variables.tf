@@ -39,3 +39,5 @@ variable "rds_password" {}
 variable "rds_subnet_group" {}
 
 variable "rds_security_groups" {}
+
+variable "stack_prefix" {}
