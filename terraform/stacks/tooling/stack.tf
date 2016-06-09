@@ -70,6 +70,11 @@ module "ci_user" {
     username = "concourse"
 }
 
+module "cf_user" {
+    source = "../../modules/iam_user/cf_user"
+    username = "cf-cc-s3"
+}
+
 module "release_user" {
     source = "../../modules/iam_user/release_user"
     username = "releaser"

@@ -153,6 +153,17 @@ output "release_secret_access_key" {
   value = "${module.release_user.secret_access_key}"
 }
 
+/* cf cc user */
+output "release_username" {
+  value = "${module.cf_user.username}"
+}
+output "release_access_key_id" {
+  value = "${module.cf_user.access_key_id}"
+}
+output "release_secret_access_key" {
+  value = "${module.cf_user.secret_access_key}"
+}
+
 /* cloudwatch user */
 output "awslogs_username" {
   value = "${module.cloudwatch_user.username}"
