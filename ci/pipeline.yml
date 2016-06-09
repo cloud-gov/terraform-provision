@@ -61,6 +61,7 @@ jobs:
       TF_VAR_cf_rds_password: {{staging_cf_rds_password}}
   - task: init-db
     config:
+      platform: linux
       image_resource:
         type: docker-image
         source:
@@ -108,6 +109,7 @@ jobs:
       TF_VAR_cf_rds_password: {{production_cf_rds_password}}
   - task: init-db
     config:
+      platform: linux
       image_resource:
         type: docker-image
         source:
