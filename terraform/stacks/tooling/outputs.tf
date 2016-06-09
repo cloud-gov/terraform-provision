@@ -154,13 +154,13 @@ output "release_secret_access_key" {
 }
 
 /* cf cc user */
-output "release_username" {
+output "cf_username" {
   value = "${module.cf_user.username}"
 }
-output "release_access_key_id" {
+output "cf_access_key_id" {
   value = "${module.cf_user.access_key_id}"
 }
-output "release_secret_access_key" {
+output "cf_secret_access_key" {
   value = "${module.cf_user.secret_access_key}"
 }
 
