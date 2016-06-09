@@ -48,9 +48,9 @@ module "s3_broker_user" {
                 "iam:UpdateUser"
             ],
             "Resource": [
-                "arn:aws-us-gov:iam:::user/cloud-foundry/s3/*",
-                "arn:aws-us-gov:iam:::group/cloud-foundry/s3/",
-                "arn:aws-us-gov:iam:::group/cloud-foundry/s3/*"
+                "arn:aws-us-gov:iam::${var.account_id}:user/cloud-foundry/s3/*",
+                "arn:aws-us-gov:iam::${var.account_id}:group/cloud-foundry/s3/",
+                "arn:aws-us-gov:iam::${var.account_id}:group/cloud-foundry/s3/*"
             ]
         }
     ]

@@ -83,6 +83,7 @@ module "release_user" {
 module "s3_broker_user" {
     source = "../../modules/iam_user/s3_broker_user"
     username = "s3-broker"
+    account_id = "${var.account_id}"
 }
 
 module "cloudwatch_user" {
