@@ -13,16 +13,3 @@ module "cf_database" {
     rds_security_groups = "${var.rds_security_groups}"
     rds_encrypted = true
 }
-
-provider "postgresql" {
-    alias = "cf_rds"
-    host = "${module.cf_database.rds_host}"
-    username = "${var.rds_username}"
-    password = "${var.rds_password}"
-    ssl_mode = "require"
-}
-
-resource "postgresql_database" "uaadb" {
-    provider = "postgresql.cf_rds"
-    name = "uaadb"
-}
