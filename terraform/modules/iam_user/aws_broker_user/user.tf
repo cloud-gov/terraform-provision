@@ -20,6 +20,8 @@ module "aws_broker_user" {
             ],
             "Resource": [
                 "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*"
+                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:cg-aws-broker-*"
+                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:secgrp:cg-aws-broker-*"
             ]
         },
         {
