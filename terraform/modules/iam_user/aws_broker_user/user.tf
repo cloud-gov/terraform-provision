@@ -19,7 +19,7 @@ module "aws_broker_user" {
                 "rds:DeleteDBInstance"
             ],
             "Resource": [
-                "arn:aws-us-gov:rds::${var.account_id}:db:cg-aws-broker-*"
+                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*"
             ]
         },
         {
