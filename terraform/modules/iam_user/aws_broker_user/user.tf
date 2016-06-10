@@ -6,6 +6,7 @@ module "aws_broker_user" {
 
     /* TODO: Make the bucket names configurable */
     /* TODO: Make sure the bucket arn:path is configurable */
+    /* TODO: Make `subgrp` configurable */
     iam_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -20,8 +21,8 @@ module "aws_broker_user" {
             ],
             "Resource": [
                 "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
-                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:cg-aws-broker-*",
-                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:secgrp:cg-aws-broker-*"
+                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:production",
+                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:staging"
             ]
         },
         {
