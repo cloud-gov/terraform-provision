@@ -72,12 +72,12 @@ Manual steps to create the world:
   1. Update the pipeline to use proper stemcell
   1. Fly the pipeline
   1. Verify the pipeline runs successfully
-1. After CloudFoundry is successfully deployed, make sure it has a `security-group` called `internal_access` that includes all private subnets within that installation. e.g.
+1. After CloudFoundry is successfully deployed, make sure it has a `security-group` called `internal_access` that includes any private subnets within that installation that tenant applications should be able to access, e.g.
 
  ```
  [
     {
-      "destination": "10.0.1.0-10.0.100.255",
+      "destination": "10.0.50.0-10.0.51.255",
       "protocol": "all"
     }
  ]
