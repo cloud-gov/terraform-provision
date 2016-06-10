@@ -50,9 +50,11 @@ variable "az2" {
   default = "us-gov-west-1b"
 }
 
-variable "remote_state_bucket" {}
+variable "vpc_id" {}
 
-variable "target_stack_name" {}
+variable "private_route_table_az1" {}
+
+variable "private_route_table_az2" {}
 
 variable "services_cidr_1" {
   default = "10.0.30.0/24"
