@@ -82,3 +82,9 @@ Manual steps to create the world:
     }
  ]
 ```
+
+  # Monitoring
+  1. Create a Route 53 name for metrics.environment.cloud.gov
+  1. Create an ELB to point to the 0.riemann.monitoring.monitoring-environment.bosh
+  1. Point Route 53 name to ELB for HTTPS
+

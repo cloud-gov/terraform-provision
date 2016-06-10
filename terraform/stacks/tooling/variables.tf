@@ -3,6 +3,10 @@ variable "stack_description" {
     default = "tooling"
 }
 
+variable "aws_default_region" {
+    default = "us-gov-west-1"
+}
+
 variable "vpc_cidr" {}
 
 variable "az1" {

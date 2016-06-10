@@ -90,6 +90,7 @@ module "aws_broker_user" {
     source = "../../modules/iam_user/aws_broker_user"
     username = "aws-broker"
     account_id = "${var.account_id}"
+    aws_default_region = "${var.aws_default_region}"
     remote_state_bucket = "${var.remote_state_bucket}"
 }
 

@@ -106,6 +106,12 @@ output "cf_apps_elb_name" {
   value = "${module.cf.elb_apps_name}"
 }
 
+output "monitoring_elb_dns_name" {
+  value = "${module.cf.monitoring_elb_dns_name}"
+}
+output "monitoring_elb_name" {
+  value = "${module.cf.monitoring_elb_name}"
+}
 
 /* CloudFoundry RDS */
 output "cf_rds_url" {

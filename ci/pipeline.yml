@@ -16,6 +16,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_default_region: {{aws_default_region}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{tooling_rds_password}}
       TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
