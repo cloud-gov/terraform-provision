@@ -9,10 +9,10 @@ Manual steps to create the world:
 1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for tooling and production: `cloud-gov-varz`
 1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for staging: `cloud-gov-varz-staging`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
+  1. Upload all custom bosh releases
 1. Create S3 bucket to store BOSH stemcell images: `cloud-gov-stemcell-images`
-1. Create IAM user with privileges to create EC2 volumes, snapshots, AMIs, and the `cloud-gov-stemcell-images` bucket
-1. Create [vmimport](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html#vmimport-service-role) role, using `cloud-gov-stemcell-images` bucket in service role
- 1. Upload all custom bosh releases
+  1. Create IAM user with privileges to create EC2 volumes, snapshots, AMIs, and the `cloud-gov-stemcell-images` bucket
+  1. Create [vmimport](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html#vmimport-service-role) role, using `cloud-gov-stemcell-images` bucket in service role
 1. Create S3 buckets for bosh blobstores: `bosh-tooling-blobstore`, `bosh-staging-blobstore`, `bosh-prod-blobstore`
 1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
@@ -72,6 +72,16 @@ Manual steps to create the world:
   1. Update the pipeline to use proper stemcell
   1. Fly the pipeline
   1. Verify the pipeline runs successfully
+1. After CloudFoundry is successfully deployed, make sure it has a `security-group` called `internal_access` that includes any private subnets within that installation that tenant applications should be able to access, e.g.
+
+ ```
+ [
+    {
+      "destination": "10.0.50.0-10.0.51.255",
+      "protocol": "all"
+    }
+ ]
+```
 
   # Monitoring
   1. Create a Route 53 name for metrics.environment.cloud.gov
