@@ -43,6 +43,15 @@ output "web_traffic_security_group" {
   value = "${module.stack.web_traffic_security_group}"
 }
 
+/* Services Subnets */
+output "services_subnet_az1" {
+  value = "${module.cf.services_subnet_az1}"
+}
+output "services_subnet_az2" {
+  value = "${module.cf.services_subnet_az2}"
+}
+
+
 /* RDS Network */
 output "rds_subnet_az1" {
     value = "${module.stack.rds_subnet_az1}"

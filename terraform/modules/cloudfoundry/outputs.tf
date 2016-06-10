@@ -26,3 +26,11 @@ output "cf_rds_host" {
 output "cf_rds_port" {
     value = "${module.cf_database.rds_port}"
 }
+
+/* Services network */
+output "services_subnet_az1" {
+  value = "${aws_subnet.az1_services.id}"
+}
+output "services_subnet_az2" {
+  value = "${aws_subnet.az2_services.id}"
+}

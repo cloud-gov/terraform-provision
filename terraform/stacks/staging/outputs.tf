@@ -108,3 +108,10 @@ output "cf_rds_port" {
     value = "${module.cf.cf_rds_port}"
 }
 
+/* Services Subnets */
+output "services_subnet_az1" {
+  value = "${module.cf.services_subnet_az1}"
+}
+output "services_subnet_az2" {
+  value = "${module.cf.services_subnet_az2}"
+}

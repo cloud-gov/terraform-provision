@@ -41,3 +41,25 @@ variable "rds_subnet_group" {}
 variable "rds_security_groups" {}
 
 variable "stack_prefix" {}
+
+variable "az1" {
+  default = "us-gov-west-1a"
+}
+
+variable "az2" {
+  default = "us-gov-west-1b"
+}
+
+variable "vpc_id" {}
+
+variable "private_route_table_az1" {}
+
+variable "private_route_table_az2" {}
+
+variable "services_cidr_1" {
+  default = "10.0.30.0/24"
+}
+
+variable "services_cidr_2" {
+  default = "10.0.31.0/24"
+}
