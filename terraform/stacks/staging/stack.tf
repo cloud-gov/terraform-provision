@@ -31,9 +31,9 @@ module "cf" {
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
     stack_prefix = "cf-staging"
 
-    vpc_id = ${module.stack.vpc_id}
-    private_route_table_az1 = ${module.stack.private_route_table_az1}
-    private_route_table_az2 = ${module.stack.private_route_table_az2}
+    vpc_id = "${module.stack.vpc_id}"
+    private_route_table_az1 = "${module.stack.private_route_table_az1}"
+    private_route_table_az2 = "${module.stack.private_route_table_az2}"
     stack_description = "${var.stack_description}"
     services_cidr_1 = "${var.services_cidr_1}"
     services_cidr_2 = "${var.services_cidr_2}"
