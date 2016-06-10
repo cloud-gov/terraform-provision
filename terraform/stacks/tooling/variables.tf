@@ -28,6 +28,8 @@ variable "rds_password" {}
 
 variable "account_id" {}
 
+variable "remote_state_bucket" {}
+
 variable "concourse_prod_rds_password" {}
 variable "concourse_prod_cidr" {}
 variable "concourse_prod_elb_cert_name" {
