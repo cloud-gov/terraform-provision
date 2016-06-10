@@ -31,6 +31,6 @@ output "cf_rds_port" {
 output "services_subnet_az1" {
   value = "${aws_subnet.az1_services.id}"
 }
-output "private_subnet_az2" {
+output "services_subnet_az2" {
   value = "${aws_subnet.az2_services.id}"
 }
