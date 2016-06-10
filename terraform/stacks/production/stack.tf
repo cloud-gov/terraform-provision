@@ -30,4 +30,8 @@ module "cf" {
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
     stack_prefix = "cf-production"
+
+    remote_state_bucket = "${var.remote_state_bucket}"
+    target_stack_name = "${var.target_stack_name}"
+
 }
