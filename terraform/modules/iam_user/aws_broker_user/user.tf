@@ -30,8 +30,8 @@ module "aws_broker_user" {
                 "s3:GetObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3::${var.account_id}:${var.remote_state_bucket}",
-                "arn:aws-us-gov:s3::${var.account_id}:${var.remote_state_bucket}/*"
+                "arn:aws-us-gov:s3:::${var.remote_state_bucket}",
+                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/*"
             ]
         },
         {
@@ -43,8 +43,8 @@ module "aws_broker_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3::${var.account_id}:${var.remote_state_bucket}/cg-aws-broker-*",
-                "arn:aws-us-gov:s3::${var.account_id}:${var.remote_state_bucket}/cg-aws-broker-*/*"
+                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/cg-aws-broker-*",
+                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/cg-aws-broker-*/*"
             ]
         }
     ]
