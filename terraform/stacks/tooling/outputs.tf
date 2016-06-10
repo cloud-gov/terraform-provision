@@ -164,6 +164,17 @@ output "s3_broker_secret_access_key" {
   value = "${module.s3_broker_user.secret_access_key}"
 }
 
+/* aws broker user */
+output "aws_broker_username" {
+  value = "${module.aws_broker_user.username}"
+}
+output "aws_broker_access_key_id" {
+  value = "${module.aws_broker_user.access_key_id}"
+}
+output "aws_broker_secret_access_key" {
+  value = "${module.aws_broker_user.secret_access_key}"
+}
+
 /* cf cc user */
 output "cf_username" {
   value = "${module.cf_user.username}"
