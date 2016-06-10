@@ -86,6 +86,13 @@ module "s3_broker_user" {
     account_id = "${var.account_id}"
 }
 
+module "aws_broker_user" {
+    source = "../../modules/iam_user/aws_broker_user"
+    username = "aws-broker"
+    account_id = "${var.account_id}"
+    remote_state_bucket = "${var.remote_state_bucket}"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
