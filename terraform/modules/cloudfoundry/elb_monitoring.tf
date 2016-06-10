@@ -17,7 +17,7 @@ resource "aws_elb" "monitoring_elb" {
     healthy_threshold = 2
     unhealthy_threshold = 10
     timeout = 5
-    target = "tcp:3000"
+    target = "http:3000"
     interval = 30
   }
 
