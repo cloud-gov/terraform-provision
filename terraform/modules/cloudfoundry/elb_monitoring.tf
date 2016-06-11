@@ -7,7 +7,7 @@ resource "aws_elb" "monitoring_elb" {
   /* TODO: Make sure that the cert can ref either "arn:aws" or "arn:aws-us-gov" */
   listener {
     instance_port = 3000
-    instance_protocol = "http"
+    instance_protocol = "tcp"
     lb_port = 443
     lb_protocol = "ssl"
     ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.monitoring_elb_cert_name}"
@@ -17,7 +17,7 @@ resource "aws_elb" "monitoring_elb" {
     healthy_threshold = 2
     unhealthy_threshold = 10
     timeout = 5
-    target = "http:3000"
+    target = "tcp:3000"
     interval = 30
   }
 
