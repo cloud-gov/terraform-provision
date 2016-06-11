@@ -43,3 +43,7 @@ output "monitoring_elb_dns_name" {
 output "monitoring_elb_name" {
   value = "${aws_elb.monitoring_elb.name}"
 }
+
+output "monitoring_elb_security_group" {
+  value = "${aws_security_group.monitoring.id}"
+}
