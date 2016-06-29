@@ -21,6 +21,10 @@ variable "rds_username" {
   default = "atc"
 }
 
+variable "rds_encrypted" {
+  default = true
+}
+
 variable "rds_password" {}
 
 variable "rds_subnet_group" {}

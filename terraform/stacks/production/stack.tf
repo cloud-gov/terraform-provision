@@ -10,6 +10,7 @@ module "stack" {
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     rds_password = "${var.rds_password}"
+    rds_encrypted = false
     account_id = "${var.account_id}"
     remote_state_bucket = "${var.remote_state_bucket}"
     target_stack_name = "${var.target_stack_name}"

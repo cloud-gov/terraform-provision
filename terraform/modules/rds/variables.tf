@@ -32,5 +32,5 @@ variable "rds_subnet_group" {}
 variable "rds_security_groups" {}
 
 variable "rds_encrypted" {
-    default = false
+    default = true
 }
