@@ -10,4 +10,5 @@ module "rds" {
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${var.rds_subnet_group}"
     rds_security_groups = "${var.rds_security_groups}"
+    rds_encrypted = "${var.rds_encrypted}"
 }

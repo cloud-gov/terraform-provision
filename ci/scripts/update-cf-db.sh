@@ -2,22 +2,10 @@
 set -e
 
 # Check environment variables
-export PGPASSWORD=${CF_DB_PASSWORD:?}
-db_address=$(grep cf_rds_host ${STATE_FILE_PATH} | uniq | cut -d'"' -f4)
+export DB_USER="cfdb"
+export DB_PASSWORD=${CF_DB_PASSWORD:?}
+export TERRAFORM_DB_FIELD="cf_rds_host"
+export DATABASES="ccdb uaadb"
+export STATE_FILE_PATH=${STATE_FILE_PATH}
 
-# See: https://github.com/koalaman/shellcheck/wiki/SC2086#exceptions
-psql_adm() { psql -h "${db_address}" -U cfdb "$@"; }
-
-
-for db in ccdb uaadb; do
-
-  # Create database
-  psql_adm -d postgres -l | grep -q " ${db} " || \
-    psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER cfdb"
-
-  # Enable extensions
-  for ext in citext uuid-ossp pgcrypto pg_stat_statements; do
-    psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
-  done
-
-done
+./create-and-update-db.sh

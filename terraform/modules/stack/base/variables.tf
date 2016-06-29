@@ -68,4 +68,8 @@ variable "rds_username" {
     default = "postgres"
 }
 
+variable "rds_encrypted" {
+    default = true
+}
+
 variable "rds_password" {}
