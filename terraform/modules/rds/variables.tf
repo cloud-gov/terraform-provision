@@ -2,7 +2,7 @@
 variable "stack_description" {}
 
 variable "rds_instance_type" {
-    default = "db.t2.medium"
+    default = "db.m3.medium"
 }
 
 variable "rds_db_size" {
