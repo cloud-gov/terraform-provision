@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 
 # Check environment variables
 export DB_USER="postgres"
@@ -8,4 +9,4 @@ export TERRAFORM_DB_FIELD="bosh_rds_host"
 export DATABASES="bosh bosh_uaadb"
 export STATE_FILE_PATH=${STATE_FILE_PATH}
 
-./create-and-update-db.sh
+$SCRIPTPATH/create-and-update-db.sh
