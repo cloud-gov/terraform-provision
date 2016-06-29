@@ -17,6 +17,10 @@ variable "rds_db_size" {
   default = 10
 }
 
+variable "rds_instance_type" {
+    default = "db.m3.medium"
+}
+
 variable "rds_username" {
   default = "atc"
 }
