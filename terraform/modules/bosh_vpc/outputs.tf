@@ -49,3 +49,8 @@ output "local_vpc_traffic_security_group" {
 output "web_traffic_security_group" {
   value = "${aws_security_group.web_traffic.id}"
 }
+
+output "restricted_web_traffic_security_group" {
+  value = "${aws_security_group.restricted_web_traffic.id}"
+}
+

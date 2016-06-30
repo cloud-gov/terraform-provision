@@ -31,6 +31,7 @@ jobs:
       TF_VAR_private_cidr_2: {{tooling_private_cidr_2}}
       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
+      TF_VAR_restricted_ingress_web_cidr: {{tooling_restricted_ingress_web_cidr}}
   - task: init-bosh-db
     config:
       platform: linux
@@ -81,6 +82,7 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{staging_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{staging_rds_private_cidr_2}}
       TF_VAR_cf_rds_password: {{staging_cf_rds_password}}
+      TF_VAR_restricted_ingress_web_cidr: {{staging_restricted_ingress_web_cidr}}
   - task: init-bosh-db
     config:
       platform: linux
@@ -150,6 +152,7 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{production_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{production_rds_private_cidr_2}}
       TF_VAR_cf_rds_password: {{production_cf_rds_password}}
+      TF_VAR_restricted_ingress_web_cidr: {{production_restricted_ingress_web_cidr}}
   - task: init-bosh-db
     config:
       platform: linux

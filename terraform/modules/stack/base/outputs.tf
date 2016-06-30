@@ -42,6 +42,9 @@ output "local_vpc_traffic_security_group" {
 output "web_traffic_security_group" {
   value = "${module.vpc.web_traffic_security_group}"
 }
+output "restricted_web_traffic_security_group" {
+  value = "${module.vpc.restricted_web_traffic_security_group}"
+}
 
 /* RDS Network */
 output "rds_subnet_az1" {

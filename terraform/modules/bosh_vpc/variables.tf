@@ -28,6 +28,10 @@ variable "private_cidr_2" {
   default = "10.0.2.0/24"
 }
 
+variable "restricted_ingress_web_cidr" {
+  default = ["127.0.0.1/32"]
+}
+
 variable "nat_gateway_instance_type" {
   default = "t2.micro"
 }

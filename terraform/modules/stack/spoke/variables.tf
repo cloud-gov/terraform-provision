@@ -72,6 +72,10 @@ variable "rds_encrypted" {
     default = true
 }
 
+variable "restricted_ingress_web_cidr" {
+    default = ["127.0.0.1/32"]
+}
+
 variable "rds_password" {}
 
 variable "account_id" {}
