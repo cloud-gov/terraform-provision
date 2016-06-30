@@ -28,7 +28,7 @@ variable "private_cidr_2" {
   default = "10.0.2.0/24"
 }
 
-variable "restricted_ingress_web_cidr" {
+variable "restricted_ingress_web_cidrs" {
   default = ["127.0.0.1/32"]
 }
 

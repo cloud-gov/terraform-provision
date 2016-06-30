@@ -10,7 +10,7 @@ module "vpc" {
     private_cidr_2 = "${var.private_cidr_2}"
     public_cidr_1 = "${var.public_cidr_1}"
     public_cidr_2 = "${var.public_cidr_2}"
-    restricted_ingress_web_cidr = "${var.restricted_ingress_web_cidr}"
+    restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
     nat_gateway_ami = "${var.nat_gateway_ami}"
 }
