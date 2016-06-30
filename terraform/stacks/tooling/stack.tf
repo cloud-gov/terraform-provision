@@ -51,8 +51,8 @@ module "concourse_staging" {
     rds_password = "${var.concourse_staging_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
-    rds_instance_type = "db.t2.medium"
-    rds_encrypted = false
+    rds_instance_type = "db.m3.medium"
+    rds_encrypted = true
     account_id = "${var.account_id}"
     elb_cert_name = "${var.concourse_staging_elb_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az2}"
