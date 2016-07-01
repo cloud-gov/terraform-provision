@@ -9,6 +9,7 @@ module "stack" {
     private_cidr_2 = "${var.private_cidr_2}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
+    restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_password = "${var.rds_password}"
     rds_encrypted = false
     account_id = "${var.account_id}"
