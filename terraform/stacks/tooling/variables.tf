@@ -49,3 +49,5 @@ variable "concourse_staging_elb_cert_name" {
 variable "nessus_elb_cert_name" {
 	default = "star-fr-cloud-gov-06-16"
 }
+
+variable "restricted_ingress_web_cidrs" {}
