@@ -1,7 +1,7 @@
 resource "aws_elb" "nessus_elb" {
   name = "${var.stack_description}-Nessus"
   subnets = ["${module.stack.public_subnet_az1}" ,"${module.stack.public_subnet_az2}"] 
-  security_groups = ["${module.stack.web_traffic_security_group}"]
+  security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
 
   listener {
     lb_port = 443
