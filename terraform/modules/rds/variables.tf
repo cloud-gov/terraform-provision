@@ -9,6 +9,10 @@ variable "rds_db_size" {
     default = 5
 }
 
+variable "rds_db_storage_type" {
+    default = "standard"
+}
+
 variable "rds_db_name" {
     default = "bosh"
 }
