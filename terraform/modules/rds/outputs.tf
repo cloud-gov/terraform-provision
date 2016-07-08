@@ -10,3 +10,4 @@ output "rds_host" {
 output "rds_port" {
     value = "${aws_db_instance.rds_database.port}"
 }
+

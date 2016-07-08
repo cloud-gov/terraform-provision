@@ -34,7 +34,8 @@ module "concourse_production" {
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
     rds_encrypted = true
-    rds_instance_type = "db.m3.medium"
+    rds_instance_type = "db.m3.xlarge"
+    rds_db_storage_type = "gp2"
     account_id = "${var.account_id}"
     elb_cert_name = "${var.concourse_prod_elb_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1}"

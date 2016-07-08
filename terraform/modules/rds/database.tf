@@ -5,6 +5,7 @@
  *  rds_db_engine_version
  *  rds_db_name
  *  rds_db_size
+ *  rds_db_storage_type
  *  rds_instance_type
  *  rds_username
  *  rds_password
