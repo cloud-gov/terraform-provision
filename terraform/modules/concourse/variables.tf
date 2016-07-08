@@ -18,7 +18,7 @@ variable "rds_db_size" {
 }
 
 variable "rds_instance_type" {
-    default = "db.m3.medium"
+    default = "db.m3.xlarge"
 }
 
 variable "rds_username" {
