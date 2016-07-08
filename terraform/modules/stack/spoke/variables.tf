@@ -48,6 +48,10 @@ variable "rds_instance_type" {
     default = "db.m3.medium"
 }
 
+variable "rds_db_storage_type" {
+    default = "standard"
+}
+
 variable "rds_db_size" {
     default = 5
 }
