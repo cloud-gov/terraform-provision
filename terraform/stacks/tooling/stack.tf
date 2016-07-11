@@ -27,6 +27,7 @@ module "stack" {
 module "concourse_production" {
   source = "../../modules/concourse"
     stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
     vpc_id = "${module.stack.vpc_id}"
     concourse_cidr = "${var.concourse_prod_cidr}"
     concourse_az = "${var.az1}"
@@ -46,6 +47,7 @@ module "concourse_production" {
 module "concourse_staging" {
   source = "../../modules/concourse"
     stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
     vpc_id = "${module.stack.vpc_id}"
     concourse_cidr = "${var.concourse_staging_cidr}"
     concourse_az = "${var.az2}"
@@ -74,22 +76,26 @@ module "master_bosh_user" {
 module "ci_user" {
     source = "../../modules/iam_user/concourse_user"
     username = "concourse"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "cf_user" {
     source = "../../modules/iam_user/cf_user"
     username = "cf-cc-s3"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "release_user" {
     source = "../../modules/iam_user/release_user"
     username = "releaser"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "s3_broker_user" {
     source = "../../modules/iam_user/s3_broker_user"
     username = "s3-broker"
     account_id = "${var.account_id}"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "aws_broker_user" {
@@ -98,6 +104,7 @@ module "aws_broker_user" {
     account_id = "${var.account_id}"
     aws_default_region = "${var.aws_default_region}"
     remote_state_bucket = "${var.remote_state_bucket}"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "cloudwatch_user" {
@@ -116,7 +123,7 @@ module "cloudwatch_user" {
                 "logs:DescribeLogStreams"
             ],
             "Resource": [
-                "arn:aws-us-gov:logs:*:*:*"
+                "arn:${var.aws_partition}:logs:*:*:*"
             ]
         }
     ]

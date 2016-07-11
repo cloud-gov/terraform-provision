@@ -2,6 +2,10 @@ variable "stack_description" {
     default = "production"
 }
 
+variable "aws_partition" {
+    default = "aws-us-gov"
+}
+
 variable "vpc_cidr" {}
 
 variable "public_cidr_1" {}

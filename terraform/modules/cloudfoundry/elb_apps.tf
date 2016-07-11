@@ -16,7 +16,7 @@ resource "aws_elb" "cloudfoundry_elb_apps" {
     instance_port = 80
     instance_protocol = "HTTP"
 
-    ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
+    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
   }
 
   listener {
@@ -25,7 +25,7 @@ resource "aws_elb" "cloudfoundry_elb_apps" {
     instance_port = 80
     instance_protocol = "TCP"
 
-    ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
+    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
   }
 
   health_check {

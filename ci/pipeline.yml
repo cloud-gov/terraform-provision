@@ -16,6 +16,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_aws_default_region: {{aws_default_region}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{tooling_rds_password}}
@@ -69,6 +70,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{staging_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
@@ -139,6 +141,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{production_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
