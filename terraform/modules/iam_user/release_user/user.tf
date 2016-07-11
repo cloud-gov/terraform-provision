@@ -5,7 +5,6 @@ module "release_user" {
     username = "${var.username}"
 
     /* TODO: Make the bucket names configurable */
-    /* TODO: Make sure the bucket arn:path is configurable */
     iam_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -30,10 +29,10 @@ module "release_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::cloud-gov-release-blobstore",
-                "arn:aws-us-gov:s3:::cloud-gov-release-blobstore/*",
-                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases",
-                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases/*"
+                "arn:${var.aws_partition}:s3:::cloud-gov-release-blobstore",
+                "arn:${var.aws_partition}:s3:::cloud-gov-release-blobstore/*",
+                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases",
+                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases/*"
             ]
         }
     ]

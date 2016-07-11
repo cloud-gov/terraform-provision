@@ -12,13 +12,12 @@ resource "aws_elb" "concourse_elb" {
     lb_protocol = "tcp"
   }
 
-  /* TODO: Make sure that the cert can ref either "arn:aws" or "arn:aws-us-gov" */
   listener {
     instance_port = 8080
     instance_protocol = "tcp"
     lb_port = 443
     lb_protocol = "ssl"
-    ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
+    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
   }
 
   health_check {
@@ -32,5 +31,4 @@ resource "aws_elb" "concourse_elb" {
   tags =  {
     Name = "${var.stack_description}-Concourse-${var.concourse_az}"
   }
-
 }

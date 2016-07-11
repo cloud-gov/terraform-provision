@@ -23,6 +23,7 @@ module "cf" {
 
     account_id = "${var.account_id}"
     stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
     elb_main_cert_name = "${var.main_cert_name}"
     elb_apps_cert_name = "${var.apps_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"

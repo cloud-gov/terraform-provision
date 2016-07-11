@@ -5,7 +5,6 @@ module "concourse_user" {
     username = "${var.username}"
 
     /* TODO: Make the bucket names configurable */
-    /* TODO: Make sure the bucket arn:path is configurable */
     iam_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -29,14 +28,14 @@ module "concourse_user" {
                 "s3:ListMultipartUploadParts"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::cloud-gov-varz",
-                "arn:aws-us-gov:s3:::cloud-gov-varz/*",
-                "arn:aws-us-gov:s3:::cloud-gov-varz-stage",
-                "arn:aws-us-gov:s3:::cloud-gov-varz-stage/*",
-                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases",
-                "arn:aws-us-gov:s3:::cloud-gov-bosh-releases/*",
-                "arn:aws-us-gov:s3:::cg-stemcell-images",
-                "arn:aws-us-gov:s3:::cg-stemcell-images/*"
+                "arn:${var.aws_partition}:s3:::cloud-gov-varz",
+                "arn:${var.aws_partition}:s3:::cloud-gov-varz/*",
+                "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage",
+                "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage/*",
+                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases",
+                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases/*",
+                "arn:${var.aws_partition}:s3:::cg-stemcell-images",
+                "arn:${var.aws_partition}:s3:::cg-stemcell-images/*"
             ]
         },
         {
@@ -45,7 +44,7 @@ module "concourse_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::cloud-gov-varz/master-bosh-state.json"
+                "arn:${var.aws_partition}:s3:::cloud-gov-varz/master-bosh-state.json"
             ]
         }
     ]

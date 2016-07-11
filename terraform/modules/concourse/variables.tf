@@ -50,3 +50,5 @@ variable "elb_cert_name" {}
 variable "elb_subnets" {}
 
 variable "elb_security_groups" {}
+
+variable "aws_partition" {}
