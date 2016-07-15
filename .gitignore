@@ -14,5 +14,4 @@ credentials.yml
 
 cg-provision.yml
 cloud_gov_policy.json
-provision.sh
 vmimport.json
