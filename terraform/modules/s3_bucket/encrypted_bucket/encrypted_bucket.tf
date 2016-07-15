@@ -1,6 +1,9 @@
 resource "aws_s3_bucket" "encrypted_bucket" {
     bucket = "${var.bucket}"
     acl = "${var.acl}"
+    versioning {
+        enabled = "${var.versioning}"
+    }
 
     policy = <<EOF
 {
