@@ -34,8 +34,8 @@ module "concourse_user" {
                 "arn:${var.aws_partition}:s3:::${var.staging_private_bucket}/*",
                 "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}",
                 "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}/*",
-                "arn:${var.aws_partition}:s3:::${var.cg-stemcell-images}",
-                "arn:${var.aws_partition}:s3:::${var.cg-stemcell-images}/*"
+                "arn:${var.aws_partition}:s3:::${var.bosh_stemcells_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.bosh_stemcells_bucket}/*"
             ]
         },
         {
