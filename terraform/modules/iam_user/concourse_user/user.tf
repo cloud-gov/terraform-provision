@@ -28,14 +28,14 @@ module "concourse_user" {
                 "s3:ListMultipartUploadParts"
             ],
             "Resource": [
-                "arn:${var.aws_partition}:s3:::cloud-gov-varz",
-                "arn:${var.aws_partition}:s3:::cloud-gov-varz/*",
-                "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage",
-                "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage/*",
-                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases",
-                "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases/*",
-                "arn:${var.aws_partition}:s3:::cg-stemcell-images",
-                "arn:${var.aws_partition}:s3:::cg-stemcell-images/*"
+                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}/*",
+                "arn:${var.aws_partition}:s3:::${var.staging_private_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.staging_private_bucket}/*",
+                "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}/*",
+                "arn:${var.aws_partition}:s3:::${var.cg-stemcell-images}",
+                "arn:${var.aws_partition}:s3:::${var.cg-stemcell-images}/*"
             ]
         },
         {
@@ -44,7 +44,7 @@ module "concourse_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:${var.aws_partition}:s3:::cloud-gov-varz/master-bosh-state.json"
+                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}/master-bosh-state.json"
             ]
         }
     ]

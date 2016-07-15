@@ -77,6 +77,10 @@ module "ci_user" {
     source = "../../modules/iam_user/concourse_user"
     username = "concourse"
     aws_partition = "${var.aws_partition}"
+    staging_private_bucket = "${var.staging_private_bucket}"
+    prod_private_bucket = "${var.prod_private_bucket}"
+    bosh_releases_bucket = "${var.bosh_releases_bucket}"
+    bosh_stemcells_bucket = "${var.bosh_stemcells_bucket}"
 }
 
 module "cf_user" {

@@ -32,7 +32,7 @@ module "production_stack" {
     private_cidr_2 = "10.10.2.0/24"
     rds_private_cidr_1 = "10.10.20.0/24"
     rds_private_cidr_2 = "10.10.21.0/24"
-    remote_state_bucket = "terraform-state"
+    remote_state_bucket = "${var.remote_state_bucket}"
 }
 
 module "staging_stack" {
@@ -47,5 +47,5 @@ module "staging_stack" {
     private_cidr_2 = "10.9.2.0/24"
     rds_private_cidr_1 = "10.9.20.0/24"
     rds_private_cidr_2 = "10.9.21.0/24"
-    remote_state_bucket = "terraform-state"
+    remote_state_bucket = "${var.remote_state_bucket}"
 }

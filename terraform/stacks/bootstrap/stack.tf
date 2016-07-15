@@ -12,4 +12,5 @@ module "bootstrap_concourse" {
   default_vpc_id = "${var.default_vpc_id}"
   default_vpc_cidr = "${var.default_vpc_cidr}"
   default_vpc_route_table = "${var.default_vpc_route_table}"
+  ami_id = "${var.ami_id}"
 }

@@ -37,6 +37,10 @@ variable "rds_password" {}
 variable "account_id" {}
 
 variable "remote_state_bucket" {}
+variable "staging_private_bucket" {}
+variable "prod_private_bucket" {}
+variable "bosh_releases_bucket" {}
+variable "bosh_stemcells_bucket" {}
 
 variable "concourse_prod_rds_password" {}
 variable "concourse_prod_cidr" {}

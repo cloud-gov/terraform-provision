@@ -134,4 +134,4 @@
     type: docker-image
     source:
       repository: robdimsdale/concourse-pipeline-resource
-      tag: v0.4.1
+      tag: v0.6.0
