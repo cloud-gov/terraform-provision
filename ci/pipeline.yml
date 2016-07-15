@@ -207,7 +207,7 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      passed: [teardown-staging, teardown-production]
+#      passed: [teardown-staging, teardown-production]
   - task: destroy
     file: pipeline-tasks/terraform-destroy.yml
     input_mapping: { terraform-templates: cg-provision-repo }
