@@ -15,7 +15,7 @@ module "stack" {
     account_id = "${var.account_id}"
     remote_state_bucket = "${var.remote_state_bucket}"
     target_stack_name = "${var.target_stack_name}"
-
+    nat_gateway_ami = "${var.nat_gateway_ami}"
 }
 
 module "cf" {

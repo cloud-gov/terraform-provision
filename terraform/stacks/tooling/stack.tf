@@ -22,6 +22,7 @@ module "stack" {
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     rds_password = "${var.rds_password}"
     rds_encrypted = true
+    nat_gateway_ami = "${var.nat_gateway_ami}"
 }
 
 module "concourse_production" {
