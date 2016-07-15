@@ -90,6 +90,12 @@ gen_password ()
   tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1
 }
 
+cert_name=${prefix}certificate
+openssl genrsa -out my-private-key.pem 2048
+openssl req -sha256 -new -key my-private-key.pem -out csr.pem
+openssl x509 -req -days 365 -in csr.pem -signkey my-private-key.pem -out my-certificate.pem
+aws iam upload-server-certificate --server-certificate-name $cert_name --certificate-body file://my-certificate.pem --private-key file://my-private-key.pem
+
 cat > cg-provision.yml <<EOF
 aws_access_key_id: $ACCESS_KEY_ID
 aws_secret_access_key: $SECRET_ACCESS_KEY
@@ -141,6 +147,12 @@ production_rds_password: $(gen_password)
 production_cf_rds_password: $(gen_password)
 production_restricted_ingress_web_cidrs: "127.0.0.1/32,192.168.0.1/24"
 nat_gateway_ami: "ami-004b0f60"
+concourse_prod_elb_cert_name: $cert_name
+concourse_staging_elb_cert_name: $cert_name
+nessus_elb_cert_name: $cert_name
+main_cert_name: $cert_name
+apps_cert_name: $cert_name
+monitoring_elb_cert_name: $cert_name
 EOF
 aws s3 cp cg-provision.yml s3://${concourse_credentials}/ 
 
@@ -168,6 +180,7 @@ export TF_VAR_credentials_bucket=$concourse_credentials
 export TF_VAR_ami_id='ami-72723412'
 export TF_VAR_concourse_password="$(gen_password)"
 EOF
+
 
 ./scripts/bootstrap.sh apply
 
