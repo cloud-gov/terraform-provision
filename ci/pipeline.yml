@@ -41,7 +41,6 @@ jobs:
       TF_VAR_concourse_prod_elb_cert_name: {{concourse_prod_elb_cert_name}}
       TF_VAR_concourse_staging_elb_cert_name: {{concourse_staging_elb_cert_name}}
       TF_VAR_nessus_elb_cert_name: {{nessus_elb_cert_name}}
-
   - task: init-bosh-db
     config:
       platform: linux
