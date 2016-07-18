@@ -10,6 +10,7 @@ module "vpc" {
     private_cidr_2 = "${var.private_cidr_2}"
     public_cidr_1 = "${var.public_cidr_1}"
     public_cidr_2 = "${var.public_cidr_2}"
+    restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
     nat_gateway_ami = "${var.nat_gateway_ami}"
 }
@@ -39,17 +40,5 @@ module "rds" {
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
-}
-
-provider "postgresql" {
-    alias = "rds"
-    host = "${module.rds.rds_host}"
-    username = "${var.rds_username}"
-    password = "${var.rds_password}"
-    ssl_mode = "require"
-}
-
-resource "postgresql_database" "uaadb" {
-    provider = "postgresql.rds"
-    name = "bosh_uaadb"
+    rds_encrypted = "${var.rds_encrypted}"
 }

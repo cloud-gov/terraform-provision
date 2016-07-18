@@ -16,6 +16,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_aws_default_region: {{aws_default_region}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{tooling_rds_password}}
@@ -31,6 +32,26 @@ jobs:
       TF_VAR_private_cidr_2: {{tooling_private_cidr_2}}
       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
+      TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
+  - task: init-bosh-db
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: governmentpaas/psql
+      inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+      params:
+        BOSH_DB_PASSWORD: {{tooling_rds_password}}
+        STATE_FILE_PATH: terraform-state/terraform.tfstate
+      run:
+        path: sh
+        args:
+        - -e
+        - -c
+        - cg-provision-repo/ci/scripts/update-bosh-db.sh
 
 - name: bootstrap-staging
   plan:
@@ -49,6 +70,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{staging_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
@@ -62,7 +84,27 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{staging_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{staging_rds_private_cidr_2}}
       TF_VAR_cf_rds_password: {{staging_cf_rds_password}}
-  - task: init-db
+      TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
+  - task: init-bosh-db
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: governmentpaas/psql
+      inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+      params:
+        BOSH_DB_PASSWORD: {{staging_rds_password}}
+        STATE_FILE_PATH: terraform-state/terraform.tfstate
+      run:
+        path: sh
+        args:
+        - -e
+        - -c
+        - cg-provision-repo/ci/scripts/update-bosh-db.sh
+  - task: init-cf-db
     config:
       platform: linux
       image_resource:
@@ -99,6 +141,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{production_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
@@ -112,7 +155,27 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{production_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{production_rds_private_cidr_2}}
       TF_VAR_cf_rds_password: {{production_cf_rds_password}}
-  - task: init-db
+      TF_VAR_restricted_ingress_web_cidrs: {{production_restricted_ingress_web_cidrs}}
+  - task: init-bosh-db
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: governmentpaas/psql
+      inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+      params:
+        BOSH_DB_PASSWORD: {{production_rds_password}}
+        STATE_FILE_PATH: terraform-state/terraform.tfstate
+      run:
+        path: sh
+        args:
+        - -e
+        - -c
+        - cg-provision-repo/ci/scripts/update-bosh-db.sh
+  - task: init-cf-db
     config:
       platform: linux
       image_resource:

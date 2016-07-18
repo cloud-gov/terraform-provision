@@ -65,3 +65,5 @@ variable "services_cidr_1" {
 variable "services_cidr_2" {
   default = "10.0.31.0/24"
 }
+
+variable "aws_partition" {}

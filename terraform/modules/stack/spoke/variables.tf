@@ -45,7 +45,11 @@ variable "rds_private_cidr_2" {
 }
 
 variable "rds_instance_type" {
-    default = "db.t2.medium"
+    default = "db.m3.medium"
+}
+
+variable "rds_db_storage_type" {
+    default = "standard"
 }
 
 variable "rds_db_size" {
@@ -66,6 +70,14 @@ variable "rds_db_engine_version" {
 
 variable "rds_username" {
     default = "postgres"
+}
+
+variable "rds_encrypted" {
+    default = true
+}
+
+variable "restricted_ingress_web_cidrs" {
+    default = "127.0.0.1/32,192.168.0.1/24"
 }
 
 variable "rds_password" {}

@@ -6,8 +6,6 @@ Manual steps to create the world:
 1. Make sure you have [terraform](https://www.terraform.io/), awscli, and jq installed
  1. Mac OSX users can install all of these with homebrew
 1. Create S3 bucket with versioning enabled to store terraform state: `terraform-state`
-1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for tooling and production: `cloud-gov-varz`
-1. Create S3 bucket with versioning enabled to store BOSH manifest secrets for staging: `cloud-gov-varz-staging`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
   1. Upload all custom bosh releases
 1. Create S3 bucket to store BOSH stemcell images: `cloud-gov-stemcell-images`

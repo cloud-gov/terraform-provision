@@ -2,6 +2,10 @@ variable "stack_description" {
     default = "staging"
 }
 
+variable "aws_partition" {
+    default = "aws-us-gov"
+}
+
 variable "vpc_cidr" {}
 
 variable "public_cidr_1" {}
@@ -42,3 +46,5 @@ variable "services_cidr_2" {}
 variable "monitoring_elb_cert_name" {
   default = "star-fr-stage-cloud-gov-06-16"
 }
+
+variable "restricted_ingress_web_cidrs" {}

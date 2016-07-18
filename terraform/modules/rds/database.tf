@@ -5,6 +5,7 @@
  *  rds_db_engine_version
  *  rds_db_name
  *  rds_db_size
+ *  rds_db_storage_type
  *  rds_instance_type
  *  rds_username
  *  rds_password
@@ -30,6 +31,7 @@ resource "aws_db_instance" "rds_database" {
 
   name = "${var.rds_db_name}"
   allocated_storage = "${var.rds_db_size}"
+  storage_type = "${var.rds_db_storage_type}"
   instance_class = "${var.rds_instance_type}"
 
   username = "${var.rds_username}"

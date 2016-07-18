@@ -5,7 +5,6 @@ module "s3_broker_user" {
     username = "${var.username}"
 
     /* TODO: Make the bucket names configurable */
-    /* TODO: Make sure the bucket arn:path is configurable */
     iam_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -17,8 +16,8 @@ module "s3_broker_user" {
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::cg-*",
-                "arn:aws-us-gov:s3:::cg-*/*"
+                "arn:${var.aws_partition}:s3:::cg-*",
+                "arn:${var.aws_partition}:s3:::cg-*/*"
             ]
         },
         {
@@ -48,9 +47,9 @@ module "s3_broker_user" {
                 "iam:UpdateUser"
             ],
             "Resource": [
-                "arn:aws-us-gov:iam::${var.account_id}:user/cloud-foundry/s3/*",
-                "arn:aws-us-gov:iam::${var.account_id}:group/cloud-foundry/s3/",
-                "arn:aws-us-gov:iam::${var.account_id}:group/cloud-foundry/s3/*"
+                "arn:${var.aws_partition}:iam::${var.account_id}:user/cloud-foundry/s3/*",
+                "arn:${var.aws_partition}:iam::${var.account_id}:group/cloud-foundry/s3/",
+                "arn:${var.aws_partition}:iam::${var.account_id}:group/cloud-foundry/s3/*"
             ]
         }
     ]

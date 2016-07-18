@@ -17,8 +17,20 @@ variable "rds_db_size" {
   default = 10
 }
 
+variable "rds_db_storage_type" {
+  default = "gp2"
+}
+
+variable "rds_instance_type" {
+    default = "db.m3.xlarge"
+}
+
 variable "rds_username" {
   default = "atc"
+}
+
+variable "rds_encrypted" {
+  default = true
 }
 
 variable "rds_password" {}
@@ -38,3 +50,5 @@ variable "elb_cert_name" {}
 variable "elb_subnets" {}
 
 variable "elb_security_groups" {}
+
+variable "aws_partition" {}

@@ -5,7 +5,6 @@ module "aws_broker_user" {
     username = "${var.username}"
 
     /* TODO: Make the bucket names configurable */
-    /* TODO: Make sure the bucket arn:path is configurable */
     /* TODO: Make `subgrp` configurable */
     iam_policy = <<EOF
 {
@@ -20,9 +19,9 @@ module "aws_broker_user" {
                 "rds:DeleteDBInstance"
             ],
             "Resource": [
-                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
-                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:production",
-                "arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:subgrp:staging"
+                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
+                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:production",
+                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:staging"
             ]
         },
         {
@@ -33,8 +32,8 @@ module "aws_broker_user" {
                 "s3:GetObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::${var.remote_state_bucket}",
-                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/*"
+                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/*"
             ]
         },
         {
@@ -46,8 +45,8 @@ module "aws_broker_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/cg-aws-broker-*",
-                "arn:aws-us-gov:s3:::${var.remote_state_bucket}/cg-aws-broker-*/*"
+                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*",
+                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*/*"
             ]
         }
     ]

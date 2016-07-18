@@ -9,7 +9,9 @@ module "stack" {
     private_cidr_2 = "${var.private_cidr_2}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
+    restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_password = "${var.rds_password}"
+    rds_encrypted = true
     account_id = "${var.account_id}"
     remote_state_bucket = "${var.remote_state_bucket}"
     target_stack_name = "${var.target_stack_name}"
@@ -21,6 +23,7 @@ module "cf" {
 
     account_id = "${var.account_id}"
     stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
     elb_main_cert_name = "${var.main_cert_name}"
     elb_apps_cert_name = "${var.apps_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"

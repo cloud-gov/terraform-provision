@@ -1,7 +1,7 @@
 resource "aws_elb" "nessus_elb" {
   name = "${var.stack_description}-Nessus"
   subnets = ["${module.stack.public_subnet_az1}" ,"${module.stack.public_subnet_az2}"] 
-  security_groups = ["${module.stack.web_traffic_security_group}"]
+  security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
 
   listener {
     lb_port = 443
@@ -9,7 +9,7 @@ resource "aws_elb" "nessus_elb" {
     instance_port = 8834
     instance_protocol = "HTTPS"
 
-    ssl_certificate_id = "arn:aws-us-gov:iam::${var.account_id}:server-certificate/${var.nessus_elb_cert_name}"
+    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.nessus_elb_cert_name}"
   }
 
   health_check {

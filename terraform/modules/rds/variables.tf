@@ -2,11 +2,15 @@
 variable "stack_description" {}
 
 variable "rds_instance_type" {
-    default = "db.t2.medium"
+    default = "db.m3.medium"
 }
 
 variable "rds_db_size" {
     default = 5
+}
+
+variable "rds_db_storage_type" {
+    default = "standard"
 }
 
 variable "rds_db_name" {
@@ -32,5 +36,5 @@ variable "rds_subnet_group" {}
 variable "rds_security_groups" {}
 
 variable "rds_encrypted" {
-    default = false
+    default = true
 }
