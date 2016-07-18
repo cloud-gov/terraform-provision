@@ -21,6 +21,7 @@ resource "aws_db_instance" "rds_database" {
 
   lifecycle {
     ignore_changes = ["identifier"]
+    prevent_destroy = "${var.rds_prevent_destroy}"
   }
   identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
 
