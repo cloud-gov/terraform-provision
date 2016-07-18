@@ -260,7 +260,7 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      passed: [bootstrap-staging]
+#      passed: [bootstrap-staging]
   - task: destroy
     file: pipeline-tasks/terraform-destroy.yml
     input_mapping: { terraform-templates: cg-provision-repo }
