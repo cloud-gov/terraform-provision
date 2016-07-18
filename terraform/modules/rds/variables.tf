@@ -1,3 +1,6 @@
+variable "rds_prevent_destroy" {
+    default = "true"
+}
 
 variable "stack_description" {}
 
