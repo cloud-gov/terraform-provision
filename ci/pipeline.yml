@@ -94,6 +94,9 @@ jobs:
       TF_VAR_cf_rds_password: {{staging_cf_rds_password}}
       TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
       TF_VAR_nat_gateway_ami: {{nat_gateway_ami}}
+      TF_VAR_main_cert_name: {{main_cert_name}}
+      TF_VAR_apps_cert_name: {{apps_cert_name}}
+      TF_VAR_monitoring_elb_cert_name: {{monitoring_elb_cert_name}}
   - task: init-bosh-db
     config:
       platform: linux
@@ -286,6 +289,9 @@ jobs:
      TF_VAR_cf_rds_password: {{staging_cf_rds_password}}
      TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
      TF_VAR_nat_gateway_ami: {{nat_gateway_ami}}
+     TF_VAR_main_cert_name: {{main_cert_name}}
+     TF_VAR_apps_cert_name: {{apps_cert_name}}
+     TF_VAR_monitoring_elb_cert_name: {{monitoring_elb_cert_name}}
 
 - name: teardown-production
   plan:
