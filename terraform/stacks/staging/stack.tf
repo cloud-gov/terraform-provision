@@ -16,6 +16,8 @@ module "stack" {
     remote_state_bucket = "${var.remote_state_bucket}"
     target_stack_name = "${var.target_stack_name}"
     nat_gateway_ami = "${var.nat_gateway_ami}"
+    az1 = "${var.az1}"
+    az2 = "${var.az2}"
 
 }
 
@@ -45,5 +47,4 @@ module "cf" {
     monitoring_elb_cert_name = "${var.monitoring_elb_cert_name}"
     az1 = "${var.az1}"
     az2 = "${var.az2}"
-
 }
