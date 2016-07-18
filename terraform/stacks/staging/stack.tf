@@ -43,5 +43,7 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
 
     monitoring_elb_cert_name = "${var.monitoring_elb_cert_name}"
+    az1 = "${var.az1}"
+    az2 = "${var.az2}"
 
 }
