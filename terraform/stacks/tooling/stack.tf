@@ -125,9 +125,7 @@ module "cloudwatch_user" {
                 "cloudwatch:GetMetricData",
                 "cloudwatch:GetMetricStatistics"
             ],
-            "Resource": [
-                "arn:${var.aws_partition}:logs:*:*:*"
-            ]
+            "Resource": "*"
         }
     ]
 }
