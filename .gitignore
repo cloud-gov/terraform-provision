@@ -12,10 +12,3 @@ credentials.yml
 .project
 *.swp
 
-cg-provision.yml
-cloud_gov_policy.json
-vmimport.json
-csr.pem
-my-certificate.pem
-my-private-key.pem
-
