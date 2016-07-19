@@ -84,7 +84,7 @@
   - name: cg-provision
     type: git
     source:
-      uri: https://github.com/s-matyukevich/cg-provision
+      uri: https://github.com/18F/cg-provision
       branch: master
   - name: pipeline-tasks
     type: git
