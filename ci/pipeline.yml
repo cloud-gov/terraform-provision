@@ -1,4 +1,48 @@
 jobs:
+- name: bootstrap-external-staging
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+  - task: create-update-external-staging
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      STACK_NAME: external-staging
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_aws_partition: {{aws_external_partition}}
+      TF_VAR_aws_default_region: {{aws_external_region}}
+      TF_VAR_account_id: {{aws_external_account_id}}
+      TF_VAR_cdn_broker_username: {{cdn_broker_username_staging}}
+      TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
+      TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
+
+- name: bootstrap-external-production
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+  - task: create-update-external-production
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      STACK_NAME: external-production
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_aws_partition: {{aws_external_partition}}
+      TF_VAR_aws_default_region: {{aws_external_region}}
+      TF_VAR_account_id: {{aws_external_account_id}}
+      TF_VAR_cdn_broker_username: {{cdn_broker_username_production}}
+      TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
+      TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
+
 - name: bootstrap-tooling
   plan:
   - aggregate:

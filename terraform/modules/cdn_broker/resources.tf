@@ -1,6 +1,11 @@
+module "cdn_broker_bucket" {
+    source = "../s3_bucket/encrypted_public_bucket"
+    bucket = "${var.bucket}"
+    aws_partition = "${var.aws_partition}"
+}
 
 module "cdn_broker_user" {
-    source = ".."
+    source = "../iam_user"
 
     username = "${var.username}"
 
@@ -18,18 +23,14 @@ module "cdn_broker_user" {
                 "iam:UpdateServerCertificate"
             ],
             "Resource": [
-                "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/cg/*"
+                "arn:{$var.aws_partition}:iam::${var.account_id}:server-certificate/cloudfront/${var.cloudfront_prefix}"
             ]
         },
         {
             "Sid": "manageCloudfront",
             "Effect": "Allow",
-            "Action": [
-                "cloudfront:*"
-            ],
-            "Resource": [
-                "*"
-            ]
+            "Action": "cloudfront:*",
+            "Resource": "*"
         },
         {
             "Sid": "manageS3",
@@ -40,7 +41,7 @@ module "cdn_broker_user" {
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:aws:s3:::${aws_s3_bucket.cdn_broker_le.id}/*"
+                "arn:${var.aws_partition}:s3:::${var.bucket}/*"
             ]
         }
     ]

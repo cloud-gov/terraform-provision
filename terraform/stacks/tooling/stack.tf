@@ -98,16 +98,6 @@ module "s3_broker_user" {
     aws_partition = "${var.aws_partition}"
 }
 
-module "cdn_broker_bucket" {
-    source = "../../modules/s3_bucket/cdn_broker_bucket"
-}
-
-module "cdn_broker_user" {
-    source = "../../modules/iam_user/s3_broker_user"
-    username = "cdn-broker"
-    account_id = "${var.account_id}"
-}
-
 module "aws_broker_user" {
     source = "../../modules/iam_user/aws_broker_user"
     username = "aws-broker"
