@@ -4,8 +4,6 @@ module "read_only_admin" {
 
     username = "${var.username}"
 
-    /* TODO: Make the bucket names configurable */
-    /* TODO: Make `subgrp` configurable */
     iam_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -160,7 +158,7 @@ module "read_only_admin" {
                 "logs:DescribeLogStreams"
             ],
             "Resource": [
-                "arn:aws:logs:*:*:*"
+                "arn:${var.aws_partition}:logs:*:*:*"
             ]
         }
     ]
