@@ -1,5 +1,6 @@
-variable "username" {}
 variable "account_id" {}
 variable "aws_partition" {}
-variable "cloudfront_prefix" {}
-variable "bucket" {}
+
+variable "cdn_broker_username" {}
+variable "cdn_broker_cloudfront_prefix" {}
+variable "cdn_broker_bucket" {}
