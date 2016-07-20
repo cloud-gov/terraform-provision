@@ -1,20 +1,19 @@
-output "cf_rds_url" {
-    value = "${module.cf_database.rds_url}"
-}
 
-output "cf_rds_host" {
-    value = "${module.cf_database.rds_host}"
-}
+/* Diego Proxy ELB */
 
-output "cf_rds_port" {
-    value = "${module.cf_database.rds_port}"
-}
-
-output "elb_main_name" {
+output "elb_diego_main_name" {
   value = "${aws_elb.diego_elb_main.name}"
 }
 
-output "elb_main_dns_name" {
+output "elb_diego_main_dns_name" {
   value = "${aws_elb.diego_elb_main.dns_name}"
+}
+
+/* Services network */
+output "services_subnet_az1" {
+  value = "${aws_subnet.diego_az1_services.id}"
+}
+output "services_subnet_az2" {
+  value = "${aws_subnet.diego_az2_services.id}"
 }
 
