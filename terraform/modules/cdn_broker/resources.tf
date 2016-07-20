@@ -1,5 +1,5 @@
 module "cdn_broker_bucket" {
-    source = "../s3_bucket/encrypted_public_bucket"
+    source = "../s3_bucket/public_encrypted_bucket"
     bucket = "${var.bucket}"
     aws_partition = "${var.aws_partition}"
 }
@@ -23,7 +23,7 @@ module "cdn_broker_user" {
                 "iam:UpdateServerCertificate"
             ],
             "Resource": [
-                "arn:{$var.aws_partition}:iam::${var.account_id}:server-certificate/cloudfront/${var.cloudfront_prefix}"
+                "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/cloudfront/${var.cloudfront_prefix}"
             ]
         },
         {

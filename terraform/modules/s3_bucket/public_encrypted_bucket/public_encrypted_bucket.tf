@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "public_encrypted_bucket" {
                 "AWS": "*"
             },
             "Action": "s3:GetObject",
-            "Resource": "arn:${var.aws_partition}:s3:::${var.bucket}/*",
+            "Resource": "arn:${var.aws_partition}:s3:::${var.bucket}/*"
         },
         {
             "Sid": "DenyUnencryptedPut",
