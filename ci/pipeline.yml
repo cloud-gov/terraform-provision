@@ -341,5 +341,5 @@ resources:
 - name: cg-provision-repo
   type: git
   source:
-    uri: https://github.com/s-matyukevich/cg-provision.git
+    uri: https://github.com/18F/cg-provision.git
     branch: master
