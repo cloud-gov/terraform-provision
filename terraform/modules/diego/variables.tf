@@ -17,10 +17,13 @@ variable "vpc_id" {}
 
 variable "elb_subnets" {}
 
-variable "elb_security_groups" {}
+variable "diego_cidr_1" {}
 
-variable "account_id" {}
+variable "diego_cidr_2" {}
 
+variable "private_route_table_az1" {}
+
+variable "private_route_table_az2" {}
 
 
 

@@ -2,7 +2,7 @@
  * Variables required:
  *   stack_description
  *   elb_subnets
- *   elb_security_groups
+ *   
  */
 
 
@@ -42,11 +42,11 @@ resource "aws_elb" "diego_elb_main" {
   }
 
   health_check {
-    healthy_threshold = 2
-    interval = 5
+    healthy_threshold = 10
+    interval = 30
     target = "TCP:2222"
-    timeout = 4
-    unhealthy_threshold = 3
+    timeout = 5
+    unhealthy_threshold = 2
   }
 
   tags =  {
