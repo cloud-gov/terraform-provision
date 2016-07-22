@@ -2,13 +2,15 @@
  * Variables required:
  *   stack_description
  *   elb_subnets
- *   
+ *
  */
 
 
 resource "aws_security_group" "diego-elb-sg" {
   name = "${var.stack_description}-diego-elb-sg"
   description = "ELB Security Group for Diego Proxy"
+
+  vpc_id = "${var.vpc_id}"
 
   # HTTP access from anywhere
   ingress {
