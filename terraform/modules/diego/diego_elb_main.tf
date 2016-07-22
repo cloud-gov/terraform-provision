@@ -7,7 +7,7 @@
 
 
 resource "aws_security_group" "diego-elb-sg" {
-  name = "diego-elb-sg"
+  name = "${var.stack_description}-diego-elb-sg"
   description = "ELB Security Group for Diego Proxy"
 
   # HTTP access from anywhere

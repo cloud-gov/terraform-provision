@@ -125,3 +125,22 @@ output "services_subnet_az1" {
 output "services_subnet_az2" {
   value = "${module.cf.services_subnet_az2}"
 }
+
+/* Diego ELB */
+output "diego_elb_name" {
+  value = "${module.diego.diego_elb_main.name}"
+}
+
+output "diego_elb_dns_name" {
+  value = "${module.diego.diego_elb_main.dns_name}"
+}
+
+/* Diego subnets */
+output "diego_services_subnet_az1" {
+  value = "${module.diego.diego_az1_services.id}"
+}
+output "diego_services_subnet_az2" {
+  value = "${module.diego.diego_az2_services.id}"
+}
+
+
