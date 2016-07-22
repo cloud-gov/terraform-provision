@@ -137,10 +137,10 @@ output "diego_elb_dns_name" {
 
 /* Diego subnets */
 output "diego_services_subnet_az1" {
-  value = "${module.diego.diego_az1_services}"
+  value = "${module.diego.diego_cidr_1}"
 }
 output "diego_services_subnet_az2" {
-  value = "${module.diego.diego_az2_services}"
+  value = "${module.diego.diego_cidr_2}"
 }
 
 
