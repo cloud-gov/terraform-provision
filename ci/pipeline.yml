@@ -10,7 +10,7 @@ jobs:
     params:
       STACK_NAME: external-staging
       TEMPLATE_SUBDIR: terraform/stacks/external
-      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
       AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
@@ -32,7 +32,7 @@ jobs:
     params:
       STACK_NAME: external-production
       TEMPLATE_SUBDIR: terraform/stacks/external
-      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
       AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
