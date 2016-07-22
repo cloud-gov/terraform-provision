@@ -9,9 +9,9 @@ variable "az2" {
   default = "us-gov-west-1b"
 }
 
-variable "az1_route_table" {}
+variable "private_route_table_az1" {}
 
-variable "az2_route_table" {}
+variable "private_route_table_az2" {}
 
 variable "vpc_id" {}
 
