@@ -48,3 +48,19 @@ variable "monitoring_elb_cert_name" {
 }
 
 variable "restricted_ingress_web_cidrs" {}
+
+/* Variables for Diego Deployment */
+
+variable "az1" {
+  default = "us-gov-west-1a"
+}
+
+variable "az2" {
+  default = "us-gov-west-1b"
+}
+
+variable "diego_cidr_1" {}
+
+variable "diego_cidr_2" {}
+
+
