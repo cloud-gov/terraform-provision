@@ -47,4 +47,8 @@ variable "monitoring_elb_cert_name" {
   default = "star-fr-cloud-gov-06-16"
 }
 
+variable "logsearch_elb_cert_name" {
+  default = "star-fr-cloud-gov-06-16"
+}
+
 variable "restricted_ingress_web_cidrs" {}
