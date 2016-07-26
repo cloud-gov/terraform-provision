@@ -113,9 +113,6 @@ output "logsearch_elb_dns_name" {
 output "logsearch_elb_name" {
   value = "${module.cf.logsearch_elb_name}"
 }
-output "logsearch_elb_security_group" {
-  value = "${module.cf.logsearch_elb_security_group}"
-}
 
 /* CloudFoundry RDS */
 output "cf_rds_url" {
