@@ -42,7 +42,7 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
 
     monitoring_elb_cert_name = "${var.monitoring_elb_cert_name}"
-
+    logsearch_elb_cert_name = "${var.logsearch_elb_cert_name}"
 }
 
 module "diego" {
