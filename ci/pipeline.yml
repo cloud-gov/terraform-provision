@@ -284,7 +284,7 @@ jobs:
      TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
      TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-     TF_VAR_varz_staging_bucket: {{varz_staging_buckett}}
+     TF_VAR_varz_staging_bucket: {{varz_staging_bucket}}
      TF_VAR_varz_bucket: {{varz_bucket}}
      TF_VAR_bosh_releases_bucket: {{bosh_releases_bucket}}
      TF_VAR_bosh_stemcells_bucket: {{bosh_stemcells_bucket}}
