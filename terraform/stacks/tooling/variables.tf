@@ -37,6 +37,10 @@ variable "rds_password" {}
 variable "account_id" {}
 
 variable "remote_state_bucket" {}
+variable "varz_staging_bucket" {}
+variable "varz_bucket" {}
+variable "bosh_releases_bucket" {}
+variable "bosh_stemcells_bucket" {}
 
 variable "concourse_prod_rds_password" {}
 variable "concourse_prod_cidr" {}
@@ -55,3 +59,5 @@ variable "nessus_elb_cert_name" {
 }
 
 variable "restricted_ingress_web_cidrs" {}
+
+variable "nat_gateway_ami" {}

@@ -33,3 +33,32 @@ variable "default_vpc_cidr" {}
 variable "default_vpc_route_table" {}
 
 variable "account_id" {}
+
+variable "varz_bucket" {
+  default = "cloud-gov-varz"
+}
+
+variable "varz_staging_bucket" {
+  default = "cloud-gov-varz-staging"
+}
+
+
+variable "tooling_blobstore_bucket" {
+  default = "bosh-tooling-blobstore"
+}
+
+variable "staging_blobstore_bucket" {
+  default = "bosh-staging-blobstore"
+}
+
+variable "production_blobstore_bucket" {
+  default = "bosh-production-blobstore"
+}
+
+variable "bosh_release_bucket" {
+  default = "cloud-gov-bosh-releases"
+}
+
+variable "stemcell_bucket" {
+  default = "stemcell-images"
+}

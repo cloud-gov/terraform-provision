@@ -53,6 +53,8 @@ variable "logsearch_elb_cert_name" {
 
 variable "restricted_ingress_web_cidrs" {}
 
+variable "nat_gateway_ami" {}
+
 /* Variables for Diego Deployment */
 
 variable "az1" {

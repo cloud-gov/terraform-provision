@@ -58,6 +58,7 @@
         TF_VAR_default_vpc_id: ${default_vpc_id}
         TF_VAR_default_vpc_cidr: ${default_vpc_cidr}
         TF_VAR_default_vpc_route_table: ${default_vpc_route_table}
+        TF_VAR_remote_state_bucket: ${remote_state_bucket}
 
   - name: teardown-vpc-peering
     plan:
@@ -77,6 +78,7 @@
         TF_VAR_default_vpc_id: ${default_vpc_id}
         TF_VAR_default_vpc_cidr: ${default_vpc_cidr}
         TF_VAR_default_vpc_route_table: ${default_vpc_route_table}
+        TF_VAR_remote_state_bucket: ${remote_state_bucket}
 
   resources:
   - name: cg-provision
@@ -134,4 +136,4 @@
     type: docker-image
     source:
       repository: robdimsdale/concourse-pipeline-resource
-      tag: v0.4.1
+      tag: v0.6.0

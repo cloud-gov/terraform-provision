@@ -10,3 +10,5 @@ credentials.yml
 
 # Eclipse IDE files
 .project
+*.swp
+

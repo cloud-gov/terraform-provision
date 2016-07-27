@@ -7,6 +7,10 @@ variable "az2" {
     default = "us-gov-west-1b"
 }
 
+variable "remote_state_bucket" {
+  default = "terraform-state"
+}
+
 variable "account_id" {}
 
 variable "tooling_rds_password" {}

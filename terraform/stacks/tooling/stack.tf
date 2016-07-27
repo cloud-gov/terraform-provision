@@ -22,6 +22,7 @@ module "stack" {
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     rds_password = "${var.rds_password}"
     rds_encrypted = true
+    nat_gateway_ami = "${var.nat_gateway_ami}"
 }
 
 module "concourse_production" {
@@ -77,6 +78,10 @@ module "ci_user" {
     source = "../../modules/iam_user/concourse_user"
     username = "concourse"
     aws_partition = "${var.aws_partition}"
+    varz_staging_bucket = "${var.varz_staging_bucket}"
+    varz_bucket = "${var.varz_bucket}"
+    bosh_releases_bucket = "${var.bosh_releases_bucket}"
+    bosh_stemcells_bucket = "${var.bosh_stemcells_bucket}"
 }
 
 module "cf_user" {

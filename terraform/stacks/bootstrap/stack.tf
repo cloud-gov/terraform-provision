@@ -12,18 +12,19 @@ module "bootstrap_concourse" {
   default_vpc_id = "${var.default_vpc_id}"
   default_vpc_cidr = "${var.default_vpc_cidr}"
   default_vpc_route_table = "${var.default_vpc_route_table}"
+  ami_id = "${var.ami_id}"
 }
 
 module "bootstrap_buckets" {
     source = "../../modules/bootstrap_buckets"
     aws_partition = "${var.aws_partition}"
 
-    varz_bucket = "cloud-gov-varz"
-    varz_staging_bucket = "cloud-gov-varz-staging"
-    concourse_credentials_bucket = "concourse-credentials"
-    tooling_blobstore_bucket = "bosh-tooling-blobstore"
-    staging_blobstore_bucket = "bosh-staging-blobstore"
-    production_blobstore_bucket = "bosh-production-blobstore"
-    bosh_release_bucket = "cloud-gov-bosh-releases"
-    stemcell_bucket = "stemcell-images"
+    varz_bucket = "${var.varz_bucket}"
+    varz_staging_bucket = "${var.varz_staging_bucket}"
+    credentials_bucket = "${var.credentials_bucket}"
+    tooling_blobstore_bucket = "${var.tooling_blobstore_bucket}"
+    staging_blobstore_bucket = "${var.staging_blobstore_bucket}"
+    production_blobstore_bucket = "${var.production_blobstore_bucket}"
+    bosh_release_bucket = "${var.bosh_release_bucket}"
+    stemcell_bucket = "${var.stemcell_bucket}"
 }
