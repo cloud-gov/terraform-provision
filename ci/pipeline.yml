@@ -1,4 +1,48 @@
 jobs:
+- name: bootstrap-external-staging
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+  - task: create-update-external-staging
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      STACK_NAME: external-staging
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_aws_partition: {{aws_external_partition}}
+      TF_VAR_aws_default_region: {{aws_external_region}}
+      TF_VAR_account_id: {{aws_external_account_id}}
+      TF_VAR_cdn_broker_username: {{cdn_broker_username_staging}}
+      TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
+      TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
+
+- name: bootstrap-external-production
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+  - task: create-update-external-production
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      STACK_NAME: external-production
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_aws_partition: {{aws_external_partition}}
+      TF_VAR_aws_default_region: {{aws_external_region}}
+      TF_VAR_account_id: {{aws_external_account_id}}
+      TF_VAR_cdn_broker_username: {{cdn_broker_username_production}}
+      TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
+      TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
+
 - name: bootstrap-tooling
   plan:
   - aggregate:
@@ -25,8 +69,8 @@ jobs:
       TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
       TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-      TF_VAR_staging_private_bucket: {{staging_private_bucket}}
-      TF_VAR_prod_private_bucket: {{prod_private_bucket}}
+      TF_VAR_varz_staging_bucket: {{varz_staging_bucket}}
+      TF_VAR_varz_bucket: {{varz_bucket}}
       TF_VAR_bosh_releases_bucket: {{bosh_releases_bucket}}
       TF_VAR_bosh_stemcells_bucket: {{bosh_stemcells_bucket}}
       TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}
@@ -97,6 +141,8 @@ jobs:
       TF_VAR_main_cert_name: {{main_cert_name}}
       TF_VAR_apps_cert_name: {{apps_cert_name}}
       TF_VAR_monitoring_elb_cert_name: {{monitoring_elb_cert_name}}
+      TF_VAR_diego_cidr_1: {{staging_diego_cidr_1}}
+      TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
   - task: init-bosh-db
     config:
       platform: linux
@@ -238,8 +284,8 @@ jobs:
      TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
      TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-     TF_VAR_staging_private_bucket: {{staging_private_bucket}}
-     TF_VAR_prod_private_bucket: {{prod_private_bucket}}
+     TF_VAR_varz_staging_bucket: {{varz_staging_buckett}}
+     TF_VAR_varz_bucket: {{varz_bucket}}
      TF_VAR_bosh_releases_bucket: {{bosh_releases_bucket}}
      TF_VAR_bosh_stemcells_bucket: {{bosh_stemcells_bucket}}
      TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}

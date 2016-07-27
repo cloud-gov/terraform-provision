@@ -47,10 +47,26 @@ variable "monitoring_elb_cert_name" {
   default = "star-fr-stage-cloud-gov-06-16"
 }
 
+variable "logsearch_elb_cert_name" {
+  default = "star-fr-stage-cloud-gov-06-16"
+}
+
 variable "restricted_ingress_web_cidrs" {}
 
 variable "nat_gateway_ami" {}
 
-variable "az1" {}
-variable "az2" {}
+/* Variables for Diego Deployment */
+
+variable "az1" {
+  default = "us-gov-west-1a"
+}
+
+variable "az2" {
+  default = "us-gov-west-1b"
+}
+
+variable "diego_cidr_1" {}
+
+variable "diego_cidr_2" {}
+
 

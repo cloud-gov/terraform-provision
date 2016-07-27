@@ -1,11 +1,11 @@
 variable "username" {}
 variable "aws_partition" {}
 
-variable "staging_private_bucket" {
+variable "varz_staging_bucket" {
   default = "cloud-gov-varz-staging" 
 }
 
-variable "prod_private_bucket" {
+variable "varz_bucket" {
   default= "cloud-gov-varz" 
 }
 

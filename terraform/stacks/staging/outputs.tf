@@ -107,6 +107,13 @@ output "monitoring_elb_security_group" {
   value = "${module.cf.monitoring_elb_security_group}"
 }
 
+output "logsearch_elb_dns_name" {
+  value = "${module.cf.logsearch_elb_dns_name}"
+}
+output "logsearch_elb_name" {
+  value = "${module.cf.logsearch_elb_name}"
+}
+
 /* CloudFoundry RDS */
 output "cf_rds_url" {
     value = "${module.cf.cf_rds_url}"
@@ -125,3 +132,22 @@ output "services_subnet_az1" {
 output "services_subnet_az2" {
   value = "${module.cf.services_subnet_az2}"
 }
+
+/* Diego ELB */
+output "diego_elb_name" {
+  value = "${module.diego.diego_elb_name}"
+}
+
+output "diego_elb_dns_name" {
+  value = "${module.diego.diego_elb_dns_name}"
+}
+
+/* Diego subnets */
+output "diego_services_subnet_az1" {
+  value = "${module.diego.diego_services_subnet_az1}"
+}
+output "diego_services_subnet_az2" {
+  value = "${module.diego.diego_services_subnet_az2}"
+}
+
+

@@ -34,6 +34,7 @@ export TF_VAR_az2="us-gov-west-1b"
 export TF_VAR_aws_access_key_id="${AWS_ACCESS_KEY_ID}"
 export TF_VAR_aws_secret_access_key="${AWS_SECRET_ACCESS_KEY}"
 export TF_VAR_aws_default_region="${AWS_DEFAULT_REGION}"
+export TF_VAR_ami_id="ami-a32c93c2"
 
 #
 # Default VPC
@@ -45,3 +46,12 @@ export TF_VAR_default_vpc_route_table=`aws ec2 describe-route-tables --filters N
 # Concourse credentials bucket
 export TF_VAR_credentials_bucket=""
 export TF_VAR_concourse_password=""
+
+# Bucket names
+export TF_VAR_varz_bucket="cloud-gov-varz"
+export TF_VAR_varz_staging_bucket="cloud-gov-varz-staging"
+export TF_VAR_tooling_blobstore_bucket="bosh-tooling-blobstore"
+export TF_VAR_staging_blobstore_bucket="bosh-staging-blobstore"
+export TF_VAR_production_blobstore_bucket="bosh-production-blobstore"
+export TF_VAR_bosh_release_bucket="cloud-gov-bosh-releases"
+export TF_VAR_stemcell_bucket="stemcell-images"

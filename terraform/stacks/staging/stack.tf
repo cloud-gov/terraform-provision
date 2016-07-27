@@ -45,6 +45,21 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
 
     monitoring_elb_cert_name = "${var.monitoring_elb_cert_name}"
+    logsearch_elb_cert_name = "${var.logsearch_elb_cert_name}"
     az1 = "${var.az1}"
     az2 = "${var.az2}"
+}
+
+module "diego" {
+    source = "../../modules/diego"
+
+    stack_description = "${var.stack_description}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+
+    vpc_id = "${module.stack.vpc_id}"
+    private_route_table_az1 = "${module.stack.private_route_table_az1}"
+    private_route_table_az2 = "${module.stack.private_route_table_az2}"
+    stack_description = "${var.stack_description}"
+    diego_cidr_1 = "${var.diego_cidr_1}"
+    diego_cidr_2 = "${var.diego_cidr_2}"
 }

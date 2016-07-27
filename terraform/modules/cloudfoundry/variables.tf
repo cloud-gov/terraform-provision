@@ -8,6 +8,8 @@ variable "elb_security_groups" {}
 
 variable "monitoring_elb_cert_name" {}
 
+variable "logsearch_elb_cert_name" {}
+
 variable "stack_description" {}
 
 variable "account_id" {}

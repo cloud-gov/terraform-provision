@@ -21,6 +21,8 @@ resource "aws_db_instance" "rds_database" {
 
   lifecycle {
     ignore_changes = ["identifier"]
+    // TODO: Restore `prevent_destroy` after https://github.com/hashicorp/terraform/issues/7728 is resolved
+    // prevent_destroy = true
   }
   identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
 

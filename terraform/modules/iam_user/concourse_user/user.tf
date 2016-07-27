@@ -28,10 +28,10 @@ module "concourse_user" {
                 "s3:ListMultipartUploadParts"
             ],
             "Resource": [
-                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}",
-                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}/*",
-                "arn:${var.aws_partition}:s3:::${var.staging_private_bucket}",
-                "arn:${var.aws_partition}:s3:::${var.staging_private_bucket}/*",
+                "arn:${var.aws_partition}:s3:::${var.varz_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.varz_bucket}/*",
+                "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}",
+                "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}/*",
                 "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}",
                 "arn:${var.aws_partition}:s3:::${var.bosh_releases_bucket}/*",
                 "arn:${var.aws_partition}:s3:::${var.bosh_stemcells_bucket}",
@@ -44,7 +44,7 @@ module "concourse_user" {
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:${var.aws_partition}:s3:::${var.prod_private_bucket}/master-bosh-state.json"
+                "arn:${var.aws_partition}:s3:::${var.varz_bucket}/master-bosh-state.json"
             ]
         }
     ]

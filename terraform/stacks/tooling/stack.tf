@@ -78,8 +78,8 @@ module "ci_user" {
     source = "../../modules/iam_user/concourse_user"
     username = "concourse"
     aws_partition = "${var.aws_partition}"
-    staging_private_bucket = "${var.staging_private_bucket}"
-    prod_private_bucket = "${var.prod_private_bucket}"
+    varz_staging_bucket = "${var.varz_staging_bucket}"
+    varz_bucket = "${var.varz_bucket}"
     bosh_releases_bucket = "${var.bosh_releases_bucket}"
     bosh_stemcells_bucket = "${var.bosh_stemcells_bucket}"
 }
@@ -125,11 +125,12 @@ module "cloudwatch_user" {
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents",
-                "logs:DescribeLogStreams"
+                "logs:DescribeLogStreams",
+                "cloudwatch:ListMetrics",
+                "cloudwatch:GetMetricData",
+                "cloudwatch:GetMetricStatistics"
             ],
-            "Resource": [
-                "arn:${var.aws_partition}:logs:*:*:*"
-            ]
+            "Resource": "*"
         }
     ]
 }

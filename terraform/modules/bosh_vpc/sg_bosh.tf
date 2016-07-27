@@ -61,6 +61,15 @@ resource "aws_security_group_rule" "cf_ssh" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "diego_ssh" {
+    type = "ingress"
+    from_port = 2222
+    to_port = 2222
+    protocol = "tcp"
+    cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "bosh_nats" {
     type = "ingress"
     from_port = 6868

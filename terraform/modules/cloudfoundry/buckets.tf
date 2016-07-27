@@ -1,19 +1,23 @@
-resource "aws_s3_bucket" "cc-resoures" {
+module "cc-resoures" {
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-cc-resources"
-    acl = "private"
+    aws_partition = "${var.aws_partition}"
 }
 
-resource "aws_s3_bucket" "buildpacks" {
+module "buildpacks" {
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-buildpacks"
-    acl = "private"
+    aws_partition = "${var.aws_partition}"
 }
 
-resource "aws_s3_bucket" "cc-packages" {
+module "cc-packages" {
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-cc-packages"
-    acl = "private"
+    aws_partition = "${var.aws_partition}"
 }
 
-resource "aws_s3_bucket" "droplets" {
+module "droplets" {
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-droplets"
-    acl = "private"
+    aws_partition = "${var.aws_partition}"
 }
