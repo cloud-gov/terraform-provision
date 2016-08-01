@@ -43,15 +43,6 @@ output "web_traffic_security_group" {
   value = "${module.stack.web_traffic_security_group}"
 }
 
-/* Services Subnets */
-output "services_subnet_az1" {
-  value = "${module.cf.services_subnet_az1}"
-}
-output "services_subnet_az2" {
-  value = "${module.cf.services_subnet_az2}"
-}
-
-
 /* RDS Network */
 output "rds_subnet_az1" {
     value = "${module.stack.rds_subnet_az1}"
@@ -133,4 +124,30 @@ output "cf_rds_host" {
 output "cf_rds_port" {
     value = "${module.cf.cf_rds_port}"
 }
+
+/* Services Subnets */
+output "services_subnet_az1" {
+  value = "${module.cf.services_subnet_az1}"
+}
+output "services_subnet_az2" {
+  value = "${module.cf.services_subnet_az2}"
+}
+
+/* Diego ELB */
+output "diego_elb_name" {
+  value = "${module.diego.diego_elb_name}"
+}
+
+output "diego_elb_dns_name" {
+  value = "${module.diego.diego_elb_dns_name}"
+}
+
+/* Diego subnets */
+output "diego_services_subnet_az1" {
+  value = "${module.diego.diego_services_subnet_az1}"
+}
+output "diego_services_subnet_az2" {
+  value = "${module.diego.diego_services_subnet_az2}"
+}
+
 
