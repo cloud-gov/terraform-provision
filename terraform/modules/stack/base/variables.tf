@@ -12,6 +12,10 @@ variable "az2" {
   default = "us-gov-west-1b"
 }
 
+variable "aws_default_region" {
+    default = "us-gov-west-1"
+}
+
 variable "public_cidr_1" {
   default = "10.0.100.0/24"
 }

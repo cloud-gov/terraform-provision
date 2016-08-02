@@ -6,6 +6,7 @@ module "vpc" {
     vpc_cidr = "${var.vpc_cidr}"
     az1 = "${var.az1}"
     az2 = "${var.az2}"
+    aws_default_region = "${var.aws_default_region}"
     private_cidr_1 = "${var.private_cidr_1}"
     private_cidr_2 = "${var.private_cidr_2}"
     public_cidr_1 = "${var.public_cidr_1}"
