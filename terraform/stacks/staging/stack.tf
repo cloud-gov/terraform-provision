@@ -3,6 +3,7 @@ module "stack" {
 
     stack_description = "${var.stack_description}"
     vpc_cidr = "${var.vpc_cidr}"
+    aws_default_region = "${var.aws_default_region}"
     public_cidr_1 = "${var.public_cidr_1}"
     public_cidr_2 = "${var.public_cidr_2}"
     private_cidr_1 = "${var.private_cidr_1}"
