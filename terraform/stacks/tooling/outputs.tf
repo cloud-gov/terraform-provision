@@ -175,6 +175,28 @@ output "aws_broker_secret_access_key" {
   value = "${module.aws_broker_user.secret_access_key}"
 }
 
+/* kubernetes master user */
+output "kubernetes_master_username" {
+  value = "${module.kubernetes_master_user.username}"
+}
+output "kubernetes_master_access_key_id" {
+  value = "${module.kubernetes_master_user.access_key_id}"
+}
+output "kubernetes_master_secret_access_key" {
+  value = "${module.kubernetes_master_user.secret_access_key}"
+}
+
+/* kubernetes minion user */
+output "kubernetes_minion_username" {
+  value = "${module.kubernetes_minion_user.username}"
+}
+output "kubernetes_minion_access_key_id" {
+  value = "${module.kubernetes_minion_user.access_key_id}"
+}
+output "kubernetes_minion_secret_access_key" {
+  value = "${module.kubernetes_minion_user.secret_access_key}"
+}
+
 /* cf cc user */
 output "cf_username" {
   value = "${module.cf_user.username}"
@@ -205,5 +227,3 @@ output "nessus_elb_dns_name" {
 output "nessus_elb_name" {
   value = "${aws_elb.nessus_elb.name}"
 }
-
-
