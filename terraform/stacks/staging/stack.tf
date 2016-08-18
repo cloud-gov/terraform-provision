@@ -57,5 +57,14 @@ module "diego" {
     stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
+}
 
+module "kubernetes" {
+    source = "../../modules/kubernetes"
+
+    stack_description = "${var.stack_description}"
+
+    vpc_id = "${module.stack.vpc_id}"
+    vpc_cidr = "${var.vpc_cidr}"
+    elb_subnets = "${module.stack.services_subnet_az1},${module.stack.services_subnet_az2}"
 }
