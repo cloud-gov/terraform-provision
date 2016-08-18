@@ -66,5 +66,5 @@ module "kubernetes" {
 
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
-    elb_subnets = "${module.stack.services_subnet_az1},${module.stack.services_subnet_az2}"
+    elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
 }
