@@ -40,6 +40,7 @@ module "cf" {
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
     services_cidr_1 = "${var.services_cidr_1}"
     services_cidr_2 = "${var.services_cidr_2}"
+    kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
 
     monitoring_elb_cert_name = "${var.monitoring_elb_cert_name}"
     logsearch_elb_cert_name = "${var.logsearch_elb_cert_name}"

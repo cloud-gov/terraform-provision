@@ -21,6 +21,7 @@ resource "aws_subnet" "az1_services" {
 
   tags =  {
     Name = "${var.stack_description} (Services AZ1)"
+    KubernetesCluster = "${var.kubernetes_cluster_id}"
   }
 }
 
@@ -31,6 +32,7 @@ resource "aws_subnet" "az2_services" {
 
   tags =  {
     Name = "${var.stack_description} (Services AZ2)"
+    KubernetesCluster = "${var.kubernetes_cluster_id}"
   }
 }
 
