@@ -28,6 +28,11 @@ module "kubernetes_master_user" {
       "Effect": "Allow",
       "Action": "ec2:DetachVolume",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": "*"
     }
   ]
 }
