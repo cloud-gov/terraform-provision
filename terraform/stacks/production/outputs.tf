@@ -157,6 +157,12 @@ output "kubernetes_elb_name" {
 output "kubernetes_elb_dns_name" {
   value = "${module.kubernetes.kubernetes_elb_dns_name}"
 }
+output "kubernetes_monitoring_elb_name" {
+  value = "${module.kubernetes.kubernetes_monitoring_elb_name}"
+}
+output "kubernetes_monitoring_elb_dns_name" {
+  value = "${module.kubernetes.kubernetes_monitoring_elb_dns_name}"
+}
 output "kubernetes_elb_security_group" {
   value = "${module.kubernetes.kubernetes_elb_security_group}"
 }
