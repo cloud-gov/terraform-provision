@@ -1,10 +1,18 @@
-/* Kubernetes ELB */
+/* Kubernetes ELBs */
 output "kubernetes_elb_name" {
   value = "${aws_elb.kubernetes_elb.name}"
 }
 
 output "kubernetes_elb_dns_name" {
   value = "${aws_elb.kubernetes_elb.dns_name}"
+}
+
+output "kubernetes_monitoring_elb_name" {
+  value = "${aws_elb.kubernetes_monitoring_elb.name}"
+}
+
+output "kubernetes_monitoring_elb_dns_name" {
+  value = "${aws_elb.kubernetes_monitoring_elb.dns_name}"
 }
 
 /* Kubernetes security groups */

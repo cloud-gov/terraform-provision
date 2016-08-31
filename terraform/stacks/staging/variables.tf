@@ -71,4 +71,4 @@ variable "diego_cidr_1" {}
 
 variable "diego_cidr_2" {}
 
-
+variable "kubernetes_grafana_port" {}
