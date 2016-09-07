@@ -45,6 +45,9 @@ output "web_traffic_security_group" {
 output "nessus_security_group" {
   value = "${aws_security_group.nessus_traffic.id}"
 }
+output "bosh_uaa_security_group" {
+  value = "$aws_security_group.bosh_uaa_traffic.id}"
+}
 
 /* RDS Network */
 output "rds_subnet_az1" {
@@ -206,4 +209,12 @@ output "nessus_elb_name" {
   value = "${aws_elb.nessus_elb.name}"
 }
 
+/* BOSH UAA elb */
+output "bosh_uaa_elb_dns_name" {
+  value = "${aws_elb.bosh_uaa_elb.dns_name}"
+}
+
+output "bosh_uaa_elb_name" {
+  value = "${aws_elb.bosh_uaa_elb.name}"
+}
 

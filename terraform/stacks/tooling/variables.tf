@@ -54,4 +54,8 @@ variable "nessus_elb_cert_name" {
 	default = "star-fr-cloud-gov-06-16"
 }
 
+variable "bosh_uaa_elb_cert_name" {
+    default = "star-fr-cloud-gov-06-16"
+}
+
 variable "restricted_ingress_web_cidrs" {}
