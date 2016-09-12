@@ -108,18 +108,6 @@ module "aws_broker_user" {
     aws_partition = "${var.aws_partition}"
 }
 
-module "kubernetes_master_user" {
-    source = "../../modules/iam_user/kubernetes_master_user"
-    username = "kubernetes-master"
-    aws_partition = "${var.aws_partition}"
-}
-
-module "kubernetes_minion_user" {
-    source = "../../modules/iam_user/kubernetes_master_user"
-    username = "kubernetes-minion"
-    aws_partition = "${var.aws_partition}"
-}
-
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"

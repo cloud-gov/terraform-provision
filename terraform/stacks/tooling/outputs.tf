@@ -1,4 +1,3 @@
-
 /* VPC */
 output "vpc_id" {
     value = "${module.stack.vpc_id}"
@@ -176,28 +175,6 @@ output "aws_broker_access_key_id" {
 }
 output "aws_broker_secret_access_key" {
   value = "${module.aws_broker_user.secret_access_key}"
-}
-
-/* kubernetes master user */
-output "kubernetes_master_username" {
-  value = "${module.kubernetes_master_user.username}"
-}
-output "kubernetes_master_access_key_id" {
-  value = "${module.kubernetes_master_user.access_key_id}"
-}
-output "kubernetes_master_secret_access_key" {
-  value = "${module.kubernetes_master_user.secret_access_key}"
-}
-
-/* kubernetes minion user */
-output "kubernetes_minion_username" {
-  value = "${module.kubernetes_minion_user.username}"
-}
-output "kubernetes_minion_access_key_id" {
-  value = "${module.kubernetes_minion_user.access_key_id}"
-}
-output "kubernetes_minion_secret_access_key" {
-  value = "${module.kubernetes_minion_user.secret_access_key}"
 }
 
 /* cf cc user */
