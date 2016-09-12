@@ -2,6 +2,7 @@ module "stack" {
     source = "../../modules/stack/spoke"
 
     stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
     vpc_cidr = "${var.vpc_cidr}"
     aws_default_region = "${var.aws_default_region}"
     public_cidr_1 = "${var.public_cidr_1}"

@@ -84,6 +84,8 @@ variable "restricted_ingress_web_cidrs" {
     default = "127.0.0.1/32,192.168.0.1/24"
 }
 
+variable "aws_partition" {}
+
 variable "rds_password" {}
 
 variable "account_id" {}

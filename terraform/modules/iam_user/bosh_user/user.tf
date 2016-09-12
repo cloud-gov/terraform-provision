@@ -17,6 +17,16 @@ module "bosh_user" {
         ]
     },
     {
+        "Sid": "PassIAMRoles",
+        "Effect": "Allow",
+        "Action": [
+            "iam:PassRole"
+        ],
+        "Resource": [
+            "arn:${var.aws_partition}:iam::${var.account_id}:role/k8s-*"
+        ]
+    },
+    {
         "Sid": "S3Access",
         "Effect": "Allow",
         "Action": [
