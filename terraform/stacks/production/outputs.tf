@@ -169,3 +169,10 @@ output "kubernetes_elb_security_group" {
 output "kubernetes_ec2_security_group" {
   value = "${module.kubernetes.kubernetes_ec2_security_group}"
 }
+
+
+/* Client ELBs */
+
+output "client_elb_star_18f_gov" {
+  value = "${module.client-elbs.star_18f_gov_elb_name}"
+}
