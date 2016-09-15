@@ -72,3 +72,14 @@ module "kubernetes" {
     target_bosh_security_group = "${module.stack.bosh_security_group}"
     kubernetes_grafana_port = "${var.kubernetes_grafana_port}"
 }
+
+module "client-elbs" {
+    source = "../../modules/client-elbs"
+
+    stack_description = "${var.stack_description}"
+
+    account_id = "${var.account_id}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    star_18f_gov_cert_name = "star-18f.gov"
+}
