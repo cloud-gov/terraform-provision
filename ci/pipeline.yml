@@ -131,7 +131,6 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{staging_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
-      TF_VAR_kubernetes_grafana_port: {{staging_grafana_port}}
   - task: init-bosh-db
     config:
       platform: linux
@@ -205,7 +204,6 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{production_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{production_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{production_diego_cidr_2}}
-      TF_VAR_kubernetes_grafana_port: {{production_grafana_port}}
   - task: init-bosh-db
     config:
       platform: linux

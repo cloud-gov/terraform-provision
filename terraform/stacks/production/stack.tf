@@ -67,10 +67,8 @@ module "kubernetes" {
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
     tooling_vpc_cidr = "${module.stack.tooling_vpc_cidr}"
-    elb_subnets_private = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
-    elb_subnets_public = "${module.cf.public_subnet_az1},${module.cf.public_subnet_az2}"
+    elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
-    kubernetes_grafana_port = "${var.kubernetes_grafana_port}"
 }
 
 module "client-elbs" {
