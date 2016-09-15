@@ -81,5 +81,6 @@ module "client-elbs" {
     account_id = "${var.account_id}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
-    star_18f_gov_cert_name = "star-18f.gov"
+    aws_partition = "${var.aws_partition}"
+    star_18f_gov_cert_name = "star-18f-gov"
 }

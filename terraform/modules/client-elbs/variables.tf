@@ -7,3 +7,5 @@ variable "elb_security_groups" {}
 variable "stack_description" {}
 
 variable "account_id" {}
+
+variable "aws_partition" {}
