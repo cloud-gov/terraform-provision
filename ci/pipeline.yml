@@ -1,4 +1,35 @@
 jobs:
+- name: pull-status-check
+  plan:
+  - get: pull-request
+    version: every
+    trigger: true
+  - put: pull-request
+    params:
+      path: pull-request
+      status: pending
+  - task: validate-terraform
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: 18fgsa/concourse-task
+      inputs:
+      - name: pull-request
+      run:
+        path: pull-request/validate.sh
+    on_success:
+      put: pull-request
+      params:
+        path: pull-request
+        status: success
+    on_failure:
+      put: pull-request
+      params:
+        path: pull-request
+        status: failure
+
 - name: bootstrap-external-staging
   plan:
   - aggregate:
@@ -340,11 +371,24 @@ resources:
 - name: pipeline-tasks
   type: git
   source:
-    uri: https://github.com/18F/cg-pipeline-tasks.git
-    branch: master
+    uri: {{pipeline_tasks_git_url}}
+    branch: {{pipeline_tasks_git_branch}}
 
 - name: cg-provision-repo
   type: git
   source:
-    uri: https://github.com/18F/cg-provision.git
-    branch: master
+    uri: {{cg_provision_git_url}}
+    branch: {{cg_provision_git_branch}}
+
+- name: pull-request
+  type: pull-request
+  source:
+    repo: {{cg_provision_git_repo}}
+    access_token: {{status_access_token}}
+    every: true
+
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
