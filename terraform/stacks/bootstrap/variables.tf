@@ -8,6 +8,8 @@ variable "aws_default_region" {
     default = "us-gov-west-1"
 }
 
+variable "aws_partition" {}
+
 variable "ami_id" {
   default = "ami-a32c93c2"
 }
