@@ -121,6 +121,7 @@ jobs:
       params:
         BOSH_DB_PASSWORD: {{tooling_rds_password}}
         STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: tooling
       run:
         path: sh
         args:
@@ -176,6 +177,7 @@ jobs:
       params:
         BOSH_DB_PASSWORD: {{staging_rds_password}}
         STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: staging
       run:
         path: sh
         args:
@@ -250,6 +252,7 @@ jobs:
       params:
         BOSH_DB_PASSWORD: {{production_rds_password}}
         STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: production
       run:
         path: sh
         args:
