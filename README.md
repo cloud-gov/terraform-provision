@@ -1,11 +1,17 @@
 # cg-provision
-Scripts and configuration for provisioning infrastructure used in cloud.gov
 
-Manual steps to create the world:
+Scripts, configurations, and procedures for provisioning the infrastructure to set-up cloud.gov. 
 
-1. Make sure you have [terraform](https://www.terraform.io/), awscli, and jq installed
- 1. Mac OSX users can install all of these with homebrew
-1. Create S3 bucket with versioning enabled to store terraform state: `terraform-state`
+**Install these first on your laptop:**
+* [Terraform](https://www.terraform.io/)
+* the [AWS Command Line Interface (CLI) tool](https://aws.amazon.com/cli/)
+* [`jq`, a command line JSON processor](https://stedolan.github.io/jq/) installed
+
+macOS  users can install all of these with [`homebrew`](http://brew.sh/)
+
+## Procedures
+
+1. Create S3 bucket with versioning enabled to store Terraform state: `terraform-state`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
   1. Upload all custom bosh releases
 1. Create S3 bucket to store BOSH stemcell images: `cloud-gov-stemcell-images`
