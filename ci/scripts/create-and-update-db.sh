@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+set -u
 
 # Check environment variables
 export PGPASSWORD=${DB_PASSWORD:?}
