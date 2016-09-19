@@ -197,6 +197,7 @@ jobs:
       params:
         CF_DB_PASSWORD: {{staging_cf_rds_password}}
         STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: staging
       run:
         path: sh
         args:
@@ -272,6 +273,7 @@ jobs:
       params:
         CF_DB_PASSWORD: {{production_cf_rds_password}}
         STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: production
       run:
         path: sh
         args:
