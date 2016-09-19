@@ -1,4 +1,3 @@
-
 variable "stack_description" {}
 
 variable "az1" {
@@ -20,11 +19,3 @@ variable "elb_subnets" {}
 variable "diego_cidr_1" {}
 
 variable "diego_cidr_2" {}
-
-variable "private_route_table_az1" {}
-
-variable "private_route_table_az2" {}
-
-
-
-

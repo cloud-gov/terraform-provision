@@ -8,10 +8,10 @@ output "vpc_cidr" {
 }
 
 output "tooling_vpc_id" {
-    value = "${terraform_remote_state.target_vpc.output.vpc_id}"
+    value = "${data.terraform_remote_state.target_vpc.vpc_id}"
 }
 output "tooling_vpc_cidr" {
-    value = "${terraform_remote_state.target_vpc.output.vpc_cidr}"
+    value = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
 }
 
 /* Private network */
