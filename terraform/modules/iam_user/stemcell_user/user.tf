@@ -37,6 +37,7 @@ module "stemcell_user" {
         "ec2:CreateInstanceExportTask",
         "ec2:CreateTags",
         "ec2:DeleteTags",
+        "ec2:DescribeAvailabilityZones",
         "ec2:DescribeImages",
         "ec2:DescribeImageAttribute",
         "ec2:DescribeConversionTasks",
