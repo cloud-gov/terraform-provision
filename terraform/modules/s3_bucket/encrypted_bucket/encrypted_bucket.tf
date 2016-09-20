@@ -5,7 +5,6 @@ resource "aws_s3_bucket" "encrypted_bucket" {
         enabled = "${var.versioning}"
     }
 
-/* TODO: Enable after https://github.com/cloudfoundry/cloud_controller_ng/pull/658 is released
     policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -25,5 +24,4 @@ resource "aws_s3_bucket" "encrypted_bucket" {
     }]
 }
 EOF
-*/
 }
