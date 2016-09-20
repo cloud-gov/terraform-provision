@@ -39,7 +39,6 @@ module "production_blobstore" {
 }
 */
 
-/* TODO: Enable after https://github.com/concourse/s3-resource/pull/43 is merged
 module "bosh_release" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.bosh_release_bucket}"
@@ -53,4 +52,3 @@ module "stemcell_images" {
     aws_partition = "${var.aws_partition}"
     versioning = "true"
 }
-*/

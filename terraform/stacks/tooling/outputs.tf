@@ -156,6 +156,17 @@ output "release_secret_access_key" {
   value = "${module.release_user.secret_access_key}"
 }
 
+/* stemcell user */
+output "stemcell_username" {
+  value = "${module.stemcell_user.username}"
+}
+output "stemcell_access_key_id" {
+  value = "${module.stemcell_user.access_key_id}"
+}
+output "stemcell_secret_access_key" {
+  value = "${module.stemcell_user.secret_access_key}"
+}
+
 /* s3 broker user */
 output "s3_broker_username" {
   value = "${module.s3_broker_user.username}"
