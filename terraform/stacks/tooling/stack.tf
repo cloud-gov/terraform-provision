@@ -96,7 +96,7 @@ module "stemcell_user" {
     source = "../../modules/iam_user/stemcell_user"
     username = "stemcell"
     aws_partition = "${var.aws_partition}"
-    stemcell_bucket = "stemcell-images"
+    stemcell_bucket = "cg-stemcell-images"
 }
 
 module "s3_broker_user" {
