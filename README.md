@@ -1,22 +1,19 @@
 # cg-provision
 
-Scripts, configurations, and procedures for provisioning the infrastructure to set-up cloud.gov. 
+Scripts, configurations, and procedures for provisioning the infrastructure to set up cloud.gov.
 
 **Install these first on your laptop:**
 * [Terraform](https://www.terraform.io/)
 * the [AWS Command Line Interface (CLI) tool](https://aws.amazon.com/cli/)
 * [`jq`, a command line JSON processor](https://stedolan.github.io/jq/) installed
 
-macOS  users can install all of these with [`homebrew`](http://brew.sh/)
+macOS users can install all of these with [`homebrew`](http://brew.sh/)
 
 ## Procedures
 
 1. Create S3 bucket with versioning enabled to store Terraform state: `terraform-state`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
   1. Upload all custom bosh releases
-1. Create S3 bucket to store BOSH stemcell images: `cloud-gov-stemcell-images`
-  1. Create IAM user with privileges to create EC2 volumes, snapshots, AMIs, and the `cloud-gov-stemcell-images` bucket
-  1. Create [vmimport](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html#vmimport-service-role) role, using `cloud-gov-stemcell-images` bucket in service role
 1. Create S3 buckets for bosh blobstores: `bosh-tooling-blobstore`, `bosh-staging-blobstore`, `bosh-prod-blobstore`
 1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
