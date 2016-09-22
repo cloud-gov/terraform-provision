@@ -30,15 +30,17 @@ jobs:
         path: pull-request
         status: failure
 
-- name: bootstrap-external-staging
+- name: plan-bootstrap-external-staging
   plan:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-  - task: create-update-external-staging
+      trigger: true
+  - task: plan-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: cg-provision-repo }
-    params:
+    params: &external-staging-params
+      TERRAFORM_ACTION: plan
       STACK_NAME: external-staging
       TEMPLATE_SUBDIR: terraform/stacks/external
       S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
@@ -52,15 +54,30 @@ jobs:
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
 
-- name: bootstrap-external-production
+- name: bootstrap-external-staging
   plan:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-  - task: create-update-external-production
+      passed: [plan-bootstrap-external-staging]
+  - task: create-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: cg-provision-repo }
     params:
+      <<: *external-staging-params
+      TERRAFORM_ACTION: apply
+
+- name: plan-bootstrap-external-production
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+  - task: plan-update-external-production
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params: &external-production-params
+      TERRAFORM_ACTION: plan
       STACK_NAME: external-production
       TEMPLATE_SUBDIR: terraform/stacks/external
       S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
@@ -74,15 +91,30 @@ jobs:
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
 
-- name: bootstrap-tooling
+- name: bootstrap-external-production
   plan:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-  - task: create-update-tooling
+      passed: [plan-bootstrap-external-production]
+  - task: create-update-external-production
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: cg-provision-repo }
     params:
+      <<: *external-production-params
+      TERRAFORM_ACTION: apply
+
+- name: plan-bootstrap-tooling
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+  - task: plan-update-tooling
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params: &tooling-params
+      TERRAFORM_ACTION: plan
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
@@ -108,6 +140,19 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
       TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
+
+- name: bootstrap-tooling
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-tooling]
+  - task: create-update-tooling
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      <<: *tooling-params
+      TERRAFORM_ACTION: apply
   - task: init-bosh-db
     config:
       platform: linux
@@ -129,15 +174,17 @@ jobs:
         - -c
         - cg-provision-repo/ci/scripts/update-bosh-db.sh
 
-- name: bootstrap-staging
+- name: plan-bootstrap-staging
   plan:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-  - task: create-update-staging
+      trigger: true
+  - task: plan-update-staging
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: cg-provision-repo }
-    params:
+    params: &staging-params
+      TERRAFORM_ACTION: plan
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/staging
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
@@ -164,6 +211,19 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{staging_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
+
+- name: bootstrap-staging
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-staging]
+  - task: create-update-staging
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      <<: *staging-params
+      TERRAFORM_ACTION: apply
   - task: init-bosh-db
     config:
       platform: linux
@@ -205,15 +265,17 @@ jobs:
         - -c
         - cg-provision-repo/ci/scripts/update-cf-db.sh
 
-- name: bootstrap-production
+- name: plan-bootstrap-production
   plan:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
-  - task: create-update-production
+      trigger: true
+  - task: plan-update-production
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: { terraform-templates: cg-provision-repo }
-    params:
+    params: &production-params
+      TERRAFORM_ACTION: plan
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/production
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
@@ -240,6 +302,19 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{production_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{production_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{production_diego_cidr_2}}
+
+- name: bootstrap-production
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-production]
+  - task: create-update-production
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      <<: *production-params
+      TERRAFORM_ACTION: apply
   - task: init-bosh-db
     config:
       platform: linux
