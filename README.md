@@ -67,7 +67,7 @@ macOS users can install all of these with [`homebrew`](http://brew.sh/)
   1. Select and unpause the `terraform-provision` pipeline in the UI
   1. Run the `bootstrap-tooling` job and verify there are no changes
   1. Run both the `bootstrap-staging` and `bootstrap-production` jobs and verify they complete successfully
-1. Iterate the rest of the infrastructure in the same way staring with `cg-deploy-bosh`:
+1. Iteratively stand up the rest of the infrastructure in the same way, staring with `cg-deploy-bosh` and continuing with additional Concourse pipelines as necessary in the appropriate [`cg-` GitHub repositories](https://github.com/18F?utf8=%E2%9C%93&query=cg-):
   1. Update secrets for the environment and encrypt/upload to secrets bucket
   1. Update and upload the concourse pipeline credentials
   1. Update the pipeline to use proper stemcell
