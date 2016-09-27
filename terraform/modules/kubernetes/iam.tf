@@ -10,9 +10,9 @@ resource "aws_iam_policy" "k8s_master" {
       "Resource": ["*"]
     },
     {
-        "Effect": "Allow",
-        "Action": ["elasticloadbalancing:*"],
-        "Resource": ["*"]
+      "Effect": "Allow",
+      "Action": ["elasticloadbalancing:*"],
+      "Resource": ["*"]
     },
     {
       "Effect": "Allow",
@@ -20,6 +20,11 @@ resource "aws_iam_policy" "k8s_master" {
       "Resource": [
         "arn:${var.aws_partition}:s3:::kubernetes-*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": "*"
     }
   ]
 }
@@ -76,7 +81,6 @@ resource "aws_iam_role" "k8s_master" {
         "Service": "ec2.amazonaws.com"
       },
       "Effect": "Allow",
-      "Sid": ""
     }
   ]
 }
@@ -95,7 +99,6 @@ resource "aws_iam_role" "k8s_minion" {
         "Service": "ec2.amazonaws.com"
       },
       "Effect": "Allow",
-      "Sid": ""
     }
   ]
 }
