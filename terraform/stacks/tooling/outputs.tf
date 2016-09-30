@@ -1,4 +1,3 @@
-
 /* VPC */
 output "vpc_id" {
     value = "${module.stack.vpc_id}"
@@ -228,4 +227,3 @@ output "bosh_uaa_elb_dns_name" {
 output "bosh_uaa_elb_name" {
   value = "${aws_elb.bosh_uaa_elb.name}"
 }
-

@@ -63,4 +63,6 @@ module "vpc_security_target_to_source" {
 module "bosh_user" {
     source = "../../iam_user/bosh_user"
     username = "bosh-${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
+    account_id = "${var.account_id}"
 }
