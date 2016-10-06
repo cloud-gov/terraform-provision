@@ -41,7 +41,7 @@ resource "aws_iam_policy" "k8s_master" {
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:kubernetes-*"
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:kubernetes-*"
       ]
     },
     {
@@ -100,7 +100,7 @@ resource "aws_iam_policy" "k8s_minion" {
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:kubernetes-*"
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:kubernetes-*"
       ]
     },
     {
