@@ -149,6 +149,17 @@ resource "aws_iam_role" "k8s_minion" {
 EOF
 }
 
+resource "aws_iam_instance_profile" "k8s_minion" {
+  name = "k8s-minion"
+  roles = ["${aws_iam_role.k8s_minion.name}"]
+}
+
+resource "aws_iam_instance_profile" "k8s_master" {
+  name = "k8s-master"
+  roles = ["${aws_iam_role.k8s_master.name}"]
+}
+
+
 resource "aws_iam_role_policy_attachment" "k8s_master_attachment" {
   role = "${aws_iam_role.k8s_master.name}"
   policy_arn = "${aws_iam_policy.k8s_master.arn}"
