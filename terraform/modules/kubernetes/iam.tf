@@ -124,7 +124,7 @@ resource "aws_iam_role" "k8s_master" {
       "Principal": {
         "Service": "ec2.amazonaws.com"
       },
-      "Effect": "Allow",
+      "Effect": "Allow"
     }
   ]
 }
@@ -142,7 +142,7 @@ resource "aws_iam_role" "k8s_minion" {
       "Principal": {
         "Service": "ec2.amazonaws.com"
       },
-      "Effect": "Allow",
+      "Effect": "Allow"
     }
   ]
 }
