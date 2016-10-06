@@ -1,3 +1,5 @@
+# TODO: Remove `CreateTags` permission https://github.com/cloudfoundry-incubator/bosh-aws-cpi-release/issues/33 is resolved
+
 resource "aws_iam_policy" "k8s_master" {
   name = "k8s-master"
   policy = <<EOF
@@ -19,6 +21,27 @@ resource "aws_iam_policy" "k8s_master" {
       "Action": "s3:*",
       "Resource": [
         "arn:${var.aws_partition}:s3:::kubernetes-*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:kubernetes-*"
       ]
     },
     {
@@ -58,6 +81,27 @@ resource "aws_iam_policy" "k8s_minion" {
       "Effect": "Allow",
       "Action": "ec2:DetachVolume",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:kubernetes-*"
+      ]
     },
     {
       "Effect": "Allow",
