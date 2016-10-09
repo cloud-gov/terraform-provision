@@ -7,7 +7,7 @@ Scripts, configurations, and procedures for provisioning the infrastructure to s
 * the [AWS Command Line Interface (CLI) tool](https://aws.amazon.com/cli/)
 * [`jq`, a command line JSON processor](https://stedolan.github.io/jq/) installed
 
-macOS users can install all of these with [`homebrew`](http://brew.sh/)
+macOS users can install all of these with [`homebrew`](http://brew.sh/).
 
 ## Procedures
 
@@ -75,18 +75,19 @@ macOS users can install all of these with [`homebrew`](http://brew.sh/)
   1. Verify the pipeline runs successfully
 1. After CloudFoundry is successfully deployed, make sure it has a `security-group` called `internal_access` that includes any private subnets within that installation that tenant applications should be able to access, e.g.
 
- ```
- [
-    {
-      "destination": "10.0.50.0-10.0.51.255",
-      "protocol": "all"
-    }
- ]
-```
+    ```json
+    [
+      {
+        "destination": "10.0.50.0-10.0.51.255",
+        "protocol": "all"
+      }
+    ]
+    ```
 
-  # Monitoring
-  1. Create a Route 53 name for metrics.environment.cloud.gov
-  1. Create an ELB to point to the 0.riemann.monitoring.monitoring-environment.bosh
-  1. Point Route 53 name to ELB for HTTPS
-  1. Create a security group to allow access to port 3000 for Grafana
+# Monitoring
+
+1. Create a Route 53 name for `metrics.environment.cloud.gov`
+1. Create an ELB to point to the `0.riemann.monitoring.monitoring-environment.bosh`
+1. Point Route 53 name to ELB for HTTPS
+1. Create a security group to allow access to port 3000 for Grafana
 
