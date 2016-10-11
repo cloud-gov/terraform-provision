@@ -18,4 +18,27 @@ module "kubernetes_node" {
   }
 }
 EOF
+  iam_assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+  {
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "Service": "ec2.amazonaws.com"
+    },
+    "Action": "sts:AssumeRole"
+  },
+  {
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": "arn:${var.aws_partition}:iam::${var.account_id}:role/${var.principal_role_prefix}"
+    },
+    "Action": "sts:AssumeRole"
+  }]
 }
+  EOF
+}
+
