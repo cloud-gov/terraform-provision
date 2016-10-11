@@ -32,27 +32,6 @@ module "kubernetes_minion" {
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": [
-        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:kubernetes-*"
-      ]
-    },
-    {
-      "Effect": "Allow",
       "Action": "ec2:CreateTags",
       "Resource": "*"
     },
