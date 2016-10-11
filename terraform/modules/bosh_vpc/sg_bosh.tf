@@ -38,7 +38,7 @@ resource "aws_security_group_rule" "dns" {
     type = "ingress"
     from_port = 53
     to_port = 53
-    protocol = "tcp"
+    protocol = -1
     cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
     security_group_id = "${aws_security_group.bosh.id}"
 }
