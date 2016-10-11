@@ -140,6 +140,10 @@ module "kubernetes_minion_role" {
 module "kubernetes_node_role" {
   source = "../../modules/iam_role/kubernetes_node"
   role_name = "k8s-node"
+  aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  account_id = "${var.account_id}"
+  principal_role_prefix = "k8s-*"
 }
 
 module "cloudwatch_user" {
