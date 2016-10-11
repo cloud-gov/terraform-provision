@@ -67,11 +67,15 @@ module "concourse_staging" {
 module "tooling_bosh_user" {
     source = "../../modules/iam_user/bosh_user"
     username = "bosh-tooling"
+    account_id = "${var.account_id}"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "master_bosh_user" {
     source = "../../modules/iam_user/bosh_user"
     username = "bosh-master"
+    account_id = "${var.account_id}"
+    aws_partition = "${var.aws_partition}"
 }
 
 module "ci_user" {
