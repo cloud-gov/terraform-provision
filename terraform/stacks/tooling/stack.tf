@@ -115,6 +115,24 @@ module "aws_broker_user" {
     aws_partition = "${var.aws_partition}"
 }
 
+module "kubernetes_master_role" {
+  source = "../../modules/iam_role/kubernetes_master"
+  stack_description = "${var.stack_description}"
+  aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  account_id = "${var.account_id}"
+  role_name = "k8s-master"
+}
+
+module "kubernetes_minion_role" {
+  source = "../../modules/iam_role/kubernetes_minion"
+  stack_description = "${var.stack_description}"
+  aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  account_id = "${var.account_id}"
+  role_name = "k8s-minion"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
