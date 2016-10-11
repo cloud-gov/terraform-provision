@@ -55,6 +55,13 @@ module "kubernetes_minion" {
       "Effect": "Allow",
       "Action": "ec2:CreateTags",
       "Resource": "*"
+    },
+    {
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
     }
   ]
 }
