@@ -34,11 +34,20 @@ resource "aws_security_group_rule" "bosh_ssh" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
-resource "aws_security_group_rule" "dns" {
+resource "aws_security_group_rule" "dns_tcp" {
     type = "ingress"
     from_port = 53
     to_port = 53
-    protocol = -1
+    protocol = "tcp"
+    cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
+resource "aws_security_group_rule" "dns_udp" {
+    type = "ingress"
+    from_port = 53
+    to_port = 53
+    protocol = "udp"
     cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
     security_group_id = "${aws_security_group.bosh.id}"
 }
