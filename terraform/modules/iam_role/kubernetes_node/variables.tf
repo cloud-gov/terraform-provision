@@ -1,0 +1,1 @@
+variable "role_name" {}

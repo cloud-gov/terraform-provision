@@ -137,6 +137,11 @@ module "kubernetes_minion_role" {
   role_name = "k8s-minion"
 }
 
+module "kubernetes_node_role" {
+  source = "../../modules/iam_role/kubernetes_node"
+  role_name = "k8s-node"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
