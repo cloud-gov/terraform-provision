@@ -65,9 +65,7 @@ module "kubernetes" {
     source = "../../modules/kubernetes"
 
     stack_description = "${var.stack_description}"
-    aws_partition = "${var.aws_partition}"
     aws_default_region = "${var.aws_default_region}"
-    account_id = "${var.account_id}"
 
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
