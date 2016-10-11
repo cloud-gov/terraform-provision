@@ -142,7 +142,8 @@ module "kubernetes_node_role" {
   role_name = "k8s-node"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
-  principal_role_prefix = "k8s-*"
+  master_role = "k8s-master"
+  minion_role = "k8s-minion"
 }
 
 module "cloudwatch_user" {
