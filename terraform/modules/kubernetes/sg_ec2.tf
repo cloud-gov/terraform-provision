@@ -25,6 +25,15 @@ resource "aws_security_group_rule" "kubernetes_elb" {
   security_group_id = "${aws_security_group.kubernetes_ec2.id}"
 }
 
+resource "aws_security_group_rule" "consul_dns" {
+  type = "ingress"
+  from_port = 53
+  to_port = 53
+  protocol = "udp"
+  source_security_group_id = "${var.target_bosh_security_group}"
+  security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+}
+
 resource "aws_security_group_rule" "outbound" {
   type = "egress"
   from_port = 0
