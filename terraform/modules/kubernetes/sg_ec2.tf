@@ -1,4 +1,4 @@
-sresource "aws_security_group" "kubernetes_ec2" {
+resource "aws_security_group" "kubernetes_ec2" {
   description = "Allow access to incoming kubernetes traffic"
   vpc_id = "${var.vpc_id}"
 
