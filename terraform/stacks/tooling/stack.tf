@@ -152,6 +152,8 @@ module "kubernetes_logger_role" {
   aws_default_region = "${var.aws_default_region}"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
+  master_role = "k8s-master"
+  minion_role = "k8s-minion"
 }
 
 module "cloudwatch_user" {
