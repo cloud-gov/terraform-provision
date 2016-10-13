@@ -1,5 +1,6 @@
 resource "aws_iam_role" "iam_role" {
   name = "${var.role_name}"
+  path = "${var.role_path}"
   assume_role_policy = "${var.iam_assume_role_policy}"
 }
 
