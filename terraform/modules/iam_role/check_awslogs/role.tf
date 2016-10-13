@@ -9,7 +9,7 @@ module "check_awslogs" {
     {
       "Effect": "Allow",
       "Action": [
-        "logs:DescribeLogGroups"
+        "logs:DescribeLogGroups",
         "logs:DescribeLogStreams"
       ],
       "Resource": [
