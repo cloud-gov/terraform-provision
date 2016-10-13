@@ -13,7 +13,8 @@ module "bosh_user" {
         "iam:PassRole"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:iam::${var.account_id}:role/k8s-*"
+        "arn:${var.aws_partition}:iam::${var.account_id}:role/bosh-passed/*"
+
       ]
     },
     {
