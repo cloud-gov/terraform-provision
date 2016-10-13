@@ -144,6 +144,7 @@ module "kubernetes_node_role" {
   account_id = "${var.account_id}"
   master_role = "k8s-master"
   minion_role = "k8s-minion"
+  assume_role_path = "/bosh-passed/"
 }
 
 module "kubernetes_logger_role" {
@@ -154,6 +155,7 @@ module "kubernetes_logger_role" {
   account_id = "${var.account_id}"
   master_role = "k8s-master"
   minion_role = "k8s-minion"
+  assume_role_path = "/bosh-passed/"
 }
 
 module "check_awslogs_role" {

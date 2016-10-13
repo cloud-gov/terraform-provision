@@ -47,8 +47,8 @@ EOF
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:${var.aws_partition}:iam::${var.account_id}:role/${var.master_role}",
-          "arn:${var.aws_partition}:iam::${var.account_id}:role/${var.minion_role}"
+          "arn:${var.aws_partition}:iam::${var.account_id}:role${var.assume_role_path}${var.master_role}",
+          "arn:${var.aws_partition}:iam::${var.account_id}:role${var.assume_role_path}${var.minion_role}"
         ]
       },
       "Action": "sts:AssumeRole"
