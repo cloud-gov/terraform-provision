@@ -156,6 +156,14 @@ module "kubernetes_logger_role" {
   minion_role = "k8s-minion"
 }
 
+module "check_awslogs_role" {
+  source = "../../modules/iam_role/check_awslogs"
+  role_name = "check-awslogs"
+  aws_default_region = "${var.aws_default_region}"
+  aws_partition = "${var.aws_partition}"
+  account_id = "${var.account_id}"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
