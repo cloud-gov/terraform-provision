@@ -1,7 +1,7 @@
 variable "role_name" {}
 
 variable "role_path" {
-  default = "bosh-passed"
+  default = "/bosh-passed/"
 }
 
 variable "iam_policy" {}
