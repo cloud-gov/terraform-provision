@@ -92,13 +92,3 @@ output "bosh_access_key_id" {
 output "bosh_secret_access_key" {
   value = "${module.bosh_user.secret_access_key}"
 }
-
-/* Shibboleth ELB */
-
-output "shibboleth_elb_name" {
-  value ="${module.shibboleth.shibboleth_elb_name}"
-}
-
-output "shibboleth_elb_dns_name" {
-  value = "${module.shibboleth.shibboleth_elb_dns_name}"
-}
