@@ -164,7 +164,7 @@ output "kubernetes_ec2_security_group" {
   value = "${module.kubernetes.kubernetes_ec2_security_group}"
 }
 
-/* shibboleth Proxy ELB */
+/* Shibboleth Proxy ELB */
 
 output "shibboleth_elb_name" {
   value = "${module.shibboleth.shibboleth_elb_name}"
