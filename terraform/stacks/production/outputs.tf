@@ -184,3 +184,7 @@ output "shibboleth_elb_name" {
 output "shibboleth_elb_dns_name" {
   value = "${module.shibboleth.shibboleth_elb_dns_name}"
 }
+
+output "shibboleth_elb_zone_id" {
+  value = "${module.shibboleth.shibboleth_elb_zone_id}"
+}
