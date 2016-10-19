@@ -174,3 +174,13 @@ output "client_elb_star_18f_gov_name" {
 output "client_elb_star_18f_gov_dsn_name" {
   value = "${module.client-elbs.star_18f_gov_elb_dns_name}"
 }
+
+/* Shibboleth Proxy ELB */
+
+output "shibboleth_elb_name" {
+  value = "${module.shibboleth.shibboleth_elb_name}"
+}
+
+output "shibboleth_elb_dns_name" {
+  value = "${module.shibboleth.shibboleth_elb_dns_name}"
+}
