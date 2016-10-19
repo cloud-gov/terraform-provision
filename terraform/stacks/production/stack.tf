@@ -85,3 +85,16 @@ module "client-elbs" {
     aws_partition = "${var.aws_partition}"
     star_18f_gov_cert_name = "star-18f-gov"
 }
+
+module "shibboleth" {
+    source = "../../modules/shibboleth"
+
+    stack_description = "${var.stack_description}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+
+    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    stack_description = "${var.stack_description}"
+    account_id = "${var.account_id}"
+    aws_partition = "${var.aws_partition}"
+}
