@@ -71,3 +71,7 @@ variable "az2" {
 variable "diego_cidr_1" {}
 
 variable "diego_cidr_2" {}
+
+variable "elb_shibboleth_cert_name" {
+  default = "star-fr-stage-cloud-gov-06-16"
+}

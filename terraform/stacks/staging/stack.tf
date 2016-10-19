@@ -56,7 +56,6 @@ module "diego" {
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
-    stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
 }
@@ -72,4 +71,17 @@ module "kubernetes" {
     tooling_vpc_cidr = "${module.stack.tooling_vpc_cidr}"
     elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
+}
+
+module "shibboleth" {
+    source = "../../modules/shibboleth"
+
+    stack_description = "${var.stack_description}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+
+    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    stack_description = "${var.stack_description}"
+    account_id = "${var.account_id}"
+    aws_partition = "${var.aws_partition}"
 }
