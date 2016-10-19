@@ -79,6 +79,7 @@ module "shibboleth" {
     stack_description = "${var.stack_description}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
 
+    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
