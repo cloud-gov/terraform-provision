@@ -56,7 +56,6 @@ module "diego" {
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
-    stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
 }
