@@ -73,5 +73,5 @@ variable "diego_cidr_1" {}
 variable "diego_cidr_2" {}
 
 variable "elb_shibboleth_cert_name" {
-  default = "star-fr-stage-cloud-gov-06-16"
+  default = "star-fr-cloud-gov-06-16"
 }
