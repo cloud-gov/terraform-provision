@@ -81,7 +81,6 @@ module "shibboleth" {
 
     elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
-    vpc_id = "${module.stack.vpc_id}"
     stack_description = "${var.stack_description}"
     account_id = "${var.account_id}"
     aws_partition = "${var.aws_partition}"
