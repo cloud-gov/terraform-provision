@@ -61,6 +61,15 @@ resource "aws_security_group_rule" "http_elb" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "http_alt_elb" {
+    type = "ingress"
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "cf_ssh" {
     type = "ingress"
     from_port = 4222
