@@ -5,6 +5,14 @@ resource "aws_s3_bucket" "encrypted_bucket" {
         enabled = "${var.versioning}"
     }
 
+    lifecycle_rule {
+        prefix = ""
+        enabled = "${lookup(map("0", "false"), var.expiration_days, "true")}"
+        expiration {
+            days = "${var.expiration_days}"
+        }
+    }
+
     policy = <<EOF
 {
     "Version": "2012-10-17",
