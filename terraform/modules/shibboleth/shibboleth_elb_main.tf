@@ -24,10 +24,10 @@ resource "aws_elb" "shibboleth_elb_main" {
   }
 
   health_check {
-    healthy_threshold = 10
-    interval = 30
+    healthy_threshold = 2
+    interval = 15
     target = "TCP:8080"
-    timeout = 5
+    timeout = 10
     unhealthy_threshold = 2
   }
 
