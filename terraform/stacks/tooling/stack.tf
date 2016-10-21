@@ -169,9 +169,7 @@ module "check_awslogs_role" {
 module "logsearch_ingestor_role" {
   source = "../../modules/iam_role/logsearch_ingestor"
   role_name = "logsearch-ingestor"
-  aws_default_region = "${var.aws_default_region}"
   aws_partition = "${var.aws_partition}"
-  account_id = "${var.account_id}"
 }
 
 module "cloudwatch_user" {

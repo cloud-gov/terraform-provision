@@ -13,7 +13,7 @@ module "logsearch_ingestor" {
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:${var.aws_partition}:s3:${var.aws_default_region}:${var.account_id}:logsearch-*/*"
+                "arn:${var.aws_partition}:s3:::logsearch-*/*"
             ]
         }
     ]
