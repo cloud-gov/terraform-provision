@@ -172,6 +172,12 @@ module "logsearch_ingestor_role" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "influxdb_archive_role" {
+  source = "../../modules/iam_role/influxdb_archive"
+  role_name = "influxdb-archive"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "cloudwatch_user" {
     source = "../../modules/iam_user"
     username = "bosh-cloudwatch"
