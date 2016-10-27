@@ -21,4 +21,9 @@ for db in ${DATABASES}; do
     psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
   done
 
+  # Special case for uaadb, create totp seed table for use with MFA
+  if [ "${db}" = "uaadb" ]; then
+    psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS totp_seed ( username varchar(255) PRIMARY KEY, seed varchar(36), backup_code varchar(36) )"
+  fi
+
 done
