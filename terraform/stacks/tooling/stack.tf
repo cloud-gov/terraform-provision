@@ -64,6 +64,34 @@ module "concourse_staging" {
     elb_security_groups = "${module.stack.web_traffic_security_group}"
 }
 
+module "monitoring_production" {
+  source = "../../modules/monitoring"
+    stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
+    vpc_id = "${module.stack.vpc_id}"
+    monitoring_cidr = "${var.monitoring_production_cidr}"
+    monitoring_az = "${var.az1}"
+    route_table_id = "${module.stack.private_route_table_az1}"
+    account_id = "${var.account_id}"
+    elb_cert_name = "${var.monitoring_production_elb_cert_name}"
+    elb_subnets = "${module.stack.public_subnet_az1}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+}
+
+module "monitoring_staging" {
+  source = "../../modules/monitoring"
+    stack_description = "${var.stack_description}"
+    aws_partition = "${var.aws_partition}"
+    vpc_id = "${module.stack.vpc_id}"
+    monitoring_cidr = "${var.monitoring_staging_cidr}"
+    monitoring_az = "${var.az2}"
+    route_table_id = "${module.stack.private_route_table_az2}"
+    account_id = "${var.account_id}"
+    elb_cert_name = "${var.monitoring_staging_elb_cert_name}"
+    elb_subnets = "${module.stack.public_subnet_az2}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+}
+
 module "tooling_bosh_user" {
     source = "../../modules/iam_user/bosh_user"
     username = "bosh-tooling"

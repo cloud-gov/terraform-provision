@@ -1,4 +1,4 @@
-module "cc-resoures" {
+module "cc-resources" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-cc-resources"
     aws_partition = "${var.aws_partition}"
@@ -25,13 +25,6 @@ module "droplets" {
 module "logsearch-archive" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "logsearch-${var.stack_prefix}"
-    aws_partition = "${var.aws_partition}"
-    expiration_days = 548
-}
-
-module "influxdb-archive" {
-    source = "../s3_bucket/encrypted_bucket"
-    bucket = "influxdb-${var.stack_prefix}"
     aws_partition = "${var.aws_partition}"
     expiration_days = 548
 }
