@@ -1,4 +1,4 @@
-module "cc-resources" {
+module "cc-resoures" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.stack_prefix}-cc-resources"
     aws_partition = "${var.aws_partition}"
