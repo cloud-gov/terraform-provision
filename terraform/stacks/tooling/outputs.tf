@@ -111,6 +111,34 @@ output "staging_concourse_elb_name" {
   value = "${module.concourse_staging.concourse_elb_name}"
 }
 
+/* Production Monitoring */
+output "production_monitoring_subnet" {
+  value = "${module.monitoring_production.monitoring_subnet}"
+}
+output "production_monitoring_security_group" {
+  value = "${module.monitoring_production.monitoring_security_group}"
+}
+output "production_monitoring_elb_dns_name" {
+  value = "${module.monitoring_production.monitoring_elb_dns_name}"
+}
+output "production_monitoring_elb_name" {
+  value = "${module.monitoring_production.monitoring_elb_name}"
+}
+
+/* Staging Monitoring */
+output "staging_monitoring_subnet" {
+  value = "${module.monitoring_staging.monitoring_subnet}"
+}
+output "staging_monitoring_security_group" {
+  value = "${module.monitoring_staging.monitoring_security_group}"
+}
+output "staging_monitoring_elb_dns_name" {
+  value = "${module.monitoring_staging.monitoring_elb_dns_name}"
+}
+output "staging_monitoring_elb_name" {
+  value = "${module.monitoring_staging.monitoring_elb_name}"
+}
+
 /* master bosh user */
 output "master_bosh_username" {
   value = "${module.master_bosh_user.username}"

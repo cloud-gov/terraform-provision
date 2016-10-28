@@ -1,5 +1,5 @@
 resource "aws_elb" "monitoring_elb" {
-  name = "${var.stack_description}-Monitoring"
+  name = "${var.stack_description}-Monitoring-${var.monitoring_az}"
   subnets = ["${split(",", var.elb_subnets)}"]
   security_groups = ["${split(",", var.elb_security_groups)}"]
   idle_timeout = 3600
@@ -9,7 +9,7 @@ resource "aws_elb" "monitoring_elb" {
     lb_protocol = "HTTPS"
     instance_port = 3000
     instance_protocol = "HTTP"
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.monitoring_elb_cert_name}"
+    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
   }
 
   health_check {
@@ -21,8 +21,7 @@ resource "aws_elb" "monitoring_elb" {
   }
 
   tags =  {
-    Name = "${var.stack_description}-Monitoring"
+    Name = "${var.stack_description}-Monitoring-${var.monitoring_az}"
   }
-
 }
 

@@ -89,24 +89,12 @@ output "cf_main_elb_dns_name" {
 output "cf_main_elb_name" {
   value = "${module.cf.elb_main_name}"
 }
-
 output "cf_apps_elb_dns_name" {
   value = "${module.cf.elb_apps_dns_name}"
 }
 output "cf_apps_elb_name" {
   value = "${module.cf.elb_apps_name}"
 }
-
-output "monitoring_elb_dns_name" {
-  value = "${module.cf.monitoring_elb_dns_name}"
-}
-output "monitoring_elb_name" {
-  value = "${module.cf.monitoring_elb_name}"
-}
-output "monitoring_elb_security_group" {
-  value = "${module.cf.monitoring_elb_security_group}"
-}
-
 output "logsearch_elb_dns_name" {
   value = "${module.cf.logsearch_elb_dns_name}"
 }
