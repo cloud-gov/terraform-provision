@@ -1,5 +1,5 @@
 resource "aws_elb" "monitoring_elb" {
-  name = "${var.stack_description}-Monitoring-${var.monitoring_az}"
+  name = "${var.stack_description}-Monitoring"
   subnets = ["${split(",", var.elb_subnets)}"]
   security_groups = ["${split(",", var.elb_security_groups)}"]
   idle_timeout = 3600
@@ -21,7 +21,7 @@ resource "aws_elb" "monitoring_elb" {
   }
 
   tags =  {
-    Name = "${var.stack_description}-Monitoring-${var.monitoring_az}"
+    Name = "${var.stack_description}-Monitoring"
   }
 }
 
