@@ -48,10 +48,6 @@ variable "services_cidr_1" {}
 variable "services_cidr_2" {}
 variable "kubernetes_cluster_id" {}
 
-variable "monitoring_elb_cert_name" {
-  default = "star-fr-cloud-gov-06-16"
-}
-
 variable "logsearch_elb_cert_name" {
   default = "star-fr-cloud-gov-06-16"
 }
