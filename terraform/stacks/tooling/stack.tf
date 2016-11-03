@@ -147,6 +147,12 @@ module "aws_broker_user" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "concourse_worker_role" {
+  source = "../../modules/iam_role/concourse_worker"
+  role_name = "concourse-worker"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "kubernetes_master_role" {
   source = "../../modules/iam_role/kubernetes_master"
   stack_description = "${var.stack_description}"
