@@ -106,13 +106,22 @@ output "logsearch_elb_name" {
 
 /* CloudFoundry RDS */
 output "cf_rds_url" {
-    value = "${module.cf.cf_rds_url}"
+  value = "${module.cf.cf_rds_url}"
 }
 output "cf_rds_host" {
-    value = "${module.cf.cf_rds_host}"
+  value = "${module.cf.cf_rds_host}"
 }
 output "cf_rds_port" {
-    value = "${module.cf.cf_rds_port}"
+  value = "${module.cf.cf_rds_port}"
+}
+output "cf_rds_username" {
+  value = "${module.cf.cf_rds_username}"
+}
+output "cf_rds_password" {
+  value = "${module.cf.cf_rds_password}"
+}
+output "cf_rds_engine" {
+  value = "${module.cf.cf_rds_engine}"
 }
 
 /* Services Subnets */
