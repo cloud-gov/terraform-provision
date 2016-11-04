@@ -1,4 +1,3 @@
-
 output "monitoring_subnet" {
   value = "${aws_subnet.monitoring.id}"
 }
@@ -15,3 +14,6 @@ output "monitoring_elb_name" {
   value = "${aws_elb.monitoring_elb.name}"
 }
 
+output "monitoring_influxdb_backups" {
+  value = "${module.influxdb-archive.bucket_name}"
+}
