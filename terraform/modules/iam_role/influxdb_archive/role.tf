@@ -28,7 +28,8 @@ module "influxdb_archive" {
         {
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeInstances"
+                "ec2:DescribeInstances",
+                "ec2:DescribeVPCs"
             ],
 
             "Resource": "*"
