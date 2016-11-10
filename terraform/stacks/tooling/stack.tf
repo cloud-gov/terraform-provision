@@ -212,6 +212,12 @@ module "influxdb_archive_role" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "etcd_backup_role" {
+  source = "../../modules/iam_role/etcd_backup"
+  role_name = "etcd-backup"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "cloudwatch_user" {
   source = "../../modules/iam_user"
   username = "bosh-cloudwatch"
