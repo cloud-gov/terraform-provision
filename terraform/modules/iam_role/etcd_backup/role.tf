@@ -9,7 +9,7 @@ module "etcd_backup" {
         {
             "Effect": "Allow",
             "Action": [
-                "s3:PutObject",
+                "s3:PutObject"
             ],
             "Resource": [
                 "arn:${var.aws_partition}:s3:::etcd-*/*"
