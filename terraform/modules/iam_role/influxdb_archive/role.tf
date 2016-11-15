@@ -24,15 +24,6 @@ module "influxdb_archive" {
             "Resource": [
                 "arn:${var.aws_partition}:s3:::influxdb-*"
             ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:DescribeInstances",
-                "ec2:DescribeVPCs"
-            ],
-
-            "Resource": "*"
         }
     ]
 }
