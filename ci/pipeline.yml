@@ -131,6 +131,8 @@ jobs:
       TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
       TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
       TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
+      TF_VAR_monitoring_staging_cidr: {{monitoring_staging_cidr}}
+      TF_VAR_monitoring_production_cidr: {{monitoring_production_cidr}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
       TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}
       TF_VAR_public_cidr_1: {{tooling_public_cidr_1}}
