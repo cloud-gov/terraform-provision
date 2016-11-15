@@ -204,6 +204,8 @@ module "logsearch_ingestor_role" {
   source = "../../modules/iam_role/logsearch_ingestor"
   role_name = "logsearch-ingestor"
   aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  account_id = "${var.account_id}"
 }
 
 module "influxdb_archive_role" {
