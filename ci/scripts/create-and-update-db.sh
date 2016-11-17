@@ -26,4 +26,9 @@ for db in ${DATABASES}; do
     psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS totp_seed ( username varchar(255) PRIMARY KEY, seed varchar(36), backup_code varchar(36) )"
   fi
 
+  # Special case for Shibboleth, create storage records table for use with multi-zone Shibboleth
+  if [ "${db}" = "uaadb" ]; then
+    psql_adm -d "${db}" -c "CREATE TABLE storagerecords ( context varchar(255) NOT NULL, id varchar(255) NOT NULL, expires bigint DEFAULT NULL, value text NOT NULL, version bigint NOT NULL, PRIMARY KEY (context, id) )"
+  fi
+
 done
