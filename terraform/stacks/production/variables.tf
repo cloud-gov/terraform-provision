@@ -48,10 +48,6 @@ variable "services_cidr_1" {}
 variable "services_cidr_2" {}
 variable "kubernetes_cluster_id" {}
 
-variable "logsearch_elb_cert_name" {
-  default = "star-fr-cloud-gov-06-16"
-}
-
 variable "restricted_ingress_web_cidrs" {}
 
 /* Variables for Diego Deployment */
