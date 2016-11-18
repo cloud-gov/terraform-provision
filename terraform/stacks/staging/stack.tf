@@ -43,7 +43,6 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
 
-    logsearch_elb_cert_name = "${var.logsearch_elb_cert_name}"
 }
 
 module "diego" {

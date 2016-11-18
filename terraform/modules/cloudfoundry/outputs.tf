@@ -45,12 +45,3 @@ output "services_subnet_az1" {
 output "services_subnet_az2" {
   value = "${aws_subnet.az2_services.id}"
 }
-
-/* Logsearch */
-output "logsearch_elb_dns_name" {
-  value = "${aws_elb.logsearch_elb.dns_name}"
-}
-
-output "logsearch_elb_name" {
-  value = "${aws_elb.logsearch_elb.name}"
-}

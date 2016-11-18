@@ -95,12 +95,6 @@ output "cf_apps_elb_dns_name" {
 output "cf_apps_elb_name" {
   value = "${module.cf.elb_apps_name}"
 }
-output "logsearch_elb_dns_name" {
-  value = "${module.cf.logsearch_elb_dns_name}"
-}
-output "logsearch_elb_name" {
-  value = "${module.cf.logsearch_elb_name}"
-}
 
 /* CloudFoundry RDS */
 output "cf_rds_url" {

@@ -6,8 +6,6 @@ variable "elb_subnets" {}
 
 variable "elb_security_groups" {}
 
-variable "logsearch_elb_cert_name" {}
-
 variable "stack_description" {}
 
 variable "account_id" {}
