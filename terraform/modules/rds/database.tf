@@ -28,7 +28,6 @@ resource "aws_db_instance" "rds_database" {
   backup_retention_period = 30
 
   auto_minor_version_upgrade = true
-  auto_minor_version_upgrade = false
 
   name = "${var.rds_db_name}"
   allocated_storage = "${var.rds_db_size}"
