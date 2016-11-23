@@ -1,4 +1,3 @@
-
 module "aws_broker_user" {
     source = ".."
 
@@ -16,7 +15,8 @@ module "aws_broker_user" {
             "Action": [
                 "rds:DescribeDBInstances",
                 "rds:CreateDBInstance",
-                "rds:DeleteDBInstance"
+                "rds:DeleteDBInstance",
+                "rds:ModifyDBInstance"
             ],
             "Resource": [
                 "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
