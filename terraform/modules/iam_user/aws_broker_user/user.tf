@@ -16,7 +16,9 @@ module "aws_broker_user" {
                 "rds:DescribeDBInstances",
                 "rds:CreateDBInstance",
                 "rds:DeleteDBInstance",
-                "rds:ModifyDBInstance"
+                "rds:ModifyDBInstance",
+                "rds:AddTagsToResource",
+                "rds:RemoveTagsFromResource"
             ],
             "Resource": [
                 "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
