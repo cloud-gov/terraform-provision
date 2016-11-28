@@ -1,4 +1,3 @@
-
 variable "stack_description" {}
 
 variable "az1" {
@@ -22,3 +21,5 @@ variable "az1_route_table" {}
 variable "az2_route_table" {}
 
 variable "vpc_id" {}
+
+variable "bosh_security_group" {}
