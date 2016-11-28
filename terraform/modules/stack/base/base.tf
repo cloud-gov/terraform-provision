@@ -1,4 +1,3 @@
-
 module "vpc" {
     source = "../../bosh_vpc"
 
@@ -23,7 +22,7 @@ module "rds_network" {
     az1 = "${var.az1}"
     az2 = "${var.az2}"
     vpc_id = "${module.vpc.vpc_id}"
-    bosh_security_group = "${module.vpc.bosh_security_group}"
+    security_groups = "${var.rds_security_groups}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     az1_route_table = "${module.vpc.private_route_table_az1}"
