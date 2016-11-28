@@ -85,3 +85,7 @@ variable "rds_password" {}
 variable "restricted_ingress_web_cidrs" {
     default = "127.0.0.1/32,192.168.0.1/24"
 }
+
+variable "rds_security_groups" {
+  type = "list"
+}

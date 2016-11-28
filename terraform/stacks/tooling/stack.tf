@@ -23,6 +23,7 @@ module "stack" {
   rds_private_cidr_2 = "${var.rds_private_cidr_2}"
   rds_password = "${var.rds_password}"
   rds_encrypted = true
+  rds_security_groups = ["${module.concourse_production.concourse_security_group}"]
 }
 
 module "concourse_production" {

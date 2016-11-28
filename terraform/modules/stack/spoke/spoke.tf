@@ -30,6 +30,10 @@ module "base" {
     rds_password = "${var.rds_password}"
     rds_encrypted = "${var.rds_encrypted}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
+    rds_security_groups = [
+      "${module.base.bosh_security_group}",
+      "${data.terraform_remote_state.target_vpc.production_concourse_security_group}"
+    ]
 }
 
 module "vpc_peering" {

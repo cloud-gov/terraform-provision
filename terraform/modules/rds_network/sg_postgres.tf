@@ -12,14 +12,14 @@ resource "aws_security_group" "rds_postgres" {
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
-    security_groups = ["${var.bosh_security_group}"]
+    security_groups = "${var.security_groups}"
   }
 
   egress {
     from_port = 0
     to_port = 0
     protocol = "-1"
-    security_groups = ["${var.bosh_security_group}"]
+    security_groups = "${var.security_groups}"
   }
 
   tags = {

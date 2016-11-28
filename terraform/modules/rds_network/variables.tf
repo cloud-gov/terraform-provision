@@ -22,4 +22,6 @@ variable "az2_route_table" {}
 
 variable "vpc_id" {}
 
-variable "bosh_security_group" {}
+variable "security_groups" {
+  type = "list"
+}
