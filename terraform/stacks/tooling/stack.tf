@@ -193,9 +193,9 @@ module "kubernetes_logger_role" {
   assume_role_path = "/bosh-passed/"
 }
 
-module "check_awslogs_role" {
-  source = "../../modules/iam_role/check_awslogs"
-  role_name = "check-awslogs"
+module "riemann_monitoring_role" {
+  source = "../../modules/iam_role/riemann_monitoring"
+  role_name = "riemann-monitoring"
   aws_default_region = "${var.aws_default_region}"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
