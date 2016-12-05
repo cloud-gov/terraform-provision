@@ -41,7 +41,7 @@ resource "aws_lb_cookie_stickiness_policy" "shibboleth_elb_stickiness" {
   name = "${var.stack_description}-shibb-elb-cookie-policy"
   load_balancer = "${aws_elb.shibboleth_elb_main.id}"
   lb_port = 443
-  cookie_expiration_period = 600
+  cookie_expiration_period = 1800
 }
 
 resource "aws_app_cookie_stickiness_policy" "shibboleth_app_stickiness" {
