@@ -37,15 +37,8 @@ resource "aws_elb" "shibboleth_elb_main" {
 
 }
 
-resource "aws_lb_cookie_stickiness_policy" "shibboleth_elb_stickiness" {
-  name = "${var.stack_description}-shibb-elb-cookie-policy"
-  load_balancer = "${aws_elb.shibboleth_elb_main.id}"
-  lb_port = 443
-  cookie_expiration_period = 600
-}
-
-resource "aws_app_cookie_stickiness_policy" "shibboleth_app_stickiness" {
-  name = "${var.stack_description}-shibb-app-cookie-policy"
+resource "aws_app_cookie_stickiness_policy" "shibboleth_jsession_stickiness" {
+  name = "${var.stack_description}-shibboleth-sticky-jsession"
   load_balancer = "${aws_elb.shibboleth_elb_main.name}"
   lb_port = 443
   cookie_name = "JSESSIONID"
