@@ -18,7 +18,7 @@ resource "aws_elb" "shibboleth_elb_main" {
     lb_port = 443
     lb_protocol = "SSL"
     instance_port = 8080
-    instance_protocol = "TCP"
+    instance_protocol = "HTTP"
 
     ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_shibboleth_cert_name}"
   }
@@ -26,7 +26,7 @@ resource "aws_elb" "shibboleth_elb_main" {
   health_check {
     healthy_threshold = 2
     interval = 15
-    target = "TCP:8080"
+    target = "HTTP:8080/shibboleth"
     timeout = 10
     unhealthy_threshold = 2
   }
@@ -35,4 +35,18 @@ resource "aws_elb" "shibboleth_elb_main" {
     Name = "${var.stack_description}-shibboleth-Proxy-ELB"
   }
 
+}
+
+resource "aws_lb_cookie_stickiness_policy" "shibboleth_elb_stickiness" {
+  name = "${var.stack_description}_shibb_elb_cookie_policy"
+  load_balancer = "${aws_elb.shibboleth_elb_main.id}"
+  lb_port = 443
+  cookie_expiration_period = 600
+}
+
+resource "aws_app_cookie_stickiness_policy" "shibboleth_app_stickiness" {
+  name = "${var.stack_description}_shibb_app_cookie_policy"
+  load_balancer = "${aws_elb.shibboleth_elb_main.name}"
+  lb_port = 443
+  cookie_name = "JSESSIONID"
 }
