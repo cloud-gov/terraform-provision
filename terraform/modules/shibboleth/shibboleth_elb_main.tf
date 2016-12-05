@@ -16,7 +16,7 @@ resource "aws_elb" "shibboleth_elb_main" {
 
   listener {
     lb_port = 443
-    lb_protocol = "SSL"
+    lb_protocol = "HTTPS"
     instance_port = 8080
     instance_protocol = "HTTP"
 
