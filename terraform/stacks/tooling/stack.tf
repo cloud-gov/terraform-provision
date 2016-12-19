@@ -139,6 +139,13 @@ module "s3_broker_user" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "go_s3_broker_user" {
+  source = "../../modules/iam_user/go_s3_broker_user"
+  username = "go-s3-broker"
+  account_id = "${var.account_id}"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "aws_broker_user" {
   source = "../../modules/iam_user/aws_broker_user"
   username = "aws-broker"

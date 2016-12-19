@@ -1,0 +1,38 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "manageBucketsAndObjectsInBuckets",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:s3:::cg-*",
+        "arn:${aws_partition}:s3:::cg-*/*"
+      ]
+    },
+    {
+      "Sid": "manageUsersForBinding",
+      "Action": [
+        "iam:GetUser",
+        "iam:CreateUser",
+        "iam:DeleteUser",
+        "iam:ListAccessKeys",
+        "iam:CreateAccessKey",
+        "iam:DeleteAccessKey",
+        "iam:CreatePolicy",
+        "iam:DeletePolicy",
+        "iam:ListAttachedUserPolicies",
+        "iam:AttachUserPolicy",
+        "iam:DetachUserPolicy"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:${aws_partition}:iam::${account_id}:user/cloud-foundry/s3/*",
+        "arn:${aws_partition}:iam::${account_id}:policy/cloud-foundry/s3/",
+        "arn:${aws_partition}:iam::${account_id}:policy/cloud-foundry/s3/*"
+      ]
+    }
+  ]
+}
