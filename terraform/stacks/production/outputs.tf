@@ -155,6 +155,16 @@ output "kubernetes_ec2_security_group" {
   value = "${module.kubernetes.kubernetes_ec2_security_group}"
 }
 
+/* S3 broker user */
+output "s3_broker_username" {
+  value = "${module.cf.s3_broker_username}"
+}
+output "s3_broker_access_key_id" {
+  value = "${module.cf.s3_broker_access_key_id}"
+}
+output "s3_broker_secret_access_key" {
+  value = "${module.cf.s3_broker_secret_access_key}"
+}
 
 /* Client ELBs */
 

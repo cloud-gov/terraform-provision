@@ -67,3 +67,5 @@ variable "services_cidr_2" {
 variable "aws_partition" {}
 
 variable "kubernetes_cluster_id" {}
+
+variable "bucket_prefix" {}
