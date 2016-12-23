@@ -201,28 +201,6 @@ output "stemcell_secret_access_key" {
   value = "${module.stemcell_user.secret_access_key}"
 }
 
-/* s3 broker user */
-output "s3_broker_username" {
-  value = "${module.s3_broker_user.username}"
-}
-output "s3_broker_access_key_id" {
-  value = "${module.s3_broker_user.access_key_id}"
-}
-output "s3_broker_secret_access_key" {
-  value = "${module.s3_broker_user.secret_access_key}"
-}
-
-/* golang s3 broker user */
-output "go_s3_broker_username" {
-  value = "${module.go_s3_broker_user.username}"
-}
-output "go_s3_broker_access_key_id" {
-  value = "${module.go_s3_broker_user.access_key_id}"
-}
-output "go_s3_broker_secret_access_key" {
-  value = "${module.go_s3_broker_user.secret_access_key}"
-}
-
 /* aws broker user */
 output "aws_broker_username" {
   value = "${module.aws_broker_user.username}"

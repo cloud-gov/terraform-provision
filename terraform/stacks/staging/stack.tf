@@ -41,7 +41,7 @@ module "cf" {
     services_cidr_1 = "${var.services_cidr_1}"
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
-
+    bucket_prefix = "staging-cg"
 }
 
 module "diego" {
