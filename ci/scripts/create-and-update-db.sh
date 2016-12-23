@@ -23,9 +23,33 @@ for db in ${DATABASES}; do
 
   # Special case for uaadb, create totp seed table for use with MFA
   # Special case for Shibboleth, create storage records table for use with multi-zone Shibboleth
+  # Special case for Shibboleth, create function and trigger that verifies origin uaa is set to cloud.gov IdP
   if [ "${db}" = "uaadb" ]; then
     psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS totp_seed ( username varchar(255) PRIMARY KEY, seed varchar(36), backup_code varchar(36) )"
     psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS storagerecords ( context varchar(255) NOT NULL, id varchar(255) NOT NULL, expires bigint DEFAULT NULL, value text NOT NULL, version bigint NOT NULL, PRIMARY KEY (context, id) )"
+
+    psql_adm -d "${db}" -c << EOT
+      CREATE OR REPLACE FUNCTION "f_isValidEmail"( text ) RETURNS BOOLEAN AS '
+      SELECT $1 ~ ''^[^@\s]+@[^@\s]+(\.[^@\s]+)+$'' AS RESULT
+      ' LANGUAGE sql
+EOT
+    psql_adm -d "${db}" -c << EOT
+      CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"( text ) RETURNS TRIGGER AS $$
+      BEGIN
+        UPDATE users
+          SET ( origin, externalId ) = ( 'cloud.gov', username )
+          WHERE "f_isValidEmail"( username ) AND
+            origin = 'uaa' AND
+            verified = false AND
+            created::date = passwd_lastmodified::date;
+      END;
+      $$ LANGUAGE plpgsql
+EOT
+    psql_adm -d "${db}" -c << EOT
+      CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
+        AFTER INSERT OR UPDATE ON users
+        FOR EACH ROW EXECUTE PROCEDURE "f_enforceCloudGovOrigin"()
+EOT
   fi
 
 done
