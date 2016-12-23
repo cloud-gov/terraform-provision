@@ -132,18 +132,22 @@ module "stemcell_user" {
   stemcell_bucket = "cg-stemcell-images"
 }
 
-module "s3_broker_user" {
-  source = "../../modules/iam_user/s3_broker_user"
-  username = "s3-broker"
-  account_id = "${var.account_id}"
-  aws_partition = "${var.aws_partition}"
-}
-
-module "go_s3_broker_user" {
+module "go_s3_broker_user_staging" {
   source = "../../modules/iam_user/go_s3_broker_user"
   username = "go-s3-broker"
   account_id = "${var.account_id}"
   aws_partition = "${var.aws_partition}"
+  bucket_prefix = "staging-cg"
+  iam_path = "/s3/cloud-foundry/staging/"
+}
+
+module "go_s3_broker_user_production" {
+  source = "../../modules/iam_user/go_s3_broker_user"
+  username = "go-s3-broker"
+  account_id = "${var.account_id}"
+  aws_partition = "${var.aws_partition}"
+  bucket_prefix = "cg"
+  iam_path = "/s3/cloud-foundry/production/"
 }
 
 module "aws_broker_user" {

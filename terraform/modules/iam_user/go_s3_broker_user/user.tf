@@ -4,6 +4,8 @@ data "template_file" "policy" {
   vars {
     aws_partition = "${var.aws_partition}"
     account_id = "${var.account_id}"
+    bucket_prefix = "${var.bucket_prefix}"
+    iam_path = "${var.iam_path}"
   }
 }
 

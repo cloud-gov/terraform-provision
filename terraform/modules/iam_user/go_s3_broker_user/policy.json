@@ -8,8 +8,8 @@
         "s3:*"
       ],
       "Resource": [
-        "arn:${aws_partition}:s3:::cg-*",
-        "arn:${aws_partition}:s3:::cg-*/*"
+        "arn:${aws_partition}:s3:::${bucket_prefix}-*",
+        "arn:${aws_partition}:s3:::${bucket_prefix}-*/*"
       ]
     },
     {
@@ -29,9 +29,9 @@
       ],
       "Effect": "Allow",
       "Resource": [
-        "arn:${aws_partition}:iam::${account_id}:user/cloud-foundry/s3/*",
-        "arn:${aws_partition}:iam::${account_id}:policy/cloud-foundry/s3/",
-        "arn:${aws_partition}:iam::${account_id}:policy/cloud-foundry/s3/*"
+        "arn:${aws_partition}:iam::${account_id}:user${iam_path}*",
+        "arn:${aws_partition}:iam::${account_id}:policy${iam_path}",
+        "arn:${aws_partition}:iam::${account_id}:policy${iam_path}*"
       ]
     }
   ]
