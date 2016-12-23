@@ -40,8 +40,8 @@ EOT
           SET ( origin, externalId ) = ( 'cloud.gov', username )
           WHERE "f_isValidEmail"( username ) AND
             origin = 'uaa' AND
-            verified = false AND
-            created::date = passwd_lastmodified::date;
+            verified = true AND
+            created::date != passwd_lastmodified::date;
       END;
       $$ LANGUAGE plpgsql
 EOT
