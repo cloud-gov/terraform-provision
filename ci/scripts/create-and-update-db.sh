@@ -37,7 +37,7 @@ EOT
       CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"( text ) RETURNS TRIGGER AS $$
       BEGIN
         UPDATE users
-          SET ( origin, externalId ) = ( 'cloud.gov', username )
+          SET ( origin, external_id ) = ( 'cloud.gov', username )
           WHERE "f_isValidEmail"( username ) AND
             origin = 'uaa' AND
             verified = true AND
