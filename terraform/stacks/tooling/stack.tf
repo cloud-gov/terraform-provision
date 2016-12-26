@@ -113,6 +113,13 @@ module "ci_user" {
   aws_partition = "${var.aws_partition}"
 }
 
+# This user WILL be removed once east has been shutdown.  DO NOT USE these credentials in the GovCloud environment
+module "ci_user_east" {
+  source = "../../modules/iam_user/concourse_user_east"
+  username = "concourse-east"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "cf_user" {
   source = "../../modules/iam_user/cf_user"
   username = "cf-cc-s3"
