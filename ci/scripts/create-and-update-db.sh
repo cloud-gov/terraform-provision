@@ -26,14 +26,32 @@ for db in ${DATABASES}; do
   # Special case for Shibboleth, create function and trigger that verifies origin uaa is set to cloud.gov IdP
   # Special case for Shibboelth, create FK between totp_seed and users and CASCADE on delete
   if [ "${db}" = "uaadb" ]; then
-    psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS totp_seed ( username varchar(255) PRIMARY KEY, seed varchar(36), backup_code varchar(36) )"
-    psql_adm -d "${db}" -c "CREATE TABLE IF NOT EXISTS storagerecords ( context varchar(255) NOT NULL, id varchar(255) NOT NULL, expires bigint DEFAULT NULL, value text NOT NULL, version bigint NOT NULL, PRIMARY KEY (context, id) )"
+    psql_adm -d "${db}" -c << EOT
+    CREATE TABLE IF NOT EXISTS totp_seed
+      (
+        username varchar(255) PRIMARY KEY,
+        seed varchar(36),
+        backup_code varchar(36)
+      )
+EOT
     psql_adm -d "${db}" -c << EOT
       ALTER TABLE IF EXISTS totp_seed
         ADD CONSTRAINT username_record_keeper
           FOREIGN KEY (username)
           REFERENCES users (username)
           ON DELETE CASCADE
+EOT
+
+    psql_adm -d "${db}" -c << EOT
+      CREATE TABLE IF NOT EXISTS storagerecords
+        (
+          context varchar(255) NOT NULL,
+          id varchar(255) NOT NULL,
+          expires bigint DEFAULT NULL,
+          value text NOT NULL,
+          version bigint NOT NULL,
+          PRIMARY KEY (context, id)
+        )
 EOT
 
     psql_adm -d "${db}" -c << EOT
