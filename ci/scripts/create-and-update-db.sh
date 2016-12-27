@@ -46,6 +46,10 @@ EOT
       $$ LANGUAGE plpgsql
 EOT
     psql_adm -d "${db}" -c << EOT
+      DROP TRIGGER IF EXISTS enforce_cloud_gov_idp_origin_trigger
+        ON users
+EOT
+    psql_adm -d "${db}" -c << EOT
       CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
         AFTER UPDATE ON users
         FOR EACH STATEMENT EXECUTE PROCEDURE "f_enforceCloudGovOrigin"()
