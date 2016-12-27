@@ -47,8 +47,8 @@ EOT
 EOT
     psql_adm -d "${db}" -c << EOT
       CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
-        AFTER INSERT OR UPDATE ON users
-        FOR EACH ROW EXECUTE PROCEDURE "f_enforceCloudGovOrigin"()
+        AFTER UPDATE ON users
+        FOR EACH STATEMENT EXECUTE PROCEDURE "f_enforceCloudGovOrigin"()
 EOT
   fi
 
