@@ -179,6 +179,18 @@ output "ci_secret_access_key" {
   value = "${module.ci_user.secret_access_key}"
 }
 
+/* ci user to access bosh secrets */
+output "ci_east_username" {
+  value = "${module.ci_user_east.username}"
+}
+output "ci_east_access_key_id" {
+  value = "${module.ci_user_east.access_key_id}"
+}
+output "ci_east_secret_access_key" {
+  value = "${module.ci_user_east.secret_access_key}"
+}
+
+
 /* release user to write release blobs */
 output "release_username" {
   value = "${module.release_user.username}"
