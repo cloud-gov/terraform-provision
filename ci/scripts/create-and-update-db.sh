@@ -26,7 +26,7 @@ for db in ${DATABASES}; do
   # Special case for Shibboleth, create function and trigger that verifies origin uaa is set to cloud.gov IdP
   # Special case for Shibboelth, create FK between totp_seed and users and CASCADE on delete
   if [ "${db}" = "uaadb" ]; then
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
     CREATE TABLE IF NOT EXISTS totp_seed
       (
         username varchar(255) PRIMARY KEY,
@@ -34,7 +34,7 @@ for db in ${DATABASES}; do
         backup_code varchar(36)
       )
 EOT
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       ALTER TABLE IF EXISTS totp_seed
         ADD CONSTRAINT username_record_keeper
           FOREIGN KEY (username)
@@ -42,7 +42,7 @@ EOT
           ON DELETE CASCADE
 EOT
 
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       CREATE TABLE IF NOT EXISTS storagerecords
         (
           context varchar(255) NOT NULL,
@@ -54,12 +54,12 @@ EOT
         )
 EOT
 
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       CREATE OR REPLACE FUNCTION "f_isValidEmail"( text ) RETURNS BOOLEAN AS '
       SELECT $1 ~ ''^[^@\s]+@[^@\s]+(\.[^@\s]+)+$'' AS RESULT
       ' LANGUAGE sql
 EOT
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"( text ) RETURNS TRIGGER AS $$
       BEGIN
         UPDATE users
@@ -71,11 +71,11 @@ EOT
       END;
       $$ LANGUAGE plpgsql
 EOT
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       DROP TRIGGER IF EXISTS enforce_cloud_gov_idp_origin_trigger
         ON users
 EOT
-    psql_adm -d "${db}" -c << EOT
+    psql_adm -d "${db}" <<-EOT
       CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
         AFTER UPDATE ON users
         FOR EACH STATEMENT EXECUTE PROCEDURE "f_enforceCloudGovOrigin"()
