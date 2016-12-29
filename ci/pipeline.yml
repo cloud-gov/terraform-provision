@@ -53,6 +53,7 @@ jobs:
       TF_VAR_cdn_broker_username: {{cdn_broker_username_staging}}
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
+      TF_VAR_cdn_broker_hosted_zone: {{cdn_broker_hosted_zone_staging}}
 
 - name: bootstrap-external-staging
   plan:
@@ -90,6 +91,7 @@ jobs:
       TF_VAR_cdn_broker_username: {{cdn_broker_username_production}}
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
+      TF_VAR_cdn_broker_hosted_zone: {{cdn_broker_hosted_zone_production}}
 
 - name: bootstrap-external-production
   plan:

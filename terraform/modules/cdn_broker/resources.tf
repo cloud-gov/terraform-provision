@@ -1,50 +1,24 @@
 module "cdn_broker_bucket" {
-    source = "../s3_bucket/public_encrypted_bucket"
-    bucket = "${var.bucket}"
+  source = "../s3_bucket/public_encrypted_bucket"
+  bucket = "${var.bucket}"
+  aws_partition = "${var.aws_partition}"
+}
+
+data "template_file" "policy" {
+  template = "${file("${path.module}/policy.json")}"
+
+  vars {
     aws_partition = "${var.aws_partition}"
+    account_id = "${var.account_id}"
+    cloudfront_prefix = "${var.cloudfront_prefix}"
+    hosted_zone = "${var.hosted_zone}"
+    bucket = "${var.bucket}"
+  }
 }
 
 module "cdn_broker_user" {
-    source = "../iam_user"
+  source = "../iam_user"
 
-    username = "${var.username}"
-
-    iam_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "manageIamCerts",
-            "Effect": "Allow",
-            "Action": [
-                "iam:DeleteServerCertificate",
-                "iam:ListServerCertificates",
-                "iam:UploadServerCertificate",
-                "iam:UpdateServerCertificate"
-            ],
-            "Resource": [
-                "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/cloudfront/${var.cloudfront_prefix}"
-            ]
-        },
-        {
-            "Sid": "manageCloudfront",
-            "Effect": "Allow",
-            "Action": "cloudfront:*",
-            "Resource": "*"
-        },
-        {
-            "Sid": "manageS3",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:${var.aws_partition}:s3:::${var.bucket}/*"
-            ]
-        }
-    ]
-}
-EOF
+  username = "${var.username}"
+  iam_policy = "${data.template_file.policy.rendered}"
 }
