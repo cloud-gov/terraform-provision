@@ -18,6 +18,7 @@ module "aws_broker_user" {
                 "rds:DeleteDBInstance",
                 "rds:ModifyDBInstance",
                 "rds:AddTagsToResource",
+                "rds:ListTagsForResource",
                 "rds:RemoveTagsFromResource"
             ],
             "Resource": [
