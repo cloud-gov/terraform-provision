@@ -20,3 +20,6 @@ output "concourse_elb_name" {
   value = "${aws_elb.concourse_elb.name}"
 }
 
+output "concourse_elb_zone_id" {
+  value = "${aws_elb.concourse_elb.zone_id}"
+}

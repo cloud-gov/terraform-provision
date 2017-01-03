@@ -215,6 +215,8 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{staging_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{staging_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
+      TF_VAR_concourse_rds_password: {{staging_vpc_concourse_rds_password}}
+      TF_VAR_concourse_cidr: {{staging_vpc_concourse_cidr}}
 
 - name: bootstrap-staging
   plan:
@@ -306,6 +308,8 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{production_restricted_ingress_web_cidrs}}
       TF_VAR_diego_cidr_1: {{production_diego_cidr_1}}
       TF_VAR_diego_cidr_2: {{production_diego_cidr_2}}
+      TF_VAR_concourse_rds_password: {{production_vpc_concourse_rds_password}}
+      TF_VAR_concourse_cidr: {{production_vpc_concourse_cidr}}
 
 - name: bootstrap-production
   plan:
