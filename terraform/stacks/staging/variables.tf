@@ -67,3 +67,10 @@ variable "diego_cidr_2" {}
 variable "elb_shibboleth_cert_name" {
   default = "star-fr-stage-cloud-gov-06-16"
 }
+
+/* Variables for customer concourse service */
+variable "concourse_cidr" {}
+variable "concourse_rds_password" {}
+variable "concourse_elb_cert_name" {
+  default = "star-fr-stage-cloud-gov-06-16"
+}
