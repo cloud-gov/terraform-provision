@@ -64,9 +64,9 @@ EOT
     psql_adm -d "${db}" <<-EOT
       BEGIN;
       CREATE OR REPLACE FUNCTION "f_isValidEmail"( text ) RETURNS BOOLEAN AS '
-      SELECT $1 ~ ''^[^@\s]+@[^@\s]+(\.[^@\s]+)+$'' AS RESULT
-      ' LANGUAGE sql
-      CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"( text ) RETURNS TRIGGER AS $$
+      SELECT \$1 ~ ''^[^@\s]+@[^@\s]+(\.[^@\s]+)+$'' AS RESULT
+      ' LANGUAGE sql;
+      CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"() RETURNS TRIGGER AS \$\$
       BEGIN
         UPDATE users
           SET ( origin, external_id ) = ( 'cloud.gov', username )
@@ -75,7 +75,7 @@ EOT
             verified = true AND
             created::date != passwd_lastmodified::date;
       END;
-      $$ LANGUAGE plpgsql
+      \$\$ LANGUAGE plpgsql;
       COMMIT;
 EOT
     psql_adm -d "${db}" <<-EOT
