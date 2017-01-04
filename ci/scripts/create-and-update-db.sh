@@ -27,19 +27,21 @@ for db in ${DATABASES}; do
   # Special case for Shibboelth, create FK between totp_seed and users and CASCADE on delete
   if [ "${db}" = "uaadb" ]; then
     psql_adm -d "${db}" <<-EOT
-    CREATE TABLE IF NOT EXISTS totp_seed
-      (
-        username varchar(255) PRIMARY KEY,
-        seed varchar(36),
-        backup_code varchar(36)
-      )
-EOT
-    psql_adm -d "${db}" <<-EOT
+    BEGIN;
+      CREATE TABLE IF NOT EXISTS totp_seed
+        (
+          username varchar(255) PRIMARY KEY,
+          seed varchar(36),
+          backup_code varchar(36)
+        );
+      ALTER TABLE IF EXISTS totp_seed
+        DROP CONSTRAINT username_record_keeper;
       ALTER TABLE IF EXISTS totp_seed
         ADD CONSTRAINT username_record_keeper
           FOREIGN KEY (username)
           REFERENCES users (username)
-          ON DELETE CASCADE
+          ON DELETE CASCADE;
+    COMMIT;
 EOT
 
     psql_adm -d "${db}" <<-EOT
