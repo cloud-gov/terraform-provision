@@ -56,12 +56,16 @@ EOT
         )
 EOT
 
+    # Enforce cloud.gov origin for IdP users by validating that their username
+    # is a valid email address, that their origin is set to `uaa` that they have
+    # been verified and that their created date does not match their password
+    # last modified date which only occurs for users who have been invited and
+    # haven't logged in for the first time and created their password.
     psql_adm -d "${db}" <<-EOT
+      BEGIN;
       CREATE OR REPLACE FUNCTION "f_isValidEmail"( text ) RETURNS BOOLEAN AS '
       SELECT $1 ~ ''^[^@\s]+@[^@\s]+(\.[^@\s]+)+$'' AS RESULT
       ' LANGUAGE sql
-EOT
-    psql_adm -d "${db}" <<-EOT
       CREATE OR REPLACE FUNCTION "f_enforceCloudGovOrigin"( text ) RETURNS TRIGGER AS $$
       BEGIN
         UPDATE users
@@ -72,6 +76,7 @@ EOT
             created::date != passwd_lastmodified::date;
       END;
       $$ LANGUAGE plpgsql
+      COMMIT;
 EOT
     psql_adm -d "${db}" <<-EOT
       BEGIN;
