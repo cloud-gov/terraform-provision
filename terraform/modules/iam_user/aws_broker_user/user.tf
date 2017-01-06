@@ -19,10 +19,13 @@ module "aws_broker_user" {
                 "rds:ModifyDBInstance",
                 "rds:AddTagsToResource",
                 "rds:ListTagsForResource",
-                "rds:RemoveTagsFromResource"
+                "rds:RemoveTagsFromResource",
+                "rds:DescribeDBSnapshots",
+                "rds:DeleteDBSnapshot"
             ],
             "Resource": [
                 "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
+                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:snapshot:cg-aws-broker-*",
                 "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:production",
                 "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:staging"
             ]
