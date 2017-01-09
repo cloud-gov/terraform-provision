@@ -34,8 +34,9 @@ for db in ${DATABASES}; do
           seed varchar(36),
           backup_code varchar(36)
         );
-      ALTER TABLE IF EXISTS totp_seed
-        DROP CONSTRAINT username_record_keeper;
+      IF EXISTS (SELECT 1 from sys.objects where name = 'username_record_keeper')
+        ALTER TABLE IF EXISTS totp_seed
+          DROP CONSTRAINT username_record_keeper;
       ALTER TABLE IF EXISTS totp_seed
         ADD CONSTRAINT username_record_keeper
           FOREIGN KEY (username)
