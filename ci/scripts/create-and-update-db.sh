@@ -72,8 +72,8 @@ EOT
           SET ( origin, external_id ) = ( 'cloud.gov', username )
           WHERE "f_isValidEmail"( username ) AND
             origin = 'uaa' AND
-            verified = true AND
-            created::date != passwd_lastmodified::date;
+            verified = true;
+        RETURN null;
       END;
       \$\$ LANGUAGE plpgsql;
       COMMIT;
@@ -84,7 +84,9 @@ EOT
         ON users;
       CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
         AFTER UPDATE ON users
-        FOR EACH STATEMENT EXECUTE PROCEDURE "f_enforceCloudGovOrigin"();
+        FOR EACH ROW
+        WHEN ( OLD.passwd_lastmodified IS DISTINCT FROM NEW.passwd_lastmodified )
+        EXECUTE PROCEDURE "f_enforceCloudGovOrigin"();
       COMMIT;
 EOT
   fi
