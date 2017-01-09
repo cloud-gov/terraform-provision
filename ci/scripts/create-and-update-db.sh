@@ -34,8 +34,9 @@ for db in ${DATABASES}; do
           seed varchar(36),
           backup_code varchar(36)
         );
-      ALTER TABLE IF EXISTS totp_seed
-        DROP CONSTRAINT username_record_keeper;
+      IF EXISTS (SELECT 1 from sys.objects where name = 'username_record_keeper')
+        ALTER TABLE IF EXISTS totp_seed
+          DROP CONSTRAINT username_record_keeper;
       ALTER TABLE IF EXISTS totp_seed
         ADD CONSTRAINT username_record_keeper
           FOREIGN KEY (username)
@@ -72,8 +73,8 @@ EOT
           SET ( origin, external_id ) = ( 'cloud.gov', username )
           WHERE "f_isValidEmail"( username ) AND
             origin = 'uaa' AND
-            verified = true AND
-            created::date != passwd_lastmodified::date;
+            verified = true;
+        RETURN null;
       END;
       \$\$ LANGUAGE plpgsql;
       COMMIT;
@@ -84,7 +85,9 @@ EOT
         ON users;
       CREATE TRIGGER enforce_cloud_gov_idp_origin_trigger
         AFTER UPDATE ON users
-        FOR EACH STATEMENT EXECUTE PROCEDURE "f_enforceCloudGovOrigin"();
+        FOR EACH ROW
+        WHEN ( OLD.passwd_lastmodified IS DISTINCT FROM NEW.passwd_lastmodified )
+        EXECUTE PROCEDURE "f_enforceCloudGovOrigin"();
       COMMIT;
 EOT
   fi
