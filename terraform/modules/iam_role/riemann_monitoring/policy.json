@@ -8,7 +8,7 @@
         "logs:DescribeLogStreams"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
+        "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:*"
       ]
     },
     {
@@ -28,7 +28,7 @@
             "ec2:StopInstances"
         ],
         "Resource": [
-          "arn:${var.aws_partition}:ec2:${var.aws_default_region}:${var.account_id}:*"
+          "arn:${aws_partition}:ec2:${aws_default_region}:${account_id}:*"
         ]
     }
   ]
