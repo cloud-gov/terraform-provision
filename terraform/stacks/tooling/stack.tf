@@ -139,6 +139,11 @@ module "stemcell_user" {
   stemcell_bucket = "cg-stemcell-images"
 }
 
+module "limit_check_user" {
+  source = "../../modules/iam_user/limit_check_user"
+  username = "limit-check"
+}
+
 module "aws_broker_user" {
   source = "../../modules/iam_user/aws_broker_user"
   username = "aws-broker"
