@@ -213,6 +213,17 @@ output "stemcell_secret_access_key" {
   value = "${module.stemcell_user.secret_access_key}"
 }
 
+/* limit check user */
+output "limit_check_username" {
+  value = "${module.limit_check_user.username}"
+}
+output "limit_check_access_key_id" {
+  value = "${module.limit_check_user.access_key_id}"
+}
+output "limit_check_secret_access_key" {
+  value = "${module.limit_check_user.secret_access_key}"
+}
+
 /* aws broker user */
 output "aws_broker_username" {
   value = "${module.aws_broker_user.username}"
