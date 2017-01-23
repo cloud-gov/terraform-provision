@@ -14,7 +14,6 @@ macOS users can install all of these with [`homebrew`](http://brew.sh/).
 1. Create S3 bucket with versioning enabled to store Terraform state: `terraform-state`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
   1. Upload all custom bosh releases
-1. Create S3 buckets for bosh blobstores: `bosh-tooling-blobstore`, `bosh-staging-blobstore`, `bosh-prod-blobstore`
 1. Create S3 bucket with versioning enabled to store concourse credentials: `concourse-credentials`
   1. Copy `./ci/credentials.yml.example` to `cg-provision.yml`
   1. Fill out `cg-provision.yml` with proper values
@@ -51,7 +50,6 @@ macOS users can install all of these with [`homebrew`](http://brew.sh/).
     1. Run `deploy-master-bosh` job
     1. Upload a properly filled and [encrypted secrets file](https://docs.cloud.gov/ops/updating-cf/#updating-secrets-yml) for toolingbosh to the BOSH manifest secrets bucket
     1. Upload the CA cert for tooling bosh to the BOSH manifest secrets bucket
-    1. Create S3 bucket for tooling bosh blobstore: `bosh-tooling-blobstore`
     1. Run `deploy-tooling-bosh` job
     1. Run `common-releases-tooling` job
   1. Select `deploy-concourse` pipeline in the menu
@@ -83,11 +81,3 @@ macOS users can install all of these with [`homebrew`](http://brew.sh/).
       }
     ]
     ```
-
-# Monitoring
-
-1. Create a Route 53 name for `metrics.environment.cloud.gov`
-1. Create an ELB to point to the `0.riemann.monitoring.monitoring-environment.bosh`
-1. Point Route 53 name to ELB for HTTPS
-1. Create a security group to allow access to port 3000 for Grafana
-

@@ -19,7 +19,6 @@ module "concourse_credentials" {
     versioning = "true"
 }
 
-/* TODO: Enable after https://github.com/cloudfoundry/bosh/commit/d473e74ccf9df32e2b38cef0ff40ce1616a3195b#diff-a711787c2157fb23b45c5890b26b9f7d is released
 module "tooling_blobstore" {
     source = "../s3_bucket/public_encrypted_bucket"
     bucket = "${var.tooling_blobstore_bucket}"
@@ -37,7 +36,6 @@ module "production_blobstore" {
     bucket = "${var.production_blobstore_bucket}"
     aws_partition = "${var.aws_partition}"
 }
-*/
 
 module "bosh_release" {
     source = "../s3_bucket/encrypted_bucket"
