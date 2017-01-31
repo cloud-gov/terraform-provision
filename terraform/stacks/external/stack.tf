@@ -8,3 +8,8 @@ module "cdn_broker" {
   cloudfront_prefix = "${var.cdn_broker_cloudfront_prefix}"
   hosted_zone = "${var.cdn_broker_hosted_zone}"
 }
+
+module "limit_check_user" {
+  source = "../../modules/iam_user/limit_check_user"
+  username = "limit-check-${var.stack_description}"
+}
