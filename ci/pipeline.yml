@@ -47,6 +47,7 @@ jobs:
       AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_stack_description: staging
       TF_VAR_aws_partition: {{aws_external_partition}}
       TF_VAR_aws_default_region: {{aws_external_region}}
       TF_VAR_account_id: {{aws_external_account_id}}
@@ -85,6 +86,7 @@ jobs:
       AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
+      TF_VAR_stack_description: production
       TF_VAR_aws_partition: {{aws_external_partition}}
       TF_VAR_aws_default_region: {{aws_external_region}}
       TF_VAR_account_id: {{aws_external_account_id}}
