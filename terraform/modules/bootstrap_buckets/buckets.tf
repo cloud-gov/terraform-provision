@@ -50,3 +50,11 @@ module "stemcell_images" {
     aws_partition = "${var.aws_partition}"
     versioning = "true"
 }
+
+module "tmp" {
+    source = "../s3_bucket/encrypted_bucket"
+    bucket = "${var.tmp_bucket}"
+    aws_partition = "${var.aws_partition}"
+    versioning = "true"
+    expiration_days = 1
+}
