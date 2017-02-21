@@ -13,8 +13,7 @@ resource "aws_subnet" "concourse" {
   cidr_block = "${var.concourse_cidr}"
   availability_zone = "${var.concourse_az}"
 
-
-  tags =  {
+  tags = {
     Name = "${var.stack_description} (Concourse - ${var.concourse_cidr})"
   }
 }

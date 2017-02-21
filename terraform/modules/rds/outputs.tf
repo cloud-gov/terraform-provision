@@ -1,3 +1,11 @@
+output "rds_identifier" {
+  value = "${aws_db_instance.rds_database.identifier}"
+}
+
+output "rds_name" {
+  value = "${aws_db_instance.rds_database.name}"
+}
+
 output "rds_url" {
   value = "${aws_db_instance.rds_database.endpoint}"
 }

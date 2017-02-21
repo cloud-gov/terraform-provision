@@ -50,13 +50,13 @@ output "bosh_uaa_security_group" {
 
 /* RDS Network */
 output "rds_subnet_az1" {
-    value = "${module.stack.rds_subnet_az1}"
+  value = "${module.stack.rds_subnet_az1}"
 }
 output "rds_subnet_az2" {
-    value = "${module.stack.rds_subnet_az2}"
+  value = "${module.stack.rds_subnet_az2}"
 }
 output "rds_subnet_group" {
-    value = "${module.stack.rds_subnet_group}"
+  value = "${module.stack.rds_subnet_group}"
 }
 output "rds_mysql_security_group" {
   value = "${module.stack.rds_mysql_security_group}"
@@ -76,16 +76,33 @@ output "bosh_rds_port" {
   value = "${module.stack.bosh_rds_port}"
 }
 
-
 /* Production Concourse */
 output "production_concourse_subnet" {
   value = "${module.concourse_production.concourse_subnet}"
 }
+output "production_concourse_subnet_cidr" {
+  value = "${module.concourse_production.concourse_subnet_cidr}"
+}
+output "production_concourse_subnet_gateway" {
+  value = "${cidrhost("${module.concourse_production.concourse_subnet_cidr}", 1)}"
+}
 output "production_concourse_security_group" {
   value = "${module.concourse_production.concourse_security_group}"
 }
+output "production_concourse_rds_identifier" {
+  value = "${module.concourse_production.concourse_rds_identifier}"
+}
+output "production_concourse_rds_name" {
+  value = "${module.concourse_production.concourse_rds_name}"
+}
 output "production_concourse_rds_url" {
   value = "${module.concourse_production.concourse_rds_url}"
+}
+output "production_concourse_rds_username" {
+  value = "${module.concourse_production.concourse_rds_username}"
+}
+output "production_concourse_rds_password" {
+  value = "${module.concourse_production.concourse_rds_password}"
 }
 output "production_concourse_elb_dns_name" {
   value = "${module.concourse_production.concourse_elb_dns_name}"
@@ -98,11 +115,29 @@ output "production_concourse_elb_name" {
 output "staging_concourse_subnet" {
   value = "${module.concourse_staging.concourse_subnet}"
 }
+output "staging_concourse_subnet_cidr" {
+  value = "${module.concourse_staging.concourse_subnet_cidr}"
+}
+output "staging_concourse_subnet_gateway" {
+  value = "${cidrhost("${module.concourse_staging.concourse_subnet_cidr}", 1)}"
+}
 output "staging_concourse_security_group" {
   value = "${module.concourse_staging.concourse_security_group}"
 }
+output "staging_concourse_rds_identifier" {
+  value = "${module.concourse_staging.concourse_rds_identifier}"
+}
+output "staging_concourse_rds_name" {
+  value = "${module.concourse_staging.concourse_rds_name}"
+}
 output "staging_concourse_rds_url" {
   value = "${module.concourse_staging.concourse_rds_url}"
+}
+output "staging_concourse_rds_username" {
+  value = "${module.concourse_staging.concourse_rds_username}"
+}
+output "staging_concourse_rds_password" {
+  value = "${module.concourse_staging.concourse_rds_password}"
 }
 output "staging_concourse_elb_dns_name" {
   value = "${module.concourse_staging.concourse_elb_dns_name}"
