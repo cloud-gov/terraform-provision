@@ -1,10 +1,9 @@
-
 /* VPC */
 output "vpc_id" {
-    value = "${module.stack.vpc_id}"
+  value = "${module.stack.vpc_id}"
 }
 output "vpc_cidr" {
-    value = "${module.stack.vpc_cidr}"
+  value = "${module.stack.vpc_cidr}"
 }
 
 /* Private network */
@@ -194,11 +193,29 @@ output "shibboleth_elb_zone_id" {
 output "concourse_subnet" {
   value = "${module.concourse.concourse_subnet}"
 }
+output "concourse_subnet_cidr" {
+  value = "${module.concourse.concourse_subnet_cidr}"
+}
+output "concourse_subnet_gateway" {
+  value = "${cidrhost("${module.concourse.concourse_subnet_cidr}", 1)}"
+}
 output "concourse_security_group" {
   value = "${module.concourse.concourse_security_group}"
 }
+output "concourse_rds_identifier" {
+  value = "${module.concourse.concourse_rds_identifier}"
+}
+output "concourse_rds_name" {
+  value = "${module.concourse.concourse_rds_name}"
+}
 output "concourse_rds_url" {
   value = "${module.concourse.concourse_rds_url}"
+}
+output "concourse_rds_username" {
+  value = "${module.concourse.concourse_rds_username}"
+}
+output "concourse_rds_password" {
+  value = "${module.concourse.concourse_rds_password}"
 }
 output "concourse_elb_dns_name" {
   value = "${module.concourse.concourse_elb_dns_name}"
