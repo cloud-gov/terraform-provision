@@ -513,30 +513,24 @@ resources:
     every: true
 
 - name: terraform-yaml-tooling
-  type: s3
+  type: s3-iam
   source:
     bucket: {{aws_s3_tfstate_bucket}}
     versioned_file: {{tf_state_file_tooling}}
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
     region_name: {{aws_default_region}}
 
 - name: terraform-yaml-staging
-  type: s3
+  type: s3-iam
   source:
     bucket: {{aws_s3_tfstate_bucket}}
     versioned_file: {{tf_state_file_staging}}
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
     region_name: {{aws_default_region}}
 
 - name: terraform-yaml-production
-  type: s3
+  type: s3-iam
   source:
     bucket: {{aws_s3_tfstate_bucket}}
     versioned_file: {{tf_state_file_production}}
-    access_key_id: {{aws_access_key_id}}
-    secret_access_key: {{aws_secret_access_key}}
     region_name: {{aws_default_region}}
 
 - name: terraform-yaml-external-staging
@@ -562,3 +556,8 @@ resource_types:
   type: docker-image
   source:
     repository: jtarchie/pr
+
+- name: s3-iam
+  type: docker-image
+  source:
+    repository: 18fgsa/s3-resource

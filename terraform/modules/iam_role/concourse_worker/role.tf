@@ -25,25 +25,28 @@ module "concourse" {
         "s3:ListMultipartUploadParts"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:s3:::cloud-gov-varz",
-        "arn:${var.aws_partition}:s3:::cloud-gov-varz/*",
-        "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage",
-        "arn:${var.aws_partition}:s3:::cloud-gov-varz-stage/*",
-        "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases",
-        "arn:${var.aws_partition}:s3:::cloud-gov-bosh-releases/*",
-        "arn:${var.aws_partition}:s3:::cg-stemcell-images",
-        "arn:${var.aws_partition}:s3:::cg-stemcell-images/*",
-        "arn:${var.aws_partition}:s3:::terraform-state",
-        "arn:${var.aws_partition}:s3:::terraform-state/*"
+        "arn:${var.aws_partition}:s3:::${var.varz_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.varz_bucket}/*",
+        "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}/*",
+        "arn:${var.aws_partition}:s3:::${var.bosh_release_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.bosh_release_bucket}/*",
+        "arn:${var.aws_partition}:s3:::${var.stemcell_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.stemcell_bucket}/*",
+        "arn:${var.aws_partition}:s3:::${var.terraform_state_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.terraform_state_bucket}/*"
       ]
     },
     {
       "Effect": "Allow",
       "Action": [
-        "s3:PutObject"
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectVersionAcl"
       ],
       "Resource": [
-        "arn:${var.aws_partition}:s3:::cloud-gov-varz/master-bosh-state.json"
+        "arn:${var.aws_partition}:s3:::${var.varz_bucket}/master-bosh-state.json",
+        "arn:${var.aws_partition}:s3:::${var.terraform_state_bucket}/*"
       ]
     }
   ]
