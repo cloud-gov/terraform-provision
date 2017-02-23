@@ -13,6 +13,9 @@ output "concourse_security_group" {
 output "concourse_rds_identifier" {
   value = "${module.rds.rds_identifier}"
 }
+output "concourse_rds_96_identifier" {
+  value = "${module.rds_96.rds_identifier}"
+}
 
 output "concourse_rds_name" {
   value = "${module.rds.rds_name}"

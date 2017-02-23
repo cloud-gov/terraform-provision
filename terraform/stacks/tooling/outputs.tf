@@ -127,6 +127,9 @@ output "production_concourse_security_group" {
 output "production_concourse_rds_identifier" {
   value = "${module.concourse_production.concourse_rds_identifier}"
 }
+output "production_concourse_rds_96_identifier" {
+  value = "${module.concourse_production.concourse_rds_96_identifier}"
+}
 output "production_concourse_rds_name" {
   value = "${module.concourse_production.concourse_rds_name}"
 }
