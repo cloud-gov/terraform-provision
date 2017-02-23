@@ -1,4 +1,3 @@
-
 variable "stack_description" {}
 
 variable "concourse_cidr" {
@@ -22,7 +21,11 @@ variable "rds_db_storage_type" {
 }
 
 variable "rds_instance_type" {
-    default = "db.m3.xlarge"
+  default = "db.m3.xlarge"
+}
+
+variable "rds_engine_version" {
+  default = "9.6.1"
 }
 
 variable "rds_username" {
