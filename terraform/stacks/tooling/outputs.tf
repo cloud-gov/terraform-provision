@@ -55,6 +55,13 @@ output "private_subnet_az2_dns" {
   value = "${cidrhost("${var.private_cidr_2}", 2)}"
 }
 
+output "master_bosh_static_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 6)}"
+}
+output "tooling_bosh_static_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+}
+
 /* Public network */
 output "public_subnet_az1" {
   value = "${module.stack.public_subnet_az1}"
