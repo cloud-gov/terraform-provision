@@ -1,4 +1,8 @@
 /* VPC */
+
+output "vpc_region" {
+  value = "${var.aws_default_region}"
+}
 output "vpc_id" {
   value = "${module.stack.vpc_id}"
 }
@@ -13,11 +17,42 @@ output "private_subnet_az1" {
 output "private_subnet_az2" {
   value = "${module.stack.private_subnet_az2}"
 }
+
 output "private_route_table_az1" {
   value = "${module.stack.private_route_table_az1}"
 }
 output "private_route_table_az2" {
   value = "${module.stack.private_route_table_az2}"
+}
+
+output "private_subnet_az1_cidr" {
+  value = "${var.private_cidr_1}"
+}
+output "private_subnet_az2_cidr" {
+  value = "${var.private_cidr_2}"
+}
+
+output "private_subnet_az1_zone" {
+  value = "${var.az1}"
+}
+output "private_subnet_az2_zone" {
+  value = "${var.az2}"
+}
+
+output "private_subnet_az1_gateway" {
+  value = "${cidrhost("${var.private_cidr_1}", 1)}"
+}
+
+output "private_subnet_az2_gateway" {
+  value = "${cidrhost("${var.private_cidr_2}", 1)}"
+}
+
+output "private_subnet_az1_dns" {
+  value = "${cidrhost("${var.private_cidr_1}", 2)}"
+}
+
+output "private_subnet_az2_dns" {
+  value = "${cidrhost("${var.private_cidr_2}", 2)}"
 }
 
 /* Public network */
