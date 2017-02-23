@@ -13,6 +13,7 @@ output "concourse_security_group" {
 output "concourse_rds_identifier" {
   value = "${module.rds.rds_identifier}"
 }
+
 output "concourse_rds_96_identifier" {
   value = "${module.rds_96.rds_identifier}"
 }
@@ -23,6 +24,10 @@ output "concourse_rds_name" {
 
 output "concourse_rds_url" {
   value = "${module.rds.rds_url}"
+}
+
+output "concourse_rds_96_url" {
+  value = "${module.rds_96.rds_url}"
 }
 
 output "concourse_rds_username" {

@@ -214,6 +214,9 @@ output "concourse_rds_name" {
 output "concourse_rds_url" {
   value = "${module.concourse.concourse_rds_url}"
 }
+output "concourse_rds_96_url" {
+  value = "${module.concourse.concourse_rds_96_url}"
+}
 output "concourse_rds_username" {
   value = "${module.concourse.concourse_rds_username}"
 }
