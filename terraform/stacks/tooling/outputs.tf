@@ -143,6 +143,9 @@ output "production_concourse_rds_name" {
 output "production_concourse_rds_url" {
   value = "${module.concourse_production.concourse_rds_url}"
 }
+output "production_concourse_rds_96_url" {
+  value = "${module.concourse_production.concourse_rds_96_url}"
+}
 output "production_concourse_rds_username" {
   value = "${module.concourse_production.concourse_rds_username}"
 }
@@ -172,10 +175,16 @@ output "staging_concourse_security_group" {
 output "staging_concourse_rds_identifier" {
   value = "${module.concourse_staging.concourse_rds_identifier}"
 }
+output "staging_concourse_rds_96_identifier" {
+  value = "${module.concourse_staging.concourse_rds_identifier}"
+}
 output "staging_concourse_rds_name" {
   value = "${module.concourse_staging.concourse_rds_name}"
 }
 output "staging_concourse_rds_url" {
+  value = "${module.concourse_staging.concourse_rds_url}"
+}
+output "staging_concourse_rds_96_url" {
   value = "${module.concourse_staging.concourse_rds_url}"
 }
 output "staging_concourse_rds_username" {
