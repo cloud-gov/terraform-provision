@@ -1,9 +1,9 @@
 /* VPC */
 output "vpc_id" {
-    value = "${module.stack.vpc_id}"
+  value = "${module.stack.vpc_id}"
 }
 output "vpc_cidr" {
-    value = "${module.stack.vpc_cidr}"
+  value = "${module.stack.vpc_cidr}"
 }
 
 /* Private network */
@@ -45,7 +45,7 @@ output "nessus_security_group" {
   value = "${aws_security_group.nessus_traffic.id}"
 }
 output "bosh_uaa_security_group" {
-  value = "$aws_security_group.bosh_uaa_traffic.id}"
+  value = "${aws_security_group.bosh_uaa_traffic.id}"
 }
 
 /* RDS Network */
