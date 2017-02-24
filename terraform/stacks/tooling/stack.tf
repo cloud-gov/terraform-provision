@@ -43,7 +43,7 @@ module "concourse_production" {
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_prod_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az1}"
-  elb_security_groups = "${module.stack.web_traffic_security_group}"
+  elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
 module "concourse_staging" {
@@ -62,7 +62,7 @@ module "concourse_staging" {
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_staging_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az2}"
-  elb_security_groups = "${module.stack.web_traffic_security_group}"
+  elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
 module "monitoring_production" {
