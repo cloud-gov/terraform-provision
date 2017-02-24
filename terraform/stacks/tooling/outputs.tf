@@ -111,6 +111,9 @@ output "rds_postgres_security_group" {
 output "bosh_rds_url" {
   value = "${module.stack.bosh_rds_url}"
 }
+output "bosh_rds_96_url" {
+  value = "${module.stack.bosh_rds_96_url}"
+}
 output "bosh_rds_host" {
   value = "${module.stack.bosh_rds_host}"
 }
