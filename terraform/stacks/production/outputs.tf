@@ -91,6 +91,12 @@ output "cf_main_elb_dns_name" {
 output "cf_main_elb_name" {
   value = "${module.cf.elb_main_name}"
 }
+output "cf_logging_elb_dns_name" {
+  value = "${module.cf.elb_logging_dns_name}"
+}
+output "cf_logging_elb_name" {
+  value = "${module.cf.elb_logging_name}"
+}
 output "cf_apps_elb_dns_name" {
   value = "${module.cf.elb_apps_dns_name}"
 }
