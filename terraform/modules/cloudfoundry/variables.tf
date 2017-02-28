@@ -30,6 +30,10 @@ variable "rds_db_engine_version" {
     default = "9.4.9"
 }
 
+variable "rds_96_db_engine_version" {
+    default = "9.6.1"
+}
+
 variable "rds_username" {
     default = "cfdb"
 }

@@ -18,6 +18,10 @@ output "cf_rds_url" {
   value = "${module.cf_database.rds_url}"
 }
 
+output "cf_rds_96_url" {
+  value = "${module.cf_database_96.rds_url}"
+}
+
 output "cf_rds_host" {
   value = "${module.cf_database.rds_host}"
 }

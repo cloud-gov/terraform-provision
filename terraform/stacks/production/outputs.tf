@@ -102,6 +102,9 @@ output "cf_apps_elb_name" {
 output "cf_rds_url" {
   value = "${module.cf.cf_rds_url}"
 }
+output "cf_rds_96_url" {
+  value = "${module.cf.cf_rds_96_url}"
+}
 output "cf_rds_host" {
   value = "${module.cf.cf_rds_host}"
 }
