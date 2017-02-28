@@ -1,20 +1,13 @@
-resource "aws_elb" "cloudfoundry_elb_main" {
-  name = "${var.stack_description}-CloudFoundry-Main"
+resource "aws_elb" "cloudfoundry_elb_logging" {
+  name = "${var.stack_description}-CloudFoundry-Logging"
   subnets = ["${split(",", var.elb_subnets)}"]
   security_groups = ["${split(",", var.elb_security_groups)}"]
 
   listener {
-    lb_port = 80
-    lb_protocol = "HTTP"
-    instance_port = 80
-    instance_protocol = "HTTP"
-  }
-
-  listener {
     lb_port = 443
-    lb_protocol = "HTTPS"
+    lb_protocol = "SSL"
     instance_port = 80
-    instance_protocol = "HTTP"
+    instance_protocol = "TCP"
 
     ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_main_cert_name}"
   }
@@ -36,7 +29,7 @@ resource "aws_elb" "cloudfoundry_elb_main" {
     unhealthy_threshold = 3
   }
 
-  tags =  {
-    Name = "${var.stack_description}-CloudFoundry-Main"
+  tags = {
+    Name = "${var.stack_description}-CloudFoundry-Logging"
   }
 }
