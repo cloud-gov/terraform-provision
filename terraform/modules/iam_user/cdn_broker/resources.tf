@@ -1,5 +1,5 @@
 module "cdn_broker_bucket" {
-  source = "../s3_bucket/public_encrypted_bucket"
+  source = "../../s3_bucket/public_encrypted_bucket"
   bucket = "${var.bucket}"
   aws_partition = "${var.aws_partition}"
 }
@@ -17,7 +17,7 @@ data "template_file" "policy" {
 }
 
 module "cdn_broker_user" {
-  source = "../iam_user"
+  source = ".."
 
   username = "${var.username}"
   iam_policy = "${data.template_file.policy.rendered}"
