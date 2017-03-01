@@ -1,5 +1,5 @@
 module "cdn_broker" {
-  source = "../../modules/cdn_broker"
+  source = "../../modules/iam_user/cdn_broker"
 
   account_id = "${var.account_id}"
   aws_partition = "${var.aws_partition}"
