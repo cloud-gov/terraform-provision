@@ -62,9 +62,15 @@ output "services_subnet_az2" {
 output "s3_broker_username" {
   value = "${module.s3_broker_user.username}"
 }
-output "s3_broker_access_key_id" {
-  value = "${module.s3_broker_user.access_key_id}"
+output "s3_broker_access_key_id_prev" {
+  value = "${module.s3_broker_user.access_key_id_prev}"
 }
-output "s3_broker_secret_access_key" {
-  value = "${module.s3_broker_user.secret_access_key}"
+output "s3_broker_secret_access_key_prev" {
+  value = "${module.s3_broker_user.secret_access_key_prev}"
+}
+output "s3_broker_access_key_id_curr" {
+  value = "${module.s3_broker_user.access_key_id_curr}"
+}
+output "s3_broker_secret_access_key_curr" {
+  value = "${module.s3_broker_user.secret_access_key_curr}"
 }

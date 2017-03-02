@@ -1,61 +1,24 @@
-module "aws_broker_user" {
-    source = ".."
+data "template_file" "policy" {
+  template = "${file("${path.module}/policy.json")}"
 
-    username = "${var.username}"
-
-    /* TODO: Make the bucket names configurable */
-    /* TODO: Make `subgrp` configurable */
-    iam_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "manageRdsInstances",
-            "Effect": "Allow",
-            "Action": [
-                "rds:DescribeDBInstances",
-                "rds:CreateDBInstance",
-                "rds:DeleteDBInstance",
-                "rds:ModifyDBInstance",
-                "rds:AddTagsToResource",
-                "rds:ListTagsForResource",
-                "rds:RemoveTagsFromResource",
-                "rds:DescribeDBSnapshots",
-                "rds:DeleteDBSnapshot"
-            ],
-            "Resource": [
-                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
-                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:snapshot:cg-aws-broker-*",
-                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:production",
-                "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:staging"
-            ]
-        },
-        {
-            "Sid": "readTerraformState",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:GetObject"
-            ],
-            "Resource": [
-                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}",
-                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/*"
-            ]
-        },
-        {
-            "Sid": "manageTerraformState",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:GetObject",
-                "s3:PutObject"
-            ],
-            "Resource": [
-                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*",
-                "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*/*"
-            ]
-        }
-    ]
+  vars {
+    aws_partition = "${var.aws_partition}"
+    aws_default_region = "${var.aws_default_region}"
+    remote_state_bucket = "${var.remote_state_bucket}"
+    account_id = "${var.account_id}"
+  }
 }
-EOF
+
+resource "aws_iam_user" "iam_user" {
+  name = "${var.username}"
+}
+
+resource "aws_iam_access_key" "iam_access_key" {
+  user = "${aws_iam_user.iam_user.name}"
+}
+
+resource "aws_iam_user_policy" "iam_policy" {
+  name = "${aws_iam_user.iam_user.name}-policy"
+  user = "${aws_iam_user.iam_user.name}"
+  policy = "${data.template_file.policy.rendered}"
 }

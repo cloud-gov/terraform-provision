@@ -77,11 +77,17 @@ output "bosh_rds_port" {
 output "bosh_username" {
   value = "${module.stack.bosh_username}"
 }
-output "bosh_access_key_id" {
-  value = "${module.stack.bosh_access_key_id}"
+output "bosh_access_key_id_prev" {
+  value = "${module.stack.bosh_access_key_id_prev}"
 }
-output "bosh_secret_access_key" {
-  value = "${module.stack.bosh_secret_access_key}"
+output "bosh_secret_access_key_prev" {
+  value = "${module.stack.bosh_secret_access_key_prev}"
+}
+output "bosh_access_key_id_curr" {
+  value = "${module.stack.bosh_access_key_id_curr}"
+}
+output "bosh_secret_access_key_curr" {
+  value = "${module.stack.bosh_secret_access_key_curr}"
 }
 
 /* CloudFoundry ELBs */
@@ -172,11 +178,17 @@ output "kubernetes_ec2_security_group" {
 output "s3_broker_username" {
   value = "${module.cf.s3_broker_username}"
 }
-output "s3_broker_access_key_id" {
-  value = "${module.cf.s3_broker_access_key_id}"
+output "s3_broker_access_key_id_prev" {
+  value = "${module.cf.s3_broker_access_key_id_prev}"
 }
-output "s3_broker_secret_access_key" {
-  value = "${module.cf.s3_broker_secret_access_key}"
+output "s3_broker_secret_access_key_prev" {
+  value = "${module.cf.s3_broker_secret_access_key_prev}"
+}
+output "s3_broker_access_key_id_curr" {
+  value = "${module.cf.s3_broker_access_key_id_curr}"
+}
+output "s3_broker_secret_access_key_curr" {
+  value = "${module.cf.s3_broker_secret_access_key_curr}"
 }
 
 /* Shibboleth Proxy ELB */
