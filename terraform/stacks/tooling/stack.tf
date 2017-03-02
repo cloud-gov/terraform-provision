@@ -232,26 +232,6 @@ module "etcd_backup_role" {
 }
 
 module "cloudwatch_user" {
-  source = "../../modules/iam_user"
+  source = "../../modules/iam_user/cloudwatch_user"
   username = "bosh-cloudwatch"
-  iam_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams",
-        "cloudwatch:ListMetrics",
-        "cloudwatch:GetMetricData",
-        "cloudwatch:GetMetricStatistics"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
 }

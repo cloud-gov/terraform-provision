@@ -9,9 +9,16 @@ data "template_file" "policy" {
   }
 }
 
-module "go_s3_broker_user" {
-  source = ".."
+resource "aws_iam_user" "iam_user" {
+  name = "${var.username}"
+}
 
-  username = "${var.username}"
-  iam_policy = "${data.template_file.policy.rendered}"
+resource "aws_iam_access_key" "iam_access_key" {
+  user = "${aws_iam_user.iam_user.name}"
+}
+
+resource "aws_iam_user_policy" "iam_policy" {
+  name = "${aws_iam_user.iam_user.name}-policy"
+  user = "${aws_iam_user.iam_user.name}"
+  policy = "${data.template_file.policy.rendered}"
 }

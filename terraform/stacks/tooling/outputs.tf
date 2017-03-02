@@ -242,111 +242,170 @@ output "staging_monitoring_influxdb_bucket_name" {
 output "master_bosh_username" {
   value = "${module.master_bosh_user.username}"
 }
-output "master_bosh_access_key_id" {
-  value = "${module.master_bosh_user.access_key_id}"
+output "master_bosh_access_key_id_prev" {
+  value = "${module.master_bosh_user.access_key_id_prev}"
 }
-output "master_bosh_secret_access_key" {
-  value = "${module.master_bosh_user.secret_access_key}"
+output "master_bosh_secret_access_key_prev" {
+  value = "${module.master_bosh_user.secret_access_key_prev}"
+}
+output "master_bosh_access_key_id_curr" {
+  value = "${module.master_bosh_user.access_key_id_curr}"
+}
+output "master_bosh_secret_access_key_curr" {
+  value = "${module.master_bosh_user.secret_access_key_curr}"
 }
 
 /* tooling bosh user */
 output "tooling_bosh_username" {
   value = "${module.tooling_bosh_user.username}"
 }
-output "tooling_bosh_access_key_id" {
-  value = "${module.tooling_bosh_user.access_key_id}"
+output "tooling_bosh_access_key_id_prev" {
+  value = "${module.tooling_bosh_user.access_key_id_prev}"
 }
-output "tooling_bosh_secret_access_key" {
-  value = "${module.tooling_bosh_user.secret_access_key}"
+output "tooling_bosh_secret_access_key_prev" {
+  value = "${module.tooling_bosh_user.secret_access_key_prev}"
+}
+output "tooling_bosh_access_key_id_curr" {
+  value = "${module.tooling_bosh_user.access_key_id_curr}"
+}
+output "tooling_bosh_secret_access_key_curr" {
+  value = "${module.tooling_bosh_user.secret_access_key_curr}"
 }
 
 /* ci user to access bosh secrets */
 output "ci_username" {
   value = "${module.ci_user.username}"
 }
-output "ci_access_key_id" {
-  value = "${module.ci_user.access_key_id}"
+output "ci_access_key_id_prev" {
+  value = "${module.ci_user.access_key_id_prev}"
 }
-output "ci_secret_access_key" {
-  value = "${module.ci_user.secret_access_key}"
+output "ci_secret_access_key_prev" {
+  value = "${module.ci_user.secret_access_key_prev}"
+}
+output "ci_access_key_id_curr" {
+  value = "${module.ci_user.access_key_id_curr}"
+}
+output "ci_secret_access_key_curr" {
+  value = "${module.ci_user.secret_access_key_curr}"
 }
 
 /* ci user to access bosh secrets */
 output "ci_east_username" {
   value = "${module.ci_user_east.username}"
 }
-output "ci_east_access_key_id" {
-  value = "${module.ci_user_east.access_key_id}"
+output "ci_east_access_key_id_prev" {
+  value = "${module.ci_user_east.access_key_id_prev}"
 }
-output "ci_east_secret_access_key" {
-  value = "${module.ci_user_east.secret_access_key}"
+output "ci_east_secret_access_key_prev" {
+  value = "${module.ci_user_east.secret_access_key_prev}"
 }
-
+output "ci_east_access_key_id_curr" {
+  value = "${module.ci_user_east.access_key_id_curr}"
+}
+output "ci_east_secret_access_key_curr" {
+  value = "${module.ci_user_east.secret_access_key_curr}"
+}
 
 /* release user to write release blobs */
 output "release_username" {
   value = "${module.release_user.username}"
 }
-output "release_access_key_id" {
-  value = "${module.release_user.access_key_id}"
+output "release_access_key_id_prev" {
+  value = "${module.release_user.access_key_id_prev}"
 }
-output "release_secret_access_key" {
-  value = "${module.release_user.secret_access_key}"
+output "release_secret_access_key_prev" {
+  value = "${module.release_user.secret_access_key_prev}"
+}
+output "release_access_key_id_curr" {
+  value = "${module.release_user.access_key_id_curr}"
+}
+output "release_secret_access_key_curr" {
+  value = "${module.release_user.secret_access_key_curr}"
 }
 
 /* stemcell user */
 output "stemcell_username" {
   value = "${module.stemcell_user.username}"
 }
-output "stemcell_access_key_id" {
-  value = "${module.stemcell_user.access_key_id}"
+output "stemcell_access_key_id_prev" {
+  value = "${module.stemcell_user.access_key_id_prev}"
 }
-output "stemcell_secret_access_key" {
-  value = "${module.stemcell_user.secret_access_key}"
+output "stemcell_secret_access_key_prev" {
+  value = "${module.stemcell_user.secret_access_key_prev}"
+}
+output "stemcell_access_key_id_curr" {
+  value = "${module.stemcell_user.access_key_id_curr}"
+}
+output "stemcell_secret_access_key_curr" {
+  value = "${module.stemcell_user.secret_access_key_curr}"
 }
 
 /* limit check user */
 output "limit_check_username" {
   value = "${module.limit_check_user.username}"
 }
-output "limit_check_access_key_id" {
-  value = "${module.limit_check_user.access_key_id}"
+output "limit_check_access_key_id_prev" {
+  value = "${module.limit_check_user.access_key_id_prev}"
 }
-output "limit_check_secret_access_key" {
-  value = "${module.limit_check_user.secret_access_key}"
+output "limit_check_secret_access_key_prev" {
+  value = "${module.limit_check_user.secret_access_key_prev}"
+}
+output "limit_check_access_key_id_curr" {
+  value = "${module.limit_check_user.access_key_id_curr}"
+}
+output "limit_check_secret_access_key_curr" {
+  value = "${module.limit_check_user.secret_access_key_curr}"
 }
 
 /* aws broker user */
 output "aws_broker_username" {
   value = "${module.aws_broker_user.username}"
 }
-output "aws_broker_access_key_id" {
-  value = "${module.aws_broker_user.access_key_id}"
+output "aws_broker_access_key_id_prev" {
+  value = "${module.aws_broker_user.access_key_id_prev}"
 }
-output "aws_broker_secret_access_key" {
-  value = "${module.aws_broker_user.secret_access_key}"
+output "aws_broker_secret_access_key_prev" {
+  value = "${module.aws_broker_user.secret_access_key_prev}"
+}
+output "aws_broker_access_key_id_curr" {
+  value = "${module.aws_broker_user.access_key_id_curr}"
+}
+output "aws_broker_secret_access_key_curr" {
+  value = "${module.aws_broker_user.secret_access_key_curr}"
 }
 
 /* cf cc user */
 output "cf_username" {
   value = "${module.cf_user.username}"
 }
-output "cf_access_key_id" {
-  value = "${module.cf_user.access_key_id}"
+output "cf_access_key_id_prev" {
+  value = "${module.cf_user.access_key_id_prev}"
 }
-output "cf_secret_access_key" {
-  value = "${module.cf_user.secret_access_key}"
+output "cf_secret_access_key_prev" {
+  value = "${module.cf_user.secret_access_key_prev}"
+}
+output "cf_access_key_id_curr" {
+  value = "${module.cf_user.access_key_id_curr}"
+}
+output "cf_secret_access_key_curr" {
+  value = "${module.cf_user.secret_access_key_curr}"
 }
 
 /* cloudwatch user */
 output "awslogs_username" {
   value = "${module.cloudwatch_user.username}"
 }
-output "awslogs_access_key_id" {
-  value = "${module.cloudwatch_user.access_key_id}"
+output "awslogs_access_key_id_prev" {
+  value = "${module.cloudwatch_user.access_key_id_prev}"
 }
-output "awslogs_secret_access_key" {
-  value = "${module.cloudwatch_user.secret_access_key}"
+output "awslogs_secret_access_key_prev" {
+  value = "${module.cloudwatch_user.secret_access_key_prev}"
+}
+output "awslogs_access_key_id_curr" {
+  value = "${module.cloudwatch_user.access_key_id_curr}"
+}
+output "awslogs_secret_access_key_curr" {
+  value = "${module.cloudwatch_user.secret_access_key_curr}"
 }
 
 /* nessus elb */
