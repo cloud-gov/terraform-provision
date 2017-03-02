@@ -1,11 +1,15 @@
 output "username" {
-  value = "${module.read_only_admin.username}"
+  value = "${var.username}"
 }
-
-output "access_key_id" {
-  value = "${module.read_only_admin.access_key_id}"
+output "access_key_id_prev" {
+  value = ""
 }
-
-output "secret_access_key" {
-  value = "${module.read_only_admin.secret_access_key}"
+output "secret_access_key_prev" {
+  value = ""
+}
+output "access_key_id_curr" {
+  value = "${aws_iam_access_key.iam_access_key.id}"
+}
+output "secret_access_key_curr" {
+  value = "${aws_iam_access_key.iam_access_key.secret}"
 }
