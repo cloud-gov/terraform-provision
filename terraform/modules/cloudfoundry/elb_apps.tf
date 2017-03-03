@@ -19,15 +19,6 @@ resource "aws_elb" "cloudfoundry_elb_apps" {
     ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
   }
 
-  listener {
-    lb_port = 4443
-    lb_protocol = "SSL"
-    instance_port = 80
-    instance_protocol = "TCP"
-
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_apps_cert_name}"
-  }
-
   health_check {
     healthy_threshold = 2
     interval = 5
