@@ -1,4 +1,3 @@
-
 variable "stack_description" {}
 
 variable "rds_instance_type" {
@@ -22,7 +21,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-    default = "9.4.9"
+    default = "9.6.1"
 }
 
 variable "rds_username" {

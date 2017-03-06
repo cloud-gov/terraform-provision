@@ -63,9 +63,6 @@ output "rds_postgres_security_group" {
 output "bosh_rds_url" {
   value = "${module.stack.bosh_rds_url}"
 }
-output "bosh_rds_96_url" {
-  value = "${module.stack.bosh_rds_96_url}"
-}
 output "bosh_rds_host" {
   value = "${module.stack.bosh_rds_host}"
 }
@@ -116,14 +113,8 @@ output "cf_apps_elb_name" {
 output "cf_rds_url" {
   value = "${module.cf.cf_rds_url}"
 }
-output "cf_rds_96_url" {
-  value = "${module.cf.cf_rds_96_url}"
-}
 output "cf_rds_host" {
   value = "${module.cf.cf_rds_host}"
-}
-output "cf_rds_96_host" {
-  value = "${module.cf.cf_rds_96_host}"
 }
 output "cf_rds_port" {
   value = "${module.cf.cf_rds_port}"
@@ -224,17 +215,11 @@ output "concourse_security_group" {
 output "concourse_rds_identifier" {
   value = "${module.concourse.concourse_rds_identifier}"
 }
-output "concourse_rds_96_identifier" {
-  value = "${module.concourse.concourse_rds_96_identifier}"
-}
 output "concourse_rds_name" {
   value = "${module.concourse.concourse_rds_name}"
 }
 output "concourse_rds_url" {
   value = "${module.concourse.concourse_rds_url}"
-}
-output "concourse_rds_96_url" {
-  value = "${module.concourse.concourse_rds_96_url}"
 }
 output "concourse_rds_username" {
   value = "${module.concourse.concourse_rds_username}"

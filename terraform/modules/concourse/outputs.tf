@@ -11,31 +11,23 @@ output "concourse_security_group" {
 
 /* RDS Concourse Instance */
 output "concourse_rds_identifier" {
-  value = "${module.rds.rds_identifier}"
-}
-
-output "concourse_rds_96_identifier" {
   value = "${module.rds_96.rds_identifier}"
 }
 
 output "concourse_rds_name" {
-  value = "${module.rds.rds_name}"
+  value = "${module.rds_96.rds_name}"
 }
 
 output "concourse_rds_url" {
-  value = "${module.rds.rds_url}"
-}
-
-output "concourse_rds_96_url" {
   value = "${module.rds_96.rds_url}"
 }
 
 output "concourse_rds_username" {
-  value = "${module.rds.rds_username}"
+  value = "${module.rds_96.rds_username}"
 }
 
 output "concourse_rds_password" {
-  value = "${module.rds.rds_password}"
+  value = "${module.rds_96.rds_password}"
 }
 
 output "concourse_elb_dns_name" {
