@@ -120,6 +120,9 @@ output "cf_rds_96_url" {
 output "cf_rds_host" {
   value = "${module.cf.cf_rds_host}"
 }
+output "cf_rds_96_host" {
+  value = "${module.cf.cf_rds_96_host}"
+}
 output "cf_rds_port" {
   value = "${module.cf.cf_rds_port}"
 }

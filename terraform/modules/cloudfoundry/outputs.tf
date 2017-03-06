@@ -34,6 +34,10 @@ output "cf_rds_host" {
   value = "${module.cf_database.rds_host}"
 }
 
+output "cf_rds_96_host" {
+  value = "${module.cf_database_96.rds_host}"
+}
+
 output "cf_rds_port" {
   value = "${module.cf_database.rds_port}"
 }
