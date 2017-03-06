@@ -65,14 +65,11 @@ output "rds_postgres_security_group" {
 
 /* RDS Bosh Instance */
 output "bosh_rds_url" {
-  value = "${module.rds.rds_url}"
-}
-output "bosh_rds_96_url" {
   value = "${module.rds_96.rds_url}"
 }
 output "bosh_rds_host" {
-  value = "${module.rds.rds_host}"
+  value = "${module.rds_96.rds_host}"
 }
 output "bosh_rds_port" {
-  value = "${module.rds.rds_port}"
+  value = "${module.rds_96.rds_port}"
 }
