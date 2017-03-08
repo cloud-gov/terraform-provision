@@ -42,7 +42,7 @@ resource "aws_elb" "prometheus_elb" {
   health_check {
     healthy_threshold = 2
     interval = 5
-    target = "HTTP:80"
+    target = "HTTP:80/"
     timeout = 4
     unhealthy_threshold = 3
   }
