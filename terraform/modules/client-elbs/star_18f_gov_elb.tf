@@ -19,15 +19,6 @@ resource "aws_elb" "star_18f_gov_elb" {
     ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.star_18f_gov_cert_name}"
   }
 
-  listener {
-    lb_port = 4443
-    lb_protocol = "SSL"
-    instance_port = 80
-    instance_protocol = "TCP"
-
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.star_18f_gov_cert_name}"
-  }
-
   health_check {
     healthy_threshold = 2
     interval = 5
@@ -36,8 +27,7 @@ resource "aws_elb" "star_18f_gov_elb" {
     unhealthy_threshold = 3
   }
 
-  tags =  {
+  tags = {
     Name = "${var.stack_description}-star-18f-gov-elb"
   }
-
 }

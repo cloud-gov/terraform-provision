@@ -24,13 +24,6 @@ resource "aws_security_group" "restricted_web_traffic" {
     cidr_blocks = ["${split(",", var.restricted_ingress_web_cidrs)}"]
   }
 
-  ingress {
-    from_port = 4443
-    to_port = 4443
-    protocol = "tcp"
-    cidr_blocks = ["${split(",", var.restricted_ingress_web_cidrs)}"]
-  }
-
   egress {
     from_port = 0
     to_port = 0
@@ -38,8 +31,7 @@ resource "aws_security_group" "restricted_web_traffic" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags =  {
+  tags = {
     Name = "${var.stack_description} - Restricted Incoming Web Traffic"
   }
-
 }
