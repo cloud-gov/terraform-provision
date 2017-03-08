@@ -1,5 +1,11 @@
-/* VPC */
+output "az1" {
+  value = "${var.az1}"
+}
+output "az2" {
+  value = "${var.az2}"
+}
 
+/* VPC */
 output "vpc_region" {
   value = "${var.aws_default_region}"
 }
