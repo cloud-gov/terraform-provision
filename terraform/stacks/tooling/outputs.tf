@@ -55,6 +55,14 @@ output "private_subnet_az2_dns" {
   value = "${cidrhost("${var.private_cidr_2}", 2)}"
 }
 
+output "staging_monitoring_subnet_dns" {
+  value = "${cidrhost("${var.monitoring_staging_cidr}", 2)}"
+}
+
+output "production_monitoring_subnet_dns" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 2)}"
+}
+
 output "master_bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 6)}"
 }
@@ -204,6 +212,12 @@ output "production_monitoring_elb_name" {
 output "production_monitoring_influxdb_bucket_name" {
   value = "${module.monitoring_production.monitoring_influxdb_backups}"
 }
+output "production_prometheus_elb_dns_name" {
+  value = "${module.monitoring_production.monitoring_elb_dns_name}"
+}
+output "production_prometheus_elb_name" {
+  value = "${module.monitoring_production.monitoring_elb_name}"
+}
 
 /* Staging Monitoring */
 output "staging_monitoring_subnet" {
@@ -220,6 +234,12 @@ output "staging_monitoring_elb_name" {
 }
 output "staging_monitoring_influxdb_bucket_name" {
   value = "${module.monitoring_staging.monitoring_influxdb_backups}"
+}
+output "staging_prometheus_elb_dns_name" {
+  value = "${module.monitoring_staging.monitoring_elb_dns_name}"
+}
+output "staging_prometheus_elb_name" {
+  value = "${module.monitoring_staging.monitoring_elb_name}"
 }
 
 
