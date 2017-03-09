@@ -28,7 +28,7 @@ resource "aws_elb" "monitoring_elb" {
 resource "aws_elb" "prometheus_elb" {
   name = "${var.stack_description}-Prometheus"
   subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  security_groups = ["${split(",", var.prometheus_elb_security_groups)}"]
   idle_timeout = 3600
 
   listener {
@@ -42,7 +42,7 @@ resource "aws_elb" "prometheus_elb" {
   health_check {
     healthy_threshold = 2
     interval = 5
-    target = "HTTP:80/"
+    target = "TCP:80"
     timeout = 4
     unhealthy_threshold = 3
   }
