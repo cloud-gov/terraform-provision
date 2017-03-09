@@ -61,12 +61,25 @@ output "private_subnet_az2_dns" {
   value = "${cidrhost("${var.private_cidr_2}", 2)}"
 }
 
+output "production_monitoring_subnet_dns" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 2)}"
+}
 output "staging_monitoring_subnet_dns" {
   value = "${cidrhost("${var.monitoring_staging_cidr}", 2)}"
 }
 
-output "production_monitoring_subnet_dns" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 2)}"
+output "production_monitoring_subnet_cidr" {
+  value = "${var.monitoring_production_cidr}"
+}
+output "staging_monitoring_subnet_cidr" {
+  value = "${var.monitoring_staging_cidr}"
+}
+
+output "production_monitoring_subnet_gateway" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 1)}"
+}
+output "staging_monitoring_subnet_gateway" {
+  value = "${cidrhost("${var.monitoring_staging_cidr}", 1)}"
 }
 
 output "master_bosh_static_ip" {
@@ -203,6 +216,9 @@ output "staging_concourse_elb_name" {
 }
 
 /* Production Monitoring */
+output "production_monitoring_az" {
+  value = "${module.monitoring_production.monitoring_az}"
+}
 output "production_monitoring_subnet" {
   value = "${module.monitoring_production.monitoring_subnet}"
 }
@@ -226,6 +242,9 @@ output "production_prometheus_elb_name" {
 }
 
 /* Staging Monitoring */
+output "staging_monitoring_az" {
+  value = "${module.monitoring_staging.monitoring_az}"
+}
 output "staging_monitoring_subnet" {
   value = "${module.monitoring_staging.monitoring_subnet}"
 }
