@@ -77,6 +77,7 @@ module "monitoring_production" {
   elb_cert_name = "${var.monitoring_production_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az1}"
   elb_security_groups = "${module.stack.web_traffic_security_group}"
+  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
 module "monitoring_staging" {
@@ -91,6 +92,7 @@ module "monitoring_staging" {
   elb_cert_name = "${var.monitoring_staging_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az2}"
   elb_security_groups = "${module.stack.web_traffic_security_group}"
+  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
 module "tooling_bosh_user" {
