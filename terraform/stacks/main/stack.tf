@@ -33,7 +33,7 @@ module "cf" {
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
-    stack_prefix = "cf-staging"
+    stack_prefix = "{var.stack_prefix}"
 
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
@@ -41,7 +41,7 @@ module "cf" {
     services_cidr_1 = "${var.services_cidr_1}"
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
-    bucket_prefix = "staging-cg"
+    bucket_prefix = "${var.bucket_prefix}"
 }
 
 module "diego" {
@@ -53,6 +53,7 @@ module "diego" {
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
+    stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
 }
@@ -68,6 +69,19 @@ module "kubernetes" {
     tooling_vpc_cidr = "${module.stack.tooling_vpc_cidr}"
     elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
+}
+
+module "client-elbs" {
+    source = "../../modules/client-elbs"
+
+    count = "${var.client_elb_count}"
+    stack_description = "${var.stack_description}"
+
+    account_id = "${var.account_id}"
+    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    aws_partition = "${var.aws_partition}"
+    star_18f_gov_cert_name = "${var.client_elb_cert_name}"
 }
 
 module "shibboleth" {

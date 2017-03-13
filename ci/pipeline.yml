@@ -213,7 +213,7 @@ jobs:
     params: &staging-params
       TERRAFORM_ACTION: plan
       STACK_NAME: staging
-      TEMPLATE_SUBDIR: terraform/stacks/staging
+      TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
@@ -240,6 +240,8 @@ jobs:
       TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
       TF_VAR_concourse_rds_password: {{staging_vpc_concourse_rds_password}}
       TF_VAR_concourse_cidr: {{staging_vpc_concourse_cidr}}
+      TF_VAR_stack_prefix: cf-staging
+      TF_VAR_bucket_prefix: staging-cg
 
 - name: bootstrap-staging
   plan:
@@ -313,7 +315,7 @@ jobs:
     params: &production-params
       TERRAFORM_ACTION: plan
       STACK_NAME: production
-      TEMPLATE_SUBDIR: terraform/stacks/production
+      TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
@@ -340,6 +342,10 @@ jobs:
       TF_VAR_diego_cidr_2: {{production_diego_cidr_2}}
       TF_VAR_concourse_rds_password: {{production_vpc_concourse_rds_password}}
       TF_VAR_concourse_cidr: {{production_vpc_concourse_cidr}}
+      TF_VAR_client_elb_count: 1
+      TF_VAR_client_elb_cert_name: star-18f-gov
+      TF_VAR_stack_prefix: cf-production
+      TF_VAR_bucket_prefix: cg
 
 - name: bootstrap-production
   plan:
