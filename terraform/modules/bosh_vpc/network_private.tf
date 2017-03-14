@@ -1,4 +1,3 @@
-
 /*
  * Variables required:
  *  stack_description
@@ -13,14 +12,12 @@
  *   aws_vpc referenced as 'main_vpc'
  */
 
-
 resource "aws_subnet" "az1_private" {
   vpc_id = "${aws_vpc.main_vpc.id}"
   cidr_block = "${var.private_cidr_1}"
   availability_zone = "${var.az1}"
 
-
-  tags =  {
+  tags {
     Name = "${var.stack_description} (Private AZ1)"
   }
 }
@@ -30,7 +27,7 @@ resource "aws_subnet" "az2_private" {
   cidr_block = "${var.private_cidr_2}"
   availability_zone = "${var.az2}"
 
-  tags =  {
+  tags {
     Name = "${var.stack_description} (Private AZ2)"
   }
 }
@@ -103,4 +100,3 @@ resource "aws_instance" "az2_private_nat" {
     Name = "${var.stack_description}  (AZ2 NAT)"
   }
 }
-

@@ -33,7 +33,7 @@ module "cf" {
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
-    stack_prefix = "{var.stack_prefix}"
+    stack_prefix = "${var.stack_prefix}"
 
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"

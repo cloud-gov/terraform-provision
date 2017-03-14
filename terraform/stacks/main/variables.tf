@@ -1,6 +1,4 @@
-variable "stack_description" {
-  default = "production"
-}
+variable "stack_description" {}
 
 variable "aws_partition" {
   default = "aws-us-gov"
