@@ -5,7 +5,6 @@
  *
  */
 
-
 resource "aws_security_group" "diego-elb-sg" {
   name = "${var.stack_description}-diego-elb-sg"
   description = "ELB Security Group for Diego Proxy"
@@ -17,7 +16,7 @@ resource "aws_security_group" "diego-elb-sg" {
     from_port = 2222
     to_port = 2222
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
   }
 
   # outbound internet access
@@ -40,7 +39,6 @@ resource "aws_elb" "diego_elb_main" {
     lb_protocol = "TCP"
     instance_port = 2222
     instance_protocol = "TCP"
-
   }
 
   health_check {
@@ -51,8 +49,7 @@ resource "aws_elb" "diego_elb_main" {
     unhealthy_threshold = 2
   }
 
-  tags =  {
+  tags {
     Name = "${var.stack_description}-Diego-Proxy-ELB"
   }
-
 }

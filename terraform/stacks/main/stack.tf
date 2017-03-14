@@ -58,6 +58,9 @@ module "diego" {
     stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
+    ingress_cidrs = "${var.force_restricted_network == "no" ?
+      "0.0.0.0/0" :
+      "${var.restricted_ingress_web_cidrs}"}"
 }
 
 module "kubernetes" {

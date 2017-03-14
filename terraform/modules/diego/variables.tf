@@ -19,3 +19,7 @@ variable "elb_subnets" {}
 variable "diego_cidr_1" {}
 
 variable "diego_cidr_2" {}
+
+variable "ingress_cidrs" {
+  default = "0.0.0.0"
+}
