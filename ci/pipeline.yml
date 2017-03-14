@@ -352,8 +352,7 @@ jobs:
       TF_VAR_apps_cert_name: star-app-cloud-gov-16
       TF_VAR_elb_shibboleth_cert_name: star-fr-cloud-gov-06-16
       TF_VAR_concourse_elb_cert_name: star-fr-cloud-gov-06-16
-      TF_VAR_client_elb_count: 1
-      TF_VAR_client_elb_cert_name: star-18f-gov
+      TF_VAR_18f_gov_elb_cert_name: star-18f-gov
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
 

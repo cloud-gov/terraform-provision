@@ -46,10 +46,7 @@ variable "kubernetes_cluster_id" {}
 
 variable "restricted_ingress_web_cidrs" {}
 
-variable "client_elb_count" {
-  default = 0
-}
-variable "client_elb_cert_name" {
+variable "18f_gov_elb_cert_name" {
   default = ""
 }
 

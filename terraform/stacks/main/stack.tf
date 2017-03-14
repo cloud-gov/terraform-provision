@@ -74,14 +74,14 @@ module "kubernetes" {
 module "client-elbs" {
     source = "../../modules/client-elbs"
 
-    count = "${var.client_elb_count}"
+    count = "${var.18f_gov_elb_cert_name == "" ? 0 : 1}"
     stack_description = "${var.stack_description}"
 
     account_id = "${var.account_id}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
     elb_security_groups = "${module.stack.web_traffic_security_group}"
     aws_partition = "${var.aws_partition}"
-    star_18f_gov_cert_name = "${var.client_elb_cert_name}"
+    star_18f_gov_cert_name = "${var.18f_gov_elb_cert_name}"
 }
 
 module "shibboleth" {
