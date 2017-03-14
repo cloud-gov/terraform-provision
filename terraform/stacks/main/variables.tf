@@ -1,13 +1,13 @@
 variable "stack_description" {
-    default = "production"
+  default = "production"
 }
 
 variable "aws_partition" {
-    default = "aws-us-gov"
+  default = "aws-us-gov"
 }
 
 variable "aws_default_region" {
-    default = "us-gov-west-1"
+  default = "us-gov-west-1"
 }
 
 variable "vpc_cidr" {}
@@ -33,16 +33,12 @@ variable "account_id" {}
 variable "remote_state_bucket" {}
 
 variable "target_stack_name" {
-    default = "tooling"
+  default = "tooling"
 }
 
-variable "main_cert_name" {
-    default="star-fr-cloud-gov-06-16"
-}
+variable "main_cert_name" {}
 
-variable "apps_cert_name" {
-    default="star-app-cloud-gov-16"
-}
+variable "apps_cert_name" {}
 
 variable "services_cidr_1" {}
 variable "services_cidr_2" {}
@@ -77,9 +73,7 @@ variable "elb_shibboleth_cert_name" {
 /* Variables for customer concourse service */
 variable "concourse_cidr" {}
 variable "concourse_rds_password" {}
-variable "concourse_elb_cert_name" {
-  default = "star-fr-cloud-gov-06-16"
-}
+variable "concourse_elb_cert_name" {}
 
 variable "stack_prefix" {}
 variable "bucket_prefix" {}

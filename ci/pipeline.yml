@@ -218,6 +218,7 @@ jobs:
       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_stack_description: staging
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -240,6 +241,10 @@ jobs:
       TF_VAR_diego_cidr_2: {{staging_diego_cidr_2}}
       TF_VAR_concourse_rds_password: {{staging_vpc_concourse_rds_password}}
       TF_VAR_concourse_cidr: {{staging_vpc_concourse_cidr}}
+      TF_VAR_main_cert_name: star-fr-stage-cloud-gov-06-16
+      TF_VAR_apps_cert_name: star-fr-stage-cloud-gov-06-16
+      TF_VAR_elb_shibboleth_cert_name: star-fr-stage-cloud-gov-06-16
+      TF_VAR_concourse_elb_cert_name: star-fr-stage-cloud-gov-06-16
       TF_VAR_stack_prefix: cf-staging
       TF_VAR_bucket_prefix: staging-cg
 
@@ -320,6 +325,7 @@ jobs:
       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_stack_description: production
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -342,6 +348,10 @@ jobs:
       TF_VAR_diego_cidr_2: {{production_diego_cidr_2}}
       TF_VAR_concourse_rds_password: {{production_vpc_concourse_rds_password}}
       TF_VAR_concourse_cidr: {{production_vpc_concourse_cidr}}
+      TF_VAR_main_cert_name: star-fr-cloud-gov-06-16
+      TF_VAR_apps_cert_name: star-app-cloud-gov-16
+      TF_VAR_elb_shibboleth_cert_name: star-fr-cloud-gov-06-16
+      TF_VAR_concourse_elb_cert_name: star-fr-cloud-gov-06-16
       TF_VAR_client_elb_count: 1
       TF_VAR_client_elb_cert_name: star-18f-gov
       TF_VAR_stack_prefix: cf-production
