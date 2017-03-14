@@ -15,7 +15,7 @@ resource "aws_subnet" "az1_public" {
   cidr_block = "${var.public_cidr_1}"
   availability_zone = "${var.az1}"
 
-  tags =  {
+  tags {
     Name = "${var.stack_description} (Public AZ1)"
   }
 }
@@ -25,7 +25,7 @@ resource "aws_subnet" "az2_public" {
   cidr_block = "${var.public_cidr_2}"
   availability_zone = "${var.az2}"
 
-  tags =  {
+  tags {
     Name = "${var.stack_description} (Public AZ2)"
   }
 }

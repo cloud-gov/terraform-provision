@@ -28,7 +28,9 @@ module "cf" {
     elb_main_cert_name = "${var.main_cert_name}"
     elb_apps_cert_name = "${var.apps_cert_name}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
-    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    elb_security_groups = "${var.force_restricted_network == "no" ?
+      module.stack.web_traffic_security_group :
+      module.stack.restricted_web_traffic_security_group}"
 
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
@@ -79,7 +81,9 @@ module "client-elbs" {
 
     account_id = "${var.account_id}"
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
-    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    elb_security_groups = "${var.force_restricted_network == "no" ?
+      module.stack.web_traffic_security_group :
+      module.stack.restricted_web_traffic_security_group}"
     aws_partition = "${var.aws_partition}"
     star_18f_gov_cert_name = "${var.18f_gov_elb_cert_name}"
 }
@@ -91,7 +95,9 @@ module "shibboleth" {
     elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
 
     elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
-    elb_security_groups = "${module.stack.web_traffic_security_group}"
+    elb_security_groups = "${var.force_restricted_network == "no" ?
+      module.stack.web_traffic_security_group :
+      module.stack.restricted_web_traffic_security_group}"
     stack_description = "${var.stack_description}"
     account_id = "${var.account_id}"
     aws_partition = "${var.aws_partition}"
@@ -113,5 +119,7 @@ module "concourse" {
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az2}"
-  elb_security_groups = "${module.stack.web_traffic_security_group}"
+  elb_security_groups = "${var.force_restricted_network == "no" ?
+    module.stack.web_traffic_security_group :
+    module.stack.restricted_web_traffic_security_group}"
 }
