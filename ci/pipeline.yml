@@ -242,10 +242,10 @@ jobs:
       TF_VAR_diego_cidr_2: {{development_diego_cidr_2}}
       TF_VAR_concourse_rds_password: {{development_vpc_concourse_rds_password}}
       TF_VAR_concourse_cidr: {{development_vpc_concourse_cidr}}
-      TF_VAR_main_cert_name: star-fr-stage-cloud-gov-06-16
-      TF_VAR_apps_cert_name: star-fr-stage-cloud-gov-06-16
-      TF_VAR_elb_shibboleth_cert_name: star-fr-stage-cloud-gov-06-16
-      TF_VAR_concourse_elb_cert_name: star-fr-stage-cloud-gov-06-16
+      TF_VAR_main_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_apps_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_elb_shibboleth_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_concourse_elb_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
 
