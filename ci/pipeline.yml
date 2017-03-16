@@ -219,7 +219,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: development
-      TF_VAR_force_restricted_network: yes
+      TF_VAR_force_restricted_network: "yes"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -327,7 +327,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: staging
-      TF_VAR_force_restricted_network: no
+      TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -435,7 +435,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: production
-      TF_VAR_force_restricted_network: no
+      TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
