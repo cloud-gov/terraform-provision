@@ -201,6 +201,114 @@ jobs:
     params:
       file: terraform-yaml/state.yml
 
+- name: plan-bootstrap-development
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+  - task: plan-update-development
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params: &development-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: development
+      TEMPLATE_SUBDIR: terraform/stacks/main
+      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      TF_VAR_stack_description: development
+      TF_VAR_force_restricted_network: "yes"
+      TF_VAR_az1: {{aws_az1}}
+      TF_VAR_az2: {{aws_az2}}
+      TF_VAR_aws_partition: {{aws_partition}}
+      TF_VAR_account_id: {{aws_account_id}}
+      TF_VAR_rds_password: {{development_rds_password}}
+      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
+      TF_VAR_vpc_cidr: {{development_vpc_cidr}}
+      TF_VAR_public_cidr_1: {{development_public_cidr_1}}
+      TF_VAR_public_cidr_2: {{development_public_cidr_2}}
+      TF_VAR_private_cidr_1: {{development_private_cidr_1}}
+      TF_VAR_private_cidr_2: {{development_private_cidr_2}}
+      TF_VAR_services_cidr_1: {{development_services_cidr_1}}
+      TF_VAR_services_cidr_2: {{development_services_cidr_2}}
+      TF_VAR_kubernetes_cluster_id: {{development_kubernetes_cluster_id}}
+      TF_VAR_rds_private_cidr_1: {{development_rds_private_cidr_1}}
+      TF_VAR_rds_private_cidr_2: {{development_rds_private_cidr_2}}
+      TF_VAR_cf_rds_password: {{development_cf_rds_password}}
+      TF_VAR_restricted_ingress_web_cidrs: {{development_restricted_ingress_web_cidrs}}
+      TF_VAR_diego_cidr_1: {{development_diego_cidr_1}}
+      TF_VAR_diego_cidr_2: {{development_diego_cidr_2}}
+      TF_VAR_concourse_rds_password: {{development_vpc_concourse_rds_password}}
+      TF_VAR_concourse_cidr: {{development_vpc_concourse_cidr}}
+      TF_VAR_main_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_apps_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_elb_shibboleth_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_concourse_elb_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_stack_prefix: cf-development
+      TF_VAR_bucket_prefix: development-cg
+
+- name: bootstrap-development
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-development]
+  - task: create-update-development
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: { terraform-templates: cg-provision-repo }
+    params:
+      <<: *development-params
+      TERRAFORM_ACTION: apply
+  - task: init-bosh-db
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: governmentpaas/psql
+      inputs:
+      - name: cg-provision-repo
+      - name: terraform-state
+      params:
+        BOSH_DB_PASSWORD: {{development_rds_password}}
+        STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: development
+      run:
+        path: sh
+        args:
+        - -e
+        - -c
+        - cg-provision-repo/ci/scripts/update-bosh-db.sh
+  - task: init-cf-db
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: governmentpaas/psql
+      inputs:
+      - name: cg-provision-repo
+      - name: terraform-state
+      params:
+        CF_DB_PASSWORD: {{development_cf_rds_password}}
+        STATE_FILE_PATH: terraform-state/terraform.tfstate
+        STACK_NAME: development
+      run:
+        path: sh
+        args:
+        - -e
+        - -c
+        - cg-provision-repo/ci/scripts/update-cf-db.sh
+  - task: terraform-state-to-yaml
+    file: pipeline-tasks/terraform-state-to-yaml.yml
+    params:
+      STATE_FILE: terraform.tfstate
+  - put: terraform-yaml-development
+    params:
+      file: terraform-yaml/state.yml
+
 - name: plan-bootstrap-staging
   plan:
   - aggregate:
@@ -219,6 +327,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: staging
+      TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -326,6 +435,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: production
+      TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -532,6 +642,13 @@ resources:
   source:
     bucket: {{aws_s3_tfstate_bucket}}
     versioned_file: {{tf_state_file_tooling}}
+    region_name: {{aws_default_region}}
+
+- name: terraform-yaml-development
+  type: s3-iam
+  source:
+    bucket: {{aws_s3_tfstate_bucket}}
+    versioned_file: {{tf_state_file_development}}
     region_name: {{aws_default_region}}
 
 - name: terraform-yaml-staging
