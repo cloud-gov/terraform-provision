@@ -455,3 +455,8 @@ output "bosh_uaa_elb_dns_name" {
 output "bosh_uaa_elb_name" {
   value = "${aws_elb.bosh_uaa_elb.name}"
 }
+
+/* Static proxy */
+output "static_proxy_ip" {
+  value = "${module.static_proxy.static_ip}"
+}
