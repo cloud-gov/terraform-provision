@@ -126,3 +126,7 @@ module "concourse" {
     module.stack.web_traffic_security_group :
     module.stack.restricted_web_traffic_security_group}"
 }
+
+module "static_proxy" {
+  source = "../../modules/static_proxy"
+}
