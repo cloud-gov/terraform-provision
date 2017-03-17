@@ -11,10 +11,16 @@ resource "aws_security_group" "diego-elb-sg" {
 
   vpc_id = "${var.vpc_id}"
 
-  # HTTP access from anywhere
   ingress {
     from_port = 2222
     to_port = 2222
+    protocol = "tcp"
+    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
     protocol = "tcp"
     cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
   }
@@ -36,6 +42,13 @@ resource "aws_elb" "diego_elb_main" {
 
   listener {
     lb_port = 2222
+    lb_protocol = "TCP"
+    instance_port = 2222
+    instance_protocol = "TCP"
+  }
+
+  listener {
+    lb_port = 22
     lb_protocol = "TCP"
     instance_port = 2222
     instance_protocol = "TCP"
