@@ -237,7 +237,3 @@ module "cloudwatch_user" {
   source = "../../modules/iam_user/cloudwatch_user"
   username = "bosh-cloudwatch"
 }
-
-module "static_proxy" {
-  source = "../../modules/static_proxy"
-}

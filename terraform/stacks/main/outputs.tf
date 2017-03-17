@@ -249,3 +249,8 @@ output "concourse_elb_name" {
 output "concourse_elb_zone_id" {
   value = "${module.concourse.concourse_elb_zone_id}"
 }
+
+/* Static proxy */
+output "static_proxy_ip" {
+  value = "${module.static_proxy.static_ip}"
+}
