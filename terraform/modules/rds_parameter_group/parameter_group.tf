@@ -21,9 +21,4 @@ resource "aws_db_parameter_group" "rds_compliance_parameter_group" {
     name  = "log_statement"
     value = "ddl"
   }
-
-  parameter {
-    name  = "ssl_renegotiation_limit"
-    value = "512000"
-  }
 }
