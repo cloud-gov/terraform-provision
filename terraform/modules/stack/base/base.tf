@@ -29,6 +29,12 @@ module "rds_network" {
     az2_route_table = "${module.vpc.private_route_table_az2}"
 }
 
+module "rds_parameter_group" {
+    source = "../../rds_parameter_group"
+
+    name = "${var.stack_description}"
+}
+
 module "rds_96" {
     source = "../../rds"
 
@@ -41,5 +47,6 @@ module "rds_96" {
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
+    rds_parameter_group = "${module.rds_parameter_group.id}"
     rds_encrypted = "${var.rds_encrypted}"
 }

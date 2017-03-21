@@ -45,4 +45,6 @@ resource "aws_db_instance" "rds_database" {
   tags = {
     Name = "${var.stack_description}"
   }
+
+  parameter_group_name = "${var.rds_parameter_group}"
 }
