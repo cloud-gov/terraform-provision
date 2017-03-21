@@ -40,6 +40,8 @@ variable "rds_subnet_group" {}
 
 variable "rds_security_groups" {}
 
+variable "rds_parameter_group" {}
+
 variable "stack_prefix" {}
 
 variable "az1" {

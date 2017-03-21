@@ -70,6 +70,9 @@ output "rds_mysql_security_group" {
 output "rds_postgres_security_group" {
   value = "${module.base.rds_postgres_security_group}"
 }
+output "rds_parameter_group" {
+  value = "${module.base.rds_parameter_group}"
+}
 
 /* RDS Bosh Instance */
 output "bosh_rds_url" {
