@@ -35,7 +35,6 @@ module "cf" {
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = "${module.stack.rds_postgres_security_group}"
-    rds_parameter_group = "${module.stack.rds_parameter_group}"
     stack_prefix = "${var.stack_prefix}"
 
     vpc_id = "${module.stack.vpc_id}"
@@ -118,7 +117,6 @@ module "concourse" {
   rds_password = "${var.concourse_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
-  rds_parameter_group = "${module.stack.rds_parameter_group}"
   rds_instance_type = "db.m3.medium"
   rds_encrypted = true
   account_id = "${var.account_id}"

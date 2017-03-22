@@ -1,6 +1,6 @@
-resource "aws_db_parameter_group" "rds_compliance_parameter_group" {
-  name   = "${var.name}"
-  family = "${var.family}"
+resource "aws_db_parameter_group" "parameter_group" {
+  name   = "${var.stack_description}-${var.rds_db_name}"
+  family = "${var.rds_parameter_group_family}"
 
   parameter {
     name  = "log_connections"

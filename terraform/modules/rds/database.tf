@@ -41,10 +41,9 @@ resource "aws_db_instance" "rds_database" {
 
   db_subnet_group_name = "${var.rds_subnet_group}"
   vpc_security_group_ids = ["${split(",", var.rds_security_groups)}"]
+  parameter_group_name = "${aws_db_parameter_group.parameter_group.id}"
 
-  tags = {
+  tags {
     Name = "${var.stack_description}"
   }
-
-  parameter_group_name = "${var.rds_parameter_group}"
 }

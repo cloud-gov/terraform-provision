@@ -42,8 +42,6 @@ variable "rds_subnet_group" {}
 
 variable "rds_security_groups" {}
 
-variable "rds_parameter_group" {}
-
 variable "route_table_id" {}
 
 variable "vpc_id" {}

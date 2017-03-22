@@ -32,10 +32,12 @@ variable "rds_password" {}
 
 variable "rds_subnet_group" {}
 
-variable "rds_parameter_group" {}
-
 variable "rds_security_groups" {}
 
 variable "rds_encrypted" {
     default = true
+}
+
+variable "rds_parameter_group_family" {
+  default = "postgres9.6"
 }
