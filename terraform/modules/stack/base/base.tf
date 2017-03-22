@@ -41,5 +41,4 @@ module "rds_96" {
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${module.rds_network.rds_subnet_group}"
     rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
-    rds_encrypted = "${var.rds_encrypted}"
 }

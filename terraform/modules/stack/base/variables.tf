@@ -52,10 +52,6 @@ variable "rds_instance_type" {
     default = "db.m3.medium"
 }
 
-variable "rds_db_storage_type" {
-    default = "standard"
-}
-
 variable "rds_db_size" {
     default = 5
 }
@@ -74,10 +70,6 @@ variable "rds_db_engine_version" {
 
 variable "rds_username" {
     default = "postgres"
-}
-
-variable "rds_encrypted" {
-    default = true
 }
 
 variable "rds_password" {}

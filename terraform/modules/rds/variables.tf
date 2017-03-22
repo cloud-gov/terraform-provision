@@ -9,7 +9,7 @@ variable "rds_db_size" {
 }
 
 variable "rds_db_storage_type" {
-    default = "standard"
+    default = "gp2"
 }
 
 variable "rds_db_name" {
@@ -33,7 +33,3 @@ variable "rds_password" {}
 variable "rds_subnet_group" {}
 
 variable "rds_security_groups" {}
-
-variable "rds_encrypted" {
-    default = true
-}
