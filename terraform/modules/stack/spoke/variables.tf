@@ -69,7 +69,7 @@ variable "rds_db_engine_version" {
 }
 
 variable "rds_username" {
-    default = "postgres"
+    default = "bosh"
 }
 
 variable "restricted_ingress_web_cidrs" {

@@ -65,11 +65,20 @@ output "rds_postgres_security_group" {
 
 /* RDS Bosh Instance */
 output "bosh_rds_url" {
+  value = "${module.rds.rds_url}"
+}
+output "bosh_rds_96_url" {
   value = "${module.rds_96.rds_url}"
 }
 output "bosh_rds_host" {
-  value = "${module.rds_96.rds_host}"
+  value = "${module.rds.rds_host}"
 }
 output "bosh_rds_port" {
-  value = "${module.rds_96.rds_port}"
+  value = "${module.rds.rds_port}"
+}
+output "bosh_rds_username" {
+  value = "${module.rds.rds_username}"
+}
+output "bosh_rds_password" {
+  value = "${module.rds.rds_password}"
 }
