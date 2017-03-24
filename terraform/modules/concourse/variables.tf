@@ -16,10 +16,6 @@ variable "rds_db_size" {
   default = 10
 }
 
-variable "rds_db_storage_type" {
-  default = "gp2"
-}
-
 variable "rds_instance_type" {
   default = "db.m3.xlarge"
 }
@@ -30,10 +26,6 @@ variable "rds_engine_version" {
 
 variable "rds_username" {
   default = "atc"
-}
-
-variable "rds_encrypted" {
-  default = true
 }
 
 variable "rds_password" {}

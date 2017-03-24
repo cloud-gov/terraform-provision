@@ -13,7 +13,6 @@ module "stack" {
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_password = "${var.rds_password}"
-    rds_encrypted = true
     account_id = "${var.account_id}"
     remote_state_bucket = "${var.remote_state_bucket}"
     target_stack_name = "${var.target_stack_name}"
@@ -118,7 +117,6 @@ module "concourse" {
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
   rds_instance_type = "db.m3.medium"
-  rds_encrypted = true
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az2}"

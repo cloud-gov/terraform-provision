@@ -37,7 +37,7 @@ resource "aws_db_instance" "rds_database" {
   username = "${var.rds_username}"
   password = "${var.rds_password}"
 
-  storage_encrypted = "${var.rds_encrypted}"
+  storage_encrypted = true
 
   db_subnet_group_name = "${var.rds_subnet_group}"
   vpc_security_group_ids = ["${split(",", var.rds_security_groups)}"]
