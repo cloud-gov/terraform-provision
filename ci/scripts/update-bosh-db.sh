@@ -3,10 +3,10 @@ set -e
 SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 
 # Check environment variables
-export DB_USER="postgres"
-export DB_PASSWORD=${BOSH_DB_PASSWORD:?}
-export TERRAFORM_DB_FIELD="bosh_rds_host"
 export DATABASES="bosh bosh_uaadb"
 export STATE_FILE_PATH=${STATE_FILE_PATH}
+export TERRAFORM_DB_HOST_FIELD="bosh_rds_host_curr"
+export TERRAFORM_DB_USERNAME_FIELD="bosh_rds_username"
+export TERRAFORM_DB_PASSWORD_FIELD="bosh_rds_password"
 
 $SCRIPTPATH/create-and-update-db.sh
