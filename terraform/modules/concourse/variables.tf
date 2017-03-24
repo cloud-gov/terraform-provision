@@ -12,6 +12,10 @@ variable "rds_db_name" {
   default = "atc"
 }
 
+variable "rds_parameter_group_name" {
+  default = ""
+}
+
 variable "rds_db_size" {
   default = 10
 }
