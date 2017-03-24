@@ -23,6 +23,9 @@ for db in ${DATABASES}; do
     psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
   done
 
+  # Remove default privileges
+  psql_adm -d "${db}" -c "REVOKE ALL ON SCHEMA public FROM PUBLIC"
+
   # Special case for uaadb, create totp seed table for use with MFA
   # Special case for Shibboleth, create storage records table for use with multi-zone Shibboleth
   # Special case for Shibboleth, create function and trigger that verifies origin uaa is set to cloud.gov IdP
