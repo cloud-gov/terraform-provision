@@ -21,7 +21,7 @@ resource "aws_db_instance" "rds_database" {
 
   lifecycle {
     ignore_changes = ["identifier"]
-    prevent_destroy = true
+    prevent_destroy = false  // TODO(jmcarp) restore after bosh rotation
   }
   identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
 

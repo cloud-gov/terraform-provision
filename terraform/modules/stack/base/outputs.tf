@@ -71,10 +71,10 @@ output "bosh_rds_host_curr" {
   value = "${module.rds.rds_host}"
 }
 output "bosh_rds_url_prev" {
-  value = "${module.rds_96.rds_url}"
+  value = ""
 }
 output "bosh_rds_host_prev" {
-  value = "${module.rds_96.rds_host}"
+  value = ""
 }
 output "bosh_rds_port" {
   value = "${module.rds.rds_port}"

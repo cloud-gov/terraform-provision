@@ -29,22 +29,6 @@ module "rds_network" {
     az2_route_table = "${module.vpc.private_route_table_az2}"
 }
 
-module "rds_96" {
-    source = "../../rds"
-
-    stack_description = "${var.stack_description}"
-    rds_instance_type = "${var.rds_instance_type}"
-    rds_db_size = "${var.rds_db_size}"
-    rds_db_engine = "${var.rds_db_engine}"
-    rds_db_engine_version = "${var.rds_db_engine_version}"
-    rds_db_name = "${var.rds_db_name}"
-    rds_username = "postgres"
-    rds_password = "${var.rds_password}"
-    rds_subnet_group = "${module.rds_network.rds_subnet_group}"
-    rds_security_groups = "${module.rds_network.rds_postgres_security_group},${module.rds_network.rds_mysql_security_group}"
-    rds_parameter_group_name = "bosh-backup"
-}
-
 module "rds" {
   source = "../../rds"
 
