@@ -203,6 +203,11 @@ module "kubernetes_logger_role" {
   assume_role_path = "/bosh-passed/"
 }
 
+module "cloudwatch_logs_role" {
+  source = "../../modules/iam_role/cloudwatch_logs"
+  role_name = "cloudwatch-logs"
+}
+
 module "riemann_monitoring_role" {
   source = "../../modules/iam_role/riemann_monitoring"
   role_name = "riemann-monitoring"
@@ -211,18 +216,34 @@ module "riemann_monitoring_role" {
   account_id = "${var.account_id}"
 }
 
+module "influxdb_archive_role" {
+  source = "../../modules/iam_role/influxdb_archive"
+  role_name = "influxdb-archive"
+  aws_partition = "${var.aws_partition}"
+}
+
+resource "aws_iam_instance_profile" "riemann_monitoring" {
+  name = "riemann-monitoring"
+  roles = [
+    "${module.cloudwatch_logs_role.name}",
+    "${module.riemann_monitoring_role.name}"
+  ]
+}
+
+resource "aws_iam_instance_profile" "influxdb_monitoring" {
+  name = "influxdb-monitoring"
+  roles = [
+    "${module.cloudwatch_logs_role.name}",
+    "${module.influxdb_archive_role.name}"
+  ]
+}
+
 module "logsearch_ingestor_role" {
   source = "../../modules/iam_role/logsearch_ingestor"
   role_name = "logsearch-ingestor"
   aws_partition = "${var.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
   account_id = "${var.account_id}"
-}
-
-module "influxdb_archive_role" {
-  source = "../../modules/iam_role/influxdb_archive"
-  role_name = "influxdb-archive"
-  aws_partition = "${var.aws_partition}"
 }
 
 module "etcd_backup_role" {

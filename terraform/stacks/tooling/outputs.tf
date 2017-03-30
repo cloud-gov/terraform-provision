@@ -450,6 +450,14 @@ output "awslogs_secret_access_key_curr" {
   value = "${module.cloudwatch_user.secret_access_key_curr}"
 }
 
+/* instance profiles */
+output "riemann_monitoring_profile" {
+  value = "${aws_iam_instance_profile.riemann_monitoring.name}"
+}
+output "influxdb_monitoring_profile" {
+  value = "${aws_iam_instance_profile.influxdb_monitoring.name}"
+}
+
 /* nessus elb */
 output "nessus_elb_dns_name" {
   value = "${aws_elb.nessus_elb.dns_name}"
