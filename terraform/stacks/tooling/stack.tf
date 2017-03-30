@@ -159,6 +159,7 @@ module "concourse_worker_role" {
   aws_partition = "${var.aws_partition}"
   varz_bucket = "cloud-gov-varz"
   varz_staging_bucket = "cloud-gov-varz-stage"
+  varz_development_bucket = "cloud-gov-varz-dev"
   bosh_release_bucket = "cloud-gov-bosh-releases"
   stemcell_bucket = "cg-stemcell-images"
   terraform_state_bucket = "terraform-state"

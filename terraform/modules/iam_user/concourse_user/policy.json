@@ -24,6 +24,8 @@
         "arn:${aws_partition}:s3:::cloud-gov-varz/*",
         "arn:${aws_partition}:s3:::cloud-gov-varz-stage",
         "arn:${aws_partition}:s3:::cloud-gov-varz-stage/*",
+        "arn:${aws_partition}:s3:::cloud-gov-varz-dev",
+        "arn:${aws_partition}:s3:::cloud-gov-varz-dev/*",
         "arn:${aws_partition}:s3:::cloud-gov-bosh-releases",
         "arn:${aws_partition}:s3:::cloud-gov-bosh-releases/*",
         "arn:${aws_partition}:s3:::cg-stemcell-images",

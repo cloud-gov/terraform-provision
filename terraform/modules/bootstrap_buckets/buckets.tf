@@ -12,6 +12,13 @@ module "varz_staging" {
     versioning = "true"
 }
 
+module "varz_development" {
+    source = "../s3_bucket/encrypted_bucket"
+    bucket = "${var.varz_development_bucket}"
+    aws_partition = "${var.aws_partition}"
+    versioning = "true"
+}
+
 module "concourse_credentials" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.concourse_credentials_bucket}"
