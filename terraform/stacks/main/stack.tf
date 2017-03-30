@@ -157,6 +157,18 @@ module "logsearch_ingestor_policy" {
   account_id = "${var.account_id}"
 }
 
+module "kubernetes_master_policy" {
+  source = "../../modules/iam_role_policy/kubernetes_master"
+  policy_name = "${var.stack_description}-kubernetes-master"
+  aws_partition = "${var.aws_partition}"
+}
+
+module "kubernetes_minion_policy" {
+  source = "../../modules/iam_role_policy/kubernetes_minion"
+  policy_name = "${var.stack_description}-kubernetes-master"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -183,5 +195,25 @@ module "logsearch_ingestor_role" {
     "${module.blobstore_policy.name}",
     "${module.cloudwatch_policy.name}",
     "${module.logsearch_ingestor_policy.name}"
+  ]
+}
+
+module "kubernetes_master_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-kubernetes-master"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.kubernetes_master_policy.name}"
+  ]
+}
+
+module "kubernetes_minion_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-kubernetes-minion"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.kubernetes_minion_policy.name}"
   ]
 }

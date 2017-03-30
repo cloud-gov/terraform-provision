@@ -272,6 +272,12 @@ output "bosh_profile" {
 output "logsearch_ingestor_profile" {
   value = "${module.logsearch_ingestor_role.profile_name}"
 }
+output "kubernetes_master_profile" {
+  value = "${module.kubernetes_master_role.profile_name}"
+}
+output "kubernetes_minion_profile" {
+  value = "${module.kubernetes_minion_role.profile_name}"
+}
 
 /* Static proxy */
 output "static_proxy_ip" {
