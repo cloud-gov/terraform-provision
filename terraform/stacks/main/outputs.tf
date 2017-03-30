@@ -269,6 +269,9 @@ output "default_profile" {
 output "bosh_profile" {
   value = "${module.bosh_role.profile_name}"
 }
+output "logsearch_ingestor_profile" {
+  value = "${module.logsearch_ingestor_role.profile_name}"
+}
 
 /* Static proxy */
 output "static_proxy_ip" {

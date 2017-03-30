@@ -148,6 +148,14 @@ module "bosh_policy" {
   account_id = "${var.account_id}"
 }
 
+module "logsearch_ingestor_policy" {
+  source = "../../modules/iam_role_policy/logsearch_ingestor"
+  policy_name = "logsearch_ingestor"
+  aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  account_id = "${var.account_id}"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -164,5 +172,15 @@ module "bosh_role" {
     "${module.blobstore_policy.name}",
     "${module.cloudwatch_policy.name}",
     "${module.bosh_policy.name}"
+  ]
+}
+
+module "logsearch_ingestor_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logsearch-ingestor"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.logsearch_ingestor_policy.name}"
   ]
 }
