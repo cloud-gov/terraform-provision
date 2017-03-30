@@ -153,7 +153,7 @@ module "aws_broker_user" {
   aws_partition = "${var.aws_partition}"
 }
 
-module "concourse_worker_role" {
+module "concourse_worker_role_legacy" {
   source = "../../modules/iam_role/concourse_worker"
   role_name = "concourse-worker"
   aws_partition = "${var.aws_partition}"
@@ -236,6 +236,17 @@ module "influxdb_archive_policy" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "concourse_worker_policy" {
+  source = "../../modules/iam_role_policy/concourse_worker"
+  policy_name = "concourse-worker"
+  aws_partition = "${var.aws_partition}"
+  varz_bucket = "cloud-gov-varz"
+  varz_staging_bucket = "cloud-gov-varz-stage"
+  bosh_release_bucket = "cloud-gov-bosh-releases"
+  stemcell_bucket = "cg-stemcell-images"
+  terraform_state_bucket = "terraform-state"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -280,6 +291,16 @@ module "influxdb_monitoring_role" {
     "${module.blobstore_policy.name}",
     "${module.cloudwatch_policy.name}",
     "${module.influxdb_archive_policy.name}"
+  ]
+}
+
+module "concourse_worker_role" {
+  source = "../../modules/iam_role"
+  role_name = "tooling-concourse-worker"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.concourse_worker_policy.name}"
   ]
 }
 

@@ -466,6 +466,9 @@ output "riemann_monitoring_profile" {
 output "influxdb_monitoring_profile" {
   value = "${module.influxdb_monitoring_role.profile_name}"
 }
+output "concourse_worker_profile" {
+  value = "${module.concourse_worker_role.profile_name}"
+}
 
 /* nessus elb */
 output "nessus_elb_dns_name" {
