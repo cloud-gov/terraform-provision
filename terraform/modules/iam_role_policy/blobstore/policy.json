@@ -3,7 +3,9 @@
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": ["s3:*"],
+      "Action": [
+        "s3:GetObject"
+      ],
       "Resource": [
         "arn:${aws_partition}:s3:::${bucket_name}",
         "arn:${aws_partition}:s3:::${bucket_name}/*"

@@ -146,6 +146,7 @@ module "bosh_policy" {
   policy_name = "bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
+  bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "logsearch_ingestor_policy" {

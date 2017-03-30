@@ -220,6 +220,7 @@ module "bosh_policy" {
   policy_name = "${var.stack_description}-bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
+  bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "riemann_monitoring_policy" {

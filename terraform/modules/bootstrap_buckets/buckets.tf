@@ -20,25 +20,25 @@ module "concourse_credentials" {
 }
 
 module "tooling_blobstore" {
-    source = "../s3_bucket/public_encrypted_bucket"
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.tooling_blobstore_bucket}"
     aws_partition = "${var.aws_partition}"
 }
 
 module "development_blobstore" {
-    source = "../s3_bucket/public_encrypted_bucket"
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.development_blobstore_bucket}"
     aws_partition = "${var.aws_partition}"
 }
 
 module "staging_blobstore" {
-    source = "../s3_bucket/public_encrypted_bucket"
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.staging_blobstore_bucket}"
     aws_partition = "${var.aws_partition}"
 }
 
 module "production_blobstore" {
-    source = "../s3_bucket/public_encrypted_bucket"
+    source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.production_blobstore_bucket}"
     aws_partition = "${var.aws_partition}"
 }

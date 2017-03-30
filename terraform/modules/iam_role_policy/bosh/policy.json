@@ -19,6 +19,18 @@
         "elasticloadbalancing:*"
       ],
       "Resource": ["*"]
+    },
+    {
+      "Sid": "Blobstore",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:s3:::${bucket_name}",
+        "arn:${aws_partition}:s3:::${bucket_name}/*"
+      ]
     }
   ]
 }
