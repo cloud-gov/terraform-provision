@@ -1,1 +1,0 @@
-variable "role_name" {}

@@ -262,12 +262,12 @@ output "concourse_elb_zone_id" {
   value = "${module.concourse.concourse_elb_zone_id}"
 }
 
-/* instance profiles */
+/* iam roles */
 output "default_profile" {
-  value = "${aws_iam_instance_profile.default.name}"
+  value = "${module.default_role.profile_name}"
 }
 output "bosh_profile" {
-  value = "${aws_iam_instance_profile.bosh.name}"
+  value = "${module.bosh_role.profile_name}"
 }
 
 /* Static proxy */

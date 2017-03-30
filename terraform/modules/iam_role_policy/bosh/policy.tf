@@ -7,9 +7,7 @@ data "template_file" "policy" {
   }
 }
 
-module "bosh" {
-  source = ".."
-
-  role_name = "${var.role_name}"
-  iam_policy = "${data.template_file.policy.rendered}"
+resource "aws_iam_role_policy" "iam_policy" {
+  name = "${var.policy_name}"
+  policy = "${data.template_file.policy.rendered}"
 }

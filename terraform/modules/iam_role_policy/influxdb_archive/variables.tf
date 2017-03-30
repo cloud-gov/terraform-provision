@@ -1,2 +1,2 @@
-variable "role_name" {}
+variable "policy_name" {}
 variable "aws_partition" {}

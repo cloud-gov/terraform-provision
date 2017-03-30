@@ -129,38 +129,40 @@ module "static_proxy" {
   source = "../../modules/static_proxy"
 }
 
-module "blobstore_role" {
-  source = "../../modules/iam_role/blobstore"
-  role_name = "blobstore"
+module "blobstore_policy" {
+  source = "../../modules/iam_role_policy/blobstore"
+  policy_name = "blobstore"
   aws_partition = "${var.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
-module "cloudwatch_logs_role" {
-  source = "../../modules/iam_role/cloudwatch_logs"
-  role_name = "cloudwatch-logs"
+module "cloudwatch_policy" {
+  source = "../../modules/iam_role_policy/cloudwatch"
+  policy_name = "cloudwatch-logs"
 }
 
-module "bosh_role" {
-  source = "../../modules/iam_role/bosh"
-  role_name = "bosh"
+module "bosh_policy" {
+  source = "../../modules/iam_role_policy/bosh"
+  policy_name = "bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
 }
 
-resource "aws_iam_instance_profile" "default" {
-  name = "default"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}"
+module "default_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-default"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}"
   ]
 }
 
-resource "aws_iam_instance_profile" "bosh" {
-  name = "riemann-monitoring"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}",
-    "${module.bosh_role.name}"
+module "bosh_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.bosh_policy.name}"
   ]
 }

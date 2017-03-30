@@ -203,78 +203,83 @@ module "kubernetes_logger_role" {
   assume_role_path = "/bosh-passed/"
 }
 
-module "blobstore_role" {
-  source = "../../modules/iam_role/blobstore"
-  role_name = "blobstore"
+module "blobstore_policy" {
+  source = "../../modules/iam_role_policy/blobstore"
+  policy_name = "blobstore"
   aws_partition = "${var.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
-module "cloudwatch_logs_role" {
-  source = "../../modules/iam_role/cloudwatch_logs"
-  role_name = "cloudwatch-logs"
+module "cloudwatch_policy" {
+  source = "../../modules/iam_role_policy/cloudwatch"
+  policy_name = "${var.stack_description}-cloudwatch"
 }
 
-module "bosh_role" {
-  source = "../../modules/iam_role/bosh"
-  role_name = "bosh"
+module "bosh_policy" {
+  source = "../../modules/iam_role_policy/bosh"
+  policy_name = "${var.stack_description}-bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
 }
 
-module "riemann_monitoring_role" {
-  source = "../../modules/iam_role/riemann_monitoring"
-  role_name = "riemann-monitoring"
+module "riemann_monitoring_policy" {
+  source = "../../modules/iam_role_policy/riemann_monitoring"
+  policy_name = "riemann-monitoring"
   aws_default_region = "${var.aws_default_region}"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
 }
 
-module "influxdb_archive_role" {
-  source = "../../modules/iam_role/influxdb_archive"
-  role_name = "influxdb-archive"
+module "influxdb_archive_policy" {
+  source = "../../modules/iam_role_policy/influxdb_archive"
+  policy_name = "influxdb-archive"
   aws_partition = "${var.aws_partition}"
 }
 
-resource "aws_iam_instance_profile" "default" {
-  name = "default"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}"
+module "default_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-default"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}"
   ]
 }
 
-resource "aws_iam_instance_profile" "master_bosh" {
-  name = "riemann-monitoring"
-  roles = [
-    "${module.bosh_role.name}"
+module "master_bosh_role" {
+  source = "../../modules/iam_role"
+  role_name = "master-bosh"
+  iam_policies = [
+    "${module.bosh_policy.name}"
   ]
 }
 
-resource "aws_iam_instance_profile" "bosh" {
-  name = "riemann-monitoring"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}",
-    "${module.bosh_role.name}"
+module "bosh_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.bosh_policy.name}"
   ]
 }
 
-resource "aws_iam_instance_profile" "riemann_monitoring" {
-  name = "riemann-monitoring"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}",
-    "${module.riemann_monitoring_role.name}"
+module "riemann_monitoring_role" {
+  source = "../../modules/iam_role"
+  role_name = "riemann-monitoring"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.riemann_monitoring_policy.name}"
   ]
 }
 
-resource "aws_iam_instance_profile" "influxdb_monitoring" {
-  name = "influxdb-monitoring"
-  roles = [
-    "${module.blobstore_role.name}",
-    "${module.cloudwatch_logs_role.name}",
-    "${module.influxdb_archive_role.name}"
+module "influxdb_monitoring_role" {
+  source = "../../modules/iam_role"
+  role_name = "influxdb-monitoring"
+  iam_policies = [
+    "${module.blobstore_policy.name}",
+    "${module.cloudwatch_policy.name}",
+    "${module.influxdb_archive_policy.name}"
   ]
 }
 

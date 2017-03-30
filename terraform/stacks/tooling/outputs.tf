@@ -450,21 +450,21 @@ output "awslogs_secret_access_key_curr" {
   value = "${module.cloudwatch_user.secret_access_key_curr}"
 }
 
-/* instance profiles */
+/* iam roles */
 output "default_profile" {
-  value = "${aws_iam_instance_profile.default.name}"
+  value = "${module.default_role.profile_name}"
 }
 output "master_bosh_profile" {
-  value = "${aws_iam_instance_profile.master_bosh.name}"
+  value = "${module.master_bosh_role.profile_name}"
 }
 output "bosh_profile" {
-  value = "${aws_iam_instance_profile.bosh.name}"
+  value = "${module.bosh_role.profile_name}"
 }
 output "riemann_monitoring_profile" {
-  value = "${aws_iam_instance_profile.riemann_monitoring.name}"
+  value = "${module.riemann_monitoring_role.profile_name}"
 }
 output "influxdb_monitoring_profile" {
-  value = "${aws_iam_instance_profile.influxdb_monitoring.name}"
+  value = "${module.influxdb_monitoring_role.profile_name}"
 }
 
 /* nessus elb */
