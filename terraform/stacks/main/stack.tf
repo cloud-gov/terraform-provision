@@ -141,10 +141,26 @@ module "cloudwatch_logs_role" {
   role_name = "cloudwatch-logs"
 }
 
+module "bosh_role" {
+  source = "../../modules/iam_role/bosh"
+  role_name = "bosh"
+  aws_partition = "${var.aws_partition}"
+  account_id = "${var.account_id}"
+}
+
 resource "aws_iam_instance_profile" "default" {
   name = "default"
   roles = [
     "${module.blobstore_role.name}",
     "${module.cloudwatch_logs_role.name}"
+  ]
+}
+
+resource "aws_iam_instance_profile" "bosh" {
+  name = "riemann-monitoring"
+  roles = [
+    "${module.blobstore_role.name}",
+    "${module.cloudwatch_logs_role.name}",
+    "${module.bosh_role.name}"
   ]
 }

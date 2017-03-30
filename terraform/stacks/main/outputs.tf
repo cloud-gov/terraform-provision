@@ -266,6 +266,9 @@ output "concourse_elb_zone_id" {
 output "default_profile" {
   value = "${aws_iam_instance_profile.default.name}"
 }
+output "bosh_profile" {
+  value = "${aws_iam_instance_profile.bosh.name}"
+}
 
 /* Static proxy */
 output "static_proxy_ip" {
