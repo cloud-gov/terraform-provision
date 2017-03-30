@@ -9,7 +9,6 @@
       ],
       "Resource": [
         "arn:${aws_partition}:iam::${account_id}:role/bosh-passed/*"
-
       ]
     },
     {

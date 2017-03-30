@@ -22,6 +22,7 @@ module "bootstrap_buckets" {
   varz_staging_bucket = "cloud-gov-varz-staging"
   concourse_credentials_bucket = "concourse-credentials"
   tooling_blobstore_bucket = "bosh-tooling-blobstore"
+  development_blobstore_bucket = "bosh-development-blobstore"
   staging_blobstore_bucket = "bosh-staging-blobstore"
   production_blobstore_bucket = "bosh-production-blobstore"
   bosh_release_bucket = "cloud-gov-bosh-releases"

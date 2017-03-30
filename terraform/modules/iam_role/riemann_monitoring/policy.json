@@ -23,13 +23,13 @@
       ]
     },
     {
-        "Effect": "Allow",
-        "Action": [
-            "ec2:StopInstances"
-        ],
-        "Resource": [
-          "arn:${aws_partition}:ec2:${aws_default_region}:${account_id}:*"
-        ]
+      "Effect": "Allow",
+      "Action": [
+        "ec2:StopInstances"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:ec2:${aws_default_region}:${account_id}:*"
+      ]
     }
   ]
 }

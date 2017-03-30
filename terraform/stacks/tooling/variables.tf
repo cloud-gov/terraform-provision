@@ -1,4 +1,3 @@
-
 variable "stack_description" {
     default = "tooling"
 }
@@ -61,7 +60,7 @@ variable "monitoring_staging_elb_cert_name" {
 }
 
 variable "nessus_elb_cert_name" {
-	default = "star-fr-cloud-gov-06-16"
+  default = "star-fr-cloud-gov-06-16"
 }
 
 variable "bosh_uaa_elb_cert_name" {
@@ -69,3 +68,5 @@ variable "bosh_uaa_elb_cert_name" {
 }
 
 variable "restricted_ingress_web_cidrs" {}
+
+variable "blobstore_bucket_name" {}

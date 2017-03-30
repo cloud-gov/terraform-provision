@@ -451,6 +451,9 @@ output "awslogs_secret_access_key_curr" {
 }
 
 /* instance profiles */
+output "default_profile" {
+  value = "${aws_iam_instance_profile.default.name}"
+}
 output "riemann_monitoring_profile" {
   value = "${aws_iam_instance_profile.riemann_monitoring.name}"
 }

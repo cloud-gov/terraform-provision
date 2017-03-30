@@ -128,3 +128,23 @@ module "concourse" {
 module "static_proxy" {
   source = "../../modules/static_proxy"
 }
+
+module "blobstore_role" {
+  source = "../../modules/iam_role/blobstore"
+  role_name = "blobstore"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
+module "cloudwatch_logs_role" {
+  source = "../../modules/iam_role/cloudwatch_logs"
+  role_name = "cloudwatch-logs"
+}
+
+resource "aws_iam_instance_profile" "default" {
+  name = "default"
+  roles = [
+    "${module.blobstore_role.name}",
+    "${module.cloudwatch_logs_role.name}"
+  ]
+}

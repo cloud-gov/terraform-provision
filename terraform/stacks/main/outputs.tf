@@ -262,6 +262,11 @@ output "concourse_elb_zone_id" {
   value = "${module.concourse.concourse_elb_zone_id}"
 }
 
+/* instance profiles */
+output "default_profile" {
+  value = "${aws_iam_instance_profile.default.name}"
+}
+
 /* Static proxy */
 output "static_proxy_ip" {
   value = "${module.static_proxy.static_ip}"

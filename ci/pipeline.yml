@@ -160,6 +160,7 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
       TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
+      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
 
 - name: bootstrap-tooling
   plan:
@@ -246,6 +247,7 @@ jobs:
       TF_VAR_concourse_elb_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
+      TF_VAR_blobstore_bucket_name: bosh-development-blobstore
 
 - name: bootstrap-development
   plan:
@@ -350,6 +352,7 @@ jobs:
       TF_VAR_concourse_elb_cert_name: star-fr-stage-cloud-gov-06-16
       TF_VAR_stack_prefix: cf-staging
       TF_VAR_bucket_prefix: staging-cg
+      TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
 
 - name: bootstrap-staging
   plan:
@@ -455,6 +458,7 @@ jobs:
       TF_VAR_18f_gov_elb_cert_name: star-18f-gov
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
+      TF_VAR_blobstore_bucket_name: bosh-production-blobstore
 
 - name: bootstrap-production
   plan:

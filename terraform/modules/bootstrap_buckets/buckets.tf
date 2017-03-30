@@ -25,6 +25,12 @@ module "tooling_blobstore" {
     aws_partition = "${var.aws_partition}"
 }
 
+module "development_blobstore" {
+    source = "../s3_bucket/public_encrypted_bucket"
+    bucket = "${var.development_blobstore_bucket}"
+    aws_partition = "${var.aws_partition}"
+}
+
 module "staging_blobstore" {
     source = "../s3_bucket/public_encrypted_bucket"
     bucket = "${var.staging_blobstore_bucket}"
