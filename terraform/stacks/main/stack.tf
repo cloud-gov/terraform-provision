@@ -169,6 +169,13 @@ module "kubernetes_minion_policy" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "etcd_backup_policy" {
+  source = "../../modules/iam_role_policy/etcd_backup"
+  policy_name = "${var.stack_description}-etcd-backup"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "etcd-*"
+}
+
 module "cf_blobstore_policy" {
   source = "../../modules/iam_role_policy/cf_blobstore"
   policy_name = "${var.stack_description}-cf-blobstore"
@@ -204,6 +211,11 @@ module "kubernetes_minion_role" {
   role_name = "${var.stack_description}-kubernetes-minion"
 }
 
+module "etcd_backup_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-etcd-backup"
+}
+
 module "cf_blobstore_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-cf-blobstore"
@@ -218,6 +230,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     "${module.logsearch_ingestor_role.role_name}",
     "${module.kubernetes_master_role.role_name}",
     "${module.kubernetes_minion_role.role_name}",
+    "${module.etcd_backup_role.role_name}",
     "${module.cf_blobstore_role.role_name}"
   ]
 }
@@ -231,6 +244,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.logsearch_ingestor_role.role_name}",
     "${module.kubernetes_master_role.role_name}",
     "${module.kubernetes_minion_role.role_name}",
+    "${module.etcd_backup_role.role_name}",
     "${module.cf_blobstore_role.role_name}"
   ]
 }
@@ -252,7 +266,7 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
 }
 
 resource "aws_iam_policy_attachment" "kubernetes_master" {
-  name = "${var.stack_description}-kubernetes_master"
+  name = "${var.stack_description}-kubernetes-master"
   policy_arn = "${module.kubernetes_master_policy.arn}"
   roles = [
     "${module.kubernetes_master_role.role_name}"
@@ -260,10 +274,18 @@ resource "aws_iam_policy_attachment" "kubernetes_master" {
 }
 
 resource "aws_iam_policy_attachment" "kubernetes_minion" {
-  name = "${var.stack_description}-kubernetes_minion"
+  name = "${var.stack_description}-kubernetes-minion"
   policy_arn = "${module.kubernetes_minion_policy.arn}"
   roles = [
     "${module.kubernetes_minion_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "ectd_backup" {
+  name = "${var.stack_description}-etcd-backup"
+  policy_arn = "${module.etcd_backup_policy.arn}"
+  roles = [
+    "${module.etcd_backup_role.role_name}"
   ]
 }
 
