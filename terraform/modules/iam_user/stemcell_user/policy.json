@@ -50,6 +50,7 @@
         "ec2:ImportInstance",
         "ec2:ImportVolume",
         "ec2:ModifyImageAttribute",
+        "ec2:ModifySnapshotAttribute",
         "ec2:RegisterImage",
         "ec2:StartInstances",
         "ec2:StopInstances",
