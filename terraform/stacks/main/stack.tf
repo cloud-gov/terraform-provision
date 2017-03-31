@@ -131,19 +131,19 @@ module "static_proxy" {
 
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
-  policy_name = "blobstore"
+  policy_name = "${var.stack_description}-blobstore"
   aws_partition = "${var.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "cloudwatch_policy" {
   source = "../../modules/iam_role_policy/cloudwatch"
-  policy_name = "cloudwatch-logs"
+  policy_name = "${var.stack_description}-cloudwatch-logs"
 }
 
 module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
-  policy_name = "bosh"
+  policy_name = "${var.stack_description}-bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
@@ -151,7 +151,7 @@ module "bosh_policy" {
 
 module "logsearch_ingestor_policy" {
   source = "../../modules/iam_role_policy/logsearch_ingestor"
-  policy_name = "logsearch_ingestor"
+  policy_name = "${var.stack_description}-logsearch_ingestor"
   aws_partition = "${var.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
   account_id = "${var.account_id}"
