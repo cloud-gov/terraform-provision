@@ -172,48 +172,80 @@ module "kubernetes_minion_policy" {
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
-  iam_policies = [
-    "${module.blobstore_policy.name}",
-    "${module.cloudwatch_policy.name}"
-  ]
 }
 
 module "bosh_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-bosh"
-  iam_policies = [
-    "${module.blobstore_policy.name}",
-    "${module.cloudwatch_policy.name}",
-    "${module.bosh_policy.name}"
-  ]
 }
 
 module "logsearch_ingestor_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-logsearch-ingestor"
-  iam_policies = [
-    "${module.blobstore_policy.name}",
-    "${module.cloudwatch_policy.name}",
-    "${module.logsearch_ingestor_policy.name}"
-  ]
 }
 
 module "kubernetes_master_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-kubernetes-master"
-  iam_policies = [
-    "${module.blobstore_policy.name}",
-    "${module.cloudwatch_policy.name}",
-    "${module.kubernetes_master_policy.name}"
-  ]
 }
 
 module "kubernetes_minion_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-kubernetes-minion"
-  iam_policies = [
-    "${module.blobstore_policy.name}",
-    "${module.cloudwatch_policy.name}",
-    "${module.kubernetes_minion_policy.name}"
+}
+
+resource "aws_iam_policy_attachment" "blobstore" {
+  name = "${var.stack_description}-blobstore"
+  policy_arn = "${module.blobstore_policy.arn}"
+  roles = [
+    "${module.default_role.role_name}",
+    "${module.bosh_role.role_name}",
+    "${module.logsearch_ingestor_role.role_name}",
+    "${module.kubernetes_master_role.role_name}",
+    "${module.kubernetes_minion_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "cloudwatch" {
+  name = "${var.stack_description}-cloudwatch"
+  policy_arn = "${module.cloudwatch_policy.arn}"
+  roles = [
+    "${module.default_role.role_name}",
+    "${module.bosh_role.role_name}",
+    "${module.logsearch_ingestor_role.role_name}",
+    "${module.kubernetes_master_role.role_name}",
+    "${module.kubernetes_minion_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "bosh" {
+  name = "${var.stack_description}-bosh"
+  policy_arn = "${module.bosh_policy.arn}"
+  roles = [
+    "${module.bosh_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logsearch_ingestor" {
+  name = "logsearch_ingestor"
+  policy_arn = "${module.logsearch_ingestor_policy.arn}"
+  roles = [
+    "${module.kubernetes_master_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "kubernetes_master" {
+  name = "kubernetes_master"
+  policy_arn = "${module.kubernetes_master_policy.arn}"
+  roles = [
+    "${module.kubernetes_master_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "kubernetes_minion" {
+  name = "kubernetes_minion"
+  policy_arn = "${module.kubernetes_minion_policy.arn}"
+  roles = [
+    "${module.kubernetes_minion_role.role_name}"
   ]
 }

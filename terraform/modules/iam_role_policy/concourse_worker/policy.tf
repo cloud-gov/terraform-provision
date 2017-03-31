@@ -5,12 +5,13 @@ data "template_file" "policy" {
     aws_partition = "${var.aws_partition}"
     varz_bucket = "${var.varz_bucket}"
     varz_staging_bucket = "${var.varz_staging_bucket}"
+    bosh_release_bucket = "${var.bosh_release_bucket}"
     stemcell_bucket = "${var.stemcell_bucket}"
     terraform_state_bucket = "${var.terraform_state_bucket}"
   }
 }
 
-resource "aws_iam_role_policy" "iam_policy" {
+resource "aws_iam_policy" "iam_policy" {
   name = "${var.policy_name}"
   policy = "${data.template_file.policy.rendered}"
 }
