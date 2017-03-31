@@ -165,8 +165,18 @@ module "kubernetes_master_policy" {
 
 module "kubernetes_minion_policy" {
   source = "../../modules/iam_role_policy/kubernetes_minion"
-  policy_name = "${var.stack_description}-kubernetes-master"
+  policy_name = "${var.stack_description}-kubernetes-minion"
   aws_partition = "${var.aws_partition}"
+}
+
+module "cf_blobstore_policy" {
+  source = "../../modules/iam_role_policy/cf_blobstore"
+  policy_name = "${var.stack_description}-cf-blobstore"
+  aws_partition = "${var.aws_partition}"
+  buildpacks_bucket = "${module.cf.buildpacks_bucket_name}"
+  packages_bucket = "${module.cf.packages_bucket_name}"
+  resources_bucket = "${module.cf.resources_bucket_name}"
+  droplets_bucket = "${module.cf.droplets_bucket_name}"
 }
 
 module "default_role" {
@@ -194,6 +204,11 @@ module "kubernetes_minion_role" {
   role_name = "${var.stack_description}-kubernetes-minion"
 }
 
+module "cf_blobstore_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-cf-blobstore"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
@@ -202,7 +217,8 @@ resource "aws_iam_policy_attachment" "blobstore" {
     "${module.bosh_role.role_name}",
     "${module.logsearch_ingestor_role.role_name}",
     "${module.kubernetes_master_role.role_name}",
-    "${module.kubernetes_minion_role.role_name}"
+    "${module.kubernetes_minion_role.role_name}",
+    "${module.cf_blobstore_role.role_name}"
   ]
 }
 
@@ -214,7 +230,8 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.bosh_role.role_name}",
     "${module.logsearch_ingestor_role.role_name}",
     "${module.kubernetes_master_role.role_name}",
-    "${module.kubernetes_minion_role.role_name}"
+    "${module.kubernetes_minion_role.role_name}",
+    "${module.cf_blobstore_role.role_name}"
   ]
 }
 
@@ -235,7 +252,7 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
 }
 
 resource "aws_iam_policy_attachment" "kubernetes_master" {
-  name = "kubernetes_master"
+  name = "${var.stack_description}-kubernetes_master"
   policy_arn = "${module.kubernetes_master_policy.arn}"
   roles = [
     "${module.kubernetes_master_role.role_name}"
@@ -243,9 +260,17 @@ resource "aws_iam_policy_attachment" "kubernetes_master" {
 }
 
 resource "aws_iam_policy_attachment" "kubernetes_minion" {
-  name = "kubernetes_minion"
+  name = "${var.stack_description}-kubernetes_minion"
   policy_arn = "${module.kubernetes_minion_policy.arn}"
   roles = [
     "${module.kubernetes_minion_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "cf_blobstore" {
+  name = "${var.stack_description}-cf_blobstore"
+  policy_arn = "${module.cf_blobstore_policy.arn}"
+  roles = [
+    "${module.cf_blobstore_role.role_name}"
   ]
 }

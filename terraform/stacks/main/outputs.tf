@@ -278,6 +278,9 @@ output "kubernetes_master_profile" {
 output "kubernetes_minion_profile" {
   value = "${module.kubernetes_minion_role.profile_name}"
 }
+output "cf_blobstore_profile" {
+  value = "${module.cf_blobstore_role.profile_name}"
+}
 
 /* Static proxy */
 output "static_proxy_ip" {
