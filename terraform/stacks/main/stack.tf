@@ -261,7 +261,7 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
   name = "logsearch_ingestor"
   policy_arn = "${module.logsearch_ingestor_policy.arn}"
   roles = [
-    "${module.kubernetes_master_role.role_name}"
+    "${module.logsearch_ingestor_role.role_name}"
   ]
 }
 
