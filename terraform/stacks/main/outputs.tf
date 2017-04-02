@@ -278,6 +278,12 @@ output "kubernetes_master_profile" {
 output "kubernetes_minion_profile" {
   value = "${module.kubernetes_minion_role.profile_name}"
 }
+output "kubernetes_node_profile" {
+  value = "${module.kubernetes_node_role.profile_name}"
+}
+output "kubernetes_logger_profile" {
+  value = "${module.kubernetes_logger_role.profile_name}"
+}
 output "etcd_backup_profile" {
   value = "${module.etcd_backup_role.profile_name}"
 }

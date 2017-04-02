@@ -296,3 +296,24 @@ resource "aws_iam_policy_attachment" "cf_blobstore" {
     "${module.cf_blobstore_role.role_name}"
   ]
 }
+
+module "kubernetes_node_role" {
+  source = "../../modules/iam_role/kubernetes_node"
+  role_name = "${var.stack_description}-kubernetes-node"
+  aws_partition = "${var.aws_partition}"
+  account_id = "${var.account_id}"
+  master_role = "${module.kubernetes_master_role.role_name}"
+  minion_role = "${module.kubernetes_minion_role.role_name}"
+  assume_role_path = "/bosh-passed/"
+}
+
+module "kubernetes_logger_role" {
+  source = "../../modules/iam_role/kubernetes_logger"
+  role_name = "${var.stack_description}-kubernetes-logger"
+  aws_default_region = "${var.aws_default_region}"
+  aws_partition = "${var.aws_partition}"
+  account_id = "${var.account_id}"
+  master_role = "${module.kubernetes_master_role.role_name}"
+  minion_role = "${module.kubernetes_minion_role.role_name}"
+  assume_role_path = "/bosh-passed/"
+}
