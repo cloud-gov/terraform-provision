@@ -89,23 +89,6 @@ output "bosh_rds_password" {
   value = "${module.stack.bosh_rds_password}"
 }
 
-/* bosh user */
-output "bosh_username" {
-  value = "${module.stack.bosh_username}"
-}
-output "bosh_access_key_id_prev" {
-  value = "${module.stack.bosh_access_key_id_prev}"
-}
-output "bosh_secret_access_key_prev" {
-  value = "${module.stack.bosh_secret_access_key_prev}"
-}
-output "bosh_access_key_id_curr" {
-  value = "${module.stack.bosh_access_key_id_curr}"
-}
-output "bosh_secret_access_key_curr" {
-  value = "${module.stack.bosh_secret_access_key_curr}"
-}
-
 /* CloudFoundry ELBs */
 output "cf_main_elb_dns_name" {
   value = "${module.cf.elb_main_dns_name}"
