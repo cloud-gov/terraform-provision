@@ -12,24 +12,24 @@
       ]
     },
     {
-      "Sid": "S3Access",
-      "Effect": "Allow",
-      "Action": [
-        "s3:*"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
       "Sid": "BoshDeployments",
       "Effect": "Allow",
       "Action": [
         "ec2:*",
         "elasticloadbalancing:*"
       ],
+      "Resource": ["*"]
+    },
+    {
+      "Sid": "Blobstore",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
       "Resource": [
-        "*"
+        "arn:${aws_partition}:s3:::${bucket_name}",
+        "arn:${aws_partition}:s3:::${bucket_name}/*"
       ]
     }
   ]

@@ -153,7 +153,7 @@ module "aws_broker_user" {
   aws_partition = "${var.aws_partition}"
 }
 
-module "concourse_worker_role" {
+module "concourse_worker_role_legacy" {
   source = "../../modules/iam_role/concourse_worker"
   role_name = "concourse-worker"
   aws_partition = "${var.aws_partition}"
@@ -203,12 +203,136 @@ module "kubernetes_logger_role" {
   assume_role_path = "/bosh-passed/"
 }
 
-module "riemann_monitoring_role" {
-  source = "../../modules/iam_role/riemann_monitoring"
-  role_name = "riemann-monitoring"
+module "blobstore_policy" {
+  source = "../../modules/iam_role_policy/blobstore"
+  policy_name = "blobstore"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
+module "cloudwatch_policy" {
+  source = "../../modules/iam_role_policy/cloudwatch"
+  policy_name = "${var.stack_description}-cloudwatch"
+}
+
+module "bosh_policy" {
+  source = "../../modules/iam_role_policy/bosh"
+  policy_name = "${var.stack_description}-bosh"
+  aws_partition = "${var.aws_partition}"
+  account_id = "${var.account_id}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
+module "riemann_monitoring_policy" {
+  source = "../../modules/iam_role_policy/riemann_monitoring"
+  policy_name = "riemann-monitoring"
   aws_default_region = "${var.aws_default_region}"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
+}
+
+module "influxdb_monitoring_policy" {
+  source = "../../modules/iam_role_policy/influxdb_archive"
+  policy_name = "influxdb-archive"
+  aws_partition = "${var.aws_partition}"
+}
+
+module "concourse_worker_policy" {
+  source = "../../modules/iam_role_policy/concourse_worker"
+  policy_name = "concourse-worker"
+  aws_partition = "${var.aws_partition}"
+  varz_bucket = "cloud-gov-varz"
+  varz_staging_bucket = "cloud-gov-varz-stage"
+  bosh_release_bucket = "cloud-gov-bosh-releases"
+  stemcell_bucket = "cg-stemcell-images"
+  terraform_state_bucket = "terraform-state"
+}
+
+module "default_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-default"
+}
+
+module "master_bosh_role" {
+  source = "../../modules/iam_role"
+  role_name = "master-bosh"
+}
+
+module "bosh_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh"
+}
+
+module "riemann_monitoring_role" {
+  source = "../../modules/iam_role"
+  role_name = "riemann-monitoring"
+}
+
+module "influxdb_monitoring_role" {
+  source = "../../modules/iam_role"
+  role_name = "influxdb-monitoring"
+}
+
+module "concourse_worker_role" {
+  source = "../../modules/iam_role"
+  role_name = "tooling-concourse-worker"
+}
+
+resource "aws_iam_policy_attachment" "blobstore" {
+  name = "${var.stack_description}-blobstore"
+  policy_arn = "${module.blobstore_policy.arn}"
+  roles = [
+    "${module.default_role.role_name}",
+    "${module.bosh_role.role_name}",
+    "${module.riemann_monitoring_role.role_name}",
+    "${module.influxdb_monitoring_role.role_name}",
+    "${module.concourse_worker_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "cloudwatch" {
+  name = "${var.stack_description}-cloudwatch"
+  policy_arn = "${module.cloudwatch_policy.arn}"
+  roles = [
+    "${module.default_role.role_name}",
+    "${module.bosh_role.role_name}",
+    "${module.riemann_monitoring_role.role_name}",
+    "${module.influxdb_monitoring_role.role_name}",
+    "${module.concourse_worker_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "bosh" {
+  name = "${var.stack_description}-bosh"
+  policy_arn = "${module.bosh_policy.arn}"
+  roles = [
+    "${module.master_bosh_role.role_name}",
+    "${module.bosh_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "riemann_monitoring" {
+  name = "riemann_monitoring"
+  policy_arn = "${module.riemann_monitoring_policy.arn}"
+  roles = [
+    "${module.riemann_monitoring_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "influxdb_monitoring" {
+  name = "influxdb_monitoring"
+  policy_arn = "${module.influxdb_monitoring_policy.arn}"
+  roles = [
+    "${module.influxdb_monitoring_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "concourse_worker" {
+  name = "concourse_worker"
+  policy_arn = "${module.concourse_worker_policy.arn}"
+  roles = [
+    "${module.concourse_worker_role.role_name}"
+  ]
 }
 
 module "logsearch_ingestor_role" {
@@ -217,12 +341,6 @@ module "logsearch_ingestor_role" {
   aws_partition = "${var.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
   account_id = "${var.account_id}"
-}
-
-module "influxdb_archive_role" {
-  source = "../../modules/iam_role/influxdb_archive"
-  role_name = "influxdb-archive"
-  aws_partition = "${var.aws_partition}"
 }
 
 module "etcd_backup_role" {

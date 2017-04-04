@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation",
+        "s3:GetBucketNotification",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketRequestPayment",
+        "s3:GetBucketVersioning",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionAcl",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListBucketVersions",
+        "s3:ListMultipartUploadParts",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:s3:::${buildpacks_bucket}",
+        "arn:${aws_partition}:s3:::${buildpacks_bucket}/*",
+        "arn:${aws_partition}:s3:::${packages_bucket}",
+        "arn:${aws_partition}:s3:::${packages_bucket}/*",
+        "arn:${aws_partition}:s3:::${resources_bucket}",
+        "arn:${aws_partition}:s3:::${resources_bucket}/*",
+        "arn:${aws_partition}:s3:::${droplets_bucket}",
+        "arn:${aws_partition}:s3:::${droplets_bucket}/*"
+      ]
+    }
+  ]
+}

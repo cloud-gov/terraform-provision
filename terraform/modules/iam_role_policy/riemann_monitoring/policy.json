@@ -2,34 +2,33 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PassIAMRoles",
       "Effect": "Allow",
       "Action": [
-        "iam:PassRole"
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
       ],
       "Resource": [
-        "arn:${aws_partition}:iam::${account_id}:role/bosh-passed/*"
+        "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:*"
       ]
     },
     {
-      "Sid": "S3Access",
       "Effect": "Allow",
       "Action": [
-        "s3:*"
+        "ec2:DescribeInstances",
+        "ec2:CreateSnapshot",
+        "ec2:CreateTags"
       ],
       "Resource": [
         "*"
       ]
     },
     {
-      "Sid": "BoshDeployments",
       "Effect": "Allow",
       "Action": [
-        "ec2:*",
-        "elasticloadbalancing:*"
+        "ec2:StopInstances"
       ],
       "Resource": [
-        "*"
+        "arn:${aws_partition}:ec2:${aws_default_region}:${account_id}:*"
       ]
     }
   ]

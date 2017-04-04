@@ -72,6 +72,7 @@ variable "concourse_elb_cert_name" {}
 
 variable "stack_prefix" {}
 variable "bucket_prefix" {}
+variable "blobstore_bucket_name" {}
 
 variable "force_restricted_network" {
   default = "yes"

@@ -4,6 +4,7 @@ variable "varz_bucket" {}
 variable "varz_staging_bucket" {}
 variable "concourse_credentials_bucket" {}
 variable "tooling_blobstore_bucket" {}
+variable "development_blobstore_bucket" {}
 variable "staging_blobstore_bucket" {}
 variable "production_blobstore_bucket" {}
 variable "bosh_release_bucket" {}

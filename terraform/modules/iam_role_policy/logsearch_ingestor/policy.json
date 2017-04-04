@@ -4,6 +4,16 @@
     {
       "Effect": "Allow",
       "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:s3:::logsearch-*/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "logs:DescribeLogGroups",
         "logs:DescribeLogStreams"
       ],
@@ -14,22 +24,13 @@
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:DescribeInstances",
-        "ec2:CreateSnapshot",
-        "ec2:CreateTags"
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
       ],
       "Resource": [
-        "*"
+        "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:log-group:logsearch-*"
       ]
-    },
-    {
-        "Effect": "Allow",
-        "Action": [
-            "ec2:StopInstances"
-        ],
-        "Resource": [
-          "arn:${aws_partition}:ec2:${aws_default_region}:${account_id}:*"
-        ]
     }
   ]
 }

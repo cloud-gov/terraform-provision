@@ -262,6 +262,35 @@ output "concourse_elb_zone_id" {
   value = "${module.concourse.concourse_elb_zone_id}"
 }
 
+/* iam roles */
+output "default_profile" {
+  value = "${module.default_role.profile_name}"
+}
+output "bosh_profile" {
+  value = "${module.bosh_role.profile_name}"
+}
+output "logsearch_ingestor_profile" {
+  value = "${module.logsearch_ingestor_role.profile_name}"
+}
+output "kubernetes_master_profile" {
+  value = "${module.kubernetes_master_role.profile_name}"
+}
+output "kubernetes_minion_profile" {
+  value = "${module.kubernetes_minion_role.profile_name}"
+}
+output "kubernetes_node_profile" {
+  value = "${module.kubernetes_node_role.profile_name}"
+}
+output "kubernetes_logger_profile" {
+  value = "${module.kubernetes_logger_role.profile_name}"
+}
+output "etcd_backup_profile" {
+  value = "${module.etcd_backup_role.profile_name}"
+}
+output "cf_blobstore_profile" {
+  value = "${module.cf_blobstore_role.profile_name}"
+}
+
 /* Static proxy */
 output "static_proxy_ip" {
   value = "${module.static_proxy.static_ip}"
