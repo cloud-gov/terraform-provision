@@ -1,3 +1,11 @@
+data "terraform_remote_state" "target_vpc" {
+  backend = "s3"
+  config {
+    bucket = "${var.remote_state_bucket}"
+    key = "${var.target_stack_name}/terraform.tfstate"
+  }
+}
+
 module "stack" {
     source = "../../modules/stack/spoke"
 
@@ -14,8 +22,12 @@ module "stack" {
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_password = "${var.rds_password}"
     account_id = "${var.account_id}"
-    remote_state_bucket = "${var.remote_state_bucket}"
-    target_stack_name = "${var.target_stack_name}"
+
+    target_vpc_id = "${data.terraform_remote_state.target_vpc.vpc_id}"
+    target_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
+    target_bosh_security_group = "${data.terraform_remote_state.target_vpc.bosh_security_group}"
+    target_az1_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az1}"
+    target_az2_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az2}"
 }
 
 module "cf" {
@@ -70,9 +82,10 @@ module "kubernetes" {
 
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
-    tooling_vpc_cidr = "${module.stack.tooling_vpc_cidr}"
+    tooling_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
     elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
+    target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
 }
 
 module "client-elbs" {
