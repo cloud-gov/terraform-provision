@@ -8,6 +8,7 @@ data "template_file" "policy" {
     bosh_release_bucket = "${var.bosh_release_bucket}"
     stemcell_bucket = "${var.stemcell_bucket}"
     terraform_state_bucket = "${var.terraform_state_bucket}"
+    semver_bucket = "${var.semver_bucket}"
   }
 }
 
