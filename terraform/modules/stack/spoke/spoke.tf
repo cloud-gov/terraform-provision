@@ -1,11 +1,3 @@
-data "terraform_remote_state" "target_vpc" {
-    backend = "s3"
-    config {
-        bucket = "${var.remote_state_bucket}"
-        key = "${var.target_stack_name}/terraform.tfstate"
-    }
-}
-
 module "base" {
     source = "../base"
     stack_description = "${var.stack_description}"
@@ -31,7 +23,7 @@ module "base" {
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_security_groups = [
       "${module.base.bosh_security_group}",
-      "${data.terraform_remote_state.target_vpc.bosh_security_group}"
+      "${var.target_bosh_security_group}"
     ]
 }
 
@@ -39,10 +31,10 @@ module "vpc_peering" {
     source = "../../vpc_peering"
 
     peer_owner_id = "${var.account_id}"
-    target_vpc_id = "${data.terraform_remote_state.target_vpc.vpc_id}"
-    target_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
-    target_az1_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az1}"
-    target_az2_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az2}"
+    target_vpc_id = "${var.target_vpc_id}"
+    target_vpc_cidr = "${var.target_vpc_cidr}"
+    target_az1_route_table = "${var.target_az1_route_table}"
+    target_az2_route_table = "${var.target_az2_route_table}"
     source_vpc_id = "${module.base.vpc_id}"
     source_vpc_cidr = "${module.base.vpc_cidr}"
     source_az1_route_table = "${module.base.private_route_table_az1}"
@@ -52,7 +44,7 @@ module "vpc_peering" {
 module "vpc_security_source_to_target" {
     source = "../../vpc_peering_sg"
 
-    target_bosh_security_group = "${data.terraform_remote_state.target_vpc.bosh_security_group}"
+    target_bosh_security_group = "${var.target_bosh_security_group}"
     source_vpc_cidr = "${module.base.vpc_cidr}"
 }
 
@@ -60,7 +52,7 @@ module "vpc_security_target_to_source" {
     source = "../../vpc_peering_sg"
 
     target_bosh_security_group = "${module.base.bosh_security_group}"
-    source_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
+    source_vpc_cidr = "${var.target_vpc_cidr}"
 }
 
 module "bosh_user" {

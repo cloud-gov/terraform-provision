@@ -6,3 +6,4 @@ variable "vpc_cidr" {}
 variable "tooling_vpc_cidr" {}
 variable "elb_subnets" {}
 variable "target_bosh_security_group" {}
+variable "target_monitoring_security_group" {}

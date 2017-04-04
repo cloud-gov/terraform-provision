@@ -253,6 +253,14 @@ output "production_prometheus_elb_name" {
   value = "${module.monitoring_production.prometheus_elb_name}"
 }
 
+output "monitoring_security_groups" {
+  value = {
+    staging = "${module.monitoring_staging.monitoring_security_group}"
+    development = "${module.monitoring_staging.monitoring_security_group}"
+    production = "${module.monitoring_production.monitoring_security_group}"
+  }
+}
+
 /* Staging Monitoring */
 output "staging_monitoring_az" {
   value = "${module.monitoring_staging.monitoring_az}"
