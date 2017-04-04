@@ -246,6 +246,7 @@ module "concourse_worker_policy" {
   bosh_release_bucket = "cloud-gov-bosh-releases"
   stemcell_bucket = "cg-stemcell-images"
   terraform_state_bucket = "terraform-state"
+  semver_bucket = "cg-semver"
 }
 
 module "default_role" {
