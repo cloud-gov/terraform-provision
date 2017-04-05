@@ -458,7 +458,7 @@ jobs:
       TF_VAR_18f_gov_elb_cert_name: star-18f-gov
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
-      TF_VAR_blobstore_bucket_name: bosh-production-blobstore
+      TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
 
 - name: bootstrap-production
   plan:
