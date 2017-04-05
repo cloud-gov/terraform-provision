@@ -2,7 +2,6 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PassIAMRoles",
       "Effect": "Allow",
       "Action": [
         "iam:PassRole"
@@ -12,7 +11,6 @@
       ]
     },
     {
-      "Sid": "BoshDeployments",
       "Effect": "Allow",
       "Action": [
         "ec2:*",
@@ -21,11 +19,11 @@
       "Resource": ["*"]
     },
     {
-      "Sid": "Blobstore",
       "Effect": "Allow",
       "Action": [
         "s3:GetObject",
-        "s3:PutObject"
+        "s3:PutObject",
+        "s3:DeleteObject"
       ],
       "Resource": [
         "arn:${aws_partition}:s3:::${bucket_name}",

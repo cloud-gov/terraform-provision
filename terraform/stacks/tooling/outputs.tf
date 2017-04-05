@@ -468,6 +468,9 @@ output "master_bosh_profile" {
 output "bosh_profile" {
   value = "${module.bosh_role.profile_name}"
 }
+output "bosh_compilation_profile" {
+  value = "${module.bosh_compilation_role.profile_name}"
+}
 output "riemann_monitoring_profile" {
   value = "${module.riemann_monitoring_role.profile_name}"
 }

@@ -223,6 +223,13 @@ module "bosh_policy" {
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
+module "bosh_compilation_policy" {
+  source = "../../modules/iam_role_policy/bosh_compilation"
+  policy_name = "${var.stack_description}-bosh-compilation"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
 module "riemann_monitoring_policy" {
   source = "../../modules/iam_role_policy/riemann_monitoring"
   policy_name = "riemann-monitoring"
@@ -264,6 +271,11 @@ module "bosh_role" {
   role_name = "${var.stack_description}-bosh"
 }
 
+module "bosh_compilation_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh-compilation"
+}
+
 module "riemann_monitoring_role" {
   source = "../../modules/iam_role"
   role_name = "riemann-monitoring"
@@ -297,6 +309,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   roles = [
     "${module.default_role.role_name}",
     "${module.bosh_role.role_name}",
+    "${module.bosh_compilation_role.role_name}",
     "${module.riemann_monitoring_role.role_name}",
     "${module.influxdb_monitoring_role.role_name}",
     "${module.concourse_worker_role.role_name}"
@@ -309,6 +322,14 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     "${module.master_bosh_role.role_name}",
     "${module.bosh_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "bosh_compilation" {
+  name = "${var.stack_description}-bosh-compilation"
+  policy_arn = "${module.bosh_compilation_policy.arn}"
+  roles = [
+    "${module.bosh_compilation_role.role_name}"
   ]
 }
 
