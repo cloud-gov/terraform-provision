@@ -13,6 +13,8 @@ module "vpc" {
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
     nat_gateway_ami = "${var.nat_gateway_ami}"
+    monitoring_security_group = "${var.target_monitoring_security_group}"
+    monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
 }
 
 module "rds_network" {

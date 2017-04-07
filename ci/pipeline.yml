@@ -355,6 +355,7 @@ jobs:
       TF_VAR_bucket_prefix: staging-cg
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_target_monitoring_security_group_count: 1
 
 - name: bootstrap-staging
   plan:

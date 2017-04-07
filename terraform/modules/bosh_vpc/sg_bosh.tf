@@ -105,6 +105,16 @@ resource "aws_security_group_rule" "bosh_director" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "node_exporter" {
+    count = "${var.monitoring_security_group_count}"
+    type = "ingress"
+    from_port = 9100
+    to_port = 9100
+    protocol = "tcp"
+    source_security_group_id = "${var.monitoring_security_group}"
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "outbound" {
     type = "egress"
     from_port = 0

@@ -25,6 +25,8 @@ module "base" {
       "${module.base.bosh_security_group}",
       "${var.target_bosh_security_group}"
     ]
+    target_monitoring_security_group = "${var.target_monitoring_security_group}"
+    target_monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
 }
 
 module "vpc_peering" {
