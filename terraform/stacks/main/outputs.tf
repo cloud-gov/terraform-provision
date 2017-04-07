@@ -294,6 +294,10 @@ output "cf_blobstore_profile" {
   value = "${module.cf_blobstore_role.profile_name}"
 }
 
+output "upstream_bosh_compilation_profile" {
+  value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
+}
+
 /* Static proxy */
 output "static_proxy_ip" {
   value = "${module.static_proxy.static_ip}"
