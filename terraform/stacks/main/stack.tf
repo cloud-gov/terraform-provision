@@ -149,6 +149,14 @@ module "blobstore_policy" {
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
+// Allow development / staging / production bosh to read tooling bosh blobs
+module "blobstore_upstream_policy" {
+  source = "../../modules/iam_role_policy/blobstore"
+  policy_name = "${var.stack_description}-blobstore-upstream"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.upstream_blobstore_bucket_name}"
+}
+
 module "cloudwatch_policy" {
   source = "../../modules/iam_role_policy/cloudwatch"
   policy_name = "${var.stack_description}-cloudwatch-logs"
@@ -288,6 +296,14 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
   policy_arn = "${module.bosh_compilation_policy.arn}"
   roles = [
     "${module.bosh_compilation_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "blobstore_upstream" {
+  name = "${var.stack_description}-blobstore-upstream"
+  policy_arn = "${module.blobstore_upstream_policy.arn}"
+  roles = [
+    "${module.bosh_role.role_name}"
   ]
 }
 

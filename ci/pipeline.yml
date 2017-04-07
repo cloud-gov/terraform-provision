@@ -248,6 +248,7 @@ jobs:
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
 
 - name: bootstrap-development
   plan:
@@ -353,6 +354,7 @@ jobs:
       TF_VAR_stack_prefix: cf-staging
       TF_VAR_bucket_prefix: staging-cg
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
 
 - name: bootstrap-staging
   plan:
@@ -459,6 +461,7 @@ jobs:
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
 
 - name: bootstrap-production
   plan:
