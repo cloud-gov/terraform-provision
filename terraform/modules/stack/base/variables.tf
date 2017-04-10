@@ -81,3 +81,10 @@ variable "restricted_ingress_web_cidrs" {
 variable "rds_security_groups" {
   type = "list"
 }
+
+variable "target_monitoring_security_group" {
+  default = ""
+}
+variable "target_monitoring_security_group_count" {
+  default = 0
+}
