@@ -19,8 +19,8 @@ module "bootstrap_buckets" {
   aws_partition = "${var.aws_partition}"
 
   varz_bucket = "cloud-gov-varz"
-  varz_staging_bucket = "cloud-gov-varz-staging"
-  varz_development_bucket = "cloud-gov-varz-development"
+  varz_staging_bucket = "cloud-gov-varz-stage"
+  varz_development_bucket = "cloud-gov-varz-dev"
   concourse_credentials_bucket = "concourse-credentials"
   tooling_blobstore_bucket = "bosh-tooling-blobstore"
   staging_blobstore_bucket = "bosh-staging-blobstore"
