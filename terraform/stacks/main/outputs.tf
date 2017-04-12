@@ -243,6 +243,12 @@ output "concourse_rds_identifier" {
 output "concourse_rds_name" {
   value = "${module.concourse.concourse_rds_name}"
 }
+output "concourse_rds_host" {
+  value = "${module.concourse.concourse_rds_host}"
+}
+output "concourse_rds_port" {
+  value = "${module.concourse.concourse_rds_port}"
+}
 output "concourse_rds_url" {
   value = "${module.concourse.concourse_rds_url}"
 }
