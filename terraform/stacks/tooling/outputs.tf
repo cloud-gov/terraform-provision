@@ -176,6 +176,12 @@ output "production_concourse_rds_identifier" {
 output "production_concourse_rds_name" {
   value = "${module.concourse_production.concourse_rds_name}"
 }
+output "production_concourse_rds_host" {
+  value = "${module.concourse_production.concourse_rds_host}"
+}
+output "production_concourse_rds_port" {
+  value = "${module.concourse_production.concourse_rds_port}"
+}
 output "production_concourse_rds_url" {
   value = "${module.concourse_production.concourse_rds_url}"
 }
@@ -210,6 +216,12 @@ output "staging_concourse_rds_identifier" {
 }
 output "staging_concourse_rds_name" {
   value = "${module.concourse_staging.concourse_rds_name}"
+}
+output "staging_concourse_rds_host" {
+  value = "${module.concourse_staging.concourse_rds_host}"
+}
+output "staging_concourse_rds_port" {
+  value = "${module.concourse_staging.concourse_rds_port}"
 }
 output "staging_concourse_rds_url" {
   value = "${module.concourse_staging.concourse_rds_url}"
