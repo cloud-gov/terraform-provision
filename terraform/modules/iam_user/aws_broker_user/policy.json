@@ -12,11 +12,17 @@
         "rds:AddTagsToResource",
         "rds:ListTagsForResource",
         "rds:RemoveTagsFromResource",
+        "rds:CreateDBParameterGroup",
+        "rds:ModifyDBParameterGroup",
+        "rds:DeleteDBParameterGroup",
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBParameters",
         "rds:DescribeDBSnapshots",
         "rds:DeleteDBSnapshot"
       ],
       "Resource": [
         "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:db:cg-aws-broker-*",
+        "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:pg:cg-aws-broker-*",
         "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:snapshot:cg-aws-broker-*",
         "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:subgrp:production",
         "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:subgrp:staging"
