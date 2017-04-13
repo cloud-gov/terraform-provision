@@ -1,5 +1,7 @@
 resource "aws_db_parameter_group" "parameter_group" {
-  name   = "${var.stack_description}-${var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : var.rds_db_name}"
+  name   = "${var.rds_parameter_group_name != "" ?
+    var.rds_parameter_group_name :
+    "${replace("${var.stack_description}-${var.rds_db_name}", "/[^a-zA-Z-]+/", "-")}"}"
   family = "${var.rds_parameter_group_family}"
 
   parameter {
