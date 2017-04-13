@@ -30,6 +30,10 @@ variable "rds_subnet_group" {}
 
 variable "rds_security_groups" {}
 
+variable "use_rds_parameter_group" {
+  default = "yes"
+}
+
 variable "rds_parameter_group_name" {
   default = ""
 }
