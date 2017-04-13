@@ -1,4 +1,5 @@
 resource "aws_db_parameter_group" "parameter_group" {
+  count = "${var.use_rds_parameter_group == "yes" ? 1 : 0}"
   name   = "${var.rds_parameter_group_name != "" ?
     var.rds_parameter_group_name :
     "${replace("${var.stack_description}-${var.rds_db_name}", "/[^a-zA-Z-]+/", "-")}"}"
