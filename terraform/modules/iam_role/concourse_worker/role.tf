@@ -29,6 +29,8 @@ module "concourse" {
         "arn:${var.aws_partition}:s3:::${var.varz_bucket}/*",
         "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}",
         "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}/*",
+        "arn:${var.aws_partition}:s3:::${var.varz_development_bucket}",
+        "arn:${var.aws_partition}:s3:::${var.varz_development_bucket}/*",
         "arn:${var.aws_partition}:s3:::${var.bosh_release_bucket}",
         "arn:${var.aws_partition}:s3:::${var.bosh_release_bucket}/*",
         "arn:${var.aws_partition}:s3:::${var.stemcell_bucket}",
