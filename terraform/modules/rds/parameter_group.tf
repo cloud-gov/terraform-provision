@@ -1,6 +1,6 @@
-resource "aws_db_parameter_group" "parameter_group" {
-  count = "${var.use_rds_parameter_group == "yes" ? 1 : 0}"
-  name   = "${var.rds_parameter_group_name != "" ?
+resource "aws_db_parameter_group" "parameter_group_postgres" {
+  count = "${var.rds_db_engine == "postgres" ? 1 : 0}"
+  name = "${var.rds_parameter_group_name != "" ?
     var.rds_parameter_group_name :
     "${replace("${var.stack_description}-${var.rds_db_name}", "/[^a-zA-Z-]+/", "-")}"}"
   family = "${var.rds_parameter_group_family}"
@@ -24,4 +24,12 @@ resource "aws_db_parameter_group" "parameter_group" {
     name  = "log_statement"
     value = "ddl"
   }
+}
+
+resource "aws_db_parameter_group" "parameter_group_mysql" {
+  count = "${var.rds_db_engine == "mysql" ? 1 : 0}"
+  name = "${var.rds_parameter_group_name != "" ?
+    var.rds_parameter_group_name :
+    "${replace("${var.stack_description}-${var.rds_db_name}", "/[^a-zA-Z-]+/", "-")}"}"
+  family = "${var.rds_parameter_group_family}"
 }
