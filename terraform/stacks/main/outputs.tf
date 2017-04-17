@@ -226,6 +226,12 @@ output "concourse_rds_identifier" {
 output "concourse_rds_name" {
   value = "${module.concourse.concourse_rds_name}"
 }
+output "concourse_rds_host" {
+  value = "${module.concourse.concourse_rds_host}"
+}
+output "concourse_rds_port" {
+  value = "${module.concourse.concourse_rds_port}"
+}
 output "concourse_rds_url" {
   value = "${module.concourse.concourse_rds_url}"
 }
@@ -252,6 +258,9 @@ output "default_profile" {
 output "bosh_profile" {
   value = "${module.bosh_role.profile_name}"
 }
+output "bosh_compilation_profile" {
+  value = "${module.bosh_compilation_role.profile_name}"
+}
 output "logsearch_ingestor_profile" {
   value = "${module.logsearch_ingestor_role.profile_name}"
 }
@@ -272,6 +281,10 @@ output "etcd_backup_profile" {
 }
 output "cf_blobstore_profile" {
   value = "${module.cf_blobstore_role.profile_name}"
+}
+
+output "upstream_bosh_compilation_profile" {
+  value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
 }
 
 /* Static proxy */

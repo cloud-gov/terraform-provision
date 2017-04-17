@@ -43,3 +43,10 @@ variable "nat_gateway_instance_type" {
 variable "nat_gateway_ami" {
   default = "ami-e8ab1489"
 }
+
+variable "monitoring_security_group" {
+  default = ""
+}
+variable "monitoring_security_group_count" {
+  default = 0
+}

@@ -1,3 +1,11 @@
+data "terraform_remote_state" "target_vpc" {
+  backend = "s3"
+  config {
+    bucket = "${var.remote_state_bucket}"
+    key = "${var.target_stack_name}/terraform.tfstate"
+  }
+}
+
 module "stack" {
     source = "../../modules/stack/spoke"
 
@@ -14,8 +22,14 @@ module "stack" {
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     rds_password = "${var.rds_password}"
     account_id = "${var.account_id}"
-    remote_state_bucket = "${var.remote_state_bucket}"
-    target_stack_name = "${var.target_stack_name}"
+
+    target_vpc_id = "${data.terraform_remote_state.target_vpc.vpc_id}"
+    target_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
+    target_bosh_security_group = "${data.terraform_remote_state.target_vpc.bosh_security_group}"
+    target_az1_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az1}"
+    target_az2_route_table = "${data.terraform_remote_state.target_vpc.private_route_table_az2}"
+    target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
+    target_monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
 }
 
 module "cf" {
@@ -70,9 +84,10 @@ module "kubernetes" {
 
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
-    tooling_vpc_cidr = "${module.stack.tooling_vpc_cidr}"
+    tooling_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
     elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
+    target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
 }
 
 module "client-elbs" {
@@ -136,6 +151,14 @@ module "blobstore_policy" {
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
+// Allow development / staging / production bosh to read tooling bosh blobs
+module "blobstore_upstream_policy" {
+  source = "../../modules/iam_role_policy/blobstore"
+  policy_name = "${var.stack_description}-blobstore-upstream"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.upstream_blobstore_bucket_name}"
+}
+
 module "cloudwatch_policy" {
   source = "../../modules/iam_role_policy/cloudwatch"
   policy_name = "${var.stack_description}-cloudwatch-logs"
@@ -146,6 +169,13 @@ module "bosh_policy" {
   policy_name = "${var.stack_description}-bosh"
   aws_partition = "${var.aws_partition}"
   account_id = "${var.account_id}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
+module "bosh_compilation_policy" {
+  source = "../../modules/iam_role_policy/bosh_compilation"
+  policy_name = "${var.stack_description}-bosh-compilation"
+  aws_partition = "${var.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
@@ -196,6 +226,11 @@ module "bosh_role" {
   role_name = "${var.stack_description}-bosh"
 }
 
+module "bosh_compilation_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh-compilation"
+}
+
 module "logsearch_ingestor_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-logsearch-ingestor"
@@ -241,6 +276,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   roles = [
     "${module.default_role.role_name}",
     "${module.bosh_role.role_name}",
+    "${module.bosh_compilation_role.role_name}",
     "${module.logsearch_ingestor_role.role_name}",
     "${module.kubernetes_master_role.role_name}",
     "${module.kubernetes_minion_role.role_name}",
@@ -252,6 +288,22 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
 resource "aws_iam_policy_attachment" "bosh" {
   name = "${var.stack_description}-bosh"
   policy_arn = "${module.bosh_policy.arn}"
+  roles = [
+    "${module.bosh_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "bosh_compilation" {
+  name = "${var.stack_description}-bosh-compilation"
+  policy_arn = "${module.bosh_compilation_policy.arn}"
+  roles = [
+    "${module.bosh_compilation_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "blobstore_upstream" {
+  name = "${var.stack_description}-blobstore-upstream"
+  policy_arn = "${module.blobstore_upstream_policy.arn}"
   roles = [
     "${module.bosh_role.role_name}"
   ]

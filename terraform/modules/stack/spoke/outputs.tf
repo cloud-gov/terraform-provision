@@ -6,13 +6,6 @@ output "vpc_cidr" {
     value = "${module.base.vpc_cidr}"
 }
 
-output "tooling_vpc_id" {
-    value = "${data.terraform_remote_state.target_vpc.vpc_id}"
-}
-output "tooling_vpc_cidr" {
-    value = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
-}
-
 /* Private network */
 output "private_subnet_az1" {
   value = "${module.base.private_subnet_az1}"

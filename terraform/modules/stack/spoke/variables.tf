@@ -82,6 +82,15 @@ variable "rds_password" {}
 
 variable "account_id" {}
 
-variable "remote_state_bucket" {}
+variable "target_vpc_id" {}
+variable "target_vpc_cidr" {}
+variable "target_bosh_security_group" {}
+variable "target_az1_route_table" {}
+variable "target_az2_route_table" {}
 
-variable "target_stack_name" {}
+variable "target_monitoring_security_group" {
+  default = ""
+}
+variable "target_monitoring_security_group_count" {
+  default = 0
+}

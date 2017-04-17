@@ -176,6 +176,12 @@ output "production_concourse_rds_identifier" {
 output "production_concourse_rds_name" {
   value = "${module.concourse_production.concourse_rds_name}"
 }
+output "production_concourse_rds_host" {
+  value = "${module.concourse_production.concourse_rds_host}"
+}
+output "production_concourse_rds_port" {
+  value = "${module.concourse_production.concourse_rds_port}"
+}
 output "production_concourse_rds_url" {
   value = "${module.concourse_production.concourse_rds_url}"
 }
@@ -210,6 +216,12 @@ output "staging_concourse_rds_identifier" {
 }
 output "staging_concourse_rds_name" {
   value = "${module.concourse_staging.concourse_rds_name}"
+}
+output "staging_concourse_rds_host" {
+  value = "${module.concourse_staging.concourse_rds_host}"
+}
+output "staging_concourse_rds_port" {
+  value = "${module.concourse_staging.concourse_rds_port}"
 }
 output "staging_concourse_rds_url" {
   value = "${module.concourse_staging.concourse_rds_url}"
@@ -251,6 +263,14 @@ output "production_prometheus_elb_dns_name" {
 }
 output "production_prometheus_elb_name" {
   value = "${module.monitoring_production.prometheus_elb_name}"
+}
+
+output "monitoring_security_groups" {
+  value = {
+    staging = "${module.monitoring_staging.monitoring_security_group}"
+    development = "${module.monitoring_staging.monitoring_security_group}"
+    production = "${module.monitoring_production.monitoring_security_group}"
+  }
 }
 
 /* Staging Monitoring */
@@ -407,6 +427,9 @@ output "master_bosh_profile" {
 }
 output "bosh_profile" {
   value = "${module.bosh_role.profile_name}"
+}
+output "bosh_compilation_profile" {
+  value = "${module.bosh_compilation_role.profile_name}"
 }
 output "riemann_monitoring_profile" {
   value = "${module.riemann_monitoring_role.profile_name}"

@@ -18,6 +18,14 @@ output "concourse_rds_name" {
   value = "${module.rds_96.rds_name}"
 }
 
+output "concourse_rds_host" {
+  value = "${module.rds_96.rds_host}"
+}
+
+output "concourse_rds_port" {
+  value = "${module.rds_96.rds_port}"
+}
+
 output "concourse_rds_url" {
   value = "${module.rds_96.rds_url}"
 }

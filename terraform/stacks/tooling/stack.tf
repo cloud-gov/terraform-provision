@@ -36,7 +36,7 @@ module "concourse_production" {
   rds_password = "${var.concourse_prod_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
-  rds_parameter_group_name = "concourse-production"
+  rds_parameter_group_name = "tooling-concourse-production"
   rds_instance_type = "db.m3.xlarge"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_prod_elb_cert_name}"
@@ -55,7 +55,7 @@ module "concourse_staging" {
   rds_password = "${var.concourse_staging_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
-  rds_parameter_group_name = "concourse-staging"
+  rds_parameter_group_name = "tooling-concourse-staging"
   rds_instance_type = "db.m3.medium"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_staging_elb_cert_name}"
@@ -160,6 +160,13 @@ module "bosh_policy" {
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
+module "bosh_compilation_policy" {
+  source = "../../modules/iam_role_policy/bosh_compilation"
+  policy_name = "${var.stack_description}-bosh-compilation"
+  aws_partition = "${var.aws_partition}"
+  bucket_name = "${var.blobstore_bucket_name}"
+}
+
 module "riemann_monitoring_policy" {
   source = "../../modules/iam_role_policy/riemann_monitoring"
   policy_name = "riemann-monitoring"
@@ -183,6 +190,7 @@ module "concourse_worker_policy" {
   bosh_release_bucket = "cloud-gov-bosh-releases"
   stemcell_bucket = "cg-stemcell-images"
   terraform_state_bucket = "terraform-state"
+  semver_bucket = "cg-semver"
 }
 
 module "default_role" {
@@ -198,6 +206,11 @@ module "master_bosh_role" {
 module "bosh_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-bosh"
+}
+
+module "bosh_compilation_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh-compilation"
 }
 
 module "riemann_monitoring_role" {
@@ -233,6 +246,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   roles = [
     "${module.default_role.role_name}",
     "${module.bosh_role.role_name}",
+    "${module.bosh_compilation_role.role_name}",
     "${module.riemann_monitoring_role.role_name}",
     "${module.influxdb_monitoring_role.role_name}",
     "${module.concourse_worker_role.role_name}"
@@ -245,6 +259,14 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     "${module.master_bosh_role.role_name}",
     "${module.bosh_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "bosh_compilation" {
+  name = "${var.stack_description}-bosh-compilation"
+  policy_arn = "${module.bosh_compilation_policy.arn}"
+  roles = [
+    "${module.bosh_compilation_role.role_name}"
   ]
 }
 
