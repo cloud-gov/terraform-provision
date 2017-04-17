@@ -299,7 +299,6 @@ output "staging_prometheus_elb_name" {
   value = "${module.monitoring_staging.prometheus_elb_name}"
 }
 
-
 /* master bosh user */
 output "master_bosh_username" {
   value = "${module.master_bosh_user.username}"
@@ -315,23 +314,6 @@ output "master_bosh_access_key_id_curr" {
 }
 output "master_bosh_secret_access_key_curr" {
   value = "${module.master_bosh_user.secret_access_key_curr}"
-}
-
-/* tooling bosh user */
-output "tooling_bosh_username" {
-  value = "${module.tooling_bosh_user.username}"
-}
-output "tooling_bosh_access_key_id_prev" {
-  value = "${module.tooling_bosh_user.access_key_id_prev}"
-}
-output "tooling_bosh_secret_access_key_prev" {
-  value = "${module.tooling_bosh_user.secret_access_key_prev}"
-}
-output "tooling_bosh_access_key_id_curr" {
-  value = "${module.tooling_bosh_user.access_key_id_curr}"
-}
-output "tooling_bosh_secret_access_key_curr" {
-  value = "${module.tooling_bosh_user.secret_access_key_curr}"
 }
 
 /* ci user to access bosh secrets */
@@ -434,40 +416,6 @@ output "aws_broker_access_key_id_curr" {
 }
 output "aws_broker_secret_access_key_curr" {
   value = "${module.aws_broker_user.secret_access_key_curr}"
-}
-
-/* cf cc user */
-output "cf_username" {
-  value = "${module.cf_user.username}"
-}
-output "cf_access_key_id_prev" {
-  value = "${module.cf_user.access_key_id_prev}"
-}
-output "cf_secret_access_key_prev" {
-  value = "${module.cf_user.secret_access_key_prev}"
-}
-output "cf_access_key_id_curr" {
-  value = "${module.cf_user.access_key_id_curr}"
-}
-output "cf_secret_access_key_curr" {
-  value = "${module.cf_user.secret_access_key_curr}"
-}
-
-/* cloudwatch user */
-output "awslogs_username" {
-  value = "${module.cloudwatch_user.username}"
-}
-output "awslogs_access_key_id_prev" {
-  value = "${module.cloudwatch_user.access_key_id_prev}"
-}
-output "awslogs_secret_access_key_prev" {
-  value = "${module.cloudwatch_user.secret_access_key_prev}"
-}
-output "awslogs_access_key_id_curr" {
-  value = "${module.cloudwatch_user.access_key_id_curr}"
-}
-output "awslogs_secret_access_key_curr" {
-  value = "${module.cloudwatch_user.secret_access_key_curr}"
 }
 
 /* iam roles */

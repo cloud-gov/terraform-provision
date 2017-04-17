@@ -1,4 +1,3 @@
-
 /* VPC */
 output "vpc_id" {
     value = "${module.base.vpc_id}"
@@ -85,21 +84,4 @@ output "bosh_rds_username" {
 }
 output "bosh_rds_password" {
   value = "${module.base.bosh_rds_password}"
-}
-
-/* bosh user */
-output "bosh_username" {
-  value = "${module.bosh_user.username}"
-}
-output "bosh_access_key_id_prev" {
-  value = "${module.bosh_user.access_key_id_prev}"
-}
-output "bosh_secret_access_key_prev" {
-  value = "${module.bosh_user.secret_access_key_prev}"
-}
-output "bosh_access_key_id_curr" {
-  value = "${module.bosh_user.access_key_id_curr}"
-}
-output "bosh_secret_access_key_curr" {
-  value = "${module.bosh_user.secret_access_key_curr}"
 }

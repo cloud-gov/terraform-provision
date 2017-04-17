@@ -93,13 +93,6 @@ module "monitoring_staging" {
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
-module "tooling_bosh_user" {
-  source = "../../modules/iam_user/bosh_user"
-  username = "bosh-tooling"
-  account_id = "${var.account_id}"
-  aws_partition = "${var.aws_partition}"
-}
-
 module "master_bosh_user" {
   source = "../../modules/iam_user/bosh_user"
   username = "bosh-master"
@@ -117,12 +110,6 @@ module "ci_user" {
 module "ci_user_east" {
   source = "../../modules/iam_user/concourse_user_east"
   username = "concourse-east"
-  aws_partition = "${var.aws_partition}"
-}
-
-module "cf_user" {
-  source = "../../modules/iam_user/cf_user"
-  username = "cf-cc-s3"
   aws_partition = "${var.aws_partition}"
 }
 
@@ -151,56 +138,6 @@ module "aws_broker_user" {
   aws_default_region = "${var.aws_default_region}"
   remote_state_bucket = "${var.remote_state_bucket}"
   aws_partition = "${var.aws_partition}"
-}
-
-module "concourse_worker_role_legacy" {
-  source = "../../modules/iam_role/concourse_worker"
-  role_name = "concourse-worker"
-  aws_partition = "${var.aws_partition}"
-  varz_bucket = "cloud-gov-varz"
-  varz_staging_bucket = "cloud-gov-varz-stage"
-  bosh_release_bucket = "cloud-gov-bosh-releases"
-  stemcell_bucket = "cg-stemcell-images"
-  terraform_state_bucket = "terraform-state"
-}
-
-module "kubernetes_master_role" {
-  source = "../../modules/iam_role/kubernetes_master"
-  stack_description = "${var.stack_description}"
-  aws_partition = "${var.aws_partition}"
-  aws_default_region = "${var.aws_default_region}"
-  account_id = "${var.account_id}"
-  role_name = "k8s-master"
-}
-
-module "kubernetes_minion_role" {
-  source = "../../modules/iam_role/kubernetes_minion"
-  stack_description = "${var.stack_description}"
-  aws_partition = "${var.aws_partition}"
-  aws_default_region = "${var.aws_default_region}"
-  account_id = "${var.account_id}"
-  role_name = "k8s-minion"
-}
-
-module "kubernetes_node_role" {
-  source = "../../modules/iam_role/kubernetes_node"
-  role_name = "k8s-node"
-  aws_partition = "${var.aws_partition}"
-  account_id = "${var.account_id}"
-  master_role = "k8s-master"
-  minion_role = "k8s-minion"
-  assume_role_path = "/bosh-passed/"
-}
-
-module "kubernetes_logger_role" {
-  source = "../../modules/iam_role/kubernetes_logger"
-  role_name = "k8s-logger"
-  aws_default_region = "${var.aws_default_region}"
-  aws_partition = "${var.aws_partition}"
-  account_id = "${var.account_id}"
-  master_role = "k8s-master"
-  minion_role = "k8s-minion"
-  assume_role_path = "/bosh-passed/"
 }
 
 module "blobstore_policy" {
@@ -355,23 +292,4 @@ resource "aws_iam_policy_attachment" "concourse_worker" {
   roles = [
     "${module.concourse_worker_role.role_name}"
   ]
-}
-
-module "logsearch_ingestor_role" {
-  source = "../../modules/iam_role/logsearch_ingestor"
-  role_name = "logsearch-ingestor"
-  aws_partition = "${var.aws_partition}"
-  aws_default_region = "${var.aws_default_region}"
-  account_id = "${var.account_id}"
-}
-
-module "etcd_backup_role" {
-  source = "../../modules/iam_role/etcd_backup"
-  role_name = "etcd-backup"
-  aws_partition = "${var.aws_partition}"
-}
-
-module "cloudwatch_user" {
-  source = "../../modules/iam_user/cloudwatch_user"
-  username = "bosh-cloudwatch"
 }
