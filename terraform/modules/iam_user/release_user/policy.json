@@ -24,7 +24,9 @@
         "arn:${aws_partition}:s3:::cloud-gov-release-blobstore",
         "arn:${aws_partition}:s3:::cloud-gov-release-blobstore/*",
         "arn:${aws_partition}:s3:::cloud-gov-bosh-releases",
-        "arn:${aws_partition}:s3:::cloud-gov-bosh-releases/*"
+        "arn:${aws_partition}:s3:::cloud-gov-bosh-releases/*",
+        "arn:${aws_partition}:s3:::cg-semver",
+        "arn:${aws_partition}:s3:::cg-semver/*"
       ]
     }
   ]
