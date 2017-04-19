@@ -6,8 +6,8 @@ resource "aws_elb" "bosh_uaa_elb" {
   listener {
     lb_port = 443
     lb_protocol = "HTTPS"
-    instance_port = 8443
-    instance_protocol = "HTTPS"
+    instance_port = 8081
+    instance_protocol = "HTTP"
 
     ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.bosh_uaa_elb_cert_name}"
   }
@@ -20,8 +20,7 @@ resource "aws_elb" "bosh_uaa_elb" {
     unhealthy_threshold = 3
   }
 
-  tags =  {
+  tags {
     Name = "${var.stack_description}-bosh-uaa"
   }
-
 }
