@@ -15,7 +15,7 @@ resource "aws_elb" "bosh_uaa_elb" {
   health_check {
     healthy_threshold = 2
     interval = 61
-    target = "SSL:8443"
+    target = "TCP:8081"
     timeout = 60
     unhealthy_threshold = 3
   }

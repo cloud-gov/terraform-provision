@@ -1,11 +1,10 @@
-
 resource "aws_security_group" "bosh_uaa_traffic" {
   description = "Allow access to incoming BOSH UAA traffic for operations"
   vpc_id = "${module.stack.vpc_id}"
 
   ingress {
-    from_port = 8443
-    to_port = 8443
+    from_port = 8081
+    to_port = 8081
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -17,8 +16,7 @@ resource "aws_security_group" "bosh_uaa_traffic" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags =  {
+  tags {
     Name = "${var.stack_description} - Incoming BOSH UAA Traffic for operations"
   }
-
 }
