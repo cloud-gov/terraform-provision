@@ -12,6 +12,9 @@ output "vpc_id" {
 output "vpc_cidr" {
   value = "${module.stack.vpc_cidr}"
 }
+output "vpc_cidr_dns" {
+  value = "${cidrhost("${module.stack.vpc_cidr}", 2)}"
+}
 
 /* Private network */
 output "private_subnet_az1" {
