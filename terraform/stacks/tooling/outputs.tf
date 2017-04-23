@@ -85,6 +85,19 @@ output "staging_monitoring_subnet_gateway" {
   value = "${cidrhost("${var.monitoring_staging_cidr}", 1)}"
 }
 
+output "production_monitoring_riemann_address" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 128)}"
+}
+output "production_monitoring_influxdb_address" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 129)}"
+}
+output "staging_monitoring_riemann_address" {
+  value = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
+}
+output "staging_monitoring_influxdb_address" {
+  value = "${cidrhost("${var.monitoring_staging_cidr}", 129)}"
+}
+
 output "master_bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 6)}"
 }
