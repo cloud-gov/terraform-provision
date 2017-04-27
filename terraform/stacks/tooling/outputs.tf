@@ -48,6 +48,14 @@ output "private_subnet_az2_zone" {
   value = "${var.az2}"
 }
 
+output "private_subnet_az1_reserved" {
+  value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+}
+
+output "private_subnet_az2_reserved" {
+  value = "${cidrhost("${var.private_cidr_2}", 0)} - ${cidrhost("${var.private_cidr_2}", 3)}"
+}
+
 output "private_subnet_az1_gateway" {
   value = "${cidrhost("${var.private_cidr_1}", 1)}"
 }
@@ -62,6 +70,13 @@ output "private_subnet_az1_dns" {
 
 output "private_subnet_az2_dns" {
   value = "${cidrhost("${var.private_cidr_2}", 2)}"
+}
+
+output "production_monitoring_subnet_reserved" {
+  value = "${cidrhost("${var.monitoring_production_cidr}", 0)} - ${cidrhost("${var.monitoring_production_cidr}", 3)}"
+}
+output "staging_monitoring_subnet_reserved" {
+  value = "${cidrhost("${var.monitoring_staging_cidr}", 0)} - ${cidrhost("${var.monitoring_staging_cidr}", 3)}"
 }
 
 output "production_monitoring_subnet_dns" {
@@ -177,6 +192,9 @@ output "bosh_rds_password" {
 output "production_concourse_subnet" {
   value = "${module.concourse_production.concourse_subnet}"
 }
+output "production_concourse_subnet_reserved" {
+  value = "${cidrhost("${module.concourse_production.concourse_subnet_cidr}", 0)} - ${cidrhost("${module.concourse_production.concourse_subnet_cidr}", 3)}"
+}
 output "production_concourse_subnet_cidr" {
   value = "${module.concourse_production.concourse_subnet_cidr}"
 }
@@ -217,6 +235,9 @@ output "production_concourse_elb_name" {
 /* Staging Concourse */
 output "staging_concourse_subnet" {
   value = "${module.concourse_staging.concourse_subnet}"
+}
+output "staging_concourse_subnet_reserved" {
+  value = "${cidrhost("${module.concourse_staging.concourse_subnet_cidr}", 0)} - ${cidrhost("${module.concourse_staging.concourse_subnet_cidr}", 3)}"
 }
 output "staging_concourse_subnet_cidr" {
   value = "${module.concourse_staging.concourse_subnet_cidr}"

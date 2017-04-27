@@ -220,6 +220,9 @@ output "concourse_subnet_cidr" {
 output "concourse_subnet_gateway" {
   value = "${cidrhost("${module.concourse.concourse_subnet_cidr}", 1)}"
 }
+output "concourse_subnet_reserved" {
+  value = "${cidrhost("${module.concourse.concourse_subnet_cidr}", 0)} - ${cidrhost("${module.concourse.concourse_subnet_cidr}", 3)}"
+}
 output "concourse_security_group" {
   value = "${module.concourse.concourse_security_group}"
 }
