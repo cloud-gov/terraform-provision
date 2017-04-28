@@ -12,6 +12,25 @@ export PGPASSWORD=${db_pass:?}
 # See: https://github.com/koalaman/shellcheck/wiki/SC2086#exceptions
 psql_adm() { psql -h "${db_address}" -U ${db_user} "$@"; }
 
+# contains(string, substring)
+# See: http://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-unix-shell-scripting
+# Returns 0 if the specified string contains the specified substring,
+# otherwise returns 1.
+contains() {
+    string="$1"
+    substring="$( printf '%q' "$2" )"
+    if test "${string#*$substring}" != "$string"
+    then
+        return 0    # $substring is in $string
+    else
+        return 1    # $substring is not in $string
+    fi
+}
+
+if ! contains "$DATABASES" "$db_user"; then
+  DATABASES="$db_user $DATABASES"
+fi
+
 for db in ${DATABASES}; do
 
   # Create database
