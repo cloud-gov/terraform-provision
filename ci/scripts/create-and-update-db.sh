@@ -18,7 +18,7 @@ psql_adm() { psql -h "${db_address}" -U ${db_user} "$@"; }
 # otherwise returns 1.
 contains() {
     string="$1"
-    substring="$( printf '%q' "$2" )"
+    substring="$2"
     if test "${string#*$substring}" != "$string"
     then
         return 0    # $substring is in $string
@@ -27,6 +27,8 @@ contains() {
     fi
 }
 
+# Make sure that we create a default database for the db_user
+# PG will assume a database named like the db_user if one is not specified.
 if ! contains "$DATABASES" "$db_user"; then
   DATABASES="$db_user $DATABASES"
 fi
@@ -34,7 +36,7 @@ fi
 for db in ${DATABASES}; do
 
   # Create database
-  psql_adm -d postgres -l | grep -q " ${db} " || \
+  psql_adm -d postgres -l | awk -f '{print $1}' | grep -q " ${db} " || \
     psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER ${db_user}"
 
   # Enable extensions
