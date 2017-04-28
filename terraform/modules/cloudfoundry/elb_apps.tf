@@ -22,13 +22,12 @@ resource "aws_elb" "cloudfoundry_elb_apps" {
   health_check {
     healthy_threshold = 2
     interval = 5
-    target = "TCP:80"
+    target = "HTTP:81/"
     timeout = 4
     unhealthy_threshold = 3
   }
 
-  tags =  {
+  tags {
     Name = "${var.stack_description}-CloudFoundry-Apps"
   }
-
 }
