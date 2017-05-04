@@ -94,3 +94,11 @@ variable "target_monitoring_security_group" {
 variable "target_monitoring_security_group_count" {
   default = 0
 }
+
+variable "target_concourse_security_groups" {
+  type = "list"
+  default = []
+}
+variable "target_concourse_security_group_count" {
+  default = "0"
+}
