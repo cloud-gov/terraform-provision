@@ -27,6 +27,8 @@ module "base" {
     ]
     target_monitoring_security_group = "${var.target_monitoring_security_group}"
     target_monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
+    target_concourse_security_groups = "${var.target_concourse_security_groups}"
+    target_concourse_security_group_count = "${var.target_concourse_security_group_count}"
 }
 
 module "vpc_peering" {

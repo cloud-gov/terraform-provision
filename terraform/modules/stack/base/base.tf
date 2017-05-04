@@ -15,6 +15,8 @@ module "vpc" {
     nat_gateway_ami = "${var.nat_gateway_ami}"
     monitoring_security_group = "${var.target_monitoring_security_group}"
     monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
+    concourse_security_groups = "${var.target_concourse_security_groups}"
+    concourse_security_group_count = "${var.target_concourse_security_group_count}"
 }
 
 module "rds_network" {

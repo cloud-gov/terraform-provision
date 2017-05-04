@@ -50,3 +50,11 @@ variable "monitoring_security_group" {
 variable "monitoring_security_group_count" {
   default = 0
 }
+
+variable "concourse_security_groups" {
+  type = "list"
+  default = []
+}
+variable "concourse_security_group_count" {
+  default = "0"
+}
