@@ -7,3 +7,4 @@ variable "bosh_release_bucket" {}
 variable "stemcell_bucket" {}
 variable "terraform_state_bucket" {}
 variable "semver_bucket" {}
+variable "billing_bucket" {}

@@ -374,3 +374,9 @@ module "kubernetes_logger_role" {
   minion_role = "${module.kubernetes_minion_role.role_name}"
   assume_role_path = "/bosh-passed/"
 }
+
+module "billing_bucket" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "${var.billing_bucket_name}"
+  aws_partition = "${var.aws_partition}"
+}
