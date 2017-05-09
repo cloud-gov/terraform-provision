@@ -176,10 +176,10 @@ output "s3_broker_username" {
   value = "${module.cf.s3_broker_username}"
 }
 output "s3_broker_access_key_id_prev" {
-  value = ""
+  value = "${module.cf.s3_broker_access_key_id_prev}"
 }
 output "s3_broker_secret_access_key_prev" {
-  value = ""
+  value = "${module.cf.s3_broker_secret_access_key_prev}"
 }
 output "s3_broker_access_key_id_curr" {
   value = "${module.cf.s3_broker_access_key_id_curr}"
