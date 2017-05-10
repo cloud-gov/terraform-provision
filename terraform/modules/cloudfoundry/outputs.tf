@@ -59,10 +59,10 @@ output "s3_broker_username" {
   value = "${module.s3_broker_user.username}"
 }
 output "s3_broker_access_key_id_prev" {
-  value = "${module.s3_broker_user.access_key_id_prev}"
+  value = ""
 }
 output "s3_broker_secret_access_key_prev" {
-  value = "${module.s3_broker_user.secret_access_key_prev}"
+  value = ""
 }
 output "s3_broker_access_key_id_curr" {
   value = "${module.s3_broker_user.access_key_id_curr}"
