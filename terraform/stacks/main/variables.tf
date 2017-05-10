@@ -74,6 +74,7 @@ variable "stack_prefix" {}
 variable "bucket_prefix" {}
 variable "blobstore_bucket_name" {}
 variable "upstream_blobstore_bucket_name" {}
+variable "billing_bucket_name" {}
 
 variable "force_restricted_network" {
   default = "yes"

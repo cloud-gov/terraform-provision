@@ -93,6 +93,25 @@ module "monitoring_staging" {
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
+module "billing_bucket_staging" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "cg-billing-staging"
+  aws_partition = "${var.aws_partition}"
+}
+
+module "billing_bucket_production" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "cg-billing-production"
+  aws_partition = "${var.aws_partition}"
+}
+
+module "billing_user" {
+  source = "../../modules/iam_user/billing_user"
+  username = "cg-billing"
+  billing_bucket = "cg-billing-*"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "master_bosh_user" {
   source = "../../modules/iam_user/bosh_user"
   username = "bosh-master"
@@ -191,6 +210,7 @@ module "concourse_worker_policy" {
   stemcell_bucket = "cg-stemcell-images"
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
+  billing_bucket = "cg-billing-*"
 }
 
 module "default_role" {

@@ -44,6 +44,8 @@
       "Resource": [
         "arn:${aws_partition}:s3:::${semver_bucket}",
         "arn:${aws_partition}:s3:::${semver_bucket}/*",
+        "arn:${aws_partition}:s3:::${billing_bucket}",
+        "arn:${aws_partition}:s3:::${billing_bucket}/*",
         "arn:${aws_partition}:s3:::${varz_bucket}/master-bosh-state.json",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}/*"
       ]
