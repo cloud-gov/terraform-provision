@@ -213,6 +213,11 @@ module "concourse_worker_policy" {
   billing_bucket = "cg-billing-*"
 }
 
+module "concourse_iaas_worker_policy" {
+  source = "../../modules/iam_role_policy/concourse_iaas_worker"
+  policy_name = "concourse-iaas-worker"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -248,6 +253,11 @@ module "concourse_worker_role" {
   role_name = "tooling-concourse-worker"
 }
 
+module "concourse_iaas_worker_role" {
+  source = "../../modules/iam_role"
+  role_name = "tooling-concourse-iaas-worker"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
@@ -256,7 +266,8 @@ resource "aws_iam_policy_attachment" "blobstore" {
     "${module.bosh_role.role_name}",
     "${module.riemann_monitoring_role.role_name}",
     "${module.influxdb_monitoring_role.role_name}",
-    "${module.concourse_worker_role.role_name}"
+    "${module.concourse_worker_role.role_name}",
+    "${module.concourse_iaas_worker_role.role_name}"
   ]
 }
 
@@ -269,7 +280,8 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.bosh_compilation_role.role_name}",
     "${module.riemann_monitoring_role.role_name}",
     "${module.influxdb_monitoring_role.role_name}",
-    "${module.concourse_worker_role.role_name}"
+    "${module.concourse_worker_role.role_name}",
+    "${module.concourse_iaas_worker_role.role_name}"
   ]
 }
 
@@ -311,5 +323,13 @@ resource "aws_iam_policy_attachment" "concourse_worker" {
   policy_arn = "${module.concourse_worker_policy.arn}"
   roles = [
     "${module.concourse_worker_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
+  name = "concourse_iaas_worker"
+  policy_arn = "${module.concourse_iaas_worker_policy.arn}"
+  roles = [
+    "${module.concourse_iaas_worker_role.role_name}"
   ]
 }
