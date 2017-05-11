@@ -485,6 +485,9 @@ output "influxdb_monitoring_profile" {
 output "concourse_worker_profile" {
   value = "${module.concourse_worker_role.profile_name}"
 }
+output "concourse_iaas_worker_profile" {
+  value = "${module.concourse_iaas_worker_role.profile_name}"
+}
 
 /* nessus elb */
 output "nessus_elb_dns_name" {
