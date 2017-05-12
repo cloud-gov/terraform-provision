@@ -23,6 +23,30 @@ output "private_subnet_az1" {
 output "private_subnet_az2" {
   value = "${module.stack.private_subnet_az2}"
 }
+output "private_subnet_cidr_az1" {
+  value = "${var.private_cidr_1}"
+}
+output "private_subnet_cidr_az2" {
+  value = "${var.private_cidr_2}"
+}
+output "private_subnet_gateway_az1" {
+  value = "${cidrhost("${var.private_cidr_1}", 1)}"
+}
+output "private_subnet_gateway_az2" {
+  value = "${cidrhost("${var.private_cidr_2}", 1)}"
+}
+output "private_subnet_dns_az1" {
+  value = "${cidrhost("${var.private_cidr_1}", 2)}"
+}
+output "private_subnet_dns_az2" {
+  value = "${cidrhost("${var.private_cidr_2}", 2)}"
+}
+output "private_subnet_reserved_az1" {
+  value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+}
+output "private_subnet_reserved_az2" {
+  value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+}
 output "private_route_table_az1" {
   value = "${module.stack.private_route_table_az1}"
 }
