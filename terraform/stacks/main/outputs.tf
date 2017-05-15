@@ -6,6 +6,9 @@ output "az2" {
 }
 
 /* VPC */
+output "vpc_region" {
+  value = "${var.aws_default_region}"
+}
 output "vpc_id" {
   value = "${module.stack.vpc_id}"
 }
