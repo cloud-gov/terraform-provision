@@ -17,7 +17,7 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_db_size" {
-  default = 10
+  default = 20
 }
 
 variable "rds_instance_type" {
