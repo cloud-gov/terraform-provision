@@ -320,6 +320,10 @@ output "upstream_bosh_compilation_profile" {
   value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
 }
 
+output "bosh_static_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+}
+
 /* Static proxy */
 output "static_proxy_ip" {
   value = "${module.static_proxy.static_ip}"
