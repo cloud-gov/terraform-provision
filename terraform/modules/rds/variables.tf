@@ -12,6 +12,11 @@ variable "rds_db_storage_type" {
   default = "gp2"
 }
 
+variable "rds_db_iops" {
+  default = ""
+}
+
+
 variable "rds_db_name" {}
 
 variable "rds_db_engine" {

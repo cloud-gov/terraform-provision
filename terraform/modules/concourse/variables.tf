@@ -20,6 +20,10 @@ variable "rds_db_size" {
   default = 100
 }
 
+variable "rds_db_iops" {
+	default = 1000
+}
+
 variable "rds_db_storage_type" {
   default = "io1"
 }
