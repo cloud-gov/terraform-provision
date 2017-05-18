@@ -27,7 +27,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-    default = "${var.stack_prefix == "cf-production" ? "9.6.1" : "9.6.2"}"
+    default = "9.6.2"
 }
 
 variable "rds_username" {
