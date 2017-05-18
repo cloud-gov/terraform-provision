@@ -5,6 +5,7 @@ module "rds_96" {
   rds_db_name = "${var.rds_db_name}"
   rds_instance_type = "${var.rds_instance_type}"
   rds_db_size = "${var.rds_db_size}"
+  rds_db_storage_type = "${var.rds_db_storage_type}"
   rds_db_engine_version = "${var.rds_engine_version}"
   rds_username = "${var.rds_username}"
   rds_password = "${var.rds_password}"
