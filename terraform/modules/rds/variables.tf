@@ -16,7 +16,6 @@ variable "rds_db_iops" {
   default = ""
 }
 
-
 variable "rds_db_name" {}
 
 variable "rds_db_engine" {
