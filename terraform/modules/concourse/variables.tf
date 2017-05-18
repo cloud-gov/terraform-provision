@@ -17,7 +17,11 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_db_size" {
-  default = 20
+  default = 100
+}
+
+variable "rds_db_storage_type" {
+  default = "io1"
 }
 
 variable "rds_instance_type" {
