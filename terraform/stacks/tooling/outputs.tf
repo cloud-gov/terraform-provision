@@ -64,26 +64,11 @@ output "private_subnet_az2_gateway" {
   value = "${cidrhost("${var.private_cidr_2}", 1)}"
 }
 
-output "private_subnet_az1_dns" {
-  value = "${cidrhost("${var.private_cidr_1}", 2)}"
-}
-
-output "private_subnet_az2_dns" {
-  value = "${cidrhost("${var.private_cidr_2}", 2)}"
-}
-
 output "production_monitoring_subnet_reserved" {
   value = "${cidrhost("${var.monitoring_production_cidr}", 0)} - ${cidrhost("${var.monitoring_production_cidr}", 3)}"
 }
 output "staging_monitoring_subnet_reserved" {
   value = "${cidrhost("${var.monitoring_staging_cidr}", 0)} - ${cidrhost("${var.monitoring_staging_cidr}", 3)}"
-}
-
-output "production_monitoring_subnet_dns" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 2)}"
-}
-output "staging_monitoring_subnet_dns" {
-  value = "${cidrhost("${var.monitoring_staging_cidr}", 2)}"
 }
 
 output "production_monitoring_subnet_cidr" {

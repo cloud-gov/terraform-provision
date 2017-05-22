@@ -38,12 +38,6 @@ output "private_subnet_gateway_az1" {
 output "private_subnet_gateway_az2" {
   value = "${cidrhost("${var.private_cidr_2}", 1)}"
 }
-output "private_subnet_dns_az1" {
-  value = "${cidrhost("${var.private_cidr_1}", 2)}"
-}
-output "private_subnet_dns_az2" {
-  value = "${cidrhost("${var.private_cidr_2}", 2)}"
-}
 output "private_subnet_reserved_az1" {
   value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
 }
