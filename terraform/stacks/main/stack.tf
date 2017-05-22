@@ -139,7 +139,7 @@ module "concourse" {
   rds_instance_type = "db.m3.medium"
   rds_db_iops = 0
   rds_db_storage_type = "gp2"
-  rds_db_size = 10
+  rds_db_size = 20
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_elb_cert_name}"
   elb_subnets = "${module.stack.public_subnet_az2}"
