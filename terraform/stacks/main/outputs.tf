@@ -82,7 +82,7 @@ output "public_route_table" {
 
 /* Per-deployment static IP ranges */
 /* TODO: Make this go away */
-"template_file" "logsearch_static_ips" {
+data "template_file" "logsearch_static_ips" {
   count = 31
   vars {
     address = "${cidrhost("${var.public_cidr_1}", "${count.index + 20}")}"
@@ -92,7 +92,7 @@ output "public_route_table" {
 output "logsearch_static_ips" {
   value = ["${data.template_file.logsearch_static_ips.*.rendered}"]
 }
-"template_file" "kubernetes_static_ips" {
+data "template_file" "kubernetes_static_ips" {
   count = 31
   vars {
     address = "${cidrhost("${var.public_cidr_1}", "${count.index + 223}")}"
