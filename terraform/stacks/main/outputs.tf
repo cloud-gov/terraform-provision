@@ -322,3 +322,11 @@ output "bosh_static_ip" {
 output "static_proxy_ip" {
   value = "${module.static_proxy.static_ip}"
 }
+
+/* Buckets */
+output "logsearch_archive_bucket_name" {
+  value = "${module.cf.logsearch_archive_bucket_name}"
+}
+output "etcd_backup_bucket_name" {
+  value = "${module.cf.etcd_backup_bucket_name}"
+}
