@@ -489,6 +489,10 @@ output "nessus_elb_name" {
   value = "${aws_elb.nessus_elb.name}"
 }
 
+output "nessus_static_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 71)}"
+}
+
 /* BOSH UAA elb */
 output "bosh_uaa_elb_dns_name" {
   value = "${aws_elb.bosh_uaa_elb.dns_name}"
