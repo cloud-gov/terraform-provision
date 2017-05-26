@@ -100,10 +100,10 @@ output "services_subnet_gateway_az2" {
   value = "${cidrhost("${var.services_cidr_2}", 1)}"
 }
 output "services_subnet_reserved_az1" {
-  value = "${cidrhost("${var.services_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+  value = "${cidrhost("${var.services_cidr_1}", 0)} - ${cidrhost("${var.services_cidr_1}", 3)}"
 }
 output "services_subnet_reserved_az2" {
-  value = "${cidrhost("${var.services_cidr_2}", 0)} - ${cidrhost("${var.private_cidr_2}", 3)}"
+  value = "${cidrhost("${var.services_cidr_2}", 0)} - ${cidrhost("${var.services_cidr_2}", 3)}"
 }
 
 /* Per-deployment static IP ranges */
