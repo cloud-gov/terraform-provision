@@ -80,12 +80,38 @@ output "public_route_table" {
   value = "${module.stack.public_route_table}"
 }
 
+/* Services network */
+output "services_subnet_az1" {
+  value = "${module.cf.services_subnet_az1}"
+}
+output "services_subnet_az2" {
+  value = "${module.cf.services_subnet_az2}"
+}
+output "services_subnet_cidr_az1" {
+  value = "${var.services_cidr_1}"
+}
+output "services_subnet_cidr_az2" {
+  value = "${var.services_cidr_2}"
+}
+output "services_subnet_gateway_az1" {
+  value = "${cidrhost("${var.services_cidr_1}", 1)}"
+}
+output "services_subnet_gateway_az2" {
+  value = "${cidrhost("${var.services_cidr_2}", 1)}"
+}
+output "services_subnet_reserved_az1" {
+  value = "${cidrhost("${var.services_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+}
+output "services_subnet_reserved_az2" {
+  value = "${cidrhost("${var.services_cidr_2}", 0)} - ${cidrhost("${var.private_cidr_2}", 3)}"
+}
+
 /* Per-deployment static IP ranges */
 /* TODO: Make this go away */
 data "template_file" "logsearch_static_ips" {
   count = 31
   vars {
-    address = "${cidrhost("${var.public_cidr_1}", "${count.index + 20}")}"
+    address = "${cidrhost("${var.services_cidr_1}", "${count.index + 20}")}"
   }
   template = "$${address}"
 }
@@ -95,7 +121,7 @@ output "logsearch_static_ips" {
 data "template_file" "kubernetes_static_ips" {
   count = 31
   vars {
-    address = "${cidrhost("${var.public_cidr_1}", "${count.index + 223}")}"
+    address = "${cidrhost("${var.services_cidr_1}", "${count.index + 223}")}"
   }
   template = "$${address}"
 }
@@ -193,14 +219,6 @@ output "cf_rds_password" {
 }
 output "cf_rds_engine" {
   value = "${module.cf.cf_rds_engine}"
-}
-
-/* Services Subnets */
-output "services_subnet_az1" {
-  value = "${module.cf.services_subnet_az1}"
-}
-output "services_subnet_az2" {
-  value = "${module.cf.services_subnet_az2}"
 }
 
 /* Diego ELB */
