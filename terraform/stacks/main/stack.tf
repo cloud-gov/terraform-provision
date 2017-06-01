@@ -221,6 +221,24 @@ module "cf_blobstore_policy" {
   droplets_bucket = "${module.cf.droplets_bucket_name}"
 }
 
+module "s3_broker_policy" {
+  source = "../../modules/iam_role_policy/s3_broker"
+  policy_name = "${var.stack_description}-s3-broker"
+  account_id = "${var.account_id}"
+  aws_partition = "${var.aws_partition}"
+  bucket_prefix = "${var.bucket_prefix}"
+  iam_path = "/${var.stack_prefix}/s3/"
+}
+
+module "aws_broker_policy" {
+  source = "../../modules/iam_role_policy/aws_broker"
+  policy_name = "${var.stack_description}-aws-broker"
+  account_id = "${var.account_id}"
+  aws_partition = "${var.aws_partition}"
+  aws_default_region = "${var.aws_default_region}"
+  remote_state_bucket = "${var.remote_state_bucket}"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -261,6 +279,11 @@ module "cf_blobstore_role" {
   role_name = "${var.stack_description}-cf-blobstore"
 }
 
+module "platform_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-platform"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
@@ -271,7 +294,8 @@ resource "aws_iam_policy_attachment" "blobstore" {
     "${module.kubernetes_master_role.role_name}",
     "${module.kubernetes_minion_role.role_name}",
     "${module.etcd_backup_role.role_name}",
-    "${module.cf_blobstore_role.role_name}"
+    "${module.cf_blobstore_role.role_name}",
+    "${module.platform_role.role_name}"
   ]
 }
 
@@ -286,7 +310,8 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.kubernetes_master_role.role_name}",
     "${module.kubernetes_minion_role.role_name}",
     "${module.etcd_backup_role.role_name}",
-    "${module.cf_blobstore_role.role_name}"
+    "${module.cf_blobstore_role.role_name}",
+    "${module.platform_role.role_name}"
   ]
 }
 
@@ -351,6 +376,22 @@ resource "aws_iam_policy_attachment" "cf_blobstore" {
   policy_arn = "${module.cf_blobstore_policy.arn}"
   roles = [
     "${module.cf_blobstore_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "s3_broker" {
+  name = "${var.stack_description}-s3-broker"
+  policy_arn = "${module.s3_broker_policy.arn}"
+  roles = [
+    "${module.platform_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "aws_broker" {
+  name = "${var.stack_description}-aws-broker"
+  policy_arn = "${module.aws_broker_policy.arn}"
+  roles = [
+    "${module.platform_role.role_name}"
   ]
 }
 

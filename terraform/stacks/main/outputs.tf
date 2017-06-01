@@ -381,6 +381,9 @@ output "etcd_backup_profile" {
 output "cf_blobstore_profile" {
   value = "${module.cf_blobstore_role.profile_name}"
 }
+output "platform_profile" {
+  value = "${module.platform_role.profile_name}"
+}
 
 output "upstream_bosh_compilation_profile" {
   value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
