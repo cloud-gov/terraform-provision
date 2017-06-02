@@ -148,6 +148,12 @@ output "rds_subnet_az1" {
 output "rds_subnet_az2" {
     value = "${module.stack.rds_subnet_az2}"
 }
+output "rds_subnet_cidr_az1" {
+  value = "${var.rds_private_cidr_1}"
+}
+output "rds_subnet_cidr_az2" {
+  value = "${var.rds_private_cidr_2}"
+}
 output "rds_subnet_group" {
     value = "${module.stack.rds_subnet_group}"
 }
