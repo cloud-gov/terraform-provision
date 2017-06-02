@@ -31,6 +31,14 @@ output "public_route_table" {
   value = "${module.base.public_route_table}"
 }
 
+output "az1_egress_ip" {
+  value = "${module.base.az1_egress_ip}"
+}
+
+output "az2_egress_ip" {
+  value = "${module.base.az2_egress_ip}"
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = "${module.base.bosh_security_group}"

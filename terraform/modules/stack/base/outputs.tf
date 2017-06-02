@@ -32,6 +32,14 @@ output "public_route_table" {
   value = "${module.vpc.public_route_table}"
 }
 
+output "az1_egress_ip" {
+  value = "${module.vpc.az1_egress_ip}"
+}
+
+output "az2_egress_ip" {
+  value = "${module.vpc.az2_egress_ip}"
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = "${module.vpc.bosh_security_group}"
