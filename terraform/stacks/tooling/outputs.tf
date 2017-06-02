@@ -295,6 +295,14 @@ output "monitoring_security_groups" {
   }
 }
 
+output "monitoring_ip_addresses" {
+  value = {
+    staging = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
+    development = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
+    production = "${cidrhost("${var.monitoring_production_cidr}", 128)}"
+  }
+}
+
 /* Staging Monitoring */
 output "staging_monitoring_az" {
   value = "${module.monitoring_staging.monitoring_az}"
