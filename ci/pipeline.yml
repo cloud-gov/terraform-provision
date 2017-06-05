@@ -36,9 +36,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-staging-params
       TERRAFORM_ACTION: plan
       STACK_NAME: external-staging
@@ -55,6 +57,16 @@ jobs:
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
       TF_VAR_cdn_broker_hosted_zone: {{cdn_broker_hosted_zone_staging}}
+  - &notify-slack
+    put: slack
+    params:
+      text_file: terraform-state/message.txt
+      text:  |
+        :terraform: $BUILD_JOB_NAME needs review
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
 
 - name: bootstrap-external-staging
   plan:
@@ -64,7 +76,7 @@ jobs:
       passed: [plan-bootstrap-external-staging]
   - task: create-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *external-staging-params
       TERRAFORM_ACTION: apply
@@ -82,9 +94,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-external-production
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-production-params
       TERRAFORM_ACTION: plan
       STACK_NAME: external-production
@@ -101,6 +115,7 @@ jobs:
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
       TF_VAR_cdn_broker_hosted_zone: {{cdn_broker_hosted_zone_production}}
+  - *notify-slack
 
 - name: bootstrap-external-production
   plan:
@@ -110,7 +125,7 @@ jobs:
       passed: [plan-bootstrap-external-production]
   - task: create-update-external-production
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *external-production-params
       TERRAFORM_ACTION: apply
@@ -128,9 +143,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-tooling
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
       TERRAFORM_ACTION: plan
       STACK_NAME: tooling
@@ -161,6 +178,7 @@ jobs:
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
       TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
       TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
+  - *notify-slack
 
 - name: bootstrap-tooling
   plan:
@@ -170,7 +188,7 @@ jobs:
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *tooling-params
       TERRAFORM_ACTION: apply
@@ -206,9 +224,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-development
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
       TERRAFORM_ACTION: plan
       STACK_NAME: development
@@ -249,6 +269,7 @@ jobs:
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+  - *notify-slack
 
 - name: bootstrap-development
   plan:
@@ -258,7 +279,7 @@ jobs:
       passed: [plan-bootstrap-development]
   - task: create-update-development
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *development-params
       TERRAFORM_ACTION: apply
@@ -312,9 +333,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-staging
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
       TERRAFORM_ACTION: plan
       STACK_NAME: staging
@@ -356,6 +379,7 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_target_monitoring_security_group_count: 1
+  - *notify-slack
 
 - name: bootstrap-staging
   plan:
@@ -365,7 +389,7 @@ jobs:
       passed: [plan-bootstrap-staging]
   - task: create-update-staging
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *staging-params
       TERRAFORM_ACTION: apply
@@ -419,9 +443,11 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
+    - get: plan-timer
+      trigger: true
   - task: plan-update-production
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
       TERRAFORM_ACTION: plan
       STACK_NAME: production
@@ -463,6 +489,7 @@ jobs:
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+  - *notify-slack
 
 - name: bootstrap-production
   plan:
@@ -472,7 +499,7 @@ jobs:
       passed: [plan-bootstrap-production]
   - task: create-update-production
     file: pipeline-tasks/terraform-apply.yml
-    input_mapping: { terraform-templates: cg-provision-repo }
+    input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *production-params
       TERRAFORM_ACTION: apply
@@ -677,6 +704,17 @@ resources:
     secret_access_key: {{aws_external_secret_access_key}}
     region_name: {{aws_external_region}}
 
+- name: plan-timer
+  type: time
+  source:
+    interval: 24h
+    location: America/New_York
+
+- name: slack
+  type: slack-notification
+  source:
+    url: {{slack-webhook-url}}
+
 resource_types:
 - name: pull-request
   type: docker-image
@@ -687,3 +725,8 @@ resource_types:
   type: docker-image
   source:
     repository: 18fgsa/s3-resource
+
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
