@@ -36,10 +36,6 @@ variable "nat_gateway_instance_type" {
   default = "t2.micro"
 }
 
-variable "nat_gateway_ami" {
-  default = "ami-e8ab1489"
-}
-
 variable "rds_private_cidr_1" {
   default = "10.0.20.0/24"
 }

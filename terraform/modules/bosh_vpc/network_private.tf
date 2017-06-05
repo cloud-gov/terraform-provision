@@ -6,7 +6,6 @@
  *  private_cidr_1
  *  private_cidr_2
  *  nat_gateway_instance_type
- *  nat_gateway_ami
  *
  * Resources required:
  *   aws_vpc referenced as 'main_vpc'
@@ -48,18 +47,6 @@ resource "aws_route_table" "az2_private_route_table" {
   }
 }
 
-resource "aws_route" "az1_nat_route" {
-    route_table_id = "${aws_route_table.az1_private_route_table.id}"
-    destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az1_private_nat.id}"
-}
-
-resource "aws_route" "az2_nat_route" {
-    route_table_id = "${aws_route_table.az2_private_route_table.id}"
-    destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az2_private_nat.id}"
-}
-
 resource "aws_route_table_association" "az1_private_rta" {
   subnet_id = "${aws_subnet.az1_private.id}"
   route_table_id = "${aws_route_table.az1_private_route_table.id}"
@@ -70,13 +57,51 @@ resource "aws_route_table_association" "az2_private_rta" {
   route_table_id = "${aws_route_table.az2_private_route_table.id}"
 }
 
+/*
+ * For rotation purposes, create new NAT instance below first,
+ * then update the routes and EIP references after they
+ * have been created
+ */
+resource "aws_route" "az1_nat_route" {
+    route_table_id = "${aws_route_table.az1_private_route_table.id}"
+    destination_cidr_block = "0.0.0.0/0"
+    instance_id = "${aws_instance.az1_private_nat.id}"
+}
+resource "aws_route" "az2_nat_route" {
+    route_table_id = "${aws_route_table.az2_private_route_table.id}"
+    destination_cidr_block = "0.0.0.0/0"
+    instance_id = "${aws_instance.az2_private_nat.id}"
+}
+resource "aws_eip" "az1_nat_eip" {
+  instance = "${aws_instance.az1_private_nat_2017_03.id}"
+  vpc = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+resource "aws_eip" "az2_nat_eip" {
+  instance = "${aws_instance.az2_private_nat_2017_03.id}"
+  vpc = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+/*
+ * For NAT gateway instances:
+ * Lookup latest in table for NAT instance in GovCloud
+ * and name them to correspond with the AMI release date
+ * until native NAT Gateway instances are available
+ * https://aws.amazon.com/amazon-linux-ami/
+ */
 
 resource "aws_instance" "az1_private_nat" {
-  ami = "${var.nat_gateway_ami}"
+  ami = "ami-e8ab1489"
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
   associate_public_ip_address = true
-
   subnet_id = "${aws_subnet.az1_public.id}"
 
   vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
@@ -85,18 +110,43 @@ resource "aws_instance" "az1_private_nat" {
     Name = "${var.stack_description} (AZ1 NAT)"
   }
 }
-
 resource "aws_instance" "az2_private_nat" {
-  ami = "${var.nat_gateway_ami}"
+  ami = "ami-e8ab1489"
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
   associate_public_ip_address = true
-
   subnet_id = "${aws_subnet.az2_public.id}"
 
   vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
 
   tags {
     Name = "${var.stack_description}  (AZ2 NAT)"
+  }
+}
+
+resource "aws_instance" "az1_private_nat_2017_03" {
+  ami = "ami-6ae2660b"
+  instance_type = "${var.nat_gateway_instance_type}"
+  source_dest_check = false
+
+  subnet_id = "${aws_subnet.az1_public.id}"
+
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
+
+  tags {
+    Name = "${var.stack_description} (AZ1 2017-03 NAT)"
+  }
+}
+resource "aws_instance" "az2_private_nat_2017_03" {
+  ami = "ami-6ae2660b"
+  instance_type = "${var.nat_gateway_instance_type}"
+  source_dest_check = false
+
+  subnet_id = "${aws_subnet.az2_public.id}"
+
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
+
+  tags {
+    Name = "${var.stack_description}  (AZ2 2017-03 NAT)"
   }
 }

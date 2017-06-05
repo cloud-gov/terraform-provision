@@ -37,6 +37,14 @@ output "public_route_table" {
   value = "${aws_route_table.public_network.id}"
 }
 
+output "nat_egress_ip_az1" {
+  value = "${aws_eip.az1_nat_eip.public_ip}"
+}
+
+output "nat_egress_ip_az2" {
+  value = "${aws_eip.az2_nat_eip.public_ip}"
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = "${aws_security_group.bosh.id}"

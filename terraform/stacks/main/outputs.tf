@@ -79,6 +79,12 @@ output "public_subnet_reserved_az2" {
 output "public_route_table" {
   value = "${module.stack.public_route_table}"
 }
+output "nat_egress_ip_az1" {
+  value = "${module.stack.nat_egress_ip_az1}"
+}
+output "nat_egress_ip_az2" {
+  value = "${module.stack.nat_egress_ip_az2}"
+}
 
 /* Services network */
 output "services_subnet_az1" {
