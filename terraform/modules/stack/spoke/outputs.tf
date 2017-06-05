@@ -31,12 +31,12 @@ output "public_route_table" {
   value = "${module.base.public_route_table}"
 }
 
-output "az1_egress_ip" {
-  value = "${module.base.az1_egress_ip}"
+output "nat_egress_ip_az1" {
+  value = "${module.base.nat_egress_ip_az1}"
 }
 
-output "az2_egress_ip" {
-  value = "${module.base.az2_egress_ip}"
+output "nat_egress_ip_az2" {
+  value = "${module.base.nat_egress_ip_az2}"
 }
 
 /* Security Groups */

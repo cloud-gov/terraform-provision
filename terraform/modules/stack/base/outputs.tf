@@ -32,12 +32,12 @@ output "public_route_table" {
   value = "${module.vpc.public_route_table}"
 }
 
-output "az1_egress_ip" {
-  value = "${module.vpc.az1_egress_ip}"
+output "nat_egress_ip_az1" {
+  value = "${module.vpc.nat_egress_ip_az1}"
 }
 
-output "az2_egress_ip" {
-  value = "${module.vpc.az2_egress_ip}"
+output "nat_egress_ip_az2" {
+  value = "${module.vpc.nat_egress_ip_az2}"
 }
 
 /* Security Groups */

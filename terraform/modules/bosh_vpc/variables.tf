@@ -40,10 +40,6 @@ variable "nat_gateway_instance_type" {
   default = "t2.micro"
 }
 
-variable "nat_gateway_ami" {
-  default = "ami-6ae2660b"
-}
-
 variable "monitoring_security_group" {
   default = ""
 }

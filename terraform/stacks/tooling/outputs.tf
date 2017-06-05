@@ -115,11 +115,11 @@ output "public_subnet_az2" {
 output "public_route_table" {
   value = "${module.stack.public_route_table}"
 }
-output "az1_egress_ip" {
-  value = "${module.stack.az1_egress_ip}"
+output "nat_egress_ip_az1" {
+  value = "${module.stack.nat_egress_ip_az1}"
 }
-output "az2_egress_ip" {
-  value = "${module.stack.az2_egress_ip}"
+output "nat_egress_ip_az2" {
+  value = "${module.stack.nat_egress_ip_az2}"
 }
 
 /* Security Groups */

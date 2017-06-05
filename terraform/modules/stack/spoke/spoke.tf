@@ -10,7 +10,6 @@ module "base" {
     private_cidr_1 = "${var.private_cidr_1}"
     private_cidr_2 = "${var.private_cidr_2}"
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
-    nat_gateway_ami = "${var.nat_gateway_ami}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     rds_instance_type = "${var.rds_instance_type}"
