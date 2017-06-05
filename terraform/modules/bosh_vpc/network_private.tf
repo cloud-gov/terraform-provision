@@ -101,7 +101,7 @@ resource "aws_instance" "az1_private_nat" {
   ami = "ami-e8ab1489"
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
-
+  associate_public_ip_address = true
   subnet_id = "${aws_subnet.az1_public.id}"
 
   vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
@@ -114,7 +114,7 @@ resource "aws_instance" "az2_private_nat" {
   ami = "ami-e8ab1489"
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
-
+  associate_public_ip_address = true
   subnet_id = "${aws_subnet.az2_public.id}"
 
   vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
