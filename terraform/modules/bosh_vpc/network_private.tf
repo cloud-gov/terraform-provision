@@ -65,13 +65,14 @@ resource "aws_route_table_association" "az2_private_rta" {
 resource "aws_route" "az1_nat_route" {
     route_table_id = "${aws_route_table.az1_private_route_table.id}"
     destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az1_private_nat.id}"
+    instance_id = "${aws_instance.az1_private_nat_2017_03.id}"
 }
 resource "aws_route" "az2_nat_route" {
     route_table_id = "${aws_route_table.az2_private_route_table.id}"
     destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az2_private_nat.id}"
+    instance_id = "${aws_instance.az2_private_nat_2017_03.id}"
 }
+
 resource "aws_eip" "az1_nat_eip" {
   instance = "${aws_instance.az1_private_nat_2017_03.id}"
   vpc = true
