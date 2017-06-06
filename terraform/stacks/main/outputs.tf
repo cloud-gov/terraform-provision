@@ -154,6 +154,12 @@ output "rds_subnet_az1" {
 output "rds_subnet_az2" {
     value = "${module.stack.rds_subnet_az2}"
 }
+output "rds_subnet_cidr_az1" {
+  value = "${var.rds_private_cidr_1}"
+}
+output "rds_subnet_cidr_az2" {
+  value = "${var.rds_private_cidr_2}"
+}
 output "rds_subnet_group" {
     value = "${module.stack.rds_subnet_group}"
 }
@@ -390,4 +396,8 @@ output "logsearch_archive_bucket_name" {
 }
 output "etcd_backup_bucket_name" {
   value = "${module.cf.etcd_backup_bucket_name}"
+}
+
+output "monitoring_ip_address" {
+  value = "${loookup(data.terraform_remote_state.target_vpc.monitoring_ip_addresses, var.stack_description)}"
 }
