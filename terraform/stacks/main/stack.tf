@@ -148,10 +148,6 @@ module "concourse" {
     module.stack.restricted_web_traffic_security_group}"
 }
 
-module "static_proxy" {
-  source = "../../modules/static_proxy"
-}
-
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "${var.stack_description}-blobstore"
