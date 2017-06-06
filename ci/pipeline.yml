@@ -269,6 +269,7 @@ jobs:
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_use_nat_gateway_eip: "false"
   - *notify-slack
 
 - name: bootstrap-development
@@ -379,6 +380,7 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_target_monitoring_security_group_count: 1
+      TF_VAR_use_nat_gateway_eip: "true"
   - *notify-slack
 
 - name: bootstrap-staging
@@ -489,6 +491,7 @@ jobs:
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_use_nat_gateway_eip: "true"
   - *notify-slack
 
 - name: bootstrap-production
