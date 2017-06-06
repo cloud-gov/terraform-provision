@@ -76,6 +76,8 @@ resource "aws_eip" "az1_nat_eip" {
   instance = "${aws_instance.az1_private_nat_2017_03.id}"
   vpc = true
 
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+
   lifecycle {
     prevent_destroy = true
   }
@@ -83,6 +85,8 @@ resource "aws_eip" "az1_nat_eip" {
 resource "aws_eip" "az2_nat_eip" {
   instance = "${aws_instance.az2_private_nat_2017_03.id}"
   vpc = true
+
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
 
   lifecycle {
     prevent_destroy = true
@@ -129,6 +133,8 @@ resource "aws_instance" "az1_private_nat_2017_03" {
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
 
+  associate_public_ip_address = "${var.use_nat_gateway_eip}"
+
   subnet_id = "${aws_subnet.az1_public.id}"
 
   vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
@@ -141,6 +147,8 @@ resource "aws_instance" "az2_private_nat_2017_03" {
   ami = "ami-6ae2660b"
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
+
+  associate_public_ip_address = "${var.use_nat_gateway_eip}"
 
   subnet_id = "${aws_subnet.az2_public.id}"
 

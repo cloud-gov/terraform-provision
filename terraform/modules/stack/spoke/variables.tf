@@ -98,3 +98,6 @@ variable "target_concourse_security_groups" {
 variable "target_concourse_security_group_count" {
   default = "0"
 }
+variable "use_nat_gateway_eip" {
+  default = false
+}

@@ -16,6 +16,7 @@ module "vpc" {
     monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
     concourse_security_groups = "${var.target_concourse_security_groups}"
     concourse_security_group_count = "${var.target_concourse_security_group_count}"
+    use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
 }
 
 module "rds_network" {
