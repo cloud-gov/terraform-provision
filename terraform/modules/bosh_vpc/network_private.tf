@@ -133,9 +133,9 @@ resource "aws_instance" "az1_private_nat_2017_03" {
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
 
-  # if use_nat_gateway_eip is TRUE, then this is set to FALSE, as the EIP will be the public address
-  # if it's FALSE, then this is set to TRUE so we use an ephemeral public ip for the gateway
-  associate_public_ip_address = "${var.use_nat_gateway_eip == "true" ? "false" : "true"}"
+  # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
+  # see https://github.com/hashicorp/terraform/issues/9811 for more detail than you want
+  associate_public_ip_address = true
 
   subnet_id = "${aws_subnet.az1_public.id}"
 
@@ -150,9 +150,9 @@ resource "aws_instance" "az2_private_nat_2017_03" {
   instance_type = "${var.nat_gateway_instance_type}"
   source_dest_check = false
 
-  # if use_nat_gateway_eip is TRUE, then this is set to FALSE, as the EIP will be the public address
-  # if it's FALSE, then this is set to TRUE so we use an ephemeral public ip for the gateway
-  associate_public_ip_address = "${var.use_nat_gateway_eip == "true" ? "false" : "true"}"
+  # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
+  # see https://github.com/hashicorp/terraform/issues/9811 for more detail than you want
+  associate_public_ip_address = true
 
   subnet_id = "${aws_subnet.az2_public.id}"
 
