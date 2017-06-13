@@ -187,6 +187,8 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -279,6 +281,8 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-development]
   - task: create-update-development
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -390,6 +394,8 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-staging]
   - task: create-update-staging
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -501,6 +507,8 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-production]
   - task: create-update-production
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
