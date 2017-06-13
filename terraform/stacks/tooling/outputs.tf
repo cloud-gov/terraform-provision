@@ -386,6 +386,23 @@ output "ci_east_secret_access_key_curr" {
   value = "${module.ci_user_east.secret_access_key_curr}"
 }
 
+/* stemcell user */
+output "stemcell_username" {
+  value = "${module.stemcell_user.username}"
+}
+output "stemcell_access_key_id_prev" {
+  value = "${module.stemcell_user.access_key_id_prev}"
+}
+output "stemcell_secret_access_key_prev" {
+  value = "${module.stemcell_user.secret_access_key_prev}"
+}
+output "stemcell_access_key_id_curr" {
+  value = "${module.stemcell_user.access_key_id_curr}"
+}
+output "stemcell_secret_access_key_curr" {
+  value = "${module.stemcell_user.secret_access_key_curr}"
+}
+
 /* limit check user */
 output "limit_check_username" {
   value = "${module.limit_check_user.username}"
