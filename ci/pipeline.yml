@@ -146,6 +146,8 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-tooling
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
@@ -153,8 +155,6 @@ jobs:
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
@@ -227,6 +227,8 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-development
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
@@ -234,8 +236,6 @@ jobs:
       STACK_NAME: development
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
@@ -337,6 +337,8 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-staging
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
@@ -344,8 +346,6 @@ jobs:
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
@@ -448,6 +448,8 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-production
+    tags:
+    - iaas
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
@@ -455,8 +457,6 @@ jobs:
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
@@ -563,8 +563,6 @@ jobs:
 #       STACK_NAME: tooling
 #       TEMPLATE_SUBDIR: terraform/stacks/tooling
 #       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-#       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
 #       AWS_DEFAULT_REGION: {{aws_default_region}}
 #       TF_VAR_az1: {{aws_az1}}
 #       TF_VAR_az2: {{aws_az2}}
@@ -596,8 +594,6 @@ jobs:
 #       STACK_NAME: staging
 #       TEMPLATE_SUBDIR: terraform/stacks/staging
 #       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-#       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
 #       AWS_DEFAULT_REGION: {{aws_default_region}}
 #       TF_VAR_az1: {{aws_az1}}
 #       TF_VAR_az2: {{aws_az2}}
@@ -625,8 +621,6 @@ jobs:
 #       STACK_NAME: production
 #       TEMPLATE_SUBDIR: terraform/stacks/production
 #       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-#       AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
 #       AWS_DEFAULT_REGION: {{aws_default_region}}
 #       TF_VAR_az1: {{aws_az1}}
 #       TF_VAR_az2: {{aws_az2}}
