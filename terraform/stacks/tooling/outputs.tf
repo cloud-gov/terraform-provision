@@ -369,24 +369,7 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
-/* ci user to access bosh secrets */
-output "ci_username" {
-  value = "${module.ci_user.username}"
-}
-output "ci_access_key_id_prev" {
-  value = "${module.ci_user.access_key_id_prev}"
-}
-output "ci_secret_access_key_prev" {
-  value = "${module.ci_user.secret_access_key_prev}"
-}
-output "ci_access_key_id_curr" {
-  value = "${module.ci_user.access_key_id_curr}"
-}
-output "ci_secret_access_key_curr" {
-  value = "${module.ci_user.secret_access_key_curr}"
-}
-
-/* ci user to access bosh secrets */
+/* ci commerical cloud user to access bosh secrets */
 output "ci_east_username" {
   value = "${module.ci_user_east.username}"
 }
@@ -401,23 +384,6 @@ output "ci_east_access_key_id_curr" {
 }
 output "ci_east_secret_access_key_curr" {
   value = "${module.ci_user_east.secret_access_key_curr}"
-}
-
-/* release user to write release blobs */
-output "release_username" {
-  value = "${module.release_user.username}"
-}
-output "release_access_key_id_prev" {
-  value = "${module.release_user.access_key_id_prev}"
-}
-output "release_secret_access_key_prev" {
-  value = "${module.release_user.secret_access_key_prev}"
-}
-output "release_access_key_id_curr" {
-  value = "${module.release_user.access_key_id_curr}"
-}
-output "release_secret_access_key_curr" {
-  value = "${module.release_user.secret_access_key_curr}"
 }
 
 /* stemcell user */
