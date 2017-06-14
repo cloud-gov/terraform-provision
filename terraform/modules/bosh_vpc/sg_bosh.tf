@@ -115,6 +115,16 @@ resource "aws_security_group_rule" "node_exporter" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "monitoring_logsearch" {
+    count = "${var.monitoring_security_group_count}"
+    type = "ingress"
+    from_port = 9200
+    to_port = 9200
+    protocol = "tcp"
+    source_security_group_id = "${var.monitoring_security_group}"
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "concourse_logsearch" {
     count = "${var.concourse_security_group_count}"
     type = "ingress"
