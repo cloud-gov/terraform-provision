@@ -136,7 +136,7 @@ module "concourse" {
   route_table_id = "${module.stack.private_route_table_az2}"
   rds_password = "${var.concourse_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = "${module.stack.rds_postgres_security_group},${module.stack.rds_mysql_security_group}"
+  rds_security_groups = "${module.stack.rds_postgres_security_group}"
   rds_instance_type = "db.m3.medium"
   rds_db_iops = 0
   rds_db_storage_type = "gp2"
