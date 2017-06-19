@@ -4,13 +4,13 @@
  *   vpc_id
  */
 
-resource "aws_security_group" "rds_mysql" {
-  description = "Allow access to incoming mysql traffic"
+resource "aws_security_group" "rds_oracle" {
+  description = "Allow access to incoming Oracle traffic"
   vpc_id = "${var.vpc_id}"
 
   ingress {
-    from_port = 3306
-    to_port = 3306
+    from_port = 1521
+    to_port = 1521
     protocol = "tcp"
     security_groups = ["${var.security_groups}"]
   }
@@ -23,6 +23,6 @@ resource "aws_security_group" "rds_mysql" {
   }
 
   tags {
-    Name = "${var.stack_description} - Incoming MySQL Traffic"
+    Name = "${var.stack_description} - Incoming Oracle Traffic"
   }
 }

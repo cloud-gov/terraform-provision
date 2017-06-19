@@ -22,7 +22,7 @@ resource "aws_security_group" "rds_postgres" {
     security_groups = ["${var.security_groups}"]
   }
 
-  tags = {
+  tags {
     Name = "${var.stack_description} - Incoming PostGreSQL Traffic"
   }
 }
