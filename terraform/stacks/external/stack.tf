@@ -1,3 +1,7 @@
+terraform {
+  backend "s3" {}
+}
+
 module "cdn_broker" {
   source = "../../modules/cdn_broker"
 

@@ -6,6 +6,10 @@
  * in each module, which declares these defaults.
  */
 
+terraform {
+  backend "s3" {}
+}
+
 module "stack" {
   source = "../../modules/stack/base"
 
