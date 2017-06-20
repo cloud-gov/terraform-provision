@@ -19,7 +19,7 @@ resource "aws_iam_instance_profile" "bootstrap" {
   lifecycle {
     ignore_changes = ["name"]
   }
-  roles = ["${aws_iam_role.bootstrap.name}"]
+  role = "${aws_iam_role.bootstrap.name}"
 }
 
 resource "aws_iam_role_policy" "bootstrap" {
