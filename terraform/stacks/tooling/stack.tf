@@ -116,39 +116,11 @@ module "billing_user" {
   aws_partition = "${var.aws_partition}"
 }
 
-module "master_bosh_user" {
-  source = "../../modules/iam_user/bosh_user"
-  username = "bosh-master"
-  account_id = "${var.account_id}"
-  aws_partition = "${var.aws_partition}"
-}
-
-# This user WILL be removed once east has been shutdown.  DO NOT USE these credentials in the GovCloud environment
-module "ci_user_east" {
-  source = "../../modules/iam_user/concourse_user_east"
-  username = "concourse-east"
-  aws_partition = "${var.aws_partition}"
-}
-
 module "stemcell_user" {
   source = "../../modules/iam_user/stemcell_user"
   username = "stemcell"
   aws_partition = "${var.aws_partition}"
   stemcell_bucket = "cg-stemcell-images"
-}
-
-module "limit_check_user" {
-  source = "../../modules/iam_user/limit_check_user"
-  username = "limit-check"
-}
-
-module "aws_broker_user" {
-  source = "../../modules/iam_user/aws_broker_user"
-  username = "aws-broker"
-  account_id = "${var.account_id}"
-  aws_default_region = "${var.aws_default_region}"
-  remote_state_bucket = "${var.remote_state_bucket}"
-  aws_partition = "${var.aws_partition}"
 }
 
 module "blobstore_policy" {
