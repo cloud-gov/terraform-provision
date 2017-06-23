@@ -181,6 +181,7 @@ module "concourse_worker_policy" {
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
   billing_bucket = "cg-billing-*"
+  cg_binaries_bucket = "cg-binaries"
 }
 
 module "concourse_iaas_worker_policy" {
