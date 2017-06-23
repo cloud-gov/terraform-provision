@@ -54,23 +54,6 @@ output "services_subnet_az2" {
   value = "${aws_subnet.az2_services.id}"
 }
 
-/* S3 broker user */
-output "s3_broker_username" {
-  value = "${module.s3_broker_user.username}"
-}
-output "s3_broker_access_key_id_prev" {
-  value = ""
-}
-output "s3_broker_secret_access_key_prev" {
-  value = ""
-}
-output "s3_broker_access_key_id_curr" {
-  value = "${module.s3_broker_user.access_key_id_curr}"
-}
-output "s3_broker_secret_access_key_curr" {
-  value = "${module.s3_broker_user.secret_access_key_curr}"
-}
-
 /* buckets */
 output "buildpacks_bucket_name" {
   value = "${module.buildpacks.bucket_name}"

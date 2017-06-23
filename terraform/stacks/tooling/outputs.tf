@@ -341,23 +341,6 @@ output "staging_prometheus_elb_name" {
   value = "${module.monitoring_staging.prometheus_elb_name}"
 }
 
-/* master bosh user */
-output "master_bosh_username" {
-  value = "${module.master_bosh_user.username}"
-}
-output "master_bosh_access_key_id_prev" {
-  value = "${module.master_bosh_user.access_key_id_prev}"
-}
-output "master_bosh_secret_access_key_prev" {
-  value = "${module.master_bosh_user.secret_access_key_prev}"
-}
-output "master_bosh_access_key_id_curr" {
-  value = "${module.master_bosh_user.access_key_id_curr}"
-}
-output "master_bosh_secret_access_key_curr" {
-  value = "${module.master_bosh_user.secret_access_key_curr}"
-}
-
 /* billing user */
 output "billing_username" {
   value = "${module.billing_user.username}"
@@ -375,23 +358,6 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
-/* ci commerical cloud user to access bosh secrets */
-output "ci_east_username" {
-  value = "${module.ci_user_east.username}"
-}
-output "ci_east_access_key_id_prev" {
-  value = "${module.ci_user_east.access_key_id_prev}"
-}
-output "ci_east_secret_access_key_prev" {
-  value = "${module.ci_user_east.secret_access_key_prev}"
-}
-output "ci_east_access_key_id_curr" {
-  value = "${module.ci_user_east.access_key_id_curr}"
-}
-output "ci_east_secret_access_key_curr" {
-  value = "${module.ci_user_east.secret_access_key_curr}"
-}
-
 /* stemcell user */
 output "stemcell_username" {
   value = "${module.stemcell_user.username}"
@@ -407,40 +373,6 @@ output "stemcell_access_key_id_curr" {
 }
 output "stemcell_secret_access_key_curr" {
   value = "${module.stemcell_user.secret_access_key_curr}"
-}
-
-/* limit check user */
-output "limit_check_username" {
-  value = "${module.limit_check_user.username}"
-}
-output "limit_check_access_key_id_prev" {
-  value = "${module.limit_check_user.access_key_id_prev}"
-}
-output "limit_check_secret_access_key_prev" {
-  value = "${module.limit_check_user.secret_access_key_prev}"
-}
-output "limit_check_access_key_id_curr" {
-  value = "${module.limit_check_user.access_key_id_curr}"
-}
-output "limit_check_secret_access_key_curr" {
-  value = "${module.limit_check_user.secret_access_key_curr}"
-}
-
-/* aws broker user */
-output "aws_broker_username" {
-  value = "${module.aws_broker_user.username}"
-}
-output "aws_broker_access_key_id_prev" {
-  value = "${module.aws_broker_user.access_key_id_prev}"
-}
-output "aws_broker_secret_access_key_prev" {
-  value = "${module.aws_broker_user.secret_access_key_prev}"
-}
-output "aws_broker_access_key_id_curr" {
-  value = "${module.aws_broker_user.access_key_id_curr}"
-}
-output "aws_broker_secret_access_key_curr" {
-  value = "${module.aws_broker_user.secret_access_key_curr}"
 }
 
 /* iam roles */
