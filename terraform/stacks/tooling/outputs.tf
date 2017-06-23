@@ -289,9 +289,6 @@ output "production_monitoring_elb_dns_name" {
 output "production_monitoring_elb_name" {
   value = "${module.monitoring_production.monitoring_elb_name}"
 }
-output "production_monitoring_influxdb_bucket_name" {
-  value = "${module.monitoring_production.monitoring_influxdb_backups}"
-}
 output "production_prometheus_elb_dns_name" {
   value = "${module.monitoring_production.prometheus_elb_dns_name}"
 }
@@ -330,9 +327,6 @@ output "staging_monitoring_elb_dns_name" {
 }
 output "staging_monitoring_elb_name" {
   value = "${module.monitoring_staging.monitoring_elb_name}"
-}
-output "staging_monitoring_influxdb_bucket_name" {
-  value = "${module.monitoring_staging.monitoring_influxdb_backups}"
 }
 output "staging_prometheus_elb_dns_name" {
   value = "${module.monitoring_staging.prometheus_elb_dns_name}"
@@ -390,9 +384,6 @@ output "bosh_compilation_profile" {
 }
 output "riemann_monitoring_profile" {
   value = "${module.riemann_monitoring_role.profile_name}"
-}
-output "influxdb_monitoring_profile" {
-  value = "${module.influxdb_monitoring_role.profile_name}"
 }
 output "concourse_worker_profile" {
   value = "${module.concourse_worker_role.profile_name}"
