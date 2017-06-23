@@ -270,23 +270,6 @@ output "kubernetes_ec2_security_group" {
   value = "${module.kubernetes.kubernetes_ec2_security_group}"
 }
 
-/* S3 broker user */
-output "s3_broker_username" {
-  value = "${module.cf.s3_broker_username}"
-}
-output "s3_broker_access_key_id_prev" {
-  value = "${module.cf.s3_broker_access_key_id_prev}"
-}
-output "s3_broker_secret_access_key_prev" {
-  value = "${module.cf.s3_broker_secret_access_key_prev}"
-}
-output "s3_broker_access_key_id_curr" {
-  value = "${module.cf.s3_broker_access_key_id_curr}"
-}
-output "s3_broker_secret_access_key_curr" {
-  value = "${module.cf.s3_broker_secret_access_key_curr}"
-}
-
 /* Client ELBs */
 output "client_elb_star_18f_gov_name" {
   value = "${module.client-elbs.star_18f_gov_elb_name}"
