@@ -109,6 +109,12 @@ module "billing_bucket_production" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "cg_binaries_bucket" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "cg-binaries"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "billing_user" {
   source = "../../modules/iam_user/billing_user"
   username = "cg-billing"
@@ -175,6 +181,7 @@ module "concourse_worker_policy" {
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
   billing_bucket = "cg-billing-*"
+  cg_binaries_bucket = "cg-binaries"
 }
 
 module "concourse_iaas_worker_policy" {
