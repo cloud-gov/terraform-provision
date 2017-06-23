@@ -109,6 +109,12 @@ module "billing_bucket_production" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "cg_binaries_bucket" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "cg-binaries"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "billing_user" {
   source = "../../modules/iam_user/billing_user"
   username = "cg-billing"

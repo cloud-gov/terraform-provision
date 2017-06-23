@@ -34,6 +34,8 @@
         "arn:${aws_partition}:s3:::${billing_bucket}/*",
         "arn:${aws_partition}:s3:::${semver_bucket}",
         "arn:${aws_partition}:s3:::${semver_bucket}/*"
+        "arn:${aws_partition}:s3:::${cg_binaries_bucket}",
+        "arn:${aws_partition}:s3:::${cg_binaries_bucket}/*"
       ]
     },
     {
