@@ -6,6 +6,11 @@ output "vpc_cidr" {
     value = "${module.base.vpc_cidr}"
 }
 
+output "vpc_flow_log_role_arn" {
+  value = "${module.base.vpc_flow_log_role_arn}"
+}
+
+
 /* Private network */
 output "private_subnet_az1" {
   value = "${module.base.private_subnet_az1}"

@@ -12,7 +12,6 @@
  *
  */
 
-
 resource "aws_subnet" "diego_az1_services" {
   vpc_id = "${var.vpc_id}"
   cidr_block = "${var.diego_cidr_1}"
@@ -32,6 +31,24 @@ resource "aws_subnet" "diego_az2_services" {
   tags =  {
     Name = "${var.stack_description} (Diego Services AZ2)"
   }
+}
+
+resource "aws_cloudwatch_log_group" "diego_flow_logs" {
+  name = "${var.stack_description}-diego-flow-logs"
+}
+
+resource "aws_flow_log" "diego_az1_flow_log" {
+  log_group_name = "${aws_cloudwatch_log_group.diego_flow_logs.name}"
+  iam_role_arn = "${var.flow_log_role_arn}"
+  subnet_id = "${aws_subnet.diego_az1_services.id}"
+  traffic_type = "ALL"
+}
+
+resource "aws_flow_log" "diego_az2_flow_log" {
+  log_group_name = "${aws_cloudwatch_log_group.diego_flow_logs.name}"
+  iam_role_arn = "${var.flow_log_role_arn}"
+  subnet_id = "${aws_subnet.diego_az2_services.id}"
+  traffic_type = "ALL"
 }
 
 resource "aws_route_table_association" "az1_services_rta" {
