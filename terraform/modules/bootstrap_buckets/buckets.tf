@@ -50,13 +50,6 @@ module "bosh_release" {
     versioning = "true"
 }
 
-module "stemcell_images" {
-    source = "../s3_bucket/encrypted_bucket"
-    bucket = "${var.stemcell_bucket}"
-    aws_partition = "${var.aws_partition}"
-    versioning = "true"
-}
-
 module "tmp" {
     source = "../s3_bucket/encrypted_bucket"
     bucket = "${var.tmp_bucket}"

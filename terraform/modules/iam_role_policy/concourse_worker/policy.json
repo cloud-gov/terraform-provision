@@ -26,8 +26,6 @@
         "arn:${aws_partition}:s3:::${varz_staging_bucket}/*",
         "arn:${aws_partition}:s3:::${bosh_release_bucket}",
         "arn:${aws_partition}:s3:::${bosh_release_bucket}/*",
-        "arn:${aws_partition}:s3:::${stemcell_bucket}",
-        "arn:${aws_partition}:s3:::${stemcell_bucket}/*",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}/*",
         "arn:${aws_partition}:s3:::${billing_bucket}",
