@@ -8,5 +8,4 @@ variable "development_blobstore_bucket" {}
 variable "staging_blobstore_bucket" {}
 variable "production_blobstore_bucket" {}
 variable "bosh_release_bucket" {}
-variable "stemcell_bucket" {}
 variable "tmp_bucket" {}

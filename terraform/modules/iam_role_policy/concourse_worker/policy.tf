@@ -6,7 +6,6 @@ data "template_file" "policy" {
     varz_bucket = "${var.varz_bucket}"
     varz_staging_bucket = "${var.varz_staging_bucket}"
     bosh_release_bucket = "${var.bosh_release_bucket}"
-    stemcell_bucket = "${var.stemcell_bucket}"
     terraform_state_bucket = "${var.terraform_state_bucket}"
     semver_bucket = "${var.semver_bucket}"
     billing_bucket = "${var.billing_bucket}"

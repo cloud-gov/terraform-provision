@@ -352,23 +352,6 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
-/* stemcell user */
-output "stemcell_username" {
-  value = "${module.stemcell_user.username}"
-}
-output "stemcell_access_key_id_prev" {
-  value = "${module.stemcell_user.access_key_id_prev}"
-}
-output "stemcell_secret_access_key_prev" {
-  value = "${module.stemcell_user.secret_access_key_prev}"
-}
-output "stemcell_access_key_id_curr" {
-  value = "${module.stemcell_user.access_key_id_curr}"
-}
-output "stemcell_secret_access_key_curr" {
-  value = "${module.stemcell_user.secret_access_key_curr}"
-}
-
 /* iam roles */
 output "default_profile" {
   value = "${module.default_role.profile_name}"

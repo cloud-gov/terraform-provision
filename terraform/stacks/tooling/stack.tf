@@ -122,13 +122,6 @@ module "billing_user" {
   aws_partition = "${var.aws_partition}"
 }
 
-module "stemcell_user" {
-  source = "../../modules/iam_user/stemcell_user"
-  username = "stemcell"
-  aws_partition = "${var.aws_partition}"
-  stemcell_bucket = "cg-stemcell-images"
-}
-
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "blobstore"
@@ -171,7 +164,6 @@ module "concourse_worker_policy" {
   varz_bucket = "cloud-gov-varz"
   varz_staging_bucket = "cloud-gov-varz-stage"
   bosh_release_bucket = "cloud-gov-bosh-releases"
-  stemcell_bucket = "cg-stemcell-images"
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
   billing_bucket = "cg-billing-*"

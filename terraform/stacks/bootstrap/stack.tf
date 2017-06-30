@@ -26,6 +26,5 @@ module "bootstrap_buckets" {
   staging_blobstore_bucket = "bosh-staging-blobstore"
   production_blobstore_bucket = "bosh-prod-blobstore"
   bosh_release_bucket = "cloud-gov-bosh-releases"
-  stemcell_bucket = "cg-stemcell-images"
   tmp_bucket = "cloud-gov-tmp"
 }
