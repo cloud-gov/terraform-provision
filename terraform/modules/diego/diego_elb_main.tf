@@ -7,10 +7,11 @@
 
 resource "aws_security_group" "diego-elb-sg" {
   name = "${var.stack_description}-diego-elb-sg"
-  description = "ELB Security Group for Diego Proxy. 2222 is the port in the CF config. 22/443 are alternate ports for customers with restrictive firewalls."
+  description = "ELB Security Group for Diego Proxy."
 
   vpc_id = "${var.vpc_id}"
 
+  # 2222 is the port in the CF configuration that /v2/info will point users at
   ingress {
     from_port = 2222
     to_port = 2222
@@ -18,6 +19,7 @@ resource "aws_security_group" "diego-elb-sg" {
     cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
   }
 
+  # 22 / 443 are alternate ports available for manually use by customers with restrictive firewalls
   ingress {
     from_port = 22
     to_port = 22
