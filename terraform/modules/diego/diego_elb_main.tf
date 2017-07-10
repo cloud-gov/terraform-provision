@@ -7,7 +7,7 @@
 
 resource "aws_security_group" "diego-elb-sg" {
   name = "${var.stack_description}-diego-elb-sg"
-  description = "ELB Security Group for Diego Proxy"
+  description = "ELB Security Group for Diego Proxy. 2222 is the port in the CF config. 22/443 are alternate ports for customers with restrictive firewalls."
 
   vpc_id = "${var.vpc_id}"
 
@@ -21,6 +21,13 @@ resource "aws_security_group" "diego-elb-sg" {
   ingress {
     from_port = 22
     to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
+  }
+
+  ingress {
+    from_port = 443
+    to_port = 443
     protocol = "tcp"
     cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
   }
@@ -49,6 +56,13 @@ resource "aws_elb" "diego_elb_main" {
 
   listener {
     lb_port = 22
+    lb_protocol = "TCP"
+    instance_port = 2222
+    instance_protocol = "TCP"
+  }
+
+  listener {
+    lb_port = 443
     lb_protocol = "TCP"
     instance_port = 2222
     instance_protocol = "TCP"
