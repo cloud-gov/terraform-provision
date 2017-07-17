@@ -225,6 +225,7 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-development
       trigger: true
     - get: plan-timer
       trigger: true
@@ -279,6 +280,7 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-development
       passed: [plan-bootstrap-development]
   - task: create-update-development
     tags:
@@ -655,6 +657,12 @@ resources:
   source:
     uri: {{cg_provision_git_url}}
     branch: {{cg_provision_git_branch}}
+
+- name: cg-provision-repo-development
+  type: git
+  source:
+    uri: {{cg_provision_development_git_url}}
+    branch: {{cg_provision_development_git_branch}}
 
 - name: pull-request
   type: pull-request

@@ -34,6 +34,15 @@ resource "aws_security_group_rule" "consul_dns" {
   security_group_id = "${aws_security_group.kubernetes_ec2.id}"
 }
 
+resource "aws_security_group_rule" "node_ports" {
+  type = "ingress"
+  from_port = 30000
+  to_port = 32767
+  protocol = "tcp"
+  source_security_group_id = "${var.target_bosh_security_group}"
+  security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+}
+
 resource "aws_security_group_rule" "outbound" {
   type = "egress"
   from_port = 0
@@ -80,4 +89,13 @@ resource "aws_security_group_rule" "bosh_director" {
   protocol = "tcp"
   cidr_blocks = ["${var.vpc_cidr}"]
   security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+}
+
+resource "aws_security_group_rule" "bosh_registry" {
+  type = "ingress"
+  from_port = 25777
+  to_port = 25777
+  protocol = "tcp"
+  source_security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+  security_group_id = "${var.target_bosh_security_group}"
 }
