@@ -98,6 +98,7 @@ module "kubernetes" {
     elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
     target_bosh_security_group = "${module.stack.bosh_security_group}"
     target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
+    target_concourse_security_group = "${data.terraform_remote_state.target_vpc.production_concourse_security_group}"
 }
 
 module "client-elbs" {
