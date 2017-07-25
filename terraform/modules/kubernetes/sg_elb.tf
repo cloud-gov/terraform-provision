@@ -25,6 +25,15 @@ resource "aws_security_group_rule" "kubernetes_inbound_custom" {
   security_group_id = "${aws_security_group.kubernetes_elb.id}"
 }
 
+resource "aws_security_group_rule" "kubernetes_inbound_from_concourse" {
+  type = "ingress"
+  from_port = 6443
+  to_port = 6443
+  protocol = "tcp"
+  source_security_group_id = "${var.target_concourse_security_group}"
+  security_group_id = "${aws_security_group.kubernetes_elb.id}"
+}
+
 resource "aws_security_group_rule" "kubernetes_outbound" {
   type = "egress"
   from_port = 0
