@@ -101,6 +101,15 @@ module "kubernetes" {
     target_concourse_security_group = "${data.terraform_remote_state.target_vpc.production_concourse_security_group}"
 }
 
+module "logsearch" {
+    source = "../../modules/logsearch"
+
+    stack_description = "${var.stack_description}"
+    vpc_id = "${module.stack.vpc_id}"
+    elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
+    bosh_security_group = "${module.stack.bosh_security_group}"
+}
+
 module "client-elbs" {
     source = "../../modules/client-elbs"
 

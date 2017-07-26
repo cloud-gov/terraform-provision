@@ -270,6 +270,14 @@ output "kubernetes_ec2_security_group" {
   value = "${module.kubernetes.kubernetes_ec2_security_group}"
 }
 
+/* Logsearch network */
+output "logsearch_elb_name" {
+  value = "${module.logsearch.logsearch_elb_name}"
+}
+output "logsearch_elb_dns_name" {
+  value = "${module.logsearch.logsearch_elb_dns_name}"
+}
+
 /* Client ELBs */
 output "client_elb_star_18f_gov_name" {
   value = "${module.client-elbs.star_18f_gov_elb_name}"
