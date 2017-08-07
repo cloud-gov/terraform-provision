@@ -79,10 +79,6 @@ variable "force_restricted_network" {
   default = "yes"
 }
 
-variable "target_monitoring_security_group_count" {
-  default = 0
-}
-
 variable "use_nat_gateway_eip" {
   default = false
 }
