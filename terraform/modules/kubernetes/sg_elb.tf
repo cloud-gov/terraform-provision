@@ -2,7 +2,7 @@ resource "aws_security_group" "kubernetes_elb" {
   description = "Allow access to incoming kubernetes traffic"
   vpc_id = "${var.vpc_id}"
 
-  tags = {
+  tags {
     Name = "${var.stack_description} - Kubernetes ELB"
   }
 }

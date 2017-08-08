@@ -20,7 +20,7 @@ resource "aws_elb" "kubernetes_elb" {
     interval = 30
   }
 
-  tags = {
+  tags {
     Name = "${var.stack_description}-kubernetes"
   }
 }
