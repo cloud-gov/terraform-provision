@@ -108,3 +108,12 @@ resource "aws_security_group_rule" "bosh_registry" {
   source_security_group_id = "${aws_security_group.kubernetes_ec2.id}"
   security_group_id = "${var.target_bosh_security_group}"
 }
+
+resource "aws_security_group_rule" "logsearch_syslog" {
+  type = "ingress"
+  from_port = 5514
+  to_port = 5514
+  protocol = "tcp"
+  source_security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+  security_group_id = "${var.target_bosh_security_group}"
+}
