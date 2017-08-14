@@ -20,7 +20,7 @@ resource "aws_elb" "monitoring_elb" {
     unhealthy_threshold = 3
   }
 
-  tags = {
+  tags {
     Name = "${var.stack_description}-Monitoring"
   }
 }
@@ -47,7 +47,7 @@ resource "aws_elb" "prometheus_elb" {
     unhealthy_threshold = 3
   }
 
-  tags = {
+  tags {
     Name = "${var.stack_description}-Prometheus"
   }
 }
