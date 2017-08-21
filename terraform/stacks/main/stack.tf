@@ -84,6 +84,8 @@ module "diego" {
     ingress_cidrs = "${var.force_restricted_network == "no" ?
       "0.0.0.0/0" :
       "${var.restricted_ingress_web_cidrs}"}"
+
+    flow_log_role_arn = "${module.stack.vpc_flow_log_role_arn}"
 }
 
 module "kubernetes" {

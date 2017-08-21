@@ -7,6 +7,10 @@ output "vpc_cidr" {
     value = "${var.vpc_cidr}"
 }
 
+output "vpc_flow_log_role_arn" {
+  value= "${aws_iam_role.flow_log_role.arn}"
+}
+
 /* Private network */
 output "private_subnet_az1" {
   value = "${aws_subnet.az1_private.id}"

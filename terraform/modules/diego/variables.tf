@@ -23,3 +23,5 @@ variable "diego_cidr_2" {}
 variable "ingress_cidrs" {
   default = "0.0.0.0"
 }
+
+variable "flow_log_role_arn" {}
