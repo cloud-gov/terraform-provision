@@ -33,7 +33,7 @@ variable "private_cidr_2" {
 }
 
 variable "nat_gateway_instance_type" {
-  default = "t2.micro"
+  default = "c3.2xlarge"
 }
 
 variable "rds_private_cidr_1" {
