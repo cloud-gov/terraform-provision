@@ -37,7 +37,7 @@ variable "restricted_ingress_web_cidrs" {
 }
 
 variable "nat_gateway_instance_type" {
-  default = "t2.micro"
+  default = "c3.2xlarge"
 }
 
 variable "monitoring_security_group" {
