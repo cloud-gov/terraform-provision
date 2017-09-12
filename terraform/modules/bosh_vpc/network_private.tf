@@ -103,7 +103,7 @@ resource "aws_eip" "az2_nat_eip" {
  */
 resource "aws_instance" "az1_private_nat_2017_03" {
   ami = "ami-6ae2660b"
-  instance_type = "${var.nat_gateway_instance_type}"
+  instance_type = "t2.micro"
   source_dest_check = false
 
   # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
@@ -120,7 +120,7 @@ resource "aws_instance" "az1_private_nat_2017_03" {
 }
 resource "aws_instance" "az2_private_nat_2017_03" {
   ami = "ami-6ae2660b"
-  instance_type = "${var.nat_gateway_instance_type}"
+  instance_type = "t2.micro"
   source_dest_check = false
 
   # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
@@ -133,5 +133,40 @@ resource "aws_instance" "az2_private_nat_2017_03" {
 
   tags {
     Name = "${var.stack_description}  (AZ2 2017-03 NAT)"
+  }
+}
+
+resource "aws_instance" "az1_private_nat_2017_09" {
+  ami = "ami-4b98182a"
+  instance_type = "${var.nat_gateway_instance_type}"
+  source_dest_check = false
+
+  # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
+  # see https://github.com/hashicorp/terraform/issues/9811 for more detail than you want
+  associate_public_ip_address = true
+
+  subnet_id = "${aws_subnet.az1_public.id}"
+
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
+
+  tags {
+    Name = "${var.stack_description} (AZ1 2017-09 NAT)"
+  }
+}
+resource "aws_instance" "az2_private_nat_2017_09" {
+  ami = "ami-4b98182a"
+  instance_type = "${var.nat_gateway_instance_type}"
+  source_dest_check = false
+
+  # this always needs to be true, if use_nat_gateway_eip is set, the ephemeral address will not be used
+  # see https://github.com/hashicorp/terraform/issues/9811 for more detail than you want
+  associate_public_ip_address = true
+
+  subnet_id = "${aws_subnet.az2_public.id}"
+
+  vpc_security_group_ids = ["${aws_security_group.local_vpc_traffic.id}"]
+
+  tags {
+    Name = "${var.stack_description}  (AZ2 2017-09 NAT)"
   }
 }
