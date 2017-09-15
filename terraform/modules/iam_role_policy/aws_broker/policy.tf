@@ -6,6 +6,7 @@ data "template_file" "policy" {
     aws_default_region = "${var.aws_default_region}"
     aws_partition = "${var.aws_partition}"
     remote_state_bucket = "${var.remote_state_bucket}"
+    rds_subgroup = "${var.rds_subgroup}"
   }
 }
 

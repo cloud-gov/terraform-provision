@@ -255,6 +255,7 @@ module "aws_broker_policy" {
   aws_partition = "${var.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
   remote_state_bucket = "${var.remote_state_bucket}"
+  rds_subgroup = "${var.stack_description}"
 }
 
 module "default_role" {
