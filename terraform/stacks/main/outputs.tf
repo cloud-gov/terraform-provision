@@ -415,3 +415,6 @@ output "etcd_backup_bucket_name" {
 output "monitoring_ip_address" {
   value = "${lookup(data.terraform_remote_state.target_vpc.monitoring_ip_addresses, var.stack_description)}"
 }
+output "tooling_bosh_static_ip" {
+  value = "${data.terraform_remote_state.target_vpc.tooling_bosh_static_ip}"
+}
