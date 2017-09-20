@@ -4,6 +4,9 @@ output "az1" {
 output "az2" {
   value = "${var.az2}"
 }
+output "stack_description" {
+  value = "${var.stack_description}"
+}
 
 /* VPC */
 output "vpc_region" {
