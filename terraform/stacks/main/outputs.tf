@@ -4,6 +4,9 @@ output "az1" {
 output "az2" {
   value = "${var.az2}"
 }
+output "stack_description" {
+  value = "${var.stack_description}"
+}
 
 /* VPC */
 output "vpc_region" {
@@ -84,6 +87,12 @@ output "nat_egress_ip_az1" {
 }
 output "nat_egress_ip_az2" {
   value = "${module.stack.nat_egress_ip_az2}"
+}
+output "nat_private_ip_az1" {
+  value = "${module.stack.nat_private_ip_az1}"
+}
+output "nat_private_ip_az2" {
+  value = "${module.stack.nat_private_ip_az2}"
 }
 
 /* Services network */
