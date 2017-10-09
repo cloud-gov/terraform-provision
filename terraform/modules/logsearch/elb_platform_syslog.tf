@@ -1,6 +1,6 @@
 resource "aws_elb" "platform_syslog_elb" {
   name = "${var.stack_description}-platform-syslog"
-  subnets = ["${var.elb_subnets}"]
+  subnets = ["${var.private_elb_subnets}"]
   security_groups = ["${var.bosh_security_group}"]
   idle_timeout = 3600
   internal = true

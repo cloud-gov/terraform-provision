@@ -108,7 +108,8 @@ module "logsearch" {
     account_id = "${var.account_id}"
     stack_description = "${var.stack_description}"
     vpc_id = "${module.stack.vpc_id}"
-    elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
+    public_elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+    private_elb_subnets = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
     bosh_security_group = "${module.stack.bosh_security_group}"
     restricted_security_group = "${module.stack.restricted_web_traffic_security_group}"
     elb_cert_name = "${var.main_cert_name}"
