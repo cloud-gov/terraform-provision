@@ -115,6 +115,15 @@ resource "aws_security_group_rule" "node_exporter" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "platform_kibana" {
+    type = "ingress"
+    from_port = 5600
+    to_port = 5600
+    protocol = "tcp"
+    cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "monitoring_logsearch" {
     count = "${var.monitoring_security_group_count}"
     type = "ingress"
