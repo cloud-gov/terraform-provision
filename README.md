@@ -7,7 +7,7 @@ Scripts, configurations, and procedures for provisioning the infrastructure to s
 * the [AWS Command Line Interface (CLI) tool](https://aws.amazon.com/cli/)
 * [`jq`, a command line JSON processor](https://stedolan.github.io/jq/) installed
 
-macOS users can install all of these with [`homebrew`](http://brew.sh/).
+macOS users can install all of these with [`homebrew`](https://brew.sh/).
 
 ## Procedures
 
