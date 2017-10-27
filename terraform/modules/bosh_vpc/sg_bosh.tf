@@ -51,6 +51,15 @@ resource "aws_security_group_rule" "dns_udp" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
+resource "aws_security_group_rule" "ntp_udp" {
+    type = "ingress"
+    from_port = 123
+    to_port = 123
+    protocol = "udp"
+    cidr_blocks = ["${aws_vpc.main_vpc.cidr_block}"]
+    security_group_id = "${aws_security_group.bosh.id}"
+}
+
 resource "aws_security_group_rule" "http_elb" {
     type = "ingress"
     from_port = 80
