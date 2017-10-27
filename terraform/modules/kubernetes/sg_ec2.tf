@@ -82,6 +82,15 @@ resource "aws_security_group_rule" "bosh_ssh_tooling" {
   security_group_id = "${aws_security_group.kubernetes_ec2.id}"
 }
 
+resource "aws_security_group_rule" "bosh_ntp" {
+  type = "ingress"
+  from_port = 123
+  to_port = 123
+  protocol = "udp"
+  source_security_group_id = "${aws_security_group.kubernetes_ec2.id}"
+  security_group_id = "${var.target_bosh_security_group}"
+}
+
 resource "aws_security_group_rule" "bosh_nats" {
   type = "ingress"
   from_port = 6868

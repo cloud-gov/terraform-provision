@@ -25,6 +25,15 @@ resource "aws_security_group_rule" "dns_udp" {
     security_group_id = "${var.target_bosh_security_group}"
 }
 
+resource "aws_security_group_rule" "ntp_udp" {
+    type = "ingress"
+    from_port = 123
+    to_port = 123
+    protocol = "udp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
 resource "aws_security_group_rule" "bosh_nats" {
     type = "ingress"
     from_port = 4222
