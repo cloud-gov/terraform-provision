@@ -107,6 +107,9 @@ output "master_bosh_static_ip" {
 output "tooling_bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 7)}"
 }
+output "bosh_static_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+}
 
 /* Public network */
 output "public_subnet_az1" {
