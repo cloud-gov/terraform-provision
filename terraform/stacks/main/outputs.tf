@@ -427,3 +427,6 @@ output "monitoring_ip_address" {
 output "tooling_bosh_static_ip" {
   value = "${data.terraform_remote_state.target_vpc.tooling_bosh_static_ip}"
 }
+output "master_bosh_static_ip" {
+  value = "${data.terraform_remote_state.target_vpc.master_bosh_static_ip}"
+}
