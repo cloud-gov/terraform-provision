@@ -11,7 +11,7 @@ status=0
 
 for dir in $dirs; do
   echo "Validating terraform directory $dir"
-  terraform validate ${dir} || status=1
+  terraform validate -check-variables=false ${dir} || status=1
 done
 
 exit ${status}
