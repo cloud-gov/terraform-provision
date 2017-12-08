@@ -18,7 +18,8 @@
         "s3:ListBucketMultipartUploads",
         "s3:ListBucketVersions",
         "s3:ListMultipartUploadParts",
-        "s3:PutObject"
+        "s3:PutObject",
+        "s3:DeleteObject"
       ],
       "Resource": [
         "arn:${aws_partition}:s3:::${buildpacks_bucket}",
