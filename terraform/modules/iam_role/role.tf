@@ -7,6 +7,12 @@ resource "aws_iam_role" "iam_role" {
 resource "aws_iam_instance_profile" "iam_profile" {
   name = "${var.role_name}"
   role = "${aws_iam_role.iam_role.name}"
+  
+  # wait for propagation
+  # https://github.com/hashicorp/terraform/issues/2349#issuecomment-114168159
+  provisioner "local-exec" {
+    command = "sleep 10"
+  }
 }
 
 resource "aws_iam_role_policy" "iam_policy" {
