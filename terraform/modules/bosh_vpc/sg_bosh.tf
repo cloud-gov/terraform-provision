@@ -133,12 +133,12 @@ resource "aws_security_group_rule" "platform_kibana" {
     security_group_id = "${aws_security_group.bosh.id}"
 }
 
-resource "aws_security_group_rule" "monitoring_logsearch" {
+resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
     count = "${var.monitoring_security_group_count}"
     type = "ingress"
-    from_port = 9200
-    to_port = 9200
-    protocol = "tcp"
+    from_port = 9114
+    to_port = 9114
+    protocol = "http"
     source_security_group_id = "${var.monitoring_security_group}"
     security_group_id = "${aws_security_group.bosh.id}"
 }
