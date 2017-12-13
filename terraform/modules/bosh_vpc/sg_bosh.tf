@@ -138,7 +138,7 @@ resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
     type = "ingress"
     from_port = 9114
     to_port = 9114
-    protocol = "http"
+    protocol = "tcp"
     source_security_group_id = "${var.monitoring_security_group}"
     security_group_id = "${aws_security_group.bosh.id}"
 }
