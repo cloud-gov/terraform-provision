@@ -24,3 +24,10 @@ resource "aws_elb" "bosh_uaa_elb" {
     Name = "${var.stack_description}-bosh-uaa"
   }
 }
+
+resource "aws_app_cookie_stickiness_policy" "opslogin_jsession_stickiness" {
+  name = "${var.stack_description}-opslogin-sticky-jsession"
+  load_balancer = "${aws_elb.bosh_uaa_elb.name}"
+  lb_port = 443
+  cookie_name = "JSESSIONID"
+}
