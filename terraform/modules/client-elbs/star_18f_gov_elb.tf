@@ -2,8 +2,8 @@ resource "aws_elb" "star_18f_gov_elb" {
   count = "${var.count}"
 
   name = "${var.stack_description}-star-18f-gov-elb"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
 
   listener {
     lb_port = 80

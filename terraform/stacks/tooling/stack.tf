@@ -39,13 +39,13 @@ module "concourse_production" {
   route_table_id = "${module.stack.private_route_table_az1}"
   rds_password = "${var.concourse_prod_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = "${module.stack.rds_postgres_security_group}"
+  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-production"
   rds_instance_type = "db.m3.xlarge"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_prod_elb_cert_name}"
-  elb_subnets = "${module.stack.public_subnet_az1}"
-  elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
+  elb_subnets = ["${module.stack.public_subnet_az1}"]
+  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
 }
 
 module "concourse_staging" {
@@ -58,13 +58,13 @@ module "concourse_staging" {
   route_table_id = "${module.stack.private_route_table_az2}"
   rds_password = "${var.concourse_staging_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = "${module.stack.rds_postgres_security_group}"
+  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-staging"
   rds_instance_type = "db.m3.medium"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_staging_elb_cert_name}"
-  elb_subnets = "${module.stack.public_subnet_az2}"
-  elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
+  elb_subnets = ["${module.stack.public_subnet_az2}"]
+  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
 }
 
 module "monitoring_production" {
@@ -77,8 +77,8 @@ module "monitoring_production" {
   route_table_id = "${module.stack.private_route_table_az1}"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.monitoring_production_elb_cert_name}"
-  elb_subnets = "${module.stack.public_subnet_az1}"
-  elb_security_groups = "${module.stack.web_traffic_security_group}"
+  elb_subnets = ["${module.stack.public_subnet_az1}"]
+  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
@@ -92,8 +92,8 @@ module "monitoring_staging" {
   route_table_id = "${module.stack.private_route_table_az2}"
   account_id = "${var.account_id}"
   elb_cert_name = "${var.monitoring_staging_elb_cert_name}"
-  elb_subnets = "${module.stack.public_subnet_az2}"
-  elb_security_groups = "${module.stack.web_traffic_security_group}"
+  elb_subnets = ["${module.stack.public_subnet_az2}"]
+  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 

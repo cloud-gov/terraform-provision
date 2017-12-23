@@ -1,7 +1,7 @@
 resource "aws_elb" "monitoring_elb" {
   name = "${var.stack_description}-Monitoring"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
   idle_timeout = 3600
 
   listener {
@@ -27,8 +27,8 @@ resource "aws_elb" "monitoring_elb" {
 
 resource "aws_elb" "prometheus_elb" {
   name = "${var.stack_description}-Prometheus"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.prometheus_elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.prometheus_elb_security_groups}"]
   idle_timeout = 3600
 
   listener {

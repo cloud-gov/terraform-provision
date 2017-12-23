@@ -10,5 +10,5 @@ module "cf_database_96" {
     rds_username = "${var.rds_username}"
     rds_password = "${var.rds_password}"
     rds_subnet_group = "${var.rds_subnet_group}"
-    rds_security_groups = "${var.rds_security_groups}"
+    rds_security_groups = ["${var.rds_security_groups}"]
 }

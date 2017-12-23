@@ -14,12 +14,15 @@ variable "private_route_table_az2" {}
 
 variable "vpc_id" {}
 
-variable "elb_subnets" {}
+variable "elb_subnets" {
+  type = "list"
+}
 
 variable "diego_cidr_1" {}
 
 variable "diego_cidr_2" {}
 
 variable "ingress_cidrs" {
-  default = "0.0.0.0"
+  type = "list"
+  default = ["0.0.0.0"]
 }

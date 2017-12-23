@@ -41,7 +41,7 @@ resource "aws_db_instance" "rds_database" {
   storage_encrypted = true
 
   db_subnet_group_name = "${var.rds_subnet_group}"
-  vpc_security_group_ids = ["${split(",", var.rds_security_groups)}"]
+  vpc_security_group_ids = ["${var.rds_security_groups}"]
   parameter_group_name = "${var.rds_db_engine == "postgres" ?
     "${join("", aws_db_parameter_group.parameter_group_postgres.*.id)}" :
     "${join("", aws_db_parameter_group.parameter_group_mysql.*.id)}"}"

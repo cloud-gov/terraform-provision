@@ -2,9 +2,13 @@ variable "elb_main_cert_name" {}
 
 variable "elb_apps_cert_name" {}
 
-variable "elb_subnets" {}
+variable "elb_subnets" {
+  type = "list"
+}
 
-variable "elb_security_groups" {}
+variable "elb_security_groups" {
+  type = "list"
+}
 
 variable "stack_description" {}
 
@@ -38,7 +42,9 @@ variable "rds_password" {}
 
 variable "rds_subnet_group" {}
 
-variable "rds_security_groups" {}
+variable "rds_security_groups" {
+  type = "list"
+}
 
 variable "stack_prefix" {}
 
