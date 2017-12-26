@@ -67,6 +67,8 @@ variable "bosh_uaa_elb_cert_name" {
     default = "star-fr-cloud-gov-2017-05"
 }
 
-variable "restricted_ingress_web_cidrs" {}
+variable "restricted_ingress_web_cidrs" {
+  type = "list"
+}
 
 variable "blobstore_bucket_name" {}

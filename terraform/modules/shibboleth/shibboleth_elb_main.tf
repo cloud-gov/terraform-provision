@@ -11,8 +11,8 @@
 
 resource "aws_elb" "shibboleth_elb_main" {
   name = "${var.stack_description}-shibboleth-proxy"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
 
   listener {
     lb_port = 443

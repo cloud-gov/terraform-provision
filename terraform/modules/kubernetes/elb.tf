@@ -1,6 +1,6 @@
 resource "aws_elb" "kubernetes_elb" {
   name = "${var.stack_description}-kubernetes"
-  subnets = ["${split(",", var.elb_subnets)}"]
+  subnets = ["${var.elb_subnets}"]
   security_groups = ["${aws_security_group.kubernetes_elb.id}"]
   idle_timeout = 3600
   internal = true

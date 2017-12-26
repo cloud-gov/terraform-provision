@@ -32,7 +32,9 @@ variable "rds_password" {}
 
 variable "rds_subnet_group" {}
 
-variable "rds_security_groups" {}
+variable "rds_security_groups" {
+  type = "list"
+}
 
 variable "rds_parameter_group_name" {
   default = ""

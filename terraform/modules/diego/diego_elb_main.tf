@@ -16,7 +16,7 @@ resource "aws_security_group" "diego-elb-sg" {
     from_port = 2222
     to_port = 2222
     protocol = "tcp"
-    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
+    cidr_blocks = ["${var.ingress_cidrs}"]
   }
 
   # 22 / 443 are alternate ports available for manually use by customers with restrictive firewalls
@@ -24,14 +24,14 @@ resource "aws_security_group" "diego-elb-sg" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
+    cidr_blocks = ["${var.ingress_cidrs}"]
   }
 
   ingress {
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = ["${split(",", var.ingress_cidrs)}"]
+    cidr_blocks = ["${var.ingress_cidrs}"]
   }
 
   # outbound internet access
@@ -46,7 +46,7 @@ resource "aws_security_group" "diego-elb-sg" {
 
 resource "aws_elb" "diego_elb_main" {
   name = "${var.stack_description}-diego-proxy"
-  subnets = ["${split(",", var.elb_subnets)}"]
+  subnets = ["${var.elb_subnets}"]
   security_groups = ["${aws_security_group.diego-elb-sg.id}"]
 
   listener {

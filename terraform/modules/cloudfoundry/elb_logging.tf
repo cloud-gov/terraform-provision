@@ -1,7 +1,7 @@
 resource "aws_elb" "cloudfoundry_elb_logging" {
   name = "${var.stack_description}-CloudFoundry-Logging"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
 
   listener {
     lb_port = 443

@@ -50,14 +50,14 @@ module "cf" {
     aws_partition = "${var.aws_partition}"
     elb_main_cert_name = "${var.main_cert_name}"
     elb_apps_cert_name = "${var.apps_cert_name}"
-    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
-    elb_security_groups = "${var.force_restricted_network == "no" ?
+    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
+    elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
-      module.stack.restricted_web_traffic_security_group}"
+      module.stack.restricted_web_traffic_security_group}"]
 
     rds_password = "${var.cf_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
-    rds_security_groups = "${module.stack.rds_postgres_security_group}"
+    rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
     stack_prefix = "${var.stack_prefix}"
 
     vpc_id = "${module.stack.vpc_id}"
@@ -73,7 +73,7 @@ module "diego" {
     source = "../../modules/diego"
 
     stack_description = "${var.stack_description}"
-    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
@@ -81,9 +81,10 @@ module "diego" {
     stack_description = "${var.stack_description}"
     diego_cidr_1 = "${var.diego_cidr_1}"
     diego_cidr_2 = "${var.diego_cidr_2}"
-    ingress_cidrs = "${var.force_restricted_network == "no" ?
-      "0.0.0.0/0" :
-      "${var.restricted_ingress_web_cidrs}"}"
+    # Workaround for https://github.com/hashicorp/terraform/issues/12453
+    ingress_cidrs = "${split(",",
+      var.force_restricted_network == "no" ?
+        "0.0.0.0/0" : join(",", var.restricted_ingress_web_cidrs))}"
 }
 
 module "kubernetes" {
@@ -95,7 +96,7 @@ module "kubernetes" {
     vpc_id = "${module.stack.vpc_id}"
     vpc_cidr = "${var.vpc_cidr}"
     tooling_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
-    elb_subnets = "${module.cf.services_subnet_az1},${module.cf.services_subnet_az2}"
+    elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
     target_bosh_security_group = "${module.stack.bosh_security_group}"
     target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
     target_concourse_security_group = "${data.terraform_remote_state.target_vpc.production_concourse_security_group}"
@@ -108,8 +109,8 @@ module "logsearch" {
     account_id = "${var.account_id}"
     stack_description = "${var.stack_description}"
     vpc_id = "${module.stack.vpc_id}"
-    public_elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
-    private_elb_subnets = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
+    public_elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
+    private_elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
     bosh_security_group = "${module.stack.bosh_security_group}"
     restricted_security_group = "${module.stack.restricted_web_traffic_security_group}"
     elb_cert_name = "${var.main_cert_name}"
@@ -122,10 +123,10 @@ module "client-elbs" {
     stack_description = "${var.stack_description}"
 
     account_id = "${var.account_id}"
-    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
-    elb_security_groups = "${var.force_restricted_network == "no" ?
+    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
+    elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
-      module.stack.restricted_web_traffic_security_group}"
+      module.stack.restricted_web_traffic_security_group}"]
     aws_partition = "${var.aws_partition}"
     star_18f_gov_cert_name = "${var.18f_gov_elb_cert_name}"
 }
@@ -134,12 +135,12 @@ module "shibboleth" {
     source = "../../modules/shibboleth"
 
     stack_description = "${var.stack_description}"
-    elb_subnets = "${module.stack.public_subnet_az1},${module.stack.public_subnet_az2}"
+    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
     elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
-    elb_security_groups = "${var.force_restricted_network == "no" ?
+    elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
-      module.stack.restricted_web_traffic_security_group}"
+      module.stack.restricted_web_traffic_security_group}"]
     stack_description = "${var.stack_description}"
     account_id = "${var.account_id}"
     aws_partition = "${var.aws_partition}"
@@ -155,17 +156,17 @@ module "concourse" {
   route_table_id = "${module.stack.private_route_table_az2}"
   rds_password = "${var.concourse_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = "${module.stack.rds_postgres_security_group}"
+  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_instance_type = "db.m3.medium"
   rds_db_iops = 0
   rds_db_storage_type = "gp2"
   rds_db_size = 20
   account_id = "${var.account_id}"
   elb_cert_name = "${var.concourse_elb_cert_name}"
-  elb_subnets = "${module.stack.public_subnet_az2}"
-  elb_security_groups = "${var.force_restricted_network == "no" ?
+  elb_subnets = ["${module.stack.public_subnet_az2}"]
+  elb_security_groups = ["${var.force_restricted_network == "no" ?
     module.stack.web_traffic_security_group :
-    module.stack.restricted_web_traffic_security_group}"
+    module.stack.restricted_web_traffic_security_group}"]
 }
 
 module "blobstore_policy" {

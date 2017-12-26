@@ -16,9 +16,13 @@ variable "account_id" {}
 
 variable "elb_cert_name" {}
 
-variable "elb_subnets" {}
+variable "elb_subnets" {
+  type = "list"
+}
 
-variable "elb_security_groups" {}
+variable "elb_security_groups" {
+  type = "list"
+}
 
 variable "prometheus_elb_security_groups" {}
 

@@ -1,7 +1,7 @@
 resource "aws_elb" "concourse_elb" {
   name = "${replace("${var.stack_description}-Concourse-${var.concourse_az}", "/(.{0,32})(.*)/", "$1")}"
-  subnets = ["${split(",", var.elb_subnets)}"]
-  security_groups = ["${split(",", var.elb_security_groups)}"]
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
   idle_timeout = 3600
 
   listener {

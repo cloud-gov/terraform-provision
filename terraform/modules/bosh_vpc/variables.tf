@@ -33,7 +33,8 @@ variable "private_cidr_2" {
 }
 
 variable "restricted_ingress_web_cidrs" {
-  default = "127.0.0.1/32,192.168.0.1/24"
+  type = "list"
+  default = ["127.0.0.1/32", "192.168.0.1/24"]
 }
 
 variable "nat_gateway_instance_type" {
