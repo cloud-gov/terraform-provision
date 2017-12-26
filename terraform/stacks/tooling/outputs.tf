@@ -88,19 +88,6 @@ output "staging_monitoring_subnet_gateway" {
   value = "${cidrhost("${var.monitoring_staging_cidr}", 1)}"
 }
 
-output "production_monitoring_riemann_address" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 128)}"
-}
-output "production_monitoring_influxdb_address" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 129)}"
-}
-output "staging_monitoring_riemann_address" {
-  value = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
-}
-output "staging_monitoring_influxdb_address" {
-  value = "${cidrhost("${var.monitoring_staging_cidr}", 129)}"
-}
-
 output "master_bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 6)}"
 }
@@ -295,12 +282,6 @@ output "production_monitoring_subnet" {
 output "production_monitoring_security_group" {
   value = "${module.monitoring_production.monitoring_security_group}"
 }
-output "production_monitoring_elb_dns_name" {
-  value = "${module.monitoring_production.monitoring_elb_dns_name}"
-}
-output "production_monitoring_elb_name" {
-  value = "${module.monitoring_production.monitoring_elb_name}"
-}
 output "production_prometheus_elb_dns_name" {
   value = "${module.monitoring_production.prometheus_elb_dns_name}"
 }
@@ -313,14 +294,6 @@ output "monitoring_security_groups" {
     staging = "${module.monitoring_staging.monitoring_security_group}"
     development = "${module.monitoring_staging.monitoring_security_group}"
     production = "${module.monitoring_production.monitoring_security_group}"
-  }
-}
-
-output "monitoring_ip_addresses" {
-  value = {
-    staging = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
-    development = "${cidrhost("${var.monitoring_staging_cidr}", 128)}"
-    production = "${cidrhost("${var.monitoring_production_cidr}", 128)}"
   }
 }
 
@@ -376,9 +349,6 @@ output "bosh_profile" {
 }
 output "bosh_compilation_profile" {
   value = "${module.bosh_compilation_role.profile_name}"
-}
-output "riemann_monitoring_profile" {
-  value = "${module.riemann_monitoring_role.profile_name}"
 }
 output "concourse_worker_profile" {
   value = "${module.concourse_worker_role.profile_name}"
