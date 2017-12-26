@@ -307,12 +307,6 @@ output "staging_monitoring_subnet" {
 output "staging_monitoring_security_group" {
   value = "${module.monitoring_staging.monitoring_security_group}"
 }
-output "staging_monitoring_elb_dns_name" {
-  value = "${module.monitoring_staging.monitoring_elb_dns_name}"
-}
-output "staging_monitoring_elb_name" {
-  value = "${module.monitoring_staging.monitoring_elb_name}"
-}
 output "staging_prometheus_elb_dns_name" {
   value = "${module.monitoring_staging.prometheus_elb_dns_name}"
 }
