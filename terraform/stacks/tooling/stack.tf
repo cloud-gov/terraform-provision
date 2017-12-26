@@ -149,14 +149,6 @@ module "bosh_compilation_policy" {
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
-module "riemann_monitoring_policy" {
-  source = "../../modules/iam_role_policy/riemann_monitoring"
-  policy_name = "riemann-monitoring"
-  aws_default_region = "${var.aws_default_region}"
-  aws_partition = "${var.aws_partition}"
-  account_id = "${var.account_id}"
-}
-
 module "concourse_worker_policy" {
   source = "../../modules/iam_role_policy/concourse_worker"
   policy_name = "concourse-worker"
@@ -195,11 +187,6 @@ module "bosh_compilation_role" {
   role_name = "${var.stack_description}-bosh-compilation"
 }
 
-module "riemann_monitoring_role" {
-  source = "../../modules/iam_role"
-  role_name = "riemann-monitoring"
-}
-
 module "concourse_worker_role" {
   source = "../../modules/iam_role"
   role_name = "tooling-concourse-worker"
@@ -216,7 +203,6 @@ resource "aws_iam_policy_attachment" "blobstore" {
   roles = [
     "${module.default_role.role_name}",
     "${module.bosh_role.role_name}",
-    "${module.riemann_monitoring_role.role_name}",
     "${module.concourse_worker_role.role_name}",
     "${module.concourse_iaas_worker_role.role_name}"
   ]
@@ -229,7 +215,6 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.default_role.role_name}",
     "${module.bosh_role.role_name}",
     "${module.bosh_compilation_role.role_name}",
-    "${module.riemann_monitoring_role.role_name}",
     "${module.concourse_worker_role.role_name}",
     "${module.concourse_iaas_worker_role.role_name}"
   ]
@@ -249,14 +234,6 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
   policy_arn = "${module.bosh_compilation_policy.arn}"
   roles = [
     "${module.bosh_compilation_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "riemann_monitoring" {
-  name = "riemann_monitoring"
-  policy_arn = "${module.riemann_monitoring_policy.arn}"
-  roles = [
-    "${module.riemann_monitoring_role.role_name}"
   ]
 }
 
