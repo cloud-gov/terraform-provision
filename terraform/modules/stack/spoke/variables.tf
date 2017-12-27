@@ -85,19 +85,14 @@ variable "target_bosh_security_group" {}
 variable "target_az1_route_table" {}
 variable "target_az2_route_table" {}
 
-variable "target_monitoring_security_group" {
-  default = ""
-}
-variable "target_monitoring_security_group_count" {
-  default = 0
+variable "target_monitoring_security_groups" {
+  type = "list"
+  default = []
 }
 
 variable "target_concourse_security_groups" {
   type = "list"
   default = []
-}
-variable "target_concourse_security_group_count" {
-  default = "0"
 }
 variable "use_nat_gateway_eip" {
   default = false

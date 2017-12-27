@@ -24,10 +24,8 @@ module "base" {
       "${module.base.bosh_security_group}",
       "${var.target_bosh_security_group}"
     ]
-    target_monitoring_security_group = "${var.target_monitoring_security_group}"
-    target_monitoring_security_group_count = "${var.target_monitoring_security_group_count}"
+    target_monitoring_security_groups = "${var.target_monitoring_security_groups}"
     target_concourse_security_groups = "${var.target_concourse_security_groups}"
-    target_concourse_security_group_count = "${var.target_concourse_security_group_count}"
     use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
 }
 

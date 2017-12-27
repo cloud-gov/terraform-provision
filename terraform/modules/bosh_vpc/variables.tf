@@ -41,19 +41,14 @@ variable "nat_gateway_instance_type" {
   default = "c3.2xlarge"
 }
 
-variable "monitoring_security_group" {
-  default = ""
-}
-variable "monitoring_security_group_count" {
-  default = 0
+variable "monitoring_security_groups" {
+  type = "list"
+  default = []
 }
 
 variable "concourse_security_groups" {
   type = "list"
   default = []
-}
-variable "concourse_security_group_count" {
-  default = "0"
 }
 
 variable "use_nat_gateway_eip" {
