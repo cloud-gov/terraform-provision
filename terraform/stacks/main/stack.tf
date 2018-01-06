@@ -76,11 +76,7 @@ module "diego" {
     elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
     vpc_id = "${module.stack.vpc_id}"
-    private_route_table_az1 = "${module.stack.private_route_table_az1}"
-    private_route_table_az2 = "${module.stack.private_route_table_az2}"
     stack_description = "${var.stack_description}"
-    diego_cidr_1 = "${var.diego_cidr_1}"
-    diego_cidr_2 = "${var.diego_cidr_2}"
     # Workaround for https://github.com/hashicorp/terraform/issues/12453
     ingress_cidrs = "${split(",",
       var.force_restricted_network == "no" ?

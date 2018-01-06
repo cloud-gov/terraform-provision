@@ -257,14 +257,6 @@ output "diego_elb_dns_name" {
   value = "${module.diego.diego_elb_dns_name}"
 }
 
-/* Diego subnets */
-output "diego_services_subnet_az1" {
-  value = "${module.diego.diego_services_subnet_az1}"
-}
-output "diego_services_subnet_az2" {
-  value = "${module.diego.diego_services_subnet_az2}"
-}
-
 /* Kubernetes network */
 output "kubernetes_elb_name" {
   value = "${module.kubernetes.kubernetes_elb_name}"
