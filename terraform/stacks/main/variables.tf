@@ -59,10 +59,6 @@ variable "az2" {
   default = "us-gov-west-1b"
 }
 
-variable "diego_cidr_1" {}
-
-variable "diego_cidr_2" {}
-
 variable "elb_shibboleth_cert_name" {
   default = "star-fr-cloud-gov-2017-05"
 }
