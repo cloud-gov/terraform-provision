@@ -97,6 +97,12 @@ output "tooling_bosh_static_ip" {
 output "bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 7)}"
 }
+output "bosh_uaa_static_ips" {
+  value = [
+    "${cidrhost("${var.private_cidr_1}", 4)}",
+    "${cidrhost("${var.private_cidr_1}", 5)}"
+  ]
+}
 
 /* Public network */
 output "public_subnet_az1" {

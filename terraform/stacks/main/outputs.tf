@@ -404,6 +404,11 @@ output "upstream_bosh_compilation_profile" {
 output "bosh_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 7)}"
 }
+output "bosh_uaa_static_ips" {
+  value = [
+    "${cidrhost("${var.private_cidr_1}", 4)}"
+  ]
+}
 
 /* Buckets */
 output "logsearch_archive_bucket_name" {
