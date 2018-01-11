@@ -185,6 +185,32 @@ output "rds_oracle_security_group" {
   value = "${module.stack.rds_oracle_security_group}"
 }
 
+/* Elasticache Network */
+output "elasticache_subnet_az1" {
+  value = "${module.elasticache_broker_network.elasticache_subnet_az1}"
+}
+output "elasticache_subnet_az2" {
+  value = "${module.elasticache_broker_network.elasticache_subnet_az2}"
+}
+output "elasticache_subnet_cidr_az1" {
+  value = "${var.elasticache_private_cidr_1}"
+}
+output "elasticache_subnet_cidr_az2" {
+  value = "${var.elasticache_private_cidr_2}"
+}
+output "elasticache_subnet_group" {
+  value = "${module.elasticache_broker_network.elasticache_subnet_group}"
+}
+output "elasticache_redis_security_group" {
+  value = "${module.elasticache_broker_network.elasticache_redis_security_group}"
+}
+output "elasticache_broker_elb_name" {
+  value = "${module.elasticache_broker_network.elasticache_elb_name}"
+}
+output "elasticache_broker_elb_dns_name" {
+  value = "${module.elasticache_broker_network.elasticache_elb_dns_name}"
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = "${module.stack.bosh_rds_url_curr}"
@@ -392,6 +418,9 @@ output "etcd_backup_profile" {
 }
 output "cf_blobstore_profile" {
   value = "${module.cf_blobstore_role.profile_name}"
+}
+output "elasticache_broker_profile" {
+  value = "${module.elasticache_broker_role.profile_name}"
 }
 output "platform_profile" {
   value = "${module.platform_role.profile_name}"

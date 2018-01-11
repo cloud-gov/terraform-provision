@@ -165,6 +165,19 @@ module "concourse" {
     module.stack.restricted_web_traffic_security_group}"]
 }
 
+module "elasticache_broker_network" {
+  source = "../../modules/elasticache_broker_network"
+  stack_description = "${var.stack_description}"
+  elasticache_private_cidr_1 = "${var.elasticache_private_cidr_1}"
+  elasticache_private_cidr_2 = "${var.elasticache_private_cidr_2}"
+  az1_route_table = "${module.stack.private_route_table_az1}"
+  az2_route_table = "${module.stack.private_route_table_az2}"
+  vpc_id = "${module.stack.vpc_id}"
+  security_groups = ["${module.stack.bosh_security_group}"]
+  elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
+  elb_security_groups = ["${module.stack.bosh_security_group}"]
+}
+
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "${var.stack_description}-blobstore"
@@ -256,6 +269,11 @@ module "aws_broker_policy" {
   rds_subgroup = "${var.stack_description}"
 }
 
+module "elasticache_broker_policy" {
+  source = "../../modules/iam_role_policy/elasticache_broker"
+  policy_name = "${var.stack_description}-elasticache-broker"
+}
+
 module "default_role" {
   source = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -301,6 +319,11 @@ module "platform_role" {
   role_name = "${var.stack_description}-platform"
 }
 
+module "elasticache_broker_role" {
+  source = "../../modules/iam_role"
+  role_name = "${var.stack_description}-elasticache-broker"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
@@ -312,6 +335,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     "${module.kubernetes_minion_role.role_name}",
     "${module.etcd_backup_role.role_name}",
     "${module.cf_blobstore_role.role_name}",
+    "${module.elasticache_broker_role.role_name}",
     "${module.platform_role.role_name}"
   ]
 }
@@ -328,6 +352,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     "${module.kubernetes_minion_role.role_name}",
     "${module.etcd_backup_role.role_name}",
     "${module.cf_blobstore_role.role_name}",
+    "${module.elasticache_broker_role.role_name}",
     "${module.platform_role.role_name}"
   ]
 }
@@ -409,6 +434,14 @@ resource "aws_iam_policy_attachment" "aws_broker" {
   policy_arn = "${module.aws_broker_policy.arn}"
   roles = [
     "${module.platform_role.role_name}"
+  ]
+}
+
+resource "aws_iam_policy_attachment" "elasticache_broker" {
+  name = "${var.stack_description}-elasticache-broker"
+  policy_arn = "${module.elasticache_broker_policy.arn}"
+  roles = [
+    "${module.elasticache_broker_role.role_name}"
   ]
 }
 
