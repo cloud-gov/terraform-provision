@@ -1,3 +1,4 @@
+// Adapted from https://github.com/cloudfoundry-incubator/bosh-aws-cpi-release/blob/master/docs/iam-policy.json
 data "template_file" "policy" {
   template = "${file("${path.module}/policy.json")}"
 

@@ -2,6 +2,45 @@
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "BaselinePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachVolume",
+        "ec2:CreateTags",
+        "ec2:CreateVolume",
+        "ec2:DeleteVolume",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstances",
+        "ec2:DescribeRegions",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVolumes",
+        "ec2:DetachVolume",
+        "ec2:RunInstances",
+        "ec2:TerminateInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RequiredIfEncryptingStemcells",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CopyImage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RequiredIfUsingELBCloudProperties",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RequiredIfUsingIAMInstanceProfileCloudProperty",
       "Effect": "Allow",
       "Action": [
         "iam:PassRole"
@@ -9,14 +48,6 @@
       "Resource": [
         "arn:${aws_partition}:iam::${account_id}:role/bosh-passed/*"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:*",
-        "elasticloadbalancing:*"
-      ],
-      "Resource": ["*"]
     },
     {
       "Effect": "Allow",
