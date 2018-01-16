@@ -13,8 +13,7 @@ resource "aws_subnet" "az1_rds" {
   cidr_block = "${var.rds_private_cidr_1}"
   availability_zone = "${var.az1}"
 
-
-  tags =  {
+  tags {
     Name = "${var.stack_description} (RDS AZ1)"
   }
 }
@@ -24,8 +23,7 @@ resource "aws_subnet" "az2_rds" {
   cidr_block = "${var.rds_private_cidr_2}"
   availability_zone = "${var.az2}"
 
-
-  tags =  {
+  tags {
     Name = "${var.stack_description} (RDS AZ2)"
   }
 }
@@ -45,4 +43,3 @@ resource "aws_route_table_association" "az2_rds_rta" {
   subnet_id = "${aws_subnet.az2_rds.id}"
   route_table_id = "${var.az2_route_table}"
 }
-
