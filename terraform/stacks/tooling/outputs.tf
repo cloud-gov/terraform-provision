@@ -372,3 +372,12 @@ output "bosh_uaa_elb_dns_name" {
 output "bosh_uaa_elb_name" {
   value = "${aws_elb.bosh_uaa_elb.name}"
 }
+
+/* DNS static IPs */
+output "staging_dns_eip" {
+  value = ["${aws_eip.staging_dns_eip.*.public_ip}"]
+}
+
+output "production_dns_eip" {
+  value = ["${aws_eip.production_dns_eip.*.public_ip}"]
+}
