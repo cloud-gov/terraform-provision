@@ -380,10 +380,24 @@ output "bosh_uaa_elb_name" {
 }
 
 /* DNS static IPs */
-output "staging_dns_eip" {
+output "staging_dns_public_ips" {
   value = ["${aws_eip.staging_dns_eip.*.public_ip}"]
 }
 
-output "production_dns_eip" {
+output "staging_dns_private_ips" {
+  value = [
+    "${cidrhost("${var.private_cidr_1}", 8)}",
+    "${cidrhost("${var.private_cidr_1}", 9)}"
+  ]
+}
+
+output "production_dns_public_ips" {
   value = ["${aws_eip.production_dns_eip.*.public_ip}"]
+}
+
+output "production_dns_private_ips" {
+  value = [
+    "${cidrhost("${var.private_cidr_1}", 10)}",
+    "${cidrhost("${var.private_cidr_1}", 11)}"
+  ]
 }
