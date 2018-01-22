@@ -197,6 +197,26 @@ module "concourse_iaas_worker_role" {
   role_name = "tooling-concourse-iaas-worker"
 }
 
+resource "aws_eip" "production_dns_eip" {
+  vpc = true
+
+  count = 4
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_eip" "staging_dns_eip" {
+  vpc = true
+
+  count = 2
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
