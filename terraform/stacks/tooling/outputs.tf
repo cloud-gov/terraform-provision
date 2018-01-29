@@ -384,6 +384,10 @@ output "staging_dns_public_ips" {
   value = ["${aws_eip.staging_dns_eip.*.public_ip}"]
 }
 
+output "dns_security_group" {
+  value = "${module.dns.security_group}"
+}
+
 output "staging_dns_private_ips" {
   value = [
     "${cidrhost("${var.private_cidr_1}", 8)}",
