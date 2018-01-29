@@ -217,6 +217,12 @@ resource "aws_eip" "staging_dns_eip" {
   }
 }
 
+module "dns" {
+  source = "../../modules/dns"
+  stack_description = "${var.stack_description}"
+  vpc_id = "${module.stack.vpc_id}"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name = "${var.stack_description}-blobstore"
   policy_arn = "${module.blobstore_policy.arn}"
