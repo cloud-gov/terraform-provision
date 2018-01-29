@@ -6,7 +6,7 @@ resource "aws_security_group" "dns" {
     self = true
     from_port = 53
     to_port = 53
-    protocol = "-1"
+    protocol = "tcp"
   }
 
   egress {
