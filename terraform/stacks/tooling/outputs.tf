@@ -111,6 +111,13 @@ output "public_subnet_az1" {
 output "public_subnet_az2" {
   value = "${module.stack.public_subnet_az2}"
 }
+output "public_subnet_az1_cidr" {
+  value = "${var.public_cidr_1}"
+}
+output "public_subnet_az2_cidr" {
+  value = "${var.public_cidr_2}"
+}
+
 output "public_route_table" {
   value = "${module.stack.public_route_table}"
 }
