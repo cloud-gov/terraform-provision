@@ -67,11 +67,6 @@ variable "elb_shibboleth_cert_name" {
   default = "star-fr-cloud-gov-2017-05"
 }
 
-/* Variables for customer concourse service */
-variable "concourse_cidr" {}
-variable "concourse_rds_password" {}
-variable "concourse_elb_cert_name" {}
-
 variable "stack_prefix" {}
 variable "bucket_prefix" {}
 variable "blobstore_bucket_name" {}
