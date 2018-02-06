@@ -8,6 +8,7 @@ data "template_file" "policy" {
     bosh_release_bucket = "${var.bosh_release_bucket}"
     terraform_state_bucket = "${var.terraform_state_bucket}"
     semver_bucket = "${var.semver_bucket}"
+    buildpack_notify_bucket = "${var.buildpack_notify_bucket}"
     billing_bucket = "${var.billing_bucket}"
     cg_binaries_bucket = "${var.cg_binaries_bucket}"
   }

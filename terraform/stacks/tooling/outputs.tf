@@ -415,3 +415,11 @@ output "production_dns_private_ips" {
     "${cidrhost("${var.private_cidr_1}", 11)}"
   ]
 }
+
+/* Bucket names */
+output "buildpack_notify_state_staging_bucket_name" {
+  value = "${module.buildpack_notify_state_staging.bucket_name}"
+}
+output "buildpack_notify_state_production_bucket_name" {
+  value = "${module.buildpack_notify_state_production.bucket_name}"
+}
