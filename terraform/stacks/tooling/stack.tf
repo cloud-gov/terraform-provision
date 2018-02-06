@@ -109,6 +109,18 @@ module "billing_bucket_production" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "buildpack_notify_state_staging" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "buildpack-notify-state-staging"
+  aws_partition = "${var.aws_partition}"
+}
+
+module "buildpack_notify_state_production" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "buildpack-notify-state-production"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "cg_binaries_bucket" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "cg-binaries"
@@ -158,6 +170,7 @@ module "concourse_worker_policy" {
   bosh_release_bucket = "cloud-gov-bosh-releases"
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
+  buildpack_notify_bucket = "cg-buildpack-notify-*"
   billing_bucket = "cg-billing-*"
   cg_binaries_bucket = "cg-binaries"
 }
