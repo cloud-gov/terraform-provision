@@ -170,7 +170,7 @@ module "concourse_worker_policy" {
   bosh_release_bucket = "cloud-gov-bosh-releases"
   terraform_state_bucket = "terraform-state"
   semver_bucket = "cg-semver"
-  buildpack_notify_bucket = "cg-buildpack-notify-*"
+  buildpack_notify_bucket = "buildpack-notify-state-*"
   billing_bucket = "cg-billing-*"
   cg_binaries_bucket = "cg-binaries"
 }
