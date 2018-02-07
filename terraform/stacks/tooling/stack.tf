@@ -113,12 +113,14 @@ module "buildpack_notify_state_staging" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "buildpack-notify-state-staging"
   aws_partition = "${var.aws_partition}"
+  versioning = "true"
 }
 
 module "buildpack_notify_state_production" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "buildpack-notify-state-production"
   aws_partition = "${var.aws_partition}"
+  versioning = "true"
 }
 
 module "cg_binaries_bucket" {
