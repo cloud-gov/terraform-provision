@@ -137,6 +137,40 @@ jobs:
     params:
       file: terraform-yaml/state.yml
 
+- name: plan-dns
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-dns
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &dns-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: dns
+      TEMPLATE_SUBDIR: terraform/stacks/dns
+      S3_TFSTATE_BUCKET: {{aws_external_s3_tfstate_bucket}}
+      AWS_ACCESS_KEY_ID: {{aws_external_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
+      AWS_DEFAULT_REGION: {{aws_external_region}}
+  - *notify-slack
+
+- name: apply-dns
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-dns]
+  - task: create-update-external-staging
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *dns-params
+      TERRAFORM_ACTION: apply
+
 - name: plan-bootstrap-tooling
   plan:
   - aggregate:
