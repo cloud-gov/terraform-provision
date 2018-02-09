@@ -2,6 +2,10 @@ terraform {
   backend "s3" {}
 }
 
+provider "aws" {
+  version = "~> 1.8.0"
+}
+
 module "cdn_broker" {
   source = "../../modules/cdn_broker"
 

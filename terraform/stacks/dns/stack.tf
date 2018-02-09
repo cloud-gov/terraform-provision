@@ -2,6 +2,10 @@ terraform {
   backend "s3" {}
 }
 
+provider "aws" {
+  version = "~> 1.8.0"
+}
+
 variable "cloudfront_zone_id" {
   default = "Z33AYJ8TM3BH4J"
 }

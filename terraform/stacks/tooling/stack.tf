@@ -1,13 +1,9 @@
-/*
- * Tooling stack
- *
- * This stack relies on defaults heavily. Please look through
- * all the module sources, and specifically, the variables.tf
- * in each module, which declares these defaults.
- */
-
 terraform {
   backend "s3" {}
+}
+
+provider "aws" {
+  version = "~> 1.8.0"
 }
 
 module "stack" {

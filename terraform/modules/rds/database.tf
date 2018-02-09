@@ -1,18 +1,3 @@
-/*
- * Variables required:
- *  stack_description
- *  rds_db_engine
- *  rds_db_engine_version
- *  rds_db_name
- *  rds_db_size
- *  rds_db_storage_type
- *  rds_instance_type
- *  rds_username
- *  rds_password
- *  rds_subnet_group
- *  rds_security_groups
- */
-
 resource "aws_db_instance" "rds_database" {
   engine               = "${var.rds_db_engine}"
   engine_version       = "${var.rds_db_engine_version}"
