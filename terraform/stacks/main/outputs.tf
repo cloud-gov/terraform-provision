@@ -341,53 +341,6 @@ output "shibboleth_elb_zone_id" {
   value = "${module.shibboleth.shibboleth_elb_zone_id}"
 }
 
-/* Concourse */
-output "concourse_subnet" {
-  value = "${module.concourse.concourse_subnet}"
-}
-output "concourse_subnet_cidr" {
-  value = "${module.concourse.concourse_subnet_cidr}"
-}
-output "concourse_subnet_gateway" {
-  value = "${cidrhost("${module.concourse.concourse_subnet_cidr}", 1)}"
-}
-output "concourse_subnet_reserved" {
-  value = "${cidrhost("${module.concourse.concourse_subnet_cidr}", 0)} - ${cidrhost("${module.concourse.concourse_subnet_cidr}", 3)}"
-}
-output "concourse_security_group" {
-  value = "${module.concourse.concourse_security_group}"
-}
-output "concourse_rds_identifier" {
-  value = "${module.concourse.concourse_rds_identifier}"
-}
-output "concourse_rds_name" {
-  value = "${module.concourse.concourse_rds_name}"
-}
-output "concourse_rds_host" {
-  value = "${module.concourse.concourse_rds_host}"
-}
-output "concourse_rds_port" {
-  value = "${module.concourse.concourse_rds_port}"
-}
-output "concourse_rds_url" {
-  value = "${module.concourse.concourse_rds_url}"
-}
-output "concourse_rds_username" {
-  value = "${module.concourse.concourse_rds_username}"
-}
-output "concourse_rds_password" {
-  value = "${module.concourse.concourse_rds_password}"
-}
-output "concourse_elb_dns_name" {
-  value = "${module.concourse.concourse_elb_dns_name}"
-}
-output "concourse_elb_name" {
-  value = "${module.concourse.concourse_elb_name}"
-}
-output "concourse_elb_zone_id" {
-  value = "${module.concourse.concourse_elb_zone_id}"
-}
-
 /* iam roles */
 output "default_profile" {
   value = "${module.default_role.profile_name}"
