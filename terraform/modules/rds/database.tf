@@ -24,6 +24,9 @@ resource "aws_db_instance" "rds_database" {
     prevent_destroy = false
   }
   identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
+  final_snapshot_identifier = "${var.final_snapshot_identifier == "" ?
+    "final-snapshot-${var.rds_db_name}-${var.stack_description}" :
+    var.final_snapshot_identifier}"
 
   backup_retention_period = 30
 
