@@ -27,6 +27,8 @@ resource "aws_db_instance" "rds_database" {
 
   backup_retention_period = 30
 
+  final_snapshot_identifier = "${var.stack_description}-${element(split("-", uuid()),4)}-final"
+
   auto_minor_version_upgrade = true
 
   name = "${var.rds_db_name}"
