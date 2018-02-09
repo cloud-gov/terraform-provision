@@ -97,14 +97,6 @@ resource "aws_route53_record" "cloud_gov_mandrill__domainkey_cloud_gov_txt" {
   records = ["v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrLHiExVd55zd/IQ/J/mRwSRMAocV/hMB3jXwaHH36d9NaVynQFYV8NaWi69c1veUtRzGt7yAioXqLj7Z4TeEUoOLgrKsn8YnckGs9i3B3tVFB+Ch/4mPhXWiNfNdynHWBcPcbJ8kjEQ2U8y78dHZj1YeRXXVvWob2OaKynO8/lQIDAQAB;"]
 }
 
-resource "aws_route53_record" "cloud_gov_community_cloud_gov_cname" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "community.cloud.gov."
-  type = "CNAME"
-  ttl = 60
-  records = ["d2keufenac9p5u.cloudfront.net."]
-}
-
 resource "aws_route53_record" "cloud_gov_docs_cloud_gov_cname" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "docs.cloud.gov."
@@ -138,17 +130,6 @@ resource "aws_route53_record" "cloud_gov_star_fr-stage_cloud_gov_aaaa" {
   type = "AAAA"
   alias {
     name = "dualstack.staging-cloudfoundry-main-496592480.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_metrics_fr-stage_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "metrics.fr-stage.cloud.gov."
-  type = "A"
-  alias {
-    name = "dualstack.staging-monitoring-1064664786.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -388,61 +369,6 @@ resource "aws_route53_record" "cloud_gov_doppler_fr_cloud_gov_aaaa" {
   type = "AAAA"
   alias {
     name = "${var.cloudfoundry_elb_logging_production}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_concourse-ci_fr-stage_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "concourse-ci.fr-stage.cloud.gov."
-  type = "A"
-  alias {
-    name = "dualstack.staging-concourse-us-gov-west-1b-1233466952.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_concourse-ci_fr-stage_cloud_gov_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "concourse-ci.fr-stage.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "dualstack.staging-concourse-us-gov-west-1b-1233466952.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_concourse-ci_fr_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "concourse-ci.fr.cloud.gov."
-  type = "A"
-  alias {
-    name = "dualstack.production-Concourse-us-gov-west-840829531.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_concourse-ci_fr_cloud_gov_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "concourse-ci.fr.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "dualstack.production-Concourse-us-gov-west-840829531.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_metrics_fr_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "metrics.fr.cloud.gov."
-  type = "A"
-  alias {
-    name = "dualstack.production-monitoring-1367072254.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
