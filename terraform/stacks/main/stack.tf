@@ -2,6 +2,10 @@ terraform {
   backend "s3" {}
 }
 
+provider "aws" {
+  version = "~> 1.8.0"
+}
+
 data "terraform_remote_state" "target_vpc" {
   backend = "s3"
   config {
