@@ -142,6 +142,29 @@ module "shibboleth" {
     aws_partition = "${var.aws_partition}"
 }
 
+module "concourse" {
+  source = "../../modules/concourse"
+  stack_description = "${var.stack_description}"
+  aws_partition = "${var.aws_partition}"
+  vpc_id = "${module.stack.vpc_id}"
+  concourse_cidr = "${var.concourse_cidr}"
+  concourse_az = "${var.az2}"
+  route_table_id = "${module.stack.private_route_table_az2}"
+  rds_password = "${var.concourse_rds_password}"
+  rds_subnet_group = "${module.stack.rds_subnet_group}"
+  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
+  rds_instance_type = "db.m3.medium"
+  rds_db_iops = 0
+  rds_db_storage_type = "gp2"
+  rds_db_size = 20
+  account_id = "${var.account_id}"
+  elb_cert_name = "${var.concourse_elb_cert_name}"
+  elb_subnets = ["${module.stack.public_subnet_az2}"]
+  elb_security_groups = ["${var.force_restricted_network == "no" ?
+    module.stack.web_traffic_security_group :
+    module.stack.restricted_web_traffic_security_group}"]
+}
+
 module "elasticache_broker_network" {
   source = "../../modules/elasticache_broker_network"
   stack_description = "${var.stack_description}"
