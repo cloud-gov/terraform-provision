@@ -1,0 +1,12 @@
+- type: replace
+  path: /instance_groups/name=web/jobs/name=atc/properties/tls_cert
+  value: ((self-signed-cert.certificate))
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=atc/properties/tls_key
+  value: ((self-signed-cert.key))
+
+- type: replace
+  path: /variables/-
+    name: self-signed-cert
+    type: certificate
