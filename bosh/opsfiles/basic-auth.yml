@@ -1,13 +1,13 @@
 - type: replace
-  path: /instance_groups/name=web/jobs/name=atc/properties/no_really_i_dont_want_any_auth
+  path: /instance_groups/name=concourse/jobs/name=atc/properties/no_really_i_dont_want_any_auth?
   value: false
 
 - type: replace
-  path: /instance_groups/name=web/jobs/name=atc/properties/basic_auth_username
+  path: /instance_groups/name=concourse/jobs/name=atc/properties/basic_auth_username?
   value: bootstrap
 
 - type: replace
-  path: /instance_groups/name=web/jobs/name=atc/properties/basic_auth_password
+  path: /instance_groups/name=concourse/jobs/name=atc/properties/basic_auth_password?
   value: ((basic-auth-password))
 
 - type: replace
