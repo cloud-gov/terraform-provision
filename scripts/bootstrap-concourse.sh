@@ -2,14 +2,15 @@
 
 set -eux
 
-export TF_VAR_az1="us-gov-west-1"
+export TF_VAR_az1="us-gov-west-1a"
 
-workspace=$(mktemp)
+workspace=$(mktemp -d)
 
+aws ec2 delete-key-pair --key-name bootstrap
 aws ec2 create-key-pair --key-name bootstrap > ${workspace}/aws-keypair.json
 
 # Provision terraform infrastructure
-terraform init
+terraform init ./terraform/stacks/bootstrap
 terraform apply ./terraform/stacks/bootstrap
 terraform output -json > ${workspace}/terraform-outputs.json
 
