@@ -6,23 +6,8 @@ export TF_VAR_az1="us-gov-west-1a"
 
 workspace="${WORKSPACE_DIR}"
 
-# Create AWS keypair
-aws ec2 create-key-pair --key-name bootstrap > ${workspace}/aws-keypair.json
-
-# Provision terraform infrastructure
-terraform init ./terraform/stacks/bootstrap
-terraform apply ./terraform/stacks/bootstrap
-terraform output -json > ${workspace}/terraform-outputs.json
-
-# Collect AWS variables
-bosh interpolate \
-  ./bosh/varsfiles/collect-aws-variables.yml \
-  -l ${workspace}/terraform-outputs.json \
-  -l ${workspace}/aws-keypair.json \
-  > ${workspace}/aws-variables.yml
-
-# Deploy bootstrap concourse
-bosh create-env ../concourse-deployment/lite/concourse.yml \
+# Delete bootstrap concourse
+bosh delete-env ../concourse-deployment/lite/concourse.yml \
   --state bootstrap-concourse-state.json \
   --vars-store ${workspace}/bootstrap-concourse-creds.yml \
   -o ../concourse-deployment/lite/infrastructures/aws.yml \
@@ -37,3 +22,9 @@ bosh create-env ../concourse-deployment/lite/concourse.yml \
   -v az=${TF_VAR_az1} \
   -v access_key_id=${AWS_ACCESS_KEY_ID} \
   -v secret_access_key=${AWS_SECRET_ACCESS_KEY}
+
+# Delete AWS keypair
+aws ec2 delete-key-pair --key-name bootstrap
+
+# Terraform
+terraform destroy ./terraform/stacks/bootstrap
