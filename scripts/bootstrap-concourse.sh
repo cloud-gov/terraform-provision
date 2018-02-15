@@ -29,6 +29,8 @@ bosh create-env ../concourse-deployment/lite/concourse.yml \
   -o ./bosh/opsfiles/basic-auth.yml \
   -o ./bosh/opsfiles/self-signed-tls.yml \
   -l ../concourse-deployment/versions.yml \
+  -o ./bosh/opsfiles/ssh-tunnel.yml \
+  -o ./bosh/opsfiles/vip-network.yml \
   -l ${workspace}/aws-variables.yml \
   -v region=${AWS_DEFAULT_REGION} \
   -v default_key_name=bootstrap \

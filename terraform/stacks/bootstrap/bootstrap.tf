@@ -24,6 +24,13 @@ resource "aws_security_group" "bootstrap" {
     cidr_blocks = ["${var.ingress_cidrs}"]
   }
 
+  ingress {
+    from_port = 6868
+    to_port = 6868
+    protocol = "tcp"
+    cidr_blocks = ["${var.ingress_cidrs}"]
+  }
+
   egress {
     from_port = 0
     to_port = 0

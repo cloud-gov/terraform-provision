@@ -23,3 +23,7 @@
     options:
       ca: bootstrap-ca
       common_name: bootstrap-concourse-cert
+
+- type: replace
+  path: /instance_groups/name=concourse/jobs/name=atc/properties/external_url
+  value: https://((public_ip)):4443
