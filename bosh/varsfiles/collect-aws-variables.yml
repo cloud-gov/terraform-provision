@@ -1,0 +1,11 @@
+# Map values from AWS key pair output
+private_key: ((KeyMaterial))
+
+# Map values from terraform output
+default_security_groups:
+- ((security_group_id.value))
+subnet_id: ((public_subnet_id.value))
+internal_ip: ((private_ip.value))
+public_ip: ((public_ip.value))
+internal_cidr: ((public_subnet_cidr.value))
+internal_gw: ((public_subnet_gateway.value))
