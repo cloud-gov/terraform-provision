@@ -4,19 +4,17 @@ set -eux
 
 export TF_VAR_az1="us-gov-west-1a"
 
-workspace="${WORKSPACE_DIR}"
-
 # Delete bootstrap concourse
 bosh delete-env ../concourse-deployment/lite/concourse.yml \
   --state bootstrap-concourse-state.json \
-  --vars-store ${workspace}/bootstrap-concourse-creds.yml \
+  --vars-store ${WORKSPACE_DIR}/bootstrap-concourse-creds.yml \
   -o ../concourse-deployment/lite/infrastructures/aws.yml \
   -o ./bosh/opsfiles/basic-auth.yml \
   -o ./bosh/opsfiles/self-signed-tls.yml \
   -l ../concourse-deployment/versions.yml \
   -o ./bosh/opsfiles/ssh-tunnel.yml \
   -o ./bosh/opsfiles/vip-network.yml \
-  -l ${workspace}/aws-variables.yml \
+  -l ${WORKSPACE_DIR}/aws-variables.yml \
   -v region=${AWS_DEFAULT_REGION} \
   -v default_key_name=bootstrap \
   -v az=${TF_VAR_az1} \

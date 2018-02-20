@@ -11,6 +11,8 @@ variable "tooling_stack_name" {
 }
 
 data "terraform_remote_state" "tooling_vpc" {
+  count = "${var.use_vpc_peering}"
+
   backend = "s3"
   config {
     bucket = "${var.tooling_state_bucket}"

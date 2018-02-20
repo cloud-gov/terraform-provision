@@ -7,7 +7,11 @@ variable "ingress_cidrs" {
 
 data "aws_caller_identity" "current" {}
 
-resource "aws_default_vpc" "bootstrap" {}
+resource "aws_default_vpc" "bootstrap" {
+  tags {
+    Name = "DEFAULT"
+  }
+}
 
 resource "aws_default_route_table" "bootstrap" {
   default_route_table_id = "${aws_default_vpc.bootstrap.default_route_table_id}"
