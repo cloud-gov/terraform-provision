@@ -37,3 +37,19 @@ bosh create-env ../concourse-deployment/lite/concourse.yml \
   -v az=${TF_VAR_az1} \
   -v access_key_id=${AWS_ACCESS_KEY_ID} \
   -v secret_access_key=${AWS_SECRET_ACCESS_KEY}
+
+# TODO: Fly terraform-provision
+# TODO: Run apply-tooling
+
+# Now that tooling stack exists, reapply boostrap stack to create peering connection
+# between bootstrap and tooling
+export TF_VAR_use_vpc_peering="1"
+export TF_VAR_tooling_state_bucket="${TOOLING_STATE_BUCKET}"
+
+terraform apply ./terraform/stacks/bootstrap
+
+# TODO: Fly deploy-bosh
+# TODO: Run deploy-master-bosh
+# TODO: Run deploy-tooling-bosh
+# TODO: Fly deploy-concourse
+# TODO: Run deploy-concourse

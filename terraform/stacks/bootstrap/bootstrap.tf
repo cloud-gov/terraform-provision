@@ -5,6 +5,14 @@ variable "ingress_cidrs" {
   default = ["159.142.0.0/16"]
 }
 
+data "aws_caller_identity" "current" {}
+
+resource "aws_default_vpc" "bootstrap" {}
+
+resource "aws_default_route_table" "bootstrap" {
+  default_route_table_id = "${aws_default_vpc.bootstrap.default_route_table_id}"
+}
+
 resource "aws_default_subnet" "default_az1" {
   availability_zone = "${var.az1}"
 }
