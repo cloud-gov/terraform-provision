@@ -13,8 +13,8 @@ resource "aws_default_vpc" "bootstrap" {
   }
 }
 
-resource "aws_default_route_table" "bootstrap" {
-  default_route_table_id = "${aws_default_vpc.bootstrap.default_route_table_id}"
+data "aws_route_table" "bootstrap" {
+  vpc_id = "${aws_default_vpc.bootstrap.id}"
 }
 
 resource "aws_default_subnet" "default_az1" {

@@ -48,7 +48,7 @@ resource "aws_route" "target_az2_to_source_cidr" {
 resource "aws_route" "source_az1_to_target_cidr" {
   count = "${var.use_vpc_peering}"
 
-  route_table_id = "${aws_default_route_table.bootstrap.id}"
+  route_table_id = "${data.aws_route_table.bootstrap.id}"
   destination_cidr_block = "${data.terraform_remote_state.tooling_vpc.vpc_cidr}"
   vpc_peering_connection_id = "${aws_vpc_peering_connection.peering.id}"
 }
