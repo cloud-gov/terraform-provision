@@ -55,6 +55,46 @@ resource "aws_eip" "bootstrap" {
   vpc = true
 }
 
+resource "aws_iam_role_policy" "iam_policy" {
+  name = "bootstrap"
+  role = "${aws_iam_role.iam_role.name}"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "iam_role" {
+  name = "bootstrap"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_instance_profile" "iam_profile" {
+  name = "bootstrap"
+  role = "${aws_iam_role.iam_role.name}"
+}
+
 output "public_subnet_id" {
   value = "${aws_default_subnet.default_az1.id}"
 }

@@ -12,7 +12,7 @@ fly --target bootstrap login \
 
 fly --target bootstrap sync
 
-# TODO: fix worker tagging
+# TODO: Fix worker tagging
 cat ${TERRAFORM_PIPELINE_FILE} | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/cg-provision-pipeline.yml
 
 fly --target bootstrap set-pipeline \
