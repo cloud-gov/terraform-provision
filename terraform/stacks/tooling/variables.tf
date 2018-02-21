@@ -1,19 +1,19 @@
 variable "stack_description" {
-    default = "tooling"
+  default = "tooling"
 }
 
 variable "aws_default_region" {
-    default = "us-gov-west-1"
+  default = "us-gov-west-1"
 }
 
 variable "vpc_cidr" {}
 
 variable "az1" {
-    default = "us-gov-west-1a"
+  default = "us-gov-west-1a"
 }
 
 variable "az2" {
-    default = "us-gov-west-1b"
+  default = "us-gov-west-1b"
 }
 variable "public_cidr_1" {}
 
@@ -34,23 +34,23 @@ variable "remote_state_bucket" {}
 variable "concourse_prod_rds_password" {}
 variable "concourse_prod_cidr" {}
 variable "concourse_prod_elb_cert_name" {
-    default = "star-fr-cloud-gov-2017-05"
+  default = "star-fr-cloud-gov-2017-05"
 }
 
 variable "concourse_staging_rds_password" {}
 variable "concourse_staging_cidr" {}
 variable "concourse_staging_elb_cert_name" {
-    default = "star-fr-stage-cloud-gov-2017-05"
+  default = "star-fr-stage-cloud-gov-2017-05"
 }
 
 variable "monitoring_production_cidr" {}
 variable "monitoring_production_elb_cert_name" {
-    default = "star-fr-cloud-gov-2017-05"
+  default = "star-fr-cloud-gov-2017-05"
 }
 
 variable "monitoring_staging_cidr" {}
 variable "monitoring_staging_elb_cert_name" {
-    default = "star-fr-stage-cloud-gov-2017-05"
+  default = "star-fr-stage-cloud-gov-2017-05"
 }
 
 variable "nessus_elb_cert_name" {
@@ -58,7 +58,7 @@ variable "nessus_elb_cert_name" {
 }
 
 variable "bosh_uaa_elb_cert_name" {
-    default = "star-fr-cloud-gov-2017-05"
+  default = "star-fr-cloud-gov-2017-05"
 }
 
 variable "restricted_ingress_web_cidrs" {
@@ -66,3 +66,7 @@ variable "restricted_ingress_web_cidrs" {
 }
 
 variable "blobstore_bucket_name" {}
+
+variable "bucket_prefix" {
+  default = ""
+}

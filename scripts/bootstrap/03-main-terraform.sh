@@ -10,7 +10,6 @@ fly --target bootstrap login \
   --username bootstrap \
   --password $(bosh interpolate ${WORKSPACE_DIR}/bootstrap-concourse-creds.yml --path /basic-auth-password)
 
-
 fly --target bootstrap sync
 
 # TODO: fix worker tagging
@@ -20,6 +19,7 @@ fly --target bootstrap set-pipeline \
   --pipeline terraform-provision \
   --config ${WORKSPACE_DIR}/cg-provision-pipeline.yml \
   --load-vars-from ${TERRAFORM_PROVISION_CREDENTIALS_FILE}
+fly --target bootstrap unpause-pipeline --pipeline terraform-provision
 
 # ensure tf has a bucket for state
 if aws s3 ls s3://$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE} --path /aws_s3_tfstate_bucket) 2>&1 | grep -q 'NoSuchBucket' ; then

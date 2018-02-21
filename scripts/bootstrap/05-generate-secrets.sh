@@ -16,9 +16,9 @@ fly --target bootstrap set-pipeline \
   --var master-bucket-name=${VARZ_BUCKET} \
   --var tooling-bucket-name=${VARZ_BUCKET}
 
-fly --target bootstrap trigger-job --job secret-rotation/new-ca
-fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-master
-fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-tooling
+fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
+fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-master --watch
+fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-tooling --watch
 
 CG_PIPELINE=../cg-pipeline-tasks \
   SECRETS_BUCKET=${VARZ_BUCKET} \
