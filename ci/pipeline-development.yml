@@ -1,35 +1,4 @@
 jobs:
-- name: pull-status-check
-  plan:
-  - get: pull-request
-    version: every
-    trigger: true
-  - put: pull-request
-    params:
-      path: pull-request
-      status: pending
-  - task: validate-terraform
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: pull-request
-      run:
-        path: pull-request/validate.sh
-    on_success:
-      put: pull-request
-      params:
-        path: pull-request
-        status: success
-    on_failure:
-      put: pull-request
-      params:
-        path: pull-request
-        status: failure
-
 - name: plan-bootstrap-tooling
   plan:
   - aggregate:
@@ -39,8 +8,7 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-tooling
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
@@ -49,6 +17,8 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/tooling
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -89,8 +59,7 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -132,8 +101,7 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-development
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
@@ -142,6 +110,8 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
+      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
       TF_VAR_az1: {{aws_az1}}
@@ -182,8 +152,7 @@ jobs:
       resource: cg-provision-repo-development
       passed: [plan-bootstrap-development]
   - task: create-update-development
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -252,13 +221,6 @@ resources:
     uri: {{cg_provision_development_git_url}}
     branch: {{cg_provision_development_git_branch}}
 
-- name: pull-request
-  type: pull-request
-  source:
-    repo: {{cg_provision_git_repo}}
-    access_token: {{status_access_token}}
-    every: true
-
 - name: terraform-yaml-tooling
   type: s3-iam
   source:
@@ -285,11 +247,6 @@ resources:
     url: {{slack-webhook-url}}
 
 resource_types:
-- name: pull-request
-  type: docker-image
-  source:
-    repository: jtarchie/pr
-
 - name: s3-iam
   type: docker-image
   source:

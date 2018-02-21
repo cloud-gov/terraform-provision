@@ -176,8 +176,7 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-tooling
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
@@ -215,8 +214,7 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -257,8 +255,7 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-staging
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
@@ -304,8 +301,7 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-staging]
   - task: create-update-staging
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
@@ -364,8 +360,7 @@ jobs:
     - get: plan-timer
       trigger: true
   - task: plan-update-production
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
@@ -412,8 +407,7 @@ jobs:
     - get: cg-provision-repo
       passed: [plan-bootstrap-production]
   - task: create-update-production
-    tags:
-    - iaas
+    tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
