@@ -224,7 +224,7 @@ resource "aws_eip" "production_dns_eip" {
   count = "${var.dns_eip_count_production}"
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
@@ -234,7 +234,7 @@ resource "aws_eip" "staging_dns_eip" {
   count = "${var.dns_eip_count_staging}"
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 

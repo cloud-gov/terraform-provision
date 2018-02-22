@@ -23,6 +23,7 @@ jobs:
       TF_VAR_aws_default_region: {{aws_default_region}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{tooling_rds_password}}
+      TF_VAR_rds_multi_az: "false"
       TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
       TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
       TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
@@ -47,6 +48,8 @@ jobs:
       TF_VAR_nessus_elb_cert_name: self-signed-star-dev-cloud-gov
       TF_VAR_bosh_uaa_elb_cert_name: self-signed-star-dev-cloud-gov
       TF_VAR_bucket_prefix: dev-
+      TF_VAR_dns_eip_count_staging: "0"
+      TF_VAR_dns_eip_count_production: "0"
   - &notify-slack
     put: slack
     params:
@@ -99,6 +102,19 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
+- name: destroy-tooling
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+  - task: destroy-tooling
+    tags: [iaas]
+    file: pipeline-tasks/terraform-destroy.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      PREVENT_PREVENT_DESTROY: "true"
+      <<: *tooling-params
+
 - name: plan-bootstrap-development
   plan:
   - aggregate:
@@ -125,6 +141,7 @@ jobs:
       TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{development_rds_password}}
+      TF_VAR_rds_multi_az: "false"
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
       TF_VAR_vpc_cidr: {{development_vpc_cidr}}
       TF_VAR_public_cidr_1: {{development_public_cidr_1}}
@@ -209,6 +226,20 @@ jobs:
       - put: terraform-yaml-development
         params:
           file: terraform-yaml/state.yml
+
+- name: destroy-development
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-development
+  - task: destroy-development
+    tags: [iaas]
+    file: pipeline-tasks/terraform-destroy.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      PREVENT_PREVENT_DESTROY: "true"
+      <<: *development-params
 
 resources:
 - name: pipeline-tasks
