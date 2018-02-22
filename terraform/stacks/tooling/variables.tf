@@ -29,6 +29,10 @@ variable "rds_private_cidr_2" {}
 
 variable "rds_password" {}
 
+variable "rds_multi_az" {
+  default = "true"
+}
+
 variable "remote_state_bucket" {}
 
 variable "concourse_prod_rds_password" {}
@@ -69,4 +73,12 @@ variable "blobstore_bucket_name" {}
 
 variable "bucket_prefix" {
   default = ""
+}
+
+variable "dns_eip_count_production" {
+  default = 4
+}
+
+variable "dns_eip_count_staging" {
+  default = 2
 }

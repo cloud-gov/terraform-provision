@@ -2,16 +2,16 @@ resource "aws_db_instance" "rds_database" {
   engine               = "${var.rds_db_engine}"
   engine_version       = "${var.rds_db_engine_version}"
 
-  multi_az = true
+  multi_az = "${var.rds_multi_az}"
 
   lifecycle {
     ignore_changes = ["identifier"]
     prevent_destroy = true
   }
   identifier = "${var.stack_description}-${element(split("-", uuid()),4)}"
-  final_snapshot_identifier = "${var.final_snapshot_identifier == "" ?
+  final_snapshot_identifier = "${var.rds_final_snapshot_identifier == "" ?
     "final-snapshot-${var.rds_db_name}-${var.stack_description}" :
-    var.final_snapshot_identifier}"
+    var.rds_final_snapshot_identifier}"
 
   backup_retention_period = 30
 

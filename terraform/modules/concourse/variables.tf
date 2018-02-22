@@ -48,6 +48,10 @@ variable "rds_security_groups" {
   type = "list"
 }
 
+variable "rds_multi_az" {}
+
+variable "rds_final_snapshot_identifier" {}
+
 variable "route_table_id" {}
 
 variable "vpc_id" {}

@@ -45,6 +45,8 @@ module "concourse_production" {
   rds_parameter_group_name = "tooling-concourse-production"
   rds_instance_type = "db.m3.xlarge"
   account_id = "${data.aws_caller_identity.current.account_id}"
+  rds_multi_az = "${var.rds_multi_az}"
+  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
   elb_cert_name = "${var.concourse_prod_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az1}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
@@ -64,6 +66,8 @@ module "concourse_staging" {
   rds_parameter_group_name = "tooling-concourse-staging"
   rds_instance_type = "db.m3.medium"
   account_id = "${data.aws_caller_identity.current.account_id}"
+  rds_multi_az = "${var.rds_multi_az}"
+  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
   elb_cert_name = "${var.concourse_staging_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az2}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
@@ -217,20 +221,20 @@ module "concourse_iaas_worker_role" {
 resource "aws_eip" "production_dns_eip" {
   vpc = true
 
-  count = 4
+  count = "${var.dns_eip_count_production}"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
 resource "aws_eip" "staging_dns_eip" {
   vpc = true
 
-  count = 2
+  count = "${var.dns_eip_count_staging}"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
