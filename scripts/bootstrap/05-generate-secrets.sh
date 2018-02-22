@@ -9,6 +9,25 @@ bosh interpolate ./bosh/varsfiles/secret-rotation.yml \
 # TODO: Separate dev pipeline
 cat ../cg-secret-rotation/ci/pipeline.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/secret-rotation-pipeline.yml
 
+# TODO: Move BOSH secrets bucket(s) into terraform
+# Ensure BOSH secrets bucket
+if aws s3 ls "s3://${VARZ_BUCKET}" 2>&1 | grep -q 'NoSuchBucket' ; then
+  aws s3 mb "s3://${VARZ_BUCKET}"
+fi
+aws s3api put-bucket-versioning --bucket "${VARZ_BUCKET}" --versioning-configuration Status=Enabled
+
+# Create dummy common secrets files so that we can check resources
+for environment in common master tooling; do
+  echo '{}' > ${WORKSPACE_DIR}/${environment}-secrets-dummy.yml
+  INPUT_FILE=${WORKSPACE_DIR}/${environment}-secrets-dummy.yml \
+    OUTPUT_FILE=${WORKSPACE_DIR}/${environment}-secrets-dummy-encrypted.yml \
+    PASSPHRASE=$(bosh interpolate ${WORKSPACE_DIR}/secret-rotation.yml --path /${environment}-secrets-passphrase) \
+    ../cg-pipeline-tasks/encrypt.sh
+  aws s3 cp ${WORKSPACE_DIR}/${environment}-secrets-dummy-encrypted.yml \
+    s3://${VARZ_BUCKET}/secrets-${environment}.yml \
+    --sse AES256
+done
+
 fly --target bootstrap set-pipeline \
   --pipeline secret-rotation \
   --config ${WORKSPACE_DIR}/secret-rotation-pipeline.yml \
@@ -18,18 +37,15 @@ fly --target bootstrap set-pipeline \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
   --var common-bucket-name=${VARZ_BUCKET} \
   --var master-bucket-name=${VARZ_BUCKET} \
-  --var tooling-bucket-name=${VARZ_BUCKET}
+  --var tooling-bucket-name=${VARZ_BUCKET} \
+  --var generate-passphrase="true"
 fly --target bootstrap unpause-pipeline --pipeline secret-rotation
 
+# Hack: Update certs scripts expect two concatenated certs, so run `new-ca` twice
+fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
 fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
 fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-master --watch
 fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-tooling --watch
-
-# TODO: Move BOSH secrets bucket(s) into terraform
-# Ensure BOSH secrets bucket
-if aws s3 ls "s3://${VARZ_BUCKET}" 2>&1 | grep -q 'NoSuchBucket' ; then
-  aws s3 mb "s3://${VARZ_BUCKET}"
-fi
 
 CG_PIPELINE=../cg-pipeline-tasks \
   SECRETS_BUCKET=${VARZ_BUCKET} \

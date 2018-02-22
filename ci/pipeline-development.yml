@@ -17,8 +17,6 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/tooling
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
       TF_VAR_aws_partition: {{aws_partition}}
@@ -73,31 +71,33 @@ jobs:
     params:
       <<: *tooling-params
       TERRAFORM_ACTION: apply
-  - task: init-bosh-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-bosh-db.sh
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-tooling
-    params:
-      file: terraform-yaml/state.yml
+  - aggregate:
+    - task: init-bosh-db
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
+        inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+        params:
+          STATE_FILE_PATH: terraform-state/terraform.tfstate
+        run:
+          path: sh
+          args:
+          - -e
+          - -c
+          - cg-provision-repo/ci/scripts/update-bosh-db.sh
+    - do:
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-tooling
+        params:
+          file: terraform-yaml/state.yml
 
 - name: plan-bootstrap-development
   plan:
@@ -118,8 +118,6 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
       AWS_DEFAULT_REGION: {{aws_default_region}}
-      AWS_ACCESS_KEY_ID: {{aws_access_key_id}}
-      AWS_SECRET_ACCESS_KEY: {{aws_secret_access_key}}
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
       TF_VAR_az1: {{aws_az1}}
@@ -165,49 +163,52 @@ jobs:
     params:
       <<: *development-params
       TERRAFORM_ACTION: apply
-  - task: init-bosh-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-bosh-db.sh
-  - task: init-cf-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-cf-db.sh
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-development
-    params:
-      file: terraform-yaml/state.yml
+  - aggregate:
+    - do:
+      - task: init-bosh-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-bosh-db.sh
+      - task: init-cf-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-cf-db.sh
+    - do:
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-development
+        params:
+          file: terraform-yaml/state.yml
 
 resources:
 - name: pipeline-tasks

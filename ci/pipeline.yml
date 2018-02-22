@@ -220,31 +220,33 @@ jobs:
     params:
       <<: *tooling-params
       TERRAFORM_ACTION: apply
-  - task: init-bosh-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-bosh-db.sh
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-tooling
-    params:
-      file: terraform-yaml/state.yml
+  - aggregate:
+    - task: init-bosh-db
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
+        inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+        params:
+          STATE_FILE_PATH: terraform-state/terraform.tfstate
+        run:
+          path: sh
+          args:
+          - -e
+          - -c
+          - cg-provision-repo/ci/scripts/update-bosh-db.sh
+    - do:
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-tooling
+        params:
+          file: terraform-yaml/state.yml
 
 - name: plan-bootstrap-staging
   plan:
@@ -307,49 +309,52 @@ jobs:
     params:
       <<: *staging-params
       TERRAFORM_ACTION: apply
-  - task: init-bosh-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-bosh-db.sh
-  - task: init-cf-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
-      params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-cf-db.sh
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-staging
-    params:
-      file: terraform-yaml/state.yml
+  - aggregate:
+    - do:
+      - task: init-bosh-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-bosh-db.sh
+      - task: init-cf-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-cf-db.sh
+    - do:
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-staging
+        params:
+          file: terraform-yaml/state.yml
 
 - name: plan-bootstrap-production
   plan:
@@ -413,131 +418,52 @@ jobs:
     params:
       <<: *production-params
       TERRAFORM_ACTION: apply
-  - task: init-bosh-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
+  - aggregate:
+    - do:
+      - task: init-bosh-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-bosh-db.sh
+      - task: init-cf-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-cf-db.sh
+  - do:
+    - task: terraform-state-to-yaml
+      file: pipeline-tasks/terraform-state-to-yaml.yml
       params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-bosh-db.sh
-  - task: init-cf-db
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: 18fgsa/concourse-task
-      inputs:
-      - name: cg-provision-repo
-      - name: terraform-state
+        STATE_FILE: terraform.tfstate
+    - put: terraform-yaml-production
       params:
-        STATE_FILE_PATH: terraform-state/terraform.tfstate
-      run:
-        path: sh
-        args:
-        - -e
-        - -c
-        - cg-provision-repo/ci/scripts/update-cf-db.sh
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-production
-    params:
-      file: terraform-yaml/state.yml
-
-# - name: teardown-tooling
-#   plan:
-#   - aggregate:
-#     - get: pipeline-tasks
-#     - get: cg-provision-repo
-#       passed: [teardown-staging, teardown-production]
-#   - task: destroy
-#     file: pipeline-tasks/terraform-destroy.yml
-#     input_mapping: { terraform-templates: cg-provision-repo }
-#     params:
-#       STACK_NAME: tooling
-#       TEMPLATE_SUBDIR: terraform/stacks/tooling
-#       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_DEFAULT_REGION: {{aws_default_region}}
-#       TF_VAR_az1: {{aws_az1}}
-#       TF_VAR_az2: {{aws_az2}}
-#       TF_VAR_rds_password: {{tooling_rds_password}}
-#       TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
-#       TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
-#       TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
-#       TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
-#       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-#       TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}
-#       TF_VAR_public_cidr_1: {{tooling_public_cidr_1}}
-#       TF_VAR_public_cidr_2: {{tooling_public_cidr_2}}
-#       TF_VAR_private_cidr_1: {{tooling_private_cidr_1}}
-#       TF_VAR_private_cidr_2: {{tooling_private_cidr_2}}
-#       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
-#       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
-
-# - name: teardown-staging
-#   plan:
-#   - aggregate:
-#     - get: pipeline-tasks
-#     - get: cg-provision-repo
-#       passed: [bootstrap-staging]
-#   - task: destroy
-#     file: pipeline-tasks/terraform-destroy.yml
-#     input_mapping: { terraform-templates: cg-provision-repo }
-#     params:
-#       STACK_NAME: staging
-#       TEMPLATE_SUBDIR: terraform/stacks/staging
-#       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_DEFAULT_REGION: {{aws_default_region}}
-#       TF_VAR_az1: {{aws_az1}}
-#       TF_VAR_az2: {{aws_az2}}
-#       TF_VAR_rds_password: {{staging_rds_password}}
-#       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-#       TF_VAR_vpc_cidr: {{staging_vpc_cidr}}
-#       TF_VAR_public_cidr_1: {{staging_public_cidr_1}}
-#       TF_VAR_public_cidr_2: {{staging_public_cidr_2}}
-#       TF_VAR_private_cidr_1: {{staging_private_cidr_1}}
-#       TF_VAR_private_cidr_2: {{staging_private_cidr_2}}
-#       TF_VAR_rds_private_cidr_1: {{staging_rds_private_cidr_1}}
-#       TF_VAR_rds_private_cidr_2: {{staging_rds_private_cidr_2}}
-
-# - name: teardown-production
-#   plan:
-#   - aggregate:
-#     - get: pipeline-tasks
-#     - get: cg-provision-repo
-#       passed: [bootstrap-production]
-#   - task: destroy
-#     file: pipeline-tasks/terraform-destroy.yml
-#     input_mapping: { terraform-templates: cg-provision-repo }
-#     params:
-#       STACK_NAME: production
-#       TEMPLATE_SUBDIR: terraform/stacks/production
-#       S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-#       AWS_DEFAULT_REGION: {{aws_default_region}}
-#       TF_VAR_az1: {{aws_az1}}
-#       TF_VAR_az2: {{aws_az2}}
-#       TF_VAR_rds_password: {{production_rds_password}}
-#       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-#       TF_VAR_vpc_cidr: {{production_vpc_cidr}}
-#       TF_VAR_public_cidr_1: {{production_public_cidr_1}}
-#       TF_VAR_public_cidr_2: {{production_public_cidr_2}}
-#       TF_VAR_private_cidr_1: {{production_private_cidr_1}}
-#       TF_VAR_private_cidr_2: {{production_private_cidr_2}}
-#       TF_VAR_rds_private_cidr_1: {{production_rds_private_cidr_1}}
-#       TF_VAR_rds_private_cidr_2: {{production_rds_private_cidr_2}}
+        file: terraform-yaml/state.yml
 
 resources:
 - name: pipeline-tasks

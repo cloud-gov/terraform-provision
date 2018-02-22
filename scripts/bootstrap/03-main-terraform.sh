@@ -22,8 +22,10 @@ fly --target bootstrap set-pipeline \
 fly --target bootstrap unpause-pipeline --pipeline terraform-provision
 
 # ensure tf has a bucket for state
-if aws s3 ls s3://$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE} --path /aws_s3_tfstate_bucket) 2>&1 | grep -q 'NoSuchBucket' ; then
-  aws s3 mb s3://$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE} --path /aws_s3_tfstate_bucket)
+state_bucket=$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE} --path /aws_s3_tfstate_bucket)
+if aws s3 ls s3://${state_bucket} 2>&1 | grep -q 'NoSuchBucket' ; then
+  aws s3 mb s3://${state_bucket}
 fi
+aws s3api put-bucket-versioning --bucket "${state_bucket}" --versioning-configuration Status=Enabled
 
 fly --target bootstrap trigger-job --job terraform-provision/plan-bootstrap-tooling --watch
