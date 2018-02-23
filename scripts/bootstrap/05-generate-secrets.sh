@@ -46,7 +46,7 @@ fly --target bootstrap set-pipeline \
   --var generate-vcap-passphrase="true"
 fly --target bootstrap unpause-pipeline --pipeline secret-rotation
 
-# Hack: Update certs scripts expect two concatenated certs, so run `new-ca` twice
+# TODO: Remove double new-ca once we're sure ca-cert-store.crt works as intended
 fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
 fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
 fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-master --watch

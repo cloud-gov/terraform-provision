@@ -1,6 +1,10 @@
 # Configurations
 environment.sh
+env.sh
 credentials.yml
+
+tmp/
+tmp/*
 
 # Terraform files
 *.tfstate

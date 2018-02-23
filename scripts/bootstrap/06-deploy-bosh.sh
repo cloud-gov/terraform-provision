@@ -9,8 +9,13 @@ if [ ! -f "${WORKSPACE_DIR}/master-bosh-state.json" ]; then
   aws s3 cp ${WORKSPACE_DIR}/master-bosh-state.json s3://${VARZ_BUCKET}/master-bosh-state.json --sse AES256
 fi
 
-bosh interpolate ${WORKSPACE_DIR}/concourse-environment.yml --path /common_ca_cert > ${WORKSPACE_DIR}/master-bosh.crt
-aws s3 cp ${WORKSPACE_DIR}/master-bosh.crt s3://${VARZ_BUCKET}/master-bosh.crt --sse AES256
+bosh interpolate ${WORKSPACE_DIR}/concourse-environment.yml --path /common_ca_cert_store > ${WORKSPACE_DIR}/ca-cert-store.crt
+aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/ca-cert-store.crt --sse AES256
+
+# TODO: rename master-bosh.crt to ca-cert-store.crt in all pipelines (see cg-deploy-bosh)
+# * move cp to s3 into secret-rotation/new-ca
+# * make new ca-cert-store.crt trigger every deployment
+aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/master-bosh.crt --sse AES256
 
 cat ../cg-deploy-bosh/ci/pipeline-development.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml
 
