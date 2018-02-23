@@ -38,7 +38,12 @@ fly --target bootstrap set-pipeline \
   --var common-bucket-name=${VARZ_BUCKET} \
   --var master-bucket-name=${VARZ_BUCKET} \
   --var tooling-bucket-name=${VARZ_BUCKET} \
-  --var generate-passphrase="true"
+  --var secret-rotation-git-branch=generate-straggler-passwords \
+  --var bosh-git-branch=concourse-defaults \
+  --var generate-passphrase="true" \
+  --var generate-postgres-passphrase="true" \
+  --var generate-mbus-passphrase="true" \
+  --var generate-vcap-passphrase="true"
 fly --target bootstrap unpause-pipeline --pipeline secret-rotation
 
 # Hack: Update certs scripts expect two concatenated certs, so run `new-ca` twice

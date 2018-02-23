@@ -39,7 +39,7 @@ jobs:
       TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
       TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
       TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
-      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore-dev
       TF_VAR_elb_shibboleth_cert_name: self-signed-star-dev-cloud-gov
       TF_VAR_concourse_prod_elb_cert_name: self-signed-star-dev-cloud-gov
       TF_VAR_concourse_staging_elb_cert_name: self-signed-star-dev-cloud-gov
@@ -159,10 +159,11 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: {{development_restricted_ingress_web_cidrs}}
       TF_VAR_main_cert_name: self-signed-star-dev-cloud-gov
       TF_VAR_apps_cert_name: self-signed-star-dev-cloud-gov
-      TF_VAR_stack_prefix: cf-development
-      TF_VAR_bucket_prefix: development-cg
-      TF_VAR_blobstore_bucket_name: bosh-development-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_elb_shibboleth_cert_name: self-signed-star-dev-cloud-gov
+      TF_VAR_stack_prefix: cf-development-new
+      TF_VAR_bucket_prefix: development-cg-new
+      TF_VAR_blobstore_bucket_name: bosh-development-blobstore-dev
+      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore-dev
       TF_VAR_use_nat_gateway_eip: "false"
   - *notify-slack
 

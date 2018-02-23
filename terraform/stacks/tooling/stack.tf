@@ -103,6 +103,12 @@ module "monitoring_staging" {
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
+module "bosh_blobstore_bucket" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "${var.blobstore_bucket_name}"
+  aws_partition = "${var.aws_partition}"
+}
+
 module "billing_bucket_staging" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "${var.bucket_prefix}cg-billing-staging"
