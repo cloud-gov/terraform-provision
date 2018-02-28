@@ -53,7 +53,7 @@ resource "aws_route" "source_az1_to_target_cidr" {
   vpc_peering_connection_id = "${aws_vpc_peering_connection.peering.id}"
 }
 
-resource "aws_security_group_rule" "allow_all_default" {
+resource "aws_security_group_rule" "allow_all_bosh_default" {
   count = "${var.use_vpc_peering}"
 
   type = "ingress"
@@ -62,4 +62,15 @@ resource "aws_security_group_rule" "allow_all_default" {
   protocol = "-1"
   cidr_blocks = ["${aws_default_vpc.bootstrap.cidr_block}"]
   security_group_id = "${data.terraform_remote_state.tooling_vpc.bosh_security_group}"
+}
+
+resource "aws_security_group_rule" "allow_rds_postgres" {
+  count = "${var.use_vpc_peering}"
+
+  type = "ingress"
+  from_port = 5432
+  to_port = 5432
+  protocol = "tcp"
+  cidr_blocks = ["${aws_default_vpc.bootstrap.cidr_block}"]
+  security_group_id = "${data.terraform_remote_state.tooling_vpc.rds_postgres_security_group}"
 }
