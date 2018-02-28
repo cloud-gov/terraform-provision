@@ -44,10 +44,10 @@ fly --target bootstrap set-pipeline \
   --var github-release-access-token=${GITHUB_RELEASE_ACCESS_TOKEN} \
   --var slack-webhook-url=${SLACK_WEBHOOK_URL} \
   --var tooling-secrets-passphrase=${TOOLING_SECRETS_PASSPHRASE} \
-  --var nessus-agent-key-master=${NESSUS_KEY} \
-  --var nessus-agent-server-master=${NESSUS_SERVER} \
-  --var tripwire-localpass-master=${TRIPWIRE_LOCALPASS} \
-  --var tripwire-sitepass-master=${TRIPWIRE_SITEPASS} \
+  --var nessus-agent-key=${NESSUS_KEY} \
+  --var nessus-agent-server=${NESSUS_SERVER} \
+  --var tripwire-localpass=${TRIPWIRE_LOCALPASS} \
+  --var tripwire-sitepass=${TRIPWIRE_SITEPASS} \
   --var bosh-config-git-branch=concourse-defaults
 fly --target bootstrap unpause-pipeline --pipeline deploy-bosh
 
