@@ -55,7 +55,7 @@ jobs:
     params:
       text_file: terraform-state/message.txt
       text: |
-        :terraform: $BUILD_JOB_NAME needs review
+        :terraform: DEV $BUILD_JOB_NAME needs review
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: {{slack-channel}}
       username: {{slack-username}}
