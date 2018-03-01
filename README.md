@@ -3,13 +3,41 @@
 Scripts, configurations, and procedures for provisioning the infrastructure to set up cloud.gov.
 
 **Install these first on your laptop:**
+* git
 * [Terraform](https://www.terraform.io/)
 * the [AWS Command Line Interface (CLI) tool](https://aws.amazon.com/cli/)
-* [`jq`, a command line JSON processor](https://stedolan.github.io/jq/) installed
+*  [`jq`, a command line JSON processor](https://stedolan.github.io/jq/)
+* the [bosh cli](https://bosh.io/docs/cli-v2.html)
 
 macOS users can install all of these with [`homebrew`](https://brew.sh/).
 
-## Procedures
+## Bootstrap procedure
+
+Follow this procedure to setup a bootstrap instance of concourse and deploy minimal components to bring up a permanant instance of concourse deployed by a bosh director.
+
+1. Clone this repository: `git clone https://github.com/18F/cg-provision`
+1. Get the rest of the necessary repositories: `./cg-provision/scripts/bootstrap/setup-bootstrap.sh`
+1. `cd cg-provision`
+1. Make a copy of `env.example.sh` and populate with AWS credentials, etc.
+    1. An example `TERRAFORM_PROVISION_CREDENTIALS_FILE` can be found in `ci/credentials.example.yml`. Make a copy and place in your `WORKSPACE_DIR`.
+    1. `toolingbosh` and `concourse` currently need pre-populated secrets files: `tooling-bosh-main.yml`,`tooling-bosh-external.yml`,`concourse-tooling-prod.yml`.
+      1. Populate these and encrypt with `../cg-scripts/encrypt.sh`, upload to `${VARZ_BUCKET}`, and set the passphrases in `env.sh`.
+      1. **TODO: generate all secrets/pull values from tf.**
+    1. `source env.sh`
+1. Create bootstrap terraform stack: `./scripts/bootstrap/01-bootstrap-terraform.sh`
+1. Deploy a bootstrap concourse instance: `./scripts/bootstrap/02-bootstrap-concourse.sh`
+    1. Login to the web ui at `:4443`, `bootstrap`/password in `${WORKSPACE_DIR}/bootstrap-concourse-creds.yml`.
+1. Deploy main terraform: `./scripts/bootstrap/03-main-terraform.sh`
+    1. Inspect the terraform plan, then run `terraform-provision/bootstrap-tooling` from the web ui.
+1. Setup peering between bootstrap and main tooling: `./scripts/bootstrap/04-bootstrap-terraform-peering.sh`
+1. Generate secrets for bosh and concourse: `./scripts/bootstrap/05-generate-secrets.sh`
+1. Deploy bosh: `./scripts/bootstrap/06-deploy-bosh.sh`
+1. Deploy concourse: `./scripts/bootstrap/07-deploy-concourse.sh`
+    1. Verify main concourse comes up.
+    1. Continue deploying resources from main concourse.
+1. Teardown bootstrap concourse and terraform stack: `./scripts/bootstrap/teardown.sh`
+
+## Procedures (legacy)
 
 1. Create S3 bucket with versioning enabled to store Terraform state: `terraform-state`
 1. Create S3 bucket with versioning enabled to store BOSH releases and metadata: `cloud-gov-bosh-releases`
