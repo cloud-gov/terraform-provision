@@ -179,14 +179,14 @@ module "concourse_worker_policy" {
   source = "../../modules/iam_role_policy/concourse_worker"
   policy_name = "concourse-worker"
   aws_partition = "${local.aws_partition}"
-  varz_bucket = "cloud-gov-varz"
-  varz_staging_bucket = "cloud-gov-varz-stage"
-  bosh_release_bucket = "cloud-gov-bosh-releases"
-  terraform_state_bucket = "terraform-state"
-  semver_bucket = "cg-semver"
-  buildpack_notify_bucket = "buildpack-notify-state-*"
-  billing_bucket = "cg-billing-*"
-  cg_binaries_bucket = "cg-binaries"
+  varz_bucket = "${var.varz_bucket}"
+  varz_staging_bucket = "${var.varz_bucket_stage}"
+  bosh_release_bucket = "${var.bosh_release_bucket}"
+  terraform_state_bucket = "${var.terraform_state_bucket}"
+  semver_bucket = "${var.semver_bucket}"
+  buildpack_notify_bucket = "${var.buildpack_notify_bucket}"
+  billing_bucket = "${var.billing_bucket}"
+  cg_binaries_bucket = "${var.cg_binaries_bucket}"
 }
 
 module "concourse_iaas_worker_policy" {

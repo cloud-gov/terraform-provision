@@ -82,3 +82,35 @@ variable "dns_eip_count_production" {
 variable "dns_eip_count_staging" {
   default = 2
 }
+
+variable "varz_bucket" {
+  default = "cloud-gov-varz"
+}
+
+variable "varz_bucket_stage" {
+  default = "cloud-gov-varz-stage"
+}
+
+variable "bosh_release_bucket" {
+  default = "cloud-gov-bosh-releases"
+}
+
+variable "terraform_state_bucket" {
+  default = "terraform-state"
+}
+
+variable "semver_bucket" {
+  default = "cg-semver"
+}
+
+variable "buildpack_notify_bucket" {
+  default = "buildpack-notify-state-*"
+}
+
+variable "billing_bucket" {
+  default = "cg-billing-*"
+}
+
+variable "cg_binaries_bucket" {
+   default = "cg-binaries"
+}

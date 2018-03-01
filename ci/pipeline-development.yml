@@ -50,6 +50,11 @@ jobs:
       TF_VAR_bucket_prefix: dev-
       TF_VAR_dns_eip_count_staging: "0"
       TF_VAR_dns_eip_count_production: "0"
+      TF_VAR_varz_bucket: cloud-gov-varz-dev
+      TF_VAR_bosh_release_bucket: cloud-gov-bosh-releases-dev
+      TF_VAR_terraform_state_bucket: terraform-state-dev
+      TF_VAR_semver_bucket: cg-semver-dev
+      TF_VAR_cg_binaries_bucket: dev-cg-binaries
   - &notify-slack
     put: slack
     params:
