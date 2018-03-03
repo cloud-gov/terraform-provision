@@ -6,10 +6,6 @@ variable "aws_default_region" {
     default = "us-gov-west-1"
 }
 
-variable "aws_partition" {
-    default = "aws-us-gov"
-}
-
 variable "vpc_cidr" {}
 
 variable "az1" {
@@ -32,8 +28,6 @@ variable "rds_private_cidr_1" {}
 variable "rds_private_cidr_2" {}
 
 variable "rds_password" {}
-
-variable "account_id" {}
 
 variable "remote_state_bucket" {}
 
