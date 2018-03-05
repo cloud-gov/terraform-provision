@@ -110,6 +110,13 @@ module "bosh_blobstore_bucket" {
   aws_partition = "${var.aws_partition}"
 }
 
+module "bosh_release_bucket" {
+  source = "../../modules/s3_bucket/encrypted_bucket"
+  bucket = "${var.bosh_release_bucket}"
+  aws_partition = "${var.aws_partition}"
+  versioning = "true"
+}
+
 module "billing_bucket_staging" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "${var.bucket_prefix}cg-billing-staging"
