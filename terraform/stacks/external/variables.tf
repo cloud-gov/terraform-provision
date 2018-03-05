@@ -1,5 +1,3 @@
-variable "account_id" {}
-variable "aws_partition" {}
 variable "stack_description" {}
 
 variable "cdn_broker_username" {}

@@ -1,9 +1,5 @@
 variable "stack_description" {}
 
-variable "aws_partition" {
-  default = "aws-us-gov"
-}
-
 variable "aws_default_region" {
   default = "us-gov-west-1"
 }
@@ -29,8 +25,6 @@ variable "elasticache_private_cidr_2" {}
 variable "rds_password" {}
 
 variable "cf_rds_password" {}
-
-variable "account_id" {}
 
 variable "remote_state_bucket" {}
 

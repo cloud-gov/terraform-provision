@@ -6,11 +6,17 @@ provider "aws" {
   version = "~> 1.8.0"
 }
 
+data "aws_caller_identity" "current" {}
+
+locals {
+  aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
+}
+
 module "cdn_broker" {
   source = "../../modules/cdn_broker"
 
-  account_id = "${var.account_id}"
-  aws_partition = "${var.aws_partition}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
+  aws_partition = "${local.aws_partition}"
   username = "${var.cdn_broker_username}"
   bucket = "${var.cdn_broker_bucket}"
   cloudfront_prefix = "${var.cdn_broker_cloudfront_prefix}"

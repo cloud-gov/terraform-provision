@@ -50,9 +50,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
       TF_VAR_stack_description: staging
-      TF_VAR_aws_partition: {{aws_external_partition}}
       TF_VAR_aws_default_region: {{aws_external_region}}
-      TF_VAR_account_id: {{aws_external_account_id}}
       TF_VAR_cdn_broker_username: {{cdn_broker_username_staging}}
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
@@ -108,9 +106,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: {{aws_external_secret_access_key}}
       AWS_DEFAULT_REGION: {{aws_external_region}}
       TF_VAR_stack_description: production
-      TF_VAR_aws_partition: {{aws_external_partition}}
       TF_VAR_aws_default_region: {{aws_external_region}}
-      TF_VAR_account_id: {{aws_external_account_id}}
       TF_VAR_cdn_broker_username: {{cdn_broker_username_production}}
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_production}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_production}}
@@ -192,9 +188,7 @@ jobs:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
       TF_VAR_aws_default_region: {{aws_default_region}}
-      TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{tooling_rds_password}}
       TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
       TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
@@ -278,8 +272,6 @@ jobs:
       TF_VAR_force_restricted_network: "yes"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
-      TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{development_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
       TF_VAR_vpc_cidr: {{development_vpc_cidr}}
@@ -388,8 +380,6 @@ jobs:
       TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
-      TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{staging_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
       TF_VAR_vpc_cidr: {{staging_vpc_cidr}}
@@ -497,8 +487,6 @@ jobs:
       TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: {{aws_az1}}
       TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
-      TF_VAR_account_id: {{aws_account_id}}
       TF_VAR_rds_password: {{production_rds_password}}
       TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
       TF_VAR_vpc_cidr: {{production_vpc_cidr}}

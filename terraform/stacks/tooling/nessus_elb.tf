@@ -9,7 +9,7 @@ resource "aws_elb" "nessus_elb" {
     instance_port = 8834
     instance_protocol = "HTTPS"
 
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.nessus_elb_cert_name}"
+    ssl_certificate_id = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.nessus_elb_cert_name}"
   }
 
   health_check {

@@ -6,6 +6,12 @@ provider "aws" {
   version = "~> 1.8.0"
 }
 
+data "aws_caller_identity" "current" {}
+
+locals {
+  aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
+}
+
 module "stack" {
   source = "../../modules/stack/base"
 
@@ -28,7 +34,7 @@ module "stack" {
 module "concourse_production" {
   source = "../../modules/concourse"
   stack_description = "${var.stack_description}"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   vpc_id = "${module.stack.vpc_id}"
   concourse_cidr = "${var.concourse_prod_cidr}"
   concourse_az = "${var.az1}"
@@ -38,7 +44,7 @@ module "concourse_production" {
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-production"
   rds_instance_type = "db.m3.xlarge"
-  account_id = "${var.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   elb_cert_name = "${var.concourse_prod_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az1}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
@@ -47,7 +53,7 @@ module "concourse_production" {
 module "concourse_staging" {
   source = "../../modules/concourse"
   stack_description = "${var.stack_description}"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   vpc_id = "${module.stack.vpc_id}"
   concourse_cidr = "${var.concourse_staging_cidr}"
   concourse_az = "${var.az2}"
@@ -57,7 +63,7 @@ module "concourse_staging" {
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-staging"
   rds_instance_type = "db.m3.medium"
-  account_id = "${var.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   elb_cert_name = "${var.concourse_staging_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az2}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
@@ -66,12 +72,12 @@ module "concourse_staging" {
 module "monitoring_production" {
   source = "../../modules/monitoring"
   stack_description = "production"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   vpc_id = "${module.stack.vpc_id}"
   monitoring_cidr = "${var.monitoring_production_cidr}"
   monitoring_az = "${var.az1}"
   route_table_id = "${module.stack.private_route_table_az1}"
-  account_id = "${var.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   elb_cert_name = "${var.monitoring_production_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az1}"]
   elb_security_groups = ["${module.stack.web_traffic_security_group}"]
@@ -81,12 +87,12 @@ module "monitoring_production" {
 module "monitoring_staging" {
   source = "../../modules/monitoring"
   stack_description = "staging"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   vpc_id = "${module.stack.vpc_id}"
   monitoring_cidr = "${var.monitoring_staging_cidr}"
   monitoring_az = "${var.az2}"
   route_table_id = "${module.stack.private_route_table_az2}"
-  account_id = "${var.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   elb_cert_name = "${var.monitoring_staging_elb_cert_name}"
   elb_subnets = ["${module.stack.public_subnet_az2}"]
   elb_security_groups = ["${module.stack.web_traffic_security_group}"]
@@ -96,46 +102,46 @@ module "monitoring_staging" {
 module "billing_bucket_staging" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "cg-billing-staging"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
 }
 
 module "billing_bucket_production" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "cg-billing-production"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
 }
 
 module "buildpack_notify_state_staging" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "buildpack-notify-state-staging"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   versioning = "true"
 }
 
 module "buildpack_notify_state_production" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "buildpack-notify-state-production"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   versioning = "true"
 }
 
 module "cg_binaries_bucket" {
   source = "../../modules/s3_bucket/encrypted_bucket"
   bucket = "cg-binaries"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
 }
 
 module "billing_user" {
   source = "../../modules/iam_user/billing_user"
   username = "cg-billing"
   billing_bucket = "cg-billing-*"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
 }
 
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "blobstore"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
@@ -147,22 +153,22 @@ module "cloudwatch_policy" {
 module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
   policy_name = "${var.stack_description}-bosh"
-  aws_partition = "${var.aws_partition}"
-  account_id = "${var.account_id}"
+  aws_partition = "${local.aws_partition}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "bosh_compilation_policy" {
   source = "../../modules/iam_role_policy/bosh_compilation"
   policy_name = "${var.stack_description}-bosh-compilation"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "concourse_worker_policy" {
   source = "../../modules/iam_role_policy/concourse_worker"
   policy_name = "concourse-worker"
-  aws_partition = "${var.aws_partition}"
+  aws_partition = "${local.aws_partition}"
   varz_bucket = "cloud-gov-varz"
   varz_staging_bucket = "cloud-gov-varz-stage"
   bosh_release_bucket = "cloud-gov-bosh-releases"
