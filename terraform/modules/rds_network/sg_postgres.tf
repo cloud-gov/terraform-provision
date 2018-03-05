@@ -14,7 +14,7 @@ resource "aws_security_group" "rds_postgres" {
 }
 
 resource "aws_security_group_rule" "ingress_default" {
-  count = "${length(var.security_groups)}"
+  count = "${var.security_groups_count}"
 
   type = "ingress"
   from_port = 5432
@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "ingress_default" {
 }
 
 resource "aws_security_group_rule" "egress_default" {
-  count = "${length(var.security_groups)}"
+  count = "${var.security_groups_count}"
 
   type = "egress"
   from_port = 0

@@ -79,6 +79,10 @@ variable "rds_security_groups" {
   type = "list"
 }
 
+variable "rds_security_groups_count" {
+  default = "0"
+}
+
 variable "target_monitoring_security_groups" {
   type = "list"
   default = []
