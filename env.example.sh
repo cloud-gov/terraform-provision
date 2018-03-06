@@ -11,6 +11,7 @@ export TF_STATE_BUCKET=$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE
 export VARZ_BUCKET=cloud-gov-varz
 export SEMVER_BUCKET=cg-semver
 export BOSH_RELEASES_BUCKET=cloud-gov-bosh-releases
+export BOSH_RELEASES_BLOBSTORE_BUCKET=cloud-gov-release-blobstore
 
 export TOOLING_SECRETS_PASSPHRASE=
 export CONCOURSE_SECRETS_PASSPHRASE=
