@@ -2,6 +2,7 @@
 
 set -eux
 
+# Generate passphrases for encrypted secrets
 bosh interpolate ./bosh/varsfiles/secret-rotation.yml \
   --vars-store ${WORKSPACE_DIR}/secret-rotation.yml
 
@@ -28,6 +29,7 @@ for environment in common master tooling; do
     --sse AES256
 done
 
+# Set secret-rotation pipeline
 fly --target bootstrap set-pipeline \
   --pipeline secret-rotation \
   --config ${WORKSPACE_DIR}/secret-rotation-pipeline.yml \
@@ -52,6 +54,7 @@ fly --target bootstrap trigger-job --job secret-rotation/new-ca --watch
 fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-master --watch
 fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bosh-tooling --watch
 
+# Pull down secrets for use in deploy-bosh pipeline
 CG_PIPELINE=../cg-pipeline-tasks \
   SECRETS_BUCKET=${VARZ_BUCKET} \
   CI_ENV=bootstrap \

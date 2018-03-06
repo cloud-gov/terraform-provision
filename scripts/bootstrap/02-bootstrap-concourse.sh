@@ -26,3 +26,10 @@ bosh create-env ../concourse-deployment/lite/concourse.yml \
   -v az=${TF_VAR_az1} \
   -v access_key_id=${AWS_ACCESS_KEY_ID} \
   -v secret_access_key=${AWS_SECRET_ACCESS_KEY}
+
+echo "Deployed bootstrap concourse. Login at:
+
+https://$(cat ${WORKSPACE_DIR}/terraform-outputs.json | jq -r '.public_ip.value'):4443
+
+Username: bootstrap
+Password: $(bosh interpolate ${WORKSPACE_DIR}/bootstrap-concourse-creds.yml --path /basic-auth-password)"

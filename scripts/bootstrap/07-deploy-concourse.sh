@@ -2,6 +2,7 @@
 
 set -eux
 
+# Set deploy-concourse pipeline
 fly --target bootstrap set-pipeline \
   --pipeline deploy-concourse \
   --config ../cg-deploy-concourse/ci/pipeline-development.yml \
@@ -15,5 +16,6 @@ fly --target bootstrap set-pipeline \
   --var concourse-config-git-branch=concourse-defaults
 fly --target bootstrap unpause-pipeline --pipeline deploy-concourse
 
+# Deploy concourse
 fly --target bootstrap trigger-job --job deploy-concourse/deploy-concourse-production --watch
 
