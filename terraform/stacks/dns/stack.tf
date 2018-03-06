@@ -291,7 +291,7 @@ resource "aws_route53_record" "cloud_gov_ci_dev2_cloud_gov_a" {
   name = "ci.dev2.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-Concourse-us-gov-west-1a-1912618135.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.tooling-Concourse-us-gov-west-1b-1889945616.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -554,7 +554,7 @@ resource "aws_route53_record" "cloud_gov_ops_uaa_dev2_cloud_gov_a" {
   name = "opsuaa.dev2.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-bosh-uaa-295269673.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.tooling-bosh-uaa-1027605934.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -576,7 +576,7 @@ resource "aws_route53_record" "cloud_gov_ops_login_dev2_cloud_gov_a" {
   name = "opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-bosh-uaa-295269673.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.tooling-bosh-uaa-1027605934.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
