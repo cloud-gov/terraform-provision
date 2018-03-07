@@ -63,6 +63,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
     1. Run `bosh -d ${deployment_name} delete-deployment` for all deployments in `bosh deployments`
 1. Bring up a bootstrap concourse instance as described above:
     1. Run `01-bootstrap-terraform.sh`, `02-bootstrap-concourse.sh`, `03-main-terraform.sh`
+    1. If your bootstrap concourse already has peering to tooling VPC, run `01-bootstrap-terraform.sh` again to disable.
 1. From the web UI in your bootstrap concourse, run `terraform-provision/destroy-*` for development, or staging and production.
 1. Run `destroy-tooling` in the `terraform-provision` pipeline.
 1. Teardown bootstrap concourse and terraform stack: `./scripts/bootstrap/teardown.sh`

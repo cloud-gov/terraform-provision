@@ -8,7 +8,7 @@ fly --target bootstrap set-pipeline \
   --config ../cg-deploy-concourse/ci/pipeline-development.yml \
   --load-vars-from ${WORKSPACE_DIR}/concourse-environment.yml \
   --load-vars-from ../cg-deploy-concourse/ci/concourse-defaults.yml \
-  --var concourse-production-private-bucket=${VARZ_BUCKET} \
+  --var secrets-bucket=${VARZ_BUCKET} \
   --var concourse-production-deployment-bosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/tooling_bosh_static_ip) \
   --var concourse-production-private-passphrase=${CONCOURSE_SECRETS_PASSPHRASE} \
   --var tf-state-bucket=${TF_STATE_BUCKET} \

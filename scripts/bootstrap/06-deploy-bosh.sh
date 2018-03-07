@@ -39,14 +39,8 @@ fly --target bootstrap set-pipeline \
   --var masterbosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/master_bosh_static_ip) \
   --var toolingbosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/tooling_bosh_static_ip) \
   --var s3-bosh-releases-bucket=${BOSH_RELEASES_BUCKET} \
-  --var tf-state-bucket-tooling=${TF_STATE_BUCKET} \
-  --var tf-state-bucket-production=${TF_STATE_BUCKET} \
-  --var tf-state-bucket-staging=${TF_STATE_BUCKET} \
-  --var tf-state-bucket-development=${TF_STATE_BUCKET} \
-  --var production-bucket-name=${VARZ_BUCKET} \
-  --var tooling-bucket-name=${VARZ_BUCKET} \
-  --var master-bucket-name=${VARZ_BUCKET} \
-  --var common-bucket-name=${VARZ_BUCKET} \
+  --var tf-state-bucket=${TF_STATE_BUCKET} \
+  --var secrets-bucket=${VARZ_BUCKET} \
   --var semver-bucket=${SEMVER_BUCKET} \
   --var github-release-access-token=${GITHUB_RELEASE_ACCESS_TOKEN} \
   --var slack-webhook-url=${SLACK_WEBHOOK_URL} \
@@ -55,6 +49,7 @@ fly --target bootstrap set-pipeline \
   --var nessus-agent-server=${NESSUS_SERVER} \
   --var tripwire-localpass=${TRIPWIRE_LOCALPASS} \
   --var tripwire-sitepass=${TRIPWIRE_SITEPASS} \
+  --var uaa-url-opslogin=https://opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov
   --var bosh-config-git-branch=concourse-defaults
 fly --target bootstrap unpause-pipeline --pipeline deploy-bosh
 

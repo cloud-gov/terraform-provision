@@ -35,11 +35,8 @@ fly --target bootstrap set-pipeline \
   --config ${WORKSPACE_DIR}/secret-rotation-pipeline.yml \
   --load-vars-from ${WORKSPACE_DIR}/secret-rotation.yml \
   --load-vars-from ../cg-secret-rotation/ci/concourse-defaults.yml \
-  --var aws-region=${AWS_DEFAULT_REGION} \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
-  --var common-bucket-name=${VARZ_BUCKET} \
-  --var master-bucket-name=${VARZ_BUCKET} \
-  --var tooling-bucket-name=${VARZ_BUCKET} \
+  --var secrets-bucket-name=${VARZ_BUCKET} \
   --var secret-rotation-git-branch=generate-straggler-passwords \
   --var bosh-git-branch=concourse-defaults \
   --var generate-passphrase="true" \
