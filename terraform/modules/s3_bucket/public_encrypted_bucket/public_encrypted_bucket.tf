@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "public_encrypted_bucket" {
     bucket = "${var.bucket}"
+    force_destroy = "${var.force_destroy}"
     versioning {
         enabled = "${var.versioning}"
     }
