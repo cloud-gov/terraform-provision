@@ -15,31 +15,28 @@ jobs:
       TERRAFORM_ACTION: plan
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
-      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_DEFAULT_REGION: {{aws_default_region}}
-      TF_VAR_az1: {{aws_az1}}
-      TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
-      TF_VAR_aws_default_region: {{aws_default_region}}
-      TF_VAR_account_id: {{aws_account_id}}
-      TF_VAR_rds_password: {{tooling_rds_password}}
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_az1: ((aws_az1))
+      TF_VAR_az2: ((aws_az2))
+      TF_VAR_aws_default_region: ((aws_default_region))
+      TF_VAR_rds_password: ((tooling_rds_password))
       TF_VAR_rds_multi_az: "false"
-      TF_VAR_concourse_prod_rds_password: {{concourse_prod_rds_password}}
-      TF_VAR_concourse_prod_cidr: {{concourse_prod_cidr}}
-      TF_VAR_concourse_staging_rds_password: {{concourse_staging_rds_password}}
-      TF_VAR_concourse_staging_cidr: {{concourse_staging_cidr}}
-      TF_VAR_monitoring_staging_cidr: {{monitoring_staging_cidr}}
-      TF_VAR_monitoring_production_cidr: {{monitoring_production_cidr}}
-      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-      TF_VAR_vpc_cidr: {{tooling_vpc_cidr}}
-      TF_VAR_public_cidr_1: {{tooling_public_cidr_1}}
-      TF_VAR_public_cidr_2: {{tooling_public_cidr_2}}
-      TF_VAR_private_cidr_1: {{tooling_private_cidr_1}}
-      TF_VAR_private_cidr_2: {{tooling_private_cidr_2}}
-      TF_VAR_rds_private_cidr_1: {{tooling_rds_private_cidr_1}}
-      TF_VAR_rds_private_cidr_2: {{tooling_rds_private_cidr_2}}
-      TF_VAR_restricted_ingress_web_cidrs: {{tooling_restricted_ingress_web_cidrs}}
-      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore-dev
+      TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
+      TF_VAR_concourse_prod_cidr: ((concourse_prod_cidr))
+      TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
+      TF_VAR_concourse_staging_cidr: ((concourse_staging_cidr))
+      TF_VAR_monitoring_staging_cidr: ((monitoring_staging_cidr))
+      TF_VAR_monitoring_production_cidr: ((monitoring_production_cidr))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
+      TF_VAR_public_cidr_1: ((tooling_public_cidr_1))
+      TF_VAR_public_cidr_2: ((tooling_public_cidr_2))
+      TF_VAR_private_cidr_1: ((tooling_private_cidr_1))
+      TF_VAR_private_cidr_2: ((tooling_private_cidr_2))
+      TF_VAR_rds_private_cidr_1: ((tooling_rds_private_cidr_1))
+      TF_VAR_rds_private_cidr_2: ((tooling_rds_private_cidr_2))
+      TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
       TF_VAR_elb_shibboleth_cert_name: self-signed-star-dev2-cloud-gov
       TF_VAR_concourse_prod_elb_cert_name: self-signed-star-dev2-cloud-gov
       TF_VAR_concourse_staging_elb_cert_name: self-signed-star-dev2-cloud-gov
@@ -50,6 +47,7 @@ jobs:
       TF_VAR_bucket_prefix: dev-
       TF_VAR_dns_eip_count_staging: "0"
       TF_VAR_dns_eip_count_production: "0"
+      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore-dev
       TF_VAR_varz_bucket: cloud-gov-varz-dev
       TF_VAR_bosh_release_bucket: cloud-gov-bosh-releases-dev
       TF_VAR_terraform_state_bucket: terraform-state-dev
@@ -62,9 +60,9 @@ jobs:
       text: |
         :terraform: DEV $BUILD_JOB_NAME needs review
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: bootstrap-tooling
   plan:
@@ -137,36 +135,34 @@ jobs:
       TERRAFORM_ACTION: plan
       STACK_NAME: development
       TEMPLATE_SUBDIR: terraform/stacks/main
-      S3_TFSTATE_BUCKET: {{aws_s3_tfstate_bucket}}
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
-      TF_VAR_az1: {{aws_az1}}
-      TF_VAR_az2: {{aws_az2}}
-      TF_VAR_aws_partition: {{aws_partition}}
-      TF_VAR_account_id: {{aws_account_id}}
-      TF_VAR_rds_password: {{development_rds_password}}
+      TF_VAR_az1: ((aws_az1))
+      TF_VAR_az2: ((aws_az2))
+      TF_VAR_rds_password: ((development_rds_password))
       TF_VAR_rds_multi_az: "false"
-      TF_VAR_remote_state_bucket: {{aws_s3_tfstate_bucket}}
-      TF_VAR_vpc_cidr: {{development_vpc_cidr}}
-      TF_VAR_public_cidr_1: {{development_public_cidr_1}}
-      TF_VAR_public_cidr_2: {{development_public_cidr_2}}
-      TF_VAR_private_cidr_1: {{development_private_cidr_1}}
-      TF_VAR_private_cidr_2: {{development_private_cidr_2}}
-      TF_VAR_services_cidr_1: {{development_services_cidr_1}}
-      TF_VAR_services_cidr_2: {{development_services_cidr_2}}
-      TF_VAR_kubernetes_cluster_id: {{development_kubernetes_cluster_id}}
-      TF_VAR_rds_private_cidr_1: {{development_rds_private_cidr_1}}
-      TF_VAR_rds_private_cidr_2: {{development_rds_private_cidr_2}}
-      TF_VAR_elasticache_private_cidr_1: {{development_elasticache_private_cidr_1}}
-      TF_VAR_elasticache_private_cidr_2: {{development_elasticache_private_cidr_2}}
-      TF_VAR_cf_rds_password: {{development_cf_rds_password}}
-      TF_VAR_restricted_ingress_web_cidrs: {{development_restricted_ingress_web_cidrs}}
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_vpc_cidr: ((development_vpc_cidr))
+      TF_VAR_public_cidr_1: ((development_public_cidr_1))
+      TF_VAR_public_cidr_2: ((development_public_cidr_2))
+      TF_VAR_private_cidr_1: ((development_private_cidr_1))
+      TF_VAR_private_cidr_2: ((development_private_cidr_2))
+      TF_VAR_services_cidr_1: ((development_services_cidr_1))
+      TF_VAR_services_cidr_2: ((development_services_cidr_2))
+      TF_VAR_kubernetes_cluster_id: ((development_kubernetes_cluster_id))
+      TF_VAR_rds_private_cidr_1: ((development_rds_private_cidr_1))
+      TF_VAR_rds_private_cidr_2: ((development_rds_private_cidr_2))
+      TF_VAR_elasticache_private_cidr_1: ((development_elasticache_private_cidr_1))
+      TF_VAR_elasticache_private_cidr_2: ((development_elasticache_private_cidr_2))
+      TF_VAR_cf_rds_password: ((development_cf_rds_password))
+      TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
       TF_VAR_main_cert_name: self-signed-star-dev2-cloud-gov
       TF_VAR_apps_cert_name: self-signed-star-dev2-cloud-gov
       TF_VAR_elb_shibboleth_cert_name: self-signed-star-dev2-cloud-gov
-      TF_VAR_stack_prefix: cf-development-new
-      TF_VAR_bucket_prefix: development-cg-new
+      TF_VAR_stack_prefix: dev-cf-development
+      TF_VAR_bucket_prefix: dev-development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore-dev
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore-dev
       TF_VAR_use_nat_gateway_eip: "false"
@@ -251,34 +247,34 @@ resources:
 - name: pipeline-tasks
   type: git
   source:
-    uri: {{pipeline_tasks_git_url}}
-    branch: {{pipeline_tasks_git_branch}}
+    uri: ((pipeline_tasks_git_url))
+    branch: ((pipeline_tasks_git_branch))
 
 - name: cg-provision-repo
   type: git
   source:
-    uri: {{cg_provision_git_url}}
-    branch: {{cg_provision_git_branch}}
+    uri: ((cg_provision_git_url))
+    branch: ((cg_provision_git_branch))
 
 - name: cg-provision-repo-development
   type: git
   source:
-    uri: {{cg_provision_development_git_url}}
-    branch: {{cg_provision_development_git_branch}}
+    uri: ((cg_provision_development_git_url))
+    branch: ((cg_provision_development_git_branch))
 
 - name: terraform-yaml-tooling
   type: s3-iam
   source:
-    bucket: {{aws_s3_tfstate_bucket}}
-    versioned_file: {{tf_state_file_tooling}}
-    region_name: {{aws_default_region}}
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_tooling))
+    region_name: ((aws_default_region))
 
 - name: terraform-yaml-development
   type: s3-iam
   source:
-    bucket: {{aws_s3_tfstate_bucket}}
-    versioned_file: {{tf_state_file_development}}
-    region_name: {{aws_default_region}}
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_development))
+    region_name: ((aws_default_region))
 
 - name: plan-timer
   type: time
@@ -289,7 +285,7 @@ resources:
 - name: slack
   type: slack-notification
   source:
-    url: {{slack-webhook-url}}
+    url: ((slack-webhook-url))
 
 resource_types:
 - name: s3-iam
