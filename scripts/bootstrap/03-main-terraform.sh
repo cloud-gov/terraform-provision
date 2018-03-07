@@ -21,6 +21,7 @@ cat ${TERRAFORM_PIPELINE_FILE} | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/cg-provi
 fly --target bootstrap set-pipeline \
   --pipeline terraform-provision \
   --config ${WORKSPACE_DIR}/cg-provision-pipeline.yml \
+  --load-vars-from ci/concourse-defaults.yml \
   --load-vars-from ${TERRAFORM_PROVISION_CREDENTIALS_FILE}
 fly --target bootstrap unpause-pipeline --pipeline terraform-provision
 
