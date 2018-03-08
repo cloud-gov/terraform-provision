@@ -17,6 +17,7 @@ bosh create-env ../concourse-deployment/lite/concourse.yml \
   -o ./bosh/opsfiles/basic-auth.yml \
   -o ./bosh/opsfiles/self-signed-tls.yml \
   -o ./bosh/opsfiles/iam-instance-profile.yml \
+  -o ./bosh/opsfiles/bootstrap-instance-size.yml \
   -l ../concourse-deployment/versions.yml \
   -o ./bosh/opsfiles/ssh-tunnel.yml \
   -o ./bosh/opsfiles/vip-network.yml \
