@@ -24,10 +24,15 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
         1. Populate these and encrypt with `../cg-scripts/encrypt.sh`, upload to `${VARZ_BUCKET}` with the aws cli, and set the respective passphrases in `env.sh`.
         1. **TODO: generate all secrets for bosh & concourse / pull values from tf.**
     1. `source env.sh`
+    1. If the above step fails, you may have to comment out the `TF_STATE_BUCKET` line.
 1. Create bootstrap terraform stack: `./scripts/bootstrap/01-bootstrap-terraform.sh`
     1. Note the `public_ip` output. This is the address of your bootstrap concourse instance.
 1. Deploy a bootstrap concourse instance: `./scripts/bootstrap/02-bootstrap-concourse.sh`
+    1. If, for some reason, this fails, and you want to start this step over, you can use the `./scripts/bootstrap/destroy-02-bootstrap-concourse.sh` script to do this, as there is a volume that persists otherwise.
     1. Login to the web ui at `https://public-ip:4443`, `bootstrap`/password in `${WORKSPACE_DIR}/bootstrap-concourse-creds.yml`.
+    1. If you commented out `TF_STATE_BUCKET` above:
+        1. Create the `${WORKSPACE_DIR}/cg-provision.yml` file, if you haven't already.
+        1. uncomment it and `source env.sh` again.
 1. Deploy main terraform: `./scripts/bootstrap/03-main-terraform.sh`
     1. Inspect the terraform plan, then run `terraform-provision/bootstrap-tooling` from the web ui.
     1. If you don't have a `star-fr-cloud-gov` certificate in the account, [upload it to aws](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate).
