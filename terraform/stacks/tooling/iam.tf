@@ -16,7 +16,7 @@ module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
   policy_name = "${var.stack_description}-bosh"
   aws_partition = "${local.aws_partition}"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 

@@ -22,7 +22,7 @@ module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
   policy_name = "${var.stack_description}-bosh"
   aws_partition = "${local.aws_partition}"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
@@ -38,7 +38,7 @@ module "logsearch_ingestor_policy" {
   policy_name = "${var.stack_description}-logsearch_ingestor"
   aws_partition = "${local.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
 }
 
 module "kubernetes_master_policy" {
@@ -73,7 +73,7 @@ module "cf_blobstore_policy" {
 module "s3_broker_policy" {
   source = "../../modules/iam_role_policy/s3_broker"
   policy_name = "${var.stack_description}-s3-broker"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   aws_partition = "${local.aws_partition}"
   bucket_prefix = "${var.bucket_prefix}"
   iam_path = "/${var.stack_prefix}/s3/"
@@ -82,7 +82,7 @@ module "s3_broker_policy" {
 module "aws_broker_policy" {
   source = "../../modules/iam_role_policy/aws_broker"
   policy_name = "${var.stack_description}-aws-broker"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   aws_partition = "${local.aws_partition}"
   aws_default_region = "${var.aws_default_region}"
   remote_state_bucket = "${var.remote_state_bucket}"
@@ -269,7 +269,7 @@ module "kubernetes_node_role" {
   source = "../../modules/iam_role/kubernetes_node"
   role_name = "${var.stack_description}-kubernetes-node"
   aws_partition = "${local.aws_partition}"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   master_role = "${module.kubernetes_master_role.role_name}"
   minion_role = "${module.kubernetes_minion_role.role_name}"
   assume_role_path = "/bosh-passed/"
@@ -280,7 +280,7 @@ module "kubernetes_logger_role" {
   role_name = "${var.stack_description}-kubernetes-logger"
   aws_default_region = "${var.aws_default_region}"
   aws_partition = "${local.aws_partition}"
-  account_id = "${local.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
   master_role = "${module.kubernetes_master_role.role_name}"
   minion_role = "${module.kubernetes_minion_role.role_name}"
   assume_role_path = "/bosh-passed/"
