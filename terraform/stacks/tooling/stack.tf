@@ -28,6 +28,7 @@ module "stack" {
   rds_private_cidr_1 = "${var.rds_private_cidr_1}"
   rds_private_cidr_2 = "${var.rds_private_cidr_2}"
   rds_password = "${var.rds_password}"
+  rds_multi_az = "${var.rds_multi_az}"
   rds_security_groups = ["${module.stack.bosh_security_group}"]
   rds_security_groups_count = "1"
 }
