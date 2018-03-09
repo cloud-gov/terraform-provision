@@ -24,6 +24,7 @@ module "base" {
       "${module.base.bosh_security_group}",
       "${var.target_bosh_security_group}"
     ]
+    rds_security_groups_count = 2
     target_monitoring_security_groups = "${var.target_monitoring_security_groups}"
     target_concourse_security_groups = "${var.target_concourse_security_groups}"
     use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
