@@ -9,7 +9,11 @@ image_resource:
 
 inputs:
 - name: cg-provision-repo
-- name: terraform-yaml
+- name: terraform-yaml-external
+- name: certificates
+
+outputs:
+- name: acme
 
 run:
-  path: cg-provision-repo/ci/acme-certificate.sh
+  path: cg-provision-repo/ci/provision-certificate.sh

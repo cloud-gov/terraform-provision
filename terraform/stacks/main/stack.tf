@@ -16,6 +16,11 @@ data "terraform_remote_state" "target_vpc" {
 
 data "aws_caller_identity" "current" {}
 
+data "aws_iam_server_certificate" "wildcard" {
+  name_prefix = "${var.wildcard_prefix}"
+  latest = true
+}
+
 locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
@@ -52,19 +57,14 @@ module "stack" {
     use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
 }
 
-data "aws_iam_server_certificate" "wildcard" {
-  name_prefix = "${var.wildcard_prefix}"
-  latest = true
-}
-
 module "cf" {
     source = "../../modules/cloudfoundry"
 
     account_id = "${data.aws_caller_identity.current.account_id}"
     stack_description = "${var.stack_description}"
     aws_partition = "${local.aws_partition}"
-    elb_main_cert_name = "${data.aws_iam_server_certificate.wildcard.arn}"
-    elb_apps_cert_name = "${var.apps_cert_name}"
+    elb_main_cert_name = "${var.main_cert_name != "" ? var.main_cert_name : data.aws_iam_server_certificate.wildcard.arn}"
+    elb_apps_cert_name = "${var.apps_cert_name != "" ? var.apps_cert_name : data.aws_iam_server_certificate.wildcard.arn}"
     elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
@@ -124,7 +124,7 @@ module "logsearch" {
     private_elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
     bosh_security_group = "${module.stack.bosh_security_group}"
     restricted_security_group = "${module.stack.restricted_web_traffic_security_group}"
-    elb_cert_name = "${var.main_cert_name}"
+    elb_cert_name = "${var.main_cert_name != "" ? var.main_cert_name : data.aws_iam_server_certificate.wildcard.arn}"
 }
 
 module "client-elbs" {
@@ -148,7 +148,7 @@ module "shibboleth" {
     stack_description = "${var.stack_description}"
     elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
-    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
+    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name != "" ? var.elb_shibboleth_cert_name : data.aws_iam_server_certificate.wildcard.arn}"
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
       module.stack.restricted_web_traffic_security_group}"]
