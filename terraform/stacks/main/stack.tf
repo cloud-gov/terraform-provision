@@ -52,15 +52,20 @@ module "stack" {
     use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
 }
 
+data "aws_iam_server_certificate" "wildcard" {
+  name_prefix = "${var.wildcard_prefix}"
+  latest = true
+}
+
 module "cf" {
     source = "../../modules/cloudfoundry"
 
     account_id = "${data.aws_caller_identity.current.account_id}"
     stack_description = "${var.stack_description}"
     aws_partition = "${local.aws_partition}"
-    elb_main_cert_name = "${var.main_cert_name}"
+    elb_main_cert_name = "${data.aws_iam_server_certificate.wildcard.arn}"
     elb_apps_cert_name = "${var.apps_cert_name}"
-    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
+    elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
       module.stack.restricted_web_traffic_security_group}"]

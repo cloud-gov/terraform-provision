@@ -55,6 +55,7 @@ jobs:
       TF_VAR_cdn_broker_bucket: {{cdn_broker_bucket_staging}}
       TF_VAR_cdn_broker_cloudfront_prefix: {{cdn_broker_cloudfront_prefix_staging}}
       TF_VAR_cdn_broker_hosted_zone: {{cdn_broker_hosted_zone_staging}}
+      TF_VAR_lets_encrypt_hosted_zone: {{lets_encrypt_hosted_zone_staging}}
   - &notify-slack
     put: slack
     params:
@@ -291,6 +292,7 @@ jobs:
       TF_VAR_main_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
       TF_VAR_apps_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
       TF_VAR_elb_shibboleth_cert_name: star.dev.us-gov-west-1.aws-us-gov.cloud.gov-03-17
+      TF_VAR_wildcard_prefix: lets-encrypt/dev-wildcard
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
@@ -654,6 +656,21 @@ jobs:
 #       TF_VAR_rds_private_cidr_1: {{production_rds_private_cidr_1}}
 #       TF_VAR_rds_private_cidr_2: {{production_rds_private_cidr_2}}
 
+- name: acme-certificate-development
+  plan:
+  - aggregate:
+    - get: acme-timer
+    - get: cg-provision-repo
+      resource: cg-provision-repo-development
+    - get: terraform-yaml
+      resource: terraform-yaml-external-staging
+  - task: acme-certificate
+    file: cg-provision-repo/ci/acme-certificate.yml
+    params:
+      CERT_PREFIX: lets-encrypt/dev-wildcard
+      DOMAIN: "*.dev.cdn-broker-test.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+
 resources:
 - name: pipeline-tasks
   type: git
@@ -727,6 +744,12 @@ resources:
     region_name: {{aws_external_region}}
 
 - name: plan-timer
+  type: time
+  source:
+    interval: 24h
+    location: America/New_York
+
+- name: acme-timer
   type: time
   source:
     interval: 24h

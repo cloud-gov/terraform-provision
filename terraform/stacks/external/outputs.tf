@@ -31,3 +31,20 @@ output "limit_check_access_key_id_curr" {
 output "limit_check_secret_access_key_curr" {
   value = "${module.limit_check_user.secret_access_key_curr}"
 }
+
+/* lets encrypt user */
+output "lets_encrypt_username" {
+  value = "${module.lets_encrypt_user.username}"
+}
+output "lets_encrypt_access_key_id_prev" {
+  value = "${module.lets_encrypt_user.access_key_id_prev}"
+}
+output "lets_encrypt_secret_access_key_prev" {
+  value = "${module.lets_encrypt_user.secret_access_key_prev}"
+}
+output "lets_encrypt_access_key_id_curr" {
+  value = "${module.lets_encrypt_user.access_key_id_curr}"
+}
+output "lets_encrypt_secret_access_key_curr" {
+  value = "${module.lets_encrypt_user.secret_access_key_curr}"
+}

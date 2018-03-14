@@ -36,6 +36,8 @@ variable "main_cert_name" {}
 
 variable "apps_cert_name" {}
 
+variable "wildcard_prefix" {}
+
 variable "services_cidr_1" {}
 variable "services_cidr_2" {}
 variable "kubernetes_cluster_id" {}

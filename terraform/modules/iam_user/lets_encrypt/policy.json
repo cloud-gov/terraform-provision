@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:GetChange"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:route53:::hostedzone/${hosted_zone}"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListServerCertificates",
+        "iam:UploadServerCertificate"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:iam::${account_id}:server-certificate/lets-encrypt/*"
+      ]
+    }
+  ]
+}
