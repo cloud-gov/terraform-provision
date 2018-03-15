@@ -289,7 +289,7 @@ jobs:
       TF_VAR_elasticache_private_cidr_2: {{development_elasticache_private_cidr_2}}
       TF_VAR_cf_rds_password: {{development_cf_rds_password}}
       TF_VAR_restricted_ingress_web_cidrs: {{development_restricted_ingress_web_cidrs}}
-      TF_VAR_wildcard_prefix: star.dev.cdn-broker-test.cloud.gov
+      TF_VAR_wildcard_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
@@ -671,14 +671,23 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
-      DOMAIN: "*.dev.cdn-broker-test.cloud.gov"
+      DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: {{aws_default_region}}
       CERT_PATH: /lets-encrypt/dev/
-      CERT_PREFIX: star.dev.cdn-broker-test.cloud.gov
+      CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
 
 resources:
 - name: pipeline-tasks
