@@ -52,7 +52,19 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
     1. Upload custom bosh releases to `${BOSH_RELEASES_BUCKET}` with aws cli.  Get the latest release of each type from `cloud-gov-bosh-releases` if you are building out a dev environment.
         1. **TODO: bootstrap custom bosh releases**
         1. This might help:  
-            ```aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out ; mkdir -p /tmp/releases ; awk '/-[0-9]*.tgz$/ {print $4}' /tmp/releases.out | sed 's/\(.*\)-[0-9.]*.tgz/\1/' | sort -u | while read line ; do sort -n /tmp/releases.out | awk '{print $4}' | egrep "^${line}.*tgz" | tail -1 ; done | while read release ; do aws s3 cp s3://cloud-gov-bosh-releases/$release /tmp/releases/ ; done
+            ```aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out
+            mkdir -p /tmp/releases
+            awk '/-[0-9]*.tgz$/ {print $4}' /tmp/releases.out | \
+                sed 's/\(.*\)-[0-9.]*.tgz/\1/' | \
+                sort -u | \
+                while read line ; do
+                    sort -n /tmp/releases.out | \
+                    awk '{print $4}' | egrep "^${line}.*tgz" | \
+                    tail -1
+                done | \
+                while read release ; do
+                    echo aws s3 cp s3://cloud-gov-bosh-releases/"${release}" /tmp/releases/
+                done
             <set up your AWS creds for the new account>
             aws s3 sync /tmp/releases s3://cloud-gov-bosh-releases-dev --sse AES256
             ```
@@ -61,7 +73,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. Deploy permanent concourse: `./scripts/bootstrap/07-deploy-concourse.sh`
     1. Verify main concourse comes up.
     1. The hostname can be found in `terraform/stacks/dns/stack.tf` Search for: `cloud_gov_ci_dev2_cloud_gov_a` in there for the dev env, for example.
-1. Teardown bootstrapand terraform stack: `./scripts/bootstrap/teardown.sh`
+1. Teardown bootstrap and terraform stack: `./scripts/bootstrap/teardown.sh`
 1. From the permanent concourse: Fly `cg-provision/ci/pipeline.yml` with the `cg-provision` credentials file you created earlier as `terraform-provision`
     1. `fly --target TARGET login --concourse-url=https://HOSTNAME/ --ca-cert tmp/realconcourse-cacrt.pem --username USERNAME --password XXX`
     1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline<maybe -development>.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
