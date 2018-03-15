@@ -671,6 +671,7 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
       DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate

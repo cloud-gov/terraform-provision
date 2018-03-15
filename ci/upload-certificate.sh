@@ -8,7 +8,7 @@ if [ -s acme/cert.pem ]; then
 
   aws iam upload-server-certificate \
     --path "${CERT_PATH}" \
-    --server-certificate-name "${CERT_PREFIX}-$(date +%Y-%m-%d)" \
+    --server-certificate-name "${CERT_PREFIX}-$(date +%Y-%m-%d-%H-%M)" \
     --certificate-body file://acme/cert.pem \
     --certificate-chain file://acme/chain.pem \
     --private-key file://acme/privkey.pem
