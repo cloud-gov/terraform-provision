@@ -576,7 +576,7 @@ resource "aws_route53_record" "cloud_gov_ops_login_dev2_cloud_gov_a" {
   name = "opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-bosh-uaa-1136711406.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.tooling-bosh-uaa-2083417090.us-gov-west-1.elb.amazonaws.com."
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
