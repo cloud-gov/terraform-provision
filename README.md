@@ -21,12 +21,13 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. Make a copy of `env.example.sh` and populate with AWS credentials, etc. (`cp env.example.sh env.sh`)
     1. An example `TERRAFORM_PROVISION_CREDENTIALS_FILE` can be found in `ci/credentials.example.yml`. Make a copy and place in your `${WORKSPACE_DIR}` from `env.sh`.
     1. `toolingbosh` and `concourse` currently need [pre-populated, encrypted secrets files](https://docs.cloud.gov/ops/updating-cf/#updating-secrets-yml): `tooling-bosh-main.yml`,`tooling-bosh-external.yml`,`concourse-tooling-prod.yml`.
-        1. Populate these and encrypt with `../cg-scripts/encrypt.sh`, upload to `${VARZ_BUCKET}` with the aws cli, and set the respective passphrases in `env.sh`.
+        1. Populate these and encrypt with `../cg-pipeline-tasks/encrypt.sh`, upload to `${VARZ_BUCKET}` with the aws cli, and set the respective passphrases in `env.sh`.
         1. **TODO: generate all secrets for bosh & concourse / pull values from tf.**
     1. `source env.sh`
     1. If the above step fails, you may have to comment out the `TF_STATE_BUCKET` line.
 1. Create bootstrap terraform stack: `./scripts/bootstrap/01-bootstrap-terraform.sh`
     1. Note the `public_ip` output. This is the address of your bootstrap concourse instance.
+1. Make sure you are on the GSA network, either via VPN, or being in a GSA office.
 1. Deploy a bootstrap concourse instance: `./scripts/bootstrap/02-bootstrap-concourse.sh`
     1. If, for some reason, this fails, and you want to start this step over, you can use the `./scripts/bootstrap/destroy-02-bootstrap-concourse.sh` script to do this, as there is a volume that persists otherwise.
     1. Login to the web ui at `https://public-ip:4443`, `bootstrap`/password in `${WORKSPACE_DIR}/bootstrap-concourse-creds.yml`.
@@ -38,6 +39,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
     1. If you don't have a `star-fr-cloud-gov` certificate in the account, [upload it to aws](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate).
     1. The `init-bosh-db` task will fail because we haven't setup peering yet.
 1. Update [cloud.gov DNS records](https://cloud.gov/docs/ops/dns/) for the `tooling-bosh-uaa` and `tooling-Concourse` ELBs created by terraform.
+    1. Look at the DNS names of these ELBs in the AWS console and plug those into https://github.com/18F/cg-provision/blob/master/terraform/stacks/dns/stack.tf  For the new dev env, you can edit the entries that have `dev2` in the name.  Be sure to leave the `dualstack.` on the front of the A record.
     1. Eventually you'll need to update records for all newly created ELBs.
     1. **TODO: automate DNS updates**
 1. Setup peering between bootstrap and main tooling: `./scripts/bootstrap/04-bootstrap-terraform-peering.sh`
@@ -47,8 +49,13 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
         1. `init-bosh-db` and `init-cf-db` will fail. This is fine, you'll run again in main concourse.
 1. Generate secrets for bosh and concourse: `./scripts/bootstrap/05-generate-secrets.sh`
 1. Deploy master bosh: `./scripts/bootstrap/06-deploy-bosh.sh`
-    1. Upload custom bosh releases to `${BOSH_RELEASES_BUCKET}` with aws cli.
+    1. Upload custom bosh releases to `${BOSH_RELEASES_BUCKET}` with aws cli.  Get the latest release of each type from `cloud-gov-bosh-releases` if you are building out a dev environment.
         1. **TODO: bootstrap custom bosh releases**
+        1. This might help:  
+            ```aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out ; mkdir -p /tmp/releases ; awk '/-[0-9]*.tgz$/ {print $4}' /tmp/releases.out | sed 's/\(.*\)-[0-9.]*.tgz/\1/' | sort -u | while read line ; do cat /tmp/releases.out | awk '{print $4}' | egrep "^${line}.*tgz" | tail -1 ; done | while read release ; do aws s3 cp s3://cloud-gov-bosh-releases/$release /tmp/releases/ ; done
+            <set up your AWS creds for the new account>
+            aws s3 sync /tmp/releases s3://cloud-gov-bosh-releases-dev --sse AES256
+            ```
     1. Run `deploy-bosh/common-releases-master` and `deploy-bosh/deploy-tooling-bosh`
     1. If you get a "x509: certificate signed by unknown authority" error, you will need to add the root CA cert generated to the `tmp/concourse-environment.yml` file in the `common_ca_cert_store` section.  You can get the root cert by looking at `echo "" |openssl s_client -connect opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov:443 -showcerts`.
 1. Deploy permanent concourse: `./scripts/bootstrap/07-deploy-concourse.sh`
