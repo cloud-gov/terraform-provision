@@ -9,7 +9,7 @@ resource "aws_elb" "cloudfoundry_elb_logging" {
     instance_port = 80
     instance_protocol = "TCP"
 
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_main_cert_name}"
+    ssl_certificate_id = "${var.elb_main_cert_id}"
   }
 
   health_check {

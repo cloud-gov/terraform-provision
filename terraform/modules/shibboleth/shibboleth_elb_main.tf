@@ -20,7 +20,7 @@ resource "aws_elb" "shibboleth_elb_main" {
     instance_port = 8080
     instance_protocol = "HTTP"
 
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_shibboleth_cert_name}"
+    ssl_certificate_id = "${var.elb_shibboleth_cert_id}"
   }
 
   health_check {

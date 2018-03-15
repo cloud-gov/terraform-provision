@@ -16,7 +16,7 @@ resource "aws_elb" "concourse_elb" {
     instance_protocol = "tcp"
     lb_port = 443
     lb_protocol = "ssl"
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
+    ssl_certificate_id = "${var.elb_cert_id}"
   }
 
   health_check {

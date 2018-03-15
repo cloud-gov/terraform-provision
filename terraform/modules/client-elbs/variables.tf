@@ -1,4 +1,4 @@
-variable "star_18f_gov_cert_name" {}
+variable "star_18f_gov_cert_id" {}
 
 variable "count" {}
 
