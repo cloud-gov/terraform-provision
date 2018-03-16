@@ -344,6 +344,23 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
+/* iam cert provision user */
+output "iam_cert_provision_username" {
+  value = "${module.iam_cert_provision_user.username}"
+}
+output "iam_cert_provision_access_key_id_prev" {
+  value = "${module.iam_cert_provision_user.access_key_id_prev}"
+}
+output "iam_cert_provision_secret_access_key_prev" {
+  value = "${module.iam_cert_provision_user.secret_access_key_prev}"
+}
+output "iam_cert_provision_access_key_id_curr" {
+  value = "${module.iam_cert_provision_user.access_key_id_curr}"
+}
+output "iam_cert_provision_secret_access_key_curr" {
+  value = "${module.iam_cert_provision_user.secret_access_key_curr}"
+}
+
 /* iam roles */
 output "default_profile" {
   value = "${module.default_role.profile_name}"

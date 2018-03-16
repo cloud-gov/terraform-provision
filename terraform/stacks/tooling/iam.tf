@@ -5,6 +5,13 @@ module "billing_user" {
   aws_partition = "${local.aws_partition}"
 }
 
+module "iam_cert_provision_user" {
+  source = "../../modules/iam_user/iam_cert_provision"
+  username = "cg-iam-cert-provision"
+  aws_partition = "${local.aws_partition}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
+}
+
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "blobstore"

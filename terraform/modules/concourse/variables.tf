@@ -56,9 +56,7 @@ variable "route_table_id" {}
 
 variable "vpc_id" {}
 
-variable "account_id" {}
-
-variable "elb_cert_name" {}
+variable "elb_cert_id" {}
 
 variable "elb_subnets" {
   type = "list"
@@ -67,5 +65,3 @@ variable "elb_subnets" {
 variable "elb_security_groups" {
   type = "list"
 }
-
-variable "aws_partition" {}

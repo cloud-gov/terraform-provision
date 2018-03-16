@@ -9,7 +9,7 @@ resource "aws_elb" "prometheus_elb" {
     lb_protocol = "HTTPS"
     instance_port = 8080
     instance_protocol = "HTTP"
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
+    ssl_certificate_id = "${var.elb_cert_id}"
   }
 
   health_check {

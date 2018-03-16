@@ -1,0 +1,15 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListServerCertificates",
+        "iam:UploadServerCertificate"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:iam::${account_id}:server-certificate/lets-encrypt/*"
+      ]
+    }
+  ]
+}

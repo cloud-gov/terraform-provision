@@ -9,7 +9,7 @@ resource "aws_elb" "platform_kibana_elb" {
     lb_protocol = "https"
     instance_port = 5600
     instance_protocol = "http"
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.elb_cert_name}"
+    ssl_certificate_id = "${var.elb_cert_id}"
   }
 
   health_check {

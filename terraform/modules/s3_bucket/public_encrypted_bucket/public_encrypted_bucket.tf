@@ -5,6 +5,14 @@ resource "aws_s3_bucket" "public_encrypted_bucket" {
         enabled = "${var.versioning}"
     }
 
+    server_side_encryption_configuration {
+        rule {
+            apply_server_side_encryption_by_default {
+                sse_algorithm = "AES256"
+            }
+        }
+    }
+
     policy = <<EOF
 {
     "Version": "2012-10-17",

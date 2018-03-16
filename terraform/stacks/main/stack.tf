@@ -16,6 +16,11 @@ data "terraform_remote_state" "target_vpc" {
 
 data "aws_caller_identity" "current" {}
 
+data "aws_iam_server_certificate" "wildcard" {
+  name_prefix = "${var.wildcard_prefix}"
+  latest = true
+}
+
 locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
@@ -55,12 +60,15 @@ module "stack" {
 module "cf" {
     source = "../../modules/cloudfoundry"
 
-    account_id = "${data.aws_caller_identity.current.account_id}"
     stack_description = "${var.stack_description}"
     aws_partition = "${local.aws_partition}"
-    elb_main_cert_name = "${var.main_cert_name}"
-    elb_apps_cert_name = "${var.apps_cert_name}"
-    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
+    elb_main_cert_id = "${var.main_cert_name != "" ?
+      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
+      data.aws_iam_server_certificate.wildcard.arn}"
+    elb_apps_cert_id = "${var.apps_cert_name != "" ?
+      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
+      data.aws_iam_server_certificate.wildcard.arn}"
+    elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
       module.stack.restricted_web_traffic_security_group}"]
@@ -111,15 +119,15 @@ module "kubernetes" {
 module "logsearch" {
     source = "../../modules/logsearch"
 
-    aws_partition = "${local.aws_partition}"
-    account_id = "${data.aws_caller_identity.current.account_id}"
     stack_description = "${var.stack_description}"
     vpc_id = "${module.stack.vpc_id}"
     public_elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
     private_elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
     bosh_security_group = "${module.stack.bosh_security_group}"
     restricted_security_group = "${module.stack.restricted_web_traffic_security_group}"
-    elb_cert_name = "${var.main_cert_name}"
+    elb_cert_id = "${var.main_cert_name != "" ?
+      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
+      data.aws_iam_server_certificate.wildcard.arn}"
 }
 
 module "client-elbs" {
@@ -134,7 +142,7 @@ module "client-elbs" {
       module.stack.web_traffic_security_group :
       module.stack.restricted_web_traffic_security_group}"]
     aws_partition = "${local.aws_partition}"
-    star_18f_gov_cert_name = "${var.18f_gov_elb_cert_name}"
+    star_18f_gov_cert_id = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}"
 }
 
 module "shibboleth" {
@@ -143,13 +151,13 @@ module "shibboleth" {
     stack_description = "${var.stack_description}"
     elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
-    elb_shibboleth_cert_name = "${var.elb_shibboleth_cert_name}"
+    elb_shibboleth_cert_id = "${var.elb_shibboleth_cert_name != "" ?
+      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.elb_shibboleth_cert_name}" :
+      data.aws_iam_server_certificate.wildcard.arn}"
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :
       module.stack.restricted_web_traffic_security_group}"]
     stack_description = "${var.stack_description}"
-    account_id = "${data.aws_caller_identity.current.account_id}"
-    aws_partition = "${local.aws_partition}"
 }
 
 module "elasticache_broker_network" {

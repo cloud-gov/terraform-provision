@@ -32,9 +32,15 @@ variable "target_stack_name" {
   default = "tooling"
 }
 
-variable "main_cert_name" {}
-
-variable "apps_cert_name" {}
+variable "main_cert_name" {
+  default = ""
+}
+variable "apps_cert_name" {
+  default = ""
+}
+variable "wildcard_prefix" {
+  default = ""
+}
 
 variable "services_cidr_1" {}
 variable "services_cidr_2" {}
