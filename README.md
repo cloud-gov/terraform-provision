@@ -69,12 +69,18 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
             aws s3 sync /tmp/releases s3://cloud-gov-bosh-releases-dev --sse AES256
             ```
     1. Run `deploy-bosh/common-releases-master` and `deploy-bosh/deploy-tooling-bosh`
-    1. If you get a "x509: certificate signed by unknown authority" error, you will need to add the root CA cert generated to the `tmp/concourse-environment.yml` file in the `common_ca_cert_store` section.  You can get the root cert by looking at `echo "" |openssl s_client -connect opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov:443 -showcerts`.
+    1. If you get a "x509: certificate signed by unknown authority" error, you will need to add the root CA cert generated to the `tmp/concourse-environment.yml` file in the `common_ca_cert_store` section.  You can get the root cert by looking at `echo "" |openssl s_client -connect opslogin.<domain>:443 -showcerts`.  After you add it, rerun the 06 deploy script.
 1. Deploy permanent concourse: `./scripts/bootstrap/07-deploy-concourse.sh`
     1. Verify main concourse comes up.
     1. The hostname can be found in `terraform/stacks/dns/stack.tf` Search for: `cloud_gov_ci_dev2_cloud_gov_a` in there for the dev env, for example.
+    1. The username/pw can be found by getting the `CONCOURSE_SECRETS_PASSPHRASE` from `env.sh` and using it like so:
+        ```aws s3 cp s3://${VARZ_BUCKET}/concourse-tooling-prod.yml /tmp/
+        INPUT_FILE=/tmp/concourse-tooling-prod.yml OUTPUT_FILE=/tmp/concourse-tooling-prod-decrypted.yml PASSPHRASE=XXX ../cg-pipeline-tasks/decrypt.sh
+        grep basic_auth /tmp/concourse-tooling-prod-decrypted.yml
+        rm /tmp/concourse-tooling-prod-decrypted.yml /tmp/concourse-tooling-prod.yml
+        ```
 1. Teardown bootstrap and terraform stack: `./scripts/bootstrap/teardown.sh`
-1. From the permanent concourse: Fly `cg-provision/ci/pipeline.yml` with the `cg-provision` credentials file you created earlier as `terraform-provision`
+1. From the permanent concourse: Fly `cg-provision/ci/pipeline.yml` with the credentials you used to log into the concourse UI above.
     1. `fly --target TARGET login --concourse-url=https://HOSTNAME/ --ca-cert tmp/realconcourse-cacrt.pem --username USERNAME --password XXX`
     1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline<maybe -development>.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
     1. Select and unpause the `terraform-provision` pipeline in the UI.
@@ -95,7 +101,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. From the web UI in your bootstrap concourse, run `terraform-provision/destroy-*` for development, or staging and production.
 1. Run `destroy-tooling` in the `terraform-provision` pipeline.
 1. Teardown bootstrap concourse and terraform stack: `./scripts/bootstrap/teardown.sh`
-1. Delete the `${TF_STATE_BUCKET}`, `${VARS_BUCKET}`, `${SEMVER_BUCKET}`, and `${BOSH_RELEASES_BLOBSTORE_BUCKET}` through the AWS console.
+1. Delete the `${TF_STATE_BUCKET}`, `${VARZ_BUCKET}`, `${SEMVER_BUCKET}`, and `${BOSH_RELEASES_BLOBSTORE_BUCKET}` through the AWS console.
 
 ## Validating `terraform plan` locally (beta)
 
