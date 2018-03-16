@@ -18,7 +18,7 @@ resource "aws_elb" "star_18f_gov_elb" {
     instance_port = 80
     instance_protocol = "HTTP"
 
-    ssl_certificate_id = "arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/${var.star_18f_gov_cert_name}"
+    ssl_certificate_id = "${var.star_18f_gov_cert_id}"
   }
 
   health_check {

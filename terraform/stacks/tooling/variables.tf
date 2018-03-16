@@ -61,6 +61,13 @@ variable "bosh_uaa_elb_cert_name" {
     default = "star-fr-cloud-gov-2017-05"
 }
 
+variable "wildcard_production_prefix" {
+  default = ""
+}
+variable "wildcard_staging_prefix" {
+  default = ""
+}
+
 variable "restricted_ingress_web_cidrs" {
   type = "list"
 }

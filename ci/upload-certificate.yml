@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: 18fgsa/concourse-task
+
+inputs:
+- name: cg-provision-repo
+- name: terraform-yaml-tooling
+- name: acme
+
+run:
+  path: cg-provision-repo/ci/upload-certificate.sh

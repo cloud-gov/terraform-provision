@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: "3.6"
+
+inputs:
+- name: cg-provision-repo
+- name: terraform-yaml-external
+- name: certificates
+
+outputs:
+- name: acme
+
+run:
+  path: cg-provision-repo/ci/provision-certificate.sh
