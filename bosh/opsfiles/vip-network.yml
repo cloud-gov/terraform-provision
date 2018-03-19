@@ -1,0 +1,11 @@
+- type: replace
+  path: /networks/-
+  value:
+    name: public
+    type: vip
+
+- type: replace
+  path: /instance_groups/name=concourse/networks/-
+  value:
+    name: public
+    static_ips: [((public_ip))]

@@ -25,3 +25,6 @@ variable "vpc_id" {}
 variable "security_groups" {
   type = "list"
 }
+
+variable "security_groups_count" {
+}

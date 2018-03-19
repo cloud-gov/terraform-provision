@@ -44,6 +44,10 @@ variable "rds_parameter_group_family" {
   default = "postgres9.6"
 }
 
-variable "final_snapshot_identifier" {
+variable "rds_multi_az" {
+  default = "true"
+}
+
+variable "rds_final_snapshot_identifier" {
   default = ""
 }

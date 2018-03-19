@@ -9,7 +9,9 @@ resource "aws_elb" "bosh_uaa_elb" {
     instance_port = 8081
     instance_protocol = "HTTP"
 
-    ssl_certificate_id = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.bosh_uaa_elb_cert_name}"
+    ssl_certificate_id = "${var.bosh_uaa_elb_cert_name != "" ?
+      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.bosh_uaa_elb_cert_name}" :
+      data.aws_iam_server_certificate.wildcard_staging.arn}"
   }
 
   health_check {

@@ -38,7 +38,9 @@ module "stack" {
   rds_private_cidr_1 = "${var.rds_private_cidr_1}"
   rds_private_cidr_2 = "${var.rds_private_cidr_2}"
   rds_password = "${var.rds_password}"
+  rds_multi_az = "${var.rds_multi_az}"
   rds_security_groups = ["${module.stack.bosh_security_group}"]
+  rds_security_groups_count = "1"
 }
 
 module "concourse_production" {
@@ -53,6 +55,8 @@ module "concourse_production" {
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-production"
   rds_instance_type = "db.m3.xlarge"
+  rds_multi_az = "${var.rds_multi_az}"
+  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
   elb_cert_id = "${var.concourse_prod_elb_cert_name != "" ?
     "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_prod_elb_cert_name}" :
     data.aws_iam_server_certificate.wildcard_production.arn}"
@@ -72,6 +76,8 @@ module "concourse_staging" {
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-staging"
   rds_instance_type = "db.m3.medium"
+  rds_multi_az = "${var.rds_multi_az}"
+  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
   elb_cert_id = "${var.concourse_staging_elb_cert_name != "" ?
     "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_staging_elb_cert_name}" :
     data.aws_iam_server_certificate.wildcard_staging.arn}"
@@ -109,132 +115,10 @@ module "monitoring_staging" {
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
 }
 
-module "billing_bucket_staging" {
-  source = "../../modules/s3_bucket/encrypted_bucket"
-  bucket = "cg-billing-staging"
-  aws_partition = "${local.aws_partition}"
-}
-
-module "billing_bucket_production" {
-  source = "../../modules/s3_bucket/encrypted_bucket"
-  bucket = "cg-billing-production"
-  aws_partition = "${local.aws_partition}"
-}
-
-module "buildpack_notify_state_staging" {
-  source = "../../modules/s3_bucket/encrypted_bucket"
-  bucket = "buildpack-notify-state-staging"
-  aws_partition = "${local.aws_partition}"
-  versioning = "true"
-}
-
-module "buildpack_notify_state_production" {
-  source = "../../modules/s3_bucket/encrypted_bucket"
-  bucket = "buildpack-notify-state-production"
-  aws_partition = "${local.aws_partition}"
-  versioning = "true"
-}
-
-module "cg_binaries_bucket" {
-  source = "../../modules/s3_bucket/encrypted_bucket"
-  bucket = "cg-binaries"
-  aws_partition = "${local.aws_partition}"
-}
-
-module "billing_user" {
-  source = "../../modules/iam_user/billing_user"
-  username = "cg-billing"
-  billing_bucket = "cg-billing-*"
-  aws_partition = "${local.aws_partition}"
-}
-
-module "iam_cert_provision_user" {
-  source = "../../modules/iam_user/iam_cert_provision"
-  username = "cg-iam-cert-provision"
-  aws_partition = "${local.aws_partition}"
-  account_id = "${data.aws_caller_identity.current.account_id}"
-}
-
-module "blobstore_policy" {
-  source = "../../modules/iam_role_policy/blobstore"
-  policy_name = "blobstore"
-  aws_partition = "${local.aws_partition}"
-  bucket_name = "${var.blobstore_bucket_name}"
-}
-
-module "cloudwatch_policy" {
-  source = "../../modules/iam_role_policy/cloudwatch"
-  policy_name = "${var.stack_description}-cloudwatch"
-}
-
-module "bosh_policy" {
-  source = "../../modules/iam_role_policy/bosh"
-  policy_name = "${var.stack_description}-bosh"
-  aws_partition = "${local.aws_partition}"
-  account_id = "${data.aws_caller_identity.current.account_id}"
-  bucket_name = "${var.blobstore_bucket_name}"
-}
-
-module "bosh_compilation_policy" {
-  source = "../../modules/iam_role_policy/bosh_compilation"
-  policy_name = "${var.stack_description}-bosh-compilation"
-  aws_partition = "${local.aws_partition}"
-  bucket_name = "${var.blobstore_bucket_name}"
-}
-
-module "concourse_worker_policy" {
-  source = "../../modules/iam_role_policy/concourse_worker"
-  policy_name = "concourse-worker"
-  aws_partition = "${local.aws_partition}"
-  varz_bucket = "cloud-gov-varz"
-  varz_staging_bucket = "cloud-gov-varz-stage"
-  bosh_release_bucket = "cloud-gov-bosh-releases"
-  terraform_state_bucket = "terraform-state"
-  semver_bucket = "cg-semver"
-  buildpack_notify_bucket = "buildpack-notify-state-*"
-  billing_bucket = "cg-billing-*"
-  cg_binaries_bucket = "cg-binaries"
-}
-
-module "concourse_iaas_worker_policy" {
-  source = "../../modules/iam_role_policy/concourse_iaas_worker"
-  policy_name = "concourse-iaas-worker"
-}
-
-module "default_role" {
-  source = "../../modules/iam_role"
-  role_name = "${var.stack_description}-default"
-}
-
-module "master_bosh_role" {
-  source = "../../modules/iam_role"
-  role_name = "master-bosh"
-}
-
-module "bosh_role" {
-  source = "../../modules/iam_role"
-  role_name = "${var.stack_description}-bosh"
-}
-
-module "bosh_compilation_role" {
-  source = "../../modules/iam_role"
-  role_name = "${var.stack_description}-bosh-compilation"
-}
-
-module "concourse_worker_role" {
-  source = "../../modules/iam_role"
-  role_name = "tooling-concourse-worker"
-}
-
-module "concourse_iaas_worker_role" {
-  source = "../../modules/iam_role"
-  role_name = "tooling-concourse-iaas-worker"
-}
-
 resource "aws_eip" "production_dns_eip" {
   vpc = true
 
-  count = 4
+  count = "${var.dns_eip_count_production}"
 
   lifecycle {
     prevent_destroy = true
@@ -244,7 +128,7 @@ resource "aws_eip" "production_dns_eip" {
 resource "aws_eip" "staging_dns_eip" {
   vpc = true
 
-  count = 2
+  count = "${var.dns_eip_count_staging}"
 
   lifecycle {
     prevent_destroy = true
@@ -255,60 +139,4 @@ module "dns" {
   source = "../../modules/dns"
   stack_description = "${var.stack_description}"
   vpc_id = "${module.stack.vpc_id}"
-}
-
-resource "aws_iam_policy_attachment" "blobstore" {
-  name = "${var.stack_description}-blobstore"
-  policy_arn = "${module.blobstore_policy.arn}"
-  roles = [
-    "${module.default_role.role_name}",
-    "${module.bosh_role.role_name}",
-    "${module.concourse_worker_role.role_name}",
-    "${module.concourse_iaas_worker_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "cloudwatch" {
-  name = "${var.stack_description}-cloudwatch"
-  policy_arn = "${module.cloudwatch_policy.arn}"
-  roles = [
-    "${module.default_role.role_name}",
-    "${module.bosh_role.role_name}",
-    "${module.bosh_compilation_role.role_name}",
-    "${module.concourse_worker_role.role_name}",
-    "${module.concourse_iaas_worker_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "bosh" {
-  name = "${var.stack_description}-bosh"
-  policy_arn = "${module.bosh_policy.arn}"
-  roles = [
-    "${module.master_bosh_role.role_name}",
-    "${module.bosh_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "bosh_compilation" {
-  name = "${var.stack_description}-bosh-compilation"
-  policy_arn = "${module.bosh_compilation_policy.arn}"
-  roles = [
-    "${module.bosh_compilation_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "concourse_worker" {
-  name = "concourse_worker"
-  policy_arn = "${module.concourse_worker_policy.arn}"
-  roles = [
-    "${module.concourse_worker_role.role_name}"
-  ]
-}
-
-resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
-  name = "concourse_iaas_worker"
-  policy_arn = "${module.concourse_iaas_worker_policy.arn}"
-  roles = [
-    "${module.concourse_iaas_worker_role.role_name}"
-  ]
 }

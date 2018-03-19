@@ -25,6 +25,7 @@ module "rds_network" {
     az2 = "${var.az2}"
     vpc_id = "${module.vpc.vpc_id}"
     security_groups = "${var.rds_security_groups}"
+    security_groups_count = "${var.rds_security_groups_count}"
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     az1_route_table = "${module.vpc.private_route_table_az1}"
@@ -42,6 +43,7 @@ module "rds" {
   rds_db_name = "${var.rds_db_name}"
   rds_username = "${var.rds_username}"
   rds_password = "${var.rds_password}"
+  rds_multi_az = "${var.rds_multi_az}"
   rds_subnet_group = "${module.rds_network.rds_subnet_group}"
   rds_security_groups = ["${module.rds_network.rds_postgres_security_group}"]
 }

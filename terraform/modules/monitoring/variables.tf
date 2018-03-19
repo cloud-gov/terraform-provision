@@ -18,8 +18,6 @@ variable "elb_subnets" {
   type = "list"
 }
 
-variable "elb_security_groups" {
-  type = "list"
-}
+variable "elb_security_groups" {}
 
 variable "prometheus_elb_security_groups" {}
