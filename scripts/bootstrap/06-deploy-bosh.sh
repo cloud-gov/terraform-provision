@@ -49,8 +49,7 @@ fly --target bootstrap set-pipeline \
   --var nessus-agent-server=${NESSUS_SERVER} \
   --var tripwire-localpass=${TRIPWIRE_LOCALPASS} \
   --var tripwire-sitepass=${TRIPWIRE_SITEPASS} \
-  --var uaa-url-opslogin=https://opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov \
-  --var bosh-config-git-branch=concourse-defaults
+  --var uaa-url-opslogin=https://opslogin.dev2.us-gov-west-1.aws-us-gov.cloud.gov
 fly --target bootstrap unpause-pipeline --pipeline deploy-bosh
 
 # Deploy master bosh

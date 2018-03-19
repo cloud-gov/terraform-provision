@@ -12,8 +12,7 @@ fly --target bootstrap set-pipeline \
   --var concourse-production-deployment-bosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/tooling_bosh_static_ip) \
   --var concourse-production-private-passphrase=${CONCOURSE_SECRETS_PASSPHRASE} \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
-  --var slack-webhook-url=${SLACK_WEBHOOK_URL} \
-  --var concourse-config-git-branch=concourse-defaults
+  --var slack-webhook-url=${SLACK_WEBHOOK_URL}
 fly --target bootstrap unpause-pipeline --pipeline deploy-concourse
 
 # Deploy concourse

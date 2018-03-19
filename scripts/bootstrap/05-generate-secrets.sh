@@ -37,8 +37,6 @@ fly --target bootstrap set-pipeline \
   --load-vars-from ../cg-secret-rotation/ci/concourse-defaults.yml \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
   --var secrets-bucket-name=${VARZ_BUCKET} \
-  --var secret-rotation-git-branch=generate-straggler-passwords \
-  --var bosh-git-branch=concourse-defaults \
   --var generate-passphrase="true" \
   --var generate-postgres-passphrase="true" \
   --var generate-mbus-passphrase="true" \
