@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
 if [ -s acme/cert.pem ]; then
   export AWS_ACCESS_KEY_ID=$(spruce json terraform-yaml-tooling/state.yml | jq -r ".terraform_outputs.iam_cert_provision_access_key_id_curr")
