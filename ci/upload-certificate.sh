@@ -18,7 +18,7 @@ fi
 # Delete expired certificates
 cutoff=$(date --date '-1 month' --iso-8601=seconds --utc | sed 's/+0000$/Z/')
 certificates=$(jq -r --arg cutoff "${cutoff}" \
-  '.ServerCertificateMetadataList[] | select(.Expiration > $cutoff) | .ServerCertificateName' \
+  '.ServerCertificateMetadataList[] | select(.Expiration < $cutoff) | .ServerCertificateName' \
   < certificates/metadata)
 for certificate in ${certificates}; do
   aws iam delete-server-certificate --server-certificate-name "${certificate}"
