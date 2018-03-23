@@ -149,6 +149,7 @@ module "shibboleth" {
     source = "../../modules/shibboleth"
 
     stack_description = "${var.stack_description}"
+    vpc_id = "${module.stack.vpc_id}"
     elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
 
     elb_shibboleth_cert_id = "${var.elb_shibboleth_cert_name != "" ?

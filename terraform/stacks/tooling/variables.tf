@@ -72,6 +72,32 @@ variable "wildcard_staging_prefix" {
   default = ""
 }
 
+variable "production_cert_name" {
+  default = ""
+}
+variable "use_staging_certificate" {}
+variable "staging_cert_name" {
+  default = ""
+}
+
+variable "concourse_production_hosts" {
+  type = "list"
+}
+variable "concourse_staging_hosts" {
+  type = "list"
+}
+
+variable "monitoring_production_hosts" {
+  type = "list"
+}
+variable "monitoring_staging_hosts" {
+  type = "list"
+}
+
+variable "nessus_hosts" {
+  type = "list"
+}
+
 variable "restricted_ingress_web_cidrs" {
   type = "list"
 }

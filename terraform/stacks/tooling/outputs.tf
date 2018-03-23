@@ -240,6 +240,9 @@ output "production_concourse_elb_dns_name" {
 output "production_concourse_elb_name" {
   value = "${module.concourse_production.concourse_elb_name}"
 }
+output "production_concourse_lb_target_group" {
+  value = "${module.concourse_production.concourse_lb_target_group}"
+}
 
 /* Staging Concourse */
 output "staging_concourse_subnet" {
@@ -284,6 +287,9 @@ output "staging_concourse_elb_dns_name" {
 output "staging_concourse_elb_name" {
   value = "${module.concourse_staging.concourse_elb_name}"
 }
+output "staging_concourse_lb_target_group" {
+  value = "${module.concourse_staging.concourse_lb_target_group}"
+}
 
 /* Production Monitoring */
 output "production_monitoring_az" {
@@ -300,6 +306,9 @@ output "production_prometheus_elb_dns_name" {
 }
 output "production_prometheus_elb_name" {
   value = "${module.monitoring_production.prometheus_elb_name}"
+}
+output "production_monitoring_lb_target_group" {
+  value = "${module.monitoring_production.lb_target_group}"
 }
 
 output "monitoring_security_groups" {
@@ -325,6 +334,9 @@ output "staging_prometheus_elb_dns_name" {
 }
 output "staging_prometheus_elb_name" {
   value = "${module.monitoring_staging.prometheus_elb_name}"
+}
+output "staging_monitoring_lb_target_group" {
+  value = "${module.monitoring_staging.lb_target_group}"
 }
 
 /* billing user */
@@ -390,6 +402,10 @@ output "nessus_elb_name" {
   value = "${aws_elb.nessus_elb.name}"
 }
 
+output "nessus_target_group" {
+  value = "${aws_lb_target_group.nessus_target.name}"
+}
+
 output "nessus_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 71)}"
 }
@@ -398,9 +414,18 @@ output "nessus_static_ip" {
 output "bosh_uaa_elb_dns_name" {
   value = "${aws_elb.bosh_uaa_elb.dns_name}"
 }
-
 output "bosh_uaa_elb_name" {
   value = "${aws_elb.bosh_uaa_elb.name}"
+}
+
+output "opsuaa_lb_dns_name" {
+  value = "${aws_lb.opsuaa.dns_name}"
+}
+output "opsuaa_lb_name" {
+  value = "${aws_lb.opsuaa.name}"
+}
+output "opsuaa_target_group" {
+  value = "${aws_lb_target_group.opsuaa_target.name}"
 }
 
 /* DNS static IPs */

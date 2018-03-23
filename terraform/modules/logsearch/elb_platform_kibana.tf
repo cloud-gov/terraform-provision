@@ -24,3 +24,42 @@ resource "aws_elb" "platform_kibana_elb" {
     Name = "${var.stack_description}-platform-kibana"
   }
 }
+
+resource "aws_lb" "platform_kibana_lb" {
+  name = "${var.stack_description}-platform-kibana"
+  subnets = ["${var.public_elb_subnets}"]
+  security_groups = ["${var.restricted_security_group}"]
+  idle_timeout = 3600
+
+  tags {
+    Name = "${var.stack_description}-platform-kibana"
+  }
+}
+
+resource "aws_lb_target_group" "platform_kibana_target" {
+  name     = "${var.stack_description}-platform-kibana"
+  port     = 5600
+  protocol = "HTTP"
+  vpc_id   = "${var.vpc_id}"
+
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 10
+    timeout = 5
+    interval = 30
+    matcher = 403
+  }
+}
+
+resource "aws_lb_listener" "platform_kibana_listener" {
+  load_balancer_arn = "${aws_lb.platform_kibana_lb.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn   = "${var.elb_cert_id}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.platform_kibana_target.arn}"
+    type             = "forward"
+  }
+}
