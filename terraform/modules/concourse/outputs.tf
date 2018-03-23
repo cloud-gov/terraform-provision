@@ -49,3 +49,7 @@ output "concourse_elb_name" {
 output "concourse_elb_zone_id" {
   value = "${aws_elb.concourse_elb.zone_id}"
 }
+
+output "concourse_lb_target_group" {
+  value = "${aws_lb_target_group.concourse_target.name}"
+}

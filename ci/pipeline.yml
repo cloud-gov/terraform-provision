@@ -207,6 +207,14 @@ jobs:
       TF_VAR_rds_private_cidr_2: ((tooling_rds_private_cidr_2))
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
+      TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
+      TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
+      TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
+      TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
+      TF_VAR_main_cert_name: star-fr-cloud-gov-2017-05
+      TF_VAR_staging_cert_name: star-fr-stage-cloud-gov-2017-05
+      TF_VAR_use_staging_certificate: "true"
   - *notify-slack
 
 - name: bootstrap-tooling

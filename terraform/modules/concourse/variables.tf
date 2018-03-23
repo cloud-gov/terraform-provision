@@ -65,3 +65,9 @@ variable "elb_subnets" {
 variable "elb_security_groups" {
   type = "list"
 }
+
+variable "listener_arn" {}
+
+variable "hosts" {
+  type = "list"
+}

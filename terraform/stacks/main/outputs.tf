@@ -319,6 +319,16 @@ output "platform_kibana_elb_dns_name" {
   value = "${module.logsearch.platform_kibana_elb_dns_name}"
 }
 
+output "platform_kibana_lb_name" {
+  value = "${module.logsearch.platform_kibana_lb_name}"
+}
+output "platform_kibana_lb_dns_name" {
+  value = "${module.logsearch.platform_kibana_lb_dns_name}"
+}
+output "platform_kibana_lb_target_group" {
+  value = "${module.logsearch.platform_kibana_lb_target_group}"
+}
+
 /* Client ELBs */
 output "star_18f_gov_elb_name" {
   value = "${module.client-elbs.star_18f_gov_elb_name}"
@@ -339,6 +349,19 @@ output "shibboleth_elb_dns_name" {
 
 output "shibboleth_elb_zone_id" {
   value = "${module.shibboleth.shibboleth_elb_zone_id}"
+}
+
+/* Shibboleth Proxy LB */
+output "shibboleth_lb_name" {
+  value = "${module.shibboleth.shibboleth_lb_name}"
+}
+
+output "shibboleth_lb_dns_name" {
+  value = "${module.shibboleth.shibboleth_lb_dns_name}"
+}
+
+output "shibboleth_lb_target_group" {
+  value = "${module.shibboleth.shibboleth_lb_target_group}"
 }
 
 /* iam roles */
