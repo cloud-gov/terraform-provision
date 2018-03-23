@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 1.8.0"
+  version = "~> 1.12.0"
 }
 
 data "aws_caller_identity" "current" {}
