@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 1.8.0"
+  version = "~> 1.12.0"
 }
 
 data "terraform_remote_state" "target_vpc" {
