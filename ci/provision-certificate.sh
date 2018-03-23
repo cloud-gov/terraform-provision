@@ -16,7 +16,7 @@ chmod +x ./spruce
 expiration=$(
   ./jq -r '.ServerCertificateMetadataList | sort_by(.Expiration) | .[-1].Expiration' \
     < certificates/metadata)
-if [ $(date -d "+14 days" +%s) -lt $(date -d "${expiration}" +%s) ]; then
+if [ $(date --date "+14 days" +%s) -lt $(date --date "${expiration}" +%s) ]; then
   exit 0
 fi
 
