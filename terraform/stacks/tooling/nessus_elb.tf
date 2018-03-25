@@ -32,6 +32,7 @@ resource "aws_lb_target_group" "nessus_target" {
   vpc_id   = "${module.stack.vpc_id}"
 
   health_check {
+    protocol = "HTTPS"
     healthy_threshold = 2
     interval = 61
     timeout = 60

@@ -25,18 +25,7 @@ resource "aws_elb" "platform_kibana_elb" {
   }
 }
 
-resource "aws_lb" "platform_kibana_lb" {
-  name = "${var.stack_description}-platform-kibana"
-  subnets = ["${var.public_elb_subnets}"]
-  security_groups = ["${var.restricted_security_group}"]
-  idle_timeout = 3600
-
-  tags {
-    Name = "${var.stack_description}-platform-kibana"
-  }
-}
-
-resource "aws_lb_target_group" "platform_kibana_target" {
+resource "aws_lb_target_group" "platform_kibana" {
   name     = "${var.stack_description}-platform-kibana"
   port     = 5600
   protocol = "HTTP"
@@ -51,15 +40,19 @@ resource "aws_lb_target_group" "platform_kibana_target" {
   }
 }
 
-resource "aws_lb_listener" "platform_kibana_listener" {
-  load_balancer_arn = "${aws_lb.platform_kibana_lb.arn}"
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn   = "${var.elb_cert_id}"
+resource "aws_lb_listener_rule" "platform_kibana" {
+  count = "${length(var.hosts)}"
 
-  default_action {
-    target_group_arn = "${aws_lb_target_group.platform_kibana_target.arn}"
+  listener_arn = "${var.listener_arn}"
+  priority = 200
+
+  action {
+    target_group_arn = "${aws_lb_target_group.platform_kibana.arn}"
     type             = "forward"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["${element(var.hosts, count.index)}"]
   }
 }

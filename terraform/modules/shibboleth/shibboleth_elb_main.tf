@@ -1,14 +1,3 @@
-/*
- * Variables required:
- *   stack_description
- *   elb_subnets
- *   elb_shibboleth_cert_name
- *   account_id
- *   aws_partition
- *   elb_security_groups
- *
- */
-
 resource "aws_elb" "shibboleth_elb_main" {
   name = "${var.stack_description}-shibboleth-proxy"
   subnets = ["${var.elb_subnets}"]
@@ -37,24 +26,14 @@ resource "aws_elb" "shibboleth_elb_main" {
 
 }
 
-resource "aws_app_cookie_stickiness_policy" "shibboleth_jsession_stickiness_legacy" {
+resource "aws_app_cookie_stickiness_policy" "shibboleth_jsession_stickiness" {
   name = "${var.stack_description}-shibboleth-sticky-jsession"
   load_balancer = "${aws_elb.shibboleth_elb_main.name}"
   cookie_name = "JSESSIONID"
   lb_port = 443
 }
 
-resource "aws_lb" "shibboleth_lb" {
-  name = "${var.stack_description}-shibboleth-proxy"
-  subnets = ["${var.elb_subnets}"]
-  security_groups = ["${var.elb_security_groups}"]
-
-  tags {
-    Name = "${var.stack_description}-shibboleth-Proxy-ELB"
-  }
-}
-
-resource "aws_lb_target_group" "shibboleth_target" {
+resource "aws_lb_target_group" "shibboleth" {
   name     = "${var.stack_description}-shibboleth"
   port     = 8080
   protocol = "HTTP"
@@ -68,24 +47,26 @@ resource "aws_lb_target_group" "shibboleth_target" {
     unhealthy_threshold = 2
     matcher = 200
   }
-}
 
-resource "aws_lb_listener" "shibboleth_listener" {
-  load_balancer_arn = "${aws_lb.shibboleth_lb.arn}"
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn   = "${var.elb_shibboleth_cert_id}"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.shibboleth_target.arn}"
-    type             = "forward"
+  stickiness {
+    type = "lb_cookie"
+    enabled = true
   }
 }
 
-resource "aws_app_cookie_stickiness_policy" "shibboleth_jsession_stickiness" {
-  name = "${var.stack_description}-shibboleth-sticky-jsession"
-  load_balancer = "${aws_lb.shibboleth_lb.name}"
-  cookie_name = "JSESSIONID"
-  lb_port = 443
+resource "aws_lb_listener_rule" "shibboleth" {
+  count = "${length(var.hosts)}"
+
+  listener_arn = "${var.listener_arn}"
+  priority = 100
+
+  action {
+    target_group_arn = "${aws_lb_target_group.shibboleth.arn}"
+    type             = "forward"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["${element(var.hosts, count.index)}"]
+  }
 }
