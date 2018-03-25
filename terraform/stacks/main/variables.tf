@@ -35,11 +35,22 @@ variable "target_stack_name" {
 variable "main_cert_name" {
   default = ""
 }
+variable "use_apps_certificate" {}
 variable "apps_cert_name" {
   default = ""
 }
 variable "wildcard_prefix" {
   default = ""
+}
+
+variable "cf_hosts" {
+  type = "list"
+}
+variable "shibboleth_hosts" {
+  type = "list"
+}
+variable "platform_kibana_hosts" {
+  type = "list"
 }
 
 variable "services_cidr_1" {}

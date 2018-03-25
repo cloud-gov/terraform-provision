@@ -144,6 +144,13 @@ output "kubernetes_static_ips" {
   value = ["${data.template_file.kubernetes_static_ips.*.rendered}"]
 }
 
+/* Main LB */
+output "main_lb_name" {
+  value = "${aws_lb.main.name}"
+}
+output "main_lb_dns_name" {
+  value = "${aws_lb.main.dns_name}"
+}
 
 /* Security Groups */
 output "bosh_security_group" {
@@ -253,6 +260,9 @@ output "cf_apps_elb_dns_name" {
 output "cf_apps_elb_name" {
   value = "${module.cf.elb_apps_name}"
 }
+output "cf_target_group" {
+  value = "${module.cf.lb_target_group}"
+}
 
 /* CloudFoundry RDS */
 output "cf_rds_url" {
@@ -319,12 +329,6 @@ output "platform_kibana_elb_dns_name" {
   value = "${module.logsearch.platform_kibana_elb_dns_name}"
 }
 
-output "platform_kibana_lb_name" {
-  value = "${module.logsearch.platform_kibana_lb_name}"
-}
-output "platform_kibana_lb_dns_name" {
-  value = "${module.logsearch.platform_kibana_lb_dns_name}"
-}
 output "platform_kibana_lb_target_group" {
   value = "${module.logsearch.platform_kibana_lb_target_group}"
 }
@@ -342,24 +346,12 @@ output "star_18f_gov_elb_dns_name" {
 output "shibboleth_elb_name" {
   value = "${module.shibboleth.shibboleth_elb_name}"
 }
-
 output "shibboleth_elb_dns_name" {
   value = "${module.shibboleth.shibboleth_elb_dns_name}"
 }
-
 output "shibboleth_elb_zone_id" {
   value = "${module.shibboleth.shibboleth_elb_zone_id}"
 }
-
-/* Shibboleth Proxy LB */
-output "shibboleth_lb_name" {
-  value = "${module.shibboleth.shibboleth_lb_name}"
-}
-
-output "shibboleth_lb_dns_name" {
-  value = "${module.shibboleth.shibboleth_lb_dns_name}"
-}
-
 output "shibboleth_lb_target_group" {
   value = "${module.shibboleth.shibboleth_lb_target_group}"
 }

@@ -29,12 +29,6 @@ resource "aws_lb" "main" {
   idle_timeout = 3600
 }
 
-resource "aws_lb_target_group" "dummy" {
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = "${module.stack.vpc_id}"
-}
-
 resource "aws_lb_listener" "main" {
   load_balancer_arn = "${aws_lb.main.arn}"
   port              = "443"
@@ -48,6 +42,12 @@ resource "aws_lb_listener" "main" {
     target_group_arn = "${aws_lb_target_group.dummy.arn}"
     type             = "forward"
   }
+}
+
+resource "aws_lb_target_group" "dummy" {
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = "${module.stack.vpc_id}"
 }
 
 resource "aws_lb_listener_certificate" "main-staging" {

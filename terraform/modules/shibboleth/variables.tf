@@ -11,3 +11,8 @@ variable "elb_security_groups" {
 }
 
 variable "elb_shibboleth_cert_id" {}
+
+variable "listener_arn" {}
+variable "hosts" {
+  type = "list"
+}
