@@ -22,6 +22,10 @@ output "elb_apps_name" {
   value = "${aws_elb.cloudfoundry_elb_apps.name}"
 }
 
+output "lb_target_group" {
+  value = "${aws_lb_target_group.cf_target.name}"
+}
+
 output "cf_rds_url" {
   value = "${module.cf_database_96.rds_url}"
 }
