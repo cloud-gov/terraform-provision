@@ -55,6 +55,11 @@ resource "aws_lb_target_group" "opsuaa_target" {
     path = "/healthz"
     matcher = 200
   }
+
+  stickiness {
+    type = "lb_cookie"
+    enabled = true
+  }
 }
 
 resource "aws_lb_listener" "opsuaa_listener" {
