@@ -1,0 +1,75 @@
+# This file is meant to edit the pipeline.yml to make it suitable for the dev environment
+
+# these are taken care of in prod.
+- type: remove
+  path: /jobs/name=plan-dns
+
+- type: remove
+  path: /jobs/name=apply-dns
+
+# We want this so that things are cheaper
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_rds_multi_az?
+  value: "false"
+
+# change the cert that we use
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_wildcard_prefix?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# so we don't have name conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_bucket_prefix?
+  value: dev-
+
+# not sure why we don't want EIPs.
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_dns_eip_count_staging?
+  value: "0"
+
+# not sure why we don't want EIPs.
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_dns_eip_count_production?
+  value: "0"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+# # add some jobs that we don't want in production.
+# - type: replace
+#   path: /jobs/name=destroy-tooling
+#   value: |
+#     plan:
+#     - aggregate:
+#       - get: pipeline-tasks
+#       - get: cg-provision-repo
+#     - task: destroy-tooling
+#       tags: [iaas]
+#       file: pipeline-tasks/terraform-destroy.yml
+#       input_mapping: {terraform-templates: cg-provision-repo}
+#       params:
+#         PREVENT_PREVENT_DESTROY: "true"
+#         <<: *tooling-params
+

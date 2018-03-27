@@ -14,7 +14,7 @@ aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/ca-cert-store.c
 aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/master-bosh.crt --sse AES256
 
 # TODO: Fix worker tagging
-cat ../cg-deploy-bosh/ci/pipeline-development.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml
+cat ../cg-deploy-bosh/ci/pipeline.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml
 
 if [ ! -f "${WORKSPACE_DIR}/master-bosh-state.json" ]; then
   echo '{}' > ${WORKSPACE_DIR}/master-bosh-state.json

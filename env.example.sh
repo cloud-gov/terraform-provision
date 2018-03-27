@@ -4,8 +4,7 @@ export AWS_SECRET_ACCESS_KEY=
 export AWS_DEFAULT_REGION=us-gov-west-1
 export TF_VAR_az1=us-gov-west-1a
 
-# Choose between these two, depending on what you are bootstrapping.
-#export TERRAFORM_PIPELINE_FILE=ci/pipeline-development.yml
+# what pipeline to launch
 export TERRAFORM_PIPELINE_FILE=ci/pipeline.yml
 
 # Uncomment these after you've generated the TERRAFORM_PROVISION_CREDENTIALS_FILE

@@ -82,7 +82,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. Teardown bootstrap and terraform stack: `./scripts/bootstrap/teardown.sh`
 1. From the permanent concourse: Fly `cg-provision/ci/pipeline.yml` with the credentials you used to log into the concourse UI above.
     1. `fly --target TARGET login --concourse-url=https://HOSTNAME/ --ca-cert tmp/realconcourse-cacrt.pem --username USERNAME --password XXX`
-    1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline<maybe -development>.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
+    1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
     1. Select and unpause the `terraform-provision` pipeline in the UI.
     1. Run the `plan-bootstrap-tooling` job and verify there are no changes.
     1. Run the development, or staging and production plan and bootstrap jobs and verify they complete successfully.
