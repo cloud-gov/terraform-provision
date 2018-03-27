@@ -212,7 +212,7 @@ jobs:
       TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
       TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
       TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
-      TF_VAR_main_cert_name: star-fr-cloud-gov-2017-05
+      TF_VAR_production_cert_name: star-fr-cloud-gov-2017-05
       TF_VAR_staging_cert_name: star-fr-stage-cloud-gov-2017-05
       TF_VAR_use_staging_certificate: "true"
   - *notify-slack
