@@ -5,6 +5,11 @@ module "billing_user" {
   aws_partition = "${local.aws_partition}"
 }
 
+module "rds_storage_alert" {
+  source = "../../modules/iam_user/rds_storage_alert"
+  username = "cg-rds-storage-alert"
+}
+
 module "iam_cert_provision_user" {
   source = "../../modules/iam_user/iam_cert_provision"
   username = "cg-iam-cert-provision"
