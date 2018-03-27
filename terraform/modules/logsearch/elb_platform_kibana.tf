@@ -44,7 +44,7 @@ resource "aws_lb_listener_rule" "platform_kibana" {
   count = "${length(var.hosts)}"
 
   listener_arn = "${var.listener_arn}"
-  priority = 200
+  priority = ${200 + count.index}
 
   action {
     target_group_arn = "${aws_lb_target_group.platform_kibana.arn}"

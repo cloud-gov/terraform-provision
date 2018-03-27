@@ -52,7 +52,7 @@ resource "aws_lb_listener_rule" "cf" {
   count = "${length(var.hosts)}"
 
   listener_arn = "${var.listener_arn}"
-  priority = 1000
+  priority = ${1000 + count.index}
 
   action {
     type             = "forward"
@@ -69,7 +69,7 @@ resource "aws_lb_listener_rule" "cf_http" {
   count = "${length(var.hosts)}"
 
   listener_arn = "${var.http_listener_arn}"
-  priority = 1000
+  priority = ${1000 + count.index}
 
   action {
     type             = "forward"
