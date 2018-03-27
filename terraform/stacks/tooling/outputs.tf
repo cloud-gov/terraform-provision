@@ -344,6 +344,17 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
+/* rds storage user */
+output "rds_storage_alert_username" {
+  value = "${module.rds_storage_alert.username}"
+}
+output "rds_storage_alert_access_key_id" {
+  value = "${module.rds_storage_alert.access_key_id}"
+}
+output "rds_storage_alert_secret_access_key" {
+  value = "${module.rds_storage_alert.secret_access_key}"
+}
+
 /* iam cert provision user */
 output "iam_cert_provision_username" {
   value = "${module.iam_cert_provision_user.username}"
