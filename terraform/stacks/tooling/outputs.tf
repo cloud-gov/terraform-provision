@@ -197,6 +197,14 @@ output "bosh_rds_password" {
   value = "${module.stack.bosh_rds_password}"
 }
 
+/* Main LB */
+output "main_lb_name" {
+  value = "${aws_lb.main.name}"
+}
+output "main_lb_dns_name" {
+  value = "${aws_lb.main.dns_name}"
+}
+
 /* Production Concourse */
 output "production_concourse_subnet" {
   value = "${module.concourse_production.concourse_subnet}"

@@ -418,6 +418,7 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
+      TF_VAR_use_apps_certificate: "false"
       TF_VAR_cf_hosts: '["*.fr-stage.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
@@ -530,6 +531,7 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
+      TF_VAR_use_apps_certificate: "true"
       TF_VAR_cf_hosts: '["*.fr.cloud.gov", "*.app.cloud.gov", "*.18f.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
