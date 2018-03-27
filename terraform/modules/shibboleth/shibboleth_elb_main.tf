@@ -58,7 +58,7 @@ resource "aws_lb_listener_rule" "shibboleth" {
   count = "${length(var.hosts)}"
 
   listener_arn = "${var.listener_arn}"
-  priority = 100
+  priority = ${100 + count.index}
 
   action {
     target_group_arn = "${aws_lb_target_group.shibboleth.arn}"
