@@ -250,116 +250,6 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-
-- name: plan-bootstrap-development
-  plan:
-  - aggregate:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-development
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &development-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: development
-      TEMPLATE_SUBDIR: terraform/stacks/main
-      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_stack_description: development
-      TF_VAR_force_restricted_network: "yes"
-      TF_VAR_az1: ((aws_az1))
-      TF_VAR_az2: ((aws_az2))
-      TF_VAR_rds_password: ((development_rds_password))
-      TF_VAR_rds_multi_az: "false"
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_vpc_cidr: ((development_vpc_cidr))
-      TF_VAR_public_cidr_1: ((development_public_cidr_1))
-      TF_VAR_public_cidr_2: ((development_public_cidr_2))
-      TF_VAR_private_cidr_1: ((development_private_cidr_1))
-      TF_VAR_private_cidr_2: ((development_private_cidr_2))
-      TF_VAR_services_cidr_1: ((development_services_cidr_1))
-      TF_VAR_services_cidr_2: ((development_services_cidr_2))
-      TF_VAR_kubernetes_cluster_id: ((development_kubernetes_cluster_id))
-      TF_VAR_rds_private_cidr_1: ((development_rds_private_cidr_1))
-      TF_VAR_rds_private_cidr_2: ((development_rds_private_cidr_2))
-      TF_VAR_elasticache_private_cidr_1: ((development_elasticache_private_cidr_1))
-      TF_VAR_elasticache_private_cidr_2: ((development_elasticache_private_cidr_2))
-      TF_VAR_cf_rds_password: ((development_cf_rds_password))
-      TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
-      TF_VAR_wildcard_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-      TF_VAR_stack_prefix: cf-development
-      TF_VAR_bucket_prefix: development-cg
-      TF_VAR_blobstore_bucket_name: bosh-development-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_use_nat_gateway_eip: "false"
-  - *notify-slack
-
-- name: bootstrap-development
-  plan:
-  - aggregate:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-      passed: [plan-bootstrap-development]
-  - task: create-update-development
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *development-params
-      TERRAFORM_ACTION: apply
-  - aggregate:
-    - do:
-      - task: init-bosh-db
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: 18fgsa/concourse-task
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-bosh-db.sh
-      - task: init-cf-db
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: 18fgsa/concourse-task
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-cf-db.sh
-    - do:
-      - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform-state-to-yaml.yml
-        params:
-          STATE_FILE: terraform.tfstate
-      - put: terraform-yaml-development
-        params:
-          file: terraform-yaml/state.yml
-
 - name: plan-bootstrap-staging
   plan:
   - aggregate:
@@ -577,43 +467,6 @@ jobs:
       params:
         file: terraform-yaml/state.yml
 
-- name: acme-certificate-development
-  plan:
-  - aggregate:
-    - get: acme-timer
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-staging
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
-      CERT_PATH: /lets-encrypt/dev/
-  - task: provision-certificate
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
-      CERT_PATH: /lets-encrypt/dev/
-      CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov in ((env))
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
-
 resources:
 - name: pipeline-tasks
   type: git
@@ -627,12 +480,6 @@ resources:
     uri: ((cg_provision_git_url))
     branch: ((cg_provision_git_branch))
 
-- name: cg-provision-repo-development
-  type: git
-  source:
-    uri: ((cg_provision_development_git_url))
-    branch: ((cg_provision_development_git_branch))
-
 - name: pull-request
   type: pull-request
   source:
@@ -645,13 +492,6 @@ resources:
   source:
     bucket: ((aws_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_tooling))
-    region_name: ((aws_default_region))
-
-- name: terraform-yaml-development
-  type: s3-iam
-  source:
-    bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_development))
     region_name: ((aws_default_region))
 
 - name: terraform-yaml-staging

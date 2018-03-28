@@ -2,10 +2,10 @@
 
 # these are taken care of in prod.
 - type: remove
-  path: /jobs/name=plan-dns
+  path: /jobs/name=plan-dns?
 
 - type: remove
-  path: /jobs/name=apply-dns
+  path: /jobs/name=apply-dns?
 
 # We want this so that things are cheaper
 - type: replace
@@ -58,18 +58,65 @@
   value: dev-cg-binaries
 
 # # add some jobs that we don't want in production.
+# # XXX figure out how to do this properly.  Can't put an anchor in:
+# # https://github.com/cloudfoundry/bosh-cli/issues/398
 # - type: replace
-#   path: /jobs/name=destroy-tooling
-#   value: |
-#     plan:
-#     - aggregate:
-#       - get: pipeline-tasks
-#       - get: cg-provision-repo
-#     - task: destroy-tooling
-#       tags: [iaas]
-#       file: pipeline-tasks/terraform-destroy.yml
-#       input_mapping: {terraform-templates: cg-provision-repo}
-#       params:
-#         PREVENT_PREVENT_DESTROY: "true"
-#         <<: *tooling-params
+#   path: /jobs/name=destroy-tooling?
+#   value:
+#     - name: destroy-tooling
+#       plan:
+#       - aggregate:
+#         - get: pipeline-tasks
+#         - get: cg-provision-repo
+#       - task: destroy-tooling
+#         tags: [iaas]
+#         file: pipeline-tasks/terraform-destroy.yml
+#         input_mapping: {terraform-templates: cg-provision-repo}
+#         params:
+#           PREVENT_PREVENT_DESTROY: "true"
+#           <<: *tooling-params
+# 
+# XXX should probably create destroy-staging and destroy-production jobs too
 
+# add this job into dev env.  I used https://onlineyamltools.com/convert-yaml-to-json to
+# convert this job into a single line.  I have put the original job here so that you can
+# edit it more easily and then paste it back in.
+# - name: acme-certificate-development
+#   plan:
+#   - aggregate:
+#     - get: acme-timer
+#     - get: cg-provision-repo
+#       resource: cg-provision-repo
+#     - get: terraform-yaml-tooling
+#       resource: terraform-yaml-tooling
+#     - get: terraform-yaml-external
+#       resource: terraform-yaml-external-staging
+#   - task: check-certificates
+#     file: cg-provision-repo/ci/check-certificates.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/dev/
+#   - task: provision-certificate
+#     file: cg-provision-repo/ci/provision-certificate.yml
+#     params:
+#       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+#       DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
+#       EMAIL: cloud-gov-operations@gsa.gov
+#   - task: upload-certificate
+#     file: cg-provision-repo/ci/upload-certificate.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/dev/
+#       CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+#   on_failure:
+#     put: slack
+#     params:
+#       text: |
+#         :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov in ((env))
+#         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+#       channel: ((slack-channel))
+#       username: ((slack-username))
+#       icon_url: ((slack-icon-url))
+- type: replace
+  path: /jobs/name=acme-certificate-development?
+  value: {"name":"acme-certificate-development","plan":[{"aggregate":[{"get":"acme-timer"},{"get":"cg-provision-repo","resource":"cg-provision-repo"},{"get":"terraform-yaml-tooling","resource":"terraform-yaml-tooling"},{"get":"terraform-yaml-external","resource":"terraform-yaml-external-staging"}]},{"task":"check-certificates","file":"cg-provision-repo/ci/check-certificates.yml","params":{"AWS_DEFAULT_REGION":"((aws_default_region))","CERT_PATH":"/lets-encrypt/dev/"}},{"task":"provision-certificate","file":"cg-provision-repo/ci/provision-certificate.yml","params":{"ACME_SERVER":"https://acme-v02.api.letsencrypt.org/directory","DOMAIN":"*.dev.us-gov-west-1.aws-us-gov.cloud.gov","EMAIL":"cloud-gov-operations@gsa.gov"}},{"task":"upload-certificate","file":"cg-provision-repo/ci/upload-certificate.yml","params":{"AWS_DEFAULT_REGION":"((aws_default_region))","CERT_PATH":"/lets-encrypt/dev/","CERT_PREFIX":"star.dev.us-gov-west-1.aws-us-gov.cloud.gov"}}],"on_failure":{"put":"slack","params":{"text":":x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov in ((env))\n<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>\n","channel":"((slack-channel))","username":"((slack-username))","icon_url":"((slack-icon-url))"}}}
