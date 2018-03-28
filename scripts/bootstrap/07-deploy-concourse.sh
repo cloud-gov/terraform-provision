@@ -13,7 +13,7 @@ fly --target bootstrap set-pipeline \
   --var concourse-production-private-passphrase=${CONCOURSE_SECRETS_PASSPHRASE} \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
   --var slack-webhook-url=${SLACK_WEBHOOK_URL} \
-  --ops-file ci/opsfiles/replace-pipeline-withdevstuff.yml
+  --ops-file bosh/opsfiles/development.yml
 fly --target bootstrap unpause-pipeline --pipeline deploy-concourse
 
 # Deploy concourse
