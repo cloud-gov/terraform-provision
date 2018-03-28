@@ -197,6 +197,14 @@ output "bosh_rds_password" {
   value = "${module.stack.bosh_rds_password}"
 }
 
+/* Main LB */
+output "main_lb_name" {
+  value = "${aws_lb.main.name}"
+}
+output "main_lb_dns_name" {
+  value = "${aws_lb.main.dns_name}"
+}
+
 /* Production Concourse */
 output "production_concourse_subnet" {
   value = "${module.concourse_production.concourse_subnet}"
@@ -239,6 +247,9 @@ output "production_concourse_elb_dns_name" {
 }
 output "production_concourse_elb_name" {
   value = "${module.concourse_production.concourse_elb_name}"
+}
+output "production_concourse_lb_target_group" {
+  value = "${module.concourse_production.concourse_lb_target_group}"
 }
 
 /* Staging Concourse */
@@ -284,6 +295,9 @@ output "staging_concourse_elb_dns_name" {
 output "staging_concourse_elb_name" {
   value = "${module.concourse_staging.concourse_elb_name}"
 }
+output "staging_concourse_lb_target_group" {
+  value = "${module.concourse_staging.concourse_lb_target_group}"
+}
 
 /* Production Monitoring */
 output "production_monitoring_az" {
@@ -300,6 +314,9 @@ output "production_prometheus_elb_dns_name" {
 }
 output "production_prometheus_elb_name" {
   value = "${module.monitoring_production.prometheus_elb_name}"
+}
+output "production_monitoring_lb_target_group" {
+  value = "${module.monitoring_production.lb_target_group}"
 }
 
 output "monitoring_security_groups" {
@@ -326,6 +343,9 @@ output "staging_prometheus_elb_dns_name" {
 output "staging_prometheus_elb_name" {
   value = "${module.monitoring_staging.prometheus_elb_name}"
 }
+output "staging_monitoring_lb_target_group" {
+  value = "${module.monitoring_staging.lb_target_group}"
+}
 
 /* billing user */
 output "billing_username" {
@@ -342,6 +362,17 @@ output "billing_access_key_id_curr" {
 }
 output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
+}
+
+/* rds storage user */
+output "rds_storage_alert_username" {
+  value = "${module.rds_storage_alert.username}"
+}
+output "rds_storage_alert_access_key_id" {
+  value = "${module.rds_storage_alert.access_key_id}"
+}
+output "rds_storage_alert_secret_access_key" {
+  value = "${module.rds_storage_alert.secret_access_key}"
 }
 
 /* iam cert provision user */
@@ -390,6 +421,10 @@ output "nessus_elb_name" {
   value = "${aws_elb.nessus_elb.name}"
 }
 
+output "nessus_target_group" {
+  value = "${aws_lb_target_group.nessus_target.name}"
+}
+
 output "nessus_static_ip" {
   value = "${cidrhost("${var.private_cidr_1}", 71)}"
 }
@@ -398,9 +433,18 @@ output "nessus_static_ip" {
 output "bosh_uaa_elb_dns_name" {
   value = "${aws_elb.bosh_uaa_elb.dns_name}"
 }
-
 output "bosh_uaa_elb_name" {
   value = "${aws_elb.bosh_uaa_elb.name}"
+}
+
+output "opsuaa_lb_dns_name" {
+  value = "${aws_lb.opsuaa.dns_name}"
+}
+output "opsuaa_lb_name" {
+  value = "${aws_lb.opsuaa.name}"
+}
+output "opsuaa_target_group" {
+  value = "${aws_lb_target_group.opsuaa_target.name}"
 }
 
 /* DNS static IPs */

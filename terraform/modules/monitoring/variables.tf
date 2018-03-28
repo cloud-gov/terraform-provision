@@ -21,3 +21,9 @@ variable "elb_subnets" {
 variable "elb_security_groups" {}
 
 variable "prometheus_elb_security_groups" {}
+
+variable "listener_arn" {}
+
+variable "hosts" {
+  type = "list"
+}

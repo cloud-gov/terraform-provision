@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 1.8.0"
+  version = "~> 1.12.0"
 }
 
 data "aws_caller_identity" "current" {}
@@ -20,6 +20,43 @@ data "aws_iam_server_certificate" "wildcard_staging" {
 
 locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
+}
+
+resource "aws_lb" "main" {
+  name = "${var.stack_description}-main"
+  subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+  security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  idle_timeout = 3600
+}
+
+resource "aws_lb_listener" "main" {
+  load_balancer_arn = "${aws_lb.main.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn = "${var.production_cert_name != "" ?
+    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.production_cert_name}" :
+    data.aws_iam_server_certificate.wildcard_production.arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.dummy.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_target_group" "dummy" {
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = "${module.stack.vpc_id}"
+}
+
+resource "aws_lb_listener_certificate" "main-staging" {
+  count = "${var.use_staging_certificate ? 1 : 0}"
+
+  listener_arn    = "${aws_lb_listener.main.arn}"
+  certificate_arn = "${var.staging_cert_name != "" ?
+    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.staging_cert_name}" :
+    data.aws_iam_server_certificate.wildcard_staging.arn}"
 }
 
 module "stack" {
@@ -62,6 +99,8 @@ module "concourse_production" {
     data.aws_iam_server_certificate.wildcard_production.arn}"
   elb_subnets = ["${module.stack.public_subnet_az1}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  listener_arn = "${aws_lb_listener.main.arn}"
+  hosts = ["${var.concourse_production_hosts}"]
 }
 
 module "concourse_staging" {
@@ -83,6 +122,8 @@ module "concourse_staging" {
     data.aws_iam_server_certificate.wildcard_staging.arn}"
   elb_subnets = ["${module.stack.public_subnet_az2}"]
   elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  listener_arn = "${aws_lb_listener.main.arn}"
+  hosts = ["${var.concourse_staging_hosts}"]
 }
 
 module "monitoring_production" {
@@ -98,6 +139,8 @@ module "monitoring_production" {
   elb_subnets = ["${module.stack.public_subnet_az1}"]
   elb_security_groups = ["${module.stack.web_traffic_security_group}"]
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
+  listener_arn = "${aws_lb_listener.main.arn}"
+  hosts = ["${var.monitoring_production_hosts}"]
 }
 
 module "monitoring_staging" {
@@ -113,6 +156,8 @@ module "monitoring_staging" {
   elb_subnets = ["${module.stack.public_subnet_az2}"]
   elb_security_groups = ["${module.stack.web_traffic_security_group}"]
   prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
+  listener_arn = "${aws_lb_listener.main.arn}"
+  hosts = ["${var.monitoring_staging_hosts}"]
 }
 
 resource "aws_eip" "production_dns_eip" {
