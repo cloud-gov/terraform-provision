@@ -1,9 +1,16 @@
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "aws_region" {}
+
 terraform {
   backend "s3" {}
 }
 
 provider "aws" {
   version = "~> 1.12.0"
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region = "${var.aws_region}"
 }
 
 variable "cloudfront_zone_id" {
@@ -22,6 +29,7 @@ variable "cloudfoundry_elb_logging_production" {
 }
 
 variable "remote_state_bucket" {}
+variable "remote_state_region" {}
 
 variable "tooling_stack_name" {}
 
@@ -29,6 +37,7 @@ data "terraform_remote_state" "tooling" {
   backend = "s3"
   config {
     bucket = "${var.remote_state_bucket}"
+    region = "${var.remote_state_region}"
     key = "${var.tooling_stack_name}/terraform.tfstate"
   }
 }
