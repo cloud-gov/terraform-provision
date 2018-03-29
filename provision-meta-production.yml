@@ -1,0 +1,4 @@
+meta:
+  domain: fr.cloud.gov
+  env: PROD
+  metaname: production
