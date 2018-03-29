@@ -21,11 +21,16 @@ variable "cloudfoundry_elb_logging_production" {
   default = "dualstack.production-CloudFoundry-Logging-910586631.us-gov-west-1.elb.amazonaws.com"
 }
 
-variable "elb_prometheus_staging" {
-  default = "dualstack.staging-Prometheus-658384006.us-gov-west-1.elb.amazonaws.com"
-}
-variable "elb_prometheus_production" {
-  default = "dualstack.production-Prometheus-1971082399.us-gov-west-1.elb.amazonaws.com"
+variable "remote_state_bucket" {}
+
+variable "tooling_stack_name" {}
+
+data "terraform_remote_state" "tooling" {
+  backend = "s3"
+  config {
+    bucket = "${var.remote_state_bucket}"
+    key = "${var.tooling_stack_name}/terraform.tfstate"
+  }
 }
 
 resource "aws_route53_zone" "cloud_gov_zone" {
@@ -140,7 +145,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_a" {
   name = "prometheus.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -151,7 +156,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_aaaa" {
   name = "prometheus.fr-stage.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -162,7 +167,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_a" {
   name = "alertmanager.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -173,7 +178,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_aaaa" {
   name = "alertmanager.fr-stage.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -184,7 +189,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_a" {
   name = "grafana.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -195,7 +200,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_aaaa" {
   name = "grafana.fr-stage.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_staging}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -269,7 +274,7 @@ resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_a" {
   name = "ci.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-concourse-us-gov-west-1b-1960601158.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -280,7 +285,7 @@ resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_a" {
   name = "ci.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-concourse-us-gov-west-1a-1700142089.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -390,7 +395,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_a" {
   name = "prometheus.fr.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -401,7 +406,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_aaaa" {
   name = "prometheus.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -412,7 +417,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_a" {
   name = "alertmanager.fr.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -423,7 +428,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_aaaa" {
   name = "alertmanager.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -434,7 +439,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_a" {
   name = "grafana.fr.cloud.gov."
   type = "A"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -445,7 +450,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_aaaa" {
   name = "grafana.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "${var.elb_prometheus_production}"
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -524,7 +529,9 @@ resource "aws_route53_record" "cloud_gov_nessus_fr_cloud_gov_cname" {
   name = "nessus.fr.cloud.gov."
   type = "CNAME"
   ttl = 300
-  records = ["tooling-Nessus-1910336072.us-gov-west-1.elb.amazonaws.com"]
+  records = [
+    "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
+  ]
 }
 
 resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_a" {
@@ -543,7 +550,7 @@ resource "aws_route53_record" "cloud_gov_ops_uaa_fr_cloud_gov_a" {
   name = "opsuaa.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-bosh-uaa-1089350571.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.tooling.opsuaa_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -565,7 +572,7 @@ resource "aws_route53_record" "cloud_gov_ops_login_fr_cloud_gov_a" {
   name = "opslogin.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.tooling-bosh-uaa-1089350571.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.tooling.opsuaa_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }

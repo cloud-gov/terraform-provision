@@ -154,6 +154,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
       AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
       AWS_DEFAULT_REGION: ((aws_external_region))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_tooling_stack_name: tooling
   - *notify-slack
 
 - name: apply-dns
