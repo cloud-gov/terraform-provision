@@ -115,16 +115,13 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
-    additional_certificates = ["${compact(list(
-      "${var.use_apps_certificate == "true" ?
-        "${var.apps_cert_name != "" ?
-          "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
-          data.aws_iam_server_certificate.wildcard.arn}" :
-        ""}",
-      "${var.18f_gov_elb_cert_name != "" ?
-        "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
-        ""}"
-    ))}"]
+    additional_certificates = ["${compact(
+      list(
+        "${var.18f_gov_elb_cert_name != "" ?
+          "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
+          ""}"
+      )
+    )}"]
 }
 
 module "diego" {

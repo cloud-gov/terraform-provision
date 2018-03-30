@@ -157,6 +157,7 @@ jobs:
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_remote_state_region: ((aws_default_region))
       TF_VAR_tooling_stack_name: tooling
+      TF_VAR_production_stack_name: production
       TF_VAR_staging_stack_name: staging
   - *notify-slack
 
