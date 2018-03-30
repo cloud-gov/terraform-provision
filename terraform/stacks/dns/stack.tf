@@ -21,14 +21,11 @@ variable "cloudfoundry_elb_logging_development" {
   default = "dualstack.development-CloudFoundry-Logging-1588361105.us-gov-west-1.elb.amazonaws.com"
 }
 
-variable "cloudfoundry_elb_logging_production" {
-  default = "dualstack.production-CloudFoundry-Logging-910586631.us-gov-west-1.elb.amazonaws.com"
-}
-
 variable "remote_state_bucket" {}
 variable "remote_state_region" {}
 
 variable "tooling_stack_name" {}
+variable "production_stack_name" {}
 variable "staging_stack_name" {}
 
 data "terraform_remote_state" "tooling" {
@@ -37,6 +34,15 @@ data "terraform_remote_state" "tooling" {
     bucket = "${var.remote_state_bucket}"
     region = "${var.remote_state_region}"
     key = "${var.tooling_stack_name}/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "production" {
+  backend = "s3"
+  config {
+    bucket = "${var.remote_state_bucket}"
+    region = "${var.remote_state_region}"
+    key = "${var.production_stack_name}/terraform.tfstate"
   }
 }
 
@@ -247,7 +253,7 @@ resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_a" {
   name = "*.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.production-cloudfoundry-main-748290002.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -258,7 +264,7 @@ resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_aaaa" {
   name = "*.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.production-cloudfoundry-main-748290002.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -269,7 +275,7 @@ resource "aws_route53_record" "cloud_gov_star_app_cloud_gov_a" {
   name = "*.app.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.production-cloudfoundry-apps-1021484088.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -280,7 +286,7 @@ resource "aws_route53_record" "cloud_gov_star_app_cloud_gov_aaaa" {
   name = "*.app.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.production-cloudfoundry-apps-1021484088.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -314,50 +320,6 @@ resource "aws_route53_record" "cloud_gov_ci_dev2_cloud_gov_a" {
   type = "A"
   alias {
     name = "dualstack.tooling-Concourse-us-gov-west-1a-1305041237.us-gov-west-1.elb.amazonaws.com."
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_loggregator_fr_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "loggregator.fr.cloud.gov."
-  type = "A"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_production}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_loggregator_fr_cloud_gov_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "loggregator.fr.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_production}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_doppler_fr_cloud_gov_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "doppler.fr.cloud.gov."
-  type = "A"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_production}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_doppler_fr_cloud_gov_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "doppler.fr.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_production}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
