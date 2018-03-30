@@ -73,9 +73,3 @@ variable "aws_partition" {}
 variable "kubernetes_cluster_id" {}
 
 variable "bucket_prefix" {}
-
-variable "listener_arn" {}
-variable "http_listener_arn" {}
-variable "hosts" {
-  type = "list"
-}

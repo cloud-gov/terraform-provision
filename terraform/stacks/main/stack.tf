@@ -49,17 +49,6 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-resource "aws_lb_listener" "main_http" {
-  load_balancer_arn = "${aws_lb.main.arn}"
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.dummy.arn}"
-    type             = "forward"
-  }
-}
-
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
@@ -142,9 +131,6 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
-    listener_arn = "${aws_lb_listener.main.arn}"
-    http_listener_arn = "${aws_lb_listener.main_http.arn}"
-    hosts = ["${var.cf_hosts}"]
 }
 
 module "diego" {

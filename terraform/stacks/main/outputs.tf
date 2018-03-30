@@ -152,6 +152,14 @@ output "main_lb_dns_name" {
   value = "${aws_lb.main.dns_name}"
 }
 
+/* CloudFoundry LB */
+output "cf_lb_name" {
+  value = "${module.cf.lb_name}"
+}
+output "cf_lb_dns_name" {
+  value = "${module.cf.lb_dns_name}"
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = "${module.stack.bosh_security_group}"
