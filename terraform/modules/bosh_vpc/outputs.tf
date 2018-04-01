@@ -38,11 +38,11 @@ output "public_route_table" {
 }
 
 output "nat_egress_ip_az1" {
-  value = "${aws_eip.az1_nat_eip.public_ip}"
+  value = "${join(",", aws_eip.az1_nat_eip.*.public_ip)}"
 }
 
 output "nat_egress_ip_az2" {
-  value = "${aws_eip.az2_nat_eip.public_ip}"
+  value = "${join(",", aws_eip.az2_nat_eip.*.public_ip)}"
 }
 
 output "nat_private_ip_az1" {
