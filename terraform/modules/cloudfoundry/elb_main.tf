@@ -32,6 +32,13 @@ resource "aws_elb" "cloudfoundry_elb_main" {
   }
 }
 
+resource "aws_lb" "cf" {
+  name = "${var.stack_description}-cloudfoundry"
+  subnets = ["${var.elb_subnets}"]
+  security_groups = ["${var.elb_security_groups}"]
+  idle_timeout = 3600
+}
+
 resource "aws_lb_target_group" "cf_target" {
   name     = "${var.stack_description}-cf"
   port     = 80
@@ -48,36 +55,26 @@ resource "aws_lb_target_group" "cf_target" {
   }
 }
 
-resource "aws_lb_listener_rule" "cf" {
-  count = "${length(var.hosts)}"
+resource "aws_lb_listener" "cf" {
+  load_balancer_arn = "${aws_lb.cf.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn = "${var.elb_main_cert_id}"
 
-  listener_arn = "${var.listener_arn}"
-  priority = "${1000 + count.index}"
-
-  action {
-    type             = "forward"
+  default_action {
     target_group_arn = "${aws_lb_target_group.cf_target.arn}"
-  }
-
-  condition {
-    field  = "host-header"
-    values = ["${element(var.hosts, count.index)}"]
+    type             = "forward"
   }
 }
 
-resource "aws_lb_listener_rule" "cf_http" {
-  count = "${length(var.hosts)}"
+resource "aws_lb_listener" "cf_http" {
+  load_balancer_arn = "${aws_lb.cf.arn}"
+  port              = "80"
+  protocol          = "HTTP"
 
-  listener_arn = "${var.http_listener_arn}"
-  priority = "${1000 + count.index}"
-
-  action {
-    type             = "forward"
+  default_action {
     target_group_arn = "${aws_lb_target_group.cf_target.arn}"
-  }
-
-  condition {
-    field  = "host-header"
-    values = ["${element(var.hosts, count.index)}"]
+    type             = "forward"
   }
 }

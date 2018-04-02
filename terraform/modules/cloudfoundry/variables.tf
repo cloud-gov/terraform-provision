@@ -2,6 +2,10 @@ variable "elb_main_cert_id" {}
 
 variable "elb_apps_cert_id" {}
 
+variable "additional_certificates" {
+  type = "list"
+}
+
 variable "elb_subnets" {
   type = "list"
 }
@@ -73,9 +77,3 @@ variable "aws_partition" {}
 variable "kubernetes_cluster_id" {}
 
 variable "bucket_prefix" {}
-
-variable "listener_arn" {}
-variable "http_listener_arn" {}
-variable "hosts" {
-  type = "list"
-}

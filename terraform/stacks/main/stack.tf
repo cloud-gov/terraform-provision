@@ -49,37 +49,10 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-resource "aws_lb_listener" "main_http" {
-  load_balancer_arn = "${aws_lb.main.arn}"
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.dummy.arn}"
-    type             = "forward"
-  }
-}
-
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
-}
-
-resource "aws_lb_listener_certificate" "main-apps" {
-  count = "${var.use_apps_certificate ? 1 : 0}"
-
-  listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "${var.apps_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
-    data.aws_iam_server_certificate.wildcard.arn}"
-}
-
-resource "aws_lb_listener_certificate" "main-18f" {
-  count = "${var.18f_gov_elb_cert_name != "" ? 1 : 0}"
-
-  listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}"
 }
 
 module "stack" {
@@ -142,9 +115,13 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
-    listener_arn = "${aws_lb_listener.main.arn}"
-    http_listener_arn = "${aws_lb_listener.main_http.arn}"
-    hosts = ["${var.cf_hosts}"]
+    additional_certificates = ["${compact(
+      list(
+        "${var.18f_gov_elb_cert_name != "" ?
+          "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
+          ""}"
+      )
+    )}"]
 }
 
 module "diego" {

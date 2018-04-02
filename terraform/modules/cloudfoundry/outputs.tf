@@ -22,8 +22,28 @@ output "elb_apps_name" {
   value = "${aws_elb.cloudfoundry_elb_apps.name}"
 }
 
+output "lb_name" {
+  value = "${aws_lb.cf.name}"
+}
+
+output "lb_dns_name" {
+  value = "${aws_lb.cf.dns_name}"
+}
+
+output "apps_lb_name" {
+  value = "${aws_lb.cf_apps.name}"
+}
+
+output "apps_lb_dns_name" {
+  value = "${aws_lb.cf_apps.dns_name}"
+}
+
 output "lb_target_group" {
   value = "${aws_lb_target_group.cf_target.name}"
+}
+
+output "apps_lb_target_group" {
+  value = "${aws_lb_target_group.cf_apps_target.name}"
 }
 
 output "cf_rds_url" {

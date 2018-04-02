@@ -43,9 +43,6 @@ variable "wildcard_prefix" {
   default = ""
 }
 
-variable "cf_hosts" {
-  type = "list"
-}
 variable "shibboleth_hosts" {
   type = "list"
 }

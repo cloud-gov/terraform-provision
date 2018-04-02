@@ -151,9 +151,14 @@ jobs:
       STACK_NAME: dns
       TEMPLATE_SUBDIR: terraform/stacks/dns
       S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
-      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
-      AWS_DEFAULT_REGION: ((aws_external_region))
+      TF_VAR_aws_access_key: ((aws_external_access_key_id))
+      TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
+      TF_VAR_aws_region: ((aws_external_region))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_remote_state_region: ((aws_default_region))
+      TF_VAR_tooling_stack_name: tooling
+      TF_VAR_production_stack_name: production
+      TF_VAR_staging_stack_name: staging
   - *notify-slack
 
 - name: apply-dns
@@ -306,7 +311,6 @@ jobs:
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "false"
       TF_VAR_use_apps_certificate: "false"
-      TF_VAR_cf_hosts: '["*.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
   - *notify-slack
@@ -419,7 +423,6 @@ jobs:
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
       TF_VAR_use_apps_certificate: "false"
-      TF_VAR_cf_hosts: '["*.fr-stage.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
   - *notify-slack
@@ -532,7 +535,6 @@ jobs:
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
       TF_VAR_use_apps_certificate: "true"
-      TF_VAR_cf_hosts: '["*.fr.cloud.gov", "*.app.cloud.gov", "*.18f.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
   - *notify-slack
