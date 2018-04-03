@@ -26,6 +26,7 @@ resource "aws_lb" "main" {
   name = "${var.stack_description}-main"
   subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
   security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  ip_address_type = "dualstack"
   idle_timeout = 3600
 }
 

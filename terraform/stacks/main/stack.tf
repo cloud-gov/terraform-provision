@@ -31,6 +31,7 @@ resource "aws_lb" "main" {
   security_groups = ["${var.force_restricted_network == "no" ?
     module.stack.web_traffic_security_group :
     module.stack.restricted_web_traffic_security_group}"]
+  ip_address_type = "dualstack"
   idle_timeout = 3600
 }
 
