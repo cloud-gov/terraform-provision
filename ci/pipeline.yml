@@ -528,7 +528,7 @@ jobs:
       TF_VAR_main_cert_name: star-fr-cloud-gov-2017-05
       TF_VAR_apps_cert_name: star-app-cloud-gov-2017-10
       TF_VAR_elb_shibboleth_cert_name: star-fr-cloud-gov-2017-05
-      TF_VAR_18f_gov_elb_cert_name: star-18f-gov-04-17
+      TF_VAR_18f_gov_elb_cert_name: star-18f-gov-04-18
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
