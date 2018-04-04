@@ -97,7 +97,7 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   name = "cloud.gov."
   type = "TXT"
   ttl = 300
-  records = ["v=spf1 include:spf.mandrillapp.com -all"]
+  records = ["v=spf1 include:_spf.google.com include:spf.mandrillapp.com -all"]
 }
 
 resource "aws_route53_record" "cloud_gov_2a37e22b1f41ad3fe6af39f4fc38c1bc_cloud_gov_cname" {
