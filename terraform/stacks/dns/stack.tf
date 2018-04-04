@@ -303,10 +303,32 @@ resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_a" {
   }
 }
 
+resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "ci.fr-stage.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_a" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "ci.fr.cloud.gov."
   type = "A"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "ci.fr.cloud.gov."
+  type = "AAAA"
   alias {
     name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
@@ -551,7 +573,7 @@ resource "aws_route53_record" "cloud_gov_idp_fr_cloud_gov_a" {
   name = "idp.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.production-shibboleth-proxy-1152328295.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -562,7 +584,7 @@ resource "aws_route53_record" "cloud_gov_idp_fr_cloud_gov_aaaa" {
   name = "idp.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.production-shibboleth-proxy-1152328295.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
