@@ -484,3 +484,8 @@ output "buildpack_notify_state_staging_bucket_name" {
 output "buildpack_notify_state_production_bucket_name" {
   value = "${module.buildpack_notify_state_production.bucket_name}"
 }
+
+/* smtp security group */
+output "smtp_security_group" {
+  value = "${module.dns.smtp_security_group}"
+}
