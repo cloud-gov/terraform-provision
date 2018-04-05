@@ -186,3 +186,9 @@ module "dns" {
   stack_description = "${var.stack_description}"
   vpc_id = "${module.stack.vpc_id}"
 }
+
+module "smtp" {
+  source = "../../modules/smtp"
+  stack_description = "${var.stack_description}"
+  vpc_id = "${module.stack.vpc_id}"
+}

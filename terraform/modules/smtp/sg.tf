@@ -1,5 +1,5 @@
-resource "aws_security_group" "smtp_inbound" {
-  description = "Allow access to smtp service from all our internal hosts"
+resource "aws_security_group" "smtp" {
+  description = "Allow access to smtp service from all our internal hosts, and outbound access to 587 too"
   vpc_id = "${var.vpc_id}"
 
   ingress {
@@ -10,13 +10,13 @@ resource "aws_security_group" "smtp_inbound" {
   }
 
   egress {
-    from_port = 0
+    from_port = 587
     to_port = 587
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags {
-    Name = "${var.stack_description} - smtp inbound"
+    Name = "${var.stack_description} - smtp"
   }
 }
