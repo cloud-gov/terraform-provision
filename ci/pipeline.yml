@@ -221,6 +221,7 @@ jobs:
       TF_VAR_production_cert_name: star-fr-cloud-gov-2017-05
       TF_VAR_staging_cert_name: star-fr-stage-cloud-gov-2017-05
       TF_VAR_use_staging_certificate: "true"
+      TF_VAR_use_nat_gateway_eip: "true"
   - *notify-slack
 
 - name: bootstrap-tooling
