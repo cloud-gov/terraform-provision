@@ -17,16 +17,13 @@ variable "cloudfront_zone_id" {
   default = "Z33AYJ8TM3BH4J"
 }
 
-variable "cloudfoundry_elb_logging_development" {
-  default = "dualstack.development-CloudFoundry-Logging-1588361105.us-gov-west-1.elb.amazonaws.com"
-}
-
 variable "remote_state_bucket" {}
 variable "remote_state_region" {}
 
 variable "tooling_stack_name" {}
 variable "production_stack_name" {}
 variable "staging_stack_name" {}
+variable "development_stack_name" {}
 
 data "terraform_remote_state" "tooling" {
   backend = "s3"
@@ -52,6 +49,15 @@ data "terraform_remote_state" "staging" {
     bucket = "${var.remote_state_bucket}"
     region = "${var.remote_state_region}"
     key = "${var.staging_stack_name}/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "development" {
+  backend = "s3"
+  config {
+    bucket = "${var.remote_state_bucket}"
+    region = "${var.remote_state_region}"
+    key = "${var.development_stack_name}/terraform.tfstate"
   }
 }
 
@@ -145,7 +151,6 @@ resource "aws_route53_record" "cloud_gov_star_fr-stage_cloud_gov_a" {
   name = "*.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.staging-cloudfoundry-main-496592480.us-gov-west-1.elb.amazonaws.com."
     name = "dualstack.${data.terraform_remote_state.staging.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
@@ -234,7 +239,7 @@ resource "aws_route53_record" "cloud_gov_ssh_fr-stage_cloud_gov_a" {
   name = "ssh.fr-stage.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.staging-diego-proxy-1166959673.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.staging.diego_elb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -420,7 +425,7 @@ resource "aws_route53_record" "cloud_gov_logs_platform_dev_env_a" {
   name = "logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.development-platform-kibana-2131469203.us-gov-west-1.elb.amazonaws.com"
+    name = "dualstack.${data.terraform_remote_state.development.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -431,7 +436,7 @@ resource "aws_route53_record" "cloud_gov_logs_platform_dev_env_aaaa" {
   name = "logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.development-platform-kibana-2131469203.us-gov-west-1.elb.amazonaws.com"
+    name = "dualstack.${data.terraform_remote_state.development.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -464,7 +469,7 @@ resource "aws_route53_record" "cloud_gov_logs_platform_fr_cloud_gov_a" {
   name = "logs-platform.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.production-platform-kibana-561603889.us-gov-west-1.elb.amazonaws.com"
+    name = "dualstack.${data.terraform_remote_state.production.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -475,7 +480,7 @@ resource "aws_route53_record" "cloud_gov_logs_platform_fr_cloud_gov_aaaa" {
   name = "logs-platform.fr.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.production-platform-kibana-561603889.us-gov-west-1.elb.amazonaws.com"
+    name = "dualstack.${data.terraform_remote_state.production.main_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -496,7 +501,7 @@ resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_a" {
   name = "ssh.fr.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.production-diego-proxy-548237188.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.production.diego_elb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -595,7 +600,7 @@ resource "aws_route53_record" "cloud_gov_star_dev_env_a" {
   name = "*.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.development-CloudFoundry-Main-850241372.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.development.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -606,7 +611,7 @@ resource "aws_route53_record" "cloud_gov_ssh_dev_env_a" {
   name = "ssh.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "A"
   alias {
-    name = "dualstack.development-diego-proxy-1109590207.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.development.diego_elb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -617,63 +622,18 @@ resource "aws_route53_record" "cloud_gov_ssh_dev_env_aaaa" {
   name = "ssh.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.development-diego-proxy-1109590207.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.development.diego_elb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
 }
-
-resource "aws_route53_record" "cloud_gov_doppler_dev_env_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "doppler.dev.us-gov-west-1.aws-us-gov.cloud.gov."
-  type = "A"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_development}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_doppler_dev_env_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "doppler.dev.us-gov-west-1.aws-us-gov.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_development}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_loggregator_dev_env_a" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "loggregator.dev.us-gov-west-1.aws-us-gov.cloud.gov."
-  type = "A"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_development}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "cloud_gov_loggregator_dev_env_aaaa" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "loggregator.dev.us-gov-west-1.aws-us-gov.cloud.gov."
-  type = "AAAA"
-  alias {
-    name = "${var.cloudfoundry_elb_logging_development}"
-    zone_id = "${var.cloudfront_zone_id}"
-    evaluate_target_health = false
-  }
-}
-
 
 resource "aws_route53_record" "cloud_gov_star_dev_env_aaaa" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "*.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type = "AAAA"
   alias {
-    name = "dualstack.development-CloudFoundry-Main-850241372.us-gov-west-1.elb.amazonaws.com."
+    name = "dualstack.${data.terraform_remote_state.development.cf_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }

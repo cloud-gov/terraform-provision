@@ -159,6 +159,7 @@ jobs:
       TF_VAR_tooling_stack_name: tooling
       TF_VAR_production_stack_name: production
       TF_VAR_staging_stack_name: staging
+      TF_VAR_development_stack_name: development
   - *notify-slack
 
 - name: apply-dns
