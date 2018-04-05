@@ -487,5 +487,5 @@ output "buildpack_notify_state_production_bucket_name" {
 
 /* smtp security group */
 output "smtp_security_group" {
-  value = "${module.dns.smtp_security_group}"
+  value = "${module.smtp.smtp_security_group}"
 }
