@@ -43,7 +43,14 @@ resource "aws_security_group" "dns_public" {
   egress {
     from_port = 53
     to_port = 53
-    protocol = "-1"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 53
+    to_port = 53
+    protocol = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
