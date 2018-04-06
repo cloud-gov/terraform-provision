@@ -489,3 +489,7 @@ output "buildpack_notify_state_production_bucket_name" {
 output "smtp_security_group" {
   value = "${module.smtp.smtp_security_group}"
 }
+
+output "production_smtp_private_ip" {
+  value = "${cidrhost("${var.private_cidr_1}", 12)}"
+}
