@@ -147,3 +147,7 @@ variable "billing_bucket" {
 variable "cg_binaries_bucket" {
    default = "cg-binaries"
 }
+
+variable "use_nat_gateway_eip" {
+  default = false
+}
