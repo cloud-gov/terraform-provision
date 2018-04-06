@@ -1,37 +1,3 @@
-resource "aws_elb" "cloudfoundry_elb_apps" {
-  name = "${var.stack_description}-CloudFoundry-Apps"
-  subnets = ["${var.elb_subnets}"]
-  security_groups = ["${var.elb_security_groups}"]
-
-  listener {
-    lb_port = 80
-    lb_protocol = "HTTP"
-    instance_port = 80
-    instance_protocol = "HTTP"
-  }
-
-  listener {
-    lb_port = 443
-    lb_protocol = "HTTPS"
-    instance_port = 80
-    instance_protocol = "HTTP"
-
-    ssl_certificate_id = "${var.elb_apps_cert_id}"
-  }
-
-  health_check {
-    healthy_threshold = 2
-    interval = 5
-    target = "HTTP:81/"
-    timeout = 4
-    unhealthy_threshold = 3
-  }
-
-  tags {
-    Name = "${var.stack_description}-CloudFoundry-Apps"
-  }
-}
-
 resource "aws_lb" "cf_apps" {
   name = "${var.stack_description}-cloudfoundry-apps"
   subnets = ["${var.elb_subnets}"]

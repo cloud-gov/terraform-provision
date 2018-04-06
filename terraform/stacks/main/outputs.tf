@@ -167,6 +167,13 @@ output "cf_apps_lb_dns_name" {
   value = "${module.cf.apps_lb_dns_name}"
 }
 
+output "cf_target_group" {
+  value = "${module.cf.lb_target_group}"
+}
+output "cf_apps_target_group" {
+  value = "${module.cf.apps_lb_target_group}"
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = "${module.stack.bosh_security_group}"
@@ -256,32 +263,6 @@ output "bosh_rds_password" {
   value = "${module.stack.bosh_rds_password}"
 }
 
-/* CloudFoundry ELBs */
-output "cf_main_elb_dns_name" {
-  value = "${module.cf.elb_main_dns_name}"
-}
-output "cf_main_elb_name" {
-  value = "${module.cf.elb_main_name}"
-}
-output "cf_logging_elb_dns_name" {
-  value = "${module.cf.elb_logging_dns_name}"
-}
-output "cf_logging_elb_name" {
-  value = "${module.cf.elb_logging_name}"
-}
-output "cf_apps_elb_dns_name" {
-  value = "${module.cf.elb_apps_dns_name}"
-}
-output "cf_apps_elb_name" {
-  value = "${module.cf.elb_apps_name}"
-}
-output "cf_target_group" {
-  value = "${module.cf.lb_target_group}"
-}
-output "cf_apps_target_group" {
-  value = "${module.cf.apps_lb_target_group}"
-}
-
 /* CloudFoundry RDS */
 output "cf_rds_url" {
   value = "${module.cf.cf_rds_url}"
@@ -340,36 +321,11 @@ output "platform_syslog_elb_dns_name" {
   value = "${module.logsearch.platform_syslog_elb_dns_name}"
 }
 
-output "platform_kibana_elb_name" {
-  value = "${module.logsearch.platform_kibana_elb_name}"
-}
-output "platform_kibana_elb_dns_name" {
-  value = "${module.logsearch.platform_kibana_elb_dns_name}"
-}
-
 output "platform_kibana_lb_target_group" {
   value = "${module.logsearch.platform_kibana_lb_target_group}"
 }
 
-/* Client ELBs */
-output "star_18f_gov_elb_name" {
-  value = "${module.client-elbs.star_18f_gov_elb_name}"
-}
-
-output "star_18f_gov_elb_dns_name" {
-  value = "${module.client-elbs.star_18f_gov_elb_dns_name}"
-}
-
 /* Shibboleth Proxy ELB */
-output "shibboleth_elb_name" {
-  value = "${module.shibboleth.shibboleth_elb_name}"
-}
-output "shibboleth_elb_dns_name" {
-  value = "${module.shibboleth.shibboleth_elb_dns_name}"
-}
-output "shibboleth_elb_zone_id" {
-  value = "${module.shibboleth.shibboleth_elb_zone_id}"
-}
 output "shibboleth_lb_target_group" {
   value = "${module.shibboleth.shibboleth_lb_target_group}"
 }

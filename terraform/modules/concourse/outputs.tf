@@ -38,18 +38,6 @@ output "concourse_rds_password" {
   value = "${module.rds_96.rds_password}"
 }
 
-output "concourse_elb_dns_name" {
-  value = "${aws_elb.concourse_elb.dns_name}"
-}
-
-output "concourse_elb_name" {
-  value = "${aws_elb.concourse_elb.name}"
-}
-
-output "concourse_elb_zone_id" {
-  value = "${aws_elb.concourse_elb.zone_id}"
-}
-
 output "concourse_lb_target_group" {
   value = "${aws_lb_target_group.concourse_target.name}"
 }
