@@ -96,11 +96,6 @@ module "concourse_production" {
   rds_instance_type = "db.m3.xlarge"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
-  elb_cert_id = "${var.concourse_prod_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_prod_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az1}"]
-  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.concourse_production_hosts}"]
 }
@@ -119,11 +114,6 @@ module "concourse_staging" {
   rds_instance_type = "db.m3.medium"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
-  elb_cert_id = "${var.concourse_staging_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_staging_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_staging.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az2}"]
-  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.concourse_staging_hosts}"]
 }
@@ -135,12 +125,6 @@ module "monitoring_production" {
   monitoring_cidr = "${var.monitoring_production_cidr}"
   monitoring_az = "${var.az1}"
   route_table_id = "${module.stack.private_route_table_az1}"
-  elb_cert_id = "${var.monitoring_production_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.monitoring_production_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az1}"]
-  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
-  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_production_hosts}"]
 }
@@ -152,12 +136,6 @@ module "monitoring_staging" {
   monitoring_cidr = "${var.monitoring_staging_cidr}"
   monitoring_az = "${var.az2}"
   route_table_id = "${module.stack.private_route_table_az2}"
-  elb_cert_id = "${var.monitoring_staging_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.monitoring_staging_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_staging.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az2}"]
-  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
-  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_staging_hosts}"]
 }

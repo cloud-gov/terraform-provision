@@ -242,12 +242,6 @@ output "production_concourse_rds_username" {
 output "production_concourse_rds_password" {
   value = "${module.concourse_production.concourse_rds_password}"
 }
-output "production_concourse_elb_dns_name" {
-  value = "${module.concourse_production.concourse_elb_dns_name}"
-}
-output "production_concourse_elb_name" {
-  value = "${module.concourse_production.concourse_elb_name}"
-}
 output "production_concourse_lb_target_group" {
   value = "${module.concourse_production.concourse_lb_target_group}"
 }
@@ -289,12 +283,6 @@ output "staging_concourse_rds_username" {
 output "staging_concourse_rds_password" {
   value = "${module.concourse_staging.concourse_rds_password}"
 }
-output "staging_concourse_elb_dns_name" {
-  value = "${module.concourse_staging.concourse_elb_dns_name}"
-}
-output "staging_concourse_elb_name" {
-  value = "${module.concourse_staging.concourse_elb_name}"
-}
 output "staging_concourse_lb_target_group" {
   value = "${module.concourse_staging.concourse_lb_target_group}"
 }
@@ -308,12 +296,6 @@ output "production_monitoring_subnet" {
 }
 output "production_monitoring_security_group" {
   value = "${module.monitoring_production.monitoring_security_group}"
-}
-output "production_prometheus_elb_dns_name" {
-  value = "${module.monitoring_production.prometheus_elb_dns_name}"
-}
-output "production_prometheus_elb_name" {
-  value = "${module.monitoring_production.prometheus_elb_name}"
 }
 output "production_monitoring_lb_target_group" {
   value = "${module.monitoring_production.lb_target_group}"
@@ -336,12 +318,6 @@ output "staging_monitoring_subnet" {
 }
 output "staging_monitoring_security_group" {
   value = "${module.monitoring_staging.monitoring_security_group}"
-}
-output "staging_prometheus_elb_dns_name" {
-  value = "${module.monitoring_staging.prometheus_elb_dns_name}"
-}
-output "staging_prometheus_elb_name" {
-  value = "${module.monitoring_staging.prometheus_elb_name}"
 }
 output "staging_monitoring_lb_target_group" {
   value = "${module.monitoring_staging.lb_target_group}"
@@ -413,14 +389,6 @@ output "concourse_iaas_worker_profile" {
 }
 
 /* nessus elb */
-output "nessus_elb_dns_name" {
-  value = "${aws_elb.nessus_elb.dns_name}"
-}
-
-output "nessus_elb_name" {
-  value = "${aws_elb.nessus_elb.name}"
-}
-
 output "nessus_target_group" {
   value = "${aws_lb_target_group.nessus_target.name}"
 }
@@ -430,13 +398,6 @@ output "nessus_static_ip" {
 }
 
 /* BOSH UAA elb */
-output "bosh_uaa_elb_dns_name" {
-  value = "${aws_elb.bosh_uaa_elb.dns_name}"
-}
-output "bosh_uaa_elb_name" {
-  value = "${aws_elb.bosh_uaa_elb.name}"
-}
-
 output "opsuaa_lb_dns_name" {
   value = "${aws_lb.opsuaa.dns_name}"
 }
