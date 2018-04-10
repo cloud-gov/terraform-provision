@@ -26,6 +26,5 @@ slack-channel: "#cg-platform"
 slack-username: concourse
 slack-icon-url: http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
 
-# cg_provision_development_git_branch: master
-cg_provision_development_git_branch: drop-legacy-elbs
+cg_provision_development_git_branch: master
 cg_provision_development_git_url: https://github.com/18F/cg-provision
