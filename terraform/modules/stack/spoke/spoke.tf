@@ -20,6 +20,7 @@ module "base" {
     rds_username = "${var.rds_username}"
     rds_password = "${var.rds_password}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
+    restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
     rds_security_groups = [
       "${module.base.bosh_security_group}",
       "${var.target_bosh_security_group}"

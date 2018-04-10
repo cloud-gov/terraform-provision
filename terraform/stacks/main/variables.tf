@@ -58,6 +58,10 @@ variable "restricted_ingress_web_cidrs" {
   type = "list"
 }
 
+variable "restricted_ingress_web_ipv6_cidrs" {
+  type = "list"
+}
+
 variable "18f_gov_elb_cert_name" {
   default = ""
 }
