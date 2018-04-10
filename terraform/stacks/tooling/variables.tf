@@ -102,6 +102,10 @@ variable "restricted_ingress_web_cidrs" {
   type = "list"
 }
 
+variable "restricted_ingress_web_ipv6_cidrs" {
+  type = "list"
+}
+
 variable "blobstore_bucket_name" {}
 
 variable "bucket_prefix" {

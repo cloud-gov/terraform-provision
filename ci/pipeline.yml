@@ -213,6 +213,7 @@ jobs:
       TF_VAR_rds_private_cidr_1: ((tooling_rds_private_cidr_1))
       TF_VAR_rds_private_cidr_2: ((tooling_rds_private_cidr_2))
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
       TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
@@ -307,6 +308,7 @@ jobs:
       TF_VAR_elasticache_private_cidr_2: ((development_elasticache_private_cidr_2))
       TF_VAR_cf_rds_password: ((development_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
       TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
@@ -417,6 +419,7 @@ jobs:
       TF_VAR_elasticache_private_cidr_2: ((staging_elasticache_private_cidr_2))
       TF_VAR_cf_rds_password: ((staging_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((staging_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((staging_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_main_cert_name: star-fr-stage-cloud-gov-2017-05
       TF_VAR_apps_cert_name: star-fr-stage-cloud-gov-2017-05
       TF_VAR_elb_shibboleth_cert_name: star-fr-stage-cloud-gov-2017-05
@@ -528,6 +531,7 @@ jobs:
       TF_VAR_elasticache_private_cidr_2: ((production_elasticache_private_cidr_2))
       TF_VAR_cf_rds_password: ((production_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_main_cert_name: star-fr-cloud-gov-2017-05
       TF_VAR_apps_cert_name: star-app-cloud-gov-2017-10
       TF_VAR_elb_shibboleth_cert_name: star-fr-cloud-gov-2017-05

@@ -11,6 +11,7 @@ module "vpc" {
     public_cidr_1 = "${var.public_cidr_1}"
     public_cidr_2 = "${var.public_cidr_2}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
+    restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
     monitoring_security_groups = "${var.target_monitoring_security_groups}"
     concourse_security_groups = "${var.target_concourse_security_groups}"
