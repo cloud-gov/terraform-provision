@@ -151,3 +151,7 @@ variable "cg_binaries_bucket" {
 variable "use_nat_gateway_eip" {
   default = false
 }
+
+variable "smtp_ingress_cidr_blocks" {
+  type = "list"
+}

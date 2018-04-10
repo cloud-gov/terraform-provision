@@ -209,6 +209,7 @@ jobs:
       TF_VAR_public_cidr_2: ((tooling_public_cidr_2))
       TF_VAR_private_cidr_1: ((tooling_private_cidr_1))
       TF_VAR_private_cidr_2: ((tooling_private_cidr_2))
+      TF_VAR_smtp_ingress_cidr_blocks: '["((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
       TF_VAR_rds_private_cidr_1: ((tooling_rds_private_cidr_1))
       TF_VAR_rds_private_cidr_2: ((tooling_rds_private_cidr_2))
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))

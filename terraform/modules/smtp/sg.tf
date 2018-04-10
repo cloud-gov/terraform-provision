@@ -3,10 +3,10 @@ resource "aws_security_group" "smtp" {
   vpc_id = "${var.vpc_id}"
 
   ingress {
-    self = true
     from_port = 25
     to_port = 25
     protocol = "tcp"
+    cidr_blocks = ["${var.ingress_cidr_blocks}"]
   }
 
   egress {
