@@ -22,19 +22,6 @@ locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
 
-resource "aws_cloudtrail" "s3-audit-logs" {
-  name                          = "s3-audit-logs"
-  event_selector {
-    read_write_type = "All"
-    include_management_events = true
-
-    data_resource {
-      type   = "AWS::S3::Object"
-      values = ["arn:${local.aws_partition}:s3:::"]
-    }
-  }
-}
-
 resource "aws_lb" "main" {
   name = "${var.stack_description}-main"
   subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
