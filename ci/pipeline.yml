@@ -299,6 +299,7 @@ jobs:
       TF_VAR_use_apps_certificate: "false"
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "2"
   - *notify-slack
 
 - name: bootstrap-development
