@@ -47,5 +47,3 @@ resource "aws_cloudtrail" "cg-s3-cloudtrail-trail"{
     }
   }
 }
-
-
