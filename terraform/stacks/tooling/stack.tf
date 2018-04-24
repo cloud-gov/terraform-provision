@@ -26,6 +26,7 @@ resource "aws_lb" "main" {
   name = "${var.stack_description}-main"
   subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
   security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  ip_address_type = "dualstack"
   idle_timeout = 3600
 }
 
@@ -72,12 +73,14 @@ module "stack" {
   private_cidr_1 = "${var.private_cidr_1}"
   private_cidr_2 = "${var.private_cidr_2}"
   restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
+  restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
   rds_private_cidr_1 = "${var.rds_private_cidr_1}"
   rds_private_cidr_2 = "${var.rds_private_cidr_2}"
   rds_password = "${var.rds_password}"
   rds_multi_az = "${var.rds_multi_az}"
   rds_security_groups = ["${module.stack.bosh_security_group}"]
   rds_security_groups_count = "1"
+  use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
 }
 
 module "concourse_production" {
@@ -94,11 +97,6 @@ module "concourse_production" {
   rds_instance_type = "db.m3.xlarge"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
-  elb_cert_id = "${var.concourse_prod_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_prod_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az1}"]
-  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.concourse_production_hosts}"]
 }
@@ -117,11 +115,6 @@ module "concourse_staging" {
   rds_instance_type = "db.m3.medium"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
-  elb_cert_id = "${var.concourse_staging_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.concourse_staging_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_staging.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az2}"]
-  elb_security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.concourse_staging_hosts}"]
 }
@@ -133,12 +126,6 @@ module "monitoring_production" {
   monitoring_cidr = "${var.monitoring_production_cidr}"
   monitoring_az = "${var.az1}"
   route_table_id = "${module.stack.private_route_table_az1}"
-  elb_cert_id = "${var.monitoring_production_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.monitoring_production_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az1}"]
-  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
-  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_production_hosts}"]
 }
@@ -150,12 +137,6 @@ module "monitoring_staging" {
   monitoring_cidr = "${var.monitoring_staging_cidr}"
   monitoring_az = "${var.az2}"
   route_table_id = "${module.stack.private_route_table_az2}"
-  elb_cert_id = "${var.monitoring_staging_elb_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.monitoring_staging_elb_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_staging.arn}"
-  elb_subnets = ["${module.stack.public_subnet_az2}"]
-  elb_security_groups = ["${module.stack.web_traffic_security_group}"]
-  prometheus_elb_security_groups = "${module.stack.restricted_web_traffic_security_group}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_staging_hosts}"]
 }
@@ -184,4 +165,11 @@ module "dns" {
   source = "../../modules/dns"
   stack_description = "${var.stack_description}"
   vpc_id = "${module.stack.vpc_id}"
+}
+
+module "smtp" {
+  source = "../../modules/smtp"
+  stack_description = "${var.stack_description}"
+  vpc_id = "${module.stack.vpc_id}"
+  ingress_cidr_blocks = ["${var.smtp_ingress_cidr_blocks}"]
 }

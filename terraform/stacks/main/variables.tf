@@ -43,9 +43,6 @@ variable "wildcard_prefix" {
   default = ""
 }
 
-variable "cf_hosts" {
-  type = "list"
-}
 variable "shibboleth_hosts" {
   type = "list"
 }
@@ -58,6 +55,10 @@ variable "services_cidr_2" {}
 variable "kubernetes_cluster_id" {}
 
 variable "restricted_ingress_web_cidrs" {
+  type = "list"
+}
+
+variable "restricted_ingress_web_ipv6_cidrs" {
   type = "list"
 }
 

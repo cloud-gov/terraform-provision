@@ -102,6 +102,10 @@ variable "restricted_ingress_web_cidrs" {
   type = "list"
 }
 
+variable "restricted_ingress_web_ipv6_cidrs" {
+  type = "list"
+}
+
 variable "blobstore_bucket_name" {}
 
 variable "bucket_prefix" {
@@ -146,4 +150,12 @@ variable "billing_bucket" {
 
 variable "cg_binaries_bucket" {
    default = "cg-binaries"
+}
+
+variable "use_nat_gateway_eip" {
+  default = false
+}
+
+variable "smtp_ingress_cidr_blocks" {
+  type = "list"
 }

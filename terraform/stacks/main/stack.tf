@@ -31,6 +31,7 @@ resource "aws_lb" "main" {
   security_groups = ["${var.force_restricted_network == "no" ?
     module.stack.web_traffic_security_group :
     module.stack.restricted_web_traffic_security_group}"]
+  ip_address_type = "dualstack"
   idle_timeout = 3600
 }
 
@@ -49,37 +50,10 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-resource "aws_lb_listener" "main_http" {
-  load_balancer_arn = "${aws_lb.main.arn}"
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.dummy.arn}"
-    type             = "forward"
-  }
-}
-
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
-}
-
-resource "aws_lb_listener_certificate" "main-apps" {
-  count = "${var.use_apps_certificate ? 1 : 0}"
-
-  listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "${var.apps_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
-    data.aws_iam_server_certificate.wildcard.arn}"
-}
-
-resource "aws_lb_listener_certificate" "main-18f" {
-  count = "${var.18f_gov_elb_cert_name != "" ? 1 : 0}"
-
-  listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}"
 }
 
 module "stack" {
@@ -96,6 +70,7 @@ module "stack" {
     rds_private_cidr_1 = "${var.rds_private_cidr_1}"
     rds_private_cidr_2 = "${var.rds_private_cidr_2}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
+    restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
     rds_password = "${var.rds_password}"
     account_id = "${data.aws_caller_identity.current.account_id}"
 
@@ -142,9 +117,13 @@ module "cf" {
     services_cidr_2 = "${var.services_cidr_2}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
-    listener_arn = "${aws_lb_listener.main.arn}"
-    http_listener_arn = "${aws_lb_listener.main_http.arn}"
-    hosts = ["${var.cf_hosts}"]
+    additional_certificates = ["${compact(
+      list(
+        "${var.18f_gov_elb_cert_name != "" ?
+          "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
+          ""}"
+      )
+    )}"]
 }
 
 module "diego" {
@@ -181,30 +160,10 @@ module "logsearch" {
 
     stack_description = "${var.stack_description}"
     vpc_id = "${module.stack.vpc_id}"
-    public_elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
     private_elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
     bosh_security_group = "${module.stack.bosh_security_group}"
-    restricted_security_group = "${module.stack.restricted_web_traffic_security_group}"
-    elb_cert_id = "${var.main_cert_name != "" ?
-      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
-      data.aws_iam_server_certificate.wildcard.arn}"
     listener_arn = "${aws_lb_listener.main.arn}"
     hosts = ["${var.platform_kibana_hosts}"]
-}
-
-module "client-elbs" {
-    source = "../../modules/client-elbs"
-
-    count = "${var.18f_gov_elb_cert_name == "" ? 0 : 1}"
-    stack_description = "${var.stack_description}"
-
-    account_id = "${data.aws_caller_identity.current.account_id}"
-    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
-    elb_security_groups = ["${var.force_restricted_network == "no" ?
-      module.stack.web_traffic_security_group :
-      module.stack.restricted_web_traffic_security_group}"]
-    aws_partition = "${local.aws_partition}"
-    star_18f_gov_cert_id = "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}"
 }
 
 module "shibboleth" {
@@ -212,15 +171,6 @@ module "shibboleth" {
 
     stack_description = "${var.stack_description}"
     vpc_id = "${module.stack.vpc_id}"
-    elb_subnets = ["${module.stack.public_subnet_az1}","${module.stack.public_subnet_az2}"]
-
-    elb_shibboleth_cert_id = "${var.elb_shibboleth_cert_name != "" ?
-      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.elb_shibboleth_cert_name}" :
-      data.aws_iam_server_certificate.wildcard.arn}"
-    elb_security_groups = ["${var.force_restricted_network == "no" ?
-      module.stack.web_traffic_security_group :
-      module.stack.restricted_web_traffic_security_group}"]
-    stack_description = "${var.stack_description}"
     listener_arn = "${aws_lb_listener.main.arn}"
     hosts = ["${var.shibboleth_hosts}"]
 }
