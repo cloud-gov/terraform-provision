@@ -14,8 +14,7 @@ fly --target bootstrap login \
 
 fly --target bootstrap sync
 
-# TODO: Fix worker tagging
-bosh int ${TERRAFORM_PIPELINE_FILE} --ops-file bosh/opsfiles/${DEPLOY_ENV}.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/cg-provision-pipeline.yml
+bosh int ${TERRAFORM_PIPELINE_FILE} --ops-file bosh/opsfiles/${DEPLOY_ENV}.yml > ${WORKSPACE_DIR}/cg-provision-pipeline.yml
 
 # Set terraform-provision pipeline
 fly --target bootstrap set-pipeline \
