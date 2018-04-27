@@ -46,13 +46,15 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
     1. If terraform fails with `InvalidGroup.NotFound: You have specified two resources that belong to different networks`, re-run the bootstrap job. Peering isn't consistently complete before security groups across VPCs are added.
     1. Run `terraform-provision/bootstrap-tooling` again to run `init-bosh-db`.
     1. Run the development, or staging and production plan and bootstrap jobs.
-        1. `init-bosh-db` and `init-cf-db` will fail. This is fine, you'll run again in main concourse.
+        1. You may have to run the jobs twice, since there seems to be a race condition.
+        1. `init-bosh-db` and `init-cf-db` will fail. This is fine, you'll run again in the main concourse.
 1. Generate secrets for bosh and concourse: `./scripts/bootstrap/05-generate-secrets.sh`
 1. Deploy master bosh: `./scripts/bootstrap/06-deploy-bosh.sh`
     1. Upload custom bosh releases to `${BOSH_RELEASES_BUCKET}` with aws cli.  Get the latest release of each type from `cloud-gov-bosh-releases` if you are building out a dev environment.
         1. **TODO: bootstrap custom bosh releases**
         1. This might help:  
-            ```aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out
+            ```
+            aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out
             mkdir -p /tmp/releases
             awk '/-[0-9]*.tgz$/ {print $4}' /tmp/releases.out | \
                 sed 's/\(.*\)-[0-9.]*.tgz/\1/' | \
