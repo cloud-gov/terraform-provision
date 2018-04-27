@@ -522,3 +522,14 @@
 - type: remove
   path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/tags
 
+- type: remove
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/tags
+
+- type: remove
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/tags
