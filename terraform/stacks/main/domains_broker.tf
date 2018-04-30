@@ -1,12 +1,77 @@
 variable "domains_broker_alb_count" {
   default = 0
 }
+variable "domains_broker_rds_username" {}
+variable "domains_broker_rds_password" {}
 variable "challenge_bucket" {}
 variable "iam_cert_prefix" {
   default = "/domains/*"
 }
 variable "alb_prefix" {
   default = "domains-*"
+}
+
+/* Broker internal load balancer */
+resource "aws_lb" "domains_broker_internal" {
+  name = "${var.stack_description}-domains-internal"
+  subnets = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
+  security_groups = ["${module.stack.bosh_security_group}"]
+  internal = true
+}
+
+resource "aws_lb_listener" "domains_broker_internal" {
+  load_balancer_arn = "${aws_lb.domains_broker_internal.arn}"
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.domains_broker_internal.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_target_group" "domains_broker_internal" {
+  name = "${var.stack_description}-domains-internal"
+  port     = 3000
+  protocol = "HTTP"
+  vpc_id   = "${module.stack.vpc_id}"
+
+  health_check {
+    path = "/healthcheck"
+  }
+}
+
+output "domains_broker_internal_dns_name" {
+  value = "${aws_lb.domains_broker_internal.dns_name}"
+}
+output "domains_broker_internal_target_group" {
+  value = "${aws_lb_target_group.domains_broker_internal.name}"
+}
+
+/* Broker database */
+resource "aws_db_instance" "domains_broker" {
+  name = "domains_broker"
+  storage_type = "gp2"
+  allocated_storage = 10
+  instance_class = "db.t2.micro"
+  username = "${var.domains_broker_rds_username}"
+  password = "${var.domains_broker_rds_password}"
+  engine = "postgres"
+  db_subnet_group_name = "${module.stack.rds_subnet_group}"
+  vpc_security_group_ids = ["${module.stack.rds_postgres_security_group}"]
+}
+
+output "domains_broker_rds_username" {
+  value = "${aws_db_instance.domains_broker.username}"
+}
+output "domains_broker_rds_password" {
+  value = "${aws_db_instance.domains_broker.password}"
+}
+output "domains_broker_rds_address" {
+  value = "${aws_db_instance.domains_broker.address}"
+}
+output "domains_broker_rds_port" {
+  value = "${aws_db_instance.domains_broker.port}"
 }
 
 resource "aws_lb" "domains_broker" {
@@ -154,18 +219,32 @@ output "challenge_bucket_domain_name" {
 }
 
 /* IAM resources */
-resource "aws_iam_user" "domains_broker" {
-  name = "${var.stack_description}-domains"
+resource "aws_iam_instance_profile" "domains_broker" {
+  name = "${var.stack_description}-domain-broker"
+  role = "${aws_iam_role.domains_broker.name}"
 }
 
-resource "aws_iam_access_key" "domains_broker" {
-  user = "${aws_iam_user.domains_broker.name}"
-}
-
-resource "aws_iam_user_policy" "domains_broker" {
+resource "aws_iam_role" "domains_broker" {
   name = "${var.stack_description}-domains-broker"
-  user = "${aws_iam_user.domains_broker.id}"
+  path = "/bosh-passed/"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
 
+resource "aws_iam_policy" "domains_broker" {
+  name = "${var.stack_description}-domains-broker"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -204,9 +283,14 @@ resource "aws_iam_user_policy" "domains_broker" {
 EOF
 }
 
-output "domains_broker_access_key" {
-  value = "${aws_iam_access_key.domains_broker.id}"
+resource "aws_iam_policy_attachment" "domains_broker" {
+  name = "${var.stack_description}-domains-broker"
+  policy_arn = "${aws_iam_policy.domains_broker.arn}"
+  roles = [
+    "${aws_iam_role.domains_broker.name}"
+  ]
 }
-output "domains_broker_secret_key" {
-  value = "${aws_iam_access_key.domains_broker.secret}"
+
+output "domains_broker_profile" {
+  value = "${aws_iam_instance_profile.domains_broker.name}"
 }

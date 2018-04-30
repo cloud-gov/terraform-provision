@@ -279,7 +279,8 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
-      TF_VAR_force_restricted_network: "yes"
+      # TF_VAR_force_restricted_network: "yes"
+      TF_VAR_force_restricted_network: "no"
       TF_VAR_az1: ((aws_az1))
       TF_VAR_az2: ((aws_az2))
       TF_VAR_rds_password: ((development_rds_password))
@@ -303,6 +304,8 @@ jobs:
       TF_VAR_challenge_bucket: development-domains-broker-challenge
       TF_VAR_iam_cert_prefix: "/domains/development/*"
       TF_VAR_alb_prefix: "development-domains-*"
+      TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
   - *notify-slack
 
 - name: bootstrap-development
