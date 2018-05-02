@@ -90,20 +90,12 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_cloud_gov_mx" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "cloud.gov."
-  type = "MX"
-  ttl = 300
-  records = ["10 30288227.in1.mandrillapp.com", "20 30288227.in2.mandrillapp.com"]
-}
-
 resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "cloud.gov."
   type = "TXT"
   ttl = 300
-  records = ["v=spf1 include:_spf.google.com include:spf.mandrillapp.com -all"]
+  records = ["v=spf1 include:_spf.google.com -all"]
 }
 
 resource "aws_route53_record" "cloud_gov_2a37e22b1f41ad3fe6af39f4fc38c1bc_cloud_gov_cname" {
@@ -120,14 +112,6 @@ resource "aws_route53_record" "cloud_gov_dc8dffe0fd99c8d067ce1bb5ef156f3e_cloud_
   type = "CNAME"
   ttl = 5
   records = ["4c76d956c990d92cf796eff553d6926e22570fa2.comodoca.com."]
-}
-
-resource "aws_route53_record" "cloud_gov_mandrill__domainkey_cloud_gov_txt" {
-  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "mandrill._domainkey.cloud.gov."
-  type = "TXT"
-  ttl = 300
-  records = ["v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrLHiExVd55zd/IQ/J/mRwSRMAocV/hMB3jXwaHH36d9NaVynQFYV8NaWi69c1veUtRzGt7yAioXqLj7Z4TeEUoOLgrKsn8YnckGs9i3B3tVFB+Ch/4mPhXWiNfNdynHWBcPcbJ8kjEQ2U8y78dHZj1YeRXXVvWob2OaKynO8/lQIDAQAB;"]
 }
 
 resource "aws_route53_record" "cloud_gov_domainkey_cloud_gov_txt" {
