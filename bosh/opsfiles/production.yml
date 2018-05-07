@@ -1,0 +1,6 @@
+# make sure we don't require iaas tags (bosh host already has the power)
+- type: remove
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/tags

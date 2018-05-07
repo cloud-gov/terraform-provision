@@ -1,5 +1,5 @@
 bosh-config-git-url: https://github.com/18F/cg-deploy-bosh.git
-bosh-config-git-branch: master
+bosh-config-git-branch: tspencer/removedevpipeline
 
 pipeline-tasks-git-url: https://github.com/18F/cg-pipeline-tasks.git
 pipeline-tasks-git-branch: master

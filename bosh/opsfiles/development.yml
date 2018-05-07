@@ -1,0 +1,535 @@
+# This file is meant to edit the pipeline.yml to make it suitable for the dev environment
+# From looking at the pipeline.yml, it seems like we ought to be able to just update the plan
+# sections, because the others use the anchor, but the anchor is resolved before the
+# opsfile gets at the YAML (https://github.com/cloudfoundry/bosh-cli/issues/254), so 
+# we have to edit all sections.  Sigh.
+
+# these are taken care of in prod.
+- type: remove
+  path: /jobs/name=plan-dns?
+
+- type: remove
+  path: /jobs/name=apply-dns?
+
+## plan-bootstrap-tooling
+# We want this so that things are cheaper
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_rds_multi_az?
+  value: "false"
+
+# change the cert that we use.  There are other certs.  Not sure what this does exactly.
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_wildcard_prefix?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# so we don't have name conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_bucket_prefix?
+  value: dev-
+
+# # not sure why we don't want EIPs.
+# - type: replace
+#   path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_dns_eip_count_staging?
+#   value: "0"
+
+# # not sure why we don't want EIPs.
+# - type: replace
+#   path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_dns_eip_count_production?
+#   value: "0"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+# change the hostnames
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_concourse_production_hosts?
+  value: '["ci.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_concourse_staging_hosts?
+  value: '["ci-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_monitoring_production_hosts?
+  value: '["prometheus.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "alertmanager.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "grafana.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_monitoring_staging_hosts?
+  value: '["prometheus-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "alertmanager-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "grafana-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_nessus_hosts?
+  value: '["nessus.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+# change cert names
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_production_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/params/TF_VAR_staging_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+## bootstrap-tooling
+# We want this so that things are cheaper
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_rds_multi_az?
+  value: "false"
+
+# change the cert that we use.  There are other certs.  Not sure what this does exactly.
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_wildcard_prefix?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# so we don't have name conflicts
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_bucket_prefix?
+  value: dev-
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+# change the hostnames
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_concourse_production_hosts?
+  value: '["ci.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_concourse_staging_hosts?
+  value: '["ci-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_monitoring_production_hosts?
+  value: '["prometheus.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "alertmanager.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "grafana.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_monitoring_staging_hosts?
+  value: '["prometheus-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "alertmanager-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov", "grafana-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_nessus_hosts?
+  value: '["nessus.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+# change cert names
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_production_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/params/TF_VAR_staging_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+
+## plan-bootstrap-staging
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_rds_multi_az?
+  value: "false"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_stack_prefix?
+  value: dev-cf-staging
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-staging-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_upstream_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-staging-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_bucket_prefix?
+  value: dev-staging-cg
+
+# certs!
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_main_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_apps_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_elb_shibboleth_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# hostname stuff
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_cf_hosts?
+  value: '["*.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_shibboleth_hosts?
+  value: '["idp-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/params/TF_VAR_platform_kibana_hosts?
+  value: '["logs-plaform-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+
+## bootstrap-staging
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_rds_multi_az?
+  value: "false"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_stack_prefix?
+  value: dev-cf-staging
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-staging-blobstore-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_upstream_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-staging-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_bucket_prefix?
+  value: dev-staging-cg
+
+# certs!
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_main_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_apps_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_elb_shibboleth_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# hostname stuff
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_cf_hosts?
+  value: '["*.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_shibboleth_hosts?
+  value: '["idp-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/params/TF_VAR_platform_kibana_hosts?
+  value: '["logs-plaform-stage.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+
+## plan-bootstrap-production
+
+# not using this for now because maybe we will want to test out production db failures.
+# - type: replace
+#   path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_rds_multi_az?
+#   value: "false"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_stack_prefix?
+  value: dev-cf-production
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-prod-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_upstream_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_bucket_prefix?
+  value: dev-production-cg
+
+# certs!
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_main_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_apps_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_elb_shibboleth_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_18f_gov_elb_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# hostname stuff
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_cf_hosts?
+  value: '["*.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_shibboleth_hosts?
+  value: '["idp.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/params/TF_VAR_platform_kibana_hosts?
+  value: '["logs-plaform.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+
+## bootstrap-production
+# not using this for now because maybe we will want to test out production db failures.
+# - type: replace
+#   path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_rds_multi_az?
+#   value: "false"
+
+# These are to prevent bucket naming conflicts
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_stack_prefix?
+  value: dev-cf-production
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_blobstore_bucket_name?
+  value: bosh-prod-blobstore-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_upstream_blobstore_bucket_name?
+  value: bosh-tooling-blobstore-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_varz_bucket?
+  value: cloud-gov-varz-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_bosh_release_bucket?
+  value: cloud-gov-bosh-releases-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_terraform_state_bucket?
+  value: terraform-state-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_semver_bucket?
+  value: cg-semver-dev
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_cg_binaries_bucket?
+  value: dev-cg-binaries
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_bucket_prefix?
+  value: dev-production-cg
+
+# certs!
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_main_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_apps_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_elb_shibboleth_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_18f_gov_elb_cert_name?
+  value: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+
+# hostname stuff
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_cf_hosts?
+  value: '["*.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_shibboleth_hosts?
+  value: '["idp.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+- type: replace
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/params/TF_VAR_platform_kibana_hosts?
+  value: '["logs-plaform.dev2.us-gov-west-1.aws-us-gov.cloud.gov"]'
+
+
+# # add some jobs that we don't want in production.
+# # XXX figure out how to do this properly.  Can't put an anchor in:
+# # https://github.com/cloudfoundry/bosh-cli/issues/398
+# - type: replace
+#   path: /jobs/name=destroy-tooling?
+#   value:
+#     - name: destroy-tooling
+#       plan:
+#       - aggregate:
+#         - get: pipeline-tasks
+#         - get: cg-provision-repo
+#       - task: destroy-tooling
+#         tags: [iaas]
+#         file: pipeline-tasks/terraform-destroy.yml
+#         input_mapping: {terraform-templates: cg-provision-repo}
+#         params:
+#           PREVENT_PREVENT_DESTROY: "true"
+#           <<: *tooling-params
+# 
+# XXX should probably create destroy-staging and destroy-production jobs too
+
+# add this job into dev env.  I used https://onlineyamltools.com/convert-yaml-to-json to
+# convert this job into a single line.  I have put the original job here so that you can
+# edit it more easily and then paste it back in.
+# - name: acme-certificate-development
+#   plan:
+#   - aggregate:
+#     - get: acme-timer
+#     - get: cg-provision-repo
+#       resource: cg-provision-repo
+#     - get: terraform-yaml-tooling
+#       resource: terraform-yaml-tooling
+#     - get: terraform-yaml-external
+#       resource: terraform-yaml-external-staging
+#   - task: check-certificates
+#     file: cg-provision-repo/ci/check-certificates.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/dev/
+#   - task: provision-certificate
+#     file: cg-provision-repo/ci/provision-certificate.yml
+#     params:
+#       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+#       DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
+#       EMAIL: cloud-gov-operations@gsa.gov
+#   - task: upload-certificate
+#     file: cg-provision-repo/ci/upload-certificate.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/dev/
+#       CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+#   on_failure:
+#     put: slack
+#     params:
+#       text: |
+#         :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov in ((env))
+#         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+#       channel: ((slack-channel))
+#       username: ((slack-username))
+#       icon_url: ((slack-icon-url))
+- type: replace
+  path: /jobs/name=acme-certificate-development?
+  value: {"name":"acme-certificate-development","plan":[{"aggregate":[{"get":"acme-timer"},{"get":"cg-provision-repo","resource":"cg-provision-repo"},{"get":"terraform-yaml-tooling","resource":"terraform-yaml-tooling"},{"get":"terraform-yaml-external","resource":"terraform-yaml-external-staging"}]},{"task":"check-certificates","file":"cg-provision-repo/ci/check-certificates.yml","params":{"AWS_DEFAULT_REGION":"((aws_default_region))","CERT_PATH":"/lets-encrypt/dev/"}},{"task":"provision-certificate","file":"cg-provision-repo/ci/provision-certificate.yml","params":{"ACME_SERVER":"https://acme-v02.api.letsencrypt.org/directory","DOMAIN":"*.dev.us-gov-west-1.aws-us-gov.cloud.gov","EMAIL":"cloud-gov-operations@gsa.gov"}},{"task":"upload-certificate","file":"cg-provision-repo/ci/upload-certificate.yml","params":{"AWS_DEFAULT_REGION":"((aws_default_region))","CERT_PATH":"/lets-encrypt/dev/","CERT_PREFIX":"star.dev.us-gov-west-1.aws-us-gov.cloud.gov"}}],"on_failure":{"put":"slack","params":{"text":":x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov in ((env))\n<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>\n","channel":"((slack-channel))","username":"((slack-username))","icon_url":"((slack-icon-url))"}}}
+
+# make sure we don't require iaas tags (bosh host already has the power)
+- type: remove
+  path: /jobs/name=plan-bootstrap-tooling/plan/task=plan-update-tooling/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-tooling/plan/task=create-update-tooling/tags
+
+- type: remove
+  path: /jobs/name=plan-bootstrap-staging/plan/task=plan-update-staging/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-staging/plan/task=create-update-staging/tags
+
+- type: remove
+  path: /jobs/name=plan-bootstrap-production/plan/task=plan-update-production/tags
+
+- type: remove
+  path: /jobs/name=bootstrap-production/plan/task=create-update-production/tags

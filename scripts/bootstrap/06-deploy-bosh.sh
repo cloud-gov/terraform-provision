@@ -14,7 +14,7 @@ aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/ca-cert-store.c
 aws s3 cp ${WORKSPACE_DIR}/ca-cert-store.crt s3://${VARZ_BUCKET}/master-bosh.crt --sse AES256
 
 # TODO: Fix worker tagging
-cat ../cg-deploy-bosh/ci/pipeline-development.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml
+cat ../cg-deploy-bosh/ci/pipeline.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml
 
 if [ ! -f "${WORKSPACE_DIR}/master-bosh-state.json" ]; then
   echo '{}' > ${WORKSPACE_DIR}/master-bosh-state.json
@@ -35,6 +35,7 @@ fly --target bootstrap set-pipeline \
   --config ${WORKSPACE_DIR}/deploy-bosh-pipeline.yml \
   --load-vars-from ${WORKSPACE_DIR}/concourse-environment.yml \
   --load-vars-from ../cg-deploy-bosh/ci/concourse-defaults.yml \
+  --load-vars-from ../cg-deploy-bosh/bosh-meta-${DEPLOY_ENV}.yml \
   --var aws-region=${AWS_DEFAULT_REGION} \
   --var masterbosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/master_bosh_static_ip) \
   --var toolingbosh-target=$(bosh interpolate ${WORKSPACE_DIR}/tooling-state.yml --path /terraform_outputs/tooling_bosh_static_ip) \

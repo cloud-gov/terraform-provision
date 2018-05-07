@@ -46,13 +46,15 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
     1. If terraform fails with `InvalidGroup.NotFound: You have specified two resources that belong to different networks`, re-run the bootstrap job. Peering isn't consistently complete before security groups across VPCs are added.
     1. Run `terraform-provision/bootstrap-tooling` again to run `init-bosh-db`.
     1. Run the development, or staging and production plan and bootstrap jobs.
-        1. `init-bosh-db` and `init-cf-db` will fail. This is fine, you'll run again in main concourse.
+        1. You may have to run the jobs twice, since there seems to be a race condition.
+        1. `init-bosh-db` and `init-cf-db` will fail. This is fine, you'll run again in the main concourse.
 1. Generate secrets for bosh and concourse: `./scripts/bootstrap/05-generate-secrets.sh`
 1. Deploy master bosh: `./scripts/bootstrap/06-deploy-bosh.sh`
     1. Upload custom bosh releases to `${BOSH_RELEASES_BUCKET}` with aws cli.  Get the latest release of each type from `cloud-gov-bosh-releases` if you are building out a dev environment.
         1. **TODO: bootstrap custom bosh releases**
         1. This might help:  
-            ```aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out
+            ```
+            aws s3 ls cloud-gov-bosh-releases > /tmp/releases.out
             mkdir -p /tmp/releases
             awk '/-[0-9]*.tgz$/ {print $4}' /tmp/releases.out | \
                 sed 's/\(.*\)-[0-9.]*.tgz/\1/' | \
@@ -69,7 +71,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
             aws s3 sync /tmp/releases s3://cloud-gov-bosh-releases-dev --sse AES256
             ```
     1. Run `deploy-bosh/common-releases-master` and `deploy-bosh/deploy-tooling-bosh`
-    1. If you get a "x509: certificate signed by unknown authority" error, you will need to add the root CA cert generated to the `tmp/concourse-environment.yml` file in the `common_ca_cert_store` section.  You can get the root cert by looking at `echo "" |openssl s_client -connect opslogin.<domain>:443 -showcerts`.  After you add it, rerun the 06 deploy script.
+    1. If you are populating your ALBs with a self-signed cert, the `update-cloud-config` task within `deploy-tooling-bosh` will fail with a bad cert.  Fly intercept the job, use openssl to get the cert and chain, and put that in the `common_ca_cert_store` section of `tmp/concourse-environment.yml`, and re-run `./scripts/bootstrap/05-generate-secrets.sh`.
 1. Deploy permanent concourse: `./scripts/bootstrap/07-deploy-concourse.sh`
     1. Verify main concourse comes up.
     1. The hostname can be found in `terraform/stacks/dns/stack.tf` Search for: `cloud_gov_ci_dev2_cloud_gov_a` in there for the dev env, for example.
@@ -82,7 +84,7 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. Teardown bootstrap and terraform stack: `./scripts/bootstrap/teardown.sh`
 1. From the permanent concourse: Fly `cg-provision/ci/pipeline.yml` with the credentials you used to log into the concourse UI above.
     1. `fly --target TARGET login --concourse-url=https://HOSTNAME/ --ca-cert tmp/realconcourse-cacrt.pem --username USERNAME --password XXX`
-    1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline<maybe -development>.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
+    1. `fly -t TARGET set-pipeline -p terraform-provision -c ci/pipeline.yml -l ci/concourse-defaults.yml -l tmp/cg-provision.yml`
     1. Select and unpause the `terraform-provision` pipeline in the UI.
     1. Run the `plan-bootstrap-tooling` job and verify there are no changes.
     1. Run the development, or staging and production plan and bootstrap jobs and verify they complete successfully.
