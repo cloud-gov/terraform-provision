@@ -42,7 +42,6 @@ fly --target bootstrap set-pipeline \
   --var tf-state-bucket=${TF_STATE_BUCKET} \
   --var secrets-bucket=${VARZ_BUCKET} \
   --var semver-bucket=${SEMVER_BUCKET} \
-  --var github-release-access-token=${GITHUB_RELEASE_ACCESS_TOKEN} \
   --var slack-webhook-url=${SLACK_WEBHOOK_URL} \
   --var tooling-secrets-passphrase=${TOOLING_SECRETS_PASSPHRASE} \
   --var nessus-agent-key=${NESSUS_KEY} \

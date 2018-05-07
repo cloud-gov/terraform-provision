@@ -17,11 +17,8 @@ export VARZ_BUCKET=cloud-gov-varz
 export SEMVER_BUCKET=cg-semver
 export BOSH_RELEASES_BUCKET=cloud-gov-bosh-releases
 export BOSH_RELEASES_BLOBSTORE_BUCKET=cloud-gov-release-blobstore
-
 export TOOLING_SECRETS_PASSPHRASE="XXX"
 export CONCOURSE_SECRETS_PASSPHRASE="XXX"
-
-export GITHUB_RELEASE_ACCESS_TOKEN="XXX"
 export SLACK_WEBHOOK_URL="XXX"
 export NESSUS_KEY="XXX"
 export NESSUS_SERVER="XXX"
