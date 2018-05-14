@@ -178,8 +178,8 @@ module "shibboleth" {
 module "elasticache_broker_network" {
   source = "../../modules/elasticache_broker_network"
   stack_description = "${var.stack_description}"
-  elasticache_private_cidr_1 = "${var.elasticache_private_cidr_1}"
-  elasticache_private_cidr_2 = "${var.elasticache_private_cidr_2}"
+  elasticache_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 34)}"
+  elasticache_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 35)}"
   az1_route_table = "${module.stack.private_route_table_az1}"
   az2_route_table = "${module.stack.private_route_table_az2}"
   vpc_id = "${module.stack.vpc_id}"
