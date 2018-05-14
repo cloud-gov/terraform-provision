@@ -222,10 +222,10 @@ output "elasticache_subnet_az2" {
   value = "${module.elasticache_broker_network.elasticache_subnet_az2}"
 }
 output "elasticache_subnet_cidr_az1" {
-  value = "${var.elasticache_private_cidr_1}"
+  value = "${module.elasticache_broker_network.elasticache_private_cidr_1}"
 }
 output "elasticache_subnet_cidr_az2" {
-  value = "${var.elasticache_private_cidr_2}"
+  value = "${module.elasticache_broker_network.elasticache_private_cidr_2}"
 }
 output "elasticache_subnet_group" {
   value = "${module.elasticache_broker_network.elasticache_subnet_group}"
