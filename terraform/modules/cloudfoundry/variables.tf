@@ -63,14 +63,10 @@ variable "vpc_id" {}
 variable "private_route_table_az1" {}
 
 variable "private_route_table_az2" {}
+# Assuming these are now being defined by terraform
+variable "services_cidr_1" {}
 
-variable "services_cidr_1" {
-  default = "10.0.30.0/24"
-}
-
-variable "services_cidr_2" {
-  default = "10.0.31.0/24"
-}
+variable "services_cidr_2" {}
 
 variable "aws_partition" {}
 

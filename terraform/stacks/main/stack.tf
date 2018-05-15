@@ -113,8 +113,9 @@ module "cf" {
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
-    services_cidr_1 = "${var.services_cidr_1}"
-    services_cidr_2 = "${var.services_cidr_2}"
+    
+    services_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 30)}" 
+    services_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
     additional_certificates = ["${compact(

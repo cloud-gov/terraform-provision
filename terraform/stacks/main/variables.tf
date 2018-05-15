@@ -46,8 +46,6 @@ variable "platform_kibana_hosts" {
   type = "list"
 }
 
-variable "services_cidr_1" {}
-variable "services_cidr_2" {}
 variable "kubernetes_cluster_id" {}
 
 variable "restricted_ingress_web_cidrs" {
