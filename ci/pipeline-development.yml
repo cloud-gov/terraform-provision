@@ -141,8 +141,6 @@ jobs:
       TF_VAR_public_cidr_2: ((development_public_cidr_2))
       TF_VAR_private_cidr_1: ((development_private_cidr_1))
       TF_VAR_private_cidr_2: ((development_private_cidr_2))
-      TF_VAR_services_cidr_1: ((development_services_cidr_1))
-      TF_VAR_services_cidr_2: ((development_services_cidr_2))
       TF_VAR_kubernetes_cluster_id: ((development_kubernetes_cluster_id))
       TF_VAR_rds_private_cidr_1: ((development_rds_private_cidr_1))
       TF_VAR_rds_private_cidr_2: ((development_rds_private_cidr_2))
