@@ -136,7 +136,7 @@ output "logsearch_static_ips" {
 data "template_file" "kubernetes_static_ips" {
   count = 31
   vars {
-    address = "${cidrhost("${module.services_cidr_1}", "${count.index + 223}")}"
+    address = "${cidrhost("${module.cf.services_cidr_1}", "${count.index + 223}")}"
   }
   template = "$${address}"
 }
