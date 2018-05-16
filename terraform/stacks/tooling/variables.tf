@@ -45,12 +45,10 @@ variable "concourse_staging_elb_cert_name" {
   default = "star-fr-stage-cloud-gov-2017-05"
 }
 
-variable "monitoring_production_cidr" {}
 variable "monitoring_production_elb_cert_name" {
   default = "star-fr-cloud-gov-2017-05"
 }
 
-variable "monitoring_staging_cidr" {}
 variable "monitoring_staging_elb_cert_name" {
   default = "star-fr-stage-cloud-gov-2017-05"
 }
