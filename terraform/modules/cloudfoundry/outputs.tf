@@ -54,6 +54,14 @@ output "services_subnet_az2" {
   value = "${aws_subnet.az2_services.id}"
 }
 
+output "services_cidr_1" {
+  value = "${aws_subnet.az1_services.cidr_block}"
+}
+
+output "services_cidr_2" {
+  value = "${aws_subnet.az2_services.cidr_block}"
+}
+
 /* buckets */
 output "buildpacks_bucket_name" {
   value = "${module.buildpacks.bucket_name}"
