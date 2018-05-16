@@ -68,24 +68,24 @@ output "private_subnet_az2_gateway" {
 }
 
 output "production_monitoring_subnet_reserved" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 0)} - ${cidrhost("${var.monitoring_production_cidr}", 3)}"
+  value = "${cidrhost("${module.monitoring_production.monitoring_cidr}", 0)} - ${cidrhost("${module.monitoring_production.monitoring_cidr}", 3)}"
 }
 output "staging_monitoring_subnet_reserved" {
-  value = "${cidrhost("${var.monitoring_staging_cidr}", 0)} - ${cidrhost("${var.monitoring_staging_cidr}", 3)}"
+  value = "${cidrhost("${module.monitoring_staging.monitoring_cidr}", 0)} - ${cidrhost("${module.monitoring_staging.monitoring_cidr}", 3)}"
 }
 
 output "production_monitoring_subnet_cidr" {
-  value = "${var.monitoring_production_cidr}"
+  value = "${module.monitoring_production.monitoring_cidr}"
 }
 output "staging_monitoring_subnet_cidr" {
-  value = "${var.monitoring_staging_cidr}"
+  value = "${module.monitoring_staging.monitoring_cidr}"
 }
 
 output "production_monitoring_subnet_gateway" {
-  value = "${cidrhost("${var.monitoring_production_cidr}", 1)}"
+  value = "${cidrhost("${module.monitoring_production.monitoring_cidr}", 1)}"
 }
 output "staging_monitoring_subnet_gateway" {
-  value = "${cidrhost("${var.monitoring_staging_cidr}", 1)}"
+  value = "${cidrhost("${module.monitoring_staging.monitoring_cidr}", 1)}"
 }
 
 output "master_bosh_static_ip" {
