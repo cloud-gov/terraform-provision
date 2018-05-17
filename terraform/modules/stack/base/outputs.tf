@@ -81,6 +81,12 @@ output "rds_subnet_az1" {
 output "rds_subnet_az2" {
     value = "${module.rds_network.rds_subnet_az2}"
 }
+output "rds_private_cidr_1"{
+    value = "${module.rds_network.rds_private_cidr_1}"
+}
+output "rds_private_cidr_2"{
+    value = "${module.rds_network.rds_private_cidr_2}"
+}
 output "rds_subnet_group" {
     value = "${module.rds_network.rds_subnet_group}"
 }

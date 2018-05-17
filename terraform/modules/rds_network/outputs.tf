@@ -6,6 +6,14 @@ output "rds_subnet_az2" {
     value = "${aws_subnet.az2_rds.id}"
 }
 
+output "rds_private_cidr_1"{
+    value = "${aws_subnet.az1_rds.cidr_block}"
+}
+output "rds_private_cidr_2"{
+    value = "${aws_subnet.az2_rds.cidr_block}"
+}
+
+
 output "rds_subnet_group" {
     value = "${aws_db_subnet_group.rds.id}"
 }
