@@ -19,6 +19,12 @@ output "private_route_table_az1" {
 output "private_route_table_az2" {
   value = "${module.base.private_route_table_az2}"
 }
+output "private_cidr_az1" {
+  value = "${module.base.private_cidr_az1}"
+}
+output "private_cidr_az2" {
+  value = "${module.base.private_cidr_az2}"
+}
 
 /* Public network */
 output "public_subnet_az1" {

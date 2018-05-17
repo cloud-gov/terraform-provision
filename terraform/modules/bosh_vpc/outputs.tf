@@ -16,6 +16,14 @@ output "private_subnet_az2" {
   value = "${aws_subnet.az2_private.id}"
 }
 
+output "private_cidr_az1" {
+  value = "${aws_subnet.az1_private.cidr_block}"
+}
+
+output "private_cidr_az2" {
+  value = "${aws_subnet.az2_private.cidr_block}"
+}
+
 output "private_route_table_az1" {
   value = "${aws_route_table.az1_private_route_table.id}"
 }

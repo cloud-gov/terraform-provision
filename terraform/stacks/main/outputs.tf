@@ -30,22 +30,22 @@ output "private_subnet_az2" {
   value = "${module.stack.private_subnet_az2}"
 }
 output "private_subnet_cidr_az1" {
-  value = "${var.private_cidr_1}"
+  value = "${module.stack.private_cidr_az1}"
 }
 output "private_subnet_cidr_az2" {
-  value = "${var.private_cidr_2}"
+  value = "${module.stack.private_cidr_az2}"
 }
 output "private_subnet_gateway_az1" {
-  value = "${cidrhost("${var.private_cidr_1}", 1)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 1)}"
 }
 output "private_subnet_gateway_az2" {
-  value = "${cidrhost("${var.private_cidr_2}", 1)}"
+  value = "${cidrhost("${module.stack.private_cidr_az2}", 1)}"
 }
 output "private_subnet_reserved_az1" {
-  value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 0)} - ${cidrhost("${module.stack.private_cidr_az1}", 3)}"
 }
 output "private_subnet_reserved_az2" {
-  value = "${cidrhost("${var.private_cidr_2}", 0)} - ${cidrhost("${var.private_cidr_2}", 3)}"
+  value = "${cidrhost("${module.stack.private_cidr_az2}", 0)} - ${cidrhost("${module.stack.private_cidr_az2}", 3)}"
 }
 output "private_route_table_az1" {
   value = "${module.stack.private_route_table_az1}"
@@ -373,11 +373,11 @@ output "upstream_bosh_compilation_profile" {
 }
 
 output "bosh_static_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
 output "bosh_uaa_static_ips" {
   value = [
-    "${cidrhost("${var.private_cidr_1}", 4)}"
+    "${cidrhost("${module.stack.private_cidr_az1}", 4)}"
   ]
 }
 
