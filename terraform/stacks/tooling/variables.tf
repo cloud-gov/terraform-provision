@@ -15,9 +15,6 @@ variable "az1" {
 variable "az2" {
   default = "us-gov-west-1b"
 }
-variable "public_cidr_1" {}
-
-variable "public_cidr_2" {}
 
 variable "rds_private_cidr_1" {}
 

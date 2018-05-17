@@ -6,10 +6,6 @@ variable "aws_default_region" {
 
 variable "vpc_cidr" {}
 
-variable "public_cidr_1" {}
-
-variable "public_cidr_2" {}
-
 variable "rds_private_cidr_1" {}
 
 variable "rds_private_cidr_2" {}
