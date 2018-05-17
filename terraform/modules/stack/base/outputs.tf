@@ -20,6 +20,12 @@ output "private_route_table_az1" {
 output "private_route_table_az2" {
   value = "${module.vpc.private_route_table_az2}"
 }
+output "private_cidr_az1" {
+  value = "${module.vpc.private_cidr_az1}"
+}
+output "private_cidr_az2" {
+  value = "${module.vpc.private_cidr_az2}"
+}
 
 /* Public network */
 output "public_subnet_az1" {
@@ -30,6 +36,12 @@ output "public_subnet_az2" {
 }
 output "public_route_table" {
   value = "${module.vpc.public_route_table}"
+}
+output "public_cidr_az1" {
+  value = "${module.vpc.public_cidr_az1}"
+}
+output "public_cidr_az2" {
+  value = "${module.vpc.public_cidr_az2}"
 }
 
 output "nat_egress_ip_az1" {
