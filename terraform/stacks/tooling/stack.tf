@@ -74,8 +74,8 @@ module "stack" {
   private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 2)}"
   restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
   restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
-  rds_private_cidr_1 = "${var.rds_private_cidr_1}"
-  rds_private_cidr_2 = "${var.rds_private_cidr_2}"
+  rds_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 20)}"
+  rds_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 21)}"
   rds_password = "${var.rds_password}"
   rds_multi_az = "${var.rds_multi_az}"
   rds_security_groups = ["${module.stack.bosh_security_group}"]
