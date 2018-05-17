@@ -38,10 +38,10 @@ output "private_route_table_az2" {
 }
 
 output "private_subnet_az1_cidr" {
-  value = "${var.private_cidr_1}"
+  value = "${module.stack.private_cidr_az1}"
 }
 output "private_subnet_az2_cidr" {
-  value = "${var.private_cidr_2}"
+  value = "${module.stack.private_cidr_az2}"
 }
 
 output "private_subnet_az1_zone" {
@@ -52,19 +52,19 @@ output "private_subnet_az2_zone" {
 }
 
 output "private_subnet_az1_reserved" {
-  value = "${cidrhost("${var.private_cidr_1}", 0)} - ${cidrhost("${var.private_cidr_1}", 3)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 0)} - ${cidrhost("${module.stack.private_cidr_az1}", 3)}"
 }
 
 output "private_subnet_az2_reserved" {
-  value = "${cidrhost("${var.private_cidr_2}", 0)} - ${cidrhost("${var.private_cidr_2}", 3)}"
+  value = "${cidrhost("${module.stack.private_cidr_az2}", 0)} - ${cidrhost("${module.stack.private_cidr_az2}", 3)}"
 }
 
 output "private_subnet_az1_gateway" {
-  value = "${cidrhost("${var.private_cidr_1}", 1)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 1)}"
 }
 
 output "private_subnet_az2_gateway" {
-  value = "${cidrhost("${var.private_cidr_2}", 1)}"
+  value = "${cidrhost("${module.stack.private_cidr_az2}", 1)}"
 }
 
 output "production_monitoring_subnet_reserved" {
@@ -89,18 +89,18 @@ output "staging_monitoring_subnet_gateway" {
 }
 
 output "master_bosh_static_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 6)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 6)}"
 }
 output "tooling_bosh_static_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
 output "bosh_static_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 7)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
 output "bosh_uaa_static_ips" {
   value = [
-    "${cidrhost("${var.private_cidr_1}", 4)}",
-    "${cidrhost("${var.private_cidr_1}", 5)}"
+    "${cidrhost("${module.stack.private_cidr_az1}", 4)}",
+    "${cidrhost("${module.stack.private_cidr_az1}", 5)}"
   ]
 }
 
@@ -394,7 +394,7 @@ output "nessus_target_group" {
 }
 
 output "nessus_static_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 71)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 71)}"
 }
 
 /* BOSH UAA elb */
@@ -422,8 +422,8 @@ output "dns_public_security_group" {
 
 output "staging_dns_private_ips" {
   value = [
-    "${cidrhost("${var.private_cidr_1}", 8)}",
-    "${cidrhost("${var.private_cidr_1}", 9)}"
+    "${cidrhost("${module.stack.private_cidr_az1}", 8)}",
+    "${cidrhost("${module.stack.private_cidr_az1}", 9)}"
   ]
 }
 
@@ -433,8 +433,8 @@ output "production_dns_public_ips" {
 
 output "production_dns_private_ips" {
   value = [
-    "${cidrhost("${var.private_cidr_1}", 10)}",
-    "${cidrhost("${var.private_cidr_1}", 11)}"
+    "${cidrhost("${module.stack.private_cidr_az1}", 10)}",
+    "${cidrhost("${module.stack.private_cidr_az1}", 11)}"
   ]
 }
 
@@ -452,5 +452,5 @@ output "smtp_security_group" {
 }
 
 output "production_smtp_private_ip" {
-  value = "${cidrhost("${var.private_cidr_1}", 12)}"
+  value = "${cidrhost("${module.stack.private_cidr_az1}", 12)}"
 }
