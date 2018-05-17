@@ -62,22 +62,22 @@ output "public_subnet_az2" {
   value = "${module.stack.public_subnet_az2}"
 }
 output "public_subnet_cidr_az1" {
-  value = "${var.public_cidr_1}"
+  value = "${module.stack.public_cidr_az1}"
 }
 output "public_subnet_cidr_az2" {
-  value = "${var.public_cidr_2}"
+  value = "${module.stack.public_cidr_az2}"
 }
 output "public_subnet_gateway_az1" {
-  value = "${cidrhost("${var.public_cidr_1}", 1)}"
+  value = "${cidrhost("${module.stack.public_cidr_az1}", 1)}"
 }
 output "public_subnet_gateway_az2" {
-  value = "${cidrhost("${var.public_cidr_2}", 1)}"
+  value = "${cidrhost("${module.stack.public_cidr_az2}", 1)}"
 }
 output "public_subnet_reserved_az1" {
-  value = "${cidrhost("${var.public_cidr_1}", 0)} - ${cidrhost("${var.public_cidr_1}", 3)}"
+  value = "${cidrhost("${module.stack.public_cidr_az1}", 0)} - ${cidrhost("${module.stack.public_cidr_az1}", 3)}"
 }
 output "public_subnet_reserved_az2" {
-  value = "${cidrhost("${var.public_cidr_2}", 0)} - ${cidrhost("${var.public_cidr_2}", 3)}"
+  value = "${cidrhost("${module.stack.public_cidr_az2}", 0)} - ${cidrhost("${module.stack.public_cidr_az2}", 3)}"
 }
 output "public_route_table" {
   value = "${module.stack.public_route_table}"

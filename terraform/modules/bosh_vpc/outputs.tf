@@ -41,6 +41,14 @@ output "public_subnet_az2" {
   value = "${aws_subnet.az2_public.id}"
 }
 
+output "public_cidr_az1" {
+  value = "${aws_subnet.az1_public.cidr_block}"
+}
+
+output "public_cidr_az2" {
+  value = "${aws_subnet.az2_public.cidr_block}"
+}
+
 output "public_route_table" {
   value = "${aws_route_table.public_network.id}"
 }
