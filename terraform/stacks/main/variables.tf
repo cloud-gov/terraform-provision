@@ -14,10 +14,6 @@ variable "private_cidr_1" {}
 
 variable "private_cidr_2" {}
 
-variable "rds_private_cidr_1" {}
-
-variable "rds_private_cidr_2" {}
-
 variable "rds_password" {}
 
 variable "cf_rds_password" {}

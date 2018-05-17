@@ -36,13 +36,9 @@ variable "nat_gateway_instance_type" {
   default = "c3.2xlarge"
 }
 
-variable "rds_private_cidr_1" {
-  default = "10.0.20.0/24"
-}
+variable "rds_private_cidr_1" {}
 
-variable "rds_private_cidr_2" {
-  default = "10.0.21.0/24"
-}
+variable "rds_private_cidr_2" {}
 
 variable "rds_instance_type" {
     default = "db.m3.medium"

@@ -8,13 +8,9 @@ variable "az2" {
   default = "us-gov-west-1b"
 }
 
-variable "rds_private_cidr_1" {
-  default = "10.0.20.0/24"
-}
+variable "rds_private_cidr_1" {}
 
-variable "rds_private_cidr_2" {
-  default = "10.0.21.0/24"
-}
+variable "rds_private_cidr_2" {}
 
 variable "az1_route_table" {}
 
