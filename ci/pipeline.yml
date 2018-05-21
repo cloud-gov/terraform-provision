@@ -402,6 +402,12 @@ jobs:
       TF_VAR_use_apps_certificate: "false"
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "2"
+      TF_VAR_challenge_bucket: staging-domains-broker-challenge
+      TF_VAR_iam_cert_prefix: "/domains/staging/*"
+      TF_VAR_alb_prefix: "staging-domains-*"
+      TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -503,6 +509,12 @@ jobs:
       TF_VAR_use_apps_certificate: "true"
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "2"
+      TF_VAR_challenge_bucket: production-domains-broker-challenge
+      TF_VAR_iam_cert_prefix: "/domains/production/*"
+      TF_VAR_alb_prefix: "production-domains-*"
+      TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
   - *notify-slack
 
 - name: bootstrap-production
