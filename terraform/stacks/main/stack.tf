@@ -21,6 +21,8 @@ data "aws_iam_server_certificate" "wildcard" {
   latest = true
 }
 
+data "aws_availability_zones" "available" {}
+
 locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
@@ -113,8 +115,8 @@ module "cf" {
     vpc_id = "${module.stack.vpc_id}"
     private_route_table_az1 = "${module.stack.private_route_table_az1}"
     private_route_table_az2 = "${module.stack.private_route_table_az2}"
-    
-    services_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 30)}" 
+
+    services_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 30)}"
     services_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"

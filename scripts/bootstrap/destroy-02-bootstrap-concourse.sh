@@ -7,6 +7,8 @@
 
 set -eux
 
+az=$(aws ec2 describe-availability-zones | jq -r '.AvailabilityZones[0].ZoneName')
+
 # Collect AWS variables
 bosh interpolate \
   ./bosh/varsfiles/collect-aws-variables.yml \
@@ -29,7 +31,7 @@ bosh delete-env ../concourse-deployment/lite/concourse.yml \
   -l ${WORKSPACE_DIR}/aws-variables.yml \
   -v region=${AWS_DEFAULT_REGION} \
   -v default_key_name=bootstrap \
-  -v az=${TF_VAR_az1} \
+  -v az=${az} \
   -v access_key_id=${AWS_ACCESS_KEY_ID} \
   -v secret_access_key=${AWS_SECRET_ACCESS_KEY}
 
