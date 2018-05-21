@@ -8,14 +8,6 @@ variable "aws_default_region" {
 
 variable "vpc_cidr" {}
 
-variable "az1" {
-  default = "us-gov-west-1a"
-}
-
-variable "az2" {
-  default = "us-gov-west-1b"
-}
-
 variable "rds_password" {}
 
 variable "rds_multi_az" {

@@ -1,4 +1,4 @@
-variable "az1" {}
+data "aws_availability_zones" "available" {}
 
 variable "ingress_cidrs" {
   type = "list"
@@ -18,7 +18,7 @@ data "aws_route_table" "bootstrap" {
 }
 
 resource "aws_default_subnet" "default_az1" {
-  availability_zone = "${var.az1}"
+  availability_zone = "${data.aws_availability_zones.available.names[0]}"
 }
 
 resource "aws_security_group" "bootstrap" {
