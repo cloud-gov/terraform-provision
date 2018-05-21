@@ -1,8 +1,8 @@
 output "az1" {
-  value = "${var.az1}"
+  value = "${data.aws_availability_zones.available.names[0]}"
 }
 output "az2" {
-  value = "${var.az2}"
+  value = "${data.aws_availability_zones.available.names[1]}"
 }
 output "stack_description" {
   value = "${var.stack_description}"
@@ -42,13 +42,6 @@ output "private_subnet_az1_cidr" {
 }
 output "private_subnet_az2_cidr" {
   value = "${module.stack.private_cidr_az2}"
-}
-
-output "private_subnet_az1_zone" {
-  value = "${var.az1}"
-}
-output "private_subnet_az2_zone" {
-  value = "${var.az2}"
 }
 
 output "private_subnet_az1_reserved" {

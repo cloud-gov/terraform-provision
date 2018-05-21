@@ -18,6 +18,8 @@ data "aws_iam_server_certificate" "wildcard_staging" {
   latest = true
 }
 
+data "aws_availability_zones" "available" {}
+
 locals {
   aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
@@ -65,8 +67,8 @@ module "stack" {
 
   stack_description = "${var.stack_description}"
   vpc_cidr = "${var.vpc_cidr}"
-  az1 = "${var.az1}"
-  az2 = "${var.az2}"
+  az1 = "${data.aws_availability_zones.available.names[0]}"
+  az2 = "${data.aws_availability_zones.available.names[1]}"
   aws_default_region = "${var.aws_default_region}"
   public_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 100)}"
   public_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 101)}"
@@ -88,7 +90,7 @@ module "concourse_production" {
   stack_description = "${var.stack_description}"
   vpc_id = "${module.stack.vpc_id}"
   concourse_cidr = "${cidrsubnet(var.vpc_cidr, 8, 30)}"
-  concourse_az = "${var.az1}"
+  concourse_az = "${data.aws_availability_zones.available.names[0]}"
   route_table_id = "${module.stack.private_route_table_az1}"
   rds_password = "${var.concourse_prod_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
@@ -106,7 +108,7 @@ module "concourse_staging" {
   stack_description = "${var.stack_description}"
   vpc_id = "${module.stack.vpc_id}"
   concourse_cidr = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
-  concourse_az = "${var.az2}"
+  concourse_az = "${data.aws_availability_zones.available.names[1]}"
   route_table_id = "${module.stack.private_route_table_az2}"
   rds_password = "${var.concourse_staging_rds_password}"
   rds_subnet_group = "${module.stack.rds_subnet_group}"
@@ -124,7 +126,7 @@ module "monitoring_production" {
   stack_description = "production"
   vpc_id = "${module.stack.vpc_id}"
   monitoring_cidr = "${cidrsubnet(var.vpc_cidr, 8, 32)}"
-  monitoring_az = "${var.az1}"
+  monitoring_az = "${data.aws_availability_zones.available.names[0]}"
   route_table_id = "${module.stack.private_route_table_az1}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_production_hosts}"]
@@ -135,7 +137,7 @@ module "monitoring_staging" {
   stack_description = "staging"
   vpc_id = "${module.stack.vpc_id}"
   monitoring_cidr = "${cidrsubnet(var.vpc_cidr, 8, 33)}"
-  monitoring_az = "${var.az2}"
+  monitoring_az = "${data.aws_availability_zones.available.names[1]}"
   route_table_id = "${module.stack.private_route_table_az2}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_staging_hosts}"]

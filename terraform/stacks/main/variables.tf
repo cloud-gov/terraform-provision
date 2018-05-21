@@ -48,15 +48,6 @@ variable "18f_gov_elb_cert_name" {
   default = ""
 }
 
-/* Variables for Diego Deployment */
-variable "az1" {
-  default = "us-gov-west-1a"
-}
-
-variable "az2" {
-  default = "us-gov-west-1b"
-}
-
 variable "elb_shibboleth_cert_name" {
   default = "star-fr-cloud-gov-2017-05"
 }

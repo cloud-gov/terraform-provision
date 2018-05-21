@@ -17,8 +17,6 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/tooling
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_az1: ((aws_az1))
-      TF_VAR_az2: ((aws_az2))
       TF_VAR_aws_default_region: ((aws_default_region))
       TF_VAR_rds_password: ((tooling_rds_password))
       TF_VAR_rds_multi_az: "false"
@@ -125,8 +123,6 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
-      TF_VAR_az1: ((aws_az1))
-      TF_VAR_az2: ((aws_az2))
       TF_VAR_rds_password: ((development_rds_password))
       TF_VAR_rds_multi_az: "false"
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
