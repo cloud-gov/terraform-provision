@@ -79,9 +79,7 @@ resource "aws_lb" "domains_broker" {
 
   name = "${var.stack_description}-domains-${count.index}"
   subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
-  security_groups = ["${var.force_restricted_network == "no" ?
-    module.stack.web_traffic_security_group :
-    module.stack.restricted_web_traffic_security_group}"]
+  security_groups = ["${module.stack.web_traffic_security_group}"]
   ip_address_type = "dualstack"
 }
 
