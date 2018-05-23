@@ -200,17 +200,17 @@ jobs:
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
       TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
-      TF_VAR_smtp_ingress_cidr_blocks: '["((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
+      TF_VAR_smtp_ingress_cidr_blocks: ((smtp_ingress_cidr_blocks))
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
-      TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
-      TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
-      TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
-      TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
-      TF_VAR_production_cert_name: star-fr-cloud-gov-2017-05
-      TF_VAR_staging_cert_name: star-fr-stage-cloud-gov-2017-05
+      TF_VAR_blobstore_bucket_name: ((blobstore_bucket_name_tooling))
+      TF_VAR_concourse_production_hosts: ((concourse_production_hosts))
+      TF_VAR_concourse_staging_hosts: ((concourse_staging_hosts))
+      TF_VAR_monitoring_production_hosts: ((monitoring_production_hosts))
+      TF_VAR_monitoring_staging_hosts: ((monitoring_staging_hosts))
+      TF_VAR_nessus_hosts: ((nessus_hosts))
+      TF_VAR_production_cert_name: ((production_cert_name))
+      TF_VAR_staging_cert_name: ((staging_cert_name))
       TF_VAR_use_staging_certificate: "true"
       TF_VAR_use_nat_gateway_eip: "true"
   - *notify-slack

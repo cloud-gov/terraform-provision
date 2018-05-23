@@ -1,0 +1,8 @@
+blobstore_bucket_name_tooling: bosh-tooling-blobstore
+concourse_production_hosts: '["ci.fr.cloud.gov"]'
+concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
+monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
+monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
+nessus_hosts: '["nessus.fr.cloud.gov"]'
+production_cert_name: star-fr-cloud-gov-2017-05
+staging_cert_name: star-fr-stage-cloud-gov-2017-05
