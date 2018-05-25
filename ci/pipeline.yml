@@ -638,6 +638,7 @@ resources:
   source:
     repo: ((cg_provision_git_repo))
     access_token: ((status_access_token))
+    disable_forks: true
     every: true
 
 - name: terraform-yaml-tooling
