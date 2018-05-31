@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:${local.aws_partition}:s3:::${var.cloudtrail_bucket}"
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}"
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:${local.aws_partition}:s3:::${var.cloudtrail_bucket}/*",
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"
@@ -43,7 +43,7 @@ resource "aws_cloudtrail" "cg-s3-cloudtrail-trail"{
 
     data_resource {
       type   = "AWS::S3::Object"
-      values = ["arn:${local.aws_partition}:s3:::cg-*/*"]
+      values = ["arn:${data.aws_partition.current.partition}:s3:::cg-*/*"]
     }
   }
 }

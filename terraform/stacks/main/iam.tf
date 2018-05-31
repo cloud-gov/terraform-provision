@@ -1,7 +1,7 @@
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "${var.stack_description}-blobstore"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
@@ -9,7 +9,7 @@ module "blobstore_policy" {
 module "blobstore_upstream_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "${var.stack_description}-blobstore-upstream"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "${var.upstream_blobstore_bucket_name}"
 }
 
@@ -21,7 +21,7 @@ module "cloudwatch_policy" {
 module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
   policy_name = "${var.stack_description}-bosh"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   account_id = "${data.aws_caller_identity.current.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
@@ -29,14 +29,14 @@ module "bosh_policy" {
 module "bosh_compilation_policy" {
   source = "../../modules/iam_role_policy/bosh_compilation"
   policy_name = "${var.stack_description}-bosh-compilation"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "logsearch_ingestor_policy" {
   source = "../../modules/iam_role_policy/logsearch_ingestor"
   policy_name = "${var.stack_description}-logsearch_ingestor"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   aws_default_region = "${var.aws_default_region}"
   account_id = "${data.aws_caller_identity.current.account_id}"
 }
@@ -44,26 +44,26 @@ module "logsearch_ingestor_policy" {
 module "kubernetes_master_policy" {
   source = "../../modules/iam_role_policy/kubernetes_master"
   policy_name = "${var.stack_description}-kubernetes-master"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
 }
 
 module "kubernetes_minion_policy" {
   source = "../../modules/iam_role_policy/kubernetes_minion"
   policy_name = "${var.stack_description}-kubernetes-minion"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
 }
 
 module "etcd_backup_policy" {
   source = "../../modules/iam_role_policy/etcd_backup"
   policy_name = "${var.stack_description}-etcd-backup"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "etcd-*"
 }
 
 module "cf_blobstore_policy" {
   source = "../../modules/iam_role_policy/cf_blobstore"
   policy_name = "${var.stack_description}-cf-blobstore"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   buildpacks_bucket = "${module.cf.buildpacks_bucket_name}"
   packages_bucket = "${module.cf.packages_bucket_name}"
   resources_bucket = "${module.cf.resources_bucket_name}"
@@ -74,7 +74,7 @@ module "s3_broker_policy" {
   source = "../../modules/iam_role_policy/s3_broker"
   policy_name = "${var.stack_description}-s3-broker"
   account_id = "${data.aws_caller_identity.current.account_id}"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_prefix = "${var.bucket_prefix}"
   iam_path = "/${var.stack_prefix}/s3/"
 }
@@ -83,7 +83,7 @@ module "aws_broker_policy" {
   source = "../../modules/iam_role_policy/aws_broker"
   policy_name = "${var.stack_description}-aws-broker"
   account_id = "${data.aws_caller_identity.current.account_id}"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   aws_default_region = "${var.aws_default_region}"
   remote_state_bucket = "${var.remote_state_bucket}"
   rds_subgroup = "${var.stack_description}"
@@ -270,7 +270,7 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
 module "kubernetes_node_role" {
   source = "../../modules/iam_role/kubernetes_node"
   role_name = "${var.stack_description}-kubernetes-node"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   account_id = "${data.aws_caller_identity.current.account_id}"
   master_role = "${module.kubernetes_master_role.role_name}"
   minion_role = "${module.kubernetes_minion_role.role_name}"
@@ -281,7 +281,7 @@ module "kubernetes_logger_role" {
   source = "../../modules/iam_role/kubernetes_logger"
   role_name = "${var.stack_description}-kubernetes-logger"
   aws_default_region = "${var.aws_default_region}"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   account_id = "${data.aws_caller_identity.current.account_id}"
   master_role = "${module.kubernetes_master_role.role_name}"
   minion_role = "${module.kubernetes_minion_role.role_name}"

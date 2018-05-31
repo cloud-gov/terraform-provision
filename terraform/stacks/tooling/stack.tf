@@ -6,7 +6,9 @@ provider "aws" {
   version = "~> 1.12.0"
 }
 
+data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
+data "aws_availability_zones" "available" {}
 
 data "aws_iam_server_certificate" "wildcard_production" {
   name_prefix = "${var.wildcard_production_prefix}"
@@ -16,12 +18,6 @@ data "aws_iam_server_certificate" "wildcard_production" {
 data "aws_iam_server_certificate" "wildcard_staging" {
   name_prefix = "${var.wildcard_staging_prefix}"
   latest = true
-}
-
-data "aws_availability_zones" "available" {}
-
-locals {
-  aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
 
 resource "aws_lb" "main" {
@@ -38,7 +34,7 @@ resource "aws_lb_listener" "main" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn = "${var.production_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.production_cert_name}" :
+    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.production_cert_name}" :
     data.aws_iam_server_certificate.wildcard_production.arn}"
 
   default_action {
@@ -58,7 +54,7 @@ resource "aws_lb_listener_certificate" "main-staging" {
 
   listener_arn    = "${aws_lb_listener.main.arn}"
   certificate_arn = "${var.staging_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.staging_cert_name}" :
+    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.staging_cert_name}" :
     data.aws_iam_server_certificate.wildcard_staging.arn}"
 }
 
