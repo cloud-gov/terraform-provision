@@ -14,17 +14,13 @@ data "terraform_remote_state" "target_vpc" {
   }
 }
 
+data "aws_partition" "current" {}
+data "aws_availability_zones" "available" {}
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_server_certificate" "wildcard" {
   name_prefix = "${var.wildcard_prefix}"
   latest = true
-}
-
-data "aws_availability_zones" "available" {}
-
-locals {
-  aws_partition = "${element(split(":", data.aws_caller_identity.current.arn), 1)}"
 }
 
 resource "aws_lb" "main" {
@@ -43,7 +39,7 @@ resource "aws_lb_listener" "main" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn = "${var.main_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
+    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
     data.aws_iam_server_certificate.wildcard.arn}"
 
   default_action {
@@ -62,7 +58,7 @@ module "stack" {
     source = "../../modules/stack/spoke"
 
     stack_description = "${var.stack_description}"
-    aws_partition = "${local.aws_partition}"
+    aws_partition = "${data.aws_partition.current.partition}"
     vpc_cidr = "${var.vpc_cidr}"
     aws_default_region = "${var.aws_default_region}"
     public_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 100)}"
@@ -95,12 +91,12 @@ module "cf" {
     source = "../../modules/cloudfoundry"
 
     stack_description = "${var.stack_description}"
-    aws_partition = "${local.aws_partition}"
+    aws_partition = "${data.aws_partition.current.partition}"
     elb_main_cert_id = "${var.main_cert_name != "" ?
-      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
+      "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
       data.aws_iam_server_certificate.wildcard.arn}"
     elb_apps_cert_id = "${var.apps_cert_name != "" ?
-      "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
+      "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
       data.aws_iam_server_certificate.wildcard.arn}"
     elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
     elb_security_groups = ["${var.force_restricted_network == "no" ?
@@ -123,7 +119,7 @@ module "cf" {
     additional_certificates = ["${compact(
       list(
         "${var.18f_gov_elb_cert_name != "" ?
-          "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
+          "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
           ""}"
       )
     )}"]

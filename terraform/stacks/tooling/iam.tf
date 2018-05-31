@@ -2,7 +2,7 @@ module "billing_user" {
   source = "../../modules/iam_user/billing_user"
   username = "cg-billing"
   billing_bucket = "cg-billing-*"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
 }
 
 module "rds_storage_alert" {
@@ -13,21 +13,21 @@ module "rds_storage_alert" {
 module "iam_cert_provision_user" {
   source = "../../modules/iam_user/iam_cert_provision"
   username = "cg-iam-cert-provision"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   account_id = "${data.aws_caller_identity.current.account_id}"
 }
 
 module "blobstore_policy" {
   source = "../../modules/iam_role_policy/blobstore"
   policy_name = "blobstore"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "bosh_policy" {
   source = "../../modules/iam_role_policy/bosh"
   policy_name = "${var.stack_description}-bosh"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   account_id = "${data.aws_caller_identity.current.account_id}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
@@ -35,14 +35,14 @@ module "bosh_policy" {
 module "bosh_compilation_policy" {
   source = "../../modules/iam_role_policy/bosh_compilation"
   policy_name = "${var.stack_description}-bosh-compilation"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   bucket_name = "${var.blobstore_bucket_name}"
 }
 
 module "concourse_worker_policy" {
   source = "../../modules/iam_role_policy/concourse_worker"
   policy_name = "concourse-worker"
-  aws_partition = "${local.aws_partition}"
+  aws_partition = "${data.aws_partition.current.partition}"
   varz_bucket = "${var.varz_bucket}"
   varz_staging_bucket = "${var.varz_bucket_stage}"
   bosh_release_bucket = "${var.bosh_release_bucket}"

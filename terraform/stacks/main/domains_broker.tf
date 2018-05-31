@@ -104,7 +104,7 @@ resource "aws_lb_listener" "domains_broker_https" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   certificate_arn = "${var.main_cert_name != "" ?
-    "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
+    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.main_cert_name}" :
     data.aws_iam_server_certificate.wildcard.arn}"
 
   default_action {
@@ -202,7 +202,7 @@ resource "aws_s3_bucket" "domains_bucket" {
         "AWS": "*"
       },
       "Action": "s3:GetObject",
-      "Resource": "arn:${local.aws_partition}:s3:::${var.challenge_bucket}/*"
+      "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.challenge_bucket}/*"
     }
   ]
 }
@@ -255,7 +255,7 @@ resource "aws_iam_policy" "domains_broker" {
         "iam:DeleteServerCertificate"
       ],
       "Resource": [
-        "arn:${local.aws_partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate${var.iam_cert_prefix}"
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate${var.iam_cert_prefix}"
       ]
     },
     {
@@ -266,7 +266,7 @@ resource "aws_iam_policy" "domains_broker" {
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:${local.aws_partition}:s3:::${var.challenge_bucket}/*"
+        "arn:${data.aws_partition.current.partition}:s3:::${var.challenge_bucket}/*"
       ]
     },
     {
