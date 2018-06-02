@@ -1,3 +1,28 @@
+groups:
+- name: terraform
+  jobs:
+  - pull-status-check
+  - plan-dns
+  - apply-dns
+  - plan-bootstrap-external-staging
+  - bootstrap-external-staging
+  - plan-bootstrap-external-production
+  - bootstrap-external-production
+  - plan-bootstrap-tooling
+  - bootstrap-tooling
+  - plan-bootstrap-development
+  - bootstrap-development
+  - plan-bootstrap-staging
+  - bootstrap-staging
+  - plan-bootstrap-production
+  - bootstrap-production
+- name: certs
+  jobs:
+  - acme-certificate-development
+  - acme-certificate-staging
+  - acme-certificate-production
+  - acme-certificate-production-apps
+
 jobs:
 - name: pull-status-check
   plan:
@@ -292,7 +317,6 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "false"
-      TF_VAR_use_apps_certificate: "false"
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -399,7 +423,6 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
-      TF_VAR_use_apps_certificate: "false"
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -506,7 +529,6 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_use_nat_gateway_eip: "true"
-      TF_VAR_use_apps_certificate: "true"
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -581,6 +603,7 @@ jobs:
   plan:
   - aggregate:
     - get: acme-timer
+      trigger: true
     - get: cg-provision-repo
       resource: cg-provision-repo-development
     - get: terraform-yaml-tooling
@@ -609,6 +632,117 @@ jobs:
     params:
       text: |
         :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+
+- name: acme-certificate-staging
+  plan:
+  - aggregate:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-staging
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/staging/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.fr-stage.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/staging/
+      CERT_PREFIX: star.fr-stage.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificate for *.fr-stage.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+
+- name: acme-certificate-production
+  plan:
+  - aggregate:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.fr.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: star.fr.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.fr.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+
+- name: acme-certificate-production-apps
+  plan:
+  - aggregate:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.app.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: {{aws_default_region}}
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: star.app.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.app.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: {{slack-channel}}
       username: {{slack-username}}

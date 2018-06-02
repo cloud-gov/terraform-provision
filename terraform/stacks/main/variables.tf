@@ -19,7 +19,6 @@ variable "target_stack_name" {
 variable "main_cert_name" {
   default = ""
 }
-variable "use_apps_certificate" {}
 variable "apps_cert_name" {
   default = ""
 }
