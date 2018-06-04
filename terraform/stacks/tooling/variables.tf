@@ -42,10 +42,10 @@ variable "bosh_uaa_elb_cert_name" {
   default = "star-fr-cloud-gov-2017-05"
 }
 
-variable "wildcard_production_prefix" {
+variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
-variable "wildcard_staging_prefix" {
+variable "wildcard_staging_certificate_name_prefix" {
   default = ""
 }
 

@@ -11,12 +11,12 @@ data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
 
 data "aws_iam_server_certificate" "wildcard_production" {
-  name_prefix = "${var.wildcard_production_prefix}"
+  name_prefix = "${var.wildcard_production_certificate_name_prefix}"
   latest = true
 }
 
 data "aws_iam_server_certificate" "wildcard_staging" {
-  name_prefix = "${var.wildcard_staging_prefix}"
+  name_prefix = "${var.wildcard_staging_certificate_name_prefix}"
   latest = true
 }
 

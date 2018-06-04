@@ -27,7 +27,8 @@ jobs:
       TF_VAR_rds_private_cidr_1: ((tooling_rds_private_cidr_1))
       TF_VAR_rds_private_cidr_2: ((tooling_rds_private_cidr_2))
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
-      TF_VAR_wildcard_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+      TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
       TF_VAR_bucket_prefix: dev-
       TF_VAR_dns_eip_count_staging: "0"
       TF_VAR_dns_eip_count_production: "0"

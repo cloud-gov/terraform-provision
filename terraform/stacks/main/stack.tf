@@ -19,7 +19,12 @@ data "aws_availability_zones" "available" {}
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_server_certificate" "wildcard" {
-  name_prefix = "${var.wildcard_prefix}"
+  name_prefix = "${var.wildcard_certificate_name_prefix}"
+  latest = true
+}
+
+data "aws_iam_server_certificate" "wildcard_apps" {
+  name_prefix = "${var.wildcard_apps_certificate_name_prefix}"
   latest = true
 }
 
@@ -97,7 +102,7 @@ module "cf" {
       data.aws_iam_server_certificate.wildcard.arn}"
     elb_apps_cert_id = "${var.apps_cert_name != "" ?
       "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.apps_cert_name}" :
-      data.aws_iam_server_certificate.wildcard.arn}"
+      data.aws_iam_server_certificate.wildcard_apps.arn}"
     elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
     elb_security_groups = ["${var.force_restricted_network == "no" ?
       module.stack.web_traffic_security_group :

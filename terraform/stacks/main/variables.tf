@@ -19,11 +19,13 @@ variable "target_stack_name" {
 variable "main_cert_name" {
   default = ""
 }
-variable "use_apps_certificate" {}
 variable "apps_cert_name" {
   default = ""
 }
-variable "wildcard_prefix" {
+variable "wildcard_certificate_name_prefix" {
+  default = ""
+}
+variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
@@ -46,10 +48,6 @@ variable "restricted_ingress_web_ipv6_cidrs" {
 
 variable "18f_gov_elb_cert_name" {
   default = ""
-}
-
-variable "elb_shibboleth_cert_name" {
-  default = "star-fr-cloud-gov-2017-05"
 }
 
 variable "stack_prefix" {}
