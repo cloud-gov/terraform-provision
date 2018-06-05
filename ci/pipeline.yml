@@ -521,7 +521,7 @@ jobs:
       TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr.cloud.gov
-      TF_VAR_wildcard_certificate_name_prefix: star.app.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.cloud.gov
       TF_VAR_18f_gov_elb_cert_name: star-18f-gov-04-18
       TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
