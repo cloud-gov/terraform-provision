@@ -17,43 +17,12 @@ variable "rds_multi_az" {
 variable "remote_state_bucket" {}
 
 variable "concourse_prod_rds_password" {}
-variable "concourse_prod_elb_cert_name" {
-  default = "star-fr-cloud-gov-2017-05"
-}
-
 variable "concourse_staging_rds_password" {}
-variable "concourse_staging_elb_cert_name" {
-  default = "star-fr-stage-cloud-gov-2017-05"
-}
-
-variable "monitoring_production_elb_cert_name" {
-  default = "star-fr-cloud-gov-2017-05"
-}
-
-variable "monitoring_staging_elb_cert_name" {
-  default = "star-fr-stage-cloud-gov-2017-05"
-}
-
-variable "nessus_elb_cert_name" {
-  default = "star-fr-cloud-gov-2017-05"
-}
-
-variable "bosh_uaa_elb_cert_name" {
-  default = "star-fr-cloud-gov-2017-05"
-}
 
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
 variable "wildcard_staging_certificate_name_prefix" {
-  default = ""
-}
-
-variable "production_cert_name" {
-  default = ""
-}
-variable "use_staging_certificate" {}
-variable "staging_cert_name" {
   default = ""
 }
 

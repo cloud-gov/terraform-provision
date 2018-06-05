@@ -33,9 +33,7 @@ resource "aws_lb_listener" "main" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = "${var.production_cert_name != "" ?
-    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.production_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
+  certificate_arn = "${data.aws_iam_server_certificate.wildcard_production.arn}"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.dummy.arn}"
@@ -50,12 +48,8 @@ resource "aws_lb_target_group" "dummy" {
 }
 
 resource "aws_lb_listener_certificate" "main-staging" {
-  count = "${var.use_staging_certificate ? 1 : 0}"
-
   listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "${var.staging_cert_name != "" ?
-    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.staging_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_staging.arn}"
+  certificate_arn = "${data.aws_iam_server_certificate.wildcard_staging.arn}"
 }
 
 module "stack" {

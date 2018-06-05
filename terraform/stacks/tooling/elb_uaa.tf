@@ -32,9 +32,7 @@ resource "aws_lb_listener" "opsuaa_listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = "${var.production_cert_name != "" ?
-    "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.production_cert_name}" :
-    data.aws_iam_server_certificate.wildcard_production.arn}"
+  certificate_arn = "${data.aws_iam_server_certificate.wildcard_production.arn}"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.opsuaa_target.arn}"

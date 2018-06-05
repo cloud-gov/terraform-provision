@@ -16,12 +16,6 @@ variable "target_stack_name" {
   default = "tooling"
 }
 
-variable "main_cert_name" {
-  default = ""
-}
-variable "apps_cert_name" {
-  default = ""
-}
 variable "wildcard_certificate_name_prefix" {
   default = ""
 }
