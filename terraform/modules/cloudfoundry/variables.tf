@@ -17,7 +17,7 @@ variable "elb_security_groups" {
 variable "stack_description" {}
 
 variable "rds_instance_type" {
-    default = "db.m3.large"
+    default = "db.m4.large"
 }
 
 variable "rds_db_size" {
