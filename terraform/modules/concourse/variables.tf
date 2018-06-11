@@ -29,7 +29,7 @@ variable "rds_db_storage_type" {
 }
 
 variable "rds_instance_type" {
-  default = "db.m3.xlarge"
+  default = "db.m4.xlarge"
 }
 
 variable "rds_engine_version" {

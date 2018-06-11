@@ -86,7 +86,7 @@ module "concourse_production" {
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-production"
-  rds_instance_type = "db.m3.xlarge"
+  rds_instance_type = "db.m4.xlarge"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
   listener_arn = "${aws_lb_listener.main.arn}"
@@ -104,7 +104,7 @@ module "concourse_staging" {
   rds_subnet_group = "${module.stack.rds_subnet_group}"
   rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
   rds_parameter_group_name = "tooling-concourse-staging"
-  rds_instance_type = "db.m3.medium"
+  rds_instance_type = "db.m4.large"
   rds_multi_az = "${var.rds_multi_az}"
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
   listener_arn = "${aws_lb_listener.main.arn}"
