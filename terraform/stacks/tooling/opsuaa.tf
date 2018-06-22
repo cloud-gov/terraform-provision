@@ -1,7 +1,7 @@
 variable "opsuaa_rds_password" {}
 
 module "opsuaa_db" {
-  source = "../../modules/modules/rds"
+  source = "../../modules/rds"
 
   stack_description = "${var.stack_description}"
   rds_instance_type = "db.t2.medium"
