@@ -432,6 +432,9 @@ output "production_dns_private_ips" {
 }
 
 /* Bucket names */
+output "bosh_blobstore_bucket" {
+  value = "${module.bosh_blobstore_bucket.bucket_name}"
+}
 output "buildpack_notify_state_staging_bucket_name" {
   value = "${module.buildpack_notify_state_staging.bucket_name}"
 }
