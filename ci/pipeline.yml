@@ -222,6 +222,7 @@ jobs:
       TF_VAR_rds_password: ((tooling_rds_password))
       TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
       TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
+      TF_VAR_opsuaa_rds_password: ((opsuaa_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
       TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
@@ -271,6 +272,24 @@ jobs:
           - -e
           - -c
           - cg-provision-repo/ci/scripts/update-bosh-db.sh
+    - task: init-opsuaa-db
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
+        inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+        params:
+          STATE_FILE_PATH: terraform-state/terraform.tfstate
+        run:
+          path: sh
+          args:
+          - -e
+          - -c
+          - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
     - do:
       - task: terraform-state-to-yaml
         file: pipeline-tasks/terraform-state-to-yaml.yml
