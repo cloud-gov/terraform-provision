@@ -398,3 +398,6 @@ output "tooling_bosh_static_ip" {
 output "master_bosh_static_ip" {
   value = "${data.terraform_remote_state.target_vpc.master_bosh_static_ip}"
 }
+output "nessus_static_ip" {
+  value = "${data.terraform_remote_state.target_vpc.nessus_static_ip}"
+}
