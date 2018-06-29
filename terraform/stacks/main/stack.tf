@@ -116,6 +116,26 @@ module "cf" {
     bucket_prefix = "${var.bucket_prefix}"
 }
 
+module "credhub" {
+    source = "../../module/credhub"
+    
+    stack_description = "${var.stack_description}"
+
+    elb_main_cert_id = "${data.aws_iam_server_certificate.wildcard.arn}"
+    elb_apps_cert_id = "${data.aws_iam_server_certificate.wildcard_apps.arn}"
+    elb_subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+    elb_security_groups = ["${var.force_restricted_network == "no" ?
+      module.stack.web_traffic_security_group :
+      module.stack.restricted_web_traffic_security_group}"]
+    
+    vpc_id = "${module.stack.vpc_id}"
+    vpc_cidr = "${var.vpc_cidr}"
+    rds_password = "${var.cf_rds_password}"
+    rds_subnet_group = "${module.stack.rds_subnet_group}"
+    rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
+
+}
+
 module "diego" {
     source = "../../modules/diego"
 

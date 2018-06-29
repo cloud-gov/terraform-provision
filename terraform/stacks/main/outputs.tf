@@ -292,6 +292,26 @@ output "cf_rds_engine" {
   value = "${module.cf.cf_rds_engine}"
 }
 
+/* CredHub RDS */
+output "credhub_rds_url" {
+  value = "${module.credhub.credhub_rds_url}"
+}
+output "credhub_rds_host" {
+  value = "${module.credhub.credhub_rds_host}"
+}
+output "credhub_rds_port" {
+  value = "${module.credhub.credhub_rds_port}"
+}
+output "credhub_rds_username" {
+  value = "${module.credhub.credhub_rds_username}"
+}
+output "credhub_rds_password" {
+  value = "${module.credhub.credhub_rds_password}"
+}
+output "credhub_rds_engine" {
+  value = "${module.credhub.credhub_rds_engine}"
+}
+
 /* Diego ELB */
 output "diego_elb_name" {
   value = "${module.diego.diego_elb_name}"
