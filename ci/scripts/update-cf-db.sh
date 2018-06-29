@@ -3,7 +3,7 @@ set -e
 SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 
 # Check environment variables
-export DATABASES="ccdb uaadb diegodb locketdb"
+export DATABASES="ccdb uaadb diegodb locketdb policydb"
 export STATE_FILE_PATH=${STATE_FILE_PATH}
 export TERRAFORM_DB_HOST_FIELD="cf_rds_host"
 export TERRAFORM_DB_USERNAME_FIELD="cf_rds_username"
