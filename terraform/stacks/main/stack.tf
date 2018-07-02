@@ -115,13 +115,6 @@ module "cf" {
     services_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
-    additional_certificates = ["${compact(
-      list(
-        "${var.18f_gov_elb_cert_name != "" ?
-          "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/${var.18f_gov_elb_cert_name}" :
-          ""}"
-      )
-    )}"]
 }
 
 module "diego" {

@@ -45,10 +45,3 @@ resource "aws_lb_listener" "cf_apps_http" {
     type             = "forward"
   }
 }
-
-resource "aws_lb_listener_certificate" "cf_apps" {
-  count = "${length(var.additional_certificates)}"
-
-  listener_arn    = "${aws_lb_listener.cf_apps.arn}"
-  certificate_arn = "${element(var.additional_certificates, count.index)}"
-}

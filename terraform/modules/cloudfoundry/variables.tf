@@ -2,10 +2,6 @@ variable "elb_main_cert_id" {}
 
 variable "elb_apps_cert_id" {}
 
-variable "additional_certificates" {
-  type = "list"
-}
-
 variable "elb_subnets" {
   type = "list"
 }
