@@ -120,11 +120,7 @@ module "credhub" {
     source = "../../modules/credhub"
     
     stack_description = "${var.stack_description}"
-    listener_arn = "${aws_lb_listener.main.arn}"
-    hosts = ["${var.credhub_hosts}"]
     
-    vpc_id = "${module.stack.vpc_id}"
-    vpc_cidr = "${var.vpc_cidr}"
     rds_password = "${var.credhub_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
