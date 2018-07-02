@@ -10,6 +10,8 @@ variable "rds_password" {}
 
 variable "cf_rds_password" {}
 
+variable "credhub_rds_password" {}
+
 variable "remote_state_bucket" {}
 
 variable "target_stack_name" {
