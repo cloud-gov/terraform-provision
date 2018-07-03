@@ -1,4 +1,5 @@
 /* RDS credhub Instance */
+
 output "credhub_rds_identifier" {
   value = "${module.credhub_rds.rds_identifier}"
 }
