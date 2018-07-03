@@ -308,9 +308,6 @@ output "credhub_rds_username" {
 output "credhub_rds_password" {
   value = "${module.credhub.credhub_rds_password}"
 }
-output "credhub_rds_engine" {
-  value = "${module.credhub.credhub_rds_engine}"
-}
 
 /* Diego ELB */
 output "diego_elb_name" {

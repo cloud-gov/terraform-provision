@@ -27,3 +27,4 @@ output "credhub_rds_username" {
 output "credhub_rds_password" {
   value = "${module.credhub_rds.rds_password}"
 }
+
