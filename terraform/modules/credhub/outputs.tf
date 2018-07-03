@@ -28,7 +28,7 @@ output "credhub_rds_password" {
   value = "${module.credhub_rds.rds_password}"
 }
 
-output "rds_multi_az" {
+output "credhub_rds_multi_az" {
   value = "${module.credhub_rds.rds_multi_az}"  
 }
 

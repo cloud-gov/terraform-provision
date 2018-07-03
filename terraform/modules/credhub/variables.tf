@@ -48,5 +48,7 @@ variable "rds_security_groups" {
   type = "list"
 }
 
-variable "rds_multi_az" {}
+variable "rds_multi_az" {
+  default = "true"
+}
 
