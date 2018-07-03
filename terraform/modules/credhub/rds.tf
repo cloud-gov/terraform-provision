@@ -1,4 +1,4 @@
-module "rds" {
+module "credhub_rds" {
   source = "../rds"
 
   stack_description = "${var.stack_description}"
