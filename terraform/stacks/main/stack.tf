@@ -120,8 +120,6 @@ module "credhub" {
     source = "../../modules/credhub"
     
     stack_description = "${var.stack_description}"
-    
-    vpc_id = "${module.stack.vpc_id}"
 
     rds_password = "${var.credhub_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
