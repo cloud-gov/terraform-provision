@@ -121,6 +121,8 @@ module "credhub" {
     
     stack_description = "${var.stack_description}"
     
+    vpc_cidr = "${var.vpc_cidr}"
+
     rds_password = "${var.credhub_rds_password}"
     rds_subnet_group = "${module.stack.rds_subnet_group}"
     rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
