@@ -10,3 +10,4 @@ export TERRAFORM_DB_USERNAME_FIELD="credhub_rds_username"
 export TERRAFORM_DB_PASSWORD_FIELD="credhub_rds_password"
 
 $SCRIPTPATH/create-and-update-db.sh
+
