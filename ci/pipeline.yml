@@ -397,6 +397,24 @@ jobs:
             - -e
             - -c
             - cg-provision-repo/ci/scripts/update-cf-db.sh
+      - task: init-credhub-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-credhub-db.sh
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
     - do:
       - task: terraform-state-to-yaml
         file: pipeline-tasks/terraform-state-to-yaml.yml
