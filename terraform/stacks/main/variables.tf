@@ -40,10 +40,6 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   type = "list"
 }
 
-variable "18f_gov_elb_cert_name" {
-  default = ""
-}
-
 variable "stack_prefix" {}
 variable "bucket_prefix" {}
 variable "blobstore_bucket_name" {}
