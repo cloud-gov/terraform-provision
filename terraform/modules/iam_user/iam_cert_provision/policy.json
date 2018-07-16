@@ -5,7 +5,8 @@
       "Effect": "Allow",
       "Action": [
         "iam:ListServerCertificates",
-        "iam:UploadServerCertificate"
+        "iam:UploadServerCertificate",
+        "iam:DeleteServerCertificate"
       ],
       "Resource": [
         "arn:${aws_partition}:iam::${account_id}:server-certificate/lets-encrypt/*"
