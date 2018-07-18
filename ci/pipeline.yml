@@ -16,6 +16,8 @@ groups:
   - bootstrap-staging
   - plan-bootstrap-production
   - bootstrap-production
+  - plan-isolation-segment-development
+  - apply-isolation-segment-development
 - name: certs
   jobs:
   - acme-certificate-development
@@ -298,7 +300,6 @@ jobs:
       - put: terraform-yaml-tooling
         params:
           file: terraform-yaml/state.yml
-
 
 - name: plan-bootstrap-development
   plan:
@@ -618,6 +619,54 @@ jobs:
       params:
         file: terraform-yaml/state.yml
 
+- name: plan-isolation-segment-development
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-development
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &isolation-segment-development-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: isolation-segment-development
+      TEMPLATE_SUBDIR: terraform/stacks/isolation-segment
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_stack_description: isolation-segment-development
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_target_stack_name: development
+      TF_VAR_vpc_cidr: ((isolation_segment_development_vpc_cidr))
+  - *notify-slack
+
+- name: apply-isolation-segment-development
+  plan:
+  - aggregate:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-development
+      passed: [plan-isolation-segment-development]
+  - task: apply
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *isolation-segment-development-params
+      TERRAFORM_ACTION: apply
+  - do:
+    - task: terraform-state-to-yaml
+      file: pipeline-tasks/terraform-state-to-yaml.yml
+      params:
+        STATE_FILE: terraform.tfstate
+    - put: terraform-yaml-isolation-segment-development
+      params:
+        file: terraform-yaml/state.yml
+
 - name: acme-certificate-development
   plan:
   - aggregate:
@@ -824,6 +873,13 @@ resources:
   source:
     bucket: ((aws_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_production))
+    region_name: ((aws_default_region))
+
+- name: terraform-yaml-isolation-segment-development
+  type: s3-iam
+  source:
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_isolation_segment_development))
     region_name: ((aws_default_region))
 
 - name: terraform-yaml-external-staging
