@@ -143,6 +143,12 @@ data "template_file" "kubernetes_static_ips" {
 output "kubernetes_static_ips" {
   value = ["${data.template_file.kubernetes_static_ips.*.rendered}"]
 }
+output "services_static_ips" {
+  value = "${concat(
+    data.template_file.logsearch_static_ips.*.rendered,
+    data.template_file.kubernetes_static_ips.*.rendered
+  )}"
+}
 
 /* Main LB */
 output "main_lb_name" {
@@ -165,6 +171,15 @@ output "cf_apps_lb_name" {
 }
 output "cf_apps_lb_dns_name" {
   value = "${module.cf.apps_lb_dns_name}"
+}
+
+output "cf_router_target_groups" {
+  value = "${concat(
+    list("${module.cf.lb_target_group}"),
+    list("${module.cf.apps_lb_target_group}"),
+    aws_lb_target_group.domains_broker_apps.*.name,
+    aws_lb_target_group.domains_broker_challenge.*.name
+  )}"
 }
 
 output "cf_target_group" {

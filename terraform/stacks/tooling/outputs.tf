@@ -460,6 +460,13 @@ output "production_dns_private_ips" {
   value = ["${local.production_dns_private_ips}"]
 }
 
+output "dns_private_ips" {
+  value = "${concat(
+    local.production_dns_private_ips,
+    local.staging_dns_private_ips
+  )}"
+}
+
 /* Bucket names */
 output "bosh_blobstore_bucket" {
   value = "${module.bosh_blobstore_bucket.bucket_name}"
