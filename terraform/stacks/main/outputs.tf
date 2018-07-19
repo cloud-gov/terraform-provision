@@ -375,9 +375,9 @@ output "upstream_bosh_compilation_profile" {
 output "bosh_static_ip" {
   value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
-output "bosh_uaa_static_ips" {
+output "bosh_network_static_ips" {
   value = [
-    "${cidrhost("${module.stack.private_cidr_az1}", 4)}"
+    "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
   ]
 }
 
