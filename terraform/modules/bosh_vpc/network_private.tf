@@ -135,3 +135,26 @@ resource "aws_instance" "az2_private_nat_2017_09" {
     Name = "${var.stack_description}  (AZ2 2017-09 NAT)"
   }
 }
+
+# AWS NAT Gateway provided by AWS
+resource "aws_nat_gateway" "az1_private_nat_gateway" {
+  allocation_id = "${aws_eip.nat.id}"
+  subnet_id     = "${aws_subnet.public.id}"
+
+  tags {
+    Name = "${var.stack_description}  (NAT Gateway AWS)"
+  }
+
+  depends_on = ["aws_internet_gateway.gw"]
+}
+
+resource "aws_nat_gateway" "az2_private_nat_gateway" {
+  allocation_id = "${aws_eip.nat.id}"
+  subnet_id     = "${aws_subnet.public.id}"
+
+  tags {
+    Name = "${var.stack_description}  (NAT Gateway AWS)"
+  }
+
+  depends_on = ["aws_internet_gateway.gw"]
+}
