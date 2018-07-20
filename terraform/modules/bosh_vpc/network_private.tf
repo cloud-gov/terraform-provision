@@ -58,15 +58,15 @@ resource "aws_route_table_association" "az2_private_rta" {
 }
 
 /*
- * For rotation purposes, create new NAT instance below first,
- * then update the routes and EIP references after they
- * have been created
+ * Nat Instances: For rotation purposes, create new NAT instance below first,
+ * then update the routes and EIP references after they have been created
  */
 resource "aws_route" "az1_nat_route" {
     route_table_id = "${aws_route_table.az1_private_route_table.id}"
     destination_cidr_block = "0.0.0.0/0"
     instance_id = "${aws_instance.az1_private_nat_2017_09.id}"
 }
+
 resource "aws_route" "az2_nat_route" {
     route_table_id = "${aws_route_table.az2_private_route_table.id}"
     destination_cidr_block = "0.0.0.0/0"
@@ -75,24 +75,36 @@ resource "aws_route" "az2_nat_route" {
 
 resource "aws_eip" "az1_nat_eip" {
   instance = "${aws_instance.az1_private_nat_2017_09.id}"
-  vpc = true
-
-  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+  vpc      = true
+  count    = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
 
   lifecycle {
     prevent_destroy = true
   }
 }
+
 resource "aws_eip" "az2_nat_eip" {
   instance = "${aws_instance.az2_private_nat_2017_09.id}"
-  vpc = true
-
-  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+  vpc      = true
+  count    = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
 
   lifecycle {
     prevent_destroy = true
   }
 }
+
+resource "aws_eip_association" "az1_nat_eip_association" {
+  instance_id   = "${aws_instance.az1_private_nat_2017_09.id}"
+  allocation_id = "${aws_eip.az1_nat_eip.id}"
+  count         = signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})
+}
+
+resource "aws_eip_association" "az2_nat_eip_association" {
+  instance_id   = "${aws_instance.az2_private_nat_2017_09.id}"
+  allocation_id = "${aws_eip.az2_nat_eip.id}"
+  count         = signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})
+}
+
 
 /*
  * For NAT gateway instances:
@@ -118,6 +130,7 @@ resource "aws_instance" "az1_private_nat_2017_09" {
     Name = "${var.stack_description} (AZ1 2017-09 NAT)"
   }
 }
+
 resource "aws_instance" "az2_private_nat_2017_09" {
   ami = "ami-4b98182a"
   instance_type = "${var.nat_gateway_instance_type}"
@@ -133,5 +146,25 @@ resource "aws_instance" "az2_private_nat_2017_09" {
 
   tags {
     Name = "${var.stack_description}  (AZ2 2017-09 NAT)"
+  }
+}
+
+resource "aws_nat_gateway" "az1_private_nat_service" {
+  allocation_id = "${aws_eip.az1_nat_eip.id}"
+  subnet_id     = "${aws_subnet.az1_public.id}"
+  count         = "${var.use_nat_gateway_service == "true" ? 1 : 0}"
+
+  tags {
+    Name = "Nat Service AZ1 ${var.stack_description}"
+  }
+}
+
+resource "aws_nat_gateway" "az2_private_nat_service" {
+  allocation_id = "${aws_eip.az2_nat_eip.id}"
+  subnet_id     = "${aws_subnet.az2_public.id}"
+  count         = "${var.use_nat_gateway_service == "true" ? 1 : 0}"
+
+  tags {
+    Name = "Nat Service AZ2 ${var.stack_description}"
   }
 }
