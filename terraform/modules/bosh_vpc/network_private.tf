@@ -111,13 +111,13 @@ resource "aws_eip" "az2_nat_eip" {
 resource "aws_eip_association" "az1_nat_eip_association" {
   instance_id   = "${aws_instance.az1_private_nat_2017_09.id}"
   allocation_id = "${aws_eip.az1_nat_eip.id}"
-  count         = signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})
+  count         = "${signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})}"
 }
 
 resource "aws_eip_association" "az2_nat_eip_association" {
   instance_id   = "${aws_instance.az2_private_nat_2017_09.id}"
   allocation_id = "${aws_eip.az2_nat_eip.id}"
-  count         = signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})
+  count         = "${signum(${var.use_nat_gateway_service == "true" ? 0 : 1} * ${var.use_nat_gateway_eip == "true" ? 1 : 0})}"
 }
 
 
