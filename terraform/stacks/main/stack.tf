@@ -88,6 +88,7 @@ module "stack" {
       "${data.terraform_remote_state.target_vpc.staging_concourse_security_group}"
     ]
     use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
+    use_nat_gateway_service = "${var.use_nat_gateway_service}"
 }
 
 module "cf" {
