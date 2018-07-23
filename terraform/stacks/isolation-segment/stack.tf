@@ -41,3 +41,17 @@ module "vpc_peering" {
   source_az1_route_table = "${module.vpc.private_route_table_az1}"
   source_az2_route_table = "${module.vpc.private_route_table_az2}"
 }
+
+module "vpc_security_source_to_target" {
+  source = "../../modules/vpc_peering_sg"
+
+  target_bosh_security_group = "${data.terraform_remote_state.target_vpc.bosh_security_group}"
+  source_vpc_cidr = "${module.vpc.vpc_cidr}"
+}
+
+module "vpc_security_target_to_source" {
+  source = "../../modules/vpc_peering_sg"
+
+  target_bosh_security_group = "${module.vpc.bosh_security_group}"
+  source_vpc_cidr = "${data.terraform_remote_state.target_vpc.vpc_cidr}"
+}
