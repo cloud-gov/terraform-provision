@@ -35,7 +35,7 @@ resource "aws_route_table" "az1_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
 
   tags {
-    Name = "${var.stack_description} (Private Route Table)"
+    Name = "${var.stack_description} (Private Route Table AZ1)"
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_route_table" "az2_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
 
   tags {
-    Name = "${var.stack_description} (Private Route Table)"
+    Name = "${var.stack_description} (Private Route Table AZ2)"
   }
 }
 
