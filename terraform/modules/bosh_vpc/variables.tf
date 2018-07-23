@@ -59,3 +59,7 @@ variable "concourse_security_groups" {
 variable "use_nat_gateway_eip" {
   default = false
 }
+
+variable "use_nat_gateway_service" {
+  default = false
+}
