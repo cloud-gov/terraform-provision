@@ -94,6 +94,27 @@ resource "aws_eip" "az2_nat_eip" {
   }
 }
 
+resource "aws_eip" "az1_nat_gateway_eip" {
+  instance = "${aws_instance.az1_private_nat_2017_09.id}"
+  vpc = true
+
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+resource "aws_eip" "az2_nat_gateway_eip" {
+  instance = "${aws_instance.az2_private_nat_2017_09.id}"
+  vpc = true
+
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 /*
  * For NAT gateway instances:
  * Lookup latest in table for NAT instance in GovCloud
@@ -134,4 +155,27 @@ resource "aws_instance" "az2_private_nat_2017_09" {
   tags {
     Name = "${var.stack_description}  (AZ2 2017-09 NAT)"
   }
+}
+
+# AWS NAT Gateways provided by AWS
+resource "aws_nat_gateway" "az1_private_nat_gateway" {
+  allocation_id = "${aws_eip.az2_nat_gateway_eip.id}"
+  subnet_id     = "${aws_subnet.az1_public.id}"
+
+  tags {
+    Name = "${var.stack_description}  (NAT Gateway AWS)"
+  }
+
+  depends_on = ["aws_internet_gateway.gw"]
+}
+
+resource "aws_nat_gateway" "az2_private_nat_gateway" {
+  allocation_id = "${aws_eip.az2_nat_gateway_eip.id}"
+  subnet_id     = "${aws_subnet.az2_public.id}"
+
+  tags {
+    Name = "${var.stack_description}  (NAT Gateway AWS)"
+  }
+
+  depends_on = ["aws_internet_gateway.gw"]
 }
