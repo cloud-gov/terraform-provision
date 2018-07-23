@@ -62,21 +62,37 @@ resource "aws_route_table_association" "az2_private_rta" {
  * then update the routes and EIP references after they have been created
  */
 resource "aws_route" "az1_nat_route" {
-    route_table_id = "${aws_route_table.az1_private_route_table.id}"
-    destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az1_private_nat_2017_09.id}"
+  route_table_id         = "${aws_route_table.az1_private_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  instance_id            = "${aws_instance.az1_private_nat_2017_09.id}"
+  count                  = "${var.use_nat_gateway_service == "true" ? 0 : 1}"
 }
 
 resource "aws_route" "az2_nat_route" {
-    route_table_id = "${aws_route_table.az2_private_route_table.id}"
-    destination_cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.az2_private_nat_2017_09.id}"
+  route_table_id         = "${aws_route_table.az2_private_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  instance_id            = "${aws_instance.az2_private_nat_2017_09.id}"
+  count                  = "${var.use_nat_gateway_service == "true" ? 0 : 1}"
 }
 
+resource "aws_route" "az1_nat_service_route" {
+  route_table_id         = "${aws_route_table.az1_private_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = "${aws_nat_gateway.az1_private_nat_service.id}"
+  count                  = "${var.use_nat_gateway_service == "true" ? 1 : 0}"
+}
+
+resource "aws_route" "az2_nat_service_route" {
+  route_table_id         = "${aws_route_table.az2_private_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = "${aws_nat_gateway.az2_private_nat_service.id}"
+  count                  = "${var.use_nat_gateway_service == "true" ? 1 : 0}"
+}
+
+
 resource "aws_eip" "az1_nat_eip" {
-  instance = "${aws_instance.az1_private_nat_2017_09.id}"
-  vpc      = true
-  count    = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+  vpc   = true
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
 
   lifecycle {
     prevent_destroy = true
@@ -84,9 +100,8 @@ resource "aws_eip" "az1_nat_eip" {
 }
 
 resource "aws_eip" "az2_nat_eip" {
-  instance = "${aws_instance.az2_private_nat_2017_09.id}"
-  vpc      = true
-  count    = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
+  vpc   = true
+  count = "${var.use_nat_gateway_eip == "true" ? 1 : 0}"
 
   lifecycle {
     prevent_destroy = true
