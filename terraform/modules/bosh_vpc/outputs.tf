@@ -61,14 +61,6 @@ output "nat_egress_ip_az2" {
   value = "${join(",", aws_eip.az2_nat_eip.*.public_ip)}"
 }
 
-output "nat_private_ip_az1" {
-  value = "${aws_instance.az1_private_nat_2017_09.private_ip}"
-}
-
-output "nat_private_ip_az2" {
-  value = "${aws_instance.az2_private_nat_2017_09.private_ip}"
-}
-
 /* Security Groups */
 output "bosh_security_group" {
   value = "${aws_security_group.bosh.id}"

@@ -98,19 +98,10 @@ variable "cg_binaries_bucket" {
    default = "cg-binaries"
 }
 
-variable "use_nat_gateway_eip" {
-  default = false
-}
-
-variable "use_nat_gateway_service" {
-  default = false
-}
-
 variable "smtp_ingress_cidr_blocks" {
   type = "list"
 }
 
 variable "cloudtrail_bucket" {
-   default = "cg-s3-cloudtrail"
+  default = "cg-s3-cloudtrail"
 }
-
