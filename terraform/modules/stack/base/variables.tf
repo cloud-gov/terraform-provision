@@ -90,13 +90,6 @@ variable "target_concourse_security_groups" {
   default = []
 }
 
-variable "use_nat_gateway_eip" {
-  default = false
-}
-variable "use_nat_gateway_service" {
-  default = false
-}
-
 variable "rds_multi_az" {
   default = "true"
 }

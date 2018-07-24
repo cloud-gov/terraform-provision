@@ -237,7 +237,6 @@ jobs:
       TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
       TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
       TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
-      TF_VAR_use_nat_gateway_eip: "true"
   - *notify-slack
 
 - name: bootstrap-tooling
@@ -335,8 +334,6 @@ jobs:
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_use_nat_gateway_eip: "true"
-      TF_VAR_use_nat_gateway_service: "true"
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -441,7 +438,6 @@ jobs:
       TF_VAR_bucket_prefix: staging-cg
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_use_nat_gateway_eip: "true"
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -545,7 +541,6 @@ jobs:
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_use_nat_gateway_eip: "true"
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"

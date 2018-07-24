@@ -28,8 +28,6 @@ module "base" {
     rds_security_groups_count = 2
     target_monitoring_security_groups = "${var.target_monitoring_security_groups}"
     target_concourse_security_groups = "${var.target_concourse_security_groups}"
-    use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
-    use_nat_gateway_service = "${var.use_nat_gateway_service}"
 }
 
 module "vpc_peering" {

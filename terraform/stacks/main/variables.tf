@@ -48,11 +48,3 @@ variable "upstream_blobstore_bucket_name" {}
 variable "force_restricted_network" {
   default = "yes"
 }
-
-variable "use_nat_gateway_eip" {
-  default = false
-}
-
-variable "use_nat_gateway_service" {
-  default = false
-}

@@ -15,8 +15,6 @@ module "vpc" {
     nat_gateway_instance_type = "${var.nat_gateway_instance_type}"
     monitoring_security_groups = "${var.target_monitoring_security_groups}"
     concourse_security_groups = "${var.target_concourse_security_groups}"
-    use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
-    use_nat_gateway_service = "${var.use_nat_gateway_service}"
 }
 
 module "rds_network" {
