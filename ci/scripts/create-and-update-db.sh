@@ -38,19 +38,12 @@ fi
 for db in ${DATABASES}; do
 
   # Create database
-  if ! [ "${db}" = "credhub" ]; then
-    psql_adm -d postgres -l | awk '{print $1}' | grep -q "${db}" || \
-      psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER ${db_user}"
-    # Enable extensions
-    for ext in citext uuid-ossp pgcrypto pg_stat_statements; do
-      psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
-    done
-  elif [ "${db}" = "credhub"]; then
-    #this is a one off, revert this stuff after innovation sp. is done
-    #psql_adm -d postgres -c "DROP DATABASE ${db} IF EXISTS"
-    psql_adm -d postgres -l | awk '{print $1}' | grep -q "${db}" || \
-      psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER ${db_user} TEMPLATE template0"
-  fi
+  psql_adm -d postgres -l | awk '{print $1}' | grep -q "${db}" || \
+    psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER ${db_user}"
+  # Enable extensions
+  for ext in citext uuid-ossp pgcrypto pg_stat_statements; do
+    psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
+  done
 
   # Remove default privileges
   psql_adm -d "${db}" -c "REVOKE ALL ON SCHEMA public FROM PUBLIC"
