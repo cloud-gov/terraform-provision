@@ -73,6 +73,7 @@ module "stack" {
   rds_security_groups = ["${module.stack.bosh_security_group}"]
   rds_security_groups_count = "1"
   use_nat_gateway_eip = "${var.use_nat_gateway_eip}"
+  use_nat_gateway_service = "${var.use_nat_gateway_service}"
 }
 
 module "concourse_production" {
