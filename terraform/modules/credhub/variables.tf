@@ -1,12 +1,5 @@
 variable "stack_description" {}
 
-variable "credhub_cidr" {
-  default = "10.0.30.0/24"
-}
-
-variable "credhub_az" {
-  default = "us-gov-west-1a"
-}
 
 variable "rds_db_name" {
   default = "credhub"
@@ -20,16 +13,12 @@ variable "rds_db_size" {
   default = 100
 }
 
-variable "rds_db_iops" {
-	default = 1000
-}
-
 variable "rds_db_storage_type" {
-  default = "io1"
+  default = "gp2"
 }
 
 variable "rds_instance_type" {
-  default = "db.m4.xlarge"
+  default = "db.t2.medium"
 }
 
 variable "rds_engine_version" {
