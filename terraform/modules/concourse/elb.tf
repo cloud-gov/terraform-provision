@@ -11,6 +11,11 @@ resource "aws_lb_target_group" "concourse_target" {
     interval = 30
     matcher = 200
   }
+
+  stickiness {
+    type = "lb_cookie"
+    enabled = true
+  }
 }
 
 resource "aws_lb_listener_rule" "concourse_listener_rule" {
