@@ -59,7 +59,7 @@ module "credhub_rds" {
   rds_db_engine_version = "${var.credhub_rds_engine_version}"
   rds_username = "${var.credhub_rds_username}"
   rds_password = "${var.credhub_rds_password}"
-  rds_subnet_group = "${var.rds_network.rds_subnet_group}"
+  rds_subnet_group = "${module.rds_network.rds_subnet_group}"
   rds_security_groups = ["${var.rds_security_groups}"]
   rds_parameter_group_name = "${var.rds_parameter_group_name}"
   rds_force_ssl = "${var.credhub_rds_force_ssl}"
