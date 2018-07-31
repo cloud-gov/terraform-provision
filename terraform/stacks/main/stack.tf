@@ -73,6 +73,7 @@ module "stack" {
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
     rds_password = "${var.rds_password}"
+    credhub_rds_password = "${var.credhub_rds_password}"
     account_id = "${data.aws_caller_identity.current.account_id}"
 
     target_vpc_id = "${data.terraform_remote_state.target_vpc.vpc_id}"

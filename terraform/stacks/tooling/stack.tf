@@ -69,6 +69,7 @@ module "stack" {
   rds_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 20)}"
   rds_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 21)}"
   rds_password = "${var.rds_password}"
+  credhub_rds_password = "${var.credhub_rds_password}"
   rds_multi_az = "${var.rds_multi_az}"
   rds_security_groups = ["${module.stack.bosh_security_group}"]
   rds_security_groups_count = "1"
