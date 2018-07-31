@@ -117,7 +117,16 @@ variable "credhub_rds_username" {
     default = "credhub"
 }
 
+variable "credhub_rds_password" {}
+
+variable "credhub_rds_db_engine_version" {
+  default = "9.6.3"
+}
+
+variable "rds_parameter_group_name" {
+  default = ""
+}
+
 variable "credhub_rds_force_ssl" {
   default = 1
 }
-
