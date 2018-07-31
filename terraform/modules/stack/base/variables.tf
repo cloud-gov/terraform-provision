@@ -94,3 +94,30 @@ variable "rds_multi_az" {
   default = "true"
 }
 
+/*
+ * CredHub database variables
+ */
+variable "credhub_rds_db_name" {
+  default = "credhub"
+}
+
+variable "credhub_rds_db_storage_type" {
+  default = "gp2"
+}
+
+variable "credhub_rds_instance_type" {
+  default = "db.t2.medium"
+}
+
+variable "credhub_rds_db_size" {
+  default = 100
+}
+
+variable "credhub_rds_username" {
+    default = "credhub"
+}
+
+variable "credhub_rds_force_ssl" {
+  default = 1
+}
+

@@ -47,3 +47,20 @@ module "rds" {
   rds_subnet_group = "${module.rds_network.rds_subnet_group}"
   rds_security_groups = ["${module.rds_network.rds_postgres_security_group}"]
 }
+
+module "credhub_rds" {
+  source = "../rds"
+
+  stack_description = "${var.stack_description}"
+  rds_db_name = "${var.credhub_rds_db_name}"
+  rds_instance_type = "${var.credhub_rds_instance_type}"
+  rds_db_size = "${var.credhub_rds_db_size}"
+  rds_db_storage_type = "${var.credhub_rds_db_storage_type}"
+  rds_db_engine_version = "${var.credhub_rds_engine_version}"
+  rds_username = "${var.credhub_rds_username}"
+  rds_password = "${var.credhub_rds_password}"
+  rds_subnet_group = "${var.rds_subnet_group}"
+  rds_security_groups = ["${var.rds_security_groups}"]
+  rds_parameter_group_name = "${var.rds_parameter_group_name}"
+  rds_force_ssl = "${var.credhub_rds_force_ssl}"
+}

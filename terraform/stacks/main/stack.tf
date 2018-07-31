@@ -116,17 +116,6 @@ module "cf" {
     bucket_prefix = "${var.bucket_prefix}"
 }
 
-module "credhub" {
-    source = "../../modules/credhub"
-    
-    stack_description = "${var.stack_description}"
-
-    rds_password = "${var.credhub_rds_password}"
-    rds_subnet_group = "${module.stack.rds_subnet_group}"
-    rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
-
-}
-
 module "diego" {
     source = "../../modules/diego"
 
