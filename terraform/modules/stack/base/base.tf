@@ -49,7 +49,7 @@ module "rds" {
 }
 
 module "credhub_rds" {
-  source = "../rds"
+  source = "../../rds"
 
   stack_description = "${var.stack_description}"
   rds_db_name = "${var.credhub_rds_db_name}"
