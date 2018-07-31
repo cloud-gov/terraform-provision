@@ -73,6 +73,7 @@ variable "restricted_ingress_web_ipv6_cidrs" {
 variable "aws_partition" {}
 
 variable "rds_password" {}
+variable "credhub_rds_password" {}
 
 variable "account_id" {}
 
