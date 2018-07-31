@@ -56,7 +56,7 @@ module "credhub_rds" {
   rds_instance_type = "${var.credhub_rds_instance_type}"
   rds_db_size = "${var.credhub_rds_db_size}"
   rds_db_storage_type = "${var.credhub_rds_db_storage_type}"
-  rds_db_engine_version = "${var.credhub_rds_engine_version}"
+  rds_db_engine_version = "${var.credhub_rds_db_engine_version}"
   rds_username = "${var.credhub_rds_username}"
   rds_password = "${var.credhub_rds_password}"
   rds_subnet_group = "${module.rds_network.rds_subnet_group}"
