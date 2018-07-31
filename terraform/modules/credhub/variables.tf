@@ -1,5 +1,8 @@
 variable "stack_description" {}
 
+variable "rds_force_ssl" {
+  default = 1
+}
 
 variable "rds_db_name" {
   default = "credhub"

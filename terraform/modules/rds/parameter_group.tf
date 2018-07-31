@@ -24,6 +24,12 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     name  = "log_statement"
     value = "ddl"
   }
+
+  parameter {
+    name = "rds.force_ssl"
+    value = "${var.rds_force_ssl}"
+    apply_method = "pending-reboot"
+  }
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {
