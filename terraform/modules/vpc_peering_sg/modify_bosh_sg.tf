@@ -70,6 +70,15 @@ resource "aws_security_group_rule" "uaa_https" {
     security_group_id = "${var.target_bosh_security_group}"
 }
 
+resource "aws_security_group_rule" "credhub_https" {
+    type = "ingress"
+    from_port = 8844
+    to_port = 8844
+    protocol = "tcp"
+    cidr_blocks = ["${var.source_vpc_cidr}"]
+    security_group_id = "${var.target_bosh_security_group}"
+}
+
 resource "aws_security_group_rule" "bosh_director" {
     type = "ingress"
     from_port = 25555

@@ -36,6 +36,10 @@ variable "rds_security_groups" {
   type = "list"
 }
 
+variable "rds_force_ssl" {
+  default = 0
+}
+
 variable "rds_parameter_group_name" {
   default = ""
 }

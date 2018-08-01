@@ -19,6 +19,7 @@ module "base" {
     rds_db_engine_version = "${var.rds_db_engine_version}"
     rds_username = "${var.rds_username}"
     rds_password = "${var.rds_password}"
+    credhub_rds_password = "${var.credhub_rds_password}"
     restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
     restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
     rds_security_groups = [

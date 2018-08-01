@@ -117,3 +117,27 @@ output "bosh_rds_username" {
 output "bosh_rds_password" {
   value = "${module.base.bosh_rds_password}"
 }
+
+/*
+ * CredHub RDS Instance
+ */
+
+output "credhub_rds_host" {
+  value = "${module.base.credhub_rds_host}"
+}
+
+output "credhub_rds_port" {
+  value = "${module.base.credhub_rds_port}"
+}
+
+output "credhub_rds_url" {
+  value = "${module.base.credhub_rds_url}"
+}
+
+output "credhub_rds_username" {
+  value = "${module.base.credhub_rds_username}"
+}
+
+output "credhub_rds_password" {
+  value = "${module.base.credhub_rds_password}"
+}
