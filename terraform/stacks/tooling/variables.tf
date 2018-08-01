@@ -9,6 +9,7 @@ variable "aws_default_region" {
 variable "vpc_cidr" {}
 
 variable "rds_password" {}
+variable "credhub_rds_password" {}
 
 variable "rds_multi_az" {
   default = "true"
