@@ -640,7 +640,8 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: isolation-segment-development
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_target_stack_name: development
+      TF_VAR_main_stack_name: development
+      TF_VAR_tooling_stack_name: tooling
       TF_VAR_vpc_cidr: ((isolation_segment_development_vpc_cidr))
   - *notify-slack
 
