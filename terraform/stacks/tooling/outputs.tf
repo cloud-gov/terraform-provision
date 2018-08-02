@@ -219,6 +219,23 @@ output "bosh_rds_password" {
   value = "${module.stack.bosh_rds_password}"
 }
 
+/* CredHub RDS */
+output "credhub_rds_url" {
+  value = "${module.stack.credhub_rds_url}"
+}
+output "credhub_rds_host" {
+  value = "${module.stack.credhub_rds_host}"
+}
+output "credhub_rds_port" {
+  value = "${module.stack.credhub_rds_port}"
+}
+output "credhub_rds_username" {
+  value = "${module.stack.credhub_rds_username}"
+}
+output "credhub_rds_password" {
+  value = "${module.stack.credhub_rds_password}"
+}
+
 /* Main LB */
 output "main_lb_name" {
   value = "${aws_lb.main.name}"
