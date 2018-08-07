@@ -14,7 +14,8 @@ chmod +x ./spruce
 
 # Quit if current certificate isn't close to expiration date
 expiration=$(
-  ./jq -r '.ServerCertificateMetadataList | sort_by(.Expiration) | .[-1].Expiration' \
+  ./jq -r --arg prefix "${CERT_PREFIX}-" \
+    '.ServerCertificateMetadataList | map(select(.ServerCertificateName | startswith($prefix))) | sort_by(.Expiration) | .[-1].Expiration' \
     < certificates/metadata)
 if [ $(date --date "+30 days" +%s) -lt $(date --date "${expiration}" +%s) ]; then
   exit 0

@@ -634,6 +634,7 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
+      CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
       DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
@@ -671,6 +672,7 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
+      CERT_PREFIX: star.fr-stage.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
       DOMAIN: "*.fr-stage.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
@@ -708,6 +710,7 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
+      CERT_PREFIX: star.fr.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
       DOMAIN: "*.fr.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
@@ -745,6 +748,7 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
+      CERT_PREFIX: star.app.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
       DOMAIN: "*.app.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
