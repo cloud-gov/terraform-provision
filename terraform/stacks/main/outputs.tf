@@ -356,6 +356,11 @@ output "shibboleth_lb_target_group" {
   value = "${module.shibboleth.shibboleth_lb_target_group}"
 }
 
+/* Admin UI ELB */
+output "admin_lb_target_group" {
+  value = "${module.admin.admin_lb_target_group}"
+}
+
 /* iam roles */
 output "default_profile" {
   value = "${module.default_role.profile_name}"

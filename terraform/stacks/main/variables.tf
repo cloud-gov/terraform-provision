@@ -25,6 +25,9 @@ variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
+variable "admin_hosts" {
+  type = "list"
+}
 variable "shibboleth_hosts" {
   type = "list"
 }

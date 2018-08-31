@@ -166,6 +166,15 @@ module "shibboleth" {
     hosts = ["${var.shibboleth_hosts}"]
 }
 
+module "admin" {
+    source = "../../modules/admin"
+
+    stack_description = "${var.stack_description}"
+    vpc_id = "${module.stack.vpc_id}"
+    listener_arn = "${aws_lb_listener.main.arn}"
+    hosts = ["${var.admin_hosts}"]
+}
+
 module "elasticache_broker_network" {
   source = "../../modules/elasticache_broker_network"
   stack_description = "${var.stack_description}"
