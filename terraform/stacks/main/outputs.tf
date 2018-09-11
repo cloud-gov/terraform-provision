@@ -357,6 +357,12 @@ output "shibboleth_lb_target_group" {
 }
 
 /* Admin UI ELB */
+output "admin_lb_name" {
+  value = "${module.admin.admin_lb_name}"
+}
+output "admin_lb_dns_name" {
+  value = "${module.admin.admin_lb_dns_name}"
+}
 output "admin_lb_target_group" {
   value = "${module.admin.admin_lb_target_group}"
 }
