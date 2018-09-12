@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "admin" {
   health_check {
     healthy_threshold = 2
     interval = 15
-    path = "/"
+    path = "/health"
     timeout = 10
     unhealthy_threshold = 2
     matcher = 200
