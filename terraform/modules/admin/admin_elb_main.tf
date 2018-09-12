@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "admin" {
     healthy_threshold = 2
     interval = 15
     path = "/"
-    timeout = 15
+    timeout = 10
     unhealthy_threshold = 2
     matcher = 200
   }
