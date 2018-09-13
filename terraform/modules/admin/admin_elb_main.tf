@@ -21,7 +21,7 @@ resource "aws_lb_listener" "admin" {
 
 resource "aws_lb_target_group" "admin" {
   name     = "${var.stack_description}-admin"
-  port     = 8070
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = "${var.vpc_id}"
 
