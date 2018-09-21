@@ -14,3 +14,8 @@ inputs:
 
 run:
   path: cg-provision-repo/ci/upload-certificate.sh
+
+params:
+  AWS_DEFAULT_REGION:
+  CERT_PATH:
+  CERT_PREFIX:

@@ -17,3 +17,9 @@ outputs:
 
 run:
   path: cg-provision-repo/ci/provision-certificate.sh
+
+params:
+  CERT_PREFIX:
+  ACME_SERVER:
+  DOMAIN:
+  EMAIL: cloud-gov-operations@gsa.gov
