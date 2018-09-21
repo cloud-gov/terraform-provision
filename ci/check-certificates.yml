@@ -15,3 +15,7 @@ outputs:
 
 run:
   path: cg-provision-repo/ci/check-certificates.sh
+
+params:
+  AWS_DEFAULT_REGION:
+  CERT_PATH:
