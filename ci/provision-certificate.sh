@@ -35,4 +35,4 @@ certbot certonly \
   --domain "${DOMAIN}"
 
 out_path=$(ls -d -1 ${config_path}/live/*/)
-cp ${config_path}/live/${out_path}/*.pem acme
+cp ${out_path}/*.pem acme
