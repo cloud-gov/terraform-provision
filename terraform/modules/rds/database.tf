@@ -13,7 +13,7 @@ resource "aws_db_instance" "rds_database" {
     "final-snapshot-${var.rds_db_name}-${var.stack_description}" :
     var.rds_final_snapshot_identifier}"
 
-  backup_retention_period = 120
+  backup_retention_period = 35
 
   auto_minor_version_upgrade = true
 
