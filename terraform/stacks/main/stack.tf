@@ -39,7 +39,6 @@ resource "aws_lb" "main" {
   
   access_logs = {
       bucket        = "cloud-gov-elb-logs"
-      interval      = 5
     }
 }
 
