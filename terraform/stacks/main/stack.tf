@@ -37,11 +37,12 @@ resource "aws_lb" "main" {
   ip_address_type = "dualstack"
   idle_timeout = 3600
   
-  access_logs {
-    bucket        = "cloud-gov-elb-logs-${var.stack_description}"
-    bucket_prefix = "${var.stack_description}"
-    interval      = 5
-  }
+  access_logs =  [
+    {
+      bucket        = "cloud-gov-elb-logs"
+      bucket_prefix = "${var.stack_description}"
+      interval      = 5
+    },
 }
 
 resource "aws_lb_listener" "main" {
