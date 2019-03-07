@@ -36,10 +36,10 @@ resource "aws_lb" "main" {
     module.stack.restricted_web_traffic_security_group}"]
   ip_address_type = "dualstack"
   idle_timeout = 3600
-
+  
   access_logs {
     bucket        = "cloud-gov-elb-logs"
-    bucket_prefix = "foo"
+    bucket_prefix = "${var.stack_description}"
     interval      = 5
   }
 }
