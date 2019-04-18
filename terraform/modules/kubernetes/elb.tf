@@ -23,4 +23,8 @@ resource "aws_elb" "kubernetes_elb" {
   tags {
     Name = "${var.stack_description}-kubernetes"
   }
+
+   access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+    }
 }

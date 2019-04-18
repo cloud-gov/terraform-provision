@@ -23,4 +23,8 @@ resource "aws_elb" "platform_syslog_elb" {
   tags {
     Name = "${var.stack_description}-platform-syslog"
   }
+
+   access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+    }
 }
