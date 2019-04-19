@@ -23,4 +23,8 @@ resource "aws_elb" "logsearch_elb" {
   tags {
     Name = "${var.stack_description}-logsearch"
   }
+
+   access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+    }
 }

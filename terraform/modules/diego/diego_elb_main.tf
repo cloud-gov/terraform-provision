@@ -81,4 +81,8 @@ resource "aws_elb" "diego_elb_main" {
   tags {
     Name = "${var.stack_description}-Diego-Proxy-ELB"
   }
+
+   access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+    }
 }

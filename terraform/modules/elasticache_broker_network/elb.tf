@@ -22,4 +22,8 @@ resource "aws_elb" "elasticache_elb" {
   tags {
     Name = "${var.stack_description}-elasticache-broker"
   }
+
+   access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+    }
 }
