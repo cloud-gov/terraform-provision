@@ -4,6 +4,9 @@ resource "aws_lb" "cf" {
   security_groups = ["${var.elb_security_groups}"]
   ip_address_type = "dualstack"
   idle_timeout = 3600
+  access_logs = {
+      bucket        = "cloud-gov-elb-logs"
+  }
 }
 
 resource "aws_lb_target_group" "cf_target" {
