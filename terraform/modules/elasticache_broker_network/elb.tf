@@ -25,6 +25,6 @@ resource "aws_elb" "elasticache_elb" {
 
    access_logs = {
       bucket        = "cloud-gov-elb-logs"
-      prefix        = "${var.stack_description}"
+      bucket_prefix        = "${var.stack_description}"
     }
 }
