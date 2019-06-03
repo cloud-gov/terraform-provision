@@ -6,6 +6,7 @@ resource "aws_lb" "cf" {
   idle_timeout = 3600
   access_logs = {
       bucket        = "cloud-gov-elb-logs"
+      prefix        = "${var.stack_description}"
   }
 }
 
