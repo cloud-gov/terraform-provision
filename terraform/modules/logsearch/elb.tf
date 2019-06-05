@@ -26,6 +26,5 @@ resource "aws_elb" "logsearch_elb" {
 
    access_logs = {
       bucket        = "cloud-gov-elb-logs"
-      bucket_prefix        = "${var.stack_description}"
     }
 }

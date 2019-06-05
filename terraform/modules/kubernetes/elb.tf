@@ -26,6 +26,5 @@ resource "aws_elb" "kubernetes_elb" {
 
    access_logs = {
       bucket        = "cloud-gov-elb-logs"
-      bucket_prefix        = "${var.stack_description}"
     }
 }
