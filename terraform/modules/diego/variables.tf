@@ -18,3 +18,5 @@ variable "ingress_cidrs" {
   type = "list"
   default = ["0.0.0.0"]
 }
+
+variable "log_bucket_name" {}

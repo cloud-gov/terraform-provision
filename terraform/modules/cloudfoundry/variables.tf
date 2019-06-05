@@ -69,3 +69,5 @@ variable "aws_partition" {}
 variable "kubernetes_cluster_id" {}
 
 variable "bucket_prefix" {}
+
+variable "log_bucket_name" {}

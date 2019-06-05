@@ -44,3 +44,8 @@ module "cg_binaries_bucket" {
   bucket = "${var.bucket_prefix}cg-binaries"
   aws_partition = "${data.aws_partition.current.partition}"
 }
+
+module "log_bucket" {
+  source = "../../modules/log_bucket"
+  aws_partition = "${data.aws_partition.current.partition}"
+}

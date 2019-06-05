@@ -5,7 +5,7 @@ resource "aws_lb" "cf" {
   ip_address_type = "dualstack"
   idle_timeout = 3600
   access_logs = {
-      bucket        = "cloud-gov-elb-logs"
+      bucket        = "${var.log_bucket_name}"
       prefix        = "${var.stack_description}"
   }
 }

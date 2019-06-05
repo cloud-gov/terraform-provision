@@ -38,7 +38,7 @@ resource "aws_lb" "main" {
   idle_timeout = 3600
   
   access_logs = {
-      bucket        = "cloud-gov-elb-logs"
+      bucket        = "${var.log_bucket_name}"
       prefix        = "${var.stack_description}"
     }
 }
