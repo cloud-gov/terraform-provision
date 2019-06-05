@@ -84,6 +84,5 @@ resource "aws_elb" "diego_elb_main" {
 
    access_logs = {
       bucket        = "cloud-gov-elb-logs"
-      prefix        = "${var.stack_description}"
     }
 }
