@@ -37,12 +37,8 @@ resource "aws_s3_bucket" "log_bucket" {
             days = 90
             storage_class = "ONEZONE_IA"
         }
-        transition {
-            days = 180
-            storage_class = "GLACIER"
-        }
         expiration {
-            days = 365
+            days = 180
         }
     }
 
