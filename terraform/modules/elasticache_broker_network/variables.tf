@@ -29,3 +29,5 @@ variable "elb_subnets" {
 variable "elb_security_groups" {
   type = "list"
 }
+
+variable "log_bucket_name" {}

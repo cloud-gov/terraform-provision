@@ -10,3 +10,5 @@ variable "elb_subnets" {
 variable "target_bosh_security_group" {}
 variable "target_monitoring_security_group" {}
 variable "target_concourse_security_group" {}
+
+variable "log_bucket_name" {}

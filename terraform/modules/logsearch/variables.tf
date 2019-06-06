@@ -6,3 +6,4 @@ variable "listener_arn" {}
 variable "hosts" {
   type = "list"
 }
+variable "log_bucket_name" {}

@@ -53,3 +53,7 @@ variable "upstream_blobstore_bucket_name" {}
 variable "force_restricted_network" {
   default = "yes"
 }
+
+variable "log_bucket_name" {
+  default = "cg-elb-logs"
+}
