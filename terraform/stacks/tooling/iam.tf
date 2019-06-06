@@ -51,6 +51,7 @@ module "concourse_worker_policy" {
   buildpack_notify_bucket = "${var.buildpack_notify_bucket}"
   billing_bucket = "${var.billing_bucket}"
   cg_binaries_bucket = "${var.cg_binaries_bucket}"
+  log_bucket = "${var.log_bucket_name}"
 }
 
 module "concourse_iaas_worker_policy" {
