@@ -120,6 +120,7 @@ module "cf" {
     services_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
     kubernetes_cluster_id = "${var.kubernetes_cluster_id}"
     bucket_prefix = "${var.bucket_prefix}"
+    log_bucket = "${var.log_bucket_name}"
 }
 
 module "diego" {
@@ -134,6 +135,7 @@ module "diego" {
     ingress_cidrs = "${split(",",
       var.force_restricted_network == "no" ?
         "0.0.0.0/0" : join(",", var.restricted_ingress_web_cidrs))}"
+    log_bucket = "${var.log_bucket_name}"
 }
 
 module "kubernetes" {
@@ -149,6 +151,7 @@ module "kubernetes" {
     target_bosh_security_group = "${module.stack.bosh_security_group}"
     target_monitoring_security_group = "${lookup(data.terraform_remote_state.target_vpc.monitoring_security_groups, var.stack_description)}"
     target_concourse_security_group = "${data.terraform_remote_state.target_vpc.production_concourse_security_group}"
+    log_bucket = "${var.log_bucket_name}"
 }
 
 module "logsearch" {
@@ -160,6 +163,7 @@ module "logsearch" {
     bosh_security_group = "${module.stack.bosh_security_group}"
     listener_arn = "${aws_lb_listener.main.arn}"
     hosts = ["${var.platform_kibana_hosts}"]
+    log_bucket = "${var.log_bucket_name}"
 }
 
 module "shibboleth" {
@@ -194,4 +198,5 @@ module "elasticache_broker_network" {
   security_groups = ["${module.stack.bosh_security_group}"]
   elb_subnets = ["${module.cf.services_subnet_az1}","${module.cf.services_subnet_az2}"]
   elb_security_groups = ["${module.stack.bosh_security_group}"]
+  log_bucket = "${var.log_bucket_name}"
 }
