@@ -9,3 +9,5 @@ variable "log_bucket_acl" {
 }
 
 variable "aws_partition" {}
+
+variable "aws_region" {}
