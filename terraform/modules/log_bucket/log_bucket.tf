@@ -43,7 +43,6 @@ resource "aws_s3_bucket" "log_bucket" {
     }
 
     policy = <<EOF
-    {
         {
             "Version": "2012-10-17",
             "Statement": [
@@ -57,6 +56,5 @@ resource "aws_s3_bucket" "log_bucket" {
                 }
             ]
         }
-    }
 EOF
 }
