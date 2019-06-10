@@ -9,6 +9,7 @@ provider "aws" {
 data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "available" {}
+data "aws_region" "current" {}
 
 data "aws_iam_server_certificate" "wildcard_production" {
   name_prefix = "${var.wildcard_production_certificate_name_prefix}"
