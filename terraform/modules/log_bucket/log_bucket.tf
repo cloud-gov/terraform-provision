@@ -43,18 +43,18 @@ resource "aws_s3_bucket" "log_bucket" {
     }
 
     policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
         {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "AWS": "arn:${var.aws_partition}:iam::${local.aws_alb_account_ids[var.aws_region]}:root"
-                    },
-                    "Action": "s3:PutObject",
-                    "Resource": "arn:aws-us-gov:s3:::${var.log_bucket_name}/*"
-                }
-            ]
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:${var.aws_partition}:iam::${local.aws_alb_account_ids[var.aws_region]}:root"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws-us-gov:s3:::${var.log_bucket_name}/*"
         }
+    ]
+}
 EOF
 }
