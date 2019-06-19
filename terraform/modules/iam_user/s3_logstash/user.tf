@@ -1,12 +1,8 @@
-data "aws_route53_zone" "zone" {
-  name = "${var.hosted_zone}"
-}
-
 data "template_file" "policy" {
   template = "${file("${path.module}/policy.json")}"
   vars {
     aws_partition = "${var.aws_partition}"
-    hosted_zone = "${data.aws_route53_zone.zone.zone_id}"
+    log_bucket = "${var.log_bucket}"
   }
 }
 
