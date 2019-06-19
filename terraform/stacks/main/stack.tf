@@ -187,6 +187,7 @@ module "admin" {
     public_subnet_az1 = "${module.stack.public_subnet_az1}"
     public_subnet_az2 = "${module.stack.public_subnet_az2}"
     security_group = "${module.stack.restricted_web_traffic_security_group}"
+    "log_bucket_name" = "${var.log_bucket_name}"
 }
 
 module "elasticache_broker_network" {

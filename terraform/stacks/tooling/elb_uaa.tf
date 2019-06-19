@@ -4,6 +4,10 @@ resource "aws_lb" "opsuaa" {
   security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
   ip_address_type = "dualstack"
   idle_timeout = 3600
+  access_logs = {
+      bucket        = "${var.log_bucket_name}"
+      prefix        = "${var.stack_description}"
+  }
 }
 
 resource "aws_lb_target_group" "opsuaa_target" {
