@@ -8,3 +8,4 @@ variable "public_subnet_az2" {}
 variable "hosts" {
   type = "list"
 }
+variable "log_bucket_name" {}
