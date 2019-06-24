@@ -379,6 +379,17 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
+/* s3 logstash user */
+output "s3_logstash_username" {
+  value = "${module.s3_logstash_alert.username}"
+}
+output "s3_logstash_alert_access_key_id" {
+  value = "${module.s3_logstash_alert.access_key_id}"
+}
+output "s3_logstash_alert_secret_access_key" {
+  value = "${module.s3_logstash_alert.secret_access_key}"
+}
+
 /* rds storage user */
 output "rds_storage_alert_username" {
   value = "${module.rds_storage_alert.username}"
