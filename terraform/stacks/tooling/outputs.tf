@@ -383,11 +383,17 @@ output "billing_secret_access_key_curr" {
 output "s3_logstash_username" {
   value = "${module.s3_logstash.username}"
 }
-output "s3_logstash_alert_access_key_id" {
-  value = "${module.s3_logstash.access_key_id}"
+output "s3_logstash_access_key_id_prev" {
+  value = "${module.s3_logstash.access_key_id_prev}"
 }
-output "s3_logstash_alert_secret_access_key" {
-  value = "${module.s3_logstash.secret_access_key}"
+output "s3_logstash_secret_access_key_prev" {
+  value = "${module.s3_logstash.secret_access_key_prev}"
+}
+output "s3_logstash_access_key_id_curr" {
+  value = "${module.s3_logstash.access_key_id_curr}"
+}
+output "s3_logstash_secret_access_key_curr" {
+  value = "${module.s3_logstash.secret_access_key_curr}"
 }
 
 /* rds storage user */
