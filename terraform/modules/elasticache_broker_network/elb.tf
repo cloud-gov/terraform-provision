@@ -22,4 +22,9 @@ resource "aws_elb" "elasticache_elb" {
   tags {
     Name = "${var.stack_description}-elasticache-broker"
   }
+
+   access_logs = {
+      bucket        = "${var.log_bucket_name}"
+      bucket_prefix        = "${var.stack_description}"
+    }
 }

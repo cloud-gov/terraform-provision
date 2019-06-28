@@ -5,7 +5,7 @@ variable "rds_instance_type" {
 }
 
 variable "rds_db_size" {
-  default = 5
+  default = 20
 }
 
 variable "rds_db_storage_type" {
@@ -23,7 +23,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.3"
+  default = "9.6.11"
 }
 
 variable "rds_username" {}

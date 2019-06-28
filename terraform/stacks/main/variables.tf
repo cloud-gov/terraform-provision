@@ -25,6 +25,9 @@ variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
+variable "admin_hosts" {
+  type = "list"
+}
 variable "shibboleth_hosts" {
   type = "list"
 }
@@ -49,4 +52,8 @@ variable "upstream_blobstore_bucket_name" {}
 
 variable "force_restricted_network" {
   default = "yes"
+}
+
+variable "log_bucket_name" {
+  default = "cg-elb-logs"
 }

@@ -32,6 +32,8 @@
         "arn:${aws_partition}:s3:::${billing_bucket}/*",
         "arn:${aws_partition}:s3:::${semver_bucket}",
         "arn:${aws_partition}:s3:::${semver_bucket}/*",
+        "arn:${aws_partition}:s3:::${log_bucket}",
+        "arn:${aws_partition}:s3:::${log_bucket}/*",
         "arn:${aws_partition}:s3:::${buildpack_notify_bucket}",
         "arn:${aws_partition}:s3:::${buildpack_notify_bucket}/*",
         "arn:${aws_partition}:s3:::${cg_binaries_bucket}",
@@ -48,6 +50,8 @@
       "Resource": [
         "arn:${aws_partition}:s3:::${semver_bucket}",
         "arn:${aws_partition}:s3:::${semver_bucket}/*",
+        "arn:${aws_partition}:s3:::${log_bucket}",
+        "arn:${aws_partition}:s3:::${log_bucket}/*",
         "arn:${aws_partition}:s3:::${buildpack_notify_bucket}",
         "arn:${aws_partition}:s3:::${buildpack_notify_bucket}/*",
         "arn:${aws_partition}:s3:::${billing_bucket}",

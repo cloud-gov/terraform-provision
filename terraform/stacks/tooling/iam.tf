@@ -5,6 +5,13 @@ module "billing_user" {
   aws_partition = "${data.aws_partition.current.partition}"
 }
 
+module "s3_logstash" {
+  source = "../../modules/iam_user/s3_logstash"
+  username = "s3-logstash"
+  log_bucket = "${var.log_bucket_name}"
+  aws_partition = "${data.aws_partition.current.partition}"
+}
+
 module "rds_storage_alert" {
   source = "../../modules/iam_user/rds_storage_alert"
   username = "cg-rds-storage-alert"
@@ -51,6 +58,7 @@ module "concourse_worker_policy" {
   buildpack_notify_bucket = "${var.buildpack_notify_bucket}"
   billing_bucket = "${var.billing_bucket}"
   cg_binaries_bucket = "${var.cg_binaries_bucket}"
+  log_bucket = "${var.log_bucket_name}"
 }
 
 module "concourse_iaas_worker_policy" {

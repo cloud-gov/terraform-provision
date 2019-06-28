@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 1.12.0"
+  version = "~> 1.39.0"
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
   region = "${var.aws_region}"
@@ -95,7 +95,8 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   name = "cloud.gov."
   type = "TXT"
   ttl = 300
-  records = ["v=spf1 include:_spf.google.com -all"]
+  records = ["v=spf1 -all"]
+
 }
 
 resource "aws_route53_record" "cloud_gov_2a37e22b1f41ad3fe6af39f4fc38c1bc_cloud_gov_cname" {
@@ -284,6 +285,50 @@ resource "aws_route53_record" "cloud_gov_star_app_cloud_gov_aaaa" {
   type = "AAAA"
   alias {
     name = "dualstack.${data.terraform_remote_state.production.cf_apps_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_admin_fr_cloud_gov_a" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "admin.fr.cloud.gov."
+  type = "A"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.production.admin_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_admin_fr_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "admin.fr.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.production.admin_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_admin_fr-stage_cloud_gov_a" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "admin.fr-stage.cloud.gov."
+  type = "A"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.staging.admin_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_admin_fr-stage_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "admin.fr-stage.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.staging.admin_lb_dns_name}"
     zone_id = "${var.cloudfront_zone_id}"
     evaluate_target_health = false
   }
@@ -681,8 +726,8 @@ resource "aws_route53_record" "cloud_gov__dmarc_cloud_gov_txt" {
   name = "_dmarc.cloud.gov."
   type = "TXT"
   ttl = 300
-  records = [
-     "v=DMARC1; p=none; pct=10; fo=1; ri=86400; rua=mailto:dmarcreports@gsa.gov,mailto:reports@dmarc.cyber.dhs.gov; ruf=mailto:dmarcfailures@gsa.gov"
+  records =[
+    "v=DMARC1; p=reject; rua=mailto:dmarcreports@gsa.gov, mailto:reports@dmarc.cyber.dhs.gov; ruf=mailto:dmarcfailures@gsa.gov; pct=100; fo=1"
   ]
 }
 

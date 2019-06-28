@@ -29,7 +29,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-    default = "9.6.3"
+    default = "9.6.11"
 }
 
 variable "rds_username" {
@@ -69,3 +69,5 @@ variable "aws_partition" {}
 variable "kubernetes_cluster_id" {}
 
 variable "bucket_prefix" {}
+
+variable "log_bucket_name" {}

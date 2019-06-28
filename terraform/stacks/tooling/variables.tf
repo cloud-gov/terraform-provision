@@ -106,3 +106,7 @@ variable "smtp_ingress_cidr_blocks" {
 variable "cloudtrail_bucket" {
   default = "cg-s3-cloudtrail"
 }
+
+variable "log_bucket_name" {
+  default = "cg-elb-logs"
+}
