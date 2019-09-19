@@ -85,6 +85,7 @@ resource "aws_lb" "domains_broker" {
   subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
   security_groups = ["${module.stack.web_traffic_security_group}"]
   ip_address_type = "dualstack"
+  idle_timeout = 3600
   access_logs = {
       bucket        = "${var.log_bucket_name}"
       prefix        = "${var.stack_description}"
