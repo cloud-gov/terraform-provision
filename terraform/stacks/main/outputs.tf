@@ -428,7 +428,9 @@ output "etcd_backup_bucket_name" {
 output "bosh_blobstore_bucket" {
   value = "${module.bosh_blobstore_bucket.bucket_name}"
 }
-
+output "elb_log_bucket"{
+  value = "${var.log_bucket_name}"
+}
 output "tooling_bosh_static_ip" {
   value = "${data.terraform_remote_state.target_vpc.tooling_bosh_static_ip}"
 }
