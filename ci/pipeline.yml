@@ -632,7 +632,7 @@ jobs:
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/dev/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
@@ -644,7 +644,7 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/dev/
       CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
   on_failure:
@@ -653,9 +653,9 @@ jobs:
       text: |
         :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: acme-certificate-staging
   plan:
@@ -670,7 +670,7 @@ jobs:
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/staging/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
@@ -682,7 +682,7 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/staging/
       CERT_PREFIX: star.fr-stage.cloud.gov
   on_failure:
@@ -691,9 +691,9 @@ jobs:
       text: |
         :x: Failed to check ACME certificate for *.fr-stage.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: acme-certificate-production
   plan:
@@ -708,7 +708,7 @@ jobs:
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/production/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
@@ -720,7 +720,7 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/production/
       CERT_PREFIX: star.fr.cloud.gov
   on_failure:
@@ -729,9 +729,9 @@ jobs:
       text: |
         :x: Failed to check ACME certificates for *.fr.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: acme-certificate-production-apps
   plan:
@@ -746,7 +746,7 @@ jobs:
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/production/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
@@ -758,7 +758,7 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      AWS_DEFAULT_REGION: {{aws_default_region}}
+      AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/production/
       CERT_PREFIX: star.app.cloud.gov
   on_failure:
@@ -767,9 +767,9 @@ jobs:
       text: |
         :x: Failed to check ACME certificates for *.app.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: {{slack-channel}}
-      username: {{slack-username}}
-      icon_url: {{slack-icon-url}}
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 resources:
 - name: pipeline-tasks
