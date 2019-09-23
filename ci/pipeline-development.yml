@@ -1,7 +1,7 @@
 jobs:
 - name: plan-bootstrap-tooling
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -51,7 +51,7 @@ jobs:
 
 - name: bootstrap-tooling
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
@@ -62,7 +62,7 @@ jobs:
     params:
       <<: *tooling-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - task: init-bosh-db
       config:
         platform: linux
@@ -92,7 +92,7 @@ jobs:
 
 - name: destroy-tooling
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
   - task: destroy-tooling
@@ -105,7 +105,7 @@ jobs:
 
 - name: plan-bootstrap-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -143,7 +143,7 @@ jobs:
 
 - name: bootstrap-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -155,7 +155,7 @@ jobs:
     params:
       <<: *development-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - do:
       - task: init-bosh-db
         config:
@@ -204,7 +204,7 @@ jobs:
 
 - name: destroy-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
