@@ -57,7 +57,7 @@ jobs:
 
 - name: plan-bootstrap-external-staging
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -94,7 +94,7 @@ jobs:
 
 - name: bootstrap-external-staging
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-external-staging]
@@ -114,7 +114,7 @@ jobs:
 
 - name: plan-bootstrap-external-production
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -142,7 +142,7 @@ jobs:
 
 - name: bootstrap-external-production
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-external-production]
@@ -162,7 +162,7 @@ jobs:
 
 - name: plan-dns
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -189,7 +189,7 @@ jobs:
 
 - name: apply-dns
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-dns]
@@ -202,7 +202,7 @@ jobs:
 
 - name: plan-bootstrap-tooling
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -242,7 +242,7 @@ jobs:
 
 - name: bootstrap-tooling
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
@@ -253,7 +253,7 @@ jobs:
     params:
       <<: *tooling-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - task: init-bosh-db
       config:
         platform: linux
@@ -302,7 +302,7 @@ jobs:
 
 - name: plan-bootstrap-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -349,7 +349,7 @@ jobs:
 
 - name: bootstrap-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -361,7 +361,7 @@ jobs:
     params:
       <<: *development-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - do:
       - task: init-bosh-db
         config:
@@ -410,7 +410,7 @@ jobs:
 
 - name: plan-bootstrap-staging
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -455,7 +455,7 @@ jobs:
 
 - name: bootstrap-staging
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-staging]
@@ -466,7 +466,7 @@ jobs:
     params:
       <<: *staging-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - do:
       - task: init-bosh-db
         config:
@@ -515,7 +515,7 @@ jobs:
 
 - name: plan-bootstrap-production
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
@@ -560,7 +560,7 @@ jobs:
 
 - name: bootstrap-production
   plan:
-  - aggregate:
+  - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-production]
@@ -571,7 +571,7 @@ jobs:
     params:
       <<: *production-params
       TERRAFORM_ACTION: apply
-  - aggregate:
+  - in_parallel:
     - do:
       - task: init-bosh-db
         config:
@@ -620,7 +620,7 @@ jobs:
 
 - name: acme-certificate-development
   plan:
-  - aggregate:
+  - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
@@ -659,7 +659,7 @@ jobs:
 
 - name: acme-certificate-staging
   plan:
-  - aggregate:
+  - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
@@ -697,7 +697,7 @@ jobs:
 
 - name: acme-certificate-production
   plan:
-  - aggregate:
+  - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
@@ -735,7 +735,7 @@ jobs:
 
 - name: acme-certificate-production-apps
   plan:
-  - aggregate:
+  - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
