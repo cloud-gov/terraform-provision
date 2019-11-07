@@ -78,6 +78,7 @@ output "domains_broker_rds_port" {
   value = "${aws_db_instance.domains_broker.port}"
 }
 
+/* old domains broker alb */
 resource "aws_lb" "domains_broker" {
   count = "${var.domains_broker_alb_count}"
 
@@ -196,6 +197,131 @@ output "domains_broker_listener_arns" {
   value = "${aws_lb_listener.domains_broker_http.*.arn}"
 }
 
+/* new broker ALB */
+resource "aws_lb" "domain_broker_v2" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  name = "${var.stack_description}-domains-${count.index}"
+  subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+  security_groups = ["${module.stack.web_traffic_security_group}"]
+  ip_address_type = "dualstack"
+  idle_timeout = 3600
+  access_logs = {
+      bucket        = "${var.log_bucket_name}"
+      prefix        = "${var.stack_description}"
+  }
+}
+
+resource "aws_lb_listener" "domain_broker_v2_http" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  load_balancer_arn = "${aws_lb.domain_broker_v2.*.arn[count.index]}"
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.domain_broker_v2_apps.*.arn[count.index]}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_listener" "domain_broker_v2_https" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  load_balancer_arn = "${aws_lb.domain_broker_v2.*.arn[count.index]}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  certificate_arn = "${data.aws_iam_server_certificate.wildcard.arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.domain_broker_v2_apps.*.arn[count.index]}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_listener_rule" "static_http" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  listener_arn = "${aws_lb_listener.domain_broker_v2_http.*.arn[count.index]}"
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.domain_broker_v2_challenge.*.arn[count.index]}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/.well-known/acme-challenge/*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "static_https" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  listener_arn = "${aws_lb_listener.domain_broker_v2_https.*.arn[count.index]}"
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.domain_broker_challenge.*.arn[count.index]}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/.well-known/acme-challenge/*"]
+  }
+}
+
+resource "aws_lb_target_group" "domain_broker_v2_apps" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  name = "${var.stack_description}-domains-apps-${count.index}"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = "${module.stack.vpc_id}"
+
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 3
+    timeout = 4
+    interval = 5
+    port = 81
+    matcher = 200
+  }
+}
+
+resource "aws_lb_target_group" "domain_broker_v2_challenge" {
+  count = "${var.domain_broker_v2_alb_count}"
+
+  name = "${var.stack_description}-domains-acme-${count.index}"
+  port     = 8081
+  protocol = "HTTP"
+  vpc_id   = "${module.stack.vpc_id}"
+
+  health_check {
+    path = "/health"
+  }
+}
+
+output "domain_broker_v2_alb_names" {
+  value = "${aws_lb.domain_broker_v2.*.name}"
+}
+output "domain_broker_v2_target_group_apps_names" {
+  value = "${aws_lb_target_group.domain_broker_v2_apps.*.name}"
+}
+output "domain_broker_v2_target_group_challenge_names" {
+  value = "${aws_lb_target_group.domain_broker_v2_challenge.*.name}"
+}
+output "domain_broker_v2_listener_arns" {
+  value = "${aws_lb_listener.domain_broker_v2_http.*.arn}"
+}
+/* end new broker alb config */
+
+/* n.b. this bucket is used for:
+   - original domains broker
+   - original cdn broker
+   - new domains + cdn broker
+ */
 resource "aws_s3_bucket" "domains_bucket" {
   bucket = "${var.challenge_bucket}"
   policy = <<EOF
@@ -215,7 +341,6 @@ resource "aws_s3_bucket" "domains_bucket" {
 }
 EOF
 }
-
 output "challenge_bucket" {
   value = "${aws_s3_bucket.domains_bucket.id}"
 }
