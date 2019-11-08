@@ -3,6 +3,9 @@ variable "domains_broker_alb_count" {
 }
 variable "domains_broker_rds_username" {}
 variable "domains_broker_rds_password" {}
+variable "domain_broker_v2_alb_count" {
+  default = 0
+}
 variable "challenge_bucket" {}
 variable "iam_cert_prefix" {
   default = "/domains/*"
