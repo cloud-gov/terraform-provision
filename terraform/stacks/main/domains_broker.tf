@@ -243,7 +243,7 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
   }
 }
 
-resource "aws_lb_listener_rule" "static_http" {
+resource "aws_lb_listener_rule" "domain_broker_v2static_http" {
   count = "${var.domain_broker_v2_alb_count}"
 
   listener_arn = "${aws_lb_listener.domain_broker_v2_http.*.arn[count.index]}"
@@ -259,14 +259,14 @@ resource "aws_lb_listener_rule" "static_http" {
   }
 }
 
-resource "aws_lb_listener_rule" "static_https" {
+resource "aws_lb_listener_rule" "domain_broker_v2_static_https" {
   count = "${var.domain_broker_v2_alb_count}"
 
   listener_arn = "${aws_lb_listener.domain_broker_v2_https.*.arn[count.index]}"
 
   action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.domain_broker_challenge.*.arn[count.index]}"
+    target_group_arn = "${aws_lb_target_group.domain_broker_v2_challenge.*.arn[count.index]}"
   }
 
   condition {
