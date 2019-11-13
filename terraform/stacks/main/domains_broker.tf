@@ -216,42 +216,42 @@ resource "aws_iam_user_policy" "domain_broker_v2_policy" {
   name = "domain_broker_v2_policy"
   user = "${aws_iam_user.domain_broker_v2.name}"
   policy = <<EOF
-  {
-    "Version": "2015-12-01",
+{
+    "Version": "2012-10-17",
     "Statement": [
-      {
-        "Action": [
-          "elasticloadbalancing:CreateLoadBalancer"
-          "elasticloadbalancing:DeleteLoadBalancer"
-        ],
-        "Effect": "Deny",
-        "Resource": "*"
-      },
-      {
-        "Action": [
-          "elasticloadbalancing:AddListenerCertificates",
-          "elasticloadbalancing:CreateListener",
-          "elasticloadbalancing:CreateRule",
-          "elasticloadbalancing:CreateTargetGroup",
-          "elasticloadbalancing:DeleteListener",
-          "elasticloadbalancing:DeleteRule",
-          "elasticloadbalancing:DeleteTargetGroup",
-          "elasticloadbalancing:DeregisterTargets",
-          "elasticloadbalancing:ModifyListener",
-          "elasticloadbalancing:ModifyLoadBalancerAttributes",
-          "elasticloadbalancing:ModifyRule",
-          "elasticloadbalancing:ModifyTargetGroup",
-          "elasticloadbalancing:ModifyTargetGroupAttributes",
-          "elasticloadbalancing:RegisterTargets",
-          "elasticloadbalancing:RemoveListenerCertificates",
-          "elasticloadbalancing:RemoveListenerCertificates",
-        ],
-        "Effect": "Allow",
-        "Resource": "*"
-      }
+        {
+            "Action": [
+                "elasticloadbalancing:CreateLoadBalancer",
+                "elasticloadbalancing:DeleteLoadBalancer"
+            ],
+            "Effect": "Deny",
+            "Resource": "*"
+        },
+        {
+            "Action": [
+                "elasticloadbalancing:AddListenerCertificates",
+                "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:CreateRule",
+                "elasticloadbalancing:CreateTargetGroup",
+                "elasticloadbalancing:DeleteListener",
+                "elasticloadbalancing:DeleteRule",
+                "elasticloadbalancing:DeleteTargetGroup",
+                "elasticloadbalancing:DeregisterTargets",
+                "elasticloadbalancing:ModifyListener",
+                "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                "elasticloadbalancing:ModifyRule",
+                "elasticloadbalancing:ModifyTargetGroup",
+                "elasticloadbalancing:ModifyTargetGroupAttributes",
+                "elasticloadbalancing:RegisterTargets",
+                "elasticloadbalancing:RemoveListenerCertificates",
+                "elasticloadbalancing:RemoveListenerCertificates"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
     ]
-  }
-  EOF
+}
+EOF
 }
 
 resource "aws_lb" "domain_broker_v2" {
