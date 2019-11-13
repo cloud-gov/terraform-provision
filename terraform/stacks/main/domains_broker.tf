@@ -396,6 +396,12 @@ output "domain_broker_v2_target_group_challenge_names" {
 output "domain_broker_v2_listener_arns" {
   value = "${aws_lb_listener.domain_broker_v2_http.*.arn}"
 }
+output "domain_broker_v2_access_key_id" {
+  value = "${aws_iam_access_key.domain_broker_v2_access_key.id}"
+}
+output "domain_broker_v2_secret_access_key" {
+  value = "${aws_iam_access_key.domain_broker_v2_access_key.encrypted_secret}"
+}
 /* end new broker alb config */
 
 /* n.b. this bucket is used for:
