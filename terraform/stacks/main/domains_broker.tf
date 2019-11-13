@@ -203,6 +203,57 @@ output "domains_broker_listener_arns" {
 }
 
 /* new broker ALB */
+
+resource "aws_iam_user" "domain_broker_v2" {
+  name = "domain_broker_v2"
+}
+
+resource "aws_iam_access_key" "domain_broker_v2_access_key" {
+  user = "${aws_iam_user.domain_broker_v2.name}"
+}
+
+resource "aws_iam_user_policy" "domain_broker_v2_policy" {
+  name = "domain_broker_v2_policy"
+  user = "${aws_iam_user.domain_broker_v2.name}"
+  policy = <<EOF
+  {
+    "Version": "2015-12-01",
+    "Statement": [
+      {
+        "Action": [
+          "elasticloadbalancing:CreateLoadBalancer"
+          "elasticloadbalancing:DeleteLoadBalancer"
+        ],
+        "Effect": "Deny",
+        "Resource": "*"
+      },
+      {
+        "Action": [
+          "elasticloadbalancing:AddListenerCertificates",
+          "elasticloadbalancing:CreateListener",
+          "elasticloadbalancing:CreateRule",
+          "elasticloadbalancing:CreateTargetGroup",
+          "elasticloadbalancing:DeleteListener",
+          "elasticloadbalancing:DeleteRule",
+          "elasticloadbalancing:DeleteTargetGroup",
+          "elasticloadbalancing:DeregisterTargets",
+          "elasticloadbalancing:ModifyListener",
+          "elasticloadbalancing:ModifyLoadBalancerAttributes",
+          "elasticloadbalancing:ModifyRule",
+          "elasticloadbalancing:ModifyTargetGroup",
+          "elasticloadbalancing:ModifyTargetGroupAttributes",
+          "elasticloadbalancing:RegisterTargets",
+          "elasticloadbalancing:RemoveListenerCertificates",
+          "elasticloadbalancing:RemoveListenerCertificates",
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ]
+  }
+  EOF
+}
+
 resource "aws_lb" "domain_broker_v2" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -344,6 +395,12 @@ output "domain_broker_v2_target_group_challenge_names" {
 }
 output "domain_broker_v2_listener_arns" {
   value = "${aws_lb_listener.domain_broker_v2_http.*.arn}"
+}
+output "domain_broker_v2_access_key_id" {
+  value = "${aws_iam_access_key.domain_broker_v2_access_key.id}"
+}
+output "domain_broker_v2_secret_access_key" {
+  value = "${aws_iam_access_key.domain_broker_v2_access_key.encrypted_secret}"
 }
 /* end new broker alb config */
 
