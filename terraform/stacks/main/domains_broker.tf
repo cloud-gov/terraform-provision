@@ -400,7 +400,7 @@ output "domain_broker_v2_access_key_id" {
   value = "${aws_iam_access_key.domain_broker_v2_access_key.id}"
 }
 output "domain_broker_v2_secret_access_key" {
-  value = "${aws_iam_access_key.domain_broker_v2_access_key.encrypted_secret}"
+  value = "${aws_iam_access_key.domain_broker_v2_access_key.secret}"
 }
 /* end new broker alb config */
 
