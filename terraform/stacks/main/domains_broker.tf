@@ -203,6 +203,57 @@ output "domains_broker_listener_arns" {
 }
 
 /* new broker ALB */
+
+resource "aws_iam_user" "domain_broker_v2" {
+  name = "domain_broker_v2"
+}
+
+resource "aws_iam_access_key" "domain_broker_v2_access_key" {
+  user = "${aws_iam_user.domain_broker_v2.name}"
+}
+
+resource "aws_iam_user_policy" "domain_broker_v2_policy" {
+  name = "domain_broker_v2_policy"
+  user = "${aws_iam_user.domain_broker_v2.name}"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "elasticloadbalancing:CreateLoadBalancer",
+                "elasticloadbalancing:DeleteLoadBalancer"
+            ],
+            "Effect": "Deny",
+            "Resource": "*"
+        },
+        {
+            "Action": [
+                "elasticloadbalancing:AddListenerCertificates",
+                "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:CreateRule",
+                "elasticloadbalancing:CreateTargetGroup",
+                "elasticloadbalancing:DeleteListener",
+                "elasticloadbalancing:DeleteRule",
+                "elasticloadbalancing:DeleteTargetGroup",
+                "elasticloadbalancing:DeregisterTargets",
+                "elasticloadbalancing:ModifyListener",
+                "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                "elasticloadbalancing:ModifyRule",
+                "elasticloadbalancing:ModifyTargetGroup",
+                "elasticloadbalancing:ModifyTargetGroupAttributes",
+                "elasticloadbalancing:RegisterTargets",
+                "elasticloadbalancing:RemoveListenerCertificates",
+                "elasticloadbalancing:RemoveListenerCertificates"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
 resource "aws_lb" "domain_broker_v2" {
   count = "${var.domain_broker_v2_alb_count}"
 
