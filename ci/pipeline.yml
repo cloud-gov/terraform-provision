@@ -346,6 +346,8 @@ jobs:
       TF_VAR_alb_prefix: "development-domains-*"
       TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((development_domain_broker_v2_rds_username))
+      TF_VAR_domain_broker_v2_rds_password: ((development_domain_broker_v2_rds_password))
   - *notify-slack
 
 - name: bootstrap-development
@@ -453,6 +455,8 @@ jobs:
       TF_VAR_alb_prefix: "staging-domains-*"
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((staging_domain_broker_v2_rds_username))
+      TF_VAR_domain_broker_v2_rds_password: ((staging_domain_broker_v2_rds_password))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -559,6 +563,8 @@ jobs:
       TF_VAR_alb_prefix: "production-domains-*"
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((production_domain_broker_v2_rds_username))
+      TF_VAR_domain_broker_v2_rds_password: ((production_domain_broker_v2_rds_password))
   - *notify-slack
 
 - name: bootstrap-production

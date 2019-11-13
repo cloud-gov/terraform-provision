@@ -3,6 +3,8 @@ variable "domains_broker_alb_count" {
 }
 variable "domains_broker_rds_username" {}
 variable "domains_broker_rds_password" {}
+variable "domain_broker_v2_rds_username" {}
+variable "domain_broker_v2_rds_password" {}
 variable "domain_broker_v2_alb_count" {
   default = 0
 }
@@ -304,6 +306,31 @@ resource "aws_lb_target_group" "domain_broker_v2_challenge" {
   health_check {
     path = "/health"
   }
+}
+
+resource "aws_db_instance" "domain_broker_v2" {
+  name = "domain_broker_v2"
+  storage_type = "gp2"
+  allocated_storage = 10
+  instance_class = "db.t2.micro"
+  username = "${var.domain_broker_v2_rds_username}"
+  password = "${var.domain_broker_v2_rds_password}"
+  engine = "postgres"
+  db_subnet_group_name = "${module.stack.rds_subnet_group}"
+  vpc_security_group_ids = ["${module.stack.rds_postgres_security_group}"]
+}
+
+output "domain_broker_v2_rds_username" {
+  value = "${aws_db_instance.domain_broker_v2.username}"
+}
+output "domain_broker_v2_rds_password" {
+  value = "${aws_db_instance.domain_broker_v2.password}"
+}
+output "domain_broker_v2_rds_address" {
+  value = "${aws_db_instance.domain_broker_v2.address}"
+}
+output "domain_broker_v2_rds_port" {
+  value = "${aws_db_instance.domain_broker_v2.port}"
 }
 
 output "domain_broker_v2_alb_names" {
