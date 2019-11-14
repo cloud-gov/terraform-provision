@@ -206,6 +206,7 @@ output "domains_broker_listener_arns" {
 
 resource "aws_iam_user" "domain_broker_v2" {
   name = "domain_broker_v2"
+  path = "/domain-broker-v2/"
 }
 
 resource "aws_iam_access_key" "domain_broker_v2_access_key" {
