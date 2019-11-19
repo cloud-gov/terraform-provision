@@ -238,6 +238,7 @@ resource "aws_iam_user_policy" "domain_broker_v2_policy" {
                 "elasticloadbalancing:DeleteRule",
                 "elasticloadbalancing:DeleteTargetGroup",
                 "elasticloadbalancing:DeregisterTargets",
+                "elasticloadbalancing:DescribeLoadBalancers",
                 "elasticloadbalancing:ModifyListener",
                 "elasticloadbalancing:ModifyLoadBalancerAttributes",
                 "elasticloadbalancing:ModifyRule",
