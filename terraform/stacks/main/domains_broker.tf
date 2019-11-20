@@ -18,13 +18,13 @@ variable "alb_prefix" {
 
 /* Broker internal load balancer */
 resource "aws_lb" "domains_broker_internal" {
-  name = "${var.stack_description}-domains-internal"
-  subnets = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
+  name            = "${var.stack_description}-domains-internal"
+  subnets         = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
   security_groups = ["${module.stack.bosh_security_group}"]
-  internal = true
+  internal        = true
   access_logs = {
-      bucket        = "${var.log_bucket_name}"
-      prefix        = "${var.stack_description}"
+    bucket = "${var.log_bucket_name}"
+    prefix = "${var.stack_description}"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_lb_listener" "domains_broker_internal" {
 }
 
 resource "aws_lb_target_group" "domains_broker_internal" {
-  name = "${var.stack_description}-domains-internal"
+  name     = "${var.stack_description}-domains-internal"
   port     = 3000
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
@@ -59,14 +59,14 @@ output "domains_broker_internal_target_group" {
 
 /* Broker database */
 resource "aws_db_instance" "domains_broker" {
-  name = "domains_broker"
-  storage_type = "gp2"
-  allocated_storage = 10
-  instance_class = "db.t2.micro"
-  username = "${var.domains_broker_rds_username}"
-  password = "${var.domains_broker_rds_password}"
-  engine = "postgres"
-  db_subnet_group_name = "${module.stack.rds_subnet_group}"
+  name                   = "domains_broker"
+  storage_type           = "gp2"
+  allocated_storage      = 10
+  instance_class         = "db.t2.micro"
+  username               = "${var.domains_broker_rds_username}"
+  password               = "${var.domains_broker_rds_password}"
+  engine                 = "postgres"
+  db_subnet_group_name   = "${module.stack.rds_subnet_group}"
   vpc_security_group_ids = ["${module.stack.rds_postgres_security_group}"]
 }
 
@@ -87,14 +87,14 @@ output "domains_broker_rds_port" {
 resource "aws_lb" "domains_broker" {
   count = "${var.domains_broker_alb_count}"
 
-  name = "${var.stack_description}-domains-${count.index}"
-  subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+  name            = "${var.stack_description}-domains-${count.index}"
+  subnets         = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
   security_groups = ["${module.stack.web_traffic_security_group}"]
   ip_address_type = "dualstack"
-  idle_timeout = 3600
+  idle_timeout    = 3600
   access_logs = {
-      bucket        = "${var.log_bucket_name}"
-      prefix        = "${var.stack_description}"
+    bucket = "${var.log_bucket_name}"
+    prefix = "${var.stack_description}"
   }
 }
 
@@ -118,7 +118,7 @@ resource "aws_lb_listener" "domains_broker_https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = "${data.aws_iam_server_certificate.wildcard.arn}"
+  certificate_arn   = "${data.aws_iam_server_certificate.wildcard.arn}"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.domains_broker_apps.*.arn[count.index]}"
@@ -161,25 +161,25 @@ resource "aws_lb_listener_rule" "static_https" {
 resource "aws_lb_target_group" "domains_broker_apps" {
   count = "${var.domains_broker_alb_count}"
 
-  name = "${var.stack_description}-domains-apps-${count.index}"
+  name     = "${var.stack_description}-domains-apps-${count.index}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
 
   health_check {
-    healthy_threshold = 2
+    healthy_threshold   = 2
     unhealthy_threshold = 3
-    timeout = 4
-    interval = 5
-    port = 81
-    matcher = 200
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
   }
 }
 
 resource "aws_lb_target_group" "domains_broker_challenge" {
   count = "${var.domains_broker_alb_count}"
 
-  name = "${var.stack_description}-domains-acme-${count.index}"
+  name     = "${var.stack_description}-domains-acme-${count.index}"
   port     = 8081
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
@@ -214,8 +214,8 @@ resource "aws_iam_access_key" "domain_broker_v2_access_key" {
 }
 
 resource "aws_iam_user_policy" "domain_broker_v2_policy" {
-  name = "domain_broker_v2_policy"
-  user = "${aws_iam_user.domain_broker_v2.name}"
+  name   = "domain_broker_v2_policy"
+  user   = "${aws_iam_user.domain_broker_v2.name}"
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -233,24 +233,15 @@ resource "aws_iam_user_policy" "domain_broker_v2_policy" {
                 "elasticloadbalancing:AddListenerCertificates",
                 "elasticloadbalancing:CreateListener",
                 "elasticloadbalancing:CreateRule",
+                "elasticloadbalancing:CreateLoadBalancerListeners",
                 "elasticloadbalancing:CreateTargetGroup",
                 "elasticloadbalancing:DeleteListener",
                 "elasticloadbalancing:DeleteRule",
                 "elasticloadbalancing:DeleteTargetGroup",
                 "elasticloadbalancing:DeregisterTargets",
-                "elasticloadbalancing:DescribeInstanceHealth",
-                "elasticloadbalancing:DescribeLoadBalancerAttributes",
-                "elasticloadbalancing:DescribeLoadBalancerPolicyTypes",
-                "elasticloadbalancing:DescribeLoadBalancers",
-                "elasticloadbalancing:DescribeLoadBalancerPolicies",
-                "elasticloadbalancing:DescribeTags",
-                "elasticloadbalancing:ModifyListener",
-                "elasticloadbalancing:ModifyLoadBalancerAttributes",
-                "elasticloadbalancing:ModifyRule",
-                "elasticloadbalancing:ModifyTargetGroup",
-                "elasticloadbalancing:ModifyTargetGroupAttributes",
+                "elasticloadbalancing:Describe*",
+                "elasticloadbalancing:Modify*",
                 "elasticloadbalancing:RegisterTargets",
-                "elasticloadbalancing:RemoveListenerCertificates",
                 "elasticloadbalancing:RemoveListenerCertificates"
             ],
             "Effect": "Allow",
@@ -264,14 +255,14 @@ EOF
 resource "aws_lb" "domain_broker_v2" {
   count = "${var.domain_broker_v2_alb_count}"
 
-  name = "${var.stack_description}-domains-${count.index}"
-  subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
+  name            = "${var.stack_description}-domains-${count.index}"
+  subnets         = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
   security_groups = ["${module.stack.web_traffic_security_group}"]
   ip_address_type = "dualstack"
-  idle_timeout = 3600
+  idle_timeout    = 3600
   access_logs = {
-      bucket        = "${var.log_bucket_name}"
-      prefix        = "${var.stack_description}"
+    bucket = "${var.log_bucket_name}"
+    prefix = "${var.stack_description}"
   }
 }
 
@@ -295,7 +286,7 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = "${data.aws_iam_server_certificate.wildcard.arn}"
+  certificate_arn   = "${data.aws_iam_server_certificate.wildcard.arn}"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.domain_broker_v2_apps.*.arn[count.index]}"
@@ -338,25 +329,25 @@ resource "aws_lb_listener_rule" "domain_broker_v2_static_https" {
 resource "aws_lb_target_group" "domain_broker_v2_apps" {
   count = "${var.domain_broker_v2_alb_count}"
 
-  name = "${var.stack_description}-domains-apps-${count.index}"
+  name     = "${var.stack_description}-domains-apps-${count.index}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
 
   health_check {
-    healthy_threshold = 2
+    healthy_threshold   = 2
     unhealthy_threshold = 3
-    timeout = 4
-    interval = 5
-    port = 81
-    matcher = 200
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
   }
 }
 
 resource "aws_lb_target_group" "domain_broker_v2_challenge" {
   count = "${var.domain_broker_v2_alb_count}"
 
-  name = "${var.stack_description}-domains-acme-${count.index}"
+  name     = "${var.stack_description}-domains-acme-${count.index}"
   port     = 8081
   protocol = "HTTP"
   vpc_id   = "${module.stack.vpc_id}"
@@ -367,14 +358,14 @@ resource "aws_lb_target_group" "domain_broker_v2_challenge" {
 }
 
 resource "aws_db_instance" "domain_broker_v2" {
-  name = "domain_broker_v2"
-  storage_type = "gp2"
-  allocated_storage = 10
-  instance_class = "db.t2.micro"
-  username = "${var.domain_broker_v2_rds_username}"
-  password = "${var.domain_broker_v2_rds_password}"
-  engine = "postgres"
-  db_subnet_group_name = "${module.stack.rds_subnet_group}"
+  name                   = "domain_broker_v2"
+  storage_type           = "gp2"
+  allocated_storage      = 10
+  instance_class         = "db.t2.micro"
+  username               = "${var.domain_broker_v2_rds_username}"
+  password               = "${var.domain_broker_v2_rds_password}"
+  engine                 = "postgres"
+  db_subnet_group_name   = "${module.stack.rds_subnet_group}"
   vpc_security_group_ids = ["${module.stack.rds_postgres_security_group}"]
 }
 
@@ -449,8 +440,8 @@ resource "aws_iam_instance_profile" "domains_broker" {
 }
 
 resource "aws_iam_role" "domains_broker" {
-  name = "${var.stack_description}-domains-broker"
-  path = "/bosh-passed/"
+  name               = "${var.stack_description}-domains-broker"
+  path               = "/bosh-passed/"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -468,7 +459,7 @@ EOF
 }
 
 resource "aws_iam_policy" "domains_broker" {
-  name = "${var.stack_description}-domains-broker"
+  name   = "${var.stack_description}-domains-broker"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -508,7 +499,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "domains_broker" {
-  name = "${var.stack_description}-domains-broker"
+  name       = "${var.stack_description}-domains-broker"
   policy_arn = "${aws_iam_policy.domains_broker.arn}"
   roles = [
     "${aws_iam_role.domains_broker.name}"
