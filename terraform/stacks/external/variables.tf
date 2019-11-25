@@ -8,3 +8,7 @@ variable "cdn_broker_bucket" {}
 variable "lets_encrypt_hosted_zone" {}
 
 variable "domain_broker_v2_username" {}
+
+variable "domain_broker_v2_bucket" {}
+
+variable "domain_broker_v2_cloudfront_prefix" {}
