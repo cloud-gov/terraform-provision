@@ -6,3 +6,5 @@ variable "cdn_broker_hosted_zone" {}
 variable "cdn_broker_bucket" {}
 
 variable "lets_encrypt_hosted_zone" {}
+
+variable "cdn_hosted_zone" {}
