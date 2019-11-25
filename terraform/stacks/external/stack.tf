@@ -35,6 +35,7 @@ module "lets_encrypt_user" {
 module "domain_broker_v2_user" {
   source = "../../modules/cdn_broker"
   aws_partition = "${data.aws_partition.current.partition}"
-  hosted_zone = "${var.cdn_hosted_zone}"
+  username = "${var.domain_broker_v2_username}"
+  hosted_zone = "${var.cdn_broker_hosted_zone}"
   username = "domain-broker-v2"
 }

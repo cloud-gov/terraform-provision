@@ -1,21 +1,21 @@
 groups:
 - name: terraform
   jobs:
-  - pull-status-check
-  - plan-dns
   - apply-dns
-  - plan-bootstrap-external-staging
-  - bootstrap-external-staging
-  - plan-bootstrap-external-production
+  - bootstrap-development
   - bootstrap-external-production
-  - plan-bootstrap-tooling
+  - bootstrap-external-staging
+  - bootstrap-production
+  - bootstrap-staging
   - bootstrap-tooling
   - plan-bootstrap-development
-  - bootstrap-development
-  - plan-bootstrap-staging
-  - bootstrap-staging
+  - plan-bootstrap-external-production
+  - plan-bootstrap-external-staging
   - plan-bootstrap-production
-  - bootstrap-production
+  - plan-bootstrap-staging
+  - plan-bootstrap-tooling
+  - plan-dns
+  - pull-status-check
 - name: certs
   jobs:
   - acme-certificate-development
@@ -80,6 +80,7 @@ jobs:
       TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_staging))
       TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_staging))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
+      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_staging))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
   - &notify-slack
     put: slack
@@ -137,6 +138,7 @@ jobs:
       TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_production))
       TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_production))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
+      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_production))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
   - *notify-slack
 
