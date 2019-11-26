@@ -246,6 +246,17 @@ resource "aws_iam_user_policy" "domain_broker_v2_policy" {
             ],
             "Effect": "Allow",
             "Resource": "*"
+        },
+        {
+            "Action": [
+                "iam:DeleteServerCertificate",
+                "iam:GetServerCertificate",
+                "iam:ListServerCertificates",
+                "iam:UpdateServerCertificate",
+                "iam:UploadServerCertificate",
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
         }
     ]
 }
