@@ -82,7 +82,6 @@ jobs:
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
       TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_staging))
       TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_staging))
-      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_staging))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
   - &notify-slack
     put: slack
@@ -142,7 +141,6 @@ jobs:
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
       TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_production))
       TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_production))
-      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_production))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
   - *notify-slack
 

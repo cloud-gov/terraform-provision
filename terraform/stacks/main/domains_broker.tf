@@ -205,7 +205,7 @@ output "domains_broker_listener_arns" {
 /* new broker ALB */
 
 resource "aws_iam_user" "domain_broker_v2" {
-  name = "domain_broker_v2"
+  name = "domain_broker_v2_${var.stack_description}"
   path = "/domain-broker-v2/"
 }
 
