@@ -137,8 +137,9 @@ resource "aws_lb_listener_rule" "static_http" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/.well-known/acme-challenge/*"]
+    path_pattern {
+      values = ["/.well-known/acme-challenge/*"]
+    }
   }
 }
 
@@ -153,8 +154,9 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/.well-known/acme-challenge/*"]
+    path_pattern {
+      values = ["/.well-known/acme-challenge/*"]
+    }
   }
 }
 
@@ -316,8 +318,9 @@ resource "aws_lb_listener_rule" "domain_broker_v2static_http" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/.well-known/acme-challenge/*"]
+    path_pattern {
+      values = ["/.well-known/acme-challenge/*"]
+    }
   }
 }
 
@@ -332,8 +335,9 @@ resource "aws_lb_listener_rule" "domain_broker_v2_static_https" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/.well-known/acme-challenge/*"]
+    path_pattern {
+      values = ["/.well-known/acme-challenge/*"]
+    }
   }
 }
 

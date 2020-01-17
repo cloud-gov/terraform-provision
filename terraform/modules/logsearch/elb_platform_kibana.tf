@@ -25,7 +25,8 @@ resource "aws_lb_listener_rule" "platform_kibana" {
   }
 
   condition {
-    field  = "host-header"
-    values = ["${element(var.hosts, count.index)}"]
+    host_header {
+      values = ["${element(var.hosts, count.index)}"]
+    }
   }
 }
