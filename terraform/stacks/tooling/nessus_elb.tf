@@ -23,7 +23,8 @@ resource "aws_lb_listener_rule" "nessus_listener_rule" {
   }
 
   condition {
-    field  = "host-header"
-    values = ["${var.nessus_hosts}"]
+    host_header {
+      values = ["${var.nessus_hosts}"]
+    }
   }
 }

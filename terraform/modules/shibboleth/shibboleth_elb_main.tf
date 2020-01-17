@@ -31,7 +31,8 @@ resource "aws_lb_listener_rule" "shibboleth" {
   }
 
   condition {
-    field  = "host-header"
-    values = ["${element(var.hosts, count.index)}"]
+    host_header {
+      values = ["${element(var.hosts, count.index)}"]
+    }
   }
 }
