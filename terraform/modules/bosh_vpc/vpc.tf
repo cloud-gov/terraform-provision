@@ -65,7 +65,7 @@ EOF
 }
 
 resource "aws_flow_log" "main_vpc_flow_log" {
-  log_group_name = "${aws_cloudwatch_log_group.main_vpc_flow_log_cloudwatch_log_group.name}"
+  log_destination = "${aws_cloudwatch_log_group.main_vpc_flow_log_cloudwatch_log_group.arn}"
   iam_role_arn = "${aws_iam_role.flow_log_role.arn}"
   vpc_id = "${aws_vpc.main_vpc.id}"
   traffic_type = "ALL"
