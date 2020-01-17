@@ -455,6 +455,28 @@ resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_aaaa" {
   }
 }
 
+resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_a" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "doomsday.fr.cloud.gov."
+  type = "A"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "doomsday.fr.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.tooling.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
 /* Platform logs */
 
 resource "aws_route53_record" "cloud_gov_logs_platform_dev_env_a" {
