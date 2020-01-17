@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.20.0"
+  version = "~> 2.30.0"
 }
 
 data "aws_partition" "current" {}

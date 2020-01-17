@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 2.20.0"
+  version = "~> 2.30.0"
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
   region = "${var.aws_region}"
