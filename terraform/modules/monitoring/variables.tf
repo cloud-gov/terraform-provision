@@ -18,6 +18,6 @@ variable "hosts" {
   type = "list"
 }
 
-variable "oidc-client" {}
+variable "oidc_client" {}
 
-variable "oidc-client-secret" {}
+variable "oidc_client_secret" {}

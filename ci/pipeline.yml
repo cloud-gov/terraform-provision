@@ -244,6 +244,8 @@ jobs:
       TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
       TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
       TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
+      TF_VAR_oidc_client: "client"
+      TF_VAR_oidc_client_secret: "something"
   - *notify-slack
 
 - name: bootstrap-tooling
