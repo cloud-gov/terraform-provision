@@ -110,3 +110,7 @@ variable "cloudtrail_bucket" {
 variable "log_bucket_name" {
   default = "cg-elb-logs"
 }
+
+variable "oidc-client" {}
+
+variable "oidc-client-secret" {}
