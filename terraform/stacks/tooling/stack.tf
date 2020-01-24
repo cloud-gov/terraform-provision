@@ -125,6 +125,8 @@ module "monitoring_production" {
   route_table_id = "${module.stack.private_route_table_az1}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_production_hosts}"]
+  oidc_client = "${var.oidc_client}"
+  oidc_client_secret = "${var.oidc_client_secret}"
 }
 
 module "monitoring_staging" {
@@ -136,6 +138,8 @@ module "monitoring_staging" {
   route_table_id = "${module.stack.private_route_table_az2}"
   listener_arn = "${aws_lb_listener.main.arn}"
   hosts = ["${var.monitoring_staging_hosts}"]
+  oidc_client = "${var.oidc_client}"
+  oidc_client_secret = "${var.oidc_client_secret}"
 }
 
 resource "aws_eip" "production_dns_eip" {

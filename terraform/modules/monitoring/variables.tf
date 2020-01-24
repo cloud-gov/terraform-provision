@@ -17,3 +17,7 @@ variable "listener_arn" {}
 variable "hosts" {
   type = "list"
 }
+
+variable "oidc_client" {}
+
+variable "oidc_client_secret" {}
