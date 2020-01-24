@@ -20,6 +20,8 @@ variable "remote_state_bucket" {}
 variable "concourse_prod_rds_password" {}
 variable "concourse_staging_rds_password" {}
 
+variable "concourse_varz_bucket" {}
+
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
