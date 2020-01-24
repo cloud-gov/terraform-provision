@@ -71,7 +71,7 @@ resource "aws_lb_listener_rule" "doomsday_listener_rule" {
 
   condition {
     host_header {
-      value = ["doomsday.fr*.cloud.gov"]
+      values = ["doomsday.fr*.cloud.gov"]
     }
   }
 }
