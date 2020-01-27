@@ -18,3 +18,7 @@ output "lb_target_group" {
   value = "${aws_lb_target_group.prometheus_target.name}"
 }
 
+# doomsday lb target.
+output "doomsday_lb_target_group" {
+  value = "${aws_lb_target_group.doomsday_target.name}"
+}
