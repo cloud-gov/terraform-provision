@@ -367,7 +367,7 @@ output "staging_monitoring_lb_target_group" {
 }
 
 output "staging_doomsday_lb_target_group" {
-  value = "${module.monitoring_production.doomsday_lb_target_group}"
+  value = "${module.monitoring_staging.doomsday_lb_target_group}"
 }
 
 /* billing user */
