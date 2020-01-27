@@ -340,6 +340,10 @@ output "production_monitoring_lb_target_group" {
   value = "${module.monitoring_production.lb_target_group}"
 }
 
+output "production_doomsday_lb_target_group" {
+  value = "${module.monitoring_production.doomsday_lb_target_group}"
+}
+
 output "monitoring_security_groups" {
   value = {
     staging = "${module.monitoring_staging.monitoring_security_group}"
@@ -360,6 +364,10 @@ output "staging_monitoring_security_group" {
 }
 output "staging_monitoring_lb_target_group" {
   value = "${module.monitoring_staging.lb_target_group}"
+}
+
+output "staging_doomsday_lb_target_group" {
+  value = "${module.monitoring_production.doomsday_lb_target_group}"
 }
 
 /* billing user */
