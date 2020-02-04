@@ -287,3 +287,17 @@ module "kubernetes_logger_role" {
   minion_role = "${module.kubernetes_minion_role.role_name}"
   assume_role_path = "/bosh-passed/"
 }
+
+# This user has access to all cloudtrail events in the account, as there
+# doesn't seem to be a way of constraining to just cloudfront events relevant
+# to a set of S3 buckets (or all S3 buckets, for that matter).
+#
+# If you need cloudtrail auditor access for another reason, PLEASE CREATE A NEW
+# USER AND MODULE (yes, even with the same permissions).  Having separate users
+# with the same permissions simplifies our work when we have to rotate
+# credentials.
+module "federalist_auditor_user" {
+  source = "../../modules/iam_user/federalist_auditor"
+  username = "federalist-s3-bucket-auditor"
+}
+
