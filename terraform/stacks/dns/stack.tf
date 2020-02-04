@@ -101,6 +101,17 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ]
 }
 
+resource "aws_route53_record" "cloud_gov_federalist_verification_txt" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "_acme-challenge.cloud.gov."
+  type = "TXT"
+  ttl = 120
+  records = [
+    "StvL8Z97d63ziair8f7Npo-TrfkkrB0eG3xa3uxG0Zo"
+  ]
+}
+
+
 resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "zendeskverification.cloud.gov."
