@@ -103,11 +103,11 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
 
 resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
-  name = "cloud.gov."
+  name = "zendeskverification.cloud.gov."
   type = "TXT"
   ttl = 300
   records = [
-    "zendeskverification.cloud.gov=bb924f6a32697b2b"
+    "bb924f6a32697b2b"
   ]
 }
 
