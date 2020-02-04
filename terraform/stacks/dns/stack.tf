@@ -97,7 +97,16 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ttl = 300
   records = [
     "v=spf1 include:mail.zendesk.com ?all",
-    "google-site-verification=JlbE7awT0VhzUvlXbc1wO1yhfFme3lSE1ViUmFX6EEY",
+    "google-site-verification=JlbE7awT0VhzUvlXbc1wO1yhfFme3lSE1ViUmFX6EEY"
+  ]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "cloud.gov."
+  type = "TXT"
+  ttl = 300
+  records = [
     "zendeskverification.cloud.gov=bb924f6a32697b2b"
   ]
 }
