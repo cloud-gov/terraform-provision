@@ -101,6 +101,48 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ]
 }
 
+resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendeskverification.cloud.gov."
+  type = "TXT"
+  ttl = 300
+  records = [
+    "bb924f6a32697b2b"
+  ]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk1_cloud_gov_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk1.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["mail1.zendesk.com."]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk2_cloud_gov_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk2.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["mail2.zendesk.com."]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk3_cloud_gov_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk3.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["mail3.zendesk.com."]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk4_cloud_gov_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk4.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["mail4.zendesk.com."]
+}
+
 resource "aws_route53_record" "cloud_gov_2a37e22b1f41ad3fe6af39f4fc38c1bc_cloud_gov_cname" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "2a37e22b1f41ad3fe6af39f4fc38c1bc.cloud.gov."
