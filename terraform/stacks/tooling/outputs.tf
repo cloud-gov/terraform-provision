@@ -387,6 +387,23 @@ output "billing_secret_access_key_curr" {
   value = "${module.billing_user.secret_access_key_curr}"
 }
 
+/* federalist auditor user */
+output "federalist_auditor_username" {
+  value = "${module.federalist_auditor_user.username}"
+}
+output "federalist_auditor_access_key_id_prev" {
+  value = "${module.federalist_auditor_user.access_key_id_prev}"
+}
+output "federalist_auditor_secret_access_key_prev" {
+  value = "${module.federalist_auditor_user.secret_access_key_prev}"
+}
+output "federalist_auditor_access_key_id_curr" {
+  value = "${module.federalist_auditor_user.access_key_id_curr}"
+}
+output "federalist_auditor_secret_access_key_curr" {
+  value = "${module.federalist_auditor_user.secret_access_key_curr}"
+}
+
 /* s3 logstash user */
 output "s3_logstash_username" {
   value = "${module.s3_logstash.username}"
