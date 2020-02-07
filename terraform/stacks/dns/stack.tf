@@ -90,6 +90,20 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_aaaa" {
   }
 }
 
+resource "aws_route53_record" "cloud_gov_google_gsuite_mx" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name    = "cloud.gov."
+  type    = "MX"
+  ttl     = 100
+  records = [
+    "1         ASPMX.L.GOOGLE.COM.",
+    "5    ALT1.ASPMX.L.GOOGLE.COM.",
+    "5    ALT2.ASPMX.L.GOOGLE.COM.",
+    "10   ALT3.ASPMX.L.GOOGLE.COM.",
+    "10   ALT4.ASPMX.L.GOOGLE.COM."
+  ]
+}
+
 resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "cloud.gov."
