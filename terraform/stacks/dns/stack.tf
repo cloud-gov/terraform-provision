@@ -97,7 +97,7 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ttl = 300
   records = [
     "v=spf1 include:mail.zendesk.com ?all",
-    "google-site-verification=JlbE7awT0VhzUvlXbc1wO1yhfFme3lSE1ViUmFX6EEY"
+    "google-site-verification=W6XRI1c1ebqaBV3vsGpkODQSirR5uN91uOG7Axrakzs"
   ]
 }
 
