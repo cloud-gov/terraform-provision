@@ -157,6 +157,22 @@ resource "aws_route53_record" "cloud_gov_zendesk4_cloud_gov_cname" {
   records = ["mail4.zendesk.com."]
 }
 
+resource "aws_route53_record" "cloud_gov_zendesk_domain_key1_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk1._domainkey.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["zendesk1._domainkey.zendesk.com"]
+}
+
+resource "aws_route53_record" "cloud_gov_zendesk_domain_key2_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "zendesk2._domainkey.cloud.gov."
+  type = "CNAME"
+  ttl = 5
+  records = ["zendesk2._domainkey.zendesk.com"]
+}
+
 resource "aws_route53_record" "cloud_gov_2a37e22b1f41ad3fe6af39f4fc38c1bc_cloud_gov_cname" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "2a37e22b1f41ad3fe6af39f4fc38c1bc.cloud.gov."
