@@ -7,11 +7,6 @@ to bootstrap our infrastructure.
 
 ### Terraform
 
-This system is using Terraform 0.11.  Future versions of the main providers
-(AWS in particular) [will not work with this
-version](https://www.hashicorp.com/blog/deprecating-terraform-0-11-support-in-terraform-providers/).
-At some point, we'll need to upgrade to the (much better) 0.12 syntax.
-
 The main terraform directories are:
 
 * `modules`: where we decompose our configuration into [Terraform
@@ -51,7 +46,8 @@ The tooling BOSH then deploys the BOSH directors in the main stacks.
 
 The `external` and `dns` stacks are both outside of GovCloud (commercial AWS).
 
-I believe the `test` stack is unused.
+I believe the `test` stack is unused, and there's [a story to remove
+it](https://github.com/18F/cg-product/issues/1277).
 
 ### BOSH
 
