@@ -115,6 +115,19 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ]
 }
 
+
+resource "aws_route53_record" "cloud_gov_gsuite_dkim_txt" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "google._domainkey"
+  type = "TXT"
+  ttl = 5
+  records = [
+    "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm6Zb6w+xgLv8afxiQYafPpsSPE9TMQWmTziXLxTEFXtLR+R08+7BjKG7pIpycaX10NGP66K9ZDdEYyGPEHLNU20Q/satC5QSO1hX3Aem38WOSdr5d6D/dJ6FUBooF1U/UFEOblCFyM6U6vAweaoNj753I05BB57Kra9DTFf96i26C0cMRguhpaehCsLL2MMgaOCidX0YUKMIpCaMLNyFRX0NjOn9ABiI4NLFg3uLs6i/B2RzT906mrWUZjwdbQCYqmJ0Z9OMSLYSn7ZmrZ8DHLMF8EaZvelR1zK/mCalEqNT0IMCgKrtrtSle7t31e+nsK+JnzlGgHKg3Z1GaB4FcQIDAQAB"
+  ]
+}
+
+
+
 resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "zendeskverification.cloud.gov."
