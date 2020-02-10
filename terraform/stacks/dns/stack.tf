@@ -110,7 +110,7 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   type = "TXT"
   ttl = 300
   records = [
-    "v=spf1 include:mail.zendesk.com ?all",
+    "v=spf1 include:mail.zendesk.com include:_spf.google.com ~all",
     "google-site-verification=W6XRI1c1ebqaBV3vsGpkODQSirR5uN91uOG7Axrakzs"
   ]
 }
