@@ -1,4 +1,4 @@
-## Validating `terraform plan` locally (beta)
+## Validating `terraform plan` locally (work in progress)
 
 * Locally clone git@github.com:18F/cg-pipeline-tasks.git; you'll need `cg-pipeline-tasks/terraform-apply.sh`
 * This terraform setup won't use your AWS profile, so export your AWS secret

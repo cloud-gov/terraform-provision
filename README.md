@@ -3,6 +3,9 @@
 This repository holds the terraform configuration (and BOSH vars and ops-files)
 to bootstrap our infrastructure.
 
+Be sure to read the internal developer documentation ("cg-provision") for
+non-public information about using this repository.
+
 ## Layout
 
 ### Terraform
@@ -20,27 +23,6 @@ The main terraform directories are:
 The `main` stack is a template that is used to provision the production,
 staging, and development "environments."
 
-> ##### Aside: Multiple environments in one account
->
-> Why do I keep putting "environments" in quotes?  One confusing and suboptimal
-> point is that the various environments are isolated from each other by being
-> in separate VPCs, _not_ separate AWS accounts. This has some knock-on
-> effects.
->
-> For one, the modules are generally built to namespace themselves:
->
-> ``` terraform
-> resource "aws_elb" "kubernetes_elb" {
->   name = "${var.stack_description}-kubernetes"
->   ...
-> ```
->
-> If we didn't do this, then the production, staging and development resources
-> would all use the same name - which wouldn't work since they're all in the same
-> AWS account.
->
-> :shrug:
-
 The `tooling` stack contains our "proto-BOSH", which deploys the tooling BOSH.
 The tooling BOSH then deploys the BOSH directors in the main stacks.
 
@@ -51,8 +33,7 @@ it](https://github.com/18F/cg-product/issues/1277).
 
 ### BOSH
 
-The `bosh` directory contains vars and opsfiles.  I'm not sure which directors
-use them.
+The `bosh` directory contains vars and opsfiles for use by the BOSH directors.
 
 ## Development Workflow
 
