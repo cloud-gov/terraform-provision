@@ -115,6 +115,14 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ]
 }
 
+resource "aws_route53_record" "cloud_gov_zendesk_support_cname" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "support.cloud.gov."
+  type = "CNAME"
+  ttl = 60
+  records = ["cloud-gov.zendesk.com."]
+}
+
 
 resource "aws_route53_record" "cloud_gov_gsuite_dkim_txt" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
