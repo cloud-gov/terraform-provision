@@ -68,6 +68,38 @@ resource "aws_route53_zone" "cloud_gov_zone" {
   }
 }
 
+resource "aws_route53_record" "www_cloud_gov_cloud_gov_a" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "www.cloud.gov."
+  type = "A"
+  alias {
+    name = "d2vy872d33xc5d.cloudfront.net."
+    zone_id = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "www_cloud_gov_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "www.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "d2vy872d33xc5d.cloudfront.net."
+    zone_id = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "acme_challenge_www_cloud_gov_cloud_gov_txt" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "_acme-challenge.www.cloud.gov"
+  type = "TXT"
+  ttl = 300
+  records = [
+    "Ks4AnY9CZQLOo-btH-pWUYxpKxcH8mW-U4o394n8OYE"
+  ]
+
+}
 resource "aws_route53_record" "cloud_gov_cloud_gov_a" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "cloud.gov."
