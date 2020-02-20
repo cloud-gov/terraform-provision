@@ -34,6 +34,8 @@ resource "aws_db_instance" "rds_database" {
     "${join("", aws_db_parameter_group.parameter_group_postgres.*.id)}" :
     "${join("", aws_db_parameter_group.parameter_group_mysql.*.id)}"}"
 
+  allow_major_version_upgrade = "${var.allow_major_version_upgrade}"
+  apply_immediately = "${var.apply_immediately}"
   tags {
     Name = "${var.stack_description}"
   }

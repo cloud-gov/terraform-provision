@@ -55,3 +55,11 @@ variable "rds_multi_az" {
 variable "rds_final_snapshot_identifier" {
   default = ""
 }
+
+variable "apply_immediately" {
+  default = "false"
+}
+
+variable "allow_major_version_upgrade" {
+  default = "false"
+}
