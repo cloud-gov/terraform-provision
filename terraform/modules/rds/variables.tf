@@ -56,10 +56,25 @@ variable "rds_final_snapshot_identifier" {
   default = ""
 }
 
+# Used in combination, these two flags allow for immediate upgrade of RDS
+# instances across major versions. They should be used temporarily:
+#
+# 1. Set both to `true` and apply the configuration.
+# 1. Upgrade the DB version and apply.
+# 1. Set both to `false` and apply a third time.
+#
+# Also, please be cautious when upgrading, and follow the documented best
+# practices:
+#
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html#USER_UpgradeDBInstance.PostgreSQL.MajorVersion.Process
+# https://aws.amazon.com/blogs/database/best-practices-for-upgrading-amazon-rds-to-major-and-minor-versions-of-postgresql/
+#
 variable "apply_immediately" {
-  default = "false"
+  # Even though the documentation says these default to "false", `terraform
+  # plan` shows otherwise.
+  default = ""
 }
 
 variable "allow_major_version_upgrade" {
-  default = "false"
+  default = ""
 }
