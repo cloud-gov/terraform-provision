@@ -864,7 +864,7 @@ resource "aws_route53_record" "cloud_gov__dmarc_cloud_gov_txt" {
   type = "TXT"
   ttl = 300
   records =[
-    "v=DMARC1; p=reject; rua=mailto:dmarcreports@gsa.gov, mailto:reports@dmarc.cyber.dhs.gov, mailto:cloud-gov-operations@gsa.gov; ruf=mailto:dmarcfailures@gsa.gov; pct=1; fo=1"
+    "v=DMARC1; p=reject; rua=mailto:dmarcreports@gsa.gov, mailto:reports@dmarc.cyber.dhs.gov, mailto:cloud-gov-operations@gsa.gov; ruf=mailto:dmarcfailures@gsa.gov; pct=100; fo=1"
   ]
 }
 
