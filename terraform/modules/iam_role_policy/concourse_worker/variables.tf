@@ -9,5 +9,5 @@ variable "buildpack_notify_bucket" {}
 variable "billing_bucket" {}
 variable "cg_binaries_bucket" {}
 variable "log_bucket" {}
-variable "build_artifact_bucket" {}
+variable "build_artifacts_bucket" {}
 variable "concourse_varz_bucket" {}
