@@ -52,7 +52,7 @@ module "log_bucket" {
   aws_region      = "${data.aws_region.current.name}"
 }
 
-module "billing_bucket_staging" {
+module "build_artifacts_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket"
   bucket        = "${var.bucket_prefix}build-artifacts"
   aws_partition = "${data.aws_partition.current.partition}"
