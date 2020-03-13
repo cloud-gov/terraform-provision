@@ -25,6 +25,7 @@ variable "concourse_varz_bucket" {}
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
+
 variable "wildcard_staging_certificate_name_prefix" {
   default = ""
 }
@@ -32,6 +33,7 @@ variable "wildcard_staging_certificate_name_prefix" {
 variable "concourse_production_hosts" {
   type = "list"
 }
+
 variable "concourse_staging_hosts" {
   type = "list"
 }
@@ -39,6 +41,7 @@ variable "concourse_staging_hosts" {
 variable "monitoring_production_hosts" {
   type = "list"
 }
+
 variable "monitoring_staging_hosts" {
   type = "list"
 }
@@ -89,6 +92,10 @@ variable "semver_bucket" {
   default = "cg-semver"
 }
 
+variable "build_artifacts_bucket" {
+  default = "cg-build-artifacts"
+}
+
 variable "buildpack_notify_bucket" {
   default = "buildpack-notify-state-*"
 }
@@ -98,7 +105,7 @@ variable "billing_bucket" {
 }
 
 variable "cg_binaries_bucket" {
-   default = "cg-binaries"
+  default = "cg-binaries"
 }
 
 variable "smtp_ingress_cidr_blocks" {
