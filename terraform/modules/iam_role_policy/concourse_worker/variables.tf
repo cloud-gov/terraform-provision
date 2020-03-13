@@ -10,3 +10,4 @@ variable "billing_bucket" {}
 variable "cg_binaries_bucket" {}
 variable "log_bucket" {}
 variable "concourse_varz_bucket" {}
+variable "build_artifacts_bucket" {}
