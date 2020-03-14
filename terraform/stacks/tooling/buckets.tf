@@ -56,4 +56,5 @@ module "build_artifacts_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket"
   bucket        = "cg-build-artifacts"
   aws_partition = "${data.aws_partition.current.partition}"
+  versioning    = "true"
 }
