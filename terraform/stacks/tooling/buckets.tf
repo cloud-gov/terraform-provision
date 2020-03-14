@@ -54,6 +54,6 @@ module "log_bucket" {
 
 module "build_artifacts_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket"
-  bucket        = "${var.bucket_prefix}build-artifacts"
+  bucket        = "cg-build-artifacts"
   aws_partition = "${data.aws_partition.current.partition}"
 }
