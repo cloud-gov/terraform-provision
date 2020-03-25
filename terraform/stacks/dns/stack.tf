@@ -868,6 +868,19 @@ resource "aws_route53_record" "cloud_gov__dmarc_cloud_gov_txt" {
   ]
 }
 
+resource "aws_route53_record" "dev2_delegate" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name    = "dev2.cloud.gov."
+  type    = "NS"
+  ttl     = 300
+  records = [
+    "ns-620.awsdns-13.net.",
+    "ns-157.awsdns-19.com.",
+    "ns-1126.awsdns-12.org.",
+    "ns-1858.awsdns-40.co.uk."
+  ]
+}
+
 output "cloud_gov_ns" {
   value = "${aws_route53_zone.cloud_gov_zone.name_servers}"
 }
