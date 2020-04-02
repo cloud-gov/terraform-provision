@@ -61,13 +61,6 @@ for db in ${DATABASES}; do
           seed varchar(36),
           backup_code varchar(36)
         );
-      ALTER TABLE IF EXISTS totp_seed
-        DROP CONSTRAINT IF EXISTS username_record_keeper;
-      ALTER TABLE IF EXISTS totp_seed
-        ADD CONSTRAINT username_record_keeper
-          FOREIGN KEY (username)
-          REFERENCES users (username)
-          ON DELETE CASCADE;
     COMMIT;
 EOT
 
