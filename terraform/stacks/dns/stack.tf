@@ -725,6 +725,28 @@ resource "aws_route53_record" "cloud_gov_ops_login_dev2_cloud_gov_a" {
   }
 }
 
+resource "aws_route53_record" "cloud_gov_idp_dev_us_gov_west_1_cloud_gov_a" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "idp.dev.us-gov-west-1.aws-us-gov.cloud.gov."
+  type = "A"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.development.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_idp_dev_us_gov_west_1_cloud_gov_aaaa" {
+  zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
+  name = "idp.dev.us-gov-west-1.aws-us-gov.cloud.gov."
+  type = "AAAA"
+  alias {
+    name = "dualstack.${data.terraform_remote_state.development.main_lb_dns_name}"
+    zone_id = "${var.cloudfront_zone_id}"
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "cloud_gov_idp_fr-stage_cloud_gov_a" {
   zone_id = "${aws_route53_zone.cloud_gov_zone.zone_id}"
   name = "idp.fr-stage.cloud.gov."
