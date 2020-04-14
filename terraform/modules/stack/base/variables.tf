@@ -13,7 +13,7 @@ variable "az2" {
 }
 
 variable "aws_default_region" {
-    default = "us-gov-west-1"
+  default = "us-gov-west-1"
 }
 
 variable "public_cidr_1" {
@@ -37,38 +37,46 @@ variable "rds_private_cidr_1" {}
 variable "rds_private_cidr_2" {}
 
 variable "rds_instance_type" {
-    default = "db.m4.large"
+  default = "db.m4.large"
 }
 
 variable "rds_db_size" {
-    default = 20
+  default = 20
+}
+
+variable "rds_allow_major_version_upgrade" {
+  default = ""
+}
+
+variable "rds_apply_immediately" {
+  default = ""
 }
 
 variable "rds_db_name" {
-    default = "bosh"
+  default = "bosh"
 }
 
 variable "rds_db_engine" {
-    default = "postgres"
+  default = "postgres"
 }
 
 variable "rds_db_engine_version" {
-    default = "9.6.11"
+  default = "9.6.11"
 }
 
 variable "rds_username" {
-    default = "bosh"
+  default = "bosh"
 }
 
 variable "rds_password" {}
 
 variable "restricted_ingress_web_cidrs" {
-  type = "list"
-  default = ["127.0.0.1/32","192.168.0.1/24"]
+  type    = "list"
+  default = ["127.0.0.1/32", "192.168.0.1/24"]
 }
 
 variable "restricted_ingress_web_ipv6_cidrs" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
@@ -81,12 +89,12 @@ variable "rds_security_groups_count" {
 }
 
 variable "target_monitoring_security_groups" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "target_concourse_security_groups" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
@@ -114,7 +122,7 @@ variable "credhub_rds_db_size" {
 }
 
 variable "credhub_rds_username" {
-    default = "credhub"
+  default = "credhub"
 }
 
 variable "credhub_rds_password" {}

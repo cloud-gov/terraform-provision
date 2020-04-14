@@ -69,12 +69,12 @@ variable "rds_final_snapshot_identifier" {
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html#USER_UpgradeDBInstance.PostgreSQL.MajorVersion.Process
 # https://aws.amazon.com/blogs/database/best-practices-for-upgrading-amazon-rds-to-major-and-minor-versions-of-postgresql/
 #
-variable "apply_immediately" {
+variable "rds_apply_immediately" {
   # Even though the documentation says these default to "false", `terraform
   # plan` shows otherwise.
   default = ""
 }
 
-variable "allow_major_version_upgrade" {
+variable "rds_allow_major_version_upgrade" {
   default = ""
 }
