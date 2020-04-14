@@ -21,6 +21,7 @@ variable "target_stack_name" {
 variable "wildcard_certificate_name_prefix" {
   default = ""
 }
+
 variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
@@ -28,9 +29,11 @@ variable "wildcard_apps_certificate_name_prefix" {
 variable "admin_hosts" {
   type = "list"
 }
+
 variable "shibboleth_hosts" {
   type = "list"
 }
+
 variable "platform_kibana_hosts" {
   type = "list"
 }
@@ -56,4 +59,16 @@ variable "force_restricted_network" {
 
 variable "log_bucket_name" {
   default = "cg-elb-logs"
+}
+
+variable "rds_db_size" {
+  default = 20
+}
+
+variable "rds_allow_major_version_upgrade" {
+  default = ""
+}
+
+variable "rds_apply_immediately" {
+  default = ""
 }

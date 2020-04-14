@@ -246,7 +246,7 @@ jobs:
       TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
       TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
       TF_VAR_oidc_client: ((tooling_oidc_client))
-      TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))      
+      TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
   - *notify-slack
 
 - name: bootstrap-tooling
@@ -331,6 +331,8 @@ jobs:
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
       TF_VAR_rds_password: ((development_rds_password))
+      TF_VAR_rds_db_size: ((development_rds_db_size))
+      TF_VAR_rds_apply_immediately: "true"
       TF_VAR_rds_multi_az: "false"
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((development_vpc_cidr))
@@ -441,6 +443,7 @@ jobs:
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
       TF_VAR_rds_password: ((staging_rds_password))
+      TF_VAR_rds_db_size: ((staging_rds_db_size))
       TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((staging_vpc_cidr))
@@ -549,6 +552,7 @@ jobs:
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
       TF_VAR_rds_password: ((production_rds_password))
+      TF_VAR_rds_db_size: ((production_rds_db_size))
       TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((production_vpc_cidr))
