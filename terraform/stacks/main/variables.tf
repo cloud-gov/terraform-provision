@@ -6,6 +6,10 @@ variable "aws_default_region" {
 
 variable "vpc_cidr" {}
 
+variable "rds_db_size" {
+  default = 20
+}
+
 variable "rds_password" {}
 
 variable "cf_rds_password" {}
@@ -21,6 +25,7 @@ variable "target_stack_name" {
 variable "wildcard_certificate_name_prefix" {
   default = ""
 }
+
 variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
@@ -28,9 +33,11 @@ variable "wildcard_apps_certificate_name_prefix" {
 variable "admin_hosts" {
   type = "list"
 }
+
 variable "shibboleth_hosts" {
   type = "list"
 }
+
 variable "platform_kibana_hosts" {
   type = "list"
 }
