@@ -65,10 +65,6 @@ variable "log_bucket_name" {
   default = "cg-elb-logs"
 }
 
-variable "rds_db_size" {
-  default = 20
-}
-
 variable "rds_allow_major_version_upgrade" {
   default = ""
 }
