@@ -6,6 +6,10 @@ variable "aws_default_region" {
 
 variable "vpc_cidr" {}
 
+variable "rds_db_size" {
+  default = 20
+}
+
 variable "rds_password" {}
 
 variable "cf_rds_password" {}
