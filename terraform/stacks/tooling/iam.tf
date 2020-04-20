@@ -92,6 +92,13 @@ module "self_managed_mfa" {
   aws_partition = "${data.aws_partition.current.partition}"
 }
 
+module "compliance_role" {
+  source        = "../../modules/iam_role_policy/compliance_role"
+  policy_name   = "compliance-role"
+  aws_partition = "${data.aws_partition.current.partition}"
+
+}
+
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"

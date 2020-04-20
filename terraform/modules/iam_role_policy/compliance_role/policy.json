@@ -1,0 +1,31 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "cloudgovComplianceRoleAllow",
+          "Effect": "Allow",
+          "Resource": "*",
+          "Action": [
+            "waf:List*",
+            "waf:Get*",
+            "waf-regional:List*",
+            "waf-regional:Get*"
+            "wafv2:CheckCapacity",
+            "wafv2:Describe*",
+            "wafv2:Get*",
+            "wafv2:List*"
+        ]
+    },
+    {
+      "Sid": "cloudgovComplianceRoleDeny",
+      "Effect": "Deny",
+      "Resource": "*",
+      "Action": [
+        "waf:GetChangeToken",
+        "waf:GetChangeTokenStatus",
+        "waf-regional:GetChangeToken",
+        "waf-regional:GetChangeTokenStatus"
+    ]
+}
+  ]
+}
