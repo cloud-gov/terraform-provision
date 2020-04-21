@@ -9,23 +9,20 @@
             "waf:List*",
             "waf:Get*",
             "waf-regional:List*",
-            "waf-regional:Get*"
+            "waf-regional:GetByteMatchSet",
+            "waf-regional:GetIPSet",
+            "waf-regional:GetRule",
+            "waf-regional:GetSampledRequests",
+            "waf-regional:GetSizeConstraintSet",
+            "waf-regional:GetSqlInjectionMatchSet",
+            "waf-regional:GetWebACL",
+            "waf-regional:GetWebACLForResource",
+            "waf-regional:GetXssMatchSet",
             "wafv2:CheckCapacity",
             "wafv2:Describe*",
             "wafv2:Get*",
             "wafv2:List*"
         ]
-    },
-    {
-      "Sid": "cloudgovComplianceRoleDeny",
-      "Effect": "Deny",
-      "Resource": "*",
-      "Action": [
-        "waf:GetChangeToken",
-        "waf:GetChangeTokenStatus",
-        "waf-regional:GetChangeToken",
-        "waf-regional:GetChangeTokenStatus"
-    ]
-}
+    }
   ]
 }
