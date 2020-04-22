@@ -86,15 +86,9 @@ module "cloudwatch_policy" {
   policy_name = "${var.stack_description}-cloudwatch"
 }
 
-module "self_managed_mfa" {
-  source        = "../../modules/iam_role_policy/self_managed_mfa"
-  policy_name   = "self-managed-mfa"
-  aws_partition = "${data.aws_partition.current.partition}"
-}
-
-module "self_managed_access_key" {
-  source        = "../../modules/iam_role_policy/self_managed_access_key"
-  policy_name   = "self-managed-access-key"
+module "self_managed_credentials" {
+  source        = "../../modules/iam_role_policy/self_managed_credentials"
+  policy_name   = "self-managed-credentials"
   aws_partition = "${data.aws_partition.current.partition}"
 }
 
