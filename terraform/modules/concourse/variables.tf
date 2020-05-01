@@ -17,15 +17,15 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_db_size" {
-  default = 100
+  default = 200
 }
 
 variable "rds_db_iops" {
-	default = 1000
+	default = 0
 }
 
 variable "rds_db_storage_type" {
-  default = "io1"
+  default = "gp2"
 }
 
 variable "rds_instance_type" {
