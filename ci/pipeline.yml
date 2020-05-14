@@ -247,6 +247,7 @@ jobs:
       TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
       TF_VAR_oidc_client: ((tooling_oidc_client))
       TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
+      TF_VAR_payer_account_id: ((payer_account_id))
   - *notify-slack
 
 - name: bootstrap-tooling

@@ -123,3 +123,5 @@ variable "log_bucket_name" {
 variable "oidc_client" {}
 
 variable "oidc_client_secret" {}
+
+variable "payer_account_id" {}
