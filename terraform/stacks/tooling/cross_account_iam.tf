@@ -41,7 +41,7 @@ resource "aws_iam_policy" "read_s3_tags" {
             "s3:GetBucketLocation",
             "s3:GetBucketTagging"
            ],
-          "Resource": "arn:aws:s3:::*"
+          "Resource": "arn:${data.aws_partition.current.partition}:s3:::*"
         }
       ]
     }
