@@ -3,9 +3,13 @@ resource "aws_route53_zone" "zone" {
   comment = "Hosts TXT and CNAME records for the external-domain-broker"
 }
 
+data "aws_route53_zone" "cloud_gov" {
+  name = "cloud.gov"
+}
+
 resource "aws_route53_record" "record" {
   name    = "${aws_route53_zone.zone.name}"
-  zone_id = "${aws_route53_zone.zone.zone_id}"
+  zone_id = "${data.aws_route53_zone.cloud_gov.zone_id}"
   type    = "NS"
   ttl     = "60"
 
