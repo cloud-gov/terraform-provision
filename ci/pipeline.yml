@@ -33,6 +33,7 @@ jobs:
     params:
       path: pull-request
       status: pending
+      context: validate-terraform
   - task: validate-terraform
     config:
       platform: linux
@@ -49,11 +50,13 @@ jobs:
       params:
         path: pull-request
         status: success
+        context: validate-terraform
     on_failure:
       put: pull-request
       params:
         path: pull-request
         status: failure
+        context: validate-terraform
 
 - name: plan-bootstrap-external-staging
   plan:
