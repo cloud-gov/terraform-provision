@@ -50,5 +50,5 @@ resource "aws_iam_policy" "read_s3_tags" {
 
 resource "aws_iam_role_policy_attachment" "payer_read_s3_tags" {
     role = "${aws_iam_role.payer_account_access.name}"
-    policy_arn = "${aws_iam_policy.read_s3_tags.arn}""
+    policy_arn = "${aws_iam_policy.read_s3_tags.arn}"
 }
