@@ -9,7 +9,12 @@ resource "aws_route53_record" "record" {
   type    = "NS"
   ttl     = "60"
 
-  records = ["${aws_route53_zone.zone.name_servers[*]}"]
+  records = [
+    "${aws_route53_zone.zone.name_servers.0}",
+    "${aws_route53_zone.zone.name_servers.1}",
+    "${aws_route53_zone.zone.name_servers.2}",
+    "${aws_route53_zone.zone.name_servers.3}",
+  ]
 }
 
 data "template_file" "policy" {
