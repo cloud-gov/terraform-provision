@@ -1,0 +1,31 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeleteServerCertificate",
+        "iam:ListServerCertificates",
+        "iam:UploadServerCertificate",
+        "iam:UpdateServerCertificate"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:iam::${account_id}:server-certificate/cloudfront/${cloudfront_prefix}"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "cloudfront:*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:route53:::hostedzone/${hosted_zone}"
+      ]
+    }
+  ]
+}
