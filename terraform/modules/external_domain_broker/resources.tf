@@ -24,7 +24,7 @@ data "template_file" "policy" {
     aws_partition     = "${var.aws_partition}"
     account_id        = "${var.account_id}"
     cloudfront_prefix = "${var.cloudfront_prefix}"
-    hosted_zone       = "${data.aws_route53_zone.zone.zone_id}"
+    hosted_zone       = "${resource.aws_route53_zone.zone.zone_id}"
   }
 }
 
