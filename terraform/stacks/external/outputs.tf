@@ -81,24 +81,3 @@ output "lets_encrypt_access_key_id_curr" {
 output "lets_encrypt_secret_access_key_curr" {
   value = "${module.lets_encrypt_user.secret_access_key_curr}"
 }
-
-// Domain Broker v2
-output "domain_broker_v2" {
-  value = "${module.domain_broker_v2_user.username}"
-}
-
-output "domain_broker_v2_access_key_id_prev" {
-  value = "${module.domain_broker_v2_user.access_key_id_prev}"
-}
-
-output "domain_broker_v2_secret_access_key_prev" {
-  value = "${module.domain_broker_v2_user.secret_access_key_prev}"
-}
-
-output "domain_broker_v2_access_key_id_curr" {
-  value = "${module.domain_broker_v2_user.access_key_id_curr}"
-}
-
-output "domain_broker_v2_secret_access_key_curr" {
-  value = "${module.domain_broker_v2_user.secret_access_key_curr}"
-}
