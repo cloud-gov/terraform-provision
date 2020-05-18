@@ -8,7 +8,8 @@
                 "iam:GetAccountPasswordPolicy",
                 "iam:ListVirtualMFADevices",
                 "iam:ListUsers",
-                "iam:GetAccountSummary"
+                "iam:GetAccountSummary",
+                "sts:GetFederationToken"
             ],
             "Resource": "*"
         },
@@ -70,7 +71,8 @@
               "iam:ListMFADevices",
               "iam:ListVirtualMFADevices",
               "iam:ResyncMFADevice",
-              "sts:GetSessionToken"
+              "sts:GetSessionToken",
+              "sts:GetFederationToken"
           ],
           "Resource": "*",
           "Condition": {
