@@ -41,3 +41,14 @@ module "lets_encrypt_user" {
   hosted_zone   = "${var.lets_encrypt_hosted_zone}"
   username      = "lets-encrypt-${var.stack_description}"
 }
+
+module "domain_broker_v2_user" {
+  source            = "../../modules/cdn_broker"
+  account_id        = "${data.aws_caller_identity.current.account_id}"
+  aws_partition     = "${data.aws_partition.current.partition}"
+  username          = "${var.domain_broker_v2_username}"
+  bucket            = "${var.domain_broker_v2_bucket}"
+  cloudfront_prefix = "${var.domain_broker_v2_cloudfront_prefix}"
+  hosted_zone       = "${var.cdn_broker_hosted_zone}"
+  username          = "domain-broker-v2"
+}
