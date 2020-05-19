@@ -20,15 +20,18 @@ variable "domain_broker_v2_alb_count" {
   default = 0
 }
 
+// DO NOT DELETE (see above)
 resource "aws_iam_user" "domain_broker_v2" {
   name = "domain_broker_v2_${var.stack_description}"
   path = "/domain-broker-v2/"
 }
 
+// DO NOT DELETE (see above)
 resource "aws_iam_access_key" "domain_broker_v2_access_key" {
   user = "${aws_iam_user.domain_broker_v2.name}"
 }
 
+// DO NOT DELETE (see above)
 resource "aws_iam_user_policy" "domain_broker_v2_policy" {
   name = "domain_broker_v2_policy"
   user = "${aws_iam_user.domain_broker_v2.name}"
@@ -80,6 +83,7 @@ resource "aws_iam_user_policy" "domain_broker_v2_policy" {
 EOF
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb" "domain_broker_v2" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -95,6 +99,7 @@ resource "aws_lb" "domain_broker_v2" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_listener" "domain_broker_v2_http" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -108,6 +113,7 @@ resource "aws_lb_listener" "domain_broker_v2_http" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_listener" "domain_broker_v2_https" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -123,6 +129,7 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_listener_rule" "domain_broker_v2static_http" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -140,6 +147,7 @@ resource "aws_lb_listener_rule" "domain_broker_v2static_http" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_listener_rule" "domain_broker_v2_static_https" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -157,6 +165,7 @@ resource "aws_lb_listener_rule" "domain_broker_v2_static_https" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_target_group" "domain_broker_v2_apps" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -175,6 +184,7 @@ resource "aws_lb_target_group" "domain_broker_v2_apps" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_lb_target_group" "domain_broker_v2_challenge" {
   count = "${var.domain_broker_v2_alb_count}"
 
@@ -188,6 +198,7 @@ resource "aws_lb_target_group" "domain_broker_v2_challenge" {
   }
 }
 
+// DO NOT DELETE (see above)
 resource "aws_db_instance" "domain_broker_v2" {
   name                   = "domain_broker_v2"
   storage_type           = "gp2"
