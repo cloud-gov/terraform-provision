@@ -70,7 +70,8 @@
               "iam:ListMFADevices",
               "iam:ListVirtualMFADevices",
               "iam:ResyncMFADevice",
-              "sts:GetSessionToken"
+              "sts:GetSessionToken",
+              "sts:GetFederationToken"
           ],
           "Resource": "*",
           "Condition": {
