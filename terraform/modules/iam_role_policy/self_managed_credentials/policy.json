@@ -8,8 +8,7 @@
                 "iam:GetAccountPasswordPolicy",
                 "iam:ListVirtualMFADevices",
                 "iam:ListUsers",
-                "iam:GetAccountSummary",
-                "sts:GetFederationToken"
+                "iam:GetAccountSummary"
             ],
             "Resource": "*"
         },
