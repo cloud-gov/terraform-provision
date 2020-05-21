@@ -8,6 +8,10 @@
 //
 // https://docs.google.com/document/d/19LDEX8ac46JkPgoJUoSAJCf2B0K5D_QpX6O1IdO8w7Q/edit
 //
+// See also this github issue, outlining a potential checklist:
+//
+// https://github.com/cloud-gov/cg-provision/issues/735
+//
 // Basically, these resources are pointed at the same AWS resources (LB,
 // listeners, etc) as the other domains_broker resources in this directory.  
 // We attempted to delete these resources.  `terraform plan` looked good, but
