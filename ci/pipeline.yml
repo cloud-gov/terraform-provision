@@ -79,13 +79,13 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_external_region))
       TF_VAR_stack_description: staging
       TF_VAR_aws_default_region: ((aws_external_region))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
       TF_VAR_cdn_broker_username: ((cdn_broker_username_staging))
       TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_staging))
       TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_staging))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
-      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_staging))
-      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_staging))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
       TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_staging))
       TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_staging))
       TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_staging))
@@ -142,13 +142,13 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_external_region))
       TF_VAR_stack_description: production
       TF_VAR_aws_default_region: ((aws_external_region))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
       TF_VAR_cdn_broker_username: ((cdn_broker_username_production))
       TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_production))
       TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_production))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
-      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_production))
-      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_production))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
       TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_production))
       TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_production))
       TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_production))
@@ -340,6 +340,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
       TF_VAR_rds_password: ((development_rds_password))
       TF_VAR_rds_db_size: ((development_rds_db_size))
       TF_VAR_rds_apply_immediately: "true"
@@ -452,6 +455,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
       TF_VAR_rds_password: ((staging_rds_password))
       TF_VAR_rds_db_size: ((staging_rds_db_size))
       TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
@@ -561,6 +567,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
       TF_VAR_rds_password: ((production_rds_password))
       TF_VAR_rds_db_size: ((production_rds_db_size))
       TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
