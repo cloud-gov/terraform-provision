@@ -1,5 +1,5 @@
 output "username" {
-  value = "${aws_iam_user.name}"
+  value = "${aws_iam_user.iam_user.name}"
 }
 output "access_key_id_prev" {
   value = ""
