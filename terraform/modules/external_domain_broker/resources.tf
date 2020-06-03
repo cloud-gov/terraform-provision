@@ -39,7 +39,7 @@ resource "aws_route53_record" "acceptance_test_acme_challenge" {
   name    = "_acme-challenge.test-${count.index}.${var.stack_description}.edb.cloud.gov"
   type    = "CNAME"
   ttl     = 600
-  records = ["_acme-challenge.test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.name}."]
+  records = ["_acme-challenge.test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.zone.name}."]
 }
 
 data "template_file" "policy" {
