@@ -30,7 +30,7 @@ resource "aws_route53_record" "acceptance_test_domain" {
   name    = "test-${count.index}.${var.stack_description}.edb.cloud.gov"
   type    = "CNAME"
   ttl     = 600
-  records = ["test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.name}."]
+  records = ["test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.zone.name}."]
 }
 
 resource "aws_route53_record" "acceptance_test_acme_challenge" {
