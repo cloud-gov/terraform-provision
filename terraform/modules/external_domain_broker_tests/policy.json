@@ -4,34 +4,6 @@
     {
       "Effect": "Allow",
       "Action": [
-        "iam:DeleteServerCertificate",
-        "iam:ListServerCertificates",
-        "iam:UploadServerCertificate",
-        "iam:UpdateServerCertificate"
-      ],
-      "Resource": [
-        "arn:${aws_partition}:iam::${account_id}:server-certificate/cloudfront/${cloudfront_prefix}"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": "cloudfront:*",
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject"
-      ],
-      "Resource": [
-        "arn:${aws_partition}:s3:::${bucket}/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
         "route53:ChangeResourceRecordSets"
       ],
       "Resource": [
