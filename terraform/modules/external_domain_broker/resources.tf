@@ -23,25 +23,6 @@ resource "aws_route53_record" "record" {
   ]
 }
 
-# Used for the acceptance tests
-resource "aws_route53_record" "acceptance_test_domain" {
-  count   = 2
-  zone_id = "${data.aws_route53_zone.cloud_gov.zone_id}"
-  name    = "test-${count.index}.${var.stack_description}.edb.cloud.gov"
-  type    = "CNAME"
-  ttl     = 600
-  records = ["test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.zone.name}"]
-}
-
-resource "aws_route53_record" "acceptance_test_acme_challenge" {
-  count   = 2
-  zone_id = "${data.aws_route53_zone.cloud_gov.zone_id}"
-  name    = "_acme-challenge.test-${count.index}.${var.stack_description}.edb.cloud.gov"
-  type    = "CNAME"
-  ttl     = 600
-  records = ["_acme-challenge.test-${count.index}.${var.stack_description}.edb.cloud.gov.${aws_route53_zone.zone.name}"]
-}
-
 data "template_file" "policy" {
   template = "${file("${path.module}/policy.json")}"
 
