@@ -18,7 +18,7 @@ module "external_domain_broker" {
 module "external_domain_broker_tests" {
   source = "../../modules/external_domain_broker_tests"
 
-  account_id        = "${data.aws_caller_identity.current.account_id}"
+  aws_partition     = "${data.aws_partition.current.partition}"
   stack_description = "${var.stack_description}"
 }
 
