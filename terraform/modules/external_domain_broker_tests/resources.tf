@@ -24,7 +24,7 @@ data "template_file" "policy" {
 
   vars {
     aws_partition = "${var.aws_partition}"
-    hosted_zone = "${data.aws_route53_zone.zone.zone_id}"
+    hosted_zone = "${aws_route53_zone.zone.zone_id}"
   }
 }
 

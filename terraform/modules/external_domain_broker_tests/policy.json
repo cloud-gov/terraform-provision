@@ -3,6 +3,11 @@
   "Statement": [
     {
       "Effect": "Allow",
+      "Action": "route53:GetChange",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
       "Action": [
         "route53:ChangeResourceRecordSets"
       ],
