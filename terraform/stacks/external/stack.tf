@@ -15,6 +15,12 @@ module "external_domain_broker" {
   account_id        = "${data.aws_caller_identity.current.account_id}"
   stack_description = "${var.stack_description}"
 }
+module "external_domain_broker_tests" {
+  source = "../../modules/external_domain_broker_tests"
+
+  account_id        = "${data.aws_caller_identity.current.account_id}"
+  stack_description = "${var.stack_description}"
+}
 
 module "cdn_broker" {
   source = "../../modules/cdn_broker"
