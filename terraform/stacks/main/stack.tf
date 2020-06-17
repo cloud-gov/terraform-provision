@@ -214,3 +214,10 @@ module "elasticache_broker_network" {
   elb_security_groups        = ["${module.stack.bosh_security_group}"]
   log_bucket_name            = "${var.log_bucket_name}"
 }
+
+module "external_domain_broker_govcloud" {
+  source = "../../modules/external_domain_broker_govcloud"
+
+  account_id        = "${data.aws_caller_identity.current.account_id}"
+  stack_description = "${var.stack_description}"
+}
