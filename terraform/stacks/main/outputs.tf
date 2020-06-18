@@ -411,6 +411,21 @@ output "upstream_bosh_compilation_profile" {
   value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
 }
 
+output "external_domain_broker_gov_username"{
+  value = "${module.external_domain_broker_govcloud.username}"
+}
+output "external_domain_broker_gov_access_key_id_curr"{
+  value = "${module.external_domain_broker_govcloud.access_key_id_curr}"
+}
+output "external_domain_broker_gov_secret_access_key_curr"{
+  value = "${module.external_domain_broker_govcloud.secret_access_key_curr}"
+}
+output "external_domain_broker_gov_access_key_id_prev"{
+  value = "${module.external_domain_broker_govcloud.access_key_id_prev}"
+}
+output "external_domain_broker_gov_secret_access_key_prev"{
+  value = "${module.external_domain_broker_govcloud.secret_access_key_prev}"
+}
 output "bosh_static_ip" {
   value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
