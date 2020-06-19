@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListServerCertificates",
+        "iam:UploadServerCertificate",
+        "iam:DeleteServerCertificate"
+      ],
+      "Resource": [
+        "arn:aws-us-gov:iam::${account_id}:server-certificate/alb/external-domains-${stack}/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:*"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}

@@ -10,7 +10,7 @@
         "iam:UpdateServerCertificate"
       ],
       "Resource": [
-        "arn:${aws_partition}:iam::${account_id}:server-certificate/cloudfront/${cloudfront_prefix}"
+        "arn:aws:iam::${account_id}:server-certificate/cloudfront/external-domains-${stack}/*"
       ]
     },
     {
@@ -20,11 +20,16 @@
     },
     {
       "Effect": "Allow",
+      "Action": "route53:GetChange",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
       "Action": [
         "route53:ChangeResourceRecordSets"
       ],
       "Resource": [
-        "arn:${aws_partition}:route53:::hostedzone/${hosted_zone}"
+        "arn:aws:route53:::hostedzone/${hosted_zone_id}"
       ]
     }
   ]

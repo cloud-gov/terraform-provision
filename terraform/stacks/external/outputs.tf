@@ -19,6 +19,27 @@ output "external_domain_broker_secret_access_key_curr" {
   value = "${module.external_domain_broker.secret_access_key_curr}"
 }
 
+/* external domain broker test user */
+output "external_domain_broker_tests_username" {
+  value = "${module.external_domain_broker_tests.username}"
+}
+
+output "external_domain_broker_tests_access_key_id_prev" {
+  value = "${module.external_domain_broker_tests.access_key_id_prev}"
+}
+
+output "external_domain_broker_tests_secret_access_key_prev" {
+  value = "${module.external_domain_broker_tests.secret_access_key_prev}"
+}
+
+output "external_domain_broker_tests_access_key_id_curr" {
+  value = "${module.external_domain_broker_tests.access_key_id_curr}"
+}
+
+output "external_domain_broker_tests_secret_access_key_curr" {
+  value = "${module.external_domain_broker_tests.secret_access_key_curr}"
+}
+
 /* cdn broker user */
 output "cdn_broker_username" {
   value = "${module.cdn_broker.username}"
