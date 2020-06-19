@@ -6,6 +6,9 @@
           "Effect": "Allow",
           "Resource": "*",
           "Action": [
+            "trustedadvisor:RefreshCheck",
+            "servicequota:Get*",
+            "servicequota:List*",
             "waf:List*",
             "waf:Get*",
             "waf-regional:List*",
