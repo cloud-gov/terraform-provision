@@ -115,9 +115,9 @@ data "template_file" "policy" {
     aws_partition = "${var.aws_partition}"
     hosted_zone_0 = "${aws_route53_zone.zone.zone_id}"
     hosted_zone_1 = "${aws_route53_zone.test_0.zone_id}"
-    hosted_zone_2 = "${aws_route53_zone.zone_1.zone_id}"
-    hosted_zone_3 = "${aws_route53_zone.zone_2.zone_id}"
-    hosted_zone_4 = "${aws_route53_zone.zone_3.zone_id}"
+    hosted_zone_2 = "${aws_route53_zone.test_1.zone_id}"
+    hosted_zone_3 = "${aws_route53_zone.test_2.zone_id}"
+    hosted_zone_4 = "${aws_route53_zone.test_3.zone_id}"
   }
 }
 
