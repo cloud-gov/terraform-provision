@@ -28,7 +28,7 @@ resource "aws_route53_zone" "stack_test_0" {
 data "aws_route53_zone" "test_0" {
   name = "cloud-gov-test-domain-0.com"
 }
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "test_record_0" {
   name    = "${aws_route53_zone.stack_test_0.name}"
   zone_id = "${data.aws_route53_zone.test_0.zone_id}"
   type    = "NS"
@@ -50,7 +50,7 @@ resource "aws_route53_zone" "stack_test_1" {
 data "aws_route53_zone" "test_1" {
   name = "cloud-gov-test-domain-1.com"
 }
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "test_record_1" {
   name    = "${aws_route53_zone.stack_test_1.name}"
   zone_id = "${data.aws_route53_zone.test_1.zone_id}"
   type    = "NS"
@@ -72,7 +72,7 @@ resource "aws_route53_zone" "stack_test_2" {
 data "aws_route53_zone" "test_2" {
   name = "cloud-gov-test-domain-2.com"
 }
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "test_record_2" {
   name    = "${aws_route53_zone.stack_test_2.name}"
   zone_id = "${data.aws_route53_zone.test_2.zone_id}"
   type    = "NS"
@@ -94,7 +94,7 @@ resource "aws_route53_zone" "stack_test_3" {
 data "aws_route53_zone" "test_3" {
   name = "cloud-gov-test-domain-3.com"
 }
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "test_record_3" {
   name    = "${aws_route53_zone.stack_test_3.name}"
   zone_id = "${data.aws_route53_zone.test_3.zone_id}"
   type    = "NS"
@@ -114,10 +114,10 @@ data "template_file" "policy" {
   vars {
     aws_partition = "${var.aws_partition}"
     hosted_zone_0 = "${aws_route53_zone.zone.zone_id}"
-    hosted_zone_1 = "${aws_route53_zone.test_0.zone_id}"
-    hosted_zone_2 = "${aws_route53_zone.test_1.zone_id}"
-    hosted_zone_3 = "${aws_route53_zone.test_2.zone_id}"
-    hosted_zone_4 = "${aws_route53_zone.test_3.zone_id}"
+    hosted_zone_1 = "${aws_route53_zone.stack_test_0.zone_id}"
+    hosted_zone_2 = "${aws_route53_zone.stack_test_1.zone_id}"
+    hosted_zone_3 = "${aws_route53_zone.stack_test_2.zone_id}"
+    hosted_zone_4 = "${aws_route53_zone.stack_test_3.zone_id}"
   }
 }
 
