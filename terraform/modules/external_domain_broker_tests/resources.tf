@@ -35,10 +35,10 @@ resource "aws_route53_record" "record" {
   ttl     = "60"
 
   records = [
-    "${aws_route53_zone.test_0.name_servers.0}",
-    "${aws_route53_zone.test_0.name_servers.1}",
-    "${aws_route53_zone.test_0.name_servers.2}",
-    "${aws_route53_zone.test_0.name_servers.3}",
+    "${aws_route53_zone.stack_test_0.name_servers.0}",
+    "${aws_route53_zone.stack_test_0.name_servers.1}",
+    "${aws_route53_zone.stack_test_0.name_servers.2}",
+    "${aws_route53_zone.stack_test_0.name_servers.3}",
   ]
 }
 
@@ -57,10 +57,10 @@ resource "aws_route53_record" "record" {
   ttl     = "60"
 
   records = [
-    "${aws_route53_zone.test_1.name_servers.0}",
-    "${aws_route53_zone.test_1.name_servers.1}",
-    "${aws_route53_zone.test_1.name_servers.2}",
-    "${aws_route53_zone.test_1.name_servers.3}",
+    "${aws_route53_zone.stack_test_1.name_servers.0}",
+    "${aws_route53_zone.stack_test_1.name_servers.1}",
+    "${aws_route53_zone.stack_test_1.name_servers.2}",
+    "${aws_route53_zone.stack_test_1.name_servers.3}",
   ]
 }
 
@@ -79,10 +79,10 @@ resource "aws_route53_record" "record" {
   ttl     = "60"
 
   records = [
-    "${aws_route53_zone.test_2.name_servers.0}",
-    "${aws_route53_zone.test_2.name_servers.1}",
-    "${aws_route53_zone.test_2.name_servers.2}",
-    "${aws_route53_zone.test_2.name_servers.3}",
+    "${aws_route53_zone.stack_test_2.name_servers.0}",
+    "${aws_route53_zone.stack_test_2.name_servers.1}",
+    "${aws_route53_zone.stack_test_2.name_servers.2}",
+    "${aws_route53_zone.stack_test_2.name_servers.3}",
   ]
 }
 
@@ -101,10 +101,10 @@ resource "aws_route53_record" "record" {
   ttl     = "60"
 
   records = [
-    "${aws_route53_zone.test_3.name_servers.0}",
-    "${aws_route53_zone.test_3.name_servers.1}",
-    "${aws_route53_zone.test_3.name_servers.2}",
-    "${aws_route53_zone.test_3.name_servers.3}",
+    "${aws_route53_zone.stack_test_3.name_servers.0}",
+    "${aws_route53_zone.stack_test_3.name_servers.1}",
+    "${aws_route53_zone.stack_test_3.name_servers.2}",
+    "${aws_route53_zone.stack_test_3.name_servers.3}",
   ]
 }
 
