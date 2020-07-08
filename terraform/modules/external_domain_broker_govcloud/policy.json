@@ -15,7 +15,9 @@
     {
       "Effect": "Allow",
       "Action": [
-        "elasticloadbalancing:*"
+        "elasticloadbalancing:AddListenerCertificates",
+        "elasticloadbalancing:Describe*",
+        "elasticloadbalancing:RemoveListenerCertificates"
       ],
       "Resource": ["*"]
     }
