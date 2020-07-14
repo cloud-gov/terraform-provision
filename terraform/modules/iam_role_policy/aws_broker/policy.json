@@ -52,6 +52,69 @@
     {
       "Effect": "Allow",
       "Action": [
+        "es:ESHttpGet",
+        "es:CreateElasticsearchDomain",
+        "es:ListTags",
+        "es:DescribeElasticsearchDomainConfig",
+        "es:ESHttpDelete",
+        "es:GetUpgradeHistory",
+        "es:AddTags",
+        "es:RemoveTags",
+        "es:ESHttpHead",
+        "es:DeleteElasticsearchDomain",
+        "es:DescribeElasticsearchDomain",
+        "es:UpgradeElasticsearchDomain",
+        "es:UpdateElasticsearchDomainConfig",
+        "es:ESHttpPost",
+        "es:GetCompatibleElasticsearchVersions",
+        "es:ESHttpPatch",
+        "es:GetUpgradeStatus",
+        "es:DescribeElasticsearchDomains",
+        "es:ESHttpPut"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:domain:cg-*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "es:ListDomainNames",
+        "es:ListElasticsearchInstanceTypeDetails",
+        "es:CreateElasticsearchServiceRole",
+        "es:DeleteElasticsearchServiceRole",
+        "es:ListElasticsearchInstanceTypes",
+        "es:DescribeElasticsearchInstanceTypeLimits",
+        "es:ListElasticsearchVersions"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Action": [
+        "iam:GetUser",
+        "iam:CreateUser",
+        "iam:DeleteUser",
+        "iam:ListAccessKeys",
+        "iam:CreateAccessKey",
+        "iam:DeleteAccessKey",
+        "iam:CreatePolicy",
+        "iam:DeletePolicy",
+        "iam:ListAttachedUserPolicies",
+        "iam:AttachUserPolicy",
+        "iam:DetachUserPolicy"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:${aws_partition}:iam::${account_id}:user${iam_path}*",
+        "arn:${aws_partition}:iam::${account_id}:policy${iam_path}",
+        "arn:${aws_partition}:iam::${account_id}:policy${iam_path}*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
           "elasticache:DescribeReplicationGroups",
           "elasticache:RemoveTagsFromResource",
           "elasticache:DescribeCacheParameters",
