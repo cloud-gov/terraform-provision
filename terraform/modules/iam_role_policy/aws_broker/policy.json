@@ -73,7 +73,7 @@
         "es:ESHttpPut"
       ],
       "Resource": [
-        "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:domain:cg-*"
+        "arn:${aws_partition}:es:${aws_default_region}:${account_id}:domain:cg-*"
       ]
     },
     {
