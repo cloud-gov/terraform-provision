@@ -7,6 +7,7 @@ resource "aws_lb" "cf" {
   access_logs = {
       bucket        = "${var.log_bucket_name}"
       prefix        = "${var.stack_description}"
+      enabled       = true
   }
 }
 
