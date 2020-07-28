@@ -20,6 +20,7 @@ resource "aws_lb" "domains_broker_internal" {
   access_logs = {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
+    enabled = true
   }
 }
 
@@ -90,6 +91,7 @@ resource "aws_lb" "domains_broker" {
   access_logs = {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
+    enabled = true
   }
 }
 
