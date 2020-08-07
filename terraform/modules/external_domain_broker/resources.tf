@@ -49,7 +49,7 @@ resource "aws_iam_user_policy" "iam_policy" {
 
 data "aws_canonical_user_id" "current_user" {}
 
-resource "aws_s3" "bucket" {
+resource "aws_s3_bucket" "cloudfrond_log_bucket" {
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
     grant {
     id          = "${data.aws_canonical_user_id.current_user.id}"
