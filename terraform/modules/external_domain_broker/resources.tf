@@ -52,7 +52,7 @@ data "aws_canonical_user_id" "current_user" {}
 resource "aws_s3" "bucket" {
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
     grant {
-    id          = data.aws_canonical_user_id.current_user.id
+    id          = "${data.aws_canonical_user_id.current_user.id}"
     type        = "CanonicalUser"
     permissions = ["FULL_CONTROL"]
   }
