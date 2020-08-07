@@ -46,3 +46,23 @@ resource "aws_iam_user_policy" "iam_policy" {
   user   = "${aws_iam_user.iam_user.name}"
   policy = "${data.template_file.policy.rendered}"
 }
+
+data "aws_canonical_user_id" "current_user" {}
+
+resource "aws_s3" "bucket" {
+  bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
+    grant {
+    id          = data.aws_canonical_user_id.current_user.id
+    type        = "CanonicalUser"
+    permissions = ["FULL_CONTROL"]
+  }
+
+  grant {
+    type        = "CanonicalUser"
+    permissions = ["FULL_CONTROL"]
+    # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#AccessLogsBucketAndFileOwnership
+    # canonical user id of awslogsdelivery
+    id          = "c4c1ede66af53448b93c283ce9448c4ba468c9432aa01d700d3878632f77d2d0"
+  }
+
+}
