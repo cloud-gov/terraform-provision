@@ -65,5 +65,13 @@ resource "aws_s3_bucket" "cloudfrond_log_bucket" {
     # canonical user id of awslogsdelivery
     id          = "c4c1ede66af53448b93c283ce9448c4ba468c9432aa01d700d3878632f77d2d0"
   }
+  server_side_encryption_configuration {
+        rule {
+            apply_server_side_encryption_by_default {
+                sse_algorithm = "AES256"
+            }
+        }
+    }
+
 
 }

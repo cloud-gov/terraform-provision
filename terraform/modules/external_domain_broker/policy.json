@@ -15,6 +15,16 @@
     },
     {
       "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketAcl",
+        "s3:PutBucketAcl"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:s3:::${bucket}"
+      ]
+    },
+    {
+      "Effect": "Allow",
       "Action": "cloudfront:*",
       "Resource": "*"
     },
