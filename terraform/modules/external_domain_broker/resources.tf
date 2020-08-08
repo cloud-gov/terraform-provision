@@ -30,6 +30,7 @@ data "template_file" "policy" {
     account_id        = "${var.account_id}"
     hosted_zone_id    = "${aws_route53_zone.zone.zone_id}"
     stack             = "${var.stack_description}"
+    bucket            = "external-domain-broker-cloudfront-logs-${var.stack_description}"
   }
 }
 
@@ -51,7 +52,7 @@ data "aws_canonical_user_id" "current_user" {}
 
 resource "aws_s3_bucket" "cloudfrond_log_bucket" {
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
-    grant {
+  grant {
     id          = "${data.aws_canonical_user_id.current_user.id}"
     type        = "CanonicalUser"
     permissions = ["FULL_CONTROL"]
