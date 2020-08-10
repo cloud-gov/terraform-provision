@@ -103,11 +103,21 @@
         "iam:DeletePolicy",
         "iam:ListAttachedUserPolicies",
         "iam:AttachUserPolicy",
-        "iam:DetachUserPolicy"
+        "iam:DetachUserPolicy",
+        "iam:ListRoles",
+        "iam:GetRole",
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:AttachRolePolicy",
+        "iam:PassRole",
+        "iam:DetachRolePolicy",
+        "iam:ListRolePolicies",
+        "iam:GetRolePolicy"
       ],
       "Effect": "Allow",
       "Resource": [
         "arn:${aws_partition}:iam::${account_id}:user${iam_path}*",
+        "arn:${aws_partition}:iam::${account_id}:role${iam_path}*",
         "arn:${aws_partition}:iam::${account_id}:policy${iam_path}",
         "arn:${aws_partition}:iam::${account_id}:policy${iam_path}*"
       ]
