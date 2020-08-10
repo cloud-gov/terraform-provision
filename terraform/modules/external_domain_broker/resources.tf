@@ -31,6 +31,7 @@ data "template_file" "policy" {
     hosted_zone_id    = "${aws_route53_zone.zone.zone_id}"
     stack             = "${var.stack_description}"
     bucket            = "external-domain-broker-cloudfront-logs-${var.stack_description}"
+    aws_partition     = "${var.aws_partition}"
   }
 }
 
