@@ -251,6 +251,26 @@ output "elasticache_broker_elb_dns_name" {
   value = "${module.elasticache_broker_network.elasticache_elb_dns_name}"
 }
 
+/* Elasticsearch Network */
+output "elasticsearch_subnet_az1" {
+  value = "${module.elasticsearch_broker.elasticsearch_subnet_az1}"
+}
+output "elasticsearch_subnet_az2" {
+  value = "${module.elasticsearch_broker.elasticsearch_subnet_az2}"
+}
+output "elasticsearch_subnet_cidr_az1" {
+  value = "${module.elasticsearch_broker.elasticsearch_private_cidr_1}"
+}
+output "elasticsearch_subnet_cidr_az2" {
+  value = "${module.elasticsearch_broker.elasticsearch_private_cidr_2}"
+}
+output "elasticsearch_subnet_group" {
+  value = "${module.elasticsearch_broker.elasticsearch_subnet_group}"
+}
+output "elasticsearch_security_group" {
+  value = "${module.elasticsearch_broker.elasticsearch_security_group}"
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = "${module.stack.bosh_rds_url_curr}"
