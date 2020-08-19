@@ -216,6 +216,17 @@ module "elasticache_broker_network" {
   log_bucket_name            = "${var.log_bucket_name}"
 }
 
+module "elasticsearch_broker" {
+  source                     = "../../modules/elasticsearch_broker"
+  stack_description          = "${var.stack_description}"
+  elasticsearch_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 40)}"
+  elasticsearch_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 42)}"
+  az1_route_table            = "${module.stack.private_route_table_az1}"
+  az2_route_table            = "${module.stack.private_route_table_az2}"
+  vpc_id                     = "${module.stack.vpc_id}"
+  security_groups            = ["${module.stack.bosh_security_group}"]
+}
+
 module "external_domain_broker_govcloud" {
   source = "../../modules/external_domain_broker_govcloud"
 
