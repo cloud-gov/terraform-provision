@@ -18,12 +18,6 @@ resource "aws_subnet" "az2_elasticsearch" {
   }
 }
 
-resource "aws_elasticsearch_subnet_group" "elasticsearch" {
-  name = "${var.stack_description}"
-  description = "${var.stack_description} (Multi-AZ Subnet Group)"
-  subnet_ids = ["${aws_subnet.az1_elasticsearch.id}", "${aws_subnet.az2_elasticsearch.id}"]
-}
-
 resource "aws_route_table_association" "az1_elasticsearch_rta" {
   subnet_id = "${aws_subnet.az1_elasticsearch.id}"
   route_table_id = "${var.az1_route_table}"
