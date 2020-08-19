@@ -264,9 +264,6 @@ output "elasticsearch_subnet_cidr_az1" {
 output "elasticsearch_subnet_cidr_az2" {
   value = "${module.elasticsearch_broker.elasticsearch_private_cidr_2}"
 }
-output "elasticsearch_subnet_group" {
-  value = "${module.elasticsearch_broker.elasticsearch_subnet_group}"
-}
 output "elasticsearch_security_group" {
   value = "${module.elasticsearch_broker.elasticsearch_security_group}"
 }
