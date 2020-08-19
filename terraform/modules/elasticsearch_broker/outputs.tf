@@ -14,10 +14,6 @@ output "elasticsearch_private_cidr_2" {
   value = "${aws_subnet.az2_elasticsearch.cidr_block}"
 }
 
-output "elasticsearch_subnet_group" {
-  value = "${aws_elasticsearch_subnet_group.elasticsearch.id}"
-}
-
 output "elasticsearch_security_group" {
   value = "${aws_security_group.elasticsearch.id}"
 }
