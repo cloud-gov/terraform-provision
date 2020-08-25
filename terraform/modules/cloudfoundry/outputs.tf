@@ -23,27 +23,27 @@ output "apps_lb_target_group" {
 }
 
 output "cf_rds_url" {
-  value = "${module.cf_database_96.rds_url}"
+  value = "${module.cf_database.rds_url}"
 }
 
 output "cf_rds_host" {
-  value = "${module.cf_database_96.rds_host}"
+  value = "${module.cf_database.rds_host}"
 }
 
 output "cf_rds_port" {
-  value = "${module.cf_database_96.rds_port}"
+  value = "${module.cf_database.rds_port}"
 }
 
 output "cf_rds_username" {
-  value = "${module.cf_database_96.rds_username}"
+  value = "${module.cf_database.rds_username}"
 }
 
 output "cf_rds_password" {
-  value = "${module.cf_database_96.rds_password}"
+  value = "${module.cf_database.rds_password}"
 }
 
 output "cf_rds_engine" {
-  value = "${module.cf_database_96.rds_engine}"
+  value = "${module.cf_database.rds_engine}"
 }
 
 /* Services network */

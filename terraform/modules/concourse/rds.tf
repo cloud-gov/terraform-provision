@@ -1,4 +1,4 @@
-module "rds_96" {
+module "rds" {
   source = "../rds"
 
   stack_description = "${var.stack_description}"
