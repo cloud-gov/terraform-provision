@@ -45,6 +45,7 @@ resource "aws_lb" "main" {
   access_logs = {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
+    enabled = true
   }
 }
 
@@ -213,4 +214,22 @@ module "elasticache_broker_network" {
   elb_subnets                = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
   elb_security_groups        = ["${module.stack.bosh_security_group}"]
   log_bucket_name            = "${var.log_bucket_name}"
+}
+
+module "elasticsearch_broker" {
+  source                     = "../../modules/elasticsearch_broker"
+  stack_description          = "${var.stack_description}"
+  elasticsearch_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 40)}"
+  elasticsearch_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 42)}"
+  az1_route_table            = "${module.stack.private_route_table_az1}"
+  az2_route_table            = "${module.stack.private_route_table_az2}"
+  vpc_id                     = "${module.stack.vpc_id}"
+  security_groups            = ["${module.stack.bosh_security_group}"]
+}
+
+module "external_domain_broker_govcloud" {
+  source = "../../modules/external_domain_broker_govcloud"
+
+  account_id        = "${data.aws_caller_identity.current.account_id}"
+  stack_description = "${var.stack_description}"
 }

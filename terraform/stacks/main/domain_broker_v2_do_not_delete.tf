@@ -100,6 +100,7 @@ resource "aws_lb" "domain_broker_v2" {
   access_logs = {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
+    enabled       = true
   }
 }
 

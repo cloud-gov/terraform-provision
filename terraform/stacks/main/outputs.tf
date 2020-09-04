@@ -251,6 +251,23 @@ output "elasticache_broker_elb_dns_name" {
   value = "${module.elasticache_broker_network.elasticache_elb_dns_name}"
 }
 
+/* Elasticsearch Network */
+output "elasticsearch_subnet_az1" {
+  value = "${module.elasticsearch_broker.elasticsearch_subnet_az1}"
+}
+output "elasticsearch_subnet_az2" {
+  value = "${module.elasticsearch_broker.elasticsearch_subnet_az2}"
+}
+output "elasticsearch_subnet_cidr_az1" {
+  value = "${module.elasticsearch_broker.elasticsearch_private_cidr_1}"
+}
+output "elasticsearch_subnet_cidr_az2" {
+  value = "${module.elasticsearch_broker.elasticsearch_private_cidr_2}"
+}
+output "elasticsearch_security_group" {
+  value = "${module.elasticsearch_broker.elasticsearch_security_group}"
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = "${module.stack.bosh_rds_url_curr}"
@@ -411,6 +428,21 @@ output "upstream_bosh_compilation_profile" {
   value = "${data.terraform_remote_state.target_vpc.bosh_compilation_profile}"
 }
 
+output "external_domain_broker_gov_username"{
+  value = "${module.external_domain_broker_govcloud.username}"
+}
+output "external_domain_broker_gov_access_key_id_curr"{
+  value = "${module.external_domain_broker_govcloud.access_key_id_curr}"
+}
+output "external_domain_broker_gov_secret_access_key_curr"{
+  value = "${module.external_domain_broker_govcloud.secret_access_key_curr}"
+}
+output "external_domain_broker_gov_access_key_id_prev"{
+  value = "${module.external_domain_broker_govcloud.access_key_id_prev}"
+}
+output "external_domain_broker_gov_secret_access_key_prev"{
+  value = "${module.external_domain_broker_govcloud.secret_access_key_prev}"
+}
 output "bosh_static_ip" {
   value = "${cidrhost("${module.stack.private_cidr_az1}", 7)}"
 }
