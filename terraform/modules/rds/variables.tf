@@ -45,7 +45,7 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_parameter_group_family" {
-  default = "default.postgres11"
+  default = "postgres11"
 }
 
 variable "rds_multi_az" {
