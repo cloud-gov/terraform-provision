@@ -1,5 +1,5 @@
 resource "aws_lb" "cf_uaa" {
-  name = "${var.stack_description}-cloudfoundry"
+  name = "${var.stack_description}-cloudfoundry-uaa"
   subnets = ["${var.elb_subnets}"]
   security_groups = ["${var.elb_security_groups}"]
   ip_address_type = "dualstack"
