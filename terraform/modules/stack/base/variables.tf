@@ -61,7 +61,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.11"
+  default = "9.6.18"
 }
 
 variable "rds_username" {
@@ -128,7 +128,7 @@ variable "credhub_rds_username" {
 variable "credhub_rds_password" {}
 
 variable "credhub_rds_db_engine_version" {
-  default = "9.6.11"
+  default = "9.6.18"
 }
 
 variable "rds_parameter_group_name" {
