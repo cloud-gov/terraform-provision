@@ -31,7 +31,7 @@ variable "wildcard_apps_certificate_name_prefix" {
 }
 
 variable "admin_hosts" {
-  type = "list"
+  type = list(string)
 }
 
 variable "shibboleth_hosts" {

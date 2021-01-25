@@ -5,7 +5,7 @@ resource "aws_db_instance" "rds_database" {
   multi_az = "${var.rds_multi_az}"
 
   lifecycle {
-    ignore_changes  = ["identifier"]
+    ignore_changes  = [identifier]
     prevent_destroy = true
   }
 
