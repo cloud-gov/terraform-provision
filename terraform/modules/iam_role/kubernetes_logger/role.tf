@@ -1,5 +1,5 @@
 module "kubernetes_logger" {
-  source = ".."
+  source = "../"
 
   role_name = "${var.role_name}"
   iam_policy = <<EOF
