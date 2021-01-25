@@ -17,7 +17,6 @@ resource "aws_s3_bucket" "encrypted_bucket" {
     lifecycle_rule {
         prefix = ""
         enabled = "${var.expiration_days == 0 ? "false" : "true"}"
-        enabled = "${lookup(map("0", "false"), var.expiration_days, "true")}"
         expiration {
             # Hack: Set expiration days to 30 if unset; objects won't actually be expired because the rule will be disabled
             # See https://github.com/terraform-providers/terraform-provider-aws/issues/1402
