@@ -142,7 +142,6 @@ module "diego" {
   elb_subnets       = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
 
   vpc_id            = "${module.stack.vpc_id}"
-  stack_description = "${var.stack_description}"
 
   # Workaround for https://github.com/hashicorp/terraform/issues/12453
   ingress_cidrs = "${split(",",
@@ -199,7 +198,7 @@ module "admin" {
   public_subnet_az1 = "${module.stack.public_subnet_az1}"
   public_subnet_az2 = "${module.stack.public_subnet_az2}"
   security_group    = "${module.stack.restricted_web_traffic_security_group}"
-  "log_bucket_name" = "${var.log_bucket_name}"
+  log_bucket_name = "${var.log_bucket_name}"
 }
 
 module "elasticache_broker_network" {
