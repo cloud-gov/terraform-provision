@@ -87,7 +87,7 @@ resource "aws_nat_gateway" "az1_private_nat_service" {
   allocation_id = "${aws_eip.az1_nat_eip.id}"
   subnet_id     = "${aws_subnet.az1_public.id}"
 
-  tags {
+  tags = {
     Name = "Nat Service AZ1 ${var.stack_description}"
   }
 }
@@ -96,7 +96,7 @@ resource "aws_nat_gateway" "az2_private_nat_service" {
   allocation_id = "${aws_eip.az2_nat_eip.id}"
   subnet_id     = "${aws_subnet.az2_public.id}"
 
-  tags {
+  tags = {
     Name = "Nat Service AZ2 ${var.stack_description}"
   }
 }

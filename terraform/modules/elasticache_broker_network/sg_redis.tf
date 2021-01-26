@@ -16,7 +16,7 @@ resource "aws_security_group" "elasticache_redis" {
     security_groups = ["${var.security_groups}"]
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description} - Incoming Redis Traffic"
   }
 }

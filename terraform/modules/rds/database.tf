@@ -40,7 +40,7 @@ resource "aws_db_instance" "rds_database" {
   allow_major_version_upgrade = "${var.rds_allow_major_version_upgrade}"
   apply_immediately           = "${var.rds_apply_immediately}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description}"
   }
 }

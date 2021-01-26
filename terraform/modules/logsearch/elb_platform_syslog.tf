@@ -20,7 +20,7 @@ resource "aws_elb" "platform_syslog_elb" {
     interval = 30
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description}-platform-syslog"
   }
 

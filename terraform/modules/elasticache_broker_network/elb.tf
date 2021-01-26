@@ -19,7 +19,7 @@ resource "aws_elb" "elasticache_elb" {
     target = "HTTP:80/healthcheck"
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description}-elasticache-broker"
   }
 

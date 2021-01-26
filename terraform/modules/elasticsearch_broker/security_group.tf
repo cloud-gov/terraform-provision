@@ -16,7 +16,7 @@ resource "aws_security_group" "elasticsearch" {
     security_groups = ["${var.security_groups}"]
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description} - Incoming Elasticsearch Traffic"
   }
 }

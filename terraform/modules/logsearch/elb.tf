@@ -20,7 +20,7 @@ resource "aws_elb" "logsearch_elb" {
     interval = 30
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description}-logsearch"
   }
 
