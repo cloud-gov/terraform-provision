@@ -9,7 +9,7 @@ provider "aws" {
 data "terraform_remote_state" "target_vpc" {
   backend = "s3"
 
-  config {
+  config = {
     bucket = "${var.remote_state_bucket}"
     key    = "${var.target_stack_name}/terraform.tfstate"
   }

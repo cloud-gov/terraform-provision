@@ -1,7 +1,7 @@
 data "template_file" "policy" {
   template = "${file("${path.module}/policy.json")}"
 
-  vars {
+  vars = {
     aws_partition = "${var.aws_partition}"
     buildpacks_bucket = "${var.buildpacks_bucket}"
     packages_bucket = "${var.packages_bucket}"

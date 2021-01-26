@@ -10,7 +10,7 @@ resource "aws_vpc" "main_vpc" {
   enable_dns_hostnames = true
   assign_generated_ipv6_cidr_block = true
 
-  tags {
+  tags = {
     Name = "${var.stack_description}"
   }
 
