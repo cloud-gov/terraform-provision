@@ -24,7 +24,7 @@ resource "aws_elb" "logsearch_elb" {
     Name = "${var.stack_description}-logsearch"
   }
 
-   access_logs = {
+   access_logs {
       bucket        = "${var.log_bucket_name}"
       bucket_prefix        = "${var.stack_description}"
       enabled       = true

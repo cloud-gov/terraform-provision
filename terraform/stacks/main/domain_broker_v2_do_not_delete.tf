@@ -97,7 +97,7 @@ resource "aws_lb" "domain_broker_v2" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
 
-  access_logs = {
+  access_logs {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
     enabled       = true

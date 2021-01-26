@@ -24,7 +24,7 @@ resource "aws_elb" "kubernetes_elb" {
     Name = "${var.stack_description}-kubernetes"
   }
 
-   access_logs = {
+   access_logs {
       bucket        = "${var.log_bucket_name}"
       bucket_prefix        = "${var.stack_description}"
       enabled       = true

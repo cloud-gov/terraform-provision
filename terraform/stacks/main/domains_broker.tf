@@ -17,7 +17,7 @@ resource "aws_lb" "domains_broker_internal" {
   subnets         = ["${module.cf.services_subnet_az1}", "${module.cf.services_subnet_az2}"]
   security_groups = ["${module.stack.bosh_security_group}"]
   internal        = true
-  access_logs = {
+  access_logs {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
     enabled = true
@@ -88,7 +88,7 @@ resource "aws_lb" "domains_broker" {
   security_groups = ["${module.stack.web_traffic_security_group}"]
   ip_address_type = "dualstack"
   idle_timeout    = 3600
-  access_logs = {
+  access_logs {
     bucket = "${var.log_bucket_name}"
     prefix = "${var.stack_description}"
     enabled = true
