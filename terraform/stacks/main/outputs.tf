@@ -119,7 +119,7 @@ output "services_subnet_reserved_az2" {
 /* TODO: Make this go away */
 data "template_file" "logsearch_static_ips" {
   count = 31
-  vars {
+  vars = {
     address = "${cidrhost("${module.cf.services_cidr_1}", "${count.index + 20}")}"
   }
   template = "$${address}"
@@ -129,7 +129,7 @@ output "logsearch_static_ips" {
 }
 data "template_file" "kubernetes_static_ips" {
   count = 50
-  vars {
+  vars = {
     address = "${cidrhost("${module.cf.services_cidr_1}", "${count.index + 200}")}"
   }
   template = "$${address}"
