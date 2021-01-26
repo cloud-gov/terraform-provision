@@ -16,7 +16,7 @@ resource "aws_subnet" "az1_services" {
   cidr_block = "${var.services_cidr_1}"
   availability_zone = "${var.az1}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Services AZ1)"
     KubernetesCluster = "${var.kubernetes_cluster_id}"
   }
@@ -27,7 +27,7 @@ resource "aws_subnet" "az2_services" {
   cidr_block = "${var.services_cidr_2}"
   availability_zone = "${var.az2}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Services AZ2)"
     KubernetesCluster = "${var.kubernetes_cluster_id}"
   }

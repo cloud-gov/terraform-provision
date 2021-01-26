@@ -3,7 +3,7 @@ resource "aws_subnet" "az1_elasticache" {
   cidr_block = "${var.elasticache_private_cidr_1}"
   availability_zone = "${var.az1}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Elasticache Broker AZ1)"
   }
 }
@@ -13,7 +13,7 @@ resource "aws_subnet" "az2_elasticache" {
   cidr_block = "${var.elasticache_private_cidr_2}"
   availability_zone = "${var.az2}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Elasticache Broker AZ2)"
   }
 }

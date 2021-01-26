@@ -8,7 +8,7 @@ resource "aws_security_group" "rds_postgres" {
   description = "Allow access to incoming postgresql traffic"
   vpc_id = "${var.vpc_id}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} - Incoming PostGreSQL Traffic"
   }
 }

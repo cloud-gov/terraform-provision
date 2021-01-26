@@ -10,7 +10,7 @@ resource "aws_security_group" "bosh" {
   description = "BOSH security group"
   vpc_id = "${aws_vpc.main_vpc.id}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} - BOSH"
   }
 }

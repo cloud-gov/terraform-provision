@@ -16,7 +16,7 @@ resource "aws_subnet" "az1_private" {
   cidr_block = "${var.private_cidr_1}"
   availability_zone = "${var.az1}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Private AZ1)"
   }
 }
@@ -26,7 +26,7 @@ resource "aws_subnet" "az2_private" {
   cidr_block = "${var.private_cidr_2}"
   availability_zone = "${var.az2}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Private AZ2)"
   }
 }
@@ -34,7 +34,7 @@ resource "aws_subnet" "az2_private" {
 resource "aws_route_table" "az1_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Private Route Table AZ1)"
   }
 }
@@ -42,7 +42,7 @@ resource "aws_route_table" "az1_private_route_table" {
 resource "aws_route_table" "az2_private_route_table" {
   vpc_id = "${aws_vpc.main_vpc.id}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Private Route Table AZ2)"
   }
 }

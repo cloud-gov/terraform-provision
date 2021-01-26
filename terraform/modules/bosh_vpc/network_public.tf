@@ -17,7 +17,7 @@ resource "aws_subnet" "az1_public" {
   ipv6_cidr_block = "${cidrsubnet(aws_vpc.main_vpc.ipv6_cidr_block != "" ? aws_vpc.main_vpc.ipv6_cidr_block : "fd00::/8", 8, 0)}"
   availability_zone = "${var.az1}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Public AZ1)"
   }
 }
@@ -29,7 +29,7 @@ resource "aws_subnet" "az2_public" {
   ipv6_cidr_block = "${cidrsubnet(aws_vpc.main_vpc.ipv6_cidr_block != "" ? aws_vpc.main_vpc.ipv6_cidr_block : "fd00::/8", 8, 1)}"
   availability_zone = "${var.az2}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Public AZ2)"
   }
 }
@@ -37,7 +37,7 @@ resource "aws_subnet" "az2_public" {
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.main_vpc.id}"
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Gateway)"
   }
 }
@@ -53,7 +53,7 @@ resource "aws_route_table" "public_network" {
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description} (Public Route Table)"
   }
 }

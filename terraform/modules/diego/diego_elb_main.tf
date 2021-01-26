@@ -78,7 +78,7 @@ resource "aws_elb" "diego_elb_main" {
     unhealthy_threshold = 2
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description}-Diego-Proxy-ELB"
   }
 

@@ -34,7 +34,7 @@ resource "aws_security_group" "restricted_web_traffic" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_description} - Restricted Incoming Web Traffic"
   }
 }
