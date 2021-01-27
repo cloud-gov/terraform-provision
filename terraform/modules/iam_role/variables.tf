@@ -1,4 +1,5 @@
-variable "role_name" {}
+variable "role_name" {
+}
 
 variable "role_path" {
   default = "/bosh-passed/"
@@ -23,4 +24,6 @@ variable "iam_assume_role_policy" {
   ]
 }
 EOF
+
 }
+

@@ -5,15 +5,14 @@
  */
 
 resource "aws_vpc" "main_vpc" {
-  cidr_block = "${var.vpc_cidr}"
-  enable_dns_support = true
-  enable_dns_hostnames = true
+  cidr_block                       = var.vpc_cidr
+  enable_dns_support               = true
+  enable_dns_hostnames             = true
   assign_generated_ipv6_cidr_block = true
 
   tags = {
-    Name = "${var.stack_description}"
+    Name = var.stack_description
   }
-
 }
 
 # Create CloudWatch log group
@@ -23,8 +22,8 @@ resource "aws_cloudwatch_log_group" "main_vpc_flow_log_cloudwatch_log_group" {
 
 # Create IAM role for sending flow logs
 resource "aws_iam_role" "flow_log_role" {
-    name = "${var.stack_description}-flow-log-role"
-    assume_role_policy = <<EOF
+  name               = "${var.stack_description}-flow-log-role"
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -39,12 +38,13 @@ resource "aws_iam_role" "flow_log_role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "flow_log_policy" {
-    name = "${var.stack_description}-flow-log-policy"
-    role = "${aws_iam_role.flow_log_role.id}"
-    policy = <<EOF
+  name   = "${var.stack_description}-flow-log-policy"
+  role   = aws_iam_role.flow_log_role.id
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -62,11 +62,13 @@ resource "aws_iam_role_policy" "flow_log_policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_flow_log" "main_vpc_flow_log" {
-  log_destination = "${aws_cloudwatch_log_group.main_vpc_flow_log_cloudwatch_log_group.arn}"
-  iam_role_arn = "${aws_iam_role.flow_log_role.arn}"
-  vpc_id = "${aws_vpc.main_vpc.id}"
-  traffic_type = "ALL"
+  log_destination = aws_cloudwatch_log_group.main_vpc_flow_log_cloudwatch_log_group.arn
+  iam_role_arn    = aws_iam_role.flow_log_role.arn
+  vpc_id          = aws_vpc.main_vpc.id
+  traffic_type    = "ALL"
 }
+

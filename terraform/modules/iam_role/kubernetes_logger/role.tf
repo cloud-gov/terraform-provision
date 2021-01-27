@@ -1,7 +1,7 @@
 module "kubernetes_logger" {
   source = "../"
 
-  role_name = "${var.role_name}"
+  role_name  = var.role_name
   iam_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -30,6 +30,8 @@ module "kubernetes_logger" {
   ]
 }
 EOF
+
+
   iam_assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -56,4 +58,6 @@ EOF
   ]
 }
 EOF
+
 }
+

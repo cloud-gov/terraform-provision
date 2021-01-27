@@ -1,2 +1,6 @@
-variable "aws_partition" {}
-variable "stack_description" {}
+variable "aws_partition" {
+}
+
+variable "stack_description" {
+}
+

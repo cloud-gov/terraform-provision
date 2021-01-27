@@ -2,14 +2,14 @@ module "billing_user" {
   source         = "../../modules/iam_user/billing_user"
   username       = "cg-billing"
   billing_bucket = "cg-billing-*"
-  aws_partition  = "${data.aws_partition.current.partition}"
+  aws_partition  = data.aws_partition.current.partition
 }
 
 module "s3_logstash" {
   source        = "../../modules/iam_user/s3_logstash"
   username      = "s3-logstash"
-  log_bucket    = "${var.log_bucket_name}"
-  aws_partition = "${data.aws_partition.current.partition}"
+  log_bucket    = var.log_bucket_name
+  aws_partition = data.aws_partition.current.partition
 }
 
 module "rds_storage_alert" {
@@ -20,8 +20,8 @@ module "rds_storage_alert" {
 module "iam_cert_provision_user" {
   source        = "../../modules/iam_user/iam_cert_provision"
   username      = "cg-iam-cert-provision"
-  aws_partition = "${data.aws_partition.current.partition}"
-  account_id    = "${data.aws_caller_identity.current.account_id}"
+  aws_partition = data.aws_partition.current.partition
+  account_id    = data.aws_caller_identity.current.account_id
 }
 
 # This user has access to all cloudtrail events in the account, as there
@@ -40,40 +40,40 @@ module "federalist_auditor_user" {
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "blobstore"
-  aws_partition = "${data.aws_partition.current.partition}"
-  bucket_name   = "${var.blobstore_bucket_name}"
+  aws_partition = data.aws_partition.current.partition
+  bucket_name   = var.blobstore_bucket_name
 }
 
 module "bosh_policy" {
   source        = "../../modules/iam_role_policy/bosh"
   policy_name   = "${var.stack_description}-bosh"
-  aws_partition = "${data.aws_partition.current.partition}"
-  account_id    = "${data.aws_caller_identity.current.account_id}"
-  bucket_name   = "${var.blobstore_bucket_name}"
+  aws_partition = data.aws_partition.current.partition
+  account_id    = data.aws_caller_identity.current.account_id
+  bucket_name   = var.blobstore_bucket_name
 }
 
 module "bosh_compilation_policy" {
   source        = "../../modules/iam_role_policy/bosh_compilation"
   policy_name   = "${var.stack_description}-bosh-compilation"
-  aws_partition = "${data.aws_partition.current.partition}"
-  bucket_name   = "${var.blobstore_bucket_name}"
+  aws_partition = data.aws_partition.current.partition
+  bucket_name   = var.blobstore_bucket_name
 }
 
 module "concourse_worker_policy" {
   source                  = "../../modules/iam_role_policy/concourse_worker"
   policy_name             = "concourse-worker"
-  aws_partition           = "${data.aws_partition.current.partition}"
-  varz_bucket             = "${var.varz_bucket}"
-  varz_staging_bucket     = "${var.varz_bucket_stage}"
-  bosh_release_bucket     = "${var.bosh_release_bucket}"
-  terraform_state_bucket  = "${var.terraform_state_bucket}"
-  build_artifacts_bucket  = "${var.build_artifacts_bucket}"
-  semver_bucket           = "${var.semver_bucket}"
-  buildpack_notify_bucket = "${var.buildpack_notify_bucket}"
-  billing_bucket          = "${var.billing_bucket}"
-  cg_binaries_bucket      = "${var.cg_binaries_bucket}"
-  log_bucket              = "${var.log_bucket_name}"
-  concourse_varz_bucket   = "${var.concourse_varz_bucket}"
+  aws_partition           = data.aws_partition.current.partition
+  varz_bucket             = var.varz_bucket
+  varz_staging_bucket     = var.varz_bucket_stage
+  bosh_release_bucket     = var.bosh_release_bucket
+  terraform_state_bucket  = var.terraform_state_bucket
+  build_artifacts_bucket  = var.build_artifacts_bucket
+  semver_bucket           = var.semver_bucket
+  buildpack_notify_bucket = var.buildpack_notify_bucket
+  billing_bucket          = var.billing_bucket
+  cg_binaries_bucket      = var.cg_binaries_bucket
+  log_bucket              = var.log_bucket_name
+  concourse_varz_bucket   = var.concourse_varz_bucket
 }
 
 module "concourse_iaas_worker_policy" {
@@ -89,14 +89,13 @@ module "cloudwatch_policy" {
 module "self_managed_credentials" {
   source        = "../../modules/iam_role_policy/self_managed_credentials"
   policy_name   = "self-managed-credentials"
-  aws_partition = "${data.aws_partition.current.partition}"
+  aws_partition = data.aws_partition.current.partition
 }
 
 module "compliance_role" {
   source        = "../../modules/iam_role_policy/compliance_role"
   policy_name   = "compliance-role"
-  aws_partition = "${data.aws_partition.current.partition}"
-
+  aws_partition = data.aws_partition.current.partition
 }
 
 module "default_role" {
@@ -131,62 +130,87 @@ module "concourse_iaas_worker_role" {
 
 resource "aws_iam_policy_attachment" "blobstore" {
   name       = "${var.stack_description}-blobstore"
-  policy_arn = "${module.blobstore_policy.arn}"
+  policy_arn = module.blobstore_policy.arn
 
   roles = [
-    "${module.default_role.role_name}",
-    "${module.bosh_role.role_name}",
-    "${module.concourse_worker_role.role_name}",
-    "${module.concourse_iaas_worker_role.role_name}",
+    module.default_role.role_name,
+    module.bosh_role.role_name,
+    module.concourse_worker_role.role_name,
+    module.concourse_iaas_worker_role.role_name,
   ]
 }
 
 resource "aws_iam_policy_attachment" "cloudwatch" {
   name       = "${var.stack_description}-cloudwatch"
-  policy_arn = "${module.cloudwatch_policy.arn}"
+  policy_arn = module.cloudwatch_policy.arn
 
   roles = [
-    "${module.default_role.role_name}",
-    "${module.bosh_role.role_name}",
-    "${module.bosh_compilation_role.role_name}",
-    "${module.concourse_worker_role.role_name}",
-    "${module.concourse_iaas_worker_role.role_name}",
+    module.default_role.role_name,
+    module.bosh_role.role_name,
+    module.bosh_compilation_role.role_name,
+    module.concourse_worker_role.role_name,
+    module.concourse_iaas_worker_role.role_name,
   ]
 }
 
 resource "aws_iam_policy_attachment" "bosh" {
   name       = "${var.stack_description}-bosh"
-  policy_arn = "${module.bosh_policy.arn}"
+  policy_arn = module.bosh_policy.arn
 
   roles = [
-    "${module.master_bosh_role.role_name}",
-    "${module.bosh_role.role_name}",
+    module.master_bosh_role.role_name,
+    module.bosh_role.role_name,
   ]
 }
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {
   name       = "${var.stack_description}-bosh-compilation"
-  policy_arn = "${module.bosh_compilation_policy.arn}"
+  policy_arn = module.bosh_compilation_policy.arn
 
+  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
+  # force an interpolation expression to be interpreted as a list by wrapping it
+  # in an extra set of list brackets. That form was supported for compatibility in
+  # v0.11, but is no longer supported in Terraform v0.12.
+  #
+  # If the expression in the following list itself returns a list, remove the
+  # brackets to avoid interpretation as a list of lists. If the expression
+  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
-    "${module.bosh_compilation_role.role_name}",
+    module.bosh_compilation_role.role_name,
   ]
 }
 
 resource "aws_iam_policy_attachment" "concourse_worker" {
   name       = "concourse_worker"
-  policy_arn = "${module.concourse_worker_policy.arn}"
+  policy_arn = module.concourse_worker_policy.arn
 
+  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
+  # force an interpolation expression to be interpreted as a list by wrapping it
+  # in an extra set of list brackets. That form was supported for compatibility in
+  # v0.11, but is no longer supported in Terraform v0.12.
+  #
+  # If the expression in the following list itself returns a list, remove the
+  # brackets to avoid interpretation as a list of lists. If the expression
+  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
-    "${module.concourse_worker_role.role_name}",
+    module.concourse_worker_role.role_name,
   ]
 }
 
 resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
   name       = "concourse_iaas_worker"
-  policy_arn = "${module.concourse_iaas_worker_policy.arn}"
+  policy_arn = module.concourse_iaas_worker_policy.arn
 
+  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
+  # force an interpolation expression to be interpreted as a list by wrapping it
+  # in an extra set of list brackets. That form was supported for compatibility in
+  # v0.11, but is no longer supported in Terraform v0.12.
+  #
+  # If the expression in the following list itself returns a list, remove the
+  # brackets to avoid interpretation as a list of lists. If the expression
+  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
-    "${module.concourse_iaas_worker_role.role_name}",
+    module.concourse_iaas_worker_role.role_name,
   ]
 }
+

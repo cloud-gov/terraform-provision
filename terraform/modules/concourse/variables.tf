@@ -1,4 +1,5 @@
-variable "stack_description" {}
+variable "stack_description" {
+}
 
 variable "concourse_cidr" {
   default = "10.0.30.0/24"
@@ -21,7 +22,7 @@ variable "rds_db_size" {
 }
 
 variable "rds_db_iops" {
-	default = 0
+  default = 0
 }
 
 variable "rds_db_storage_type" {
@@ -40,24 +41,32 @@ variable "rds_username" {
   default = "atc"
 }
 
-variable "rds_password" {}
+variable "rds_password" {
+}
 
-variable "rds_subnet_group" {}
+variable "rds_subnet_group" {
+}
 
 variable "rds_security_groups" {
-  type = "list"
+  type = list(string)
 }
 
-variable "rds_multi_az" {}
+variable "rds_multi_az" {
+}
 
-variable "rds_final_snapshot_identifier" {}
+variable "rds_final_snapshot_identifier" {
+}
 
-variable "route_table_id" {}
+variable "route_table_id" {
+}
 
-variable "vpc_id" {}
+variable "vpc_id" {
+}
 
-variable "listener_arn" {}
+variable "listener_arn" {
+}
 
 variable "hosts" {
-  type = "list"
+  type = list(string)
 }
+

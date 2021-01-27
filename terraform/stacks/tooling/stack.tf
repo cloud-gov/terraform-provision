@@ -1,48 +1,64 @@
 terraform {
-  backend "s3" {}
+  backend "s3" {
+  }
 }
 
 provider "aws" {
   version = "~> 2.40"
 }
 
-data "aws_partition" "current" {}
-data "aws_caller_identity" "current" {}
-data "aws_availability_zones" "available" {}
-data "aws_region" "current" {}
+data "aws_partition" "current" {
+}
+
+data "aws_caller_identity" "current" {
+}
+
+data "aws_availability_zones" "available" {
+}
+
+data "aws_region" "current" {
+}
 
 data "aws_iam_server_certificate" "wildcard_production" {
-  name_prefix = "${var.wildcard_production_certificate_name_prefix}"
-  latest = true
+  name_prefix = var.wildcard_production_certificate_name_prefix
+  latest      = true
 }
 
 data "aws_iam_server_certificate" "wildcard_staging" {
-  name_prefix = "${var.wildcard_staging_certificate_name_prefix}"
-  latest = true
+  name_prefix = var.wildcard_staging_certificate_name_prefix
+  latest      = true
 }
 
 resource "aws_lb" "main" {
-  name = "${var.stack_description}-main"
-  subnets = ["${module.stack.public_subnet_az1}", "${module.stack.public_subnet_az2}"]
-  security_groups = ["${module.stack.restricted_web_traffic_security_group}"]
+  name    = "${var.stack_description}-main"
+  subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
+  # force an interpolation expression to be interpreted as a list by wrapping it
+  # in an extra set of list brackets. That form was supported for compatibility in
+  # v0.11, but is no longer supported in Terraform v0.12.
+  #
+  # If the expression in the following list itself returns a list, remove the
+  # brackets to avoid interpretation as a list of lists. If the expression
+  # returns a single list item then leave it as-is and remove this TODO comment.
+  security_groups = [module.stack.restricted_web_traffic_security_group]
   ip_address_type = "dualstack"
-  idle_timeout = 3600
-  access_logs = {
-      bucket        = "${var.log_bucket_name}"
-      prefix        = "${var.stack_description}"
-      enabled       = true
+  idle_timeout    = 3600
+  access_logs {
+    bucket  = var.log_bucket_name
+    prefix  = var.stack_description
+    enabled = true
   }
 }
 
 resource "aws_lb_listener" "main" {
-  load_balancer_arn = "${aws_lb.main.arn}"
+  load_balancer_arn = aws_lb.main.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = "${data.aws_iam_server_certificate.wildcard_production.arn}"
+  certificate_arn   = data.aws_iam_server_certificate.wildcard_production.arn
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.dummy.arn}"
+    target_group_arn = aws_lb_target_group.dummy.arn
     type             = "forward"
   }
 }
@@ -50,103 +66,103 @@ resource "aws_lb_listener" "main" {
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
-  vpc_id   = "${module.stack.vpc_id}"
+  vpc_id   = module.stack.vpc_id
 }
 
 resource "aws_lb_listener_certificate" "main-staging" {
-  listener_arn    = "${aws_lb_listener.main.arn}"
-  certificate_arn = "${data.aws_iam_server_certificate.wildcard_staging.arn}"
+  listener_arn    = aws_lb_listener.main.arn
+  certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
 }
 
 module "stack" {
   source = "../../modules/stack/base"
 
-  stack_description = "${var.stack_description}"
-  vpc_cidr = "${var.vpc_cidr}"
-  az1 = "${data.aws_availability_zones.available.names[0]}"
-  az2 = "${data.aws_availability_zones.available.names[1]}"
-  aws_default_region = "${var.aws_default_region}"
-  public_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 100)}"
-  public_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 101)}"
-  private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 1)}"
-  private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 2)}"
-  restricted_ingress_web_cidrs = "${var.restricted_ingress_web_cidrs}"
-  restricted_ingress_web_ipv6_cidrs = "${var.restricted_ingress_web_ipv6_cidrs}"
-  rds_private_cidr_1 = "${cidrsubnet(var.vpc_cidr, 8, 20)}"
-  rds_private_cidr_2 = "${cidrsubnet(var.vpc_cidr, 8, 21)}"
-  rds_password = "${var.rds_password}"
-  credhub_rds_password = "${var.credhub_rds_password}"
-  rds_multi_az = "${var.rds_multi_az}"
-  rds_security_groups = ["${module.stack.bosh_security_group}"]
-  rds_security_groups_count = "1"
+  stack_description                 = var.stack_description
+  vpc_cidr                          = var.vpc_cidr
+  az1                               = data.aws_availability_zones.available.names[0]
+  az2                               = data.aws_availability_zones.available.names[1]
+  aws_default_region                = var.aws_default_region
+  public_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                    = cidrsubnet(var.vpc_cidr, 8, 1)
+  private_cidr_2                    = cidrsubnet(var.vpc_cidr, 8, 2)
+  restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
+  rds_private_cidr_1                = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_password                      = var.rds_password
+  credhub_rds_password              = var.credhub_rds_password
+  rds_multi_az                      = var.rds_multi_az
+  rds_security_groups               = [module.stack.bosh_security_group]
+  rds_security_groups_count         = "1"
 }
 
 module "concourse_production" {
-  source = "../../modules/concourse"
-  stack_description = "${var.stack_description}"
-  vpc_id = "${module.stack.vpc_id}"
-  concourse_cidr = "${cidrsubnet(var.vpc_cidr, 8, 30)}"
-  concourse_az = "${data.aws_availability_zones.available.names[0]}"
-  route_table_id = "${module.stack.private_route_table_az1}"
-  rds_password = "${var.concourse_prod_rds_password}"
-  rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
-  rds_parameter_group_name = "tooling-concourse-production"
-  rds_instance_type = "db.m4.xlarge"
-  rds_multi_az = "${var.rds_multi_az}"
+  source                        = "../../modules/concourse"
+  stack_description             = var.stack_description
+  vpc_id                        = module.stack.vpc_id
+  concourse_cidr                = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_az                  = data.aws_availability_zones.available.names[0]
+  route_table_id                = module.stack.private_route_table_az1
+  rds_password                  = var.concourse_prod_rds_password
+  rds_subnet_group              = module.stack.rds_subnet_group
+  rds_security_groups           = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name      = "tooling-concourse-production"
+  rds_instance_type             = "db.m4.xlarge"
+  rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
-  listener_arn = "${aws_lb_listener.main.arn}"
-  hosts = ["${var.concourse_production_hosts}"]
+  listener_arn                  = aws_lb_listener.main.arn
+  hosts                         = [var.concourse_production_hosts]
 }
 
 module "concourse_staging" {
-  source = "../../modules/concourse"
-  stack_description = "${var.stack_description}"
-  vpc_id = "${module.stack.vpc_id}"
-  concourse_cidr = "${cidrsubnet(var.vpc_cidr, 8, 31)}"
-  concourse_az = "${data.aws_availability_zones.available.names[1]}"
-  route_table_id = "${module.stack.private_route_table_az2}"
-  rds_password = "${var.concourse_staging_rds_password}"
-  rds_subnet_group = "${module.stack.rds_subnet_group}"
-  rds_security_groups = ["${module.stack.rds_postgres_security_group}"]
-  rds_parameter_group_name = "tooling-concourse-staging"
-  rds_instance_type = "db.m4.large"
-  rds_multi_az = "${var.rds_multi_az}"
+  source                        = "../../modules/concourse"
+  stack_description             = var.stack_description
+  vpc_id                        = module.stack.vpc_id
+  concourse_cidr                = cidrsubnet(var.vpc_cidr, 8, 31)
+  concourse_az                  = data.aws_availability_zones.available.names[1]
+  route_table_id                = module.stack.private_route_table_az2
+  rds_password                  = var.concourse_staging_rds_password
+  rds_subnet_group              = module.stack.rds_subnet_group
+  rds_security_groups           = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name      = "tooling-concourse-staging"
+  rds_instance_type             = "db.m4.large"
+  rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
-  listener_arn = "${aws_lb_listener.main.arn}"
-  hosts = ["${var.concourse_staging_hosts}"]
+  listener_arn                  = aws_lb_listener.main.arn
+  hosts                         = [var.concourse_staging_hosts]
 }
 
 module "monitoring_production" {
-  source = "../../modules/monitoring"
-  stack_description = "production"
-  vpc_id = "${module.stack.vpc_id}"
-  monitoring_cidr = "${cidrsubnet(var.vpc_cidr, 8, 32)}"
-  monitoring_az = "${data.aws_availability_zones.available.names[0]}"
-  route_table_id = "${module.stack.private_route_table_az1}"
-  listener_arn = "${aws_lb_listener.main.arn}"
-  hosts = ["${var.monitoring_production_hosts}"]
-  oidc_client = "${var.oidc_client}"
-  oidc_client_secret = "${var.oidc_client_secret}"
+  source             = "../../modules/monitoring"
+  stack_description  = "production"
+  vpc_id             = module.stack.vpc_id
+  monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 32)
+  monitoring_az      = data.aws_availability_zones.available.names[0]
+  route_table_id     = module.stack.private_route_table_az1
+  listener_arn       = aws_lb_listener.main.arn
+  hosts              = [var.monitoring_production_hosts]
+  oidc_client        = var.oidc_client
+  oidc_client_secret = var.oidc_client_secret
 }
 
 module "monitoring_staging" {
-  source = "../../modules/monitoring"
-  stack_description = "staging"
-  vpc_id = "${module.stack.vpc_id}"
-  monitoring_cidr = "${cidrsubnet(var.vpc_cidr, 8, 33)}"
-  monitoring_az = "${data.aws_availability_zones.available.names[1]}"
-  route_table_id = "${module.stack.private_route_table_az2}"
-  listener_arn = "${aws_lb_listener.main.arn}"
-  hosts = ["${var.monitoring_staging_hosts}"]
-  oidc_client = "${var.oidc_client}"
-  oidc_client_secret = "${var.oidc_client_secret}"
+  source             = "../../modules/monitoring"
+  stack_description  = "staging"
+  vpc_id             = module.stack.vpc_id
+  monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 33)
+  monitoring_az      = data.aws_availability_zones.available.names[1]
+  route_table_id     = module.stack.private_route_table_az2
+  listener_arn       = aws_lb_listener.main.arn
+  hosts              = [var.monitoring_staging_hosts]
+  oidc_client        = var.oidc_client
+  oidc_client_secret = var.oidc_client_secret
 }
 
 resource "aws_eip" "production_dns_eip" {
   vpc = true
 
-  count = "${var.dns_eip_count_production}"
+  count = var.dns_eip_count_production
 
   lifecycle {
     prevent_destroy = true
@@ -156,7 +172,7 @@ resource "aws_eip" "production_dns_eip" {
 resource "aws_eip" "staging_dns_eip" {
   vpc = true
 
-  count = "${var.dns_eip_count_staging}"
+  count = var.dns_eip_count_staging
 
   lifecycle {
     prevent_destroy = true
@@ -164,14 +180,15 @@ resource "aws_eip" "staging_dns_eip" {
 }
 
 module "dns" {
-  source = "../../modules/dns"
-  stack_description = "${var.stack_description}"
-  vpc_id = "${module.stack.vpc_id}"
+  source            = "../../modules/dns"
+  stack_description = var.stack_description
+  vpc_id            = module.stack.vpc_id
 }
 
 module "smtp" {
-  source = "../../modules/smtp"
-  stack_description = "${var.stack_description}"
-  vpc_id = "${module.stack.vpc_id}"
-  ingress_cidr_blocks = ["${var.smtp_ingress_cidr_blocks}"]
+  source              = "../../modules/smtp"
+  stack_description   = var.stack_description
+  vpc_id              = module.stack.vpc_id
+  ingress_cidr_blocks = [var.smtp_ingress_cidr_blocks]
 }
+
