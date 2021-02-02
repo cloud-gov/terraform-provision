@@ -157,7 +157,7 @@ data "template_file" "logsearch_static_ips" {
 }
 
 output "logsearch_static_ips" {
-  value = [data.template_file.logsearch_static_ips.*.rendered]
+  value = data.template_file.logsearch_static_ips.*.rendered
 }
 
 data "template_file" "kubernetes_static_ips" {
@@ -169,7 +169,7 @@ data "template_file" "kubernetes_static_ips" {
 }
 
 output "kubernetes_static_ips" {
-  value = [data.template_file.kubernetes_static_ips.*.rendered]
+  value = data.template_file.kubernetes_static_ips.*.rendered
 }
 
 output "services_static_ips" {
