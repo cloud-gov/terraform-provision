@@ -97,14 +97,6 @@ resource "aws_lb" "domain_broker_v2" {
 
   name    = "${var.stack_description}-domains-${count.index}"
   subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   security_groups = [module.stack.web_traffic_security_group]
   ip_address_type = "dualstack"
   idle_timeout    = 3600
@@ -225,14 +217,6 @@ resource "aws_db_instance" "domain_broker_v2" {
   password             = var.domain_broker_v2_rds_password
   engine               = "postgres"
   db_subnet_group_name = module.stack.rds_subnet_group
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   vpc_security_group_ids = [module.stack.rds_postgres_security_group]
 }
 
