@@ -59,6 +59,5 @@ module "domain_broker_v2_user" {
   bucket            = var.domain_broker_v2_bucket
   cloudfront_prefix = var.domain_broker_v2_cloudfront_prefix
   hosted_zone       = var.cdn_broker_hosted_zone
-  username          = "domain-broker-v2"
 }
 

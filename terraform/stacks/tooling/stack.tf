@@ -104,7 +104,7 @@ module "concourse_production" {
   rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
   listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = [var.concourse_production_hosts]
+  hosts                         = var.concourse_production_hosts
 }
 
 module "concourse_staging" {
@@ -122,7 +122,7 @@ module "concourse_staging" {
   rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
   listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = [var.concourse_staging_hosts]
+  hosts                         = var.concourse_staging_hosts
 }
 
 module "monitoring_production" {
@@ -133,7 +133,7 @@ module "monitoring_production" {
   monitoring_az      = data.aws_availability_zones.available.names[0]
   route_table_id     = module.stack.private_route_table_az1
   listener_arn       = aws_lb_listener.main.arn
-  hosts              = [var.monitoring_production_hosts]
+  hosts              = var.monitoring_production_hosts
   oidc_client        = var.oidc_client
   oidc_client_secret = var.oidc_client_secret
 }
@@ -146,7 +146,7 @@ module "monitoring_staging" {
   monitoring_az      = data.aws_availability_zones.available.names[1]
   route_table_id     = module.stack.private_route_table_az2
   listener_arn       = aws_lb_listener.main.arn
-  hosts              = [var.monitoring_staging_hosts]
+  hosts              = var.monitoring_staging_hosts
   oidc_client        = var.oidc_client
   oidc_client_secret = var.oidc_client_secret
 }
@@ -181,6 +181,6 @@ module "smtp" {
   source              = "../../modules/smtp"
   stack_description   = var.stack_description
   vpc_id              = module.stack.vpc_id
-  ingress_cidr_blocks = [var.smtp_ingress_cidr_blocks]
+  ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
 

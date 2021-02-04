@@ -11,7 +11,7 @@ module "rds_96" {
   rds_username                  = var.rds_username
   rds_password                  = var.rds_password
   rds_subnet_group              = var.rds_subnet_group
-  rds_security_groups           = [var.rds_security_groups]
+  rds_security_groups           = var.rds_security_groups
   rds_parameter_group_name      = var.rds_parameter_group_name
   rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = var.rds_final_snapshot_identifier
