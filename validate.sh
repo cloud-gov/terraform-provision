@@ -14,7 +14,7 @@ TERRAFORM="${TERRAFORM_BIN:-terraform}"
 for dir in $dirs; do
   echo "Validating terraform directory $dir"
   AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} init -backend=false ${dir}
-  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} validate -check-variables=false ${dir} || status=1
+  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} validate ${dir} || status=1
 done
 
 exit ${status}
