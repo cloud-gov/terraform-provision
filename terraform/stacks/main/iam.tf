@@ -198,14 +198,6 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
 resource "aws_iam_policy_attachment" "blobstore_upstream" {
   name       = "${var.stack_description}-blobstore-upstream"
   policy_arn = module.blobstore_upstream_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.bosh_role.role_name,
   ]
@@ -214,14 +206,6 @@ resource "aws_iam_policy_attachment" "blobstore_upstream" {
 resource "aws_iam_policy_attachment" "logsearch_ingestor" {
   name       = "logsearch_ingestor"
   policy_arn = module.logsearch_ingestor_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.logsearch_ingestor_role.role_name,
   ]
@@ -230,14 +214,6 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
 resource "aws_iam_policy_attachment" "kubernetes_master" {
   name       = "${var.stack_description}-kubernetes-master"
   policy_arn = module.kubernetes_master_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.kubernetes_master_role.role_name,
   ]
@@ -246,14 +222,6 @@ resource "aws_iam_policy_attachment" "kubernetes_master" {
 resource "aws_iam_policy_attachment" "kubernetes_minion" {
   name       = "${var.stack_description}-kubernetes-minion"
   policy_arn = module.kubernetes_minion_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.kubernetes_minion_role.role_name,
   ]
@@ -262,14 +230,6 @@ resource "aws_iam_policy_attachment" "kubernetes_minion" {
 resource "aws_iam_policy_attachment" "ectd_backup" {
   name       = "${var.stack_description}-etcd-backup"
   policy_arn = module.etcd_backup_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.etcd_backup_role.role_name,
   ]
@@ -278,14 +238,6 @@ resource "aws_iam_policy_attachment" "ectd_backup" {
 resource "aws_iam_policy_attachment" "cf_blobstore" {
   name       = "${var.stack_description}-cf_blobstore"
   policy_arn = module.cf_blobstore_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.cf_blobstore_role.role_name,
   ]
@@ -294,14 +246,6 @@ resource "aws_iam_policy_attachment" "cf_blobstore" {
 resource "aws_iam_policy_attachment" "s3_broker" {
   name       = "${var.stack_description}-s3-broker"
   policy_arn = module.s3_broker_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.platform_role.role_name,
   ]
@@ -310,14 +254,6 @@ resource "aws_iam_policy_attachment" "s3_broker" {
 resource "aws_iam_policy_attachment" "aws_broker" {
   name       = "${var.stack_description}-aws-broker"
   policy_arn = module.aws_broker_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.platform_role.role_name,
   ]
@@ -326,14 +262,6 @@ resource "aws_iam_policy_attachment" "aws_broker" {
 resource "aws_iam_policy_attachment" "elasticache_broker" {
   name       = "${var.stack_description}-elasticache-broker"
   policy_arn = module.elasticache_broker_policy.arn
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
   roles = [
     module.elasticache_broker_role.role_name,
   ]
