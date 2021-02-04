@@ -1,13 +1,17 @@
-variable "log_bucket_name" {}
+variable "log_bucket_name" {
+}
 
 variable "log_bucket_force_destroy" {
-    default = false
+  default = false
 }
 
 variable "log_bucket_acl" {
-    default = "private"
+  default = "private"
 }
 
-variable "aws_partition" {}
+variable "aws_partition" {
+}
 
-variable "aws_region" {}
+variable "aws_region" {
+}
+

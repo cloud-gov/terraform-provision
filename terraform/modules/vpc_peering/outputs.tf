@@ -1,4 +1,4 @@
-
 output "peering_connection" {
-    value = "${aws_vpc_peering_connection.peering.id}"
+  value = aws_vpc_peering_connection.peering.id
 }
+

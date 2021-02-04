@@ -1,2 +1,6 @@
-variable "stack_description" {}
-variable "vpc_id" {}
+variable "stack_description" {
+}
+
+variable "vpc_id" {
+}
+

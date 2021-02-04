@@ -1,2 +1,6 @@
-variable "policy_name" {}
-variable "aws_partition" {}
+variable "policy_name" {
+}
+
+variable "aws_partition" {
+}
+
