@@ -9,9 +9,12 @@ path="$(dirname $0)"
 dirs=$(find "${path}/terraform/stacks" -mindepth 1 -maxdepth 1 -type d)
 status=0
 
+TERRAFORM="${TERRAFORM_BIN:-terraform}"
+
 for dir in $dirs; do
   echo "Validating terraform directory $dir"
-  terraform validate -check-variables=false ${dir} || status=1
+  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} init -backend=false ${dir}
+  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} validate -check-variables=false ${dir} || status=1
 done
 
 exit ${status}
