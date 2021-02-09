@@ -50,11 +50,11 @@ variable "rds_db_size" {
 }
 
 variable "rds_allow_major_version_upgrade" {
-  default = ""
+  default = "false"
 }
 
 variable "rds_apply_immediately" {
-  default = ""
+  default = "false"
 }
 
 variable "rds_db_name" {
