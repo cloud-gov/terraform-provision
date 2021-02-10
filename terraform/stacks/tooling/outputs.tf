@@ -137,7 +137,7 @@ output "bosh_static_ip" {
 }
 
 output "bosh_uaa_static_ips" {
-  value = [local.bosh_uaa_static_ips]
+  value = local.bosh_uaa_static_ips
 }
 
 output "bosh_network_static_ips" {
@@ -596,7 +596,7 @@ output "dns_public_security_group" {
 }
 
 output "staging_dns_private_ips" {
-  value = [local.staging_dns_private_ips]
+  value = local.staging_dns_private_ips
 }
 
 output "production_dns_public_ips" {
@@ -604,7 +604,7 @@ output "production_dns_public_ips" {
 }
 
 output "production_dns_private_ips" {
-  value = [local.production_dns_private_ips]
+  value = local.production_dns_private_ips
 }
 
 output "dns_private_ips" {

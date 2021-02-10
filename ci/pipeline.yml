@@ -43,6 +43,8 @@ jobs:
           repository: 18fgsa/concourse-task
       inputs:
       - name: pull-request
+      params:
+        TERRAFORM_BIN: terratest-12.30
       run:
         path: pull-request/validate.sh
     on_success:
@@ -63,6 +65,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -70,6 +73,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-staging-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: external-staging
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -109,6 +113,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-bootstrap-external-staging]
   - task: create-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
@@ -117,7 +122,7 @@ jobs:
       <<: *external-staging-params
       TERRAFORM_ACTION: apply
   - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
+    file: pipeline-tasks/terraform12-state-to-yaml.yml
     params:
       STATE_FILE: terraform.tfstate
   - put: terraform-yaml-external-staging
@@ -129,6 +134,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -136,6 +142,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-production-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: external-production
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -166,6 +173,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-bootstrap-external-production]
   - task: create-update-external-production
     file: pipeline-tasks/terraform-apply.yml
@@ -174,7 +182,7 @@ jobs:
       <<: *external-production-params
       TERRAFORM_ACTION: apply
   - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform-state-to-yaml.yml
+    file: pipeline-tasks/terraform12-state-to-yaml.yml
     params:
       STATE_FILE: terraform.tfstate
   - put: terraform-yaml-external-production
@@ -186,6 +194,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -193,6 +202,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &dns-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: dns
       TEMPLATE_SUBDIR: terraform/stacks/dns
@@ -213,6 +223,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-dns]
   - task: create-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
@@ -226,6 +237,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -234,6 +246,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
@@ -270,6 +283,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
     tags: [iaas]
@@ -317,7 +331,7 @@ jobs:
           - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
     - do:
       - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform-state-to-yaml.yml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
           STATE_FILE: terraform.tfstate
       - put: terraform-yaml-tooling
@@ -339,6 +353,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: development
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -434,7 +449,7 @@ jobs:
             - cg-provision-repo/ci/scripts/update-cf-db.sh
     - do:
       - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform-state-to-yaml.yml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
           STATE_FILE: terraform.tfstate
       - put: terraform-yaml-development
@@ -446,6 +461,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -454,6 +470,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -498,6 +515,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-bootstrap-staging]
   - task: create-update-staging
     tags: [iaas]
@@ -546,7 +564,7 @@ jobs:
             - cg-provision-repo/ci/scripts/update-cf-db.sh
     - do:
       - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform-state-to-yaml.yml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
           STATE_FILE: terraform.tfstate
       - put: terraform-yaml-staging
@@ -558,6 +576,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -566,6 +585,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
+      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -610,6 +630,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
+      resource: cg-provision-repo-master
       passed: [plan-bootstrap-production]
   - task: create-update-production
     tags: [iaas]
@@ -658,7 +679,7 @@ jobs:
             - cg-provision-repo/ci/scripts/update-cf-db.sh
   - do:
     - task: terraform-state-to-yaml
-      file: pipeline-tasks/terraform-state-to-yaml.yml
+      file: pipeline-tasks/terraform12-state-to-yaml.yml
       params:
         STATE_FILE: terraform.tfstate
     - put: terraform-yaml-production
@@ -835,7 +856,13 @@ resources:
   type: git
   source:
     uri: ((cg_provision_development_git_url))
-    branch: ((cg_provision_development_git_branch))
+    branch: master
+
+- name: cg-provision-repo-master
+  type: git
+  source:
+    uri: ((cg_provision_development_git_url))
+    branch: master
 
 - name: pull-request
   type: pull-request
