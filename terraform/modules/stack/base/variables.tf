@@ -104,6 +104,11 @@ variable "target_concourse_security_groups" {
   default = []
 }
 
+variable "target_credhub_security_groups" {
+  type    = list(string)
+  default = []
+}
+
 variable "rds_multi_az" {
   default = "true"
 }

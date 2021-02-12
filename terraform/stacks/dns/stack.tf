@@ -542,6 +542,54 @@ resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_aaaa" {
   }
 }
 
+resource "aws_route53_record" "cloud_gov_credhub-stage_fr_cloud_gov_a" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "credhub.fr-stage.cloud.gov."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_credhub-stage_fr_cloud_gov_aaaa" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "credhub.fr-stage.cloud.gov."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_a" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "credhub.fr.cloud.gov."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_aaaa" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "credhub.fr.cloud.gov."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "cloud_gov_ci_dev2_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "ci.dev2.us-gov-west-1.aws-us-gov.cloud.gov."

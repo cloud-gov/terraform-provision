@@ -388,6 +388,112 @@ output "staging_concourse_lb_target_group" {
   value = module.concourse_staging.concourse_lb_target_group
 }
 
+/* Production credhub */
+output "production_credhub_subnet" {
+  value = module.credhub_production.credhub_subnet
+}
+
+output "production_credhub_subnet_reserved" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidr, 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidr, 3)}"
+}
+
+output "production_credhub_subnet_cidr" {
+  value = module.credhub_production.credhub_subnet_cidr
+}
+
+output "production_credhub_subnet_gateway" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidr, 1)
+}
+
+output "production_credhub_security_group" {
+  value = module.credhub_production.credhub_security_group
+}
+
+output "production_credhub_rds_identifier" {
+  value = module.credhub_production.credhub_rds_identifier
+}
+
+output "production_credhub_rds_name" {
+  value = module.credhub_production.credhub_rds_name
+}
+
+output "production_credhub_rds_host" {
+  value = module.credhub_production.credhub_rds_host
+}
+
+output "production_credhub_rds_port" {
+  value = module.credhub_production.credhub_rds_port
+}
+
+output "production_credhub_rds_url" {
+  value = module.credhub_production.credhub_rds_url
+}
+
+output "production_credhub_rds_username" {
+  value = module.credhub_production.credhub_rds_username
+}
+
+output "production_credhub_rds_password" {
+  value = module.credhub_production.credhub_rds_password
+}
+
+output "production_credhub_lb_target_group" {
+  value = module.credhub_production.credhub_lb_target_group
+}
+
+/* Staging credhub */
+output "staging_credhub_subnet" {
+  value = module.credhub_staging.credhub_subnet
+}
+
+output "staging_credhub_subnet_reserved" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidr, 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidr, 3)}"
+}
+
+output "staging_credhub_subnet_cidr" {
+  value = module.credhub_staging.credhub_subnet_cidr
+}
+
+output "staging_credhub_subnet_gateway" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidr, 1)
+}
+
+output "staging_credhub_security_group" {
+  value = module.credhub_staging.credhub_security_group
+}
+
+output "staging_credhub_rds_identifier" {
+  value = module.credhub_staging.credhub_rds_identifier
+}
+
+output "staging_credhub_rds_name" {
+  value = module.credhub_staging.credhub_rds_name
+}
+
+output "staging_credhub_rds_host" {
+  value = module.credhub_staging.credhub_rds_host
+}
+
+output "staging_credhub_rds_port" {
+  value = module.credhub_staging.credhub_rds_port
+}
+
+output "staging_credhub_rds_url" {
+  value = module.credhub_staging.credhub_rds_url
+}
+
+output "staging_credhub_rds_username" {
+  value = module.credhub_staging.credhub_rds_username
+}
+
+output "staging_credhub_rds_password" {
+  value = module.credhub_staging.credhub_rds_password
+}
+
+output "staging_credhub_lb_target_group" {
+  value = module.credhub_staging.credhub_lb_target_group
+}
+
 /* Production Monitoring */
 output "production_monitoring_az" {
   value = module.monitoring_production.monitoring_az
