@@ -110,6 +110,11 @@ module "stack" {
     data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_security_group,
   ]
+
+  target_credhub_security_groups = [
+    data.terraform_remote_state.target_vpc.outputs.production_credhub_security_group,
+    data.terraform_remote_state.target_vpc.outputs.staging_credhub_security_group,
+  ]
 }
 
 module "cf" {
