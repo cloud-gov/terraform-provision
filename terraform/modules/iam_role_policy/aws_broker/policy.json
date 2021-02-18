@@ -5,7 +5,6 @@
       "Effect": "Allow",
       "Action": [
         "rds:DescribeDBInstances",
-        "rds:DescribeDBEngineVersions",
         "rds:CreateDBInstance",
         "rds:DeleteDBInstance",
         "rds:ModifyDBInstance",
@@ -33,6 +32,15 @@
       ],
       "Resource": [
         "arn:${aws_partition}:rds:${aws_default_region}:${account_id}:pg:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBEngineVersions"
+      ],
+      "Resouce": [
+        "*"
       ]
     },
     {
