@@ -57,3 +57,8 @@ variable "concourse_security_groups" {
   default = []
 }
 
+variable "credhub_security_groups" {
+  type    = list(string)
+  default = []
+}
+

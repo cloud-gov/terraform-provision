@@ -31,6 +31,12 @@ variable "concourse_staging_rds_password" {
 variable "concourse_varz_bucket" {
 }
 
+variable "credhub_prod_rds_password" {
+}
+
+variable "credhub_staging_rds_password" {
+}
+
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
@@ -44,6 +50,14 @@ variable "concourse_production_hosts" {
 }
 
 variable "concourse_staging_hosts" {
+  type = list(string)
+}
+
+variable "credhub_production_hosts" {
+  type = list(string)
+}
+
+variable "credhub_staging_hosts" {
   type = list(string)
 }
 

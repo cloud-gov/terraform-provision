@@ -15,6 +15,7 @@ module "vpc" {
   nat_gateway_instance_type         = var.nat_gateway_instance_type
   monitoring_security_groups        = var.target_monitoring_security_groups
   concourse_security_groups         = var.target_concourse_security_groups
+  credhub_security_groups           = var.target_credhub_security_groups
 }
 
 module "rds_network" {
