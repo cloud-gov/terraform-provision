@@ -39,7 +39,7 @@
       "Action": [
         "rds:DescribeDBEngineVersions"
       ],
-      "Resouce": [
+      "Resource": [
         "*"
       ]
     },
