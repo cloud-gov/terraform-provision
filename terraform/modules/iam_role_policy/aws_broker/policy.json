@@ -5,6 +5,7 @@
       "Effect": "Allow",
       "Action": [
         "rds:DescribeDBInstances",
+        "rds:DescribeDBEngineVersions",
         "rds:CreateDBInstance",
         "rds:DeleteDBInstance",
         "rds:ModifyDBInstance",
