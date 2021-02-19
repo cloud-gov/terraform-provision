@@ -154,7 +154,7 @@ module "credhub_staging" {
   rds_subnet_group              = module.stack.rds_subnet_group
   rds_security_groups           = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name      = "tooling-credhub-staging"
-  rds_instance_type             = "db.m4.medium"
+  rds_instance_type             = "db.m4.large"
   rds_multi_az                  = var.rds_multi_az
   rds_final_snapshot_identifier = "final-snapshot-credhub-tooling-staging"
   listener_arn                  = aws_lb_listener.main.arn
