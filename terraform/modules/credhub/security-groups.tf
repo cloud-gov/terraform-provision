@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "self_reference" {
 resource "aws_security_group_rule" "credhub" {
   type              = "ingress"
   from_port         = 8844
-  to_port           = 8844
+  to_port           = 8845
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.credhub.id
