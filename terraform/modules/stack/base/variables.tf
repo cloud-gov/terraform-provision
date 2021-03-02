@@ -140,7 +140,7 @@ variable "credhub_rds_password" {
 }
 
 variable "credhub_rds_db_engine_version" {
-  default = "11.1"
+  default = "12.4"
 }
 
 variable "rds_parameter_group_name" {
