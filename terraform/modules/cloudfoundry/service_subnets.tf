@@ -12,33 +12,34 @@
  */
 
 resource "aws_subnet" "az1_services" {
-  vpc_id = "${var.vpc_id}"
-  cidr_block = "${var.services_cidr_1}"
-  availability_zone = "${var.az1}"
+  vpc_id            = var.vpc_id
+  cidr_block        = var.services_cidr_1
+  availability_zone = var.az1
 
-  tags {
-    Name = "${var.stack_description} (Services AZ1)"
-    KubernetesCluster = "${var.kubernetes_cluster_id}"
+  tags = {
+    Name              = "${var.stack_description} (Services AZ1)"
+    KubernetesCluster = var.kubernetes_cluster_id
   }
 }
 
 resource "aws_subnet" "az2_services" {
-  vpc_id = "${var.vpc_id}"
-  cidr_block = "${var.services_cidr_2}"
-  availability_zone = "${var.az2}"
+  vpc_id            = var.vpc_id
+  cidr_block        = var.services_cidr_2
+  availability_zone = var.az2
 
-  tags {
-    Name = "${var.stack_description} (Services AZ2)"
-    KubernetesCluster = "${var.kubernetes_cluster_id}"
+  tags = {
+    Name              = "${var.stack_description} (Services AZ2)"
+    KubernetesCluster = var.kubernetes_cluster_id
   }
 }
 
 resource "aws_route_table_association" "az1_services_rta" {
-  subnet_id = "${aws_subnet.az1_services.id}"
-  route_table_id = "${var.private_route_table_az1}"
+  subnet_id      = aws_subnet.az1_services.id
+  route_table_id = var.private_route_table_az1
 }
 
 resource "aws_route_table_association" "az2_services_rta" {
-  subnet_id = "${aws_subnet.az2_services.id}"
-  route_table_id = "${var.private_route_table_az2}"
+  subnet_id      = aws_subnet.az2_services.id
+  route_table_id = var.private_route_table_az2
 }
+

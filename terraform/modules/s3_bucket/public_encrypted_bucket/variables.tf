@@ -1,11 +1,14 @@
-variable "bucket" {}
+variable "bucket" {
+}
 
 variable "versioning" {
-    default = "false"
+  default = "false"
 }
 
 variable "force_destroy" {
-    default = "false"
+  default = "false"
 }
 
-variable "aws_partition" {}
+variable "aws_partition" {
+}
+

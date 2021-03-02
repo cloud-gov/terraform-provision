@@ -6,21 +6,36 @@ variable "aws_default_region" {
   default = "us-gov-west-1"
 }
 
-variable "vpc_cidr" {}
+variable "vpc_cidr" {
+}
 
-variable "rds_password" {}
-variable "credhub_rds_password" {}
+variable "rds_password" {
+}
+
+variable "credhub_rds_password" {
+}
 
 variable "rds_multi_az" {
   default = "true"
 }
 
-variable "remote_state_bucket" {}
+variable "remote_state_bucket" {
+}
 
-variable "concourse_prod_rds_password" {}
-variable "concourse_staging_rds_password" {}
+variable "concourse_prod_rds_password" {
+}
 
-variable "concourse_varz_bucket" {}
+variable "concourse_staging_rds_password" {
+}
+
+variable "concourse_varz_bucket" {
+}
+
+variable "credhub_prod_rds_password" {
+}
+
+variable "credhub_staging_rds_password" {
+}
 
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
@@ -31,34 +46,43 @@ variable "wildcard_staging_certificate_name_prefix" {
 }
 
 variable "concourse_production_hosts" {
-  type = "list"
+  type = list(string)
 }
 
 variable "concourse_staging_hosts" {
-  type = "list"
+  type = list(string)
+}
+
+variable "credhub_production_hosts" {
+  type = list(string)
+}
+
+variable "credhub_staging_hosts" {
+  type = list(string)
 }
 
 variable "monitoring_production_hosts" {
-  type = "list"
+  type = list(string)
 }
 
 variable "monitoring_staging_hosts" {
-  type = "list"
+  type = list(string)
 }
 
 variable "nessus_hosts" {
-  type = "list"
+  type = list(string)
 }
 
 variable "restricted_ingress_web_cidrs" {
-  type = "list"
+  type = list(string)
 }
 
 variable "restricted_ingress_web_ipv6_cidrs" {
-  type = "list"
+  type = list(string)
 }
 
-variable "blobstore_bucket_name" {}
+variable "blobstore_bucket_name" {
+}
 
 variable "bucket_prefix" {
   default = ""
@@ -109,7 +133,7 @@ variable "cg_binaries_bucket" {
 }
 
 variable "smtp_ingress_cidr_blocks" {
-  type = "list"
+  type = list(string)
 }
 
 variable "cloudtrail_bucket" {
@@ -120,8 +144,12 @@ variable "log_bucket_name" {
   default = "cg-elb-logs"
 }
 
-variable "oidc_client" {}
+variable "oidc_client" {
+}
 
-variable "oidc_client_secret" {}
+variable "oidc_client_secret" {
+}
 
-variable "payer_account_id" {}
+variable "payer_account_id" {
+}
+

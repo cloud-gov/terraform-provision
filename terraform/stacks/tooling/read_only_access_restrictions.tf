@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "read_only_access_restrictions" {
-  name = "ReadOnlyAccessRestrictions"
+  name        = "ReadOnlyAccessRestrictions"
   description = "Use in combination with Amazon managed ReadOnlyAccess policy."
 
   policy = <<EOF
@@ -26,4 +26,6 @@ resource "aws_iam_policy" "read_only_access_restrictions" {
   ]
 }
 EOF
+
 }
+
