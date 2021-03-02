@@ -1,19 +1,22 @@
-variable "bucket" {}
+variable "bucket" {
+}
 
 variable "acl" {
-    default = "private"
+  default = "private"
 }
 
 variable "versioning" {
-    default = "false"
+  default = "false"
 }
 
 variable "force_destroy" {
-    default = "false"
+  default = "false"
 }
 
-variable "aws_partition" {}
+variable "aws_partition" {
+}
 
 variable "expiration_days" {
-    default = 0
+  default = 0
 }
+

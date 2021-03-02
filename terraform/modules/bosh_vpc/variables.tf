@@ -1,4 +1,5 @@
-variable "stack_description" {}
+variable "stack_description" {
+}
 
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
@@ -13,7 +14,7 @@ variable "az2" {
 }
 
 variable "aws_default_region" {
-    default = "us-gov-west-1"
+  default = "us-gov-west-1"
 }
 
 variable "public_cidr_1" {
@@ -33,12 +34,12 @@ variable "private_cidr_2" {
 }
 
 variable "restricted_ingress_web_cidrs" {
-  type = "list"
+  type    = list(string)
   default = ["127.0.0.1/32", "192.168.0.1/24"]
 }
 
 variable "restricted_ingress_web_ipv6_cidrs" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
@@ -47,11 +48,17 @@ variable "nat_gateway_instance_type" {
 }
 
 variable "monitoring_security_groups" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
 variable "concourse_security_groups" {
-  type = "list"
+  type    = list(string)
   default = []
 }
+
+variable "credhub_security_groups" {
+  type    = list(string)
+  default = []
+}
+

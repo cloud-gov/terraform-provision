@@ -1,4 +1,5 @@
-variable "stack_description" {}
+variable "stack_description" {
+}
 
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
@@ -24,17 +25,21 @@ variable "public_cidr_2" {
   default = "10.0.101.0/24"
 }
 
-variable "private_cidr_1" {}
+variable "private_cidr_1" {
+}
 
-variable "private_cidr_2" {}
+variable "private_cidr_2" {
+}
 
 variable "nat_gateway_instance_type" {
   default = "c3.2xlarge"
 }
 
-variable "rds_private_cidr_1" {}
+variable "rds_private_cidr_1" {
+}
 
-variable "rds_private_cidr_2" {}
+variable "rds_private_cidr_2" {
+}
 
 variable "rds_instance_type" {
   default = "db.m4.large"
@@ -45,11 +50,11 @@ variable "rds_db_size" {
 }
 
 variable "rds_allow_major_version_upgrade" {
-  default = ""
+  default = "false"
 }
 
 variable "rds_apply_immediately" {
-  default = ""
+  default = "false"
 }
 
 variable "rds_db_name" {
@@ -61,27 +66,28 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.18"
+  default = "9.6.19"
 }
 
 variable "rds_username" {
   default = "bosh"
 }
 
-variable "rds_password" {}
+variable "rds_password" {
+}
 
 variable "restricted_ingress_web_cidrs" {
-  type    = "list"
+  type    = list(string)
   default = ["127.0.0.1/32", "192.168.0.1/24"]
 }
 
 variable "restricted_ingress_web_ipv6_cidrs" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "rds_security_groups" {
-  type = "list"
+  type = list(string)
 }
 
 variable "rds_security_groups_count" {
@@ -89,12 +95,17 @@ variable "rds_security_groups_count" {
 }
 
 variable "target_monitoring_security_groups" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "target_concourse_security_groups" {
-  type    = "list"
+  type    = list(string)
+  default = []
+}
+
+variable "target_credhub_security_groups" {
+  type    = list(string)
   default = []
 }
 
@@ -125,10 +136,11 @@ variable "credhub_rds_username" {
   default = "credhub"
 }
 
-variable "credhub_rds_password" {}
+variable "credhub_rds_password" {
+}
 
 variable "credhub_rds_db_engine_version" {
-  default = "9.6.18"
+  default = "9.6.19"
 }
 
 variable "rds_parameter_group_name" {
@@ -138,3 +150,4 @@ variable "rds_parameter_group_name" {
 variable "credhub_rds_force_ssl" {
   default = 1
 }
+

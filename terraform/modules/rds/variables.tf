@@ -1,4 +1,5 @@
-variable "stack_description" {}
+variable "stack_description" {
+}
 
 variable "rds_instance_type" {
   default = "db.m4.large"
@@ -16,7 +17,8 @@ variable "rds_db_iops" {
   default = 0
 }
 
-variable "rds_db_name" {}
+variable "rds_db_name" {
+}
 
 variable "rds_db_engine" {
   default = "postgres"
@@ -26,14 +28,17 @@ variable "rds_db_engine_version" {
   default = "11.1"
 }
 
-variable "rds_username" {}
+variable "rds_username" {
+}
 
-variable "rds_password" {}
+variable "rds_password" {
+}
 
-variable "rds_subnet_group" {}
+variable "rds_subnet_group" {
+}
 
 variable "rds_security_groups" {
-  type = "list"
+  type = list(string)
 }
 
 variable "rds_force_ssl" {
@@ -72,9 +77,10 @@ variable "rds_final_snapshot_identifier" {
 variable "rds_apply_immediately" {
   # Even though the documentation says these default to "false", `terraform
   # plan` shows otherwise.
-  default = ""
+  default = "false"
 }
 
 variable "rds_allow_major_version_upgrade" {
-  default = ""
+  default = "false"
 }
+

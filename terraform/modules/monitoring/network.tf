@@ -9,17 +9,17 @@
  */
 
 resource "aws_subnet" "monitoring" {
-  vpc_id = "${var.vpc_id}"
-  cidr_block = "${var.monitoring_cidr}"
-  availability_zone = "${var.monitoring_az}"
+  vpc_id            = var.vpc_id
+  cidr_block        = var.monitoring_cidr
+  availability_zone = var.monitoring_az
 
-
-  tags =  {
+  tags = {
     Name = "${var.stack_description} (Monitoring - ${var.monitoring_cidr})"
   }
 }
 
 resource "aws_route_table_association" "monitoring_rta" {
-  subnet_id = "${aws_subnet.monitoring.id}"
-  route_table_id = "${var.route_table_id}"
+  subnet_id      = aws_subnet.monitoring.id
+  route_table_id = var.route_table_id
 }
+
