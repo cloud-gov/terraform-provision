@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
-  bucket        = "${var.cloudtrail_bucket}"
+  bucket        = var.cloudtrail_bucket
   force_destroy = true
 
   policy = <<POLICY
@@ -32,13 +32,14 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
     ]
 }
 POLICY
+
 }
 
-resource "aws_cloudtrail" "cg-s3-cloudtrail-trail"{
-  name                          = "s3-audit-logs"
-  s3_bucket_name                = "${aws_s3_bucket.cg-s3-cloudtrail-bucket.id}"
+resource "aws_cloudtrail" "cg-s3-cloudtrail-trail" {
+  name           = "s3-audit-logs"
+  s3_bucket_name = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
   event_selector {
-    read_write_type = "All"
+    read_write_type           = "All"
     include_management_events = true
 
     data_resource {
@@ -47,3 +48,4 @@ resource "aws_cloudtrail" "cg-s3-cloudtrail-trail"{
     }
   }
 }
+
