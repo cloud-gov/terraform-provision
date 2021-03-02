@@ -1,2 +1,6 @@
-variable "account_id" {}
-variable "stack_description" {}
+variable "account_id" {
+}
+
+variable "stack_description" {
+}
+

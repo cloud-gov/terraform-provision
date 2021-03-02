@@ -1,4 +1,6 @@
+variable "target_bosh_security_group" {
+}
 
-variable "target_bosh_security_group" {}
+variable "source_vpc_cidr" {
+}
 
-variable "source_vpc_cidr" {}

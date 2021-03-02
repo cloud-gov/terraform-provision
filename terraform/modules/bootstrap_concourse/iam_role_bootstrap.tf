@@ -1,5 +1,5 @@
 resource "aws_iam_role" "bootstrap" {
-  name = "bootstrap-${var.aws_access_key_id}"
+  name               = "bootstrap-${var.aws_access_key_id}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -12,22 +12,23 @@ resource "aws_iam_role" "bootstrap" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_instance_profile" "bootstrap" {
   name = "bootstrap-${element(split("-", uuid()), 4)}"
   lifecycle {
-    ignore_changes = ["name"]
+    ignore_changes = [name]
   }
-  role = "${aws_iam_role.bootstrap.name}"
+  role = aws_iam_role.bootstrap.name
 }
 
 resource "aws_iam_role_policy" "bootstrap" {
   name = "bootstrap-${element(split("-", uuid()), 4)}"
   lifecycle {
-    ignore_changes = ["name"]
+    ignore_changes = [name]
   }
-  role = "${aws_iam_role.bootstrap.id}"
+  role   = aws_iam_role.bootstrap.id
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -41,4 +42,6 @@ resource "aws_iam_role_policy" "bootstrap" {
   ]
 }
 EOF
+
 }
+
