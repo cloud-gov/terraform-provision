@@ -1,7 +1,7 @@
 module "kubernetes_node" {
-  source = ".."
+  source = "../"
 
-  role_name = "${var.role_name}"
+  role_name  = var.role_name
   iam_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -16,6 +16,8 @@ module "kubernetes_node" {
   }
 }
 EOF
+
+
   iam_assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -42,4 +44,6 @@ EOF
   ]
 }
 EOF
+
 }
+

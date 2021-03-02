@@ -1,3 +1,9 @@
-variable "aws_partition" {}
-variable "username" {}
-variable "log_bucket" {}
+variable "aws_partition" {
+}
+
+variable "username" {
+}
+
+variable "log_bucket" {
+}
+

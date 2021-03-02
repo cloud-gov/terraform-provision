@@ -3,11 +3,11 @@
 # on both commercial (cloudfront, route53) and govcloud (alb) resources
 
 data "template_file" "policy" {
-  template = "${file("${path.module}/policy.json")}"
+  template = file("${path.module}/policy.json")
 
-  vars {
-    account_id        = "${var.account_id}"
-    stack             = "${var.stack_description}"
+  vars = {
+    account_id = var.account_id
+    stack      = var.stack_description
   }
 }
 
@@ -16,14 +16,16 @@ resource "aws_iam_user" "iam_user" {
 }
 
 resource "aws_iam_access_key" "iam_access_key_v1" {
-  user = "${aws_iam_user.iam_user.name}"
+  user = aws_iam_user.iam_user.name
 }
+
 resource "aws_iam_access_key" "iam_access_key_v2" {
-  user = "${aws_iam_user.iam_user.name}"
+  user = aws_iam_user.iam_user.name
 }
 
 resource "aws_iam_user_policy" "iam_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
-  user   = "${aws_iam_user.iam_user.name}"
-  policy = "${data.template_file.policy.rendered}"
+  user   = aws_iam_user.iam_user.name
+  policy = data.template_file.policy.rendered
 }
+

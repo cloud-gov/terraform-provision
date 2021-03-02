@@ -1,3 +1,9 @@
-variable "username" {}
-variable "billing_bucket" {}
-variable "aws_partition" {}
+variable "username" {
+}
+
+variable "billing_bucket" {
+}
+
+variable "aws_partition" {
+}
+
