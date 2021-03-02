@@ -8,6 +8,7 @@
         "apigateway:OPTIONS",
         "autoscaling:Describe*",
         "cloudformation:Describe*",
+        "cloudfront:ListDistributions",
         "cloudtrail:DescribeTrails",
         "cloudtrail:GetEventSelectors",
         "ds:GetDirectoryLimits",
