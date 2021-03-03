@@ -1,7 +1,7 @@
 resource "aws_lb_target_group" "credhub_target" {
   name     = "${var.stack_description}-credhub-${var.credhub_az}"
   port     = 8844
-  protocol = "HTTP"
+  protocol = "HTTPS"
   vpc_id   = var.vpc_id
 
   health_check {
