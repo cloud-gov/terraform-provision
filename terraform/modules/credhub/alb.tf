@@ -10,7 +10,6 @@ resource "aws_lb_target_group" "credhub_target" {
     timeout             = 5
     interval            = 30
     matcher             = 200
-    port                = 8845
   }
 
   stickiness {
