@@ -17,6 +17,7 @@ module "base" {
   rds_db_name                       = var.rds_db_name
   rds_db_engine                     = var.rds_db_engine
   rds_db_engine_version             = var.rds_db_engine_version
+  rds_parameter_group_family        = var.rds_parameter_group_family
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
   rds_apply_immediately             = var.rds_apply_immediately
   rds_username                      = var.rds_username
