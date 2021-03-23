@@ -41,7 +41,7 @@ module "logsearch_ingestor_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
-module "kubernetes_master_policy" {
+/* module "kubernetes_master_policy" {
   source        = "../../modules/iam_role_policy/kubernetes_master"
   policy_name   = "${var.stack_description}-kubernetes-master"
   aws_partition = data.aws_partition.current.partition
@@ -51,7 +51,7 @@ module "kubernetes_minion_policy" {
   source        = "../../modules/iam_role_policy/kubernetes_minion"
   policy_name   = "${var.stack_description}-kubernetes-minion"
   aws_partition = data.aws_partition.current.partition
-}
+} */
 
 module "etcd_backup_policy" {
   source        = "../../modules/iam_role_policy/etcd_backup"
@@ -114,7 +114,7 @@ module "logsearch_ingestor_role" {
   role_name = "${var.stack_description}-logsearch-ingestor"
 }
 
-module "kubernetes_master_role" {
+/* module "kubernetes_master_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-kubernetes-master"
 }
@@ -122,7 +122,7 @@ module "kubernetes_master_role" {
 module "kubernetes_minion_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-kubernetes-minion"
-}
+} */
 
 module "etcd_backup_role" {
   source    = "../../modules/iam_role"
@@ -151,8 +151,8 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.default_role.role_name,
     module.bosh_role.role_name,
     module.logsearch_ingestor_role.role_name,
-    module.kubernetes_master_role.role_name,
-    module.kubernetes_minion_role.role_name,
+    /* module.kubernetes_master_role.role_name,
+    module.kubernetes_minion_role.role_name, */
     module.etcd_backup_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
@@ -169,8 +169,8 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.bosh_role.role_name,
     module.bosh_compilation_role.role_name,
     module.logsearch_ingestor_role.role_name,
-    module.kubernetes_master_role.role_name,
-    module.kubernetes_minion_role.role_name,
+    /* module.kubernetes_master_role.role_name,
+    module.kubernetes_minion_role.role_name, */
     module.etcd_backup_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
@@ -211,7 +211,7 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "kubernetes_master" {
+/* resource "aws_iam_policy_attachment" "kubernetes_master" {
   name       = "${var.stack_description}-kubernetes-master"
   policy_arn = module.kubernetes_master_policy.arn
   roles = [
@@ -225,7 +225,7 @@ resource "aws_iam_policy_attachment" "kubernetes_minion" {
   roles = [
     module.kubernetes_minion_role.role_name,
   ]
-}
+} */
 
 resource "aws_iam_policy_attachment" "ectd_backup" {
   name       = "${var.stack_description}-etcd-backup"
@@ -267,7 +267,7 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
-module "kubernetes_node_role" {
+/* module "kubernetes_node_role" {
   source           = "../../modules/iam_role/kubernetes_node"
   role_name        = "${var.stack_description}-kubernetes-node"
   aws_partition    = data.aws_partition.current.partition
@@ -286,5 +286,5 @@ module "kubernetes_logger_role" {
   master_role        = module.kubernetes_master_role.role_name
   minion_role        = module.kubernetes_minion_role.role_name
   assume_role_path   = "/bosh-passed/"
-}
+} */
 
