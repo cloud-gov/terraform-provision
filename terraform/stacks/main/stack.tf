@@ -144,7 +144,7 @@ module "cf" {
 
   services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
-  kubernetes_cluster_id = var.kubernetes_cluster_id
+  /* kubernetes_cluster_id = var.kubernetes_cluster_id */
   bucket_prefix         = var.bucket_prefix
   log_bucket_name       = var.log_bucket_name
 }
