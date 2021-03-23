@@ -53,12 +53,12 @@ module "kubernetes_minion_policy" {
   aws_partition = data.aws_partition.current.partition
 } */
 
-module "etcd_backup_policy" {
+/* module "etcd_backup_policy" {
   source        = "../../modules/iam_role_policy/etcd_backup"
   policy_name   = "${var.stack_description}-etcd-backup"
   aws_partition = data.aws_partition.current.partition
   bucket_name   = "etcd-*"
-}
+} */
 
 module "cf_blobstore_policy" {
   source            = "../../modules/iam_role_policy/cf_blobstore"
@@ -124,10 +124,10 @@ module "kubernetes_minion_role" {
   role_name = "${var.stack_description}-kubernetes-minion"
 } */
 
-module "etcd_backup_role" {
+/* module "etcd_backup_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-etcd-backup"
-}
+} */
 
 module "cf_blobstore_role" {
   source    = "../../modules/iam_role"
@@ -153,7 +153,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.logsearch_ingestor_role.role_name,
     /* module.kubernetes_master_role.role_name,
     module.kubernetes_minion_role.role_name, */
-    module.etcd_backup_role.role_name,
+    /* module.etcd_backup_role.role_name, */
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -171,7 +171,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.logsearch_ingestor_role.role_name,
     /* module.kubernetes_master_role.role_name,
     module.kubernetes_minion_role.role_name, */
-    module.etcd_backup_role.role_name,
+    /* module.etcd_backup_role.role_name, */
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -227,13 +227,13 @@ resource "aws_iam_policy_attachment" "kubernetes_minion" {
   ]
 } */
 
-resource "aws_iam_policy_attachment" "ectd_backup" {
+/* resource "aws_iam_policy_attachment" "ectd_backup" {
   name       = "${var.stack_description}-etcd-backup"
   policy_arn = module.etcd_backup_policy.arn
   roles = [
     module.etcd_backup_role.role_name,
   ]
-}
+} */
 
 resource "aws_iam_policy_attachment" "cf_blobstore" {
   name       = "${var.stack_description}-cf_blobstore"
