@@ -502,9 +502,9 @@ output "kubernetes_logger_profile" {
   value = module.kubernetes_logger_role.profile_name
 } */
 
-output "etcd_backup_profile" {
+/* output "etcd_backup_profile" {
   value = module.etcd_backup_role.profile_name
-}
+} */
 
 output "cf_blobstore_profile" {
   value = module.cf_blobstore_role.profile_name
@@ -557,9 +557,9 @@ output "logsearch_archive_bucket_name" {
   value = module.cf.logsearch_archive_bucket_name
 }
 
-output "etcd_backup_bucket_name" {
+/* output "etcd_backup_bucket_name" {
   value = module.cf.etcd_backup_bucket_name
-}
+} */
 
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name
