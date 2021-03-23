@@ -166,6 +166,7 @@ module "diego" {
   log_bucket_name = var.log_bucket_name
 }
 
+/* 
 module "kubernetes" {
   source = "../../modules/kubernetes"
 
@@ -180,7 +181,8 @@ module "kubernetes" {
   target_monitoring_security_group = data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_description]
   target_concourse_security_group  = data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group
   log_bucket_name                  = var.log_bucket_name
-}
+} 
+*/
 
 module "logsearch" {
   source = "../../modules/logsearch"
