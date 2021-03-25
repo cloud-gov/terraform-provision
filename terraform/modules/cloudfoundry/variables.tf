@@ -35,6 +35,10 @@ variable "rds_db_engine_version" {
   default = "12.4"
 }
 
+variable "rds_parameter_group_family" {
+  default = "postgres12"
+}
+
 variable "rds_username" {
   default = "cfdb"
 }
@@ -47,6 +51,14 @@ variable "rds_subnet_group" {
 
 variable "rds_security_groups" {
   type = list(string)
+}
+
+variable "rds_apply_immediately" {
+  default = "false"
+}
+
+variable "rds_allow_major_version_upgrade" {
+  default = "false"
 }
 
 variable "stack_prefix" {
