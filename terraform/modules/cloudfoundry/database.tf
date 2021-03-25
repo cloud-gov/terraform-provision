@@ -1,4 +1,4 @@
-module "cf_database" {
+module "cf_database_96" {
   source = "../rds"
 
   stack_description     = var.stack_description
