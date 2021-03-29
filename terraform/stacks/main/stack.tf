@@ -135,8 +135,6 @@ module "cf" {
   rds_security_groups = [module.stack.rds_postgres_security_group]
   stack_prefix        = var.stack_prefix
 
-  rds_parameter_group_family  = var.rds_parameter_group_family
-
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
 
