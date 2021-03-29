@@ -15,6 +15,9 @@ variable "rds_db_size" {
 variable "rds_password" {
 }
 
+variable "rds_parameter_group_family" {
+}
+
 variable "cf_rds_password" {
 }
 
