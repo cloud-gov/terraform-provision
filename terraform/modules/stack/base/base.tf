@@ -49,6 +49,7 @@ module "rds" {
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_subnet_group                = module.rds_network.rds_subnet_group
   rds_security_groups             = [module.rds_network.rds_postgres_security_group]
+  rds_parameter_group_family      = var.rds_parameter_group_family
 }
 
 module "credhub_rds" {
