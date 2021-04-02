@@ -90,39 +90,47 @@ module "stack" {
 }
 
 module "concourse_production" {
-  source                        = "../../modules/concourse"
-  stack_description             = var.stack_description
-  vpc_id                        = module.stack.vpc_id
-  concourse_cidr                = cidrsubnet(var.vpc_cidr, 8, 30)
-  concourse_az                  = data.aws_availability_zones.available.names[0]
-  route_table_id                = module.stack.private_route_table_az1
-  rds_password                  = var.concourse_prod_rds_password
-  rds_subnet_group              = module.stack.rds_subnet_group
-  rds_security_groups           = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name      = "tooling-concourse-production"
-  rds_instance_type             = "db.m4.xlarge"
-  rds_multi_az                  = var.rds_multi_az
-  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-production"
-  listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.concourse_production_hosts
+  source                          = "../../modules/concourse"
+  stack_description               = var.stack_description
+  vpc_id                          = module.stack.vpc_id
+  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_az                    = data.aws_availability_zones.available.names[0]
+  route_table_id                  = module.stack.private_route_table_az1
+  rds_password                    = var.concourse_prod_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-concourse-production"
+  rds_parameter_group_family      = "postgres9.6"
+  rds_engine_version              = "9.6.19"
+  rds_apply_immediately           = "false"
+  rds_allow_major_version_upgrade = "false"
+  rds_instance_type               = "db.m4.xlarge"
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.concourse_production_hosts
 }
 
 module "concourse_staging" {
-  source                        = "../../modules/concourse"
-  stack_description             = var.stack_description
-  vpc_id                        = module.stack.vpc_id
-  concourse_cidr                = cidrsubnet(var.vpc_cidr, 8, 31)
-  concourse_az                  = data.aws_availability_zones.available.names[1]
-  route_table_id                = module.stack.private_route_table_az2
-  rds_password                  = var.concourse_staging_rds_password
-  rds_subnet_group              = module.stack.rds_subnet_group
-  rds_security_groups           = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name      = "tooling-concourse-staging"
-  rds_instance_type             = "db.m4.large"
-  rds_multi_az                  = var.rds_multi_az
-  rds_final_snapshot_identifier = "final-snapshot-atc-tooling-staging"
-  listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.concourse_staging_hosts
+  source                          = "../../modules/concourse"
+  stack_description               = var.stack_description
+  vpc_id                          = module.stack.vpc_id
+  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
+  concourse_az                    = data.aws_availability_zones.available.names[1]
+  route_table_id                  = module.stack.private_route_table_az2
+  rds_password                    = var.concourse_staging_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-concourse-staging"
+  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_engine_version              = var.rds_engine_version
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m4.large"
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.concourse_staging_hosts
 }
 
 module "credhub_production" {
