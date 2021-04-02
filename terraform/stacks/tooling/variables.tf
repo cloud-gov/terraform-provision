@@ -20,9 +20,11 @@ variable "rds_multi_az" {
 }
 
 variable "rds_allow_major_version_upgrade" {
+  default = "false"
 }
 
 variable "rds_apply_immediately" {
+  default = "false"
 }
 
 variable "rds_engine_version" {
