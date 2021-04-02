@@ -135,6 +135,9 @@ module "cf" {
   rds_security_groups = [module.stack.rds_postgres_security_group]
   stack_prefix        = var.stack_prefix
 
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+
   vpc_id                  = module.stack.vpc_id
   private_route_table_az1 = module.stack.private_route_table_az1
   private_route_table_az2 = module.stack.private_route_table_az2
