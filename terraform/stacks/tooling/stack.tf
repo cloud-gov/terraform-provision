@@ -124,8 +124,8 @@ module "concourse_staging" {
   rds_parameter_group_name        = "tooling-concourse-staging"
   rds_parameter_group_family      = var.rds_parameter_group_family
   rds_engine_version              = var.rds_engine_version
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = "true"
+  rds_allow_major_version_upgrade = "true"
   rds_instance_type               = "db.m4.large"
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
