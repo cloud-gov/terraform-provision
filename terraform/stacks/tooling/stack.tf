@@ -126,39 +126,47 @@ module "concourse_staging" {
 }
 
 module "credhub_production" {
-  source                        = "../../modules/credhub"
-  stack_description             = var.stack_description
-  vpc_id                        = module.stack.vpc_id
-  credhub_cidr                  = cidrsubnet(var.vpc_cidr, 8, 35)
-  credhub_az                    = data.aws_availability_zones.available.names[0]
-  route_table_id                = module.stack.private_route_table_az1
-  rds_password                  = var.credhub_prod_rds_password
-  rds_subnet_group              = module.stack.rds_subnet_group
-  rds_security_groups           = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name      = "tooling-credhub-production"
-  rds_instance_type             = "db.m4.large"
-  rds_multi_az                  = var.rds_multi_az
-  rds_final_snapshot_identifier = "final-snapshot-credhub-tooling-production"
-  listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.credhub_production_hosts
+  source                          = "../../modules/credhub"
+  stack_description               = var.stack_description
+  vpc_id                          = module.stack.vpc_id
+  credhub_cidr                    = cidrsubnet(var.vpc_cidr, 8, 35)
+  credhub_az                      = data.aws_availability_zones.available.names[0]
+  route_table_id                  = module.stack.private_route_table_az1
+  rds_password                    = var.credhub_prod_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-credhub-production"
+  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_engine_version              = var.rds_engine_version
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m4.large"
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.credhub_production_hosts
 }
 
 module "credhub_staging" {
-  source                        = "../../modules/credhub"
-  stack_description             = var.stack_description
-  vpc_id                        = module.stack.vpc_id
-  credhub_cidr                  = cidrsubnet(var.vpc_cidr, 8, 34)
-  credhub_az                    = data.aws_availability_zones.available.names[1]
-  route_table_id                = module.stack.private_route_table_az2
-  rds_password                  = var.credhub_staging_rds_password
-  rds_subnet_group              = module.stack.rds_subnet_group
-  rds_security_groups           = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name      = "tooling-credhub-staging"
-  rds_instance_type             = "db.m4.large"
-  rds_multi_az                  = var.rds_multi_az
-  rds_final_snapshot_identifier = "final-snapshot-credhub-tooling-staging"
-  listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.credhub_staging_hosts
+  source                          = "../../modules/credhub"
+  stack_description               = var.stack_description
+  vpc_id                          = module.stack.vpc_id
+  credhub_cidr                    = cidrsubnet(var.vpc_cidr, 8, 34)
+  credhub_az                      = data.aws_availability_zones.available.names[1]
+  route_table_id                  = module.stack.private_route_table_az2
+  rds_password                    = var.credhub_staging_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-credhub-staging"
+  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_engine_version              = var.rds_engine_version
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m4.large"
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.credhub_staging_hosts
 }
 
 module "monitoring_production" {

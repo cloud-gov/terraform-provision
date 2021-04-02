@@ -19,6 +19,20 @@ variable "rds_multi_az" {
   default = "true"
 }
 
+variable "rds_allow_major_version_upgrade" {
+}
+
+variable "rds_apply_immediately" {
+}
+
+variable "rds_engine_version" {
+  default = "12.4"
+}
+
+variable "rds_parameter_group_family" {
+  default = "postgres12"
+}
+
 variable "remote_state_bucket" {
 }
 
