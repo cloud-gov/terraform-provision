@@ -413,7 +413,7 @@ output "diego_elb_dns_name" {
 }
 
 /* Kubernetes network */
-output "kubernetes_elb_name" {
+/* output "kubernetes_elb_name" {
   value = module.kubernetes.kubernetes_elb_name
 }
 
@@ -428,6 +428,7 @@ output "kubernetes_elb_security_group" {
 output "kubernetes_ec2_security_group" {
   value = module.kubernetes.kubernetes_ec2_security_group
 }
+ */
 
 /* Logsearch network */
 output "logsearch_elb_name" {
@@ -485,7 +486,7 @@ output "logsearch_ingestor_profile" {
   value = module.logsearch_ingestor_role.profile_name
 }
 
-output "kubernetes_master_profile" {
+/* output "kubernetes_master_profile" {
   value = module.kubernetes_master_role.profile_name
 }
 
@@ -499,11 +500,11 @@ output "kubernetes_node_profile" {
 
 output "kubernetes_logger_profile" {
   value = module.kubernetes_logger_role.profile_name
-}
+} */
 
-output "etcd_backup_profile" {
+/* output "etcd_backup_profile" {
   value = module.etcd_backup_role.profile_name
-}
+} */
 
 output "cf_blobstore_profile" {
   value = module.cf_blobstore_role.profile_name
@@ -556,9 +557,9 @@ output "logsearch_archive_bucket_name" {
   value = module.cf.logsearch_archive_bucket_name
 }
 
-output "etcd_backup_bucket_name" {
+/* output "etcd_backup_bucket_name" {
   value = module.cf.etcd_backup_bucket_name
-}
+} */
 
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name

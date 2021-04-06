@@ -860,7 +860,7 @@ resources:
   type: git
   source:
     uri: ((cg_provision_development_git_url))
-    branch: master
+    branch: k8s-testing
 
 - name: cg-provision-repo-master
   type: git

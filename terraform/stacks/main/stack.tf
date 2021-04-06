@@ -146,7 +146,7 @@ module "cf" {
 
   services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
-  kubernetes_cluster_id = var.kubernetes_cluster_id
+  /* kubernetes_cluster_id = var.kubernetes_cluster_id */
   bucket_prefix         = var.bucket_prefix
   log_bucket_name       = var.log_bucket_name
 }
@@ -168,6 +168,7 @@ module "diego" {
   log_bucket_name = var.log_bucket_name
 }
 
+/* 
 module "kubernetes" {
   source = "../../modules/kubernetes"
 
@@ -182,7 +183,8 @@ module "kubernetes" {
   target_monitoring_security_group = data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_description]
   target_concourse_security_group  = data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group
   log_bucket_name                  = var.log_bucket_name
-}
+} 
+*/
 
 module "logsearch" {
   source = "../../modules/logsearch"
