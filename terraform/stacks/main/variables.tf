@@ -88,9 +88,9 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.19"
+  default = "12.4"
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres9.6"
+  default = "postgres12"
 }
