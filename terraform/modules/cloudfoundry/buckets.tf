@@ -29,10 +29,3 @@ module "logsearch-archive" {
   expiration_days = 548
 }
 
-/* module "etcd-backup" {
-  source          = "../s3_bucket/encrypted_bucket"
-  bucket          = "etcd-backup-${var.stack_prefix}"
-  aws_partition   = var.aws_partition
-  expiration_days = 30
-} */
-
