@@ -87,3 +87,10 @@ variable "rds_apply_immediately" {
   default = "false"
 }
 
+variable "rds_db_engine_version" {
+  default = "9.6.19"
+}
+
+variable "rds_parameter_group_family" {
+  default = "postgres9.6"
+}

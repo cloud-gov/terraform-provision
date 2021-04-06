@@ -82,6 +82,8 @@ module "stack" {
   vpc_cidr                          = var.vpc_cidr
   aws_default_region                = var.aws_default_region
   rds_db_size                       = var.rds_db_size
+  rds_db_engine_version             = var.rds_db_engine_version
+  rds_parameter_group_family        = var.rds_parameter_group_family
   rds_apply_immediately             = var.rds_apply_immediately
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
   public_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 100)
