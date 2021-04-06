@@ -147,6 +147,10 @@ variable "credhub_rds_db_engine_version" {
   default = "9.6.19"
 }
 
+variable "credhub_rds_parameter_group_family" {
+  default = "postgres9.6"
+}
+
 variable "rds_parameter_group_name" {
   default = ""
 }
