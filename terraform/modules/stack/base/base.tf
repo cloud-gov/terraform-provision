@@ -69,6 +69,6 @@ module "credhub_rds" {
   rds_force_ssl                   = var.credhub_rds_force_ssl
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_parameter_group_family      = var.credhub_rds_parameter_group_family
 }
 
