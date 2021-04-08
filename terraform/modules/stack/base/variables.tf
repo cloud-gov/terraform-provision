@@ -144,11 +144,11 @@ variable "credhub_rds_password" {
 }
 
 variable "credhub_rds_db_engine_version" {
-  default = "9.6.19"
+  default = "12.4"
 }
 
 variable "credhub_rds_parameter_group_family" {
-  default = "postgres9.6"
+  default = "postgres12"
 }
 
 variable "rds_parameter_group_name" {
