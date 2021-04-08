@@ -254,6 +254,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_aws_default_region: ((aws_default_region))
       TF_VAR_rds_password: ((tooling_rds_password))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
       TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
       TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
@@ -370,7 +373,9 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((development_rds_password))
       TF_VAR_rds_db_size: ((development_rds_db_size))
-      TF_VAR_rds_apply_immediately: "true"
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_rds_multi_az: "false"
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((development_vpc_cidr))
@@ -486,6 +491,9 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((staging_rds_password))
       TF_VAR_rds_db_size: ((staging_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((staging_vpc_cidr))
@@ -600,6 +608,9 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((production_rds_password))
       TF_VAR_rds_db_size: ((production_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((production_vpc_cidr))
