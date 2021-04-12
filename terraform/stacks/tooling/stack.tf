@@ -100,8 +100,8 @@ module "concourse_production" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-concourse-production"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_engine_version              = var.rds_engine_version
+  rds_parameter_group_family      = "postgres12"
+  rds_engine_version              = "12.4"
   rds_apply_immediately           = "true"
   rds_allow_major_version_upgrade = "true"
   rds_instance_type               = "db.m4.xlarge"
@@ -122,8 +122,8 @@ module "concourse_staging" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-concourse-staging"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_engine_version              = var.rds_engine_version
+  rds_parameter_group_family      = "postgres12"
+  rds_engine_version              = "12.4"
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m4.large"
