@@ -18,7 +18,7 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres9.6"
+  default = "postgres12"
 }
 
 variable "rds_db_size" {
