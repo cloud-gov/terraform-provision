@@ -38,7 +38,7 @@ variable "rds_instance_type" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.19"
+  default = "12.4"
 }
 
 variable "rds_username" {
