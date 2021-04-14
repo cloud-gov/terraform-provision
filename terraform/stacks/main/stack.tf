@@ -135,13 +135,15 @@ module "cf" {
   rds_security_groups = [module.stack.rds_postgres_security_group]
   stack_prefix        = var.stack_prefix
 
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+
   vpc_id                  = module.stack.vpc_id
   private_route_table_az1 = module.stack.private_route_table_az1
   private_route_table_az2 = module.stack.private_route_table_az2
 
   services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
-  kubernetes_cluster_id = var.kubernetes_cluster_id
   bucket_prefix         = var.bucket_prefix
   log_bucket_name       = var.log_bucket_name
 }
@@ -163,21 +165,6 @@ module "diego" {
   log_bucket_name = var.log_bucket_name
 }
 
-module "kubernetes" {
-  source = "../../modules/kubernetes"
-
-  stack_description  = var.stack_description
-  aws_default_region = var.aws_default_region
-
-  vpc_id                           = module.stack.vpc_id
-  vpc_cidr                         = var.vpc_cidr
-  tooling_vpc_cidr                 = data.terraform_remote_state.target_vpc.outputs.vpc_cidr
-  elb_subnets                      = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  target_bosh_security_group       = module.stack.bosh_security_group
-  target_monitoring_security_group = data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_description]
-  target_concourse_security_group  = data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group
-  log_bucket_name                  = var.log_bucket_name
-}
 
 module "logsearch" {
   source = "../../modules/logsearch"

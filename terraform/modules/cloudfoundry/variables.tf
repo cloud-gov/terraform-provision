@@ -32,7 +32,11 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "9.6.19"
+  default = "12.4"
+}
+
+variable "rds_parameter_group_family" {
+  default = "postgres12"
 }
 
 variable "rds_username" {
@@ -47,6 +51,14 @@ variable "rds_subnet_group" {
 
 variable "rds_security_groups" {
   type = list(string)
+}
+
+variable "rds_apply_immediately" {
+  default = "false"
+}
+
+variable "rds_allow_major_version_upgrade" {
+  default = "false"
 }
 
 variable "stack_prefix" {
@@ -76,9 +88,6 @@ variable "services_cidr_2" {
 }
 
 variable "aws_partition" {
-}
-
-variable "kubernetes_cluster_id" {
 }
 
 variable "bucket_prefix" {
