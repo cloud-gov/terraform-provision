@@ -44,7 +44,6 @@ jobs:
       inputs:
       - name: pull-request
       params:
-        TERRAFORM_BIN: terratest-12.30
       run:
         path: pull-request/validate.sh
     on_success:
@@ -73,7 +72,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-staging-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: external-staging
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -142,7 +140,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-production-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: external-production
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -202,7 +199,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &dns-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: dns
       TEMPLATE_SUBDIR: terraform/stacks/dns
@@ -246,7 +242,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
@@ -254,6 +249,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_aws_default_region: ((aws_default_region))
       TF_VAR_rds_password: ((tooling_rds_password))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
       TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
       TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
@@ -357,7 +355,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: development
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -370,11 +367,12 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((development_rds_password))
       TF_VAR_rds_db_size: ((development_rds_db_size))
-      TF_VAR_rds_apply_immediately: "true"
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_rds_multi_az: "false"
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((development_vpc_cidr))
-      TF_VAR_kubernetes_cluster_id: ((development_kubernetes_cluster_id))
       TF_VAR_cf_rds_password: ((development_cf_rds_password))
       TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
@@ -474,7 +472,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -487,10 +484,12 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((staging_rds_password))
       TF_VAR_rds_db_size: ((staging_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((staging_vpc_cidr))
-      TF_VAR_kubernetes_cluster_id: ((staging_kubernetes_cluster_id))
       TF_VAR_cf_rds_password: ((staging_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((staging_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((staging_restricted_ingress_web_ipv6_cidrs))
@@ -589,7 +588,6 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
-      TERRAFORM_BIN: terratest-12.30
       TERRAFORM_ACTION: plan
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -602,10 +600,12 @@ jobs:
       # IDs from `data` resources.
       TF_VAR_rds_password: ((production_rds_password))
       TF_VAR_rds_db_size: ((production_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
       TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_vpc_cidr: ((production_vpc_cidr))
-      TF_VAR_kubernetes_cluster_id: ((production_kubernetes_cluster_id))
       TF_VAR_cf_rds_password: ((production_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
