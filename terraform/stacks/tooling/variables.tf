@@ -27,12 +27,12 @@ variable "rds_apply_immediately" {
   default = "false"
 }
 
-variable "rds_engine_version" {
-  default = "9.6.19"
+variable "rds_db_engine_version" {
+  default = "12.4"
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres9.6"
+  default = "postgres12"
 }
 
 variable "remote_state_bucket" {
