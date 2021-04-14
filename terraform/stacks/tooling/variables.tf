@@ -27,7 +27,7 @@ variable "rds_apply_immediately" {
   default = "false"
 }
 
-variable "rds_engine_version" {
+variable "rds_db_engine_version" {
   default = "12.4"
 }
 

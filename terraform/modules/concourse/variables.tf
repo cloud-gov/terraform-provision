@@ -17,6 +17,10 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
+variable "rds_parameter_group_family" {
+  default = "postgres12"
+}
+
 variable "rds_db_size" {
   default = 200
 }
@@ -33,8 +37,8 @@ variable "rds_instance_type" {
   default = "db.m4.xlarge"
 }
 
-variable "rds_engine_version" {
-  default = "9.6.19"
+variable "rds_db_engine_version" {
+  default = "12.4"
 }
 
 variable "rds_username" {
@@ -55,6 +59,12 @@ variable "rds_multi_az" {
 }
 
 variable "rds_final_snapshot_identifier" {
+}
+
+variable "rds_allow_major_version_upgrade" {
+}
+
+variable "rds_apply_immediately" {
 }
 
 variable "route_table_id" {

@@ -37,7 +37,7 @@ variable "rds_instance_type" {
   default = "db.m4.xlarge"
 }
 
-variable "rds_engine_version" {
+variable "rds_db_engine_version" {
   default = "12.4"
 }
 
