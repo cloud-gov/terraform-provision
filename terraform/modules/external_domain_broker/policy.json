@@ -10,7 +10,8 @@
         "iam:UpdateServerCertificate"
       ],
       "Resource": [
-        "arn:aws:iam::${account_id}:server-certificate/cloudfront/external-domains-${stack}/*"
+        "arn:aws:iam::${account_id}:server-certificate/cloudfront/external-domains-${stack}/*",
+        "arn:aws:iam::${account_id}:server-certificate/cloudfront/cg-${stack}/*"
       ]
     },
     {
