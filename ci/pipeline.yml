@@ -44,6 +44,7 @@ jobs:
       inputs:
       - name: pull-request
       params:
+        TERRAFORM_BIN: terratest-13.6
       run:
         path: pull-request/validate.sh
     on_success:
