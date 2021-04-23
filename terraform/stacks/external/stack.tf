@@ -4,7 +4,6 @@ terraform {
 }
 
 provider "aws" {
-  version = "~> 3.26"
 }
 
 data "aws_partition" "current" {
