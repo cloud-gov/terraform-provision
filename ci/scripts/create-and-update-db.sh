@@ -5,7 +5,7 @@ set -u
 TERRAFORM="${TERRAFORM_BIN:-terraform}"
 
 # Check environment variables
-db_address=$(${TERRAFORM} output -state=${STATE_FILE_PATH} ${TERRAFORM_DB_HOST_FIELD})
+db_address=$(${TERRAFORM} output -raw -state=${STATE_FILE_PATH} ${TERRAFORM_DB_HOST_FIELD})
 db_user=$(${TERRAFORM} output -state=${STATE_FILE_PATH} ${TERRAFORM_DB_USERNAME_FIELD})
 db_pass=$(${TERRAFORM} output -state=${STATE_FILE_PATH} ${TERRAFORM_DB_PASSWORD_FIELD})
 
