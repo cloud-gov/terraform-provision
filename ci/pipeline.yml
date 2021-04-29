@@ -44,6 +44,7 @@ jobs:
       inputs:
       - name: pull-request
       params:
+        TERRAFORM_BIN: terratest-14.11
       run:
         path: pull-request/validate.sh
     on_success:
@@ -72,6 +73,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-staging-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: external-staging
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -140,6 +142,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &external-production-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: external-production
       TEMPLATE_SUBDIR: terraform/stacks/external
@@ -199,6 +202,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &dns-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: dns
       TEMPLATE_SUBDIR: terraform/stacks/dns
@@ -242,6 +246,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &tooling-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: tooling
       TEMPLATE_SUBDIR: terraform/stacks/tooling
@@ -324,6 +329,7 @@ jobs:
         - name: cg-provision-repo
         - name: terraform-state
         params:
+          TERRAFORM_BIN: terratest-14.11
           STATE_FILE_PATH: terraform-state/terraform.tfstate
         run:
           path: sh
@@ -355,6 +361,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &development-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: development
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -424,6 +431,7 @@ jobs:
           - name: cg-provision-repo
           - name: terraform-state
           params:
+            TERRAFORM_BIN: terratest-14.11
             STATE_FILE_PATH: terraform-state/terraform.tfstate
           run:
             path: sh
@@ -442,6 +450,7 @@ jobs:
           - name: cg-provision-repo
           - name: terraform-state
           params:
+            TERRAFORM_BIN: terratest-14.11
             STATE_FILE_PATH: terraform-state/terraform.tfstate
           run:
             path: sh
@@ -472,6 +481,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &staging-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: staging
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -558,6 +568,7 @@ jobs:
           - name: cg-provision-repo
           - name: terraform-state
           params:
+            TERRAFORM_BIN: terratest-14.11
             STATE_FILE_PATH: terraform-state/terraform.tfstate
           run:
             path: sh
@@ -569,6 +580,7 @@ jobs:
       - task: terraform-state-to-yaml
         file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
+          TERRAFORM_BIN: terratest-14.11
           STATE_FILE: terraform.tfstate
       - put: terraform-yaml-staging
         params:
@@ -588,6 +600,7 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: &production-params
+      TERRAFORM_BIN: terratest-14.11
       TERRAFORM_ACTION: plan
       STACK_NAME: production
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -656,6 +669,7 @@ jobs:
           - name: cg-provision-repo
           - name: terraform-state
           params:
+            TERRAFORM_BIN: terratest-14.11
             STATE_FILE_PATH: terraform-state/terraform.tfstate
           run:
             path: sh
@@ -674,6 +688,7 @@ jobs:
           - name: cg-provision-repo
           - name: terraform-state
           params:
+            TERRAFORM_BIN: terratest-14.11
             STATE_FILE_PATH: terraform-state/terraform.tfstate
           run:
             path: sh
