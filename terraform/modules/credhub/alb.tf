@@ -1,7 +1,7 @@
 resource "aws_lb_target_group" "credhub_target" {
   name     = "${var.stack_description}-credhub-${var.credhub_az}"
   port     = 8844
-  protocol = "HTTP"
+  protocol = "HTTPS"
   vpc_id   = var.vpc_id
 
   health_check {
@@ -10,7 +10,8 @@ resource "aws_lb_target_group" "credhub_target" {
     timeout             = 5
     interval            = 30
     matcher             = 200
-    port                = 8845
+    port                = 8844
+    path                = "/health"
   }
 
   stickiness {
