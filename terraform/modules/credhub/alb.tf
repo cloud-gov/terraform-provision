@@ -12,6 +12,7 @@ resource "aws_lb_target_group" "credhub_target" {
     matcher             = 200
     port                = 8844
     path                = "/health"
+    protocol            = "HTTPS"
   }
 
   stickiness {
