@@ -618,7 +618,7 @@ jobs:
       TF_VAR_admin_hosts: '["admin.fr.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
-      TF_VAR_domains_broker_alb_count: "5"
+      TF_VAR_domains_broker_alb_count: "6"
       TF_VAR_domain_broker_v2_alb_count: "3"
       TF_VAR_challenge_bucket: production-domains-broker-challenge
       TF_VAR_iam_cert_prefix: "/domains/production/*"
