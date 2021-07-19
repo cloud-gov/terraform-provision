@@ -1036,7 +1036,7 @@ resource "aws_route53_record" "dev2_delegate" {
   ]
 }
 
-resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_a" {
+resource "aws_route53_record" "cloud_gov_star_pages_staging_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "*.pages-staging.cloud.gov."
   type    = "A"
@@ -1048,7 +1048,7 @@ resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "cloud_gov_star_pages_staging_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "*.pages-staging.cloud.gov."
   type    = "AAAA"
@@ -1060,7 +1060,7 @@ resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_a" {
+resource "aws_route53_record" "cloud_gov_star_sites_pages_staging_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "*.sites.pages-staging.cloud.gov."
   type    = "A"
@@ -1072,7 +1072,7 @@ resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "cloud_gov_star_sites_pages_staging_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "*.sites.pages-staging.cloud.gov."
   type    = "AAAA"
