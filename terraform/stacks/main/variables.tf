@@ -36,6 +36,14 @@ variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
+variable "wildcard_pages_staging_certificate_name_prefix" {
+  default = ""
+}
+
+variable "wildcard_sites_pages_staging_certificate_name_prefix" {
+  default = ""
+}
+
 variable "admin_hosts" {
   type = list(string)
 }

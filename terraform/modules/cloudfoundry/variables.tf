@@ -4,6 +4,14 @@ variable "elb_main_cert_id" {
 variable "elb_apps_cert_id" {
 }
 
+variable "pages_staging_cert_id" {
+
+}
+
+variable "sites_pages_staging_cert_id" {
+  
+}
+
 variable "elb_subnets" {
   type = list(string)
 }
