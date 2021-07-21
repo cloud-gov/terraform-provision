@@ -22,8 +22,6 @@ groups:
   - acme-certificate-staging
   - acme-certificate-production
   - acme-certificate-production-apps
-  - acme-certificate-production
-  - acme-certificate-production-apps
   - acme-certificate-staging-pages
   - acme-certificate-staging-pages-sites
 
