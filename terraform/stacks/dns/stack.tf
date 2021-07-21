@@ -1042,7 +1042,7 @@ resource "aws_route53_record" "cloud_gov_star_pages_staging_cloud_gov_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -1054,7 +1054,7 @@ resource "aws_route53_record" "cloud_gov_star_pages_staging_cloud_gov_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -1066,7 +1066,7 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_staging_cloud_gov_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -1078,7 +1078,7 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_staging_cloud_gov_aaaa
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.production.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }

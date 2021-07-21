@@ -37,6 +37,16 @@ data "aws_iam_server_certificate" "wildcard_apps" {
   latest      = true
 }
 
+data "aws_iam_server_certificate" "wildcard_pages_staging" {
+  name_prefix = var.wildcard_pages_staging_certificate_name_prefix
+  latest      = true
+}
+
+data "aws_iam_server_certificate" "wildcard_sites_pages_staging" {
+  name_prefix = var.wildcard_sites_pages_staging_certificate_name_prefix
+  latest      = true
+}
+
 resource "aws_lb" "main" {
   name    = "${var.stack_description}-main"
   subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
@@ -119,11 +129,13 @@ module "stack" {
 module "cf" {
   source = "../../modules/cloudfoundry"
 
-  stack_description = var.stack_description
-  aws_partition     = data.aws_partition.current.partition
-  elb_main_cert_id  = data.aws_iam_server_certificate.wildcard.arn
-  elb_apps_cert_id  = data.aws_iam_server_certificate.wildcard_apps.arn
-  elb_subnets       = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  stack_description           = var.stack_description
+  aws_partition               = data.aws_partition.current.partition
+  elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
+  elb_apps_cert_id            = data.aws_iam_server_certificate.wildcard_apps.arn
+  pages_staging_cert_id       = data.aws_iam_server_certificate.wildcard_pages_staging.arn
+  sites_pages_staging_cert_id = data.aws_iam_server_certificate.wildcard_sites_pages_staging.arn
+  elb_subnets                 = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
 
   elb_security_groups = [
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,

@@ -51,3 +51,12 @@ resource "aws_lb_listener" "cf_apps_http" {
   }
 }
 
+resource "aws_lb_listener_certificate" "pages_staging" {
+  listener_arn    = aws_lb_listener.cf_apps.arn
+  certificate_arn = var.pages_staging_cert_id
+}
+
+resource "aws_lb_listener_certificate" "sites_pages_staging" {
+  listener_arn    = aws_lb_listener.cf_apps.arn
+  certificate_arn = var.sites_pages_staging_cert_id
+}
