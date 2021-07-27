@@ -9,7 +9,8 @@
         "iam:DeleteServerCertificate"
       ],
       "Resource": [
-        "arn:aws-us-gov:iam::${account_id}:server-certificate/alb/external-domains-${stack}/*"
+        "arn:aws-us-gov:iam::${account_id}:server-certificate/alb/external-domains-${stack}/*",
+        "arn:aws-us-gov:iam::${account_id}:server-certificate/domains/${stack}/*"
       ]
     },
     {
