@@ -8,7 +8,6 @@ data "template_file" "policy" {
   vars = {
     account_id      = var.account_id
     stack           = var.stack_description
-    iam_cert_prefix = var.iam_cert_prefix
   }
 }
 
