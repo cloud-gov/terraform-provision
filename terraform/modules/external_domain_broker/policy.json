@@ -5,13 +5,21 @@
       "Effect": "Allow",
       "Action": [
         "iam:DeleteServerCertificate",
-        "iam:ListServerCertificates",
         "iam:UploadServerCertificate",
         "iam:UpdateServerCertificate"
       ],
       "Resource": [
         "arn:aws:iam::${account_id}:server-certificate/cloudfront/external-domains-${stack}/*",
         "arn:aws:iam::${account_id}:server-certificate/cloudfront/cg-${stack}/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListServerCertificates"
+      ],
+      "Resource": [
+        "arn:aws:iam::${account_id}:server-certificate/*"
       ]
     },
     {
