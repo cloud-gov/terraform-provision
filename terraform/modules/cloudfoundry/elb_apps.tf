@@ -53,10 +53,6 @@ resource "aws_lb_listener" "cf_apps" {
   default_action {
     type = "forward"
     forward {
-      stickiness {
-        duration = 0
-        enabled = false
-      }
       target_group {
         arn = aws_lb_target_group.cf_apps_target.arn
         weight = 90
