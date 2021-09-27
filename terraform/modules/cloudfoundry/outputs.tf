@@ -17,9 +17,15 @@ output "apps_lb_dns_name" {
 output "lb_target_group" {
   value = aws_lb_target_group.cf_target.name
 }
+output "lb_target_https_group" {
+  value = aws_lb_target_group.cf_target_https.name
+}
 
 output "apps_lb_target_group" {
   value = aws_lb_target_group.cf_apps_target.name
+}
+output "apps_lb_target_https_group" {
+  value = aws_lb_target_group.cf_apps_target_https.name
 }
 
 output "cf_rds_url" {
@@ -83,5 +89,3 @@ output "droplets_bucket_name" {
 output "logsearch_archive_bucket_name" {
   value = module.logsearch-archive.bucket_name
 }
-
-
