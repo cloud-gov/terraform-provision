@@ -52,7 +52,7 @@ resource "aws_lb_listener" "cf_apps" {
 
   default_action {
     forward {
-      stickness {
+      stickiness {
         duration = 0
         enabled = false
       }
