@@ -27,6 +27,22 @@ resource "aws_lb_target_group" "cf_apps_target" {
   }
 }
 
+resource "aws_lb_target_group" "cf_apps_target_https" {
+  name     = "${var.stack_description}-cf-apps-https"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 81
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+  }
+}
+
 resource "aws_lb_listener" "cf_apps" {
   load_balancer_arn = aws_lb.cf_apps.arn
   port              = "443"
@@ -50,6 +66,8 @@ resource "aws_lb_listener" "cf_apps_http" {
     type             = "forward"
   }
 }
+
+
 
 resource "aws_lb_listener_certificate" "pages_staging" {
   listener_arn    = aws_lb_listener.cf_apps.arn
