@@ -51,6 +51,7 @@ resource "aws_lb_listener" "cf" {
   certificate_arn   = var.elb_main_cert_id
 
   default_action {
+    type = "forward"
     forward {
       stickiness {
         duration = 0
