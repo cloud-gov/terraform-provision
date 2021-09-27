@@ -51,8 +51,20 @@ resource "aws_lb_listener" "cf_apps" {
   certificate_arn   = var.elb_apps_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target.arn
-    type             = "forward"
+    forward {
+      stickness {
+        duration = 0
+        enabled = false
+      }
+      target_group {
+        arn = aws_lb_target_group.cf_apps_target.arn
+        weight = 90
+      }
+      target_group {
+        arn = aws_lb_target_group.cf_apps_target_https.arn
+        weight = 10
+      }
+    }
   }
 }
 
