@@ -69,6 +69,15 @@ resource "aws_security_group_rule" "http_elb" {
   security_group_id = aws_security_group.bosh.id
 }
 
+resource "aws_security_group_rule" "https_elb" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  security_group_id = aws_security_group.bosh.id
+}
+
 resource "aws_security_group_rule" "http_alt_elb" {
   type              = "ingress"
   from_port         = 8080
