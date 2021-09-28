@@ -163,7 +163,7 @@ resource "aws_security_group_rule" "concourse_secureproxy" {
   security_group_id        = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "concourse_secureprox_https" {
+resource "aws_security_group_rule" "concourse_secureproxy_https" {
   count                    = length(var.concourse_security_groups)
   type                     = "ingress"
   from_port                = 443
