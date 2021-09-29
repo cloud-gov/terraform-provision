@@ -235,7 +235,7 @@ output "domains_broker_target_group_apps_names" {
   value = aws_lb_target_group.domains_broker_apps.*.name
 }
 
-output "domains_broker_target_group_apps_names" {
+output "domains_broker_target_group_apps_https_names" {
   value = aws_lb_target_group.domains_broker_apps_https.*.name
 }
 
