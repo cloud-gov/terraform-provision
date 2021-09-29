@@ -135,6 +135,10 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
   default_action {
     type = "forward"
     forward {
+      stickiness {
+        duration = 1
+        enabled  = false
+        }
       target_group {
         arn = aws_lb_target_group.domain_broker_v2_apps[count.index].arn
         weight = 75
