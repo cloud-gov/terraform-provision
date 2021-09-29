@@ -55,11 +55,11 @@ resource "aws_lb_listener" "cf" {
     forward {
       target_group {
         arn = aws_lb_target_group.cf_target.arn
-        weight = 90
+        weight = 75
       }
       target_group {
         arn = aws_lb_target_group.cf_target_https.arn
-        weight = 10
+        weight = 25
       }
     }
   }
