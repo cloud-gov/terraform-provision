@@ -130,8 +130,21 @@ resource "aws_lb_listener" "domains_broker_https" {
   certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_broker_apps[count.index].arn
-    type             = "forward"
+    type = "forward"
+    forward {
+      stickiness {
+        duration = 1
+        enabled  = false
+        }
+      target_group {
+        arn = aws_lb_target_group.domains_broker_apps[count.index].arn
+        weight = 75
+      }
+      target_group {
+        arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
+        weight = 25
+      }
+    }
   }
 }
 
@@ -187,6 +200,24 @@ resource "aws_lb_target_group" "domains_broker_apps" {
   }
 }
 
+resource "aws_lb_target_group" "domains_broker_apps_https" {
+  count = var.domains_broker_alb_count
+
+  name     = "${var.stack_description}-domains-apps-https-${count.index}"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
+  }
+}
+
 resource "aws_lb_target_group" "domains_broker_challenge" {
   count = var.domains_broker_alb_count
 
@@ -206,6 +237,10 @@ output "domains_broker_alb_names" {
 
 output "domains_broker_target_group_apps_names" {
   value = aws_lb_target_group.domains_broker_apps.*.name
+}
+
+output "domains_broker_target_group_apps_https_names" {
+  value = aws_lb_target_group.domains_broker_apps_https.*.name
 }
 
 output "domains_broker_target_group_challenge_names" {
@@ -328,4 +363,3 @@ resource "aws_iam_policy_attachment" "domains_broker" {
 output "domains_broker_profile" {
   value = aws_iam_instance_profile.domains_broker.name
 }
-

@@ -3,7 +3,7 @@
 // =====================================
 // OK, so DO NOT DELETE THESE RESOURCES
 // =====================================
-// 
+//
 // ...unless you're prepared to spend ~2 days doing terraform state surgery.
 //
 // https://docs.google.com/document/d/19LDEX8ac46JkPgoJUoSAJCf2B0K5D_QpX6O1IdO8w7Q/edit
@@ -13,9 +13,9 @@
 // https://github.com/cloud-gov/cg-provision/issues/735
 //
 // Basically, these resources are pointed at the same AWS resources (LB,
-// listeners, etc) as the other domains_broker resources in this directory.  
+// listeners, etc) as the other domains_broker resources in this directory.
 // We attempted to delete these resources.  `terraform plan` looked good, but
-// `terraform apply` got real mad.  
+// `terraform apply` got real mad.
 
 variable "domain_broker_v2_rds_username" {
 }
@@ -133,8 +133,21 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
   certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.domain_broker_v2_apps[count.index].arn
-    type             = "forward"
+    type = "forward"
+    forward {
+      stickiness {
+        duration = 1
+        enabled  = false
+        }
+      target_group {
+        arn = aws_lb_target_group.domain_broker_v2_apps[count.index].arn
+        weight = 75
+        }
+        target_group {
+        arn = aws_lb_target_group.domain_broker_v2_apps_https[count.index].arn
+        weight = 25
+        }
+      }
   }
 }
 
@@ -181,6 +194,24 @@ resource "aws_lb_target_group" "domain_broker_v2_apps" {
   name     = "${var.stack_description}-domains-apps-${count.index}"
   port     = 80
   protocol = "HTTP"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
+  }
+}
+
+resource "aws_lb_target_group" "domain_broker_v2_apps_https" {
+  count = var.domain_broker_v2_alb_count
+
+  name     = "${var.stack_description}-domains-apps-https-${count.index}"
+  port     = 443
+  protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
 
   health_check {
@@ -242,6 +273,10 @@ output "domain_broker_v2_alb_names" {
 
 output "domain_broker_v2_target_group_apps_names" {
   value = aws_lb_target_group.domain_broker_v2_apps.*.name
+}
+
+output "domain_broker_v2_target_group_apps_https_names" {
+  value = aws_lb_target_group.domain_broker_v2_apps_https.*.name
 }
 
 output "domain_broker_v2_target_group_challenge_names" {
