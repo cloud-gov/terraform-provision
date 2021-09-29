@@ -215,6 +215,7 @@ output "cf_router_target_groups" {
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
     aws_lb_target_group.domain_broker_v2_apps.*.name,
+    aws_lb_target_group.domain_broker_v2_apps_https.*.name,
     aws_lb_target_group.domain_broker_v2_challenge.*.name,
   )
 }
