@@ -136,11 +136,11 @@ resource "aws_lb_listener" "domain_broker_v2_https" {
     type = "forward"
     forward {
       target_group {
-        arn = aws_lb_target_group.domains_broker_v2_apps[count.index].arn
+        arn = aws_lb_target_group.domain_broker_v2_apps[count.index].arn
         weight = 90
         }
         target_group {
-        arn = aws_lb_target_group.domains_broker_v2_apps_https[count.index].arn
+        arn = aws_lb_target_group.domain_broker_v2_apps_https[count.index].arn
         weight = 10
         }
       }
