@@ -138,11 +138,11 @@ resource "aws_lb_listener" "domains_broker_https" {
         }
       target_group {
         arn = aws_lb_target_group.domains_broker_apps[count.index].arn
-        weight = 75
+        weight = 50
       }
       target_group {
         arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
-        weight = 25
+        weight = 50
       }
     }
   }
