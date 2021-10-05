@@ -138,11 +138,11 @@ resource "aws_lb_listener" "domains_broker_https" {
         }
       target_group {
         arn = aws_lb_target_group.domains_broker_apps[count.index].arn
-        weight = 75
+        weight = 50
       }
       target_group {
         arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
-        weight = 25
+        weight = 50
       }
     }
   }
@@ -352,12 +352,43 @@ EOF
 
 }
 
+resource "aws_iam_user" "legacy_domain_certificate_renewer" {
+  name = "legacy_domain_certificate_renewer_${var.stack_description}"
+}
+
+resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v1" {
+  user = aws_iam_user.legacy_domain_certificate_renewer.name
+}
+
 resource "aws_iam_policy_attachment" "domains_broker" {
   name       = "${var.stack_description}-domains-broker"
   policy_arn = aws_iam_policy.domains_broker.arn
   roles = [
     aws_iam_role.domains_broker.name,
   ]
+  users = [
+    aws_iam_user.legacy_domain_certificate_renewer.name
+  ]
+}
+
+output "legacy_domain_certificate_renewer_username" {
+  value = aws_iam_user.legacy_domain_certificate_renewer.name
+}
+
+output "legacy_domain_certificate_renwer_access_key_id_prev" {
+  value = ""
+}
+
+output "legacy_domain_certificate_renewer_secret_access_key_prev" {
+  value = ""
+}
+
+output "legacy_domain_certificate_renewer_access_key_id_curr" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.id
+}
+
+output "legacy_domain_certificate_renewer_secret_access_key_curr" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
 }
 
 output "domains_broker_profile" {
