@@ -59,11 +59,11 @@ resource "aws_lb_listener" "cf_apps" {
         }
       target_group {
         arn = aws_lb_target_group.cf_apps_target.arn
-        weight = 50
+        weight = 25
       }
       target_group {
         arn = aws_lb_target_group.cf_apps_target_https.arn
-        weight = 50
+        weight = 75
       }
     }
   }
