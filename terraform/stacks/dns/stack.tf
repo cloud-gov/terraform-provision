@@ -166,6 +166,7 @@ resource "aws_route53_record" "cloud_gov_zendesk_verification_txt" {
 
   records = [
     "bb924f6a32697b2b",
+    "57a42f5dc9fd8c6a",
   ]
 }
 
