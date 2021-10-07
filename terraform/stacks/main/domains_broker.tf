@@ -321,6 +321,7 @@ resource "aws_iam_policy" "domains_broker" {
       "Effect": "Allow",
       "Action": [
         "iam:ListServerCertificates",
+        "iam:GetServerCertificate",
         "iam:UploadServerCertificate",
         "iam:DeleteServerCertificate"
       ],
