@@ -11,22 +11,6 @@ resource "aws_lb" "cf" {
   }
 }
 
-resource "aws_lb_target_group" "cf_target" {
-  name     = "${var.stack_description}-cf"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-
-  health_check {
-    healthy_threshold   = 2
-    interval            = 5
-    port                = 81
-    timeout             = 4
-    unhealthy_threshold = 3
-    matcher             = 200
-  }
-}
-
 resource "aws_lb_target_group" "cf_target_https" {
   name     = "${var.stack_description}-cf-https"
   port     = 443
@@ -51,21 +35,8 @@ resource "aws_lb_listener" "cf" {
   certificate_arn   = var.elb_main_cert_id
 
   default_action {
-    type = "forward"
-    forward {
-      stickiness {
-        duration = 1
-        enabled  = false
-        }
-      target_group {
-        arn = aws_lb_target_group.cf_target.arn
-        weight = 0
-      }
-      target_group {
-        arn = aws_lb_target_group.cf_target_https.arn
-        weight = 100
-      }
-    }
+    target_group_arn = aws_lb_target_group.cf_target_https.arn
+    type             = "forward"
   }
 }
 
@@ -75,7 +46,7 @@ resource "aws_lb_listener" "cf_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_target.arn
+    target_group_arn = aws_lb_target_group.cf_target_https.arn
     type             = "forward"
   }
 }

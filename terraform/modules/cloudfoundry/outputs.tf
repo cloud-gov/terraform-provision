@@ -14,16 +14,10 @@ output "apps_lb_dns_name" {
   value = aws_lb.cf_apps.dns_name
 }
 
-output "lb_target_group" {
-  value = aws_lb_target_group.cf_target.name
-}
 output "lb_target_https_group" {
   value = aws_lb_target_group.cf_target_https.name
 }
 
-output "apps_lb_target_group" {
-  value = aws_lb_target_group.cf_apps_target.name
-}
 output "apps_lb_target_https_group" {
   value = aws_lb_target_group.cf_apps_target_https.name
 }
