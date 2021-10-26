@@ -35,7 +35,7 @@ resource "aws_lb_listener" "cf_uaa" {
   certificate_arn = var.elb_main_cert_id
 
   default_action {
-    target_group_arn = "aws_lb_target_group.cf_uaa_target.arn
+    target_group_arn = aws_lb_target_group.cf_uaa_target.arn
     type             = "forward"
   }
 }
