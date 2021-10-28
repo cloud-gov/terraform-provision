@@ -51,8 +51,8 @@ resource "aws_lb_listener" "cf_uaa_http" {
   }
 }
 
-resource "aws_wafv2_web_acl" "uaa-core" {
-  name        = "uaa-core-rule"
+resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
+  name        = "${var.stack_description}-cf-uaa-waf-core"
   description = "UAA ELB WAF Rules"
   scope       = "REGIONAL"
 
@@ -84,12 +84,12 @@ resource "aws_wafv2_web_acl" "uaa-core" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                = "uaa-core-metric"
+    metric_name                = "${var.stack_description}-cf-uaa-waf-core-metric"
     sampled_requests_enabled   = true
   }
 }
 
-resource "aws_wafv2_web_acl_association" "uaa-core" {
+resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
   web_acl_arn  = aws_wafv2_web_acl.uaa-core.arn
 }
