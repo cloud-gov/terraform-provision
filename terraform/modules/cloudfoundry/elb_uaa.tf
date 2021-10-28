@@ -50,3 +50,46 @@ resource "aws_lb_listener" "cf_uaa_http" {
     type             = "forward"
   }
 }
+
+resource "aws_wafv2_web_acl" "uaa-core" {
+  name        = "uaa-core-rule"
+  description = "UAA ELB WAF Rules"
+  scope       = "us-gov-west-1"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "rule-1"
+    priority = 1
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "aws-managed-rule"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "uaa-core-metric"
+    sampled_requests_enabled   = false
+  }
+}
+
+resource "aws_wafv2_web_acl_association" "uaa-core" {
+  resource_arn = aws_lb.cf_uaa.arn
+  web_acl_arn  = aws_wafv2_web_acl.uaa-core.arn
+}
