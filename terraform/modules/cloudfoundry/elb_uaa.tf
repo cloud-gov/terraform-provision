@@ -76,16 +76,16 @@ resource "aws_wafv2_web_acl" "uaa-core" {
     }
 
     visibility_config {
-      cloudwatch_metrics_enabled = false
-      metric_name                = "aws-managed-rule"
-      sampled_requests_enabled   = false
+      cloudwatch_metrics_enabled = true
+      metric_name                = "AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
     }
   }
 
   visibility_config {
-    cloudwatch_metrics_enabled = false
+    cloudwatch_metrics_enabled = true
     metric_name                = "uaa-core-metric"
-    sampled_requests_enabled   = false
+    sampled_requests_enabled   = true
   }
 }
 
