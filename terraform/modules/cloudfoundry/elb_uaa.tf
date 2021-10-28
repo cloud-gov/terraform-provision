@@ -91,5 +91,5 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
 resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
-  web_acl_arn  = aws_wafv2_web_acl.uaa-core.arn
+  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
