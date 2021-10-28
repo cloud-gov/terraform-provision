@@ -54,7 +54,7 @@ resource "aws_lb_listener" "cf_uaa_http" {
 resource "aws_wafv2_web_acl" "uaa-core" {
   name        = "uaa-core-rule"
   description = "UAA ELB WAF Rules"
-  scope       = "us-gov-west-1"
+  scope       = "REGIONAL"
 
   default_action {
     allow {}
