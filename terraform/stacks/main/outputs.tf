@@ -205,10 +205,19 @@ output "cf_apps_lb_dns_name" {
   value = module.cf.apps_lb_dns_name
 }
 
+output "cf_uaa_lb_name" {
+  value = module.cf.uaa_lb_name
+}
+
+output "cf_uaa_lb_dns_name" {
+  value = module.cf.uaa_lb_dns_name
+}
+
 output "cf_router_target_groups" {
   value = concat(
     [module.cf.lb_target_https_group],
     [module.cf.apps_lb_target_https_group],
+    [module.cf.uaa_lb_target_group],
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
     aws_lb_target_group.domain_broker_v2_apps_https.*.name,
@@ -222,6 +231,10 @@ output "cf_target_group" {
 
 output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
+}
+
+output "cf_uaa_target_group" {
+  value = module.cf.uaa_lb_target_group
 }
 
 /* Security Groups */

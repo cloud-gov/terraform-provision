@@ -22,6 +22,18 @@ output "apps_lb_target_https_group" {
   value = aws_lb_target_group.cf_apps_target_https.name
 }
 
+output "uaa_lb_name" {
+  value = aws_lb.cf_uaa.name
+}
+
+output "uaa_lb_dns_name" {
+  value = aws_lb.cf_uaa.dns_name
+}
+
+output "uaa_lb_target_group" {
+  value = aws_lb_target_group.cf_uaa_target.name
+}
+
 output "cf_rds_url" {
   value = module.cf_database_96.rds_url
 }
