@@ -66,7 +66,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "AWS Managed Rule - Core Rule Set"
+    name     = "AWSManagedRule-CoreRuleSet"
     priority = 1
 
     override_action {
