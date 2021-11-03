@@ -954,11 +954,11 @@ resources:
 
 - name: pull-request
   type: pull-request
+  check_every: 1m
   source:
-    repo: ((cg_provision_git_repo))
+    repository: ((cg_provision_git_repo))
     access_token: ((status_access_token))
     disable_forks: true
-    every: true
 
 - name: terraform-yaml-tooling
   type: s3-iam
@@ -1027,7 +1027,7 @@ resource_types:
 - name: pull-request
   type: docker-image
   source:
-    repository: jtarchie/pr
+    repository: teliaoss/github-pr-resource
 
 - name: s3-iam
   type: docker-image
