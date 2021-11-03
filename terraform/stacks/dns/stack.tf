@@ -282,7 +282,7 @@ resource "aws_route53_record" "cloud_gov_star_fr-stage_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_uaa_fr-stage_env_a" {
+resource "aws_route53_record" "cloud_gov_uaa_fr-stage_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "uaa.fr-stage.cloud.gov."
   type    = "A"
@@ -293,7 +293,7 @@ resource "aws_route53_record" "cloud_gov_uaa_fr-stage_env_a" {
     evaluate_target_health = false
   }
 }
-resource "aws_route53_record" "cloud_gov_uaa_fr-stage_env_aaaa" {
+resource "aws_route53_record" "cloud_gov_uaa_fr-stage_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "uaa.fr-stage.cloud.gov."
   type    = "AAAA"
@@ -305,7 +305,7 @@ resource "aws_route53_record" "cloud_gov_uaa_fr-stage_env_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_login_fr-stage_env_a" {
+resource "aws_route53_record" "cloud_gov_login_fr-stage_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "login.fr-stage.cloud.gov."
   type    = "A"
@@ -316,7 +316,7 @@ resource "aws_route53_record" "cloud_gov_login_fr-stage_env_a" {
     evaluate_target_health = false
   }
 }
-resource "aws_route53_record" "cloud_gov_login_fr-stage_env_aaaa" {
+resource "aws_route53_record" "cloud_gov_login_fr-stage_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "login.fr-stage.cloud.gov."
   type    = "AAAA"
