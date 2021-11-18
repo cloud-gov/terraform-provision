@@ -314,7 +314,7 @@ resource "aws_route53_health_check" "stage_app_healthcheck" {
   request_interval  = "30"
 }
 
-resource "aws_route_53_health_check" "stage_aggregate_health" {
+resource "aws_route53_health_check" "stage_aggregate_health" {
   type                   = "CALCULATED"
   child_health_threshold = 1
   child_healthchecks     = [aws_route53_health_check.stage_api_healthcheck.id, aws_route53_health_check.stage_app_healthcheck.id, aws_route53_health_check.stage_uaa_healthcheck.id]
