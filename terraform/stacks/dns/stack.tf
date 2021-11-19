@@ -316,7 +316,7 @@ resource "aws_route53_health_check" "stage_app_healthcheck" {
 
 resource "aws_route53_health_check" "stage_aggregate_health" {
   type                   = "CALCULATED"
-  child_health_threshold = 1
+  child_health_threshold = 3
   child_healthchecks     = [aws_route53_health_check.stage_api_healthcheck.id, aws_route53_health_check.stage_app_healthcheck.id, aws_route53_health_check.stage_uaa_healthcheck.id]
 }
 
