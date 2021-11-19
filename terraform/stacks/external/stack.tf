@@ -43,6 +43,11 @@ module "limit_check_user" {
   username = "limit-check-${var.stack_description}"
 }
 
+module "health_check_user" {
+  source   = "../../modules/iam_user/health_check"
+  username = "health-check-${var.stack_description}"
+}
+
 module "lets_encrypt_user" {
   source        = "../../modules/iam_user/lets_encrypt"
   aws_partition = data.aws_partition.current.partition
