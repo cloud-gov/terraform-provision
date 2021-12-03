@@ -1,22 +1,22 @@
 /* health check user */
 output "health_check_user_username" {
-  value = module.health_check.username
+  value = module.health_check_user.username
 }
 
-output "health_check_user_access_key_id_prev" {
-  value = module.health_check.access_key_id_prev
+output "health_check_user.user_access_key_id_prev" {
+  value = module.health_check_user.access_key_id_prev
 }
 
-output "health_check_user_secret_access_key_prev" {
-  value = module.health_check.secret_access_key_prev
+output "health_check_user.user_secret_access_key_prev" {
+  value = module.health_check_user.secret_access_key_prev
 }
 
-output "health_check_user_access_key_id_curr" {
-  value = module.health_check.access_key_id_curr
+output "health_check_user.user_access_key_id_curr" {
+  value = module.health_check_user.access_key_id_curr
 }
 
-output "health_check_user_secret_access_key_curr" {
-  value = module.health_check.secret_access_key_curr
+output "health_check_user.user_secret_access_key_curr" {
+  value = module.health_check_user.secret_access_key_curr
 }
 
 /* external domain broker user */
