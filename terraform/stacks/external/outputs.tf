@@ -1,3 +1,24 @@
+/* health check user */
+output "health_check_username" {
+  value = module.health_check.username
+}
+
+output "health_check_access_key_id_prev" {
+  value = module.health_check.access_key_id_prev
+}
+
+output "health_check_secret_access_key_prev" {
+  value = module.health_check.secret_access_key_prev
+}
+
+output "health_check_access_key_id_curr" {
+  value = module.health_check.access_key_id_curr
+}
+
+output "health_check_secret_access_key_curr" {
+  value = module.health_check.secret_access_key_curr
+}
+
 /* external domain broker user */
 output "external_domain_broker_username" {
   value = module.external_domain_broker.username
