@@ -102,7 +102,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "DEV IP Block"
+    name     = "DEVIPBLOCK"
     priority = 2
 
     action {
