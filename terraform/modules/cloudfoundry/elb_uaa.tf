@@ -56,6 +56,20 @@ resource "aws_lb_listener" "cf_uaa_http" {
 // The rule in json format which will make it easier to translate to TF
 // NOTE - webacl sets have rule capacity limits - make sure your total rule counts do not exceed the limit
 
+
+resource "aws_wafv2_ip_set" "cf_uaa_waf_ip_set" {
+  name               = "${var.stack_description}-cf-uaa-waf-ip-set"
+  description        = "CF UAA WAF IP set"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+  addresses          = ["1.2.3.4/32"]
+
+  tags = {
+    Tag1 = "${var.stack_description}-cf-uaa-waf-ip-set"
+  }
+}
+
+
 resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   name        = "${var.stack_description}-cf-uaa-waf-core"
   description = "UAA ELB WAF Rules"
@@ -83,6 +97,27 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "DEV IP Block"
+    priority = 2
+
+    action {
+      block {}
+    }
+
+    statement {
+      ip_set_reference_statement {
+        arn        = aws_wafv2_ip_set.cf_uaa_waf_ip_set.arn
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSDEVIPBLOCK"
       sampled_requests_enabled   = true
     }
   }
