@@ -69,6 +69,24 @@ resource "aws_wafv2_ip_set" "cf_uaa_waf_ip_set" {
   }
 }
 
+resource "aws_wafv2_regex_pattern_set" "cf_uaa_waf_regex_pattern_set" {
+  name        = "${var.stack_description}-cf-uaa-waf-regex-pattern-set"
+  description = "CF UAA WAF regex pattern set"
+  scope       = "REGIONAL"
+
+  regular_expression {
+    regex_string = "one"
+  }
+
+  regular_expression {
+    regex_string = "two"
+  }
+
+  tags = {
+    Tag1 = "${var.stack_description}-cf-uaa-waf-regex-pattern-set"
+  }
+}
+
 
 resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   name        = "${var.stack_description}-cf-uaa-waf-core"
@@ -102,7 +120,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "DEVIPBLOCK"
+    name     = "CGCustomRuleSet"
     priority = 2
 
     action {
@@ -111,7 +129,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     statement {
       ip_set_reference_statement {
-        arn        = aws_wafv2_ip_set.cf_uaa_waf_ip_set.arn
+        arn = aws_wafv2_ip_set.cf_uaa_waf_ip_set.arn
+      }
+      regex_pattern_set_reference_statement {
+        arn = aws_wafv2_regex_pattern_set.cf_uaa_waf_regex_pattern_set.arn
       }
     }
 
