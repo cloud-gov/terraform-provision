@@ -6,6 +6,13 @@
           "Effect": "Allow",
           "Resource": "*",
           "Action": [
+            "logs:Cancel*",
+            "logs:Describe*",
+            "logs:Filter*",
+            "logs:Get*",
+            "logs:Start*",
+            "logs:Stop*",
+            "logs:Test*",
             "trustedadvisor:RefreshCheck",
             "servicequota:Get*",
             "servicequota:List*",
