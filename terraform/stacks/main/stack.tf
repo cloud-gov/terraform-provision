@@ -77,6 +77,12 @@ resource "aws_lb_listener" "main" {
   }
 }
 
+resource "aws_wafv2_web_acl_association" "main_waf_core" {
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+}
+
+
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
