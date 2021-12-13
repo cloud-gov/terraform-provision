@@ -162,7 +162,7 @@ module "cf" {
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
   resource_arn = aws_lb.main.arn
-  web_acl_arn  = module.cf.aws_wafv2_web_acl.cf_uaa_waf_core.arn
+  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
 }
 
 module "diego" {
