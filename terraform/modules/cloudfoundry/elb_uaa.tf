@@ -81,7 +81,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             field_to_match {
               uri_path {}
             }
-            text_transformation = "None"
+            text_transformation {
+              priority = 0
+              type = "None"
+            }
           }
         }
         statement {
@@ -90,7 +93,22 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             field_to_match {
               query_string {}
             }
-            text_transformation = "None"
+            text_transformation {
+              priority = 0
+              type = "None"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              body {}
+            }
+            text_transformation {
+              priority = 0
+              type = "None"
+            }
           }
         }
         statement {
@@ -101,7 +119,24 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 name = "user-agent"
               }
             }
-            text_transformation = "None"
+            text_transformation {
+              priority = 0
+              type = "None"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              single_header {
+                name = "accept"
+              }
+            }
+            text_transformation {
+              priority = 0
+              type = "None"
+            }
           }
         }
       }
