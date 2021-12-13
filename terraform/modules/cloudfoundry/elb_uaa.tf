@@ -83,7 +83,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "None"
+              type = "NONE"
             }
           }
         }
@@ -95,7 +95,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "None"
+              type = "NONE"
             }
           }
         }
@@ -107,7 +107,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "None"
+              type = "NONE"
             }
           }
         }
@@ -121,7 +121,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "None"
+              type = "NONE"
             }
           }
         }
@@ -135,7 +135,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "None"
+              type = "NONE"
             }
           }
         }
