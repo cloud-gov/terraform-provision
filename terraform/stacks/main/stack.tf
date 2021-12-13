@@ -77,11 +77,6 @@ resource "aws_lb_listener" "main" {
   }
 }
 
-resource "aws_wafv2_web_acl_association" "main_waf_core" {
-  resource_arn = aws_lb.main.arn
-  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
-}
-
 
 resource "aws_lb_target_group" "dummy" {
   port     = 80
@@ -163,6 +158,11 @@ module "cf" {
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
   bucket_prefix         = var.bucket_prefix
   log_bucket_name       = var.log_bucket_name
+}
+
+resource "aws_wafv2_web_acl_association" "main_waf_core" {
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = module.cf.aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
 
 module "diego" {
