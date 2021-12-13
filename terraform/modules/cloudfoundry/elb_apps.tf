@@ -62,3 +62,8 @@ resource "aws_lb_listener_certificate" "sites_pages_staging" {
   listener_arn    = aws_lb_listener.cf_apps.arn
   certificate_arn = var.sites_pages_staging_cert_id
 }
+
+resource "aws_wafv2_web_acl_association" "cf_apps_waf_core" {
+  resource_arn = aws_lb.cf_apps.arn
+  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+}
