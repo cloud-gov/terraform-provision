@@ -4,6 +4,6 @@ resource "aws_wafv2_regex_pattern_set" "jndi_regex" {
   scope       = "REGIONAL"
 
   regular_expression {
-    regex_string = "/(\/$|\/%24)(\/{|\/%7[bB])jndi(:|\/%3[aA])"
+    regex_string = "(\\$|\\%24)(\\{|\\%7[bB])jndi(:|\\%3[aA])"
   }
 }
