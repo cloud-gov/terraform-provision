@@ -204,7 +204,7 @@ resource "aws_wafv2_web_acl_association" "domain_waf_core" {
   count = var.domains_broker_alb_count
 
   resource_arn = aws_lb.domains_broker[count.index].arn
-  web_acl_arn  = module.stack.cf.cf_uaa_waf_core_arn
+  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
 }
 
 output "domains_broker_alb_names" {
