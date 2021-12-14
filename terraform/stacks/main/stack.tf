@@ -217,7 +217,7 @@ module "admin" {
   log_bucket_name   = var.log_bucket_name
 }
 
-resource "aws_wafv2_web_acl_association" "main_waf_core" {
+resource "aws_wafv2_web_acl_association" "admin_waf_core" {
   resource_arn = aws_lb.main.arn
   web_acl_arn  = module.admin.admin_lb_arn
 }
