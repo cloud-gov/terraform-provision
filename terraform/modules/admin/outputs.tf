@@ -10,3 +10,6 @@ output "admin_lb_target_group" {
   value = aws_lb_target_group.admin.name
 }
 
+output "admin_lb_arn" {
+  value = aws_lb.admin.arn
+}
