@@ -167,27 +167,27 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
   }
 
-  rule {
-    name     = "AWSManagedRule-CoreRuleSet"
-    priority = 20
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesCommonRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
+  //rule {
+  //  name     = "AWSManagedRule-CoreRuleSet"
+  //  priority = 20
+//
+  //  override_action {
+  //    count {}
+  //  }
+//
+  //  statement {
+  //    managed_rule_group_statement {
+  //      name        = "AWSManagedRulesCommonRuleSet"
+  //      vendor_name = "AWS"
+  //    }
+  //  }
+//
+  //  visibility_config {
+  //    cloudwatch_metrics_enabled = true
+  //    metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+  //    sampled_requests_enabled   = true
+  //  }
+  //}
 
   visibility_config {
     cloudwatch_metrics_enabled = true
