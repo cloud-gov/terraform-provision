@@ -70,7 +70,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     priority = 5
 
     override_action {
-      None{}
+      none{}
     }
 
     statement {
