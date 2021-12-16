@@ -66,7 +66,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+    name     = "AWS-KnownBadInputsRuleSet"
     priority = 5
 
     statement {
@@ -78,7 +78,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesKnownBadInputsRuleSet"
+      metric_name                = "${var.stack_description}-AWS-KnownBadInputsRuleSet"
       sampled_requests_enabled   = true
     }
   }
