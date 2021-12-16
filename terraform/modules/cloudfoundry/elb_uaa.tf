@@ -66,8 +66,30 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
+    name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 20
+
+    action {
+      block {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesKnownBadInputsRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = "CG-RegexPatternSets"
-    priority = 0
+    priority = 10
 
     action {
       block {}
@@ -151,7 +173,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWSManagedRule-CoreRuleSet"
-    priority = 1
+    priority = 20
 
     override_action {
       count {}
