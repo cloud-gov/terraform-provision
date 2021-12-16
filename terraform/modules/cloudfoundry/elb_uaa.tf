@@ -69,6 +69,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     name     = "AWS-KnownBadInputsRuleSet"
     priority = 5
 
+    override_action {
+      {}
+    }
+
     statement {
       managed_rule_group_statement {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
