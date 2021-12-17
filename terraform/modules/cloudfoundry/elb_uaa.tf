@@ -66,8 +66,111 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
+    name     = "AWS-KnownBadInputsRuleSet"
+    priority = 5
+
+    override_action {
+      none{}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-KnownBadInputsRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "CG-RegexPatternSets"
+    priority = 10  
+    action {
+      block {}
+    }  
+    statement {
+      or_statement {
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              query_string {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              body {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              single_header {
+                name = "user-agent"
+              }
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex.arn
+            field_to_match {
+              single_header {
+                name = "accept"
+              }
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+      }
+    }  
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = "AWSManagedRule-CoreRuleSet"
-    priority = 1
+    priority = 20
 
     override_action {
       count {}

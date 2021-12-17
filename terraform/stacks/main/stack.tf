@@ -77,6 +77,7 @@ resource "aws_lb_listener" "main" {
   }
 }
 
+
 resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
@@ -159,6 +160,11 @@ module "cf" {
   log_bucket_name       = var.log_bucket_name
 }
 
+resource "aws_wafv2_web_acl_association" "main_waf_core" {
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
+}
+
 module "diego" {
   source = "../../modules/diego"
 
@@ -209,6 +215,11 @@ module "admin" {
   public_subnet_az2 = module.stack.public_subnet_az2
   security_group    = module.stack.restricted_web_traffic_security_group
   log_bucket_name   = var.log_bucket_name
+}
+
+resource "aws_wafv2_web_acl_association" "admin_waf_core" {
+  resource_arn = module.admin.admin_lb_arn
+  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
 }
 
 module "elasticache_broker_network" {
