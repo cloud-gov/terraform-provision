@@ -193,6 +193,7 @@ module "logsearch" {
   listener_arn        = aws_lb_listener.main.arn
   hosts               = var.platform_kibana_hosts
   log_bucket_name     = var.log_bucket_name
+  aws_partition       = data.aws_partition.current.partition
 }
 
 module "shibboleth" {

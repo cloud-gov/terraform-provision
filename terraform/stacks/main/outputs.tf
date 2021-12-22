@@ -551,3 +551,7 @@ output "master_bosh_static_ip" {
 output "nessus_static_ip" {
   value = data.terraform_remote_state.target_vpc.outputs.nessus_static_ip
 }
+
+output "logsearch_platform_archive_bucket" {
+  value = module.logsearch.platform_archive_bucket_name
+}

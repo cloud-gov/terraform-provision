@@ -21,3 +21,5 @@ variable "hosts" {
 variable "log_bucket_name" {
 }
 
+variable "aws_partition" {
+}

@@ -19,3 +19,6 @@ output "platform_kibana_lb_target_group" {
   value = aws_lb_target_group.platform_kibana.name
 }
 
+output "platform_archive_bucket_name" {
+  value = module.platform_archive.bucket_name
+}
