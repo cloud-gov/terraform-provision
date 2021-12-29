@@ -3,12 +3,16 @@ groups:
   jobs:
   - apply-dns
   - bootstrap-development
+  - bootstrap-east1
+  - bootstrap-external-east1
   - bootstrap-external-production
   - bootstrap-external-staging
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
   - plan-bootstrap-development
+  - plan-bootstrap-east1
+  - plan-bootstrap-external-east1
   - plan-bootstrap-external-production
   - plan-bootstrap-external-staging
   - plan-bootstrap-production
@@ -19,9 +23,13 @@ groups:
 - name: certs
   jobs:
   - acme-certificate-development
+  - acme-certificate-east1
+  - acme-certificate-east1-apps
   - acme-certificate-staging
   - acme-certificate-production
   - acme-certificate-production-apps
+  - acme-certificate-staging-pages
+  - acme-certificate-staging-pages-sites
 
 jobs:
 - name: pull-status-check
@@ -1035,10 +1043,12 @@ jobs:
       trigger: true
     - get: cg-provision-repo
       resource: cg-provision-repo-east1
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
     - get: terraform-yaml-external
       resource: terraform-yaml-external-east1
   - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates-remote.yml
+    file: cg-provision-repo/ci/check-certificates.yml
     params:
       AWS_DEFAULT_REGION: ((aws_east1_region))
       ASSUME_ROLE_ARN: ((east1_cert_role_arn))
@@ -1051,7 +1061,7 @@ jobs:
       DOMAIN: "*.fr.e1.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
-    file: cg-provision-repo/ci/upload-certificate-remote.yml
+    file: cg-provision-repo/ci/upload-certificate.yml
     params:
       ASSUME_ROLE_ARN: ((east1_cert_role_arn))
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1092,7 +1102,7 @@ jobs:
       DOMAIN: "*.app.e1.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
-    file: cg-provision-repo/ci/upload-certificate-remote.yml
+    file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_east1_region))
       ASSUME_ROLE_ARN: ((east1_cert_role_arn))
@@ -1256,7 +1266,16 @@ resources:
   source:
     bucket: ((aws_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_east1))
-    region_name: ((aws_east_region))
+    region_name: ((aws_default_region))
+
+- name: terraform-yaml-external-east1
+  type: s3
+  source:
+    bucket: ((aws_external_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_external_east1))
+    access_key_id: ((aws_external_access_key_id))
+    secret_access_key: ((aws_external_secret_access_key))
+    region_name: ((aws_external_region))
 
 - name: terraform-yaml-external-staging
   type: s3
