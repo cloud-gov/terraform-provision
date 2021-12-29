@@ -92,3 +92,6 @@ variable "rds_apply_immediately" {
   default = "false"
 }
 
+variable "assume_arn" {
+  # arn of a role to assume in the account being configured
+}

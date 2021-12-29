@@ -1,4 +1,5 @@
 ---
+# upload a certificate to the tooling account
 platform: linux
 
 image_resource:
@@ -19,3 +20,4 @@ params:
   AWS_DEFAULT_REGION:
   CERT_PATH:
   CERT_PREFIX:
+  ASSUME_ROLE_ARN:

@@ -19,3 +19,4 @@ run:
 params:
   AWS_DEFAULT_REGION:
   CERT_PATH:
+  ASSUME_ROLE_ARN:

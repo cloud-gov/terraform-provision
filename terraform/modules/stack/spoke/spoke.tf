@@ -1,3 +1,9 @@
+provider aws {
+
+}
+provider aws {
+  alias = "tooling"
+}
 module "base" {
   source                            = "../base"
   stack_description                 = var.stack_description
@@ -40,7 +46,10 @@ module "base" {
 module "vpc_peering" {
   source = "../../vpc_peering"
 
-  peer_owner_id          = var.account_id
+  providers = {
+    aws = aws
+    aws.tooling = aws.tooling
+  }
   target_vpc_id          = var.target_vpc_id
   target_vpc_cidr        = var.target_vpc_cidr
   target_az1_route_table = var.target_az1_route_table
