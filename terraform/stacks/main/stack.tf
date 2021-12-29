@@ -4,9 +4,19 @@ terraform {
 }
 
 provider "aws" {
+  alias = "tooling"
+}
+provider "aws" {
+  assume_role {
+    role_arn = var.assume_arn
+  }
 }
 
 data "terraform_remote_state" "target_vpc" {
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
+  # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
+
   backend = "s3"
 
   config = {
@@ -87,6 +97,10 @@ resource "aws_lb_target_group" "dummy" {
 module "stack" {
   source = "../../modules/stack/spoke"
 
+  providers = {
+    aws = aws
+    aws.tooling = aws.tooling
+  }
   stack_description                 = var.stack_description
   aws_partition                     = data.aws_partition.current.partition
   vpc_cidr                          = var.vpc_cidr
@@ -104,7 +118,6 @@ module "stack" {
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   rds_password                      = var.rds_password
   credhub_rds_password              = var.credhub_rds_password
-  account_id                        = data.aws_caller_identity.current.account_id
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.vpc_cidr

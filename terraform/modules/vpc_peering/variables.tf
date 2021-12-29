@@ -1,6 +1,3 @@
-variable "peer_owner_id" {
-}
-
 variable "source_az1_route_table" {
 }
 

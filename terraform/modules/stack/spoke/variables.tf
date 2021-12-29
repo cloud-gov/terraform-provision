@@ -96,9 +96,6 @@ variable "rds_password" {
 variable "credhub_rds_password" {
 }
 
-variable "account_id" {
-}
-
 variable "target_vpc_id" {
 }
 
