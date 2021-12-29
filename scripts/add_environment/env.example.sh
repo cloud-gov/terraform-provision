@@ -5,4 +5,5 @@ export AWS_DEFAULT_REGION=
 # this should be the concourse iaas worker role in the tooling aws account
 export TF_VAR_tf_remote_role_arn=
 export TF_VAR_cert_remote_role_arn=
+export TV_VAR_environment_name=
 

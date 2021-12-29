@@ -2,8 +2,8 @@ provider "aws" {
 }
 
 resource "aws_iam_role" "tfrole" {
-  name               = "tooling-concourse-worker"
-  path               = "terraform"
+  name               = "${var.environment_name}-tooling-concourse-worker"
+  path               = "/terraform/"
   description        = "policy to allow terraform to run from tooling"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,7 +22,7 @@ resource "aws_iam_role" "tfrole" {
 }
 
 resource "aws_iam_policy" "tfpolicy" {
-  name  = "tooling-terraform-policy"
+  name  = "${var.environment_name}-tooling-terraform-policy"
   policy = jsonencode({
   Version = "2012-10-17"
   Statement = [
@@ -44,8 +44,8 @@ resource "aws_iam_role_policy_attachment" "tfrolepolicy" {
 }
 
 resource "aws_iam_role" "certuploadrole" {
-  name               = "tooling-cert-uploader"
-  path               = "terraform"
+  name               = "${var.environment_name}-tooling-cert-uploader"
+  path               = "/terraform/"
   description        = "policy to allow terraform to run from tooling"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -70,7 +70,7 @@ data "aws_caller_identity" "current" {
 
 }
 resource "aws_iam_policy" "certuploadpolicy" {
-  name  = "tooling-terraform-policy"
+  name  = "${var.environment_name}-tooling-cert-uploader-policy"
   policy = jsonencode({
   Version = "2012-10-17"
   Statement = [
