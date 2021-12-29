@@ -69,6 +69,15 @@ resource "aws_security_group_rule" "http_elb" {
   security_group_id = aws_security_group.bosh.id
 }
 
+resource "aws_security_group_rule" "https_elb" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  security_group_id = aws_security_group.bosh.id
+}
+
 resource "aws_security_group_rule" "http_alt_elb" {
   type              = "ingress"
   from_port         = 8080
@@ -163,6 +172,17 @@ resource "aws_security_group_rule" "concourse_secureproxy" {
   security_group_id        = aws_security_group.bosh.id
 }
 
+resource "aws_security_group_rule" "concourse_secureproxy_https" {
+  count                    = length(var.concourse_security_groups)
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = element(var.concourse_security_groups, count.index)
+  security_group_id        = aws_security_group.bosh.id
+}
+
+
 resource "aws_security_group_rule" "outbound" {
   type              = "egress"
   from_port         = 0
@@ -171,4 +191,3 @@ resource "aws_security_group_rule" "outbound" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.bosh.id
 }
-

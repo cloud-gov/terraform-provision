@@ -115,7 +115,7 @@ resource "aws_lb_listener" "domains_broker_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_broker_apps[count.index].arn
+    target_group_arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
     type             = "forward"
   }
 }
@@ -130,7 +130,7 @@ resource "aws_lb_listener" "domains_broker_https" {
   certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_broker_apps[count.index].arn
+    target_group_arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
     type             = "forward"
   }
 }
@@ -169,12 +169,12 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 }
 
-resource "aws_lb_target_group" "domains_broker_apps" {
+resource "aws_lb_target_group" "domains_broker_apps_https" {
   count = var.domains_broker_alb_count
 
-  name     = "${var.stack_description}-domains-apps-${count.index}"
-  port     = 80
-  protocol = "HTTP"
+  name     = "${var.stack_description}-domains-apps-https-${count.index}"
+  port     = 443
+  protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
 
   health_check {
@@ -200,12 +200,19 @@ resource "aws_lb_target_group" "domains_broker_challenge" {
   }
 }
 
+resource "aws_wafv2_web_acl_association" "domain_waf_core" {
+  count = var.domains_broker_alb_count
+
+  resource_arn = aws_lb.domains_broker[count.index].arn
+  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
+}
+
 output "domains_broker_alb_names" {
   value = aws_lb.domains_broker.*.name
 }
 
-output "domains_broker_target_group_apps_names" {
-  value = aws_lb_target_group.domains_broker_apps.*.name
+output "domains_broker_target_group_apps_https_names" {
+  value = aws_lb_target_group.domains_broker_apps_https.*.name
 }
 
 output "domains_broker_target_group_challenge_names" {
@@ -286,6 +293,7 @@ resource "aws_iam_policy" "domains_broker" {
       "Effect": "Allow",
       "Action": [
         "iam:ListServerCertificates",
+        "iam:GetServerCertificate",
         "iam:UploadServerCertificate",
         "iam:DeleteServerCertificate"
       ],
@@ -317,15 +325,45 @@ EOF
 
 }
 
+resource "aws_iam_user" "legacy_domain_certificate_renewer" {
+  name = "legacy_domain_certificate_renewer_${var.stack_description}"
+}
+
+resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v1" {
+  user = aws_iam_user.legacy_domain_certificate_renewer.name
+}
+
 resource "aws_iam_policy_attachment" "domains_broker" {
   name       = "${var.stack_description}-domains-broker"
   policy_arn = aws_iam_policy.domains_broker.arn
   roles = [
     aws_iam_role.domains_broker.name,
   ]
+  users = [
+    aws_iam_user.legacy_domain_certificate_renewer.name
+  ]
+}
+
+output "legacy_domain_certificate_renewer_username" {
+  value = aws_iam_user.legacy_domain_certificate_renewer.name
+}
+
+output "legacy_domain_certificate_renwer_access_key_id_prev" {
+  value = ""
+}
+
+output "legacy_domain_certificate_renewer_secret_access_key_prev" {
+  value = ""
+}
+
+output "legacy_domain_certificate_renewer_access_key_id_curr" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.id
+}
+
+output "legacy_domain_certificate_renewer_secret_access_key_curr" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
 }
 
 output "domains_broker_profile" {
   value = aws_iam_instance_profile.domains_broker.name
 }
-

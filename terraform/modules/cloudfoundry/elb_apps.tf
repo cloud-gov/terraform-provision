@@ -11,10 +11,10 @@ resource "aws_lb" "cf_apps" {
   }
 }
 
-resource "aws_lb_target_group" "cf_apps_target" {
-  name     = "${var.stack_description}-cf-apps"
-  port     = 80
-  protocol = "HTTP"
+resource "aws_lb_target_group" "cf_apps_target_https" {
+  name     = "${var.stack_description}-cf-apps-https"
+  port     = 443
+  protocol = "HTTPS"
   vpc_id   = var.vpc_id
 
   health_check {
@@ -35,7 +35,7 @@ resource "aws_lb_listener" "cf_apps" {
   certificate_arn   = var.elb_apps_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target.arn
+    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
     type             = "forward"
   }
 }
@@ -46,10 +46,12 @@ resource "aws_lb_listener" "cf_apps_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target.arn
+    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
     type             = "forward"
   }
 }
+
+
 
 resource "aws_lb_listener_certificate" "pages_staging" {
   listener_arn    = aws_lb_listener.cf_apps.arn
@@ -59,4 +61,9 @@ resource "aws_lb_listener_certificate" "pages_staging" {
 resource "aws_lb_listener_certificate" "sites_pages_staging" {
   listener_arn    = aws_lb_listener.cf_apps.arn
   certificate_arn = var.sites_pages_staging_cert_id
+}
+
+resource "aws_wafv2_web_acl_association" "cf_apps_waf_core" {
+  resource_arn = aws_lb.cf_apps.arn
+  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }

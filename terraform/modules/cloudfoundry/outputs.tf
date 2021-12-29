@@ -14,12 +14,24 @@ output "apps_lb_dns_name" {
   value = aws_lb.cf_apps.dns_name
 }
 
-output "lb_target_group" {
-  value = aws_lb_target_group.cf_target.name
+output "lb_target_https_group" {
+  value = aws_lb_target_group.cf_target_https.name
 }
 
-output "apps_lb_target_group" {
-  value = aws_lb_target_group.cf_apps_target.name
+output "apps_lb_target_https_group" {
+  value = aws_lb_target_group.cf_apps_target_https.name
+}
+
+output "uaa_lb_name" {
+  value = aws_lb.cf_uaa.name
+}
+
+output "uaa_lb_dns_name" {
+  value = aws_lb.cf_uaa.dns_name
+}
+
+output "uaa_lb_target_group" {
+  value = aws_lb_target_group.cf_uaa_target.name
 }
 
 output "cf_rds_url" {
@@ -84,4 +96,6 @@ output "logsearch_archive_bucket_name" {
   value = module.logsearch-archive.bucket_name
 }
 
-
+output "cf_uaa_waf_core_arn" {
+  value = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+}
