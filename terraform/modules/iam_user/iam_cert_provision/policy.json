@@ -18,7 +18,7 @@
         "sts:AssumeRole"
       ],
       "Resource": [
-        "arn:aws-us-gov:iam::*:role/terraform/*-tooling-cert-uploader"
+        "arn:${aws_partition}:iam::*:role/terraform/*-tooling-cert-uploader"
       ]
     }
   ]
