@@ -11,6 +11,15 @@
       "Resource": [
         "arn:${aws_partition}:iam::${account_id}:server-certificate/lets-encrypt/*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sts:AssumeRole"
+      ],
+      "Resource": [
+        "*"
+      ]
     }
   ]
 }
