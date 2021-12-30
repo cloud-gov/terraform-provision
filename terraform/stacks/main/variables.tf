@@ -96,6 +96,9 @@ variable "assume_arn" {
   # arn of a role to assume in the account being configured
 }
 
+variable "domains_broker_rds_version" {
+  default = "11.12"
+}
 variable "domain_broker_v2_rds_version" {
   default = "11.12"
 }
