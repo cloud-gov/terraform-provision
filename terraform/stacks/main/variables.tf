@@ -95,3 +95,6 @@ variable "rds_apply_immediately" {
 variable "assume_arn" {
   # arn of a role to assume in the account being configured
 }
+variable "stack_class" {
+  # should be one of development, staging, production
+}
