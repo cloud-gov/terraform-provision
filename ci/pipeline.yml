@@ -3,16 +3,16 @@ groups:
   jobs:
   - apply-dns
   - bootstrap-development
-  - bootstrap-east1
-  - bootstrap-external-east1
+  - bootstrap-easta
+  - bootstrap-external-easta
   - bootstrap-external-production
   - bootstrap-external-staging
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
   - plan-bootstrap-development
-  - plan-bootstrap-east1
-  - plan-bootstrap-external-east1
+  - plan-bootstrap-easta
+  - plan-bootstrap-external-easta
   - plan-bootstrap-external-production
   - plan-bootstrap-external-staging
   - plan-bootstrap-production
@@ -23,8 +23,8 @@ groups:
 - name: certs
   jobs:
   - acme-certificate-development
-  - acme-certificate-east1
-  - acme-certificate-east1-apps
+  - acme-certificate-easta
+  - acme-certificate-easta-apps
   - acme-certificate-staging
   - acme-certificate-production
   - acme-certificate-production-apps
@@ -194,62 +194,62 @@ jobs:
     params:
       file: terraform-yaml/state.yml
 
-- name: plan-bootstrap-external-east1
+- name: plan-bootstrap-external-easta
   plan:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
+      resource: cg-provision-repo-easta
       trigger: true
     - get: plan-timer
       trigger: true
-  - task: plan-update-external-east1
+  - task: plan-update-external-easta
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
-    params: &external-east1-params
+    params: &external-easta-params
       TERRAFORM_ACTION: plan
-      STACK_NAME: external-east1
+      STACK_NAME: external-easta
       TEMPLATE_SUBDIR: terraform/stacks/external
       S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
       AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
       AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
       AWS_DEFAULT_REGION: ((aws_external_region))
-      TF_VAR_stack_description: east1
+      TF_VAR_stack_description: easta
       TF_VAR_aws_default_region: ((aws_external_region))
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
       # IDs from `data` resources.
-      TF_VAR_cdn_broker_username: ((cdn_broker_username_east1))
-      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_east1))
-      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_east1))
-      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_east1))
-      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_east1))
-      TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_east1))
-      TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_east1))
-      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_east1))
-      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_east1))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_east1))
-      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_east1))
+      TF_VAR_cdn_broker_username: ((cdn_broker_username_easta))
+      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_easta))
+      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_easta))
+      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_easta))
+      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_easta))
+      TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_easta))
+      TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_easta))
+      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_easta))
+      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_easta))
+      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_easta))
+      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_easta))
   - *notify-slack
 
-- name: bootstrap-external-east1
+- name: bootstrap-external-easta
   plan:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
-      passed: [plan-bootstrap-external-east1]
-  - task: create-update-external-east1
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-external-easta]
+  - task: create-update-external-easta
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
-      <<: *external-east1-params
+      <<: *external-easta-params
       TERRAFORM_ACTION: apply
   - task: terraform-state-to-yaml
     file: pipeline-tasks/terraform12-state-to-yaml.yml
     params:
       STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-external-east1
+  - put: terraform-yaml-external-easta
     params:
       file: terraform-yaml/state.yml
 
@@ -428,6 +428,7 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
+      TF_VAR_stack_class: development
       TF_VAR_force_restricted_network: "yes"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -548,6 +549,7 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: staging
+      TF_VAR_stack_class: staging
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -667,6 +669,7 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: production
+      TF_VAR_stack_class: production
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -765,76 +768,78 @@ jobs:
       params:
         file: terraform-yaml/state.yml
 
-- name: plan-bootstrap-east1
+- name: plan-bootstrap-easta
   plan:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
+      resource: cg-provision-repo-easta
       trigger: true
     - get: plan-timer
       trigger: true
-  - task: plan-update-east1
+  - task: plan-update-easta
     tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
-    params: &east1-params
+    params: &easta-params
       TERRAFORM_ACTION: plan
-      STACK_NAME: east1
+      STACK_NAME: easta
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      TF_VAR_stack_description: east1
+      AWS_DEFAULT_REGION: ((aws_default_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_stack_description: easta
+      TF_VAR_stack_class: production
       TF_VAR_force_restricted_network: "no"
-      TF_VAR_assume_arn: ((east1_assume_arn))
+      TF_VAR_assume_arn: ((easta_assume_arn))
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
       # IDs from `data` resources.
-      TF_VAR_rds_password: ((east1_rds_password))
-      TF_VAR_rds_db_size: ((east1_rds_db_size))
+      TF_VAR_rds_password: ((easta_rds_password))
+      TF_VAR_rds_db_size: ((easta_rds_db_size))
       # Enable for database upgrades:
       #TF_VAR_rds_apply_immediately: "true"
       #TF_VAR_rds_allow_major_version_upgrade: "true"
-      TF_VAR_credhub_rds_password: ((east1_credhub_rds_password))
+      TF_VAR_credhub_rds_password: ((easta_credhub_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_vpc_cidr: ((east1_vpc_cidr))
-      TF_VAR_cf_rds_password: ((east1_cf_rds_password))
-      TF_VAR_restricted_ingress_web_cidrs: ((east1_restricted_ingress_web_cidrs))
-      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((east1_restricted_ingress_web_ipv6_cidrs))
+      TF_VAR_vpc_cidr: ((easta_vpc_cidr))
+      TF_VAR_cf_rds_password: ((easta_cf_rds_password))
+      TF_VAR_restricted_ingress_web_cidrs: ((easta_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((easta_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr.e1.cloud.gov
       TF_VAR_wildcard_apps_certificate_name_prefix: star.app.e1.cloud.gov
-      TF_VAR_stack_prefix: cf-east1
+      TF_VAR_stack_prefix: cf-easta
       TF_VAR_bucket_prefix: cg
-      TF_VAR_blobstore_bucket_name: bosh-east1-blobstore
+      TF_VAR_blobstore_bucket_name: bosh-easta-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore # probably doesn't actually matter
       TF_VAR_admin_hosts: '["admin.fr.e1.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.e1.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.e1.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "1"
       TF_VAR_domain_broker_v2_alb_count: "1"
-      TF_VAR_challenge_bucket: east1-domains-broker-challenge # unused, but not optional in TF
-      TF_VAR_iam_cert_prefix: "/domains/east1/*"
-      TF_VAR_alb_prefix: "east1-domains-*"
-      TF_VAR_domains_broker_rds_username: ((east1_domains_broker_rds_username))
-      TF_VAR_domains_broker_rds_password: ((east1_domains_broker_rds_password))
-      TF_VAR_domain_broker_v2_rds_username: ((east1_domain_broker_v2_rds_username)) # unused, but not optional in TF
-      TF_VAR_domain_broker_v2_rds_password: ((east1_domain_broker_v2_rds_password)) # unused, but not optional in TF
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov # unused, but not optional in TF
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov # unused, but not optional in TF
+      TF_VAR_challenge_bucket: easta-domains-broker-challenge # unused, but not optional in TF
+      TF_VAR_iam_cert_prefix: "/domains/easta/*"
+      TF_VAR_alb_prefix: "easta-domains-*"
+      TF_VAR_domains_broker_rds_username: ((easta_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((easta_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((easta_domain_broker_v2_rds_username)) # unused, but not optional in TF
+      TF_VAR_domain_broker_v2_rds_password: ((easta_domain_broker_v2_rds_password)) # unused, but not optional in TF
+      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.e1.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.e1.cloud.gov # unused, but not optional in TF
   - *notify-slack
 
-- name: bootstrap-east1
+- name: bootstrap-easta
   plan:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
-      passed: [plan-bootstrap-east1]
-  - task: create-update-east1
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-easta]
+  - task: create-update-easta
     tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
-      <<: *east1-params
+      <<: *easta-params
       TERRAFORM_ACTION: apply
   - in_parallel:
     - do:
@@ -879,7 +884,7 @@ jobs:
       file: pipeline-tasks/terraform12-state-to-yaml.yml
       params:
         STATE_FILE: terraform.tfstate
-    - put: terraform-yaml-east1
+    - put: terraform-yaml-easta
       params:
         file: terraform-yaml/state.yml
 
@@ -1036,23 +1041,23 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
-- name: acme-certificate-east1
+- name: acme-certificate-easta
   plan:
   - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
+      resource: cg-provision-repo-easta
     - get: terraform-yaml-tooling
       resource: terraform-yaml-tooling
     - get: terraform-yaml-external
-      resource: terraform-yaml-external-east1
+      resource: terraform-yaml-external-easta
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: ((aws_east1_region))
-      ASSUME_ROLE_ARN: ((east1_cert_role_arn))
-      CERT_PATH: /lets-encrypt/east1/
+      AWS_DEFAULT_REGION: ((aws_easta_region))
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
+      CERT_PATH: /lets-encrypt/easta/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
@@ -1063,9 +1068,9 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      ASSUME_ROLE_ARN: ((east1_cert_role_arn))
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
       AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/east1/
+      CERT_PATH: /lets-encrypt/easta/
       CERT_PREFIX: star.fr.e1.cloud.gov
   on_failure:
     put: slack
@@ -1077,23 +1082,23 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
-- name: acme-certificate-east1-apps
+- name: acme-certificate-easta-apps
   plan:
   - in_parallel:
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
-      resource: cg-provision-repo-east1
+      resource: cg-provision-repo-easta
     - get: terraform-yaml-tooling
       resource: terraform-yaml-tooling
     - get: terraform-yaml-external
-      resource: terraform-yaml-external-east1
+      resource: terraform-yaml-external-easta
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
-      AWS_DEFAULT_REGION: ((aws_east1_region))
-      ASSUME_ROLE_ARN: ((east1_cert_role_arn))
-      CERT_PATH: /lets-encrypt/east1/
+      AWS_DEFAULT_REGION: ((aws_easta_region))
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
+      CERT_PATH: /lets-encrypt/easta/
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
@@ -1104,9 +1109,9 @@ jobs:
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
-      AWS_DEFAULT_REGION: ((aws_east1_region))
-      ASSUME_ROLE_ARN: ((east1_cert_role_arn))
-      CERT_PATH: /lets-encrypt/east1/
+      AWS_DEFAULT_REGION: ((aws_easta_region))
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
+      CERT_PATH: /lets-encrypt/easta/
       CERT_PREFIX: star.app.e1.cloud.gov
   on_failure:
     put: slack
@@ -1213,7 +1218,7 @@ resources:
     uri: ((cg_provision_development_git_url))
     branch: master
 
-- name: cg-provision-repo-east1
+- name: cg-provision-repo-easta
   type: git
   source:
     uri: ((cg_provision_development_git_url))
@@ -1261,18 +1266,18 @@ resources:
     versioned_file: ((tf_state_file_production))
     region_name: ((aws_default_region))
 
-- name: terraform-yaml-east1
+- name: terraform-yaml-easta
   type: s3-iam
   source:
     bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_east1))
+    versioned_file: ((tf_state_file_easta))
     region_name: ((aws_default_region))
 
-- name: terraform-yaml-external-east1
+- name: terraform-yaml-external-easta
   type: s3
   source:
     bucket: ((aws_external_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_external_east1))
+    versioned_file: ((tf_state_file_external_easta))
     access_key_id: ((aws_external_access_key_id))
     secret_access_key: ((aws_external_secret_access_key))
     region_name: ((aws_external_region))
