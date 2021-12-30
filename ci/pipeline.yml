@@ -428,7 +428,6 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: development
-      TF_VAR_stack_class: development
       TF_VAR_force_restricted_network: "yes"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -549,7 +548,6 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: staging
-      TF_VAR_stack_class: staging
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -669,7 +667,6 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_stack_description: production
-      TF_VAR_stack_class: production
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
@@ -788,7 +785,6 @@ jobs:
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
       TF_VAR_stack_description: easta
-      TF_VAR_stack_class: production
       TF_VAR_force_restricted_network: "no"
       TF_VAR_assume_arn: ((easta_assume_arn))
       # Do not copy the pattern below.  You should not need separate variables
