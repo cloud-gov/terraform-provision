@@ -126,7 +126,7 @@ module "stack" {
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
   target_monitoring_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_description],
+    data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_class],
   ]
 
   target_concourse_security_groups = [
