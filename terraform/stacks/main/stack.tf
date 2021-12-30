@@ -125,18 +125,19 @@ module "stack" {
   target_az1_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
-  target_monitoring_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_class],
+  target_monitoring_security_group_cidrs = [
+    data.terraform_remote_state.target_vpc.outputs.production_monitoring_subnet,
+    data.terraform_remote_state.target_vpc.outputs.staging_monitoring_subnet,
   ]
 
-  target_concourse_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group,
-    data.terraform_remote_state.target_vpc.outputs.staging_concourse_security_group,
+  target_concourse_security_group_cidrs = [
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
 
-  target_credhub_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.production_credhub_security_group,
-    data.terraform_remote_state.target_vpc.outputs.staging_credhub_security_group,
+  target_credhub_security_group_cidrs = [
+    data.terraform_remote_state.target_vpc.outputs.production_credhub_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.staging_credhub_subnet_cidr,
   ]
 }
 

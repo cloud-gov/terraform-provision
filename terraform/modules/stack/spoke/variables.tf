@@ -111,17 +111,17 @@ variable "target_az1_route_table" {
 variable "target_az2_route_table" {
 }
 
-variable "target_monitoring_security_groups" {
+variable "target_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_concourse_security_groups" {
+variable "target_concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_credhub_security_groups" {
+variable "target_credhub_security_group_cidrs" {
   type    = list(string)
   default = []
 }
