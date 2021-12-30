@@ -71,6 +71,7 @@ resource "aws_db_instance" "domains_broker" {
   username             = var.domains_broker_rds_username
   password             = var.domains_broker_rds_password
   engine               = "postgres"
+  engine_version       = var.domains_broker_rds_version
   db_subnet_group_name = module.stack.rds_subnet_group
   vpc_security_group_ids = [module.stack.rds_postgres_security_group]
 }
