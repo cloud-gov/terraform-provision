@@ -126,8 +126,8 @@ module "stack" {
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
   target_monitoring_security_group_cidrs = [
-    data.terraform_remote_state.target_vpc.outputs.production_monitoring_subnet,
-    data.terraform_remote_state.target_vpc.outputs.staging_monitoring_subnet,
+    data.terraform_remote_state.target_vpc.outputs.production_monitoring_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.staging_monitoring_subnet_cidr,
   ]
 
   target_concourse_security_group_cidrs = [
