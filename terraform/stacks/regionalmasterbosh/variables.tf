@@ -100,3 +100,7 @@ variable "nessus_hosts" {
   type = list(string)
 
 }
+
+variable "opslogin_hostname" {
+  default = "opsuaa.fr.cloud.gov"
+}
