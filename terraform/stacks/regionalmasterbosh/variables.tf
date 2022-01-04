@@ -1,9 +1,9 @@
 variable "stack_description" {
-  default = "tooling"
+  default = "master-east"
 }
 
 variable "aws_default_region" {
-  default = "us-gov-west-1"
+  default = "us-gov-east-1"
 }
 
 variable "vpc_cidr" {
@@ -93,6 +93,7 @@ variable "assume_arn" {
 
 variable "target_stack_name" {
   # name of the stack that ci runs in to bootstrap this stack
+  default = "tooling"
 }
 
 variable "nessus_hosts" {
