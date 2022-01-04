@@ -129,7 +129,13 @@
         "iam:PassRole",
         "iam:DetachRolePolicy",
         "iam:ListRolePolicies",
-        "iam:GetRolePolicy"
+        "iam:GetRolePolicy",
+        "iam:ListPolicies",
+        "iam:ListPolicyVersions",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicyVersion"
       ],
       "Effect": "Allow",
       "Resource": [
