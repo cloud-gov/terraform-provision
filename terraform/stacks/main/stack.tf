@@ -7,6 +7,7 @@ provider "aws" {
   alias = "tooling"
 }
 provider "aws" {
+  region = var.aws_default_region
   assume_role {
     role_arn = var.assume_arn
   }

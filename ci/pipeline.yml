@@ -407,6 +407,107 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
+- name: plan-bootstrap-master-east
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-master
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-tooling
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &tooling-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: master-east
+      TEMPLATE_SUBDIR: terraform/stacks/regionalmasterbosh
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_aws_default_region: ((aws_east_region))
+      TF_VAR_rds_password: ((master_east_rds_password))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
+      TF_VAR_credhub_rds_password: ((master_east_credhub_rds_password))
+      TF_VAR_opsuaa_rds_password: ((east_opsuaa_rds_password))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
+      TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
+      TF_VAR_smtp_ingress_cidr_blocks: '["((easta_private_cidr_1))", "((easta_private_cidr_2))"]'
+      TF_VAR_restricted_ingress_web_cidrs: ((master_east_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((master_east_restricted_ingress_web_ipv6_cidrs))
+      TF_VAR_blobstore_bucket_name: bosh-master-east-blobstore
+      TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
+      TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
+      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
+      TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
+      TF_VAR_oidc_client: ((master_east_oidc_client))
+      TF_VAR_oidc_client_secret: ((master_east_oidc_client_secret))
+  - *notify-slack
+
+- name: bootstrap-tooling
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-master
+      passed: [plan-bootstrap-tooling]
+  - task: create-update-tooling
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *tooling-params
+      TERRAFORM_ACTION: apply
+  - in_parallel:
+    - task: init-bosh-db
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
+        inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+        params:
+          STATE_FILE_PATH: terraform-state/terraform.tfstate
+        run:
+          path: sh
+          args:
+          - -e
+          - -c
+          - cg-provision-repo/ci/scripts/update-bosh-db.sh
+    - task: init-opsuaa-db
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: 18fgsa/concourse-task
+        inputs:
+        - name: cg-provision-repo
+        - name: terraform-state
+        params:
+          STATE_FILE_PATH: terraform-state/terraform.tfstate
+        run:
+          path: sh
+          args:
+          - -e
+          - -c
+          - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
+    - do:
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-tooling
+        params:
+          file: terraform-yaml/state.yml
+
 
 - name: plan-bootstrap-development
   plan:
@@ -806,7 +907,7 @@ jobs:
       TF_VAR_stack_prefix: cf-easta
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-easta-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore # probably doesn't actually matter
+      TF_VAR_upstream_blobstore_bucket_name: bosh-master-east-blobstore # probably doesn't actually matter
       TF_VAR_admin_hosts: '["admin.fr.e1.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.e1.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.e1.cloud.gov"]'
