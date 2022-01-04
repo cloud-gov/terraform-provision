@@ -54,12 +54,12 @@ resource "aws_lb_listener_rule" "doomsday_listener_rule" {
     type = "authenticate-oidc"
     authenticate_oidc {
       # https://opslogin.fr.cloud.gov/.well-known/openid-configuration
-      authorization_endpoint     = "https://opslogin.fr.cloud.gov/oauth/authorize"
+      authorization_endpoint     = "https://${var.opslogin_hostname}/oauth/authorize"
       client_id                  = var.oidc_client
       client_secret              = var.oidc_client_secret
-      issuer                     = "https://opslogin.fr.cloud.gov/oauth/token"
-      token_endpoint             = "https://opslogin.fr.cloud.gov/oauth/token"
-      user_info_endpoint         = "https://opslogin.fr.cloud.gov/userinfo"
+      issuer                     = "https://${var.opslogin_hostname}/oauth/token"
+      token_endpoint             = "https://${var.opslogin_hostname}/oauth/token"
+      user_info_endpoint         = "https://${var.opslogin_hostname}/userinfo"
       on_unauthenticated_request = "authenticate"
     }
   }
