@@ -97,5 +97,6 @@ variable "target_stack_name" {
 }
 
 variable "nessus_hosts" {
+  type = list(string)
 
 }
