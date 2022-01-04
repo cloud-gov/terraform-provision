@@ -127,6 +127,7 @@ module "monitoring_production" {
   hosts              = var.monitoring_production_hosts
   oidc_client        = var.oidc_client
   oidc_client_secret = var.oidc_client_secret
+  opslogin_hostname  = var.opslogin_hostname
 }
 
 resource "aws_eip" "production_dns_eip" {
