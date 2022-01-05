@@ -143,3 +143,28 @@ module "smtp" {
   vpc_id              = module.stack.vpc_id
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
+
+module "concourse_vpc_peering" {
+  # allow concourse to talk to regionalmasterbosh and its databases
+  source = "../../modules/vpc_peering"
+
+  providers = {
+    aws = aws
+    aws.tooling = aws.tooling
+  }
+  target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
+  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.vpc_cidr
+  target_az1_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
+  target_az2_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
+  source_vpc_id          = module.stack.vpc_id
+  source_vpc_cidr        = module.stack.vpc_cidr
+  source_az1_route_table = module.stack.private_route_table_az1
+  source_az2_route_table = module.stack.private_route_table_az2
+}
+
+module "concourse_to_bosh_sg" {
+  source = "../../modules/vpc_peering_sg"
+
+  target_bosh_security_group = module.stack.bosh_security_group
+  source_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
+}
