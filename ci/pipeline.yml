@@ -437,12 +437,14 @@ jobs:
       TF_VAR_credhub_rds_password: ((master_east_credhub_rds_password))
       TF_VAR_opsuaa_rds_password: ((east_opsuaa_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
+      TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket_master_east))
       TF_VAR_vpc_cidr: ((master_east_vpc_cidr))
       TF_VAR_smtp_ingress_cidr_blocks: '["((easta_private_cidr_1))", "((easta_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((master_east_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((master_east_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-master-east-blobstore
+      TF_VAR_bosh_release_bucket: cloud-gov-bosh-releases-east
+      TF_VAR_log_bucket_name: cg-elb-logs-tooling-east
       TF_VAR_monitoring_production_hosts: '["prometheus.fr.e1.cloud.gov", "alertmanager.fr.e1.cloud.gov", "grafana.fr.e1.cloud.gov"]'
       TF_VAR_nessus_hosts: '["nessus.fr.e1.cloud.gov"]'
       TF_VAR_wildcard_production_certificate_name_prefix: star.fr.e1.cloud.gov
