@@ -19,6 +19,10 @@ provider aws {
  */
 
 # Create peering connection for source_vpc_id -> target_vpc_id
+data "aws_region" "tooling" {
+  provider = aws.tooling
+}
+
 data "aws_caller_identity" "tooling" {
   provider = aws.tooling
 }
@@ -26,7 +30,7 @@ data "aws_caller_identity" "tooling" {
 resource "aws_vpc_peering_connection" "peering" {
   peer_owner_id = data.aws_caller_identity.tooling.account_id
   peer_vpc_id   = var.target_vpc_id
-  peer_region   = data.aws_caller_identity.tooling.region
+  peer_region   = data.aws_region.tooling.name
   auto_accept   = false
   vpc_id        = var.source_vpc_id
 
