@@ -365,10 +365,6 @@ output "dns_public_security_group" {
   value = module.dns.public_security_group
 }
 
-output "production_dns_public_ips" {
-  value = [aws_eip.production_dns_eip.*.public_ip]
-}
-
 output "production_dns_private_ips" {
   value = local.production_dns_private_ips
 }
