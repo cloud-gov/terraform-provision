@@ -96,7 +96,7 @@ module "stack" {
   rds_multi_az                      = var.rds_multi_az
   rds_security_groups               = [module.stack.bosh_security_group]
   rds_security_groups_count         = "1"
-  rds_db_instance_type              = var.rds_db_instance_type 
+  rds_instance_type                 = var.rds_instance_type 
   rds_db_engine_version             = var.rds_db_engine_version
   rds_parameter_group_family        = var.rds_parameter_group_family
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
