@@ -462,13 +462,13 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-master-east-blobstore
       TF_VAR_bosh_release_bucket: cloud-gov-bosh-releases-east
       TF_VAR_log_bucket_name: cg-elb-logs-tooling-east
-      TF_VAR_monitoring_production_hosts: '["prometheus.fr.e1.cloud.gov", "alertmanager.fr.e1.cloud.gov", "grafana.fr.e1.cloud.gov"]'
-      TF_VAR_nessus_hosts: '["nessus.fr.e1.cloud.gov"]'
-      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.e1.cloud.gov
+      TF_VAR_monitoring_production_hosts: '["prometheus.fr.east.cloud.gov", "alertmanager.fr.east.cloud.gov", "grafana.fr.east.cloud.gov"]'
+      TF_VAR_nessus_hosts: '["nessus.fr.east.cloud.gov"]'
+      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.east.cloud.gov
       TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
       TF_VAR_oidc_client: ((master_east_oidc_client))
       TF_VAR_oidc_client_secret: ((master_east_oidc_client_secret))
-      TF_VAR_opslogin_hostname: "opslogin.fr.e1.cloud.gov"
+      TF_VAR_opslogin_hostname: "opslogin.fr.east.cloud.gov"
   - *notify-slack
 
 - name: bootstrap-master-east
@@ -926,15 +926,15 @@ jobs:
       TF_VAR_cf_rds_password: ((easta_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((easta_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((easta_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_wildcard_certificate_name_prefix: star.fr.e1.cloud.gov
-      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.e1.cloud.gov
+      TF_VAR_wildcard_certificate_name_prefix: star.fr.ea.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.ea.cloud.gov
       TF_VAR_stack_prefix: cf-easta
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-easta-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-master-east-blobstore # probably doesn't actually matter
-      TF_VAR_admin_hosts: '["admin.fr.e1.cloud.gov"]'
-      TF_VAR_shibboleth_hosts: '["idp.fr.e1.cloud.gov"]'
-      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.e1.cloud.gov"]'
+      TF_VAR_admin_hosts: '["admin.fr.ea.cloud.gov"]'
+      TF_VAR_shibboleth_hosts: '["idp.fr.ea.cloud.gov"]'
+      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.ea.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "1"
       TF_VAR_domain_broker_v2_alb_count: "1"
       TF_VAR_challenge_bucket: easta-domains-broker-challenge # unused, but not optional in TF
@@ -944,8 +944,8 @@ jobs:
       TF_VAR_domains_broker_rds_password: ((easta_domains_broker_rds_password))
       TF_VAR_domain_broker_v2_rds_username: ((easta_domain_broker_v2_rds_username)) # unused, but not optional in TF
       TF_VAR_domain_broker_v2_rds_password: ((easta_domain_broker_v2_rds_password)) # unused, but not optional in TF
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.e1.cloud.gov # unused, but not optional in TF
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.e1.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
   - *notify-slack
 
 - name: bootstrap-easta
