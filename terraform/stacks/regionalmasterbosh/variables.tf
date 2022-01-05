@@ -61,10 +61,6 @@ variable "bucket_prefix" {
   default = ""
 }
 
-variable "dns_eip_count_production" {
-  default = 4
-}
-
 variable "bosh_release_bucket" {
   default = "cloud-gov-bosh-releases"
 }
