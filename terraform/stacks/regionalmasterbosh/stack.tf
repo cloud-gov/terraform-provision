@@ -130,16 +130,6 @@ module "monitoring_production" {
   opslogin_hostname  = var.opslogin_hostname
 }
 
-resource "aws_eip" "production_dns_eip" {
-  vpc = true
-
-  count = var.dns_eip_count_production
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 module "dns" {
   source            = "../../modules/dns"
   stack_description = var.stack_description
