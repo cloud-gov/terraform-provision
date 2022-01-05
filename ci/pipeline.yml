@@ -22,9 +22,21 @@ groups:
   - plan-bootstrap-tooling
   - plan-dns
   - pull-status-check
+- name: terraform-east
+  jobs:
+  - apply-dns
+  - bootstrap-easta
+  - bootstrap-external-easta
+  - bootstrap-master-east
+  - plan-bootstrap-easta
+  - plan-bootstrap-external-easta
+  - plan-bootstrap-master-east
+  - plan-dns
+  - pull-status-check
 - name: certs
   jobs:
   - acme-certificate-development
+  - acme-certificate-east-tooling
   - acme-certificate-easta
   - acme-certificate-easta-apps
   - acme-certificate-staging
@@ -32,6 +44,11 @@ groups:
   - acme-certificate-production-apps
   - acme-certificate-staging-pages
   - acme-certificate-staging-pages-sites
+- name: certs-east
+  jobs:
+  - acme-certificate-east-tooling
+  - acme-certificate-easta
+  - acme-certificate-easta-apps
 
 jobs:
 - name: pull-status-check
@@ -1145,6 +1162,47 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
+- name: acme-certificate-east-tooling
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-easta
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_easta_region))
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
+      CERT_PATH: /lets-encrypt/east/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.fr.east.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.fr.east.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      ASSUME_ROLE_ARN: ((easta_cert_role_arn))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/east/
+      CERT_PREFIX: star.fr.east.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.fr.east.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
 - name: acme-certificate-easta
   plan:
   - in_parallel:
@@ -1165,9 +1223,9 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
-      CERT_PREFIX: star.fr.e1.cloud.gov
+      CERT_PREFIX: star.fr.ea.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.fr.e1.cloud.gov"
+      DOMAIN: "*.fr.ea.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
@@ -1175,12 +1233,12 @@ jobs:
       ASSUME_ROLE_ARN: ((easta_cert_role_arn))
       AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/easta/
-      CERT_PREFIX: star.fr.e1.cloud.gov
+      CERT_PREFIX: star.fr.ea.cloud.gov
   on_failure:
     put: slack
     params:
       text: |
-        :x: Failed to check ACME certificates for *.fr.e1.cloud.gov
+        :x: Failed to check ACME certificates for *.fr.ea.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: ((slack-channel))
       username: ((slack-username))
@@ -1206,9 +1264,9 @@ jobs:
   - task: provision-certificate
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
-      CERT_PREFIX: star.app.e1.cloud.gov
+      CERT_PREFIX: star.app.ea.cloud.gov
       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.app.e1.cloud.gov"
+      DOMAIN: "*.app.ea.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
     file: cg-provision-repo/ci/upload-certificate.yml
@@ -1216,12 +1274,12 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_easta_region))
       ASSUME_ROLE_ARN: ((easta_cert_role_arn))
       CERT_PATH: /lets-encrypt/easta/
-      CERT_PREFIX: star.app.e1.cloud.gov
+      CERT_PREFIX: star.app.ea.cloud.gov
   on_failure:
     put: slack
     params:
       text: |
-        :x: Failed to check ACME certificates for *.app.e1.cloud.gov
+        :x: Failed to check ACME certificates for *.app.ea.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: ((slack-channel))
       username: ((slack-username))
