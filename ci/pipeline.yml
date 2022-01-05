@@ -7,6 +7,7 @@ groups:
   - bootstrap-external-easta
   - bootstrap-external-production
   - bootstrap-external-staging
+  - bootstrap-master-east
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
@@ -15,6 +16,7 @@ groups:
   - plan-bootstrap-external-easta
   - plan-bootstrap-external-production
   - plan-bootstrap-external-staging
+  - plan-bootstrap-master-east
   - plan-bootstrap-production
   - plan-bootstrap-staging
   - plan-bootstrap-tooling
@@ -412,7 +414,7 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
+      resource: cg-provision-repo-easta
       trigger: true
     - get: plan-timer
       trigger: true
@@ -420,13 +422,14 @@ jobs:
     tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
-    params: &tooling-params
+    params: &master-east-params
       TERRAFORM_ACTION: plan
       STACK_NAME: master-east
       TEMPLATE_SUBDIR: terraform/stacks/regionalmasterbosh
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_aws_default_region: ((aws_east_region))
+      AWS_DEFAULT_REGION: ((aws_default_region)) # this needs to stay as default, since tf still runs from the default
+      TF_VAR_aws_default_region: ((aws_east_region)) # this controls where we actually connect to
+      TF_VAR_assume_arn: ((master_east_assume_arn))
       TF_VAR_rds_password: ((master_east_rds_password))
       # Enable for database upgrades:
       #TF_VAR_rds_apply_immediately: "true"
@@ -435,32 +438,33 @@ jobs:
       TF_VAR_opsuaa_rds_password: ((east_opsuaa_rds_password))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
-      TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
+      TF_VAR_vpc_cidr: ((master_east_vpc_cidr))
       TF_VAR_smtp_ingress_cidr_blocks: '["((easta_private_cidr_1))", "((easta_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((master_east_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((master_east_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-master-east-blobstore
-      TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
-      TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
-      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
+      TF_VAR_monitoring_production_hosts: '["prometheus.fr.e1.cloud.gov", "alertmanager.fr.e1.cloud.gov", "grafana.fr.e1.cloud.gov"]'
+      TF_VAR_nessus_hosts: '["nessus.fr.e1.cloud.gov"]'
+      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.e1.cloud.gov
       TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
       TF_VAR_oidc_client: ((master_east_oidc_client))
       TF_VAR_oidc_client_secret: ((master_east_oidc_client_secret))
+      TF_VAR_opslogin_hostname: "opslogin.fr.e1.cloud.gov"
   - *notify-slack
 
-- name: bootstrap-tooling
+- name: bootstrap-master-east
   plan:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
-      passed: [plan-bootstrap-tooling]
-  - task: create-update-tooling
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-master-east]
+  - task: create-update-master-east
     tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
-      <<: *tooling-params
+      <<: *master-east-params
       TERRAFORM_ACTION: apply
   - in_parallel:
     - task: init-bosh-db
@@ -504,7 +508,7 @@ jobs:
         file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
           STATE_FILE: terraform.tfstate
-      - put: terraform-yaml-tooling
+      - put: terraform-yaml-master-east
         params:
           file: terraform-yaml/state.yml
 
@@ -885,6 +889,7 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_aws_default_region: ((aws_easta_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
       TF_VAR_stack_description: easta
       TF_VAR_force_restricted_network: "no"
       TF_VAR_assume_arn: ((easta_assume_arn))
@@ -1319,7 +1324,7 @@ resources:
   type: git
   source:
     uri: ((cg_provision_development_git_url))
-    branch: tke1
+    branch: regionalbosh
 
 - name: cg-provision-repo-master
   type: git
@@ -1340,6 +1345,13 @@ resources:
   source:
     bucket: ((aws_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_tooling))
+    region_name: ((aws_default_region))
+
+- name: terraform-yaml-master-east
+  type: s3-iam
+  source:
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_master_east))
     region_name: ((aws_default_region))
 
 - name: terraform-yaml-development
