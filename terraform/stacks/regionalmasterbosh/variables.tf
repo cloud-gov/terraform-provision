@@ -100,3 +100,7 @@ variable "nessus_hosts" {
 variable "opslogin_hostname" {
   default = "opsuaa.fr.cloud.gov"
 }
+
+variable "rds_instance_type" {
+
+}
