@@ -389,3 +389,6 @@ output "production_smtp_private_ip" {
   value = local.production_smtp_private_ip
 }
 
+output "nessus_static_ip" {
+  value = cidrhost(module.stack.private_cidr_az1, 71)
+}
