@@ -23,8 +23,17 @@ The main terraform directories are:
 The `main` stack is a template that is used to provision the production,
 staging, and development "environments."
 
-The `tooling` stack contains our "proto-BOSH", which deploys the tooling BOSH.
-The tooling BOSH then deploys the BOSH directors in the main stacks.
+The `regionalmasterbosh` stack contains our masterbosh for a given region, which deploys the tooling BOSH for that region.
+The tooling BOSH then deploys the BOSH directors in the main stacks across all accounts in that region.
+
+The `tooling` stack is the same as the `regionalmasterbosh` stack, but has some extras from before we started going multi-region
+and multi-account:
+  - concourse and staging concourse
+  - buckets that we need only one of across all accounts and regions
+  - some things that really should be in child environment accounts 
+  - nessus
+In the future, we should work towards disentagling these pieces out, so the old tooling is deployed as a regionalmasterbosh and the 
+_other_ stuff is its own stack(s)
 
 The `external` and `dns` stacks are both outside of GovCloud (commercial AWS).
 

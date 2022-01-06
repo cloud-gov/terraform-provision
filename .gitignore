@@ -14,3 +14,5 @@ tmp/*
 
 # Eclipse IDE files
 .project
+
+*-state.json
