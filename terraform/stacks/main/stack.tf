@@ -14,7 +14,7 @@ provider "aws" {
   alias = "parentbosh"
   region = var.aws_default_region
   assume_role {
-    role_arn = var.parentbosh_assume_arn
+    role_arn = var.parent_assume_arn
   }
 }
 provider "aws" {
