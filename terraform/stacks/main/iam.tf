@@ -215,5 +215,5 @@ resource "aws_iam_user_policy_attachment" "parent_bosh_bosh" {
 }
 
 resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
-  user    = aws_iam_user.parent_bosh_user
+  user    = aws_iam_user.parent_bosh_user.name
 }
