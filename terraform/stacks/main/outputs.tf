@@ -551,3 +551,20 @@ output "master_bosh_static_ip" {
 output "nessus_static_ip" {
   value = data.terraform_remote_state.target_vpc.outputs.nessus_static_ip
 }
+
+
+output "parent_bosh_user_access_key_id_prev" {
+  value = ""
+}
+
+output "parent_bosh_usersecret_access_key_prev" {
+  value = ""
+}
+
+output "parent_bosh_useraccess_key_id_curr" {
+  value = aws_iam_access_key.parent_bosh_user_key_v1.id
+}
+
+output "parent_bosh_usersecret_access_key_curr" {
+  value = aws_iam_access_key.parent_bosh_user_key_v1.secret
+}
