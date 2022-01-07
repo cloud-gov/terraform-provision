@@ -203,3 +203,17 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
+
+resource "aws_iam_user" "parent_bosh_user" {
+  name = "tooling-${var.stack_description}-bosh"
+  path = "/bosh/"
+}
+
+resource "aws_iam_user_policy_attachment" "parent_bosh_bosh" {
+  user       = aws_iam_user.parent_bosh_user.name
+  policy_arn = module.bosh_policy.arn
+}
+
+resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
+  user    = aws_iam_user.parent_bosh_user
+}
