@@ -163,7 +163,6 @@ module "stack" {
 
   parent_monitoring_security_group_cidrs = [
     data.terraform_remote_state.parent_vpc.outputs.production_monitoring_subnet_cidr,
-    data.terraform_remote_state.parent_vpc.outputs.staging_monitoring_subnet_cidr,
   ]
 
 }
