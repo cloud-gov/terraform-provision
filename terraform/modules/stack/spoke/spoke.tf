@@ -1,5 +1,7 @@
 provider aws {
-
+}
+provider aws {
+  alias = "parent"
 }
 provider aws {
   alias = "tooling"
@@ -38,9 +40,8 @@ module "base" {
   ]
 
   rds_security_groups_count         = 2
-  target_monitoring_security_group_cidrs = var.target_monitoring_security_group_cidrs
+  target_monitoring_security_group_cidrs = var.parent_monitoring_security_group_cidrs
   target_concourse_security_group_cidrs  = var.target_concourse_security_group_cidrs
-  target_credhub_security_group_cidrs    = var.target_credhub_security_group_cidrs
 }
 
 module "vpc_peering" {
@@ -61,6 +62,8 @@ module "vpc_peering" {
 }
 
  module "vpc_security_source_to_target" {
+  # this is for bosh -> concourse
+  # and bosh -> monitoring stack
    providers = {
      aws = aws.tooling
    }
@@ -71,9 +74,47 @@ module "vpc_peering" {
  }
 
 module "vpc_security_target_to_source" {
+  # this is about concourse -> bosh
+  # and toolingbosh -> envbosh
   source = "../../vpc_peering_sg"
 
   target_bosh_security_group = module.base.bosh_security_group
   source_vpc_cidr            = var.target_vpc_cidr
 }
 
+
+module "vpc_peering_parentbosh" {
+  source = "../../vpc_peering"
+
+  providers = {
+    aws = aws
+    aws.tooling = aws.parent
+  }
+  target_vpc_id          = var.parent_vpc_id
+  target_vpc_cidr        = var.parent_vpc_cidr
+  target_az1_route_table = var.parent_az1_route_table
+  target_az2_route_table = var.parent_az2_route_table
+  source_vpc_id          = module.base.vpc_id
+  source_vpc_cidr        = module.base.vpc_cidr
+  source_az1_route_table = module.base.private_route_table_az1
+  source_az2_route_table = module.base.private_route_table_az2
+}
+
+ module "vpc_security_source_to_parent" {
+  # and bosh -> monitoring stack
+   providers = {
+     aws = aws.parent
+   }
+   source = "../../vpc_peering_sg"
+ 
+   target_bosh_security_group = var.parent_bosh_security_group
+   source_vpc_cidr            = module.base.vpc_cidr
+ }
+
+module "vpc_security_parent_to_source" {
+  # toolingbosh -> envbosh
+  source = "../../vpc_peering_sg"
+
+  target_bosh_security_group = module.base.bosh_security_group
+  source_vpc_cidr            = var.parent_vpc_cidr
+}
