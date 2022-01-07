@@ -36,7 +36,7 @@ module "base" {
 
   rds_security_groups = [
     module.base.bosh_security_group,
-    var.target_bosh_security_group,
+  #  var.parent_bosh_security_group,
   ]
 
   rds_security_groups_count         = 2
