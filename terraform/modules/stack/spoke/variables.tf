@@ -146,3 +146,10 @@ variable "parent_concourse_security_group_cidrs" {
   default = []
 }
 
+variable "target_account_id" {
+
+}
+
+variable "parent_account_id" {
+
+}

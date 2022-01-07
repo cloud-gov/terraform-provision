@@ -51,6 +51,7 @@ module "vpc_peering" {
     aws = aws
     aws.tooling = aws.tooling
   }
+  target_vpc_account_id  = var.target_account_id
   target_vpc_id          = var.target_vpc_id
   target_vpc_cidr        = var.target_vpc_cidr
   target_az1_route_table = var.target_az1_route_table
@@ -90,6 +91,7 @@ module "vpc_peering_parentbosh" {
     aws = aws
     aws.tooling = aws.parent
   }
+  target_vpc_account_id  = var.parent_account_id
   target_vpc_id          = var.parent_vpc_id
   target_vpc_cidr        = var.parent_vpc_cidr
   target_az1_route_table = var.parent_az1_route_table
@@ -98,6 +100,7 @@ module "vpc_peering_parentbosh" {
   source_vpc_cidr        = module.base.vpc_cidr
   source_az1_route_table = module.base.private_route_table_az1
   source_az2_route_table = module.base.private_route_table_az2
+  
 }
 
  module "vpc_security_source_to_parent" {

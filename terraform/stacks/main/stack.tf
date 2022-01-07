@@ -82,6 +82,14 @@ data "aws_iam_server_certificate" "wildcard_sites_pages_staging" {
   latest      = true
 }
 
+data "aws_caller_identity" "tooling" {
+  provider = aws.tooling
+}
+
+data "aws_arn" "parent_role_arn" {
+  arn = var.parent_assume_arn
+}
+
 resource "aws_lb" "main" {
   name    = "${var.stack_description}-main"
   subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
@@ -143,6 +151,8 @@ module "stack" {
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   rds_password                      = var.rds_password
   credhub_rds_password              = var.credhub_rds_password
+  parent_account_id                 = data.aws_arn.parent_role_arn.account
+  target_account_id                 = data.aws_caller_identity.tooling.account_id
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.vpc_cidr

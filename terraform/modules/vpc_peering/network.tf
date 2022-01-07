@@ -23,12 +23,10 @@ data "aws_region" "tooling" {
   provider = aws.tooling
 }
 
-data "aws_caller_identity" "tooling" {
-  provider = aws.tooling
-}
+
 
 resource "aws_vpc_peering_connection" "peering" {
-  peer_owner_id = data.aws_caller_identity.tooling.account_id
+  peer_owner_id = var.target_vpc_account_id
   peer_vpc_id   = var.target_vpc_id
   peer_region   = data.aws_region.tooling.name
   auto_accept   = false
