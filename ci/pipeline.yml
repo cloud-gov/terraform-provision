@@ -1239,15 +1239,15 @@ jobs:
       TF_VAR_cf_rds_password: ((westb_cf_rds_password))
       TF_VAR_restricted_ingress_web_cidrs: ((westb_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((westb_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_wildcard_certificate_name_prefix: star.fr.ea.cloud.gov
-      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.ea.cloud.gov
+      TF_VAR_wildcard_certificate_name_prefix: star.fr.wb.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.wb.cloud.gov
       TF_VAR_stack_prefix: cf-westb
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-westb-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-master-east-blobstore # probably doesn't actually matter
-      TF_VAR_admin_hosts: '["admin.fr.ea.cloud.gov"]'
-      TF_VAR_shibboleth_hosts: '["idp.fr.ea.cloud.gov"]'
-      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.ea.cloud.gov"]'
+      TF_VAR_admin_hosts: '["admin.fr.wb.cloud.gov"]'
+      TF_VAR_shibboleth_hosts: '["idp.fr.wb.cloud.gov"]'
+      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.wb.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "1"
       TF_VAR_domain_broker_v2_alb_count: "1"
       TF_VAR_challenge_bucket: westb-domains-broker-challenge # unused, but not optional in TF
@@ -1257,8 +1257,8 @@ jobs:
       TF_VAR_domains_broker_rds_password: ((westb_domains_broker_rds_password))
       TF_VAR_domain_broker_v2_rds_username: ((westb_domain_broker_v2_rds_username)) # unused, but not optional in TF
       TF_VAR_domain_broker_v2_rds_password: ((westb_domain_broker_v2_rds_password)) # unused, but not optional in TF
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.wb.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.wb.cloud.gov # unused, but not optional in TF
   - *notify-slack
 
 - name: bootstrap-westb
