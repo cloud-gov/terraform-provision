@@ -60,7 +60,7 @@
         "arn:${aws_partition}:s3:::${buildpack_notify_bucket}/*",
         "arn:${aws_partition}:s3:::${billing_bucket}",
         "arn:${aws_partition}:s3:::${billing_bucket}/*",
-        "arn:${aws_partition}:s3:::${varz_bucket}/master-bosh-state.json",
+        "arn:${aws_partition}:s3:::${varz_bucket}/*-bosh-state.json",
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}/*",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}/*"
       ]
