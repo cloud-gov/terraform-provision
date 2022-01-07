@@ -4,7 +4,18 @@ terraform {
 }
 
 provider "aws" {
+  # this is for CI 
+  # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
+}
+provider "aws" {
+  # this is for the tooling bosh 
+  # deploy and monitor vms, scrape metrics, compliance agents, and smtp
+  alias = "parentbosh"
+  region = var.aws_default_region
+  assume_role {
+    role_arn = var.parentbosh_assume_arn
+  }
 }
 provider "aws" {
   region = var.aws_default_region
@@ -23,6 +34,19 @@ data "terraform_remote_state" "target_vpc" {
   config = {
     bucket = var.remote_state_bucket
     key    = "${var.target_stack_name}/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "parent_vpc" {
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
+  # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
+
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_state_bucket
+    key    = "${var.parent_stack_name}/terraform.tfstate"
   }
 }
 
@@ -126,20 +150,22 @@ module "stack" {
   target_az1_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
-  target_monitoring_security_group_cidrs = [
-    data.terraform_remote_state.target_vpc.outputs.production_monitoring_subnet_cidr,
-    data.terraform_remote_state.target_vpc.outputs.staging_monitoring_subnet_cidr,
-  ]
-
   target_concourse_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
 
-  target_credhub_security_group_cidrs = [
-    data.terraform_remote_state.target_vpc.outputs.production_credhub_subnet_cidr,
-    data.terraform_remote_state.target_vpc.outputs.staging_credhub_subnet_cidr,
+  parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id
+  parent_vpc_cidr            = data.terraform_remote_state.parent_vpc.outputs.vpc_cidr
+  parent_bosh_security_group = data.terraform_remote_state.parent_vpc.outputs.bosh_security_group
+  parent_az1_route_table     = data.terraform_remote_state.parent_vpc.outputs.private_route_table_az1
+  parent_az2_route_table     = data.terraform_remote_state.parent_vpc.outputs.private_route_table_az2
+
+  parent_monitoring_security_group_cidrs = [
+    data.terraform_remote_state.parent_vpc.outputs.production_monitoring_subnet_cidr,
+    data.terraform_remote_state.parent_vpc.outputs.staging_monitoring_subnet_cidr,
   ]
+
 }
 
 module "cf" {

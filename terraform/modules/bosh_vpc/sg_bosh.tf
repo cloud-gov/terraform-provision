@@ -3,9 +3,12 @@
  *  stack_description
  *
  * Resources required:
- *   aws_vpc referenced as 'main_vpc'
+ *   aws_vpc referenced as 'main_vpc' is the vpc for this
+ *   bosh environment (the director and the vms it manages)
  */
 
+
+# this security group is applied to all the vms in this stack, including the bosh director
 resource "aws_security_group" "bosh" {
   description = "BOSH security group"
   vpc_id      = aws_vpc.main_vpc.id
@@ -14,6 +17,7 @@ resource "aws_security_group" "bosh" {
     Name = "${var.stack_description} - BOSH"
   }
 }
+
 
 resource "aws_security_group_rule" "self_reference" {
   type              = "ingress"
@@ -50,7 +54,6 @@ resource "aws_security_group_rule" "dns_udp" {
   cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
   security_group_id = aws_security_group.bosh.id
 }
-
 resource "aws_security_group_rule" "ntp_udp" {
   type              = "ingress"
   from_port         = 123

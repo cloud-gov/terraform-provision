@@ -96,6 +96,15 @@ variable "assume_arn" {
   # arn of a role to assume in the account being configured
 }
 
+variable "parent_assume_arn" {
+  # arn of a role to assume in the account the parentbosh lives in
+}
+
+variable "parent_stack_name" {
+  # stack where the parent bosh lives
+  default = "tooling"
+}
+
 variable "domains_broker_rds_version" {
   default = "11.12"
 }

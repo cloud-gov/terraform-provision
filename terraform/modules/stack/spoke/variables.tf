@@ -121,7 +121,28 @@ variable "target_concourse_security_group_cidrs" {
   default = []
 }
 
-variable "target_credhub_security_group_cidrs" {
+variable "parent_vpc_id" {
+}
+
+variable "parent_vpc_cidr" {
+}
+
+variable "parent_bosh_security_group" {
+}
+
+variable "parent_az1_route_table" {
+}
+
+variable "parent_az2_route_table" {
+}
+
+variable "parent_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
 }
+
+variable "parent_concourse_security_group_cidrs" {
+  type    = list(string)
+  default = []
+}
+

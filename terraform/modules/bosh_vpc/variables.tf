@@ -56,9 +56,3 @@ variable "concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
-
-variable "credhub_security_group_cidrs" {
-  type    = list(string)
-  default = []
-}
-
