@@ -392,3 +392,24 @@ output "production_smtp_private_ip" {
 output "nessus_static_ip" {
   value = cidrhost(module.stack.private_cidr_az1, 71)
 }
+
+/* CredHub RDS */
+output "credhub_rds_url" {
+  value = module.stack.credhub_rds_url
+}
+
+output "credhub_rds_host" {
+  value = module.stack.credhub_rds_host
+}
+
+output "credhub_rds_port" {
+  value = module.stack.credhub_rds_port
+}
+
+output "credhub_rds_username" {
+  value = module.stack.credhub_rds_username
+}
+
+output "credhub_rds_password" {
+  value = module.stack.credhub_rds_password
+}
