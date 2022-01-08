@@ -113,6 +113,10 @@ module "stack" {
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
+  rds_allowed_cidrs                 = [
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
+  ]
 
   target_credhub_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_credhub_subnet_cidr,
@@ -171,14 +175,4 @@ module "concourse_to_bosh_sg" {
 
   target_bosh_security_group = module.stack.bosh_security_group
   source_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
-}
-
-
-resource "aws_security_group_rule" "concourse_to_postgres" {
-  type              = "ingress"
-  from_port         = 5432
-  to_port           = 5432
-  protocol          = "tcp"
-  cidr_blocks       = [data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr]
-  security_group_id = module.stack.rds_postgres_security_group
 }
