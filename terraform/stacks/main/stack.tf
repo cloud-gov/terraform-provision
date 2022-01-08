@@ -137,6 +137,8 @@ module "stack" {
   stack_description                 = var.stack_description
   aws_partition                     = data.aws_partition.current.partition
   vpc_cidr                          = var.vpc_cidr
+  az1                               = data.aws_availability_zones.available.names[0]
+  az2                               = data.aws_availability_zones.available.names[1]
   aws_default_region                = var.aws_default_region
   rds_db_size                       = var.rds_db_size
   rds_apply_immediately             = var.rds_apply_immediately
