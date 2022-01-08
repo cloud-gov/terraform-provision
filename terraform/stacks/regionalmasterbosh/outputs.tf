@@ -343,6 +343,15 @@ output "bosh_compilation_profile" {
   value = module.bosh_compilation_role.profile_name
 }
 
+/* nessus elb */
+output "nessus_target_group" {
+  value = aws_lb_target_group.nessus_target.name
+}
+
+output "nessus_static_ip" {
+  value = cidrhost(module.stack.private_cidr_az1, 71)
+}
+
 
 /* BOSH UAA elb */
 output "opsuaa_lb_dns_name" {
