@@ -40,6 +40,7 @@ resource "aws_vpc_peering_connection" "peering" {
 resource "aws_vpc_peering_connection_accepter" "peer" {
   provider                  = aws.tooling
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  region                    = data.aws_region.tooling.name
   auto_accept               = true
 
   tags = {
