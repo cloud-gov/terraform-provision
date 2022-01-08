@@ -39,7 +39,7 @@ module "base" {
   #  var.parent_bosh_security_group,
   ]
 
-  rds_security_groups_count         = 2
+  rds_security_groups_count         = 1
   target_monitoring_security_group_cidrs = var.parent_monitoring_security_group_cidrs
   target_concourse_security_group_cidrs  = var.target_concourse_security_group_cidrs
 }
