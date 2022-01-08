@@ -18,6 +18,9 @@ data "aws_partition" "current" {
 
 data "aws_caller_identity" "current" {
 }
+data "aws_caller_identity" "tooling" {
+  provider = aws.tooling
+}
 
 data "aws_availability_zones" "available" {
 }
@@ -152,7 +155,7 @@ module "concourse_vpc_peering" {
     aws = aws
     aws.tooling = aws.tooling
   }
-  target_vpc_account_id  = data.aws_caller_identity.current.account_id
+  target_vpc_account_id  = data.aws_caller_identity.tooling.account_id
   target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.vpc_cidr
   target_az1_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
