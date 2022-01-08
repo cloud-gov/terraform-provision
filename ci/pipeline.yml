@@ -1118,6 +1118,7 @@ jobs:
       TF_VAR_vpc_cidr: ((easta_vpc_cidr))
       TF_VAR_cf_rds_password: ((easta_cf_rds_password))
       TF_VAR_cf_rds_instance_type: db.m5.large
+      TF_VAR_rds_instance_type: db.m5.large
       TF_VAR_restricted_ingress_web_cidrs: ((easta_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((easta_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr.ea.cloud.gov
@@ -1242,6 +1243,7 @@ jobs:
       TF_VAR_vpc_cidr: ((westb_vpc_cidr))
       TF_VAR_cf_rds_password: ((westb_cf_rds_password))
       TF_VAR_cf_rds_instance_type: db.m5.large
+      TF_VAR_rds_instance_type: db.m5.large
       TF_VAR_restricted_ingress_web_cidrs: ((westb_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((westb_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr.wb.cloud.gov
