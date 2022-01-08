@@ -276,35 +276,6 @@ resource "aws_wafv2_web_acl_association" "admin_waf_core" {
   web_acl_arn  = module.cf.cf_uaa_waf_core_arn
 }
 
-#module "elasticache_broker_network" {
-#  source                     = "../../modules/elasticache_broker_network"
-#  az1                        = data.aws_availability_zones.available.names[0]
-#  az2                        = data.aws_availability_zones.available.names[1]
-#  stack_description          = var.stack_description
-#  elasticache_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 34)
-#  elasticache_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 35)
-#  az1_route_table            = module.stack.private_route_table_az1
-#  az2_route_table            = module.stack.private_route_table_az2
-#  vpc_id                     = module.stack.vpc_id
-#  security_groups            = [module.stack.bosh_security_group]
-#  elb_subnets                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-#  elb_security_groups        = [module.stack.bosh_security_group]
-#  log_bucket_name            = var.log_bucket_name
-#}
-#
-#module "elasticsearch_broker" {
-#  source                       = "../../modules/elasticsearch_broker"
-#  az1                        = data.aws_availability_zones.available.names[0]
-#  az2                        = data.aws_availability_zones.available.names[1]
-#  stack_description            = var.stack_description
-#  elasticsearch_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 40)
-#  elasticsearch_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 42)
-#  az1_route_table              = module.stack.private_route_table_az1
-#  az2_route_table              = module.stack.private_route_table_az2
-#  vpc_id                       = module.stack.vpc_id
-#  security_groups              = [module.stack.bosh_security_group]
-#}
-
 module "external_domain_broker_govcloud" {
   source = "../../modules/external_domain_broker_govcloud"
 
