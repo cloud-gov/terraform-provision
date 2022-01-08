@@ -1139,6 +1139,9 @@ jobs:
       TF_VAR_domain_broker_v2_rds_password: ((easta_domain_broker_v2_rds_password)) # unused, but not optional in TF
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
       TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.ea.cloud.gov # unused, but not optional in TF
+      TF_VAR_parent_assume_arn: ((master_east_assume_arn))
+      TF_VAR_parent_stack_name: "master-east"
+      TF_VAR_log_bucket_name: "cg-elb-logs-easta"
   - *notify-slack
 
 - name: bootstrap-easta
@@ -1259,6 +1262,9 @@ jobs:
       TF_VAR_domain_broker_v2_rds_password: ((westb_domain_broker_v2_rds_password)) # unused, but not optional in TF
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.wb.cloud.gov # unused, but not optional in TF
       TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.wb.cloud.gov # unused, but not optional in TF
+      TF_VAR_parent_assume_arn: ((master_west_assume_arn))
+      TF_VAR_parent_stack_name: "master-west"
+      TF_VAR_log_bucket_name: "cg-elb-logs-westb"
   - *notify-slack
 
 - name: bootstrap-westb
