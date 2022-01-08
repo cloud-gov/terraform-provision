@@ -422,3 +422,19 @@ output "credhub_rds_password" {
 output "default_key_name" {
   value = module.stack.default_key_name
 }
+
+output "bosh_blobstore_user_access_key_id_prev" {
+  value = ""
+}
+
+output "bosh_blobstore_user_secret_access_key_prev" {
+  value = ""
+}
+
+output "bosh_blobstore_user_access_key_id_curr" {
+  value = aws_iam_access_key.bosh_blobstore_user_key_v1.id
+}
+
+output "bosh_blobstore_user_secret_access_key_curr" {
+  value = aws_iam_access_key.bosh_blobstore_user_key_v1.secret
+}

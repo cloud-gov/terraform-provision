@@ -499,15 +499,15 @@ output "parent_bosh_user_access_key_id_prev" {
   value = ""
 }
 
-output "parent_bosh_usersecret_access_key_prev" {
+output "parent_bosh_user_secret_access_key_prev" {
   value = ""
 }
 
-output "parent_bosh_useraccess_key_id_curr" {
+output "parent_bosh_user_access_key_id_curr" {
   value = aws_iam_access_key.parent_bosh_user_key_v1.id
 }
 
-output "parent_bosh_usersecret_access_key_curr" {
+output "parent_bosh_user_secret_access_key_curr" {
   value = aws_iam_access_key.parent_bosh_user_key_v1.secret
 }
 
