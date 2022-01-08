@@ -133,6 +133,7 @@ module "stack" {
   providers = {
     aws = aws
     aws.tooling = aws.tooling
+    aws.parent  = aws.parentbosh
   }
   stack_description                 = var.stack_description
   aws_partition                     = data.aws_partition.current.partition
