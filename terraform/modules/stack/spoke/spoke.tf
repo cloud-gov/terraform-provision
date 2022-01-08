@@ -33,6 +33,7 @@ module "base" {
   credhub_rds_password              = var.credhub_rds_password
   restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
+  bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
 
   rds_security_groups = [
     module.base.bosh_security_group,

@@ -554,6 +554,7 @@ jobs:
       TF_VAR_oidc_client_secret: ((master_east_oidc_client_secret))
       TF_VAR_opslogin_hostname: "opslogin.fr.east.cloud.gov"
       TF_VAR_stack_description: master-east
+      TF_VAR_bosh_default_ssh_public_key: "((master_east_bosh_ssh_public_key))"
   - *notify-slack
 
 - name: bootstrap-master-east
@@ -661,6 +662,7 @@ jobs:
       TF_VAR_oidc_client_secret: ((master_west_oidc_client_secret))
       TF_VAR_opslogin_hostname: "opslogin.fr.west.cloud.gov"
       TF_VAR_stack_description: master-west
+      TF_VAR_bosh_default_ssh_public_key: "((master_west_bosh_ssh_public_key))"
 
   - *notify-slack
 
@@ -1144,6 +1146,7 @@ jobs:
       TF_VAR_parent_assume_arn: ((master_east_assume_arn))
       TF_VAR_parent_stack_name: "master-east"
       TF_VAR_log_bucket_name: "cg-elb-logs-easta"
+      TF_VAR_bosh_default_ssh_public_key: "((easta_bosh_ssh_public_key))"
   - *notify-slack
 
 - name: bootstrap-easta
@@ -1269,6 +1272,7 @@ jobs:
       TF_VAR_parent_assume_arn: ((master_west_assume_arn))
       TF_VAR_parent_stack_name: "master-west"
       TF_VAR_log_bucket_name: "cg-elb-logs-westb"
+      TF_VAR_bosh_default_ssh_public_key: "((westb_bosh_ssh_public_key))"
   - *notify-slack
 
 - name: bootstrap-westb

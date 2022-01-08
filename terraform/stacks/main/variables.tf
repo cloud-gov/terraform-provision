@@ -117,3 +117,7 @@ variable "domain_broker_v2_rds_version" {
 variable "cf_rds_instance_type" {
   default = "db.m4.large"
 }
+
+variable "bosh_default_ssh_public_key" {
+
+}

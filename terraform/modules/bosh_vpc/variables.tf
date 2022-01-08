@@ -56,3 +56,7 @@ variable "concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
+
+variable "bosh_default_ssh_public_key" {
+
+}

@@ -104,3 +104,7 @@ variable "opslogin_hostname" {
 variable "rds_instance_type" {
 
 }
+
+variable "bosh_default_ssh_public_key" {
+
+}

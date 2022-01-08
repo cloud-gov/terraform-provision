@@ -418,3 +418,7 @@ output "credhub_rds_username" {
 output "credhub_rds_password" {
   value = module.stack.credhub_rds_password
 }
+
+output "default_key_name" {
+  value = module.stack.default_key_name
+}

@@ -153,3 +153,7 @@ variable "target_account_id" {
 variable "parent_account_id" {
 
 }
+
+variable "bosh_default_ssh_public_key" {
+
+}

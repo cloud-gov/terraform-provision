@@ -15,6 +15,7 @@ module "vpc" {
   nat_gateway_instance_type              = var.nat_gateway_instance_type
   monitoring_security_group_cidrs        = var.target_monitoring_security_group_cidrs
   concourse_security_group_cidrs         = var.target_concourse_security_group_cidrs
+  bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
 }
 
 module "rds_network" {

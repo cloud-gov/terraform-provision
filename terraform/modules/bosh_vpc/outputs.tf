@@ -78,3 +78,6 @@ output "restricted_web_traffic_security_group" {
   value = aws_security_group.restricted_web_traffic.id
 }
 
+output "default_key_name" {
+  value = aws_key_pair.bosh.key_name
+}

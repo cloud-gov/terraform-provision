@@ -157,6 +157,7 @@ module "stack" {
   credhub_rds_password              = var.credhub_rds_password
   parent_account_id                 = data.aws_arn.parent_role_arn.account
   target_account_id                 = data.aws_caller_identity.tooling.account_id
+  bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.vpc_cidr

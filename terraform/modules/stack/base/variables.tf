@@ -91,7 +91,8 @@ variable "restricted_ingress_web_ipv6_cidrs" {
 }
 
 variable "rds_allowed_cidrs" {
-  type = list(string)
+  type    = list(string)
+  default = []
 }
 
 variable "rds_allowed_cidrs_count" {
@@ -167,3 +168,6 @@ variable "credhub_rds_force_ssl" {
   default = 1
 }
 
+variable "bosh_default_ssh_public_key" {
+
+}

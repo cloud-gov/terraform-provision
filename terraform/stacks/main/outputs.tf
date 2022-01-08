@@ -510,3 +510,7 @@ output "parent_bosh_useraccess_key_id_curr" {
 output "parent_bosh_usersecret_access_key_curr" {
   value = aws_iam_access_key.parent_bosh_user_key_v1.secret
 }
+
+output "default_key_name" {
+  value = module.stack.default_key_name
+}
