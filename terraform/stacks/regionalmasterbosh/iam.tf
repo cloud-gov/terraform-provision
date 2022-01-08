@@ -1,3 +1,13 @@
+# Creds for the child boshes (e.g. <region><index>-bosh) to access
+# the parent bosh's (e.g. tooling-<region>) blobstore
+resource "aws_iam_user" "bosh_blobstore_user" {
+  name = "tooling-${var.stack_description}-bosh"
+  path = "/bosh/"
+}
+
+resource "aws_iam_access_key" "bosh_blobstore_user_key_v1" {
+  user    = aws_iam_user.bosh_blobstore_user.name
+}
 module "s3_logstash" {
   source        = "../../modules/iam_user/s3_logstash"
   username      = "s3-logstash"
@@ -83,6 +93,9 @@ resource "aws_iam_policy_attachment" "blobstore" {
   roles = [
     module.default_role.role_name,
     module.bosh_role.role_name,
+  ]
+  users = [
+    aws_iam_user.bosh_blobstore_user.name
   ]
 }
 
