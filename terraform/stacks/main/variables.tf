@@ -81,7 +81,7 @@ variable "force_restricted_network" {
 }
 
 variable "log_bucket_name" {
-  default = "cg-elb-logs"
+  default = "cg-elb-logs-${var.stack_description}"
 }
 
 variable "rds_allow_major_version_upgrade" {
