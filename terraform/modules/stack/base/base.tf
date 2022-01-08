@@ -24,6 +24,7 @@ module "rds_network" {
   az1                   = var.az1
   az2                   = var.az2
   vpc_id                = module.vpc.vpc_id
+  allowed_cidrs         = var.target_concourse_security_group_cidrs
   security_groups       = var.rds_security_groups
   security_groups_count = var.rds_security_groups_count
   rds_private_cidr_1    = var.rds_private_cidr_1

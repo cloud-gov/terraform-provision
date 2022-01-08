@@ -90,6 +90,14 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   default = []
 }
 
+variable "rds_allowed_cidrs" {
+  type = list(string)
+}
+
+variable "rds_allowed_cidrs_count" {
+  default = "0"
+}
+
 variable "rds_security_groups" {
   type = list(string)
 }
