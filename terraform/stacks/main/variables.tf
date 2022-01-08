@@ -111,3 +111,6 @@ variable "domains_broker_rds_version" {
 variable "domain_broker_v2_rds_version" {
   default = "11.12"
 }
+variable "cf_rds_instance_type" {
+  default = "db.m4.large"
+}
