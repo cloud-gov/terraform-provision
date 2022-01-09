@@ -164,7 +164,7 @@ resource "aws_route53_record" "west_ns" {
 
 module "tooling_west_dns" {
   source              = "../../modules/regionalmaster_dns"
-  tooling_stack_name  = "tooling-west"
+  tooling_stack_name  = "master-west"
   zone_id             = aws_route53_zone.west_zone.zone_id
   subdomain           = "west.cloud.gov"
   remote_state_bucket = var.remote_state_bucket
