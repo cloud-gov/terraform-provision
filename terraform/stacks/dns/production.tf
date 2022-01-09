@@ -179,14 +179,3 @@ resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "ssh.fr.cloud.gov."
-  type    = "AAAA"
-
-  alias {
-    name                   = "dualstack.${data.terraform_remote_state.production.outputs.diego_elb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
-    evaluate_target_health = false
-  }
-}
