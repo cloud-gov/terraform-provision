@@ -106,7 +106,7 @@ resource "aws_route53_record" "cloud_gov_ssh_dev_env_a" {
 }
 resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "ssh.fr.cloud.gov."
+  name    = "ssh.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type    = "AAAA"
 
   alias {
