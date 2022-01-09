@@ -147,6 +147,49 @@ resource "aws_route53_record" "cdn_broker_delegate" {
   ]
 }
 
-output "cloud_gov_ns" {
-  value = aws_route53_zone.cloud_gov_zone.name_servers
+
+# delegate zones in root so modules can be called from
+# child accounts later
+resource "aws_route53_zone" "west_zone" {
+  name = "west.cloud.gov"
+}
+
+resource "aws_route53_record" "west_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "west.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.west_zone.name_servers
+}
+
+module "tooling_west_dns" {
+  source              = "../../modules/regionalmaster_dns"
+  tooling_stack_name  = "master-west"
+  zone_id             = aws_route53_zone.west_zone.zone_id
+  subdomain           = "fr.west.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
+}
+
+
+resource "aws_route53_zone" "westb_zone" {
+  name = "wb.cloud.gov"
+}
+
+resource "aws_route53_record" "westb_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "wb.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.westb_zone.name_servers
+}
+
+module "westb_dns" {
+  source              = "../../modules/environment_dns"
+  stack_name          = "westb"
+  zone_id             = aws_route53_zone.westb_zone.zone_id
+  app_subdomain       = "app.wb.cloud.gov"
+  admin_subdomain     = "fr.wb.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
 }
