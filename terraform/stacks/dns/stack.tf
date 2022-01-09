@@ -156,7 +156,7 @@ resource "aws_route53_zone" "west_zone" {
 
 resource "aws_route53_record" "west_ns" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "west.example.com"
+  name    = "west.cloud.gov"
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.west_zone.name_servers
@@ -178,7 +178,7 @@ resource "aws_route53_zone" "westb_zone" {
 
 resource "aws_route53_record" "westb_ns" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "wb.example.com"
+  name    = "wb.cloud.gov"
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.westb_zone.name_servers
