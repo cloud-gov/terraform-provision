@@ -104,7 +104,7 @@ resource "aws_route53_record" "cloud_gov_ssh_dev_env_a" {
     evaluate_target_health = false
   }
 }
-resource "aws_route53_record" "cloud_gov_ssh_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "cloud_gov_ssh_dev_env_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "ssh.dev.us-gov-west-1.aws-us-gov.cloud.gov."
   type    = "AAAA"
