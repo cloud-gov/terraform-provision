@@ -485,6 +485,10 @@ output "cf_blobstore_profile" {
   value = module.cf_blobstore_role.profile_name
 }
 
+output "elasticache_broker_profile" {
+  value = module.elasticache_broker_role.profile_name
+}
+
 output "platform_profile" {
   value = module.platform_role.profile_name
 }

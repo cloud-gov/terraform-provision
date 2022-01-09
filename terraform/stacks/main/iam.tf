@@ -70,6 +70,11 @@ module "aws_broker_policy" {
   rds_subgroup        = var.stack_description
 }
 
+module "elasticache_broker_policy" {
+  source      = "../../modules/iam_role_policy/elasticache_broker"
+  policy_name = "${var.stack_description}-elasticache-broker"
+}
+
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -100,6 +105,11 @@ module "platform_role" {
   role_name = "${var.stack_description}-platform"
 }
 
+module "elasticache_broker_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-elasticache-broker"
+}
+
 resource "aws_iam_policy_attachment" "blobstore" {
   name       = "${var.stack_description}-blobstore"
   policy_arn = module.blobstore_policy.arn
@@ -108,6 +118,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.bosh_role.role_name,
     module.logsearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
+    module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
     aws_iam_role.domains_broker.name,
   ]
@@ -122,6 +133,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.bosh_compilation_role.role_name,
     module.logsearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
+    module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
     aws_iam_role.domains_broker.name,
   ]
@@ -180,6 +192,14 @@ resource "aws_iam_policy_attachment" "aws_broker" {
   policy_arn = module.aws_broker_policy.arn
   roles = [
     module.platform_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "elasticache_broker" {
+  name       = "${var.stack_description}-elasticache-broker"
+  policy_arn = module.elasticache_broker_policy.arn
+  roles = [
+    module.elasticache_broker_role.role_name,
   ]
 }
 
