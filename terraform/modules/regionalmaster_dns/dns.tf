@@ -9,7 +9,7 @@ data "terraform_remote_state" "tooling" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_a" {
+resource "aws_route53_record" "ci_a" {
   zone_id = var.zone_id
   name    = "ci.${var.subdomain}."
   type    = "A"
@@ -21,7 +21,7 @@ resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "ci_aaaa" {
   zone_id = var.zone_id
   name    = "ci.${var.subdomain}."
   type    = "AAAA"
@@ -33,7 +33,7 @@ resource "aws_route53_record" "cloud_gov_ci_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_a" {
+resource "aws_route53_record" "credhub_a" {
   zone_id = var.zone_id
   name    = "credhub.${var.subdomain}."
   type    = "A"
@@ -45,7 +45,7 @@ resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "credhub_aaaa" {
   zone_id = var.zone_id
   name    = "credhub.${var.subdomain}."
   type    = "AAAA"
@@ -57,7 +57,7 @@ resource "aws_route53_record" "cloud_gov_credhub_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_a" {
+resource "aws_route53_record" "prometheus_a" {
   zone_id = var.zone_id
   name    = "prometheus.${var.subdomain}."
   type    = "A"
@@ -69,7 +69,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "prometheus_aaaa" {
   zone_id = var.zone_id
   name    = "prometheus.${var.subdomain}."
   type    = "AAAA"
@@ -81,7 +81,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_a" {
+resource "aws_route53_record" "alertmanager_a" {
   zone_id = var.zone_id
   name    = "alertmanager.${var.subdomain}."
   type    = "A"
@@ -93,7 +93,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "alertmanager_aaaa" {
   zone_id = var.zone_id
   name    = "alertmanager.${var.subdomain}."
   type    = "AAAA"
@@ -105,7 +105,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_a" {
+resource "aws_route53_record" "grafana_a" {
   zone_id = var.zone_id
   name    = "grafana.${var.subdomain}."
   type    = "A"
@@ -117,7 +117,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "grafana_aaaa" {
   zone_id = var.zone_id
   name    = "grafana.${var.subdomain}."
   type    = "AAAA"
@@ -129,7 +129,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_a" {
+resource "aws_route53_record" "doomsday_a" {
   zone_id = var.zone_id
   name    = "doomsday.${var.subdomain}."
   type    = "A"
@@ -141,7 +141,7 @@ resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_aaaa" {
+resource "aws_route53_record" "doomsday_aaaa" {
   zone_id = var.zone_id
   name    = "doomsday.${var.subdomain}."
   type    = "AAAA"
@@ -153,7 +153,7 @@ resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_nessus_fr_cloud_gov_cname" {
+resource "aws_route53_record" "nessus_a" {
   zone_id = var.zone_id
   name    = "nessus.${var.subdomain}."
   type    = "CNAME"
@@ -164,7 +164,7 @@ resource "aws_route53_record" "cloud_gov_nessus_fr_cloud_gov_cname" {
   ]
 }
 
-resource "aws_route53_record" "cloud_gov_ops_uaa_fr_cloud_gov_a" {
+resource "aws_route53_record" "opsuaa_a" {
   zone_id = var.zone_id
   name    = "opsuaa.${var.subdomain}."
   type    = "A"
@@ -176,7 +176,7 @@ resource "aws_route53_record" "cloud_gov_ops_uaa_fr_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_ops_login_fr_cloud_gov_a" {
+resource "aws_route53_record" "opsuaa_aaaa" {
   zone_id = var.zone_id
   name    = "opslogin.${var.subdomain}."
   type    = "A"
