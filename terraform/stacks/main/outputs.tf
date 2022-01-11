@@ -553,6 +553,22 @@ output "nessus_static_ip" {
 }
 
 
+output "s3_broker_user_access_key_id_prev" {
+  value = ""
+}
+
+output "s3_broker_user_secret_access_key_prev" {
+  value = ""
+}
+
+output "s3_broker_user_access_key_id_curr" {
+  value = aws_iam_access_key.s3_broker_user_key_v1.id
+}
+
+output "s3_broker_user_secret_access_key_curr" {
+  value = aws_iam_access_key.s3_broker_user_key_v1.secret
+}
+
 output "parent_bosh_user_access_key_id_prev" {
   value = ""
 }
