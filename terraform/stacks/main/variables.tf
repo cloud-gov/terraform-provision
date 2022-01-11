@@ -121,3 +121,11 @@ variable "cf_rds_instance_type" {
 variable "bosh_default_ssh_public_key" {
 
 }
+
+variable "az1_index" {
+  default = "0"
+}
+
+variable "az2_index" {
+  default = "1"
+}

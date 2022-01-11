@@ -138,8 +138,8 @@ module "stack" {
   stack_description                 = var.stack_description
   aws_partition                     = data.aws_partition.current.partition
   vpc_cidr                          = var.vpc_cidr
-  az1                               = data.aws_availability_zones.available.names[0]
-  az2                               = data.aws_availability_zones.available.names[1]
+  az1                               = data.aws_availability_zones.available.names[az1_index]
+  az2                               = data.aws_availability_zones.available.names[az2_index]
   aws_default_region                = var.aws_default_region
   rds_db_size                       = var.rds_db_size
   rds_apply_immediately             = var.rds_apply_immediately
@@ -185,8 +185,8 @@ module "stack" {
 module "cf" {
   source = "../../modules/cloudfoundry"
 
-  az1                         = data.aws_availability_zones.available.names[0]
-  az2                         = data.aws_availability_zones.available.names[1]
+  az1                         = data.aws_availability_zones.available.names[az1_index]
+  az2                         = data.aws_availability_zones.available.names[az2_index]
   stack_description           = var.stack_description
   aws_partition               = data.aws_partition.current.partition
   elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
@@ -282,8 +282,8 @@ resource "aws_wafv2_web_acl_association" "admin_waf_core" {
 
 module "elasticache_broker_network" {
   source                     = "../../modules/elasticache_broker_network"
-  az1                        = data.aws_availability_zones.available.names[0]
-  az2                        = data.aws_availability_zones.available.names[1]
+  az1                        = data.aws_availability_zones.available.names[az1_index]
+  az2                        = data.aws_availability_zones.available.names[az2_index]
   stack_description          = var.stack_description
   elasticache_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 34)
   elasticache_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 35)
