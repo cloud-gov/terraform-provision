@@ -211,6 +211,7 @@ resource "aws_route53_record" "east_ns" {
 module "tooling_east_dns" {
   source              = "../../modules/regionalmaster_dns"
   tooling_stack_name  = "master-east"
+  cloudfront_zone_id  = "Z166TLBEWOO7G0"
   zone_id             = aws_route53_zone.east_zone.zone_id
   subdomain           = "fr.east.cloud.gov"
   remote_state_bucket = var.remote_state_bucket
@@ -233,6 +234,7 @@ resource "aws_route53_record" "easta_ns" {
 module "easta_dns" {
   source              = "../../modules/environment_dns"
   stack_name          = "easta"
+  cloudfront_zone_id  = "Z166TLBEWOO7G0"
   zone_id             = aws_route53_zone.easta_zone.zone_id
   app_subdomain       = "app.ea.cloud.gov"
   admin_subdomain     = "fr.ea.cloud.gov"
