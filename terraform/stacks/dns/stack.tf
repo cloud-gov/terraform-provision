@@ -193,3 +193,49 @@ module "westb_dns" {
   remote_state_bucket = var.remote_state_bucket
   remote_state_region = var.remote_state_region
 }
+
+# delegate zones in root so modules can be called from
+# child accounts later
+resource "aws_route53_zone" "east_zone" {
+  name = "east.cloud.gov"
+}
+
+resource "aws_route53_record" "east_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "east.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.east_zone.name_servers
+}
+
+module "tooling_east_dns" {
+  source              = "../../modules/regionalmaster_dns"
+  tooling_stack_name  = "master-east"
+  zone_id             = aws_route53_zone.east_zone.zone_id
+  subdomain           = "fr.east.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
+}
+
+
+resource "aws_route53_zone" "easta_zone" {
+  name = "ea.cloud.gov"
+}
+
+resource "aws_route53_record" "easta_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "ea.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.easta_zone.name_servers
+}
+
+module "easta_dns" {
+  source              = "../../modules/environment_dns"
+  stack_name          = "easta"
+  zone_id             = aws_route53_zone.easta_zone.zone_id
+  app_subdomain       = "app.ea.cloud.gov"
+  admin_subdomain     = "fr.ea.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
+}
