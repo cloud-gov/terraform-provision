@@ -66,28 +66,6 @@ module "vpc_peering" {
   source_az2_route_table = module.base.private_route_table_az2
 }
 
- module "vpc_security_source_to_target" {
-  # this is for bosh -> concourse
-  # and bosh -> monitoring stack
-   providers = {
-     aws = aws.tooling
-   }
-   source = "../../vpc_peering_sg"
- 
-   target_bosh_security_group = var.target_bosh_security_group
-   source_vpc_cidr            = module.base.vpc_cidr
- }
-
-module "vpc_security_target_to_source" {
-  # this is about concourse -> bosh
-  # and toolingbosh -> envbosh
-  source = "../../vpc_peering_sg"
-
-  target_bosh_security_group = module.base.bosh_security_group
-  source_vpc_cidr            = var.target_vpc_cidr
-}
-
-
 module "vpc_peering_parentbosh" {
   source = "../../vpc_peering"
 

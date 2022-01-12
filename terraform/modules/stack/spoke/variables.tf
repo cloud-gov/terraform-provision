@@ -102,9 +102,6 @@ variable "target_vpc_id" {
 variable "target_vpc_cidr" {
 }
 
-variable "target_bosh_security_group" {
-}
-
 variable "target_az1_route_table" {
 }
 

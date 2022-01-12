@@ -161,7 +161,6 @@ module "stack" {
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
-  target_bosh_security_group = data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group
   target_az1_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
