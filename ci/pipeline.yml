@@ -4,27 +4,36 @@ groups:
   - apply-dns
   - bootstrap-development
   - bootstrap-easta
+  - bootstrap-eastb
   - bootstrap-external-easta
+  - bootstrap-external-eastb
   - bootstrap-external-production
   - bootstrap-external-staging
   - bootstrap-external-westb
+  - bootstrap-external-westc
   - bootstrap-master-east
   - bootstrap-master-west
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
   - bootstrap-westb
+  - bootstrap-westc
   - plan-bootstrap-development
   - plan-bootstrap-easta
+  - plan-bootstrap-eastb
   - plan-bootstrap-external-easta
+  - plan-bootstrap-external-eastb
   - plan-bootstrap-external-production
   - plan-bootstrap-external-staging
+  - plan-bootstrap-external-westb
+  - plan-bootstrap-external-westc
   - plan-bootstrap-master-east
   - plan-bootstrap-master-west
   - plan-bootstrap-production
   - plan-bootstrap-staging
   - plan-bootstrap-tooling
   - plan-bootstrap-westb
+  - plan-bootstrap-westc
   - plan-dns
   - pull-status-check
 - name: terraform-east
@@ -42,11 +51,15 @@ groups:
   jobs:
   - apply-dns
   - bootstrap-external-westb
+  - bootstrap-external-westc
   - bootstrap-master-west
   - bootstrap-westb
+  - bootstrap-westc
   - plan-bootstrap-external-westb
+  - plan-bootstrap-external-westc
   - plan-bootstrap-master-west
   - plan-bootstrap-westb
+  - plan-bootstrap-westc
   - plan-dns
   - pull-status-check
 - name: certs
@@ -55,6 +68,8 @@ groups:
   - acme-certificate-east-tooling
   - acme-certificate-easta
   - acme-certificate-easta-apps
+  - acme-certificate-eastb
+  - acme-certificate-eastb-apps
   - acme-certificate-staging
   - acme-certificate-production
   - acme-certificate-production-apps
@@ -63,16 +78,22 @@ groups:
   - acme-certificate-west-tooling
   - acme-certificate-westb
   - acme-certificate-westb-apps
+  - acme-certificate-westc
+  - acme-certificate-westc-apps
 - name: certs-west
   jobs:
   - acme-certificate-west-tooling
   - acme-certificate-westb
   - acme-certificate-westb-apps
+  - acme-certificate-westc
+  - acme-certificate-westc-apps
 - name: certs-east
   jobs:
   - acme-certificate-east-tooling
   - acme-certificate-easta
   - acme-certificate-easta-apps
+  - acme-certificate-eastb
+  - acme-certificate-eastb-apps
 
 jobs:
 - name: pull-status-check
@@ -296,6 +317,65 @@ jobs:
     params:
       file: terraform-yaml/state.yml
 
+- name: plan-bootstrap-external-eastb
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-external-eastb
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &external-eastb-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: external-eastb
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+      AWS_DEFAULT_REGION: ((aws_external_region))
+      TF_VAR_stack_description: eastb
+      TF_VAR_aws_default_region: ((aws_external_region))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
+      TF_VAR_cdn_broker_username: ((cdn_broker_username_eastb))
+      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_eastb))
+      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_eastb))
+      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_eastb))
+      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_eastb))
+      TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_eastb))
+      TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_eastb))
+      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_eastb))
+      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_eastb))
+      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_eastb))
+      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_eastb))
+  - *notify-slack
+
+- name: bootstrap-external-eastb
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-external-eastb]
+  - task: create-update-external-eastb
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *external-eastb-params
+      TERRAFORM_ACTION: apply
+  - task: terraform-state-to-yaml
+    file: pipeline-tasks/terraform12-state-to-yaml.yml
+    params:
+      STATE_FILE: terraform.tfstate
+  - put: terraform-yaml-external-eastb
+    params:
+      file: terraform-yaml/state.yml
+
 - name: plan-bootstrap-external-westb
   plan:
   - in_parallel:
@@ -352,6 +432,65 @@ jobs:
     params:
       STATE_FILE: terraform.tfstate
   - put: terraform-yaml-external-westb
+    params:
+      file: terraform-yaml/state.yml
+
+- name: plan-bootstrap-external-westc
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-external-westc
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &external-westc-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: external-westc
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+      AWS_DEFAULT_REGION: ((aws_external_region))
+      TF_VAR_stack_description: westc
+      TF_VAR_aws_default_region: ((aws_external_region))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
+      TF_VAR_cdn_broker_username: ((cdn_broker_username_westc))
+      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_westc))
+      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_westc))
+      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_westc))
+      TF_VAR_domain_broker_v2_username: ((domain_broker_v2_username_westc))
+      TF_VAR_domain_broker_v2_bucket: ((domain_broker_v2_bucket_westc))
+      TF_VAR_domain_broker_v2_cloudfront_prefix: ((domain_broker_v2_cloudfront_prefix_westc))
+      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_westc))
+      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_westc))
+      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_westc))
+      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_westc))
+  - *notify-slack
+
+- name: bootstrap-external-westc
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-external-westc]
+  - task: create-update-external-westc
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *external-westc-params
+      TERRAFORM_ACTION: apply
+  - task: terraform-state-to-yaml
+    file: pipeline-tasks/terraform12-state-to-yaml.yml
+    params:
+      STATE_FILE: terraform.tfstate
+  - put: terraform-yaml-external-westc
     params:
       file: terraform-yaml/state.yml
 
@@ -540,7 +679,7 @@ jobs:
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket_master_east))
       TF_VAR_vpc_cidr: ((master_east_vpc_cidr))
-      TF_VAR_smtp_ingress_cidr_blocks: '["((easta_private_cidr_1))", "((easta_private_cidr_2))"]'
+      TF_VAR_smtp_ingress_cidr_blocks: '["((easta_private_cidr_1))", "((easta_private_cidr_2))", "((eastb_private_cidr_1))", "((eastb_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((master_east_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((master_east_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-master-east-blobstore
@@ -648,7 +787,7 @@ jobs:
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket_master_west))
       TF_VAR_vpc_cidr: ((master_west_vpc_cidr))
-      TF_VAR_smtp_ingress_cidr_blocks: '["((westa_private_cidr_1))", "((westa_private_cidr_2))"]'
+      TF_VAR_smtp_ingress_cidr_blocks: '["((westb_private_cidr_1))", "((westb_private_cidr_2))", "((westc_private_cidr_1))", "((westc_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((master_west_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((master_west_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-master-west-blobstore
@@ -1210,6 +1349,133 @@ jobs:
       params:
         file: terraform-yaml/state.yml
 
+- name: plan-bootstrap-eastb
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-eastb
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &eastb-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: eastb
+      TEMPLATE_SUBDIR: terraform/stacks/main
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_aws_default_region: ((aws_eastb_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_stack_description: eastb
+      TF_VAR_force_restricted_network: "no"
+      TF_VAR_assume_arn: ((eastb_assume_arn))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
+      TF_VAR_rds_password: ((eastb_rds_password))
+      TF_VAR_rds_db_size: ((eastb_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
+      TF_VAR_credhub_rds_password: ((eastb_credhub_rds_password))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_vpc_cidr: ((eastb_vpc_cidr))
+      TF_VAR_cf_rds_password: ((eastb_cf_rds_password))
+      TF_VAR_cf_rds_instance_type: db.m5.large
+      TF_VAR_rds_instance_type: db.m5.large
+      TF_VAR_restricted_ingress_web_cidrs: ((eastb_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((eastb_restricted_ingress_web_ipv6_cidrs))
+      TF_VAR_wildcard_certificate_name_prefix: star.fr.eb.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.eb.cloud.gov
+      TF_VAR_stack_prefix: cf-eastb
+      TF_VAR_bucket_prefix: cg
+      TF_VAR_blobstore_bucket_name: bosh-eastb-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-master-east-blobstore # probably doesn't actually matter
+      TF_VAR_admin_hosts: '["admin.fr.eb.cloud.gov"]'
+      TF_VAR_shibboleth_hosts: '["idp.fr.eb.cloud.gov"]'
+      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.eb.cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "1"
+      TF_VAR_domain_broker_v2_alb_count: "1"
+      TF_VAR_challenge_bucket: eastb-domains-broker-challenge # unused, but not optional in TF
+      TF_VAR_iam_cert_prefix: "/domains/eastb/*"
+      TF_VAR_alb_prefix: "eastb-domains-*"
+      TF_VAR_domains_broker_rds_username: ((eastb_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((eastb_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((eastb_domain_broker_v2_rds_username)) # unused, but not optional in TF
+      TF_VAR_domain_broker_v2_rds_password: ((eastb_domain_broker_v2_rds_password)) # unused, but not optional in TF
+      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.eb.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.eb.cloud.gov # unused, but not optional in TF
+      TF_VAR_parent_assume_arn: ((master_east_assume_arn))
+      TF_VAR_parent_stack_name: "master-east"
+      TF_VAR_log_bucket_name: "cg-elb-logs-eastb"
+      TF_VAR_bosh_default_ssh_public_key: "((eastb_bosh_ssh_public_key))"
+  - *notify-slack
+
+- name: bootstrap-eastb
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-eastb]
+  - task: create-update-eastb
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *eastb-params
+      TERRAFORM_ACTION: apply
+  - in_parallel:
+    - do:
+      - task: init-bosh-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-bosh-db.sh
+      - task: init-cf-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-cf-db.sh
+  - do:
+    - task: terraform-state-to-yaml
+      file: pipeline-tasks/terraform12-state-to-yaml.yml
+      params:
+        STATE_FILE: terraform.tfstate
+    - put: terraform-yaml-eastb
+      params:
+        file: terraform-yaml/state.yml
+
+
 - name: plan-bootstrap-westb
   plan:
   - in_parallel:
@@ -1335,6 +1601,133 @@ jobs:
     - put: terraform-yaml-westb
       params:
         file: terraform-yaml/state.yml
+
+- name: plan-bootstrap-westc
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-westc
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &westc-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: westc
+      TEMPLATE_SUBDIR: terraform/stacks/main
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_aws_default_region: ((aws_westc_region)) # This is for remote state, so it should be the region TF is run from, not the region we're bootstrapping
+      TF_VAR_stack_description: westc
+      TF_VAR_force_restricted_network: "no"
+      TF_VAR_assume_arn: ((westc_assume_arn))
+      # Do not copy the pattern below.  You should not need separate variables
+      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+      # IDs from `data` resources.
+      TF_VAR_rds_password: ((westc_rds_password))
+      TF_VAR_rds_db_size: ((westc_rds_db_size))
+      # Enable for database upgrades:
+      #TF_VAR_rds_apply_immediately: "true"
+      #TF_VAR_rds_allow_major_version_upgrade: "true"
+      TF_VAR_credhub_rds_password: ((westc_credhub_rds_password))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_vpc_cidr: ((westc_vpc_cidr))
+      TF_VAR_cf_rds_password: ((westc_cf_rds_password))
+      TF_VAR_cf_rds_instance_type: db.m5.large
+      TF_VAR_rds_instance_type: db.m5.large
+      TF_VAR_restricted_ingress_web_cidrs: ((westc_restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((westc_restricted_ingress_web_ipv6_cidrs))
+      TF_VAR_wildcard_certificate_name_prefix: star.fr.wc.cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.wc.cloud.gov
+      TF_VAR_stack_prefix: cf-westc
+      TF_VAR_bucket_prefix: cg
+      TF_VAR_blobstore_bucket_name: bosh-westc-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-master-west-blobstore # probably doesn't actually matter
+      TF_VAR_admin_hosts: '["admin.fr.wc.cloud.gov"]'
+      TF_VAR_shibboleth_hosts: '["idp.fr.wc.cloud.gov"]'
+      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.wc.cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "1"
+      TF_VAR_domain_broker_v2_alb_count: "1"
+      TF_VAR_challenge_bucket: westc-domains-broker-challenge # unused, but not optional in TF
+      TF_VAR_iam_cert_prefix: "/domains/westc/*"
+      TF_VAR_alb_prefix: "westc-domains-*"
+      TF_VAR_domains_broker_rds_username: ((westc_domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((westc_domains_broker_rds_password))
+      TF_VAR_domain_broker_v2_rds_username: ((westc_domain_broker_v2_rds_username)) # unused, but not optional in TF
+      TF_VAR_domain_broker_v2_rds_password: ((westc_domain_broker_v2_rds_password)) # unused, but not optional in TF
+      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.fr.wc.cloud.gov # unused, but not optional in TF
+      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.fr.wc.cloud.gov # unused, but not optional in TF
+      TF_VAR_parent_assume_arn: ((master_west_assume_arn))
+      TF_VAR_parent_stack_name: "master-west"
+      TF_VAR_log_bucket_name: "cg-elb-logs-westc"
+      TF_VAR_bosh_default_ssh_public_key: "((westc_bosh_ssh_public_key))"
+  - *notify-slack
+
+- name: bootstrap-westc
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+      passed: [plan-bootstrap-westc]
+  - task: create-update-westc
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *westc-params
+      TERRAFORM_ACTION: apply
+  - in_parallel:
+    - do:
+      - task: init-bosh-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-bosh-db.sh
+      - task: init-cf-db
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: 18fgsa/concourse-task
+          inputs:
+          - name: cg-provision-repo
+          - name: terraform-state
+          params:
+            STATE_FILE_PATH: terraform-state/terraform.tfstate
+          run:
+            path: sh
+            args:
+            - -e
+            - -c
+            - cg-provision-repo/ci/scripts/update-cf-db.sh
+  - do:
+    - task: terraform-state-to-yaml
+      file: pipeline-tasks/terraform12-state-to-yaml.yml
+      params:
+        STATE_FILE: terraform.tfstate
+    - put: terraform-yaml-westc
+      params:
+        file: terraform-yaml/state.yml
+
 
 - name: acme-certificate-development
   plan:
@@ -1653,6 +2046,88 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
+- name: acme-certificate-westc
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-westc
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_westc_region))
+      ASSUME_ROLE_ARN: ((westc_cert_role_arn))
+      CERT_PATH: /lets-encrypt/westc/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.fr.wc.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.fr.wc.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      ASSUME_ROLE_ARN: ((westc_cert_role_arn))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/westc/
+      CERT_PREFIX: star.fr.wc.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.fr.wc.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-westc-apps
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-westc
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_westc_region))
+      ASSUME_ROLE_ARN: ((westc_cert_role_arn))
+      CERT_PATH: /lets-encrypt/westc/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.app.wc.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.app.wc.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_westc_region))
+      ASSUME_ROLE_ARN: ((westc_cert_role_arn))
+      CERT_PATH: /lets-encrypt/westc/
+      CERT_PREFIX: star.app.wc.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.app.wc.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
 - name: acme-certificate-easta
   plan:
   - in_parallel:
@@ -1730,6 +2205,88 @@ jobs:
     params:
       text: |
         :x: Failed to check ACME certificates for *.app.ea.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-eastb
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-eastb
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_eastb_region))
+      ASSUME_ROLE_ARN: ((eastb_cert_role_arn))
+      CERT_PATH: /lets-encrypt/eastb/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.fr.eb.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.fr.eb.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      ASSUME_ROLE_ARN: ((eastb_cert_role_arn))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/eastb/
+      CERT_PREFIX: star.fr.eb.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.fr.eb.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-eastb-apps
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo-easta
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-eastb
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_eastb_region))
+      ASSUME_ROLE_ARN: ((eastb_cert_role_arn))
+      CERT_PATH: /lets-encrypt/eastb/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.app.eb.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.app.eb.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_eastb_region))
+      ASSUME_ROLE_ARN: ((eastb_cert_role_arn))
+      CERT_PATH: /lets-encrypt/eastb/
+      CERT_PREFIX: star.app.eb.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.app.eb.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: ((slack-channel))
       username: ((slack-username))
@@ -1908,6 +2465,22 @@ resources:
     secret_access_key: ((aws_external_secret_access_key))
     region_name: ((aws_external_region))
 
+- name: terraform-yaml-eastb
+  type: s3-iam
+  source:
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_eastb))
+    region_name: ((aws_default_region))
+
+- name: terraform-yaml-external-eastb
+  type: s3
+  source:
+    bucket: ((aws_external_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_external_eastb))
+    access_key_id: ((aws_external_access_key_id))
+    secret_access_key: ((aws_external_secret_access_key))
+    region_name: ((aws_external_region))
+
 - name: terraform-yaml-westb
   type: s3-iam
   source:
@@ -1920,6 +2493,22 @@ resources:
   source:
     bucket: ((aws_external_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_external_westb))
+    access_key_id: ((aws_external_access_key_id))
+    secret_access_key: ((aws_external_secret_access_key))
+    region_name: ((aws_external_region))
+
+- name: terraform-yaml-westc
+  type: s3-iam
+  source:
+    bucket: ((aws_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_westc))
+    region_name: ((aws_default_region))
+
+- name: terraform-yaml-external-westc
+  type: s3
+  source:
+    bucket: ((aws_external_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_external_westc))
     access_key_id: ((aws_external_access_key_id))
     secret_access_key: ((aws_external_secret_access_key))
     region_name: ((aws_external_region))
