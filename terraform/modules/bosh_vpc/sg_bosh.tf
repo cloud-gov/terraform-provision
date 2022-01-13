@@ -136,6 +136,15 @@ resource "aws_security_group_rule" "bosh_uaa" {
   security_group_id = aws_security_group.bosh.id
 }
 
+resource "aws_security_group_rule" "bosh_credhub" {
+  type              = "ingress"
+  from_port         = 8844
+  to_port           = 8844
+  protocol          = "tcp"
+  cidr_blocks       = concat(var.concourse_security_group_cidrs, [aws_vpc.main_vpc.cidr_block])
+  security_group_id = aws_security_group.bosh.id
+}
+
 resource "aws_security_group_rule" "node_exporter" {
   type                     = "ingress"
   from_port                = 9100
