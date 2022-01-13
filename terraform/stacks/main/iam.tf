@@ -152,6 +152,9 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     module.bosh_role.role_name,
   ]
+  users = [
+     aws_iam_user.parent_bosh_user.name
+  ]
 }
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {
@@ -221,10 +224,6 @@ resource "aws_iam_user" "parent_bosh_user" {
   path = "/bosh/"
 }
 
-resource "aws_iam_user_policy_attachment" "parent_bosh_bosh" {
-  user       = aws_iam_user.parent_bosh_user.name
-  policy_arn = module.bosh_policy.arn
-}
 
 resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
   user    = aws_iam_user.parent_bosh_user.name
