@@ -170,10 +170,3 @@ module "concourse_vpc_peering" {
   source_az1_route_table = module.stack.private_route_table_az1
   source_az2_route_table = module.stack.private_route_table_az2
 }
-
-module "concourse_to_bosh_sg" {
-  source = "../../modules/vpc_peering_sg"
-
-  target_bosh_security_group = module.stack.bosh_security_group
-  source_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
-}
