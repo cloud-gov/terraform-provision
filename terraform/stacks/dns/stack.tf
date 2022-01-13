@@ -279,7 +279,6 @@ resource "aws_route53_record" "westc_ns" {
 module "westc_dns" {
   source              = "../../modules/environment_dns"
   stack_name          = "westc"
-  cloudfront_zone_id  = "Z166TLBEWOO7G0"
   zone_id             = aws_route53_zone.westc_zone.zone_id
   app_subdomain       = "app.wc.cloud.gov"
   admin_subdomain     = "fr.wc.cloud.gov"
