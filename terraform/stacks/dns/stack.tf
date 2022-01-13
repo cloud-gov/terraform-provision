@@ -241,3 +241,48 @@ module "easta_dns" {
   remote_state_bucket = var.remote_state_bucket
   remote_state_region = var.remote_state_region
 }
+resource "aws_route53_zone" "eastb_zone" {
+  name = "eb.cloud.gov"
+}
+
+resource "aws_route53_record" "eastb_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "eb.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.eastb_zone.name_servers
+}
+
+module "eastb_dns" {
+  source              = "../../modules/environment_dns"
+  stack_name          = "eastb"
+  cloudfront_zone_id  = "Z166TLBEWOO7G0"
+  zone_id             = aws_route53_zone.eastb_zone.zone_id
+  app_subdomain       = "app.eb.cloud.gov"
+  admin_subdomain     = "fr.eb.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
+}
+
+resource "aws_route53_zone" "westc_zone" {
+  name = "wc.cloud.gov"
+}
+
+resource "aws_route53_record" "westc_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "wc.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.westc_zone.name_servers
+}
+
+module "westc_dns" {
+  source              = "../../modules/environment_dns"
+  stack_name          = "westc"
+  cloudfront_zone_id  = "Z166TLBEWOO7G0"
+  zone_id             = aws_route53_zone.westc_zone.zone_id
+  app_subdomain       = "app.wc.cloud.gov"
+  admin_subdomain     = "fr.wc.cloud.gov"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.remote_state_region
+}
