@@ -29,7 +29,7 @@
         "s3:PutBucketAcl"
       ],
       "Resource": [
-        "arn:${aws_partition}:s3:::${bucket}"
+        "arn:${aws_partition}:s3:::external-domain-broker-*"
       ]
     },
     {
