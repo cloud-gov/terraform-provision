@@ -201,11 +201,162 @@ resource "aws_lb_target_group" "domains_broker_challenge" {
   }
 }
 
-resource "aws_wafv2_web_acl_association" "domain_waf_core" {
+resource "aws_wafv2_regex_pattern_set" "jndi_regex_domains" {
+  name        = "${var.stack_description}-waf-jndi-regex_domains"
+  description = "DOMAINS Regex Pattern Set for JNDI"
+  scope       = "REGIONAL"
+
+  regular_expression {
+    regex_string = "(\\$|\\%24)(\\{|\\%7[bB])jndi(:|\\%3[aA])"
+  }
+}
+
+resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
+  name        = "${var.stack_description}-cf-domains-waf-acl"
+  description = "UAA ELB WAF Rules"
+  scope       = "REGIONAL"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "AWS-KnownBadInputsRuleSet"
+    priority = 5
+
+    override_action {
+      none{}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-Domains-KnownBadInputsRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "CG-DomainsRegexPatternSets"
+    priority = 10  
+    action {
+      block {}
+    }  
+    statement {
+      or_statement {
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+            field_to_match {
+              uri_path {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+            field_to_match {
+              query_string {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+            field_to_match {
+              body {}
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+            field_to_match {
+              single_header {
+                name = "user-agent"
+              }
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+        statement {
+          regex_pattern_set_reference_statement {
+            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+            field_to_match {
+              single_header {
+                name = "accept"
+              }
+            }
+            text_transformation {
+              priority = 0
+              type = "NONE"
+            }
+          }
+        }
+      }
+    }  
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-Domains-ManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWSManagedRule-CoreRuleSet"
+    priority = 20
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-Domains-ManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${var.stack_description}-cf-domains-waf-metric"
+    sampled_requests_enabled   = true
+  }
+}
+
+resource "aws_wafv2_web_acl_association" "domain_waf" {
   count = var.domains_broker_alb_count
 
   resource_arn = aws_lb.domains_broker[count.index].arn
-  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
+  web_acl_arn  = aws_wafv2_web_acl.cf_domains_waf_acl.arn
 }
 
 output "domains_broker_alb_names" {
