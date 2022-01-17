@@ -255,32 +255,36 @@ resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
     }
 
     statement {
-      or_statement {
+      not_statement {
         statement {
-          byte_match_statement {
-            text_transformation {
-              priority = 1
-              type = "NONE"
-            }
-            field_to_match {
-              single_header {
-                name = var.cloudfront_access_header_name
+          or_statement {
+            statement {
+              byte_match_statement {
+                text_transformation {
+                  priority = 1
+                  type = "NONE"
+                }
+                field_to_match {
+                  single_header {
+                    name = var.cloudfront_access_header_name
+                  }
+                }
+                positional_constraint = "EXACTLY"
+                search_string = var.cloudfront_access_header_value
               }
             }
-            positional_constraint = "EXACTLY"
-            search_string = var.cloudfront_access_header_value
-          }
-        }
-        statement {
-          byte_match_statement {
-            positional_constraint = "EXACTLY"
-            search_string = "/robots.txt"
-            text_transformation {
-              priority = 1
-              type = "NONE"
-            }
-            field_to_match {
-              uri_path {}
+            statement {
+              byte_match_statement {
+                positional_constraint = "EXACTLY"
+                search_string = "/robots.txt"
+                text_transformation {
+                  priority = 1
+                  type = "NONE"
+                }
+                field_to_match {
+                  uri_path {}
+                }
+              }
             }
           }
         }
