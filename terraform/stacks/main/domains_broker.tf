@@ -250,7 +250,7 @@ resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-Domains-KnownBadInputsRuleSet"
+      metric_name                = "${var.stack_description}-cloudfront-only"
       sampled_requests_enabled   = true
     }
 
