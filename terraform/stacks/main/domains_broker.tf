@@ -243,84 +243,43 @@ resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
   }
 
   rule {
-    name     = "CG-DomainsRegexPatternSets"
-    priority = 10  
+    name     = "cloudfront-only-access"
+    priority = 1
     action {
-      block {}
-    }  
+      count {}
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-Domains-KnownBadInputsRuleSet"
+      sampled_requests_enabled   = true
+    }
+
     statement {
       or_statement {
         statement {
-          regex_pattern_set_reference_statement {
-            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
+          byte_match_statement {
+            field_to_match {
+              single_header {
+                name = var.cloudfront_access_header_name
+              }
+            }
+            positional_constraint = "EXACTLY"
+            search_string = var.cloudfront_access_header_value
+          }
+        }
+        statement {
+          byte_match_statement {
+            positional_constraint = "EXACTLY"
+            search_string = "/robots.txt"
             field_to_match {
               uri_path {}
-            }
-            text_transformation {
-              priority = 0
-              type = "NONE"
-            }
-          }
-        }
-        statement {
-          regex_pattern_set_reference_statement {
-            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
-            field_to_match {
-              query_string {}
-            }
-            text_transformation {
-              priority = 0
-              type = "NONE"
-            }
-          }
-        }
-        statement {
-          regex_pattern_set_reference_statement {
-            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
-            field_to_match {
-              body {}
-            }
-            text_transformation {
-              priority = 0
-              type = "NONE"
-            }
-          }
-        }
-        statement {
-          regex_pattern_set_reference_statement {
-            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
-            field_to_match {
-              single_header {
-                name = "user-agent"
-              }
-            }
-            text_transformation {
-              priority = 0
-              type = "NONE"
-            }
-          }
-        }
-        statement {
-          regex_pattern_set_reference_statement {
-            arn = aws_wafv2_regex_pattern_set.jndi_regex_domains.arn
-            field_to_match {
-              single_header {
-                name = "accept"
-              }
-            }
-            text_transformation {
-              priority = 0
-              type = "NONE"
             }
           }
         }
       }
-    }  
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-Domains-ManagedRulesCommonRuleSet"
-      sampled_requests_enabled   = true
     }
+
+
   }
 
   rule {
