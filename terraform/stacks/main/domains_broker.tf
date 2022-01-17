@@ -258,6 +258,10 @@ resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
       or_statement {
         statement {
           byte_match_statement {
+            text_transformation {
+              priority = 1
+              type = "NONE"
+            }
             field_to_match {
               single_header {
                 name = var.cloudfront_access_header_name
@@ -271,6 +275,10 @@ resource "aws_wafv2_web_acl" "cf_domains_waf_acl" {
           byte_match_statement {
             positional_constraint = "EXACTLY"
             search_string = "/robots.txt"
+            text_transformation {
+              priority = 1
+              type = "NONE"
+            }
             field_to_match {
               uri_path {}
             }
