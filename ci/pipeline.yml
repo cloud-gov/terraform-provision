@@ -865,7 +865,6 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-
 - name: plan-bootstrap-development
   plan:
   - in_parallel:
@@ -1286,6 +1285,8 @@ jobs:
       TF_VAR_parent_stack_name: "master-east"
       TF_VAR_log_bucket_name: "cg-elb-logs-easta"
       TF_VAR_bosh_default_ssh_public_key: "((easta_bosh_ssh_public_key))"
+      TF_VAR_cloudfront_access_header_name: "((cloudfront_access_header_name))"
+      TF_VAR_cloudfront_access_header_value: "((cloudfront_access_header_value))"
   - *notify-slack
 
 - name: bootstrap-easta
@@ -1412,6 +1413,8 @@ jobs:
       TF_VAR_parent_stack_name: "master-east"
       TF_VAR_log_bucket_name: "cg-elb-logs-eastb"
       TF_VAR_bosh_default_ssh_public_key: "((eastb_bosh_ssh_public_key))"
+      TF_VAR_cloudfront_access_header_name: "((cloudfront_access_header_name))"
+      TF_VAR_cloudfront_access_header_value: "((cloudfront_access_header_value))"
   - *notify-slack
 
 - name: bootstrap-eastb
@@ -1539,6 +1542,8 @@ jobs:
       TF_VAR_parent_stack_name: "master-west"
       TF_VAR_log_bucket_name: "cg-elb-logs-westb"
       TF_VAR_bosh_default_ssh_public_key: "((westb_bosh_ssh_public_key))"
+      TF_VAR_cloudfront_access_header_name: "((cloudfront_access_header_name))"
+      TF_VAR_cloudfront_access_header_value: "((cloudfront_access_header_value))"
   - *notify-slack
 
 - name: bootstrap-westb
@@ -1665,6 +1670,8 @@ jobs:
       TF_VAR_parent_stack_name: "master-west"
       TF_VAR_log_bucket_name: "cg-elb-logs-westc"
       TF_VAR_bosh_default_ssh_public_key: "((westc_bosh_ssh_public_key))"
+      TF_VAR_cloudfront_access_header_name: "((cloudfront_access_header_name))"
+      TF_VAR_cloudfront_access_header_value: "((cloudfront_access_header_value))"
   - *notify-slack
 
 - name: bootstrap-westc
