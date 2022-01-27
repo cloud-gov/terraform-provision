@@ -186,13 +186,14 @@ module "diego" {
 module "logsearch" {
   source = "../../modules/logsearch"
 
-  stack_description   = var.stack_description
-  vpc_id              = module.stack.vpc_id
-  private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  bosh_security_group = module.stack.bosh_security_group
-  listener_arn        = aws_lb_listener.main.arn
-  hosts               = var.platform_kibana_hosts
-  log_bucket_name     = var.log_bucket_name
+  stack_description       = var.stack_description
+  vpc_id                  = module.stack.vpc_id
+  private_elb_subnets     = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
+  bosh_security_group     = module.stack.bosh_security_group
+  listener_arn            = aws_lb_listener.main.arn
+  hosts                   = var.platform_kibana_hosts
+  elb_log_bucket_name     = var.log_bucket_name
+  aws_partition           = data.aws_partition.current.partition
 }
 
 module "shibboleth" {
