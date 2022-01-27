@@ -433,6 +433,26 @@ output "platform_kibana_lb_target_group" {
   value = module.logsearch.platform_kibana_lb_target_group
 }
 
+output "platform_logs_bucket_access_key_id_prev" {
+  value = module.logsearch.platform_logs_bucket_access_key_id_prev
+}
+
+output "platform_logs_bucket_secret_access_key_prev" {
+  value = module.logsearch.platform_logs_bucket_secret_access_key_prev
+}
+
+output "platform_logs_bucket_access_key_id_curr" {
+  value = module.logsearch.platform_logs_bucket_access_key_id_curr
+}
+
+output "platform_logs_bucket_secret_access_key_curr" {
+  value = module.logsearch.platform_logs_bucket_secret_access_key_curr
+}
+output "platform_logs_bucket_name" {
+  value = module.logsearch.platform_logs_bucket_name
+}
+
+
 /* Shibboleth Proxy ELB */
 output "shibboleth_lb_target_group" {
   value = module.shibboleth.shibboleth_lb_target_group
