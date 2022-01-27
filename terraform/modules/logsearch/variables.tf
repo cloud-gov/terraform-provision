@@ -18,6 +18,9 @@ variable "hosts" {
   type = list(string)
 }
 
-variable "log_bucket_name" {
+variable "elb_log_bucket_name" {
 }
 
+variable "aws_partition" {
+
+}
