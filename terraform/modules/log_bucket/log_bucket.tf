@@ -29,7 +29,7 @@ locals {
 resource "aws_s3_bucket" "log_bucket" {
   bucket        = var.log_bucket_name
   acl           = var.log_bucket_acl
-  force_destroy = var.log_bucket_force_destroy
+  force_destroy = true
 
   lifecycle_rule {
     prefix  = ""

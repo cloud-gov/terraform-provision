@@ -354,6 +354,7 @@ output "domains_broker_listener_arns" {
  */
 resource "aws_s3_bucket" "domains_bucket" {
   bucket = var.challenge_bucket
+  force_destroy = true
   policy = <<EOF
 {
   "Version": "2012-10-17",
