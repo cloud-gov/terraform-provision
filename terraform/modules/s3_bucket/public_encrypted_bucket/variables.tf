@@ -6,7 +6,7 @@ variable "versioning" {
 }
 
 variable "force_destroy" {
-  default = "false"
+  default = "true"
 }
 
 variable "aws_partition" {
