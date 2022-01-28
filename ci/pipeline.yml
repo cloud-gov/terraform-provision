@@ -20,6 +20,8 @@ groups:
   jobs:
   - acme-certificate-development
   - acme-certificate-staging
+  - acme-certificate-staging-pages
+  - acme-certificate-staging-pages-sites
   - acme-certificate-production
   - acme-certificate-production-apps
 
@@ -221,7 +223,7 @@ jobs:
     - get: cg-provision-repo
       resource: cg-provision-repo-master
       passed: [plan-dns]
-  - task: create-update-external-staging
+  - task: create-update-dns
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
