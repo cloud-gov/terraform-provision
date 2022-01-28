@@ -5,7 +5,7 @@ resource "aws_route53_zone" "dev_zone" {
 
 # this is the switch we flip to make it active - before we turn this on, 
 # the new zone does nothing
-#resource "aws_route53_record" "west_ns" {
+#resource "aws_route53_record" "dev_ns" {
 #  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
 #  name    = "dev.us-gov-west-1.aws-us-gov.cloud.gov"
 #  type    = "NS"
