@@ -16,7 +16,7 @@ resource "aws_route53_zone" "dev_zone" {
 
 module "dev_dns" {
   source              = "../../modules/environment_dns"
-  stack_name          = "dev"
+  stack_name          = "development"
   zone_id             = aws_route53_zone.dev_zone.zone_id
   app_subdomain       = "dev.us-gov-west-1.aws-us-gov.cloud.gov"
   admin_subdomain     = "dev.us-gov-west-1.aws-us-gov.cloud.gov"
