@@ -9,7 +9,7 @@ tmp/*
 # Terraform files
 *.tfstate
 *.tfstate.backup
-.terraform
+.terraform*
 *.tfvars
 
 # Eclipse IDE files
