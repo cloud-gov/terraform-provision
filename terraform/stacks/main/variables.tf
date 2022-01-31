@@ -129,10 +129,3 @@ variable "az1_index" {
 variable "az2_index" {
   default = "1"
 }
-
-variable cloudfront_access_header_name {
-
-}
-variable cloudfront_access_header_value {
-
-}
