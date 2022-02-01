@@ -160,22 +160,9 @@ output "logsearch_static_ips" {
   value = data.template_file.logsearch_static_ips.*.rendered
 }
 
-data "template_file" "kubernetes_static_ips" {
-  count = 50
-  vars = {
-    address = cidrhost(module.cf.services_cidr_1, count.index + 200)
-  }
-  template = "$${address}"
-}
-
-output "kubernetes_static_ips" {
-  value = data.template_file.kubernetes_static_ips.*.rendered
-}
-
 output "services_static_ips" {
   value = concat(
     data.template_file.logsearch_static_ips.*.rendered,
-    data.template_file.kubernetes_static_ips.*.rendered,
   )
 }
 
