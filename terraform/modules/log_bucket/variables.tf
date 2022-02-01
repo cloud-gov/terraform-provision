@@ -2,7 +2,7 @@ variable "log_bucket_name" {
 }
 
 variable "log_bucket_force_destroy" {
-  default = true
+  default = false
 }
 
 variable "log_bucket_acl" {
