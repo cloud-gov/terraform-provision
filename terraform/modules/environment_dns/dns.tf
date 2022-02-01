@@ -45,7 +45,7 @@ resource "aws_route53_record" "star_app_a" {
   }
 }
 
-resource "aws_route53_record" "star_app_aaa" {
+resource "aws_route53_record" "star_app_aaaa" {
   zone_id = var.zone_id
   name    = "*.${var.app_subdomain}."
   type    = "AAAA"
@@ -93,7 +93,7 @@ resource "aws_route53_record" "uaa_a" {
   }
 }
 
-resource "aws_route53_record" "uaa_aaa" {
+resource "aws_route53_record" "uaa_aaaa" {
   zone_id = var.zone_id
   name    = "uaa.${var.admin_subdomain}."
   type    = "AAAA"

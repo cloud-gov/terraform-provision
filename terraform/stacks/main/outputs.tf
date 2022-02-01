@@ -160,22 +160,9 @@ output "logsearch_static_ips" {
   value = data.template_file.logsearch_static_ips.*.rendered
 }
 
-data "template_file" "kubernetes_static_ips" {
-  count = 50
-  vars = {
-    address = cidrhost(module.cf.services_cidr_1, count.index + 200)
-  }
-  template = "$${address}"
-}
-
-output "kubernetes_static_ips" {
-  value = data.template_file.kubernetes_static_ips.*.rendered
-}
-
 output "services_static_ips" {
   value = concat(
     data.template_file.logsearch_static_ips.*.rendered,
-    data.template_file.kubernetes_static_ips.*.rendered,
   )
 }
 
@@ -445,6 +432,26 @@ output "platform_syslog_elb_dns_name" {
 output "platform_kibana_lb_target_group" {
   value = module.logsearch.platform_kibana_lb_target_group
 }
+
+output "platform_logs_bucket_access_key_id_prev" {
+  value = module.logsearch.platform_logs_bucket_access_key_id_prev
+}
+
+output "platform_logs_bucket_secret_access_key_prev" {
+  value = module.logsearch.platform_logs_bucket_secret_access_key_prev
+}
+
+output "platform_logs_bucket_access_key_id_curr" {
+  value = module.logsearch.platform_logs_bucket_access_key_id_curr
+}
+
+output "platform_logs_bucket_secret_access_key_curr" {
+  value = module.logsearch.platform_logs_bucket_secret_access_key_curr
+}
+output "platform_logs_bucket_name" {
+  value = module.logsearch.platform_logs_bucket_name
+}
+
 
 /* Shibboleth Proxy ELB */
 output "shibboleth_lb_target_group" {

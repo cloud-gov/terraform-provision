@@ -25,7 +25,7 @@ resource "aws_elb" "platform_syslog_elb" {
   }
 
   access_logs {
-    bucket        = var.log_bucket_name
+    bucket        = var.elb_log_bucket_name
     bucket_prefix = var.stack_description
     enabled       = true
   }
