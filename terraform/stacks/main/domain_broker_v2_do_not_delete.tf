@@ -218,7 +218,6 @@ resource "aws_db_instance" "domain_broker_v2" {
   engine               = "postgres"
   db_subnet_group_name = module.stack.rds_subnet_group
   vpc_security_group_ids = [module.stack.rds_postgres_security_group]
-  skip_final_snapshot =  true
 }
 
 output "domain_broker_v2_rds_username" {
