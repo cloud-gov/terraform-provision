@@ -49,6 +49,9 @@ module "base" {
 }
 
 module "vpc_peering" {
+  # count as a cheap hack. Basically, if the parent and target vpcs are the same, skip this
+  # we need to do this because otherwise we'll try to make duplicate entries in the route table
+  count  = var.target_vpc_id == var.parent_vpc_id ? 0 : 1
   source = "../../vpc_peering"
 
   providers = {
