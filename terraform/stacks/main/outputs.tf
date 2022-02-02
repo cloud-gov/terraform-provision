@@ -544,7 +544,7 @@ output "bosh_blobstore_bucket" {
 }
 
 output "elb_log_bucket" {
-  value = var.log_bucket_name
+  value = module.log_bucket.elb_bucket_name
 }
 
 output "tooling_bosh_static_ip" {

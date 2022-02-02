@@ -26,7 +26,7 @@ resource "aws_lb" "domains_broker_internal" {
   security_groups = [module.stack.bosh_security_group]
   internal        = true
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -103,7 +103,7 @@ resource "aws_lb" "domains_broker" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }

@@ -101,7 +101,7 @@ resource "aws_lb" "main" {
   idle_timeout    = 3600
 
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -214,7 +214,7 @@ module "cf" {
   services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
   bucket_prefix         = var.bucket_prefix
-  log_bucket_name       = var.log_bucket_name
+  log_bucket_name       = module.log_bucket.elb_bucket_name
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
@@ -236,7 +236,7 @@ module "diego" {
     var.force_restricted_network == "no" ? "0.0.0.0/0" : join(",", var.restricted_ingress_web_cidrs),
   )
 
-  log_bucket_name = var.log_bucket_name
+  log_bucket_name = module.log_bucket.elb_bucket_name
 }
 
 
@@ -249,7 +249,7 @@ module "logsearch" {
   bosh_security_group     = module.stack.bosh_security_group
   listener_arn            = aws_lb_listener.main.arn
   hosts                   = var.platform_kibana_hosts
-  elb_log_bucket_name     = var.log_bucket_name
+  elb_log_bucket_name     = module.log_bucket.elb_bucket_name
   aws_partition           = data.aws_partition.current.partition
 }
 
@@ -272,7 +272,7 @@ module "admin" {
   public_subnet_az1 = module.stack.public_subnet_az1
   public_subnet_az2 = module.stack.public_subnet_az2
   security_group    = module.stack.restricted_web_traffic_security_group
-  log_bucket_name   = var.log_bucket_name
+  log_bucket_name   = module.log_bucket.elb_bucket_name
 }
 
 resource "aws_wafv2_web_acl_association" "admin_waf_core" {
@@ -293,7 +293,7 @@ module "elasticache_broker_network" {
   security_groups            = [module.stack.bosh_security_group]
   elb_subnets                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
   elb_security_groups        = [module.stack.bosh_security_group]
-  log_bucket_name            = var.log_bucket_name
+  log_bucket_name            = module.log_bucket.elb_bucket_name
 }
 
 module "elasticsearch_broker" {
