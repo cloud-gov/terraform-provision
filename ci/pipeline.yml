@@ -478,6 +478,10 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_assume_arn: ((staging_assume_arn))
+      TF_VAR_parent_assume_arn: ((staging_parent_assume_arn))
+      TF_VAR_parent_stack_name: ((staging_parent_stack_name))
+      TF_VAR_bosh_default_ssh_public_key: ((staging_ssh_key))
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
@@ -595,6 +599,10 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_assume_arn: ((production_assume_arn))
+      TF_VAR_parent_assume_arn: ((production_parent_assume_arn))
+      TF_VAR_parent_stack_name: ((production_parent_stack_name))
+      TF_VAR_bosh_default_ssh_public_key: ((production_ssh_key))
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
