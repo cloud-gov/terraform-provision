@@ -246,6 +246,7 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_default_region))
       TF_VAR_aws_default_region: ((aws_default_region))
       TF_VAR_rds_password: ((tooling_rds_password))
+      TF_VAR_bosh_default_ssh_public_key: ((tooling_ssh_key))
       # Enable for database upgrades:
       #TF_VAR_rds_apply_immediately: "true"
       #TF_VAR_rds_allow_major_version_upgrade: "true"
