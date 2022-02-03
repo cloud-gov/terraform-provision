@@ -31,3 +31,6 @@ variable "security_groups" {
 variable "security_groups_count" {
 }
 
+variable "allowed_cidrs" {
+  type = list(string)
+}

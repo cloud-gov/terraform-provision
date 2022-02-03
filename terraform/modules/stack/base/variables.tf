@@ -90,6 +90,15 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   default = []
 }
 
+variable "rds_allowed_cidrs" {
+  type    = list(string)
+  default = []
+}
+
+variable "rds_allowed_cidrs_count" {
+  default = "0"
+}
+
 variable "rds_security_groups" {
   type = list(string)
 }
@@ -98,17 +107,17 @@ variable "rds_security_groups_count" {
   default = "0"
 }
 
-variable "target_monitoring_security_groups" {
+variable "target_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_concourse_security_groups" {
+variable "target_concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_credhub_security_groups" {
+variable "target_credhub_security_group_cidrs" {
   type    = list(string)
   default = []
 }
@@ -159,3 +168,6 @@ variable "credhub_rds_force_ssl" {
   default = 1
 }
 
+variable "bosh_default_ssh_public_key" {
+
+}

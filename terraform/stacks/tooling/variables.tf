@@ -166,6 +166,11 @@ variable "oidc_client" {
 variable "oidc_client_secret" {
 }
 
-variable "payer_account_id" {
+variable "opslogin_hostname" {
+  default = "opsuaa.fr.cloud.gov"
+}
+
+variable "bosh_default_ssh_public_key" {
+
 }
 

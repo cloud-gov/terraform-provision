@@ -1,3 +1,10 @@
+provider aws {
+
+}
+# note, we'll need to move this to terraform.required_providers.aws.configuration_aliases when we update to 1.x (or maybe 0.15?)
+provider aws {
+  alias = "tooling"
+}
 /*
  * Variables required:
  *   peer_owner_id
@@ -12,11 +19,28 @@
  */
 
 # Create peering connection for source_vpc_id -> target_vpc_id
+data "aws_region" "tooling" {
+  provider = aws.tooling
+}
+
+
+
 resource "aws_vpc_peering_connection" "peering" {
-  peer_owner_id = var.peer_owner_id
+  peer_owner_id = var.target_vpc_account_id
   peer_vpc_id   = var.target_vpc_id
-  auto_accept   = true
+  peer_region   = data.aws_region.tooling.name
+  auto_accept   = false
   vpc_id        = var.source_vpc_id
+
+  tags = {
+    Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
+  }
+}
+
+resource "aws_vpc_peering_connection_accepter" "peer" {
+  provider                  = aws.tooling
+  vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  auto_accept               = true
 
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
@@ -25,6 +49,7 @@ resource "aws_vpc_peering_connection" "peering" {
 
 # Add peering connection to target_az1_route_table with source_vpc_cidr
 resource "aws_route" "target_az1_to_source_cidr" {
+  provider = aws.tooling
   route_table_id            = var.target_az1_route_table
   destination_cidr_block    = var.source_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
@@ -32,6 +57,7 @@ resource "aws_route" "target_az1_to_source_cidr" {
 
 # Add peering connection to target_az2_route_table with source_vpc_cidr
 resource "aws_route" "target_az2_to_source_cidr" {
+  provider = aws.tooling
   route_table_id            = var.target_az2_route_table
   destination_cidr_block    = var.source_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id

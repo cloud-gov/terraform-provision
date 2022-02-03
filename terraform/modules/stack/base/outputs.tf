@@ -176,3 +176,6 @@ output "credhub_rds_password" {
   value = module.credhub_rds.rds_password
 }
 
+output "default_key_name" {
+  value = module.vpc.default_key_name
+}

@@ -168,3 +168,6 @@ output "credhub_rds_password" {
   value = module.base.credhub_rds_password
 }
 
+output "default_key_name" {
+  value = module.base.default_key_name
+}

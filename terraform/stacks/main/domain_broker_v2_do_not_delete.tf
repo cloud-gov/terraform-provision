@@ -102,7 +102,7 @@ resource "aws_lb" "domain_broker_v2" {
   idle_timeout    = 3600
 
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -212,6 +212,7 @@ resource "aws_db_instance" "domain_broker_v2" {
   storage_type         = "gp2"
   allocated_storage    = 10
   instance_class       = "db.t2.micro"
+  engine_version       = var.domain_broker_v2_rds_version
   username             = var.domain_broker_v2_rds_username
   password             = var.domain_broker_v2_rds_password
   engine               = "postgres"

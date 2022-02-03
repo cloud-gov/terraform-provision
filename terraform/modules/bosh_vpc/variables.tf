@@ -47,18 +47,16 @@ variable "nat_gateway_instance_type" {
   default = "c3.2xlarge"
 }
 
-variable "monitoring_security_groups" {
+variable "monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "concourse_security_groups" {
+variable "concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "credhub_security_groups" {
-  type    = list(string)
-  default = []
-}
+variable "bosh_default_ssh_public_key" {
 
+}

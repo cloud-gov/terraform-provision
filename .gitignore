@@ -11,6 +11,9 @@ tmp/*
 *.tfstate.backup
 .terraform*
 *.tfvars
+.terraform.lock.hcl
 
 # Eclipse IDE files
 .project
+
+*-state.json

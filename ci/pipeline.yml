@@ -24,6 +24,8 @@ groups:
   - acme-certificate-staging-pages-sites
   - acme-certificate-production
   - acme-certificate-production-apps
+  - acme-certificate-staging-pages
+  - acme-certificate-staging-pages-sites
 
 jobs:
 - name: pull-status-check
@@ -66,7 +68,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -113,7 +114,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-bootstrap-external-staging]
   - task: create-update-external-staging
     file: pipeline-tasks/terraform-apply.yml
@@ -134,7 +134,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -172,7 +171,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-bootstrap-external-production]
   - task: create-update-external-production
     file: pipeline-tasks/terraform-apply.yml
@@ -193,7 +191,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -221,7 +218,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-dns]
   - task: create-update-dns
     file: pipeline-tasks/terraform-apply.yml
@@ -235,7 +231,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -287,7 +282,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-bootstrap-tooling]
   - task: create-update-tooling
     tags: [iaas]
@@ -342,7 +336,6 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-
 - name: plan-bootstrap-development
   plan:
   - in_parallel:
@@ -362,6 +355,10 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_assume_arn: ((development_assume_arn))
+      TF_VAR_parent_assume_arn: ((development_parent_assume_arn))
+      TF_VAR_parent_stack_name: ((development_parent_stack_name))
+      TF_VAR_bosh_default_ssh_public_key: ((development_ssh_key))
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
       # Do not copy the pattern below.  You should not need separate variables
@@ -468,7 +465,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -482,6 +478,10 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_assume_arn: ((staging_assume_arn))
+      TF_VAR_parent_assume_arn: ((staging_parent_assume_arn))
+      TF_VAR_parent_stack_name: ((staging_parent_stack_name))
+      TF_VAR_bosh_default_ssh_public_key: ((staging_ssh_key))
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
@@ -526,7 +526,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-bootstrap-staging]
   - task: create-update-staging
     tags: [iaas]
@@ -587,7 +586,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       trigger: true
     - get: plan-timer
       trigger: true
@@ -601,6 +599,10 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      TF_VAR_assume_arn: ((production_assume_arn))
+      TF_VAR_parent_assume_arn: ((production_parent_assume_arn))
+      TF_VAR_parent_stack_name: ((production_parent_stack_name))
+      TF_VAR_bosh_default_ssh_public_key: ((production_ssh_key))
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
       # Do not copy the pattern below.  You should not need separate variables
@@ -644,7 +646,6 @@ jobs:
   - in_parallel:
     - get: pipeline-tasks
     - get: cg-provision-repo
-      resource: cg-provision-repo-master
       passed: [plan-bootstrap-production]
   - task: create-update-production
     tags: [iaas]
@@ -699,6 +700,7 @@ jobs:
     - put: terraform-yaml-production
       params:
         file: terraform-yaml/state.yml
+
 
 - name: acme-certificate-development
   plan:
@@ -945,14 +947,8 @@ resources:
 - name: cg-provision-repo-development
   type: git
   source:
-    uri: ((cg_provision_development_git_url))
-    branch: master
-
-- name: cg-provision-repo-master
-  type: git
-  source:
-    uri: ((cg_provision_development_git_url))
-    branch: master
+    uri: ((cg_provision_git_url))
+    branch: ((cg_provision_git_branch_development))
 
 - name: pull-request
   type: pull-request

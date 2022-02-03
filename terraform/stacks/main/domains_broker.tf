@@ -26,7 +26,7 @@ resource "aws_lb" "domains_broker_internal" {
   security_groups = [module.stack.bosh_security_group]
   internal        = true
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -64,15 +64,17 @@ output "domains_broker_internal_target_group" {
 
 /* Broker database */
 resource "aws_db_instance" "domains_broker" {
-  name                 = "domains_broker"
-  storage_type         = "gp2"
-  allocated_storage    = 10
-  instance_class       = "db.t2.micro"
-  username             = var.domains_broker_rds_username
-  password             = var.domains_broker_rds_password
-  engine               = "postgres"
-  db_subnet_group_name = module.stack.rds_subnet_group
-  vpc_security_group_ids = [module.stack.rds_postgres_security_group]
+  name                        = "domains_broker"
+  storage_type                = "gp2"
+  allocated_storage           = 10
+  instance_class              = "db.t2.micro"
+  username                    = var.domains_broker_rds_username
+  password                    = var.domains_broker_rds_password
+  engine                      = "postgres"
+  engine_version              = var.domains_broker_rds_version
+  db_subnet_group_name        = module.stack.rds_subnet_group
+  vpc_security_group_ids      = [module.stack.rds_postgres_security_group]
+  allow_major_version_upgrade = true
 }
 
 output "domains_broker_rds_username" {
@@ -101,7 +103,7 @@ resource "aws_lb" "domains_broker" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -200,7 +202,7 @@ resource "aws_lb_target_group" "domains_broker_challenge" {
   }
 }
 
-resource "aws_wafv2_web_acl_association" "domain_waf_core" {
+resource "aws_wafv2_web_acl_association" "domain_waf" {
   count = var.domains_broker_alb_count
 
   resource_arn = aws_lb.domains_broker[count.index].arn

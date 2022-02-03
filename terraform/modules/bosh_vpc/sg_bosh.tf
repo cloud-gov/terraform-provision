@@ -3,9 +3,12 @@
  *  stack_description
  *
  * Resources required:
- *   aws_vpc referenced as 'main_vpc'
+ *   aws_vpc referenced as 'main_vpc' is the vpc for this
+ *   bosh environment (the director and the vms it manages)
  */
 
+
+# this security group is applied to all the vms in this stack, including the bosh director
 resource "aws_security_group" "bosh" {
   description = "BOSH security group"
   vpc_id      = aws_vpc.main_vpc.id
@@ -14,6 +17,7 @@ resource "aws_security_group" "bosh" {
     Name = "${var.stack_description} - BOSH"
   }
 }
+
 
 resource "aws_security_group_rule" "self_reference" {
   type              = "ingress"
@@ -29,7 +33,7 @@ resource "aws_security_group_rule" "bosh_ssh" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  cidr_blocks       = concat(var.concourse_security_group_cidrs, [aws_vpc.main_vpc.cidr_block])
   security_group_id = aws_security_group.bosh.id
 }
 
@@ -50,7 +54,6 @@ resource "aws_security_group_rule" "dns_udp" {
   cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
   security_group_id = aws_security_group.bosh.id
 }
-
 resource "aws_security_group_rule" "ntp_udp" {
   type              = "ingress"
   from_port         = 123
@@ -119,17 +122,35 @@ resource "aws_security_group_rule" "bosh_director" {
   from_port         = 25555
   to_port           = 25555
   protocol          = "tcp"
-  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  cidr_blocks       = concat(var.concourse_security_group_cidrs, [aws_vpc.main_vpc.cidr_block])
+  security_group_id = aws_security_group.bosh.id
+}
+
+
+resource "aws_security_group_rule" "bosh_uaa" {
+  type              = "ingress"
+  from_port         = 8443
+  to_port           = 8443
+  protocol          = "tcp"
+  cidr_blocks       = concat(var.concourse_security_group_cidrs, [aws_vpc.main_vpc.cidr_block])
+  security_group_id = aws_security_group.bosh.id
+}
+
+resource "aws_security_group_rule" "bosh_credhub" {
+  type              = "ingress"
+  from_port         = 8844
+  to_port           = 8844
+  protocol          = "tcp"
+  cidr_blocks       = concat(var.concourse_security_group_cidrs, [aws_vpc.main_vpc.cidr_block])
   security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "node_exporter" {
-  count                    = length(var.monitoring_security_groups)
   type                     = "ingress"
   from_port                = 9100
   to_port                  = 9100
   protocol                 = "tcp"
-  source_security_group_id = element(var.monitoring_security_groups, count.index)
+  cidr_blocks              = var.monitoring_security_group_cidrs
   security_group_id        = aws_security_group.bosh.id
 }
 
@@ -143,42 +164,38 @@ resource "aws_security_group_rule" "platform_kibana" {
 }
 
 resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
-  count                    = length(var.monitoring_security_groups)
   type                     = "ingress"
   from_port                = 9114
   to_port                  = 9114
   protocol                 = "tcp"
-  source_security_group_id = element(var.monitoring_security_groups, count.index)
+  cidr_blocks              = var.monitoring_security_group_cidrs
   security_group_id        = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_logsearch" {
-  count                    = length(var.concourse_security_groups)
   type                     = "ingress"
   from_port                = 9200
   to_port                  = 9200
   protocol                 = "tcp"
-  source_security_group_id = element(var.concourse_security_groups, count.index)
+  cidr_blocks              = var.concourse_security_group_cidrs
   security_group_id        = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_secureproxy" {
-  count                    = length(var.concourse_security_groups)
   type                     = "ingress"
   from_port                = 80
   to_port                  = 80
   protocol                 = "tcp"
-  source_security_group_id = element(var.concourse_security_groups, count.index)
+  cidr_blocks              = var.concourse_security_group_cidrs
   security_group_id        = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_secureproxy_https" {
-  count                    = length(var.concourse_security_groups)
   type                     = "ingress"
   from_port                = 443
   to_port                  = 443
   protocol                 = "tcp"
-  source_security_group_id = element(var.concourse_security_groups, count.index)
+  cidr_blocks              = var.concourse_security_group_cidrs
   security_group_id        = aws_security_group.bosh.id
 }
 

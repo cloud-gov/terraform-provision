@@ -96,16 +96,10 @@ variable "rds_password" {
 variable "credhub_rds_password" {
 }
 
-variable "account_id" {
-}
-
 variable "target_vpc_id" {
 }
 
 variable "target_vpc_cidr" {
-}
-
-variable "target_bosh_security_group" {
 }
 
 variable "target_az1_route_table" {
@@ -114,17 +108,49 @@ variable "target_az1_route_table" {
 variable "target_az2_route_table" {
 }
 
-variable "target_monitoring_security_groups" {
+variable "target_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_concourse_security_groups" {
+variable "target_concourse_security_group_cidrs" {
   type    = list(string)
   default = []
 }
 
-variable "target_credhub_security_groups" {
+variable "parent_vpc_id" {
+}
+
+variable "parent_vpc_cidr" {
+}
+
+variable "parent_bosh_security_group" {
+}
+
+variable "parent_az1_route_table" {
+}
+
+variable "parent_az2_route_table" {
+}
+
+variable "parent_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []
+}
+
+variable "parent_concourse_security_group_cidrs" {
+  type    = list(string)
+  default = []
+}
+
+variable "target_account_id" {
+
+}
+
+variable "parent_account_id" {
+
+}
+
+variable "bosh_default_ssh_public_key" {
+
 }

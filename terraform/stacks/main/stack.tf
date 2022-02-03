@@ -4,14 +4,49 @@ terraform {
 }
 
 provider "aws" {
+  # this is for CI 
+  # run deployments, provide jumpboxes, check on things, etc
+  alias = "tooling"
+}
+provider "aws" {
+  # this is for the tooling bosh 
+  # deploy and monitor vms, scrape metrics, compliance agents, and smtp
+  alias = "parentbosh"
+  region = var.aws_default_region
+  assume_role {
+    role_arn = var.parent_assume_arn
+  }
+}
+provider "aws" {
+  region = var.aws_default_region
+  assume_role {
+    role_arn = var.assume_arn
+  }
 }
 
 data "terraform_remote_state" "target_vpc" {
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
+  # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
+
   backend = "s3"
 
   config = {
     bucket = var.remote_state_bucket
     key    = "${var.target_stack_name}/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "parent_vpc" {
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
+  # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
+
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_state_bucket
+    key    = "${var.parent_stack_name}/terraform.tfstate"
   }
 }
 
@@ -47,6 +82,14 @@ data "aws_iam_server_certificate" "wildcard_sites_pages_staging" {
   latest      = true
 }
 
+data "aws_caller_identity" "tooling" {
+  provider = aws.tooling
+}
+
+data "aws_arn" "parent_role_arn" {
+  arn = var.parent_assume_arn
+}
+
 resource "aws_lb" "main" {
   name    = "${var.stack_description}-main"
   subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
@@ -58,7 +101,7 @@ resource "aws_lb" "main" {
   idle_timeout    = 3600
 
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -87,13 +130,21 @@ resource "aws_lb_target_group" "dummy" {
 module "stack" {
   source = "../../modules/stack/spoke"
 
+  providers = {
+    aws = aws
+    aws.tooling = aws.tooling
+    aws.parent  = aws.parentbosh
+  }
   stack_description                 = var.stack_description
   aws_partition                     = data.aws_partition.current.partition
   vpc_cidr                          = var.vpc_cidr
+  az1                               = data.aws_availability_zones.available.names[var.az1_index]
+  az2                               = data.aws_availability_zones.available.names[var.az2_index]
   aws_default_region                = var.aws_default_region
   rds_db_size                       = var.rds_db_size
   rds_apply_immediately             = var.rds_apply_immediately
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
+  rds_instance_type                 = var.rds_instance_type
   public_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 100)
   public_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 101)
   private_cidr_1                    = cidrsubnet(var.vpc_cidr, 8, 1)
@@ -104,32 +155,37 @@ module "stack" {
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   rds_password                      = var.rds_password
   credhub_rds_password              = var.credhub_rds_password
-  account_id                        = data.aws_caller_identity.current.account_id
+  parent_account_id                 = data.aws_arn.parent_role_arn.account
+  target_account_id                 = data.aws_caller_identity.tooling.account_id
+  bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
-  target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.vpc_cidr
-  target_bosh_security_group = data.terraform_remote_state.target_vpc.outputs.bosh_security_group
+  target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
   target_az1_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
-  target_monitoring_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.monitoring_security_groups[var.stack_description],
+  target_concourse_security_group_cidrs = [
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
 
-  target_concourse_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.production_concourse_security_group,
-    data.terraform_remote_state.target_vpc.outputs.staging_concourse_security_group,
+  parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id
+  parent_vpc_cidr            = data.terraform_remote_state.parent_vpc.outputs.vpc_cidr
+  parent_bosh_security_group = data.terraform_remote_state.parent_vpc.outputs.bosh_security_group
+  parent_az1_route_table     = data.terraform_remote_state.parent_vpc.outputs.private_route_table_az1
+  parent_az2_route_table     = data.terraform_remote_state.parent_vpc.outputs.private_route_table_az2
+
+  parent_monitoring_security_group_cidrs = [
+    data.terraform_remote_state.parent_vpc.outputs.production_monitoring_subnet_cidr,
   ]
 
-  target_credhub_security_groups = [
-    data.terraform_remote_state.target_vpc.outputs.production_credhub_security_group,
-    data.terraform_remote_state.target_vpc.outputs.staging_credhub_security_group,
-  ]
 }
 
 module "cf" {
   source = "../../modules/cloudfoundry"
 
+  az1                         = data.aws_availability_zones.available.names[var.az1_index]
+  az2                         = data.aws_availability_zones.available.names[var.az2_index]
   stack_description           = var.stack_description
   aws_partition               = data.aws_partition.current.partition
   elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
@@ -145,6 +201,7 @@ module "cf" {
   rds_password        = var.cf_rds_password
   rds_subnet_group    = module.stack.rds_subnet_group
   rds_security_groups = [module.stack.rds_postgres_security_group]
+  rds_instance_type   = var.cf_rds_instance_type
   stack_prefix        = var.stack_prefix
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
@@ -157,7 +214,7 @@ module "cf" {
   services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
   bucket_prefix         = var.bucket_prefix
-  log_bucket_name       = var.log_bucket_name
+  log_bucket_name       = module.log_bucket.elb_bucket_name
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
@@ -179,7 +236,7 @@ module "diego" {
     var.force_restricted_network == "no" ? "0.0.0.0/0" : join(",", var.restricted_ingress_web_cidrs),
   )
 
-  log_bucket_name = var.log_bucket_name
+  log_bucket_name = module.log_bucket.elb_bucket_name
 }
 
 
@@ -192,7 +249,7 @@ module "logsearch" {
   bosh_security_group     = module.stack.bosh_security_group
   listener_arn            = aws_lb_listener.main.arn
   hosts                   = var.platform_kibana_hosts
-  elb_log_bucket_name     = var.log_bucket_name
+  elb_log_bucket_name     = module.log_bucket.elb_bucket_name
   aws_partition           = data.aws_partition.current.partition
 }
 
@@ -215,7 +272,7 @@ module "admin" {
   public_subnet_az1 = module.stack.public_subnet_az1
   public_subnet_az2 = module.stack.public_subnet_az2
   security_group    = module.stack.restricted_web_traffic_security_group
-  log_bucket_name   = var.log_bucket_name
+  log_bucket_name   = module.log_bucket.elb_bucket_name
 }
 
 resource "aws_wafv2_web_acl_association" "admin_waf_core" {
@@ -225,6 +282,8 @@ resource "aws_wafv2_web_acl_association" "admin_waf_core" {
 
 module "elasticache_broker_network" {
   source                     = "../../modules/elasticache_broker_network"
+  az1                        = data.aws_availability_zones.available.names[var.az1_index]
+  az2                        = data.aws_availability_zones.available.names[var.az2_index]
   stack_description          = var.stack_description
   elasticache_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 34)
   elasticache_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 35)
@@ -234,12 +293,14 @@ module "elasticache_broker_network" {
   security_groups            = [module.stack.bosh_security_group]
   elb_subnets                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
   elb_security_groups        = [module.stack.bosh_security_group]
-  log_bucket_name            = var.log_bucket_name
+  log_bucket_name            = module.log_bucket.elb_bucket_name
 }
 
 module "elasticsearch_broker" {
   source                       = "../../modules/elasticsearch_broker"
   stack_description            = var.stack_description
+  az1                          = data.aws_availability_zones.available.names[var.az1_index]
+  az2                          = data.aws_availability_zones.available.names[var.az2_index]
   elasticsearch_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 40)
   elasticsearch_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 42)
   az1_route_table              = module.stack.private_route_table_az1

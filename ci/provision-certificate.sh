@@ -7,9 +7,10 @@ chmod +x ./jq
 
 pip install certbot certbot-dns-route53
 
-spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
-  | ./jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
-curl -L -o spruce "${spruce_url}"
+#spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
+#  | ./jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
+#curl -L -o spruce "${spruce_url}"
+curl -L -o spruce https://github.com/geofffranks/spruce/releases/download/v1.29.0/spruce-linux-amd64
 chmod +x ./spruce
 
 # Quit if current certificate isn't close to expiration date

@@ -1,3 +1,11 @@
+provider aws {
+}
+provider aws {
+  alias = "parent"
+}
+provider aws {
+  alias = "tooling"
+}
 module "base" {
   source                            = "../base"
   stack_description                 = var.stack_description
@@ -25,22 +33,32 @@ module "base" {
   credhub_rds_password              = var.credhub_rds_password
   restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
+  bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
 
   rds_security_groups = [
     module.base.bosh_security_group,
-    var.target_bosh_security_group,
   ]
+  rds_security_groups_count         = 1
 
-  rds_security_groups_count         = 2
-  target_monitoring_security_groups = var.target_monitoring_security_groups
-  target_concourse_security_groups  = var.target_concourse_security_groups
-  target_credhub_security_groups    = var.target_credhub_security_groups
+  rds_allowed_cidrs = var.target_concourse_security_group_cidrs
+  rds_allowed_cidrs_count         = 1
+
+
+  target_monitoring_security_group_cidrs = var.parent_monitoring_security_group_cidrs
+  target_concourse_security_group_cidrs  = var.target_concourse_security_group_cidrs
 }
 
 module "vpc_peering" {
+  # count as a cheap hack. Basically, if the parent and target vpcs are the same, skip this
+  # we need to do this because otherwise we'll try to make duplicate entries in the route table
+  count  = var.target_vpc_id == var.parent_vpc_id ? 0 : 1
   source = "../../vpc_peering"
 
-  peer_owner_id          = var.account_id
+  providers = {
+    aws = aws
+    aws.tooling = aws.tooling
+  }
+  target_vpc_account_id  = var.target_account_id
   target_vpc_id          = var.target_vpc_id
   target_vpc_cidr        = var.target_vpc_cidr
   target_az1_route_table = var.target_az1_route_table
@@ -51,17 +69,40 @@ module "vpc_peering" {
   source_az2_route_table = module.base.private_route_table_az2
 }
 
-module "vpc_security_source_to_target" {
-  source = "../../vpc_peering_sg"
+module "vpc_peering_parentbosh" {
+  source = "../../vpc_peering"
 
-  target_bosh_security_group = var.target_bosh_security_group
-  source_vpc_cidr            = module.base.vpc_cidr
+  providers = {
+    aws = aws
+    aws.tooling = aws.parent
+  }
+  target_vpc_account_id  = var.parent_account_id
+  target_vpc_id          = var.parent_vpc_id
+  target_vpc_cidr        = var.parent_vpc_cidr
+  target_az1_route_table = var.parent_az1_route_table
+  target_az2_route_table = var.parent_az2_route_table
+  source_vpc_id          = module.base.vpc_id
+  source_vpc_cidr        = module.base.vpc_cidr
+  source_az1_route_table = module.base.private_route_table_az1
+  source_az2_route_table = module.base.private_route_table_az2
+  
 }
 
-module "vpc_security_target_to_source" {
+ module "vpc_security_source_to_parent" {
+  # and bosh -> monitoring stack
+   providers = {
+     aws = aws.parent
+   }
+   source = "../../vpc_peering_sg"
+ 
+   target_bosh_security_group = var.parent_bosh_security_group
+   source_vpc_cidr            = module.base.vpc_cidr
+ }
+
+module "vpc_security_parent_to_source" {
+  # toolingbosh -> envbosh
   source = "../../vpc_peering_sg"
 
   target_bosh_security_group = module.base.bosh_security_group
-  source_vpc_cidr            = var.target_vpc_cidr
+  source_vpc_cidr            = var.parent_vpc_cidr
 }
-

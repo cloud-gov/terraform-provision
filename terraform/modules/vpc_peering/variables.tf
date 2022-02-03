@@ -1,6 +1,3 @@
-variable "peer_owner_id" {
-}
-
 variable "source_az1_route_table" {
 }
 
@@ -25,3 +22,6 @@ variable "source_vpc_id" {
 variable "source_vpc_cidr" {
 }
 
+variable "target_vpc_account_id" {
+
+}

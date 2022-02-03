@@ -1,9 +1,9 @@
 output "az1" {
-  value = data.aws_availability_zones.available.names[0]
+  value = data.aws_availability_zones.available.names[var.az1_index]
 }
 
 output "az2" {
-  value = data.aws_availability_zones.available.names[1]
+  value = data.aws_availability_zones.available.names[var.az2_index]
 }
 
 output "stack_description" {
@@ -544,7 +544,7 @@ output "bosh_blobstore_bucket" {
 }
 
 output "elb_log_bucket" {
-  value = var.log_bucket_name
+  value = module.log_bucket.elb_bucket_name
 }
 
 output "tooling_bosh_static_ip" {
@@ -557,4 +557,41 @@ output "master_bosh_static_ip" {
 
 output "nessus_static_ip" {
   value = data.terraform_remote_state.target_vpc.outputs.nessus_static_ip
+}
+
+
+output "s3_broker_user_access_key_id_prev" {
+  value = ""
+}
+
+output "s3_broker_user_secret_access_key_prev" {
+  value = ""
+}
+
+output "s3_broker_user_access_key_id_curr" {
+  value = aws_iam_access_key.s3_broker_user_key_v1.id
+}
+
+output "s3_broker_user_secret_access_key_curr" {
+  value = aws_iam_access_key.s3_broker_user_key_v1.secret
+}
+
+output "parent_bosh_user_access_key_id_prev" {
+  value = ""
+}
+
+output "parent_bosh_user_secret_access_key_prev" {
+  value = ""
+}
+
+output "parent_bosh_user_access_key_id_curr" {
+  value = aws_iam_access_key.parent_bosh_user_key_v1.id
+}
+
+output "parent_bosh_user_secret_access_key_curr" {
+  value = aws_iam_access_key.parent_bosh_user_key_v1.secret
+}
+
+output "default_key_name" {
+  value = module.stack.default_key_name
 }

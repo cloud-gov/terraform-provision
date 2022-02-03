@@ -90,6 +90,7 @@ module "stack" {
   rds_parameter_group_family        = var.rds_parameter_group_family
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
   rds_apply_immediately             = var.rds_apply_immediately
+  bosh_default_ssh_public_key        = var.bosh_default_ssh_public_key
 }
 
 module "concourse_production" {
@@ -191,6 +192,7 @@ module "monitoring_production" {
   hosts              = var.monitoring_production_hosts
   oidc_client        = var.oidc_client
   oidc_client_secret = var.oidc_client_secret
+  opslogin_hostname  = var.opslogin_hostname
 }
 
 module "monitoring_staging" {
@@ -204,6 +206,7 @@ module "monitoring_staging" {
   hosts              = var.monitoring_staging_hosts
   oidc_client        = var.oidc_client
   oidc_client_secret = var.oidc_client_secret
+  opslogin_hostname  = var.opslogin_hostname
 }
 
 resource "aws_eip" "production_dns_eip" {

@@ -1,3 +1,10 @@
+resource "aws_iam_user" "s3_broker_user" {
+  name = "s3-broker-${var.stack_description}"
+}
+resource "aws_iam_access_key" "s3_broker_user_key_v1" {
+  user    = aws_iam_user.s3_broker_user.name
+}
+
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-blobstore"
@@ -145,6 +152,9 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     module.bosh_role.role_name,
   ]
+  users = [
+     aws_iam_user.parent_bosh_user.name
+  ]
 }
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {
@@ -185,6 +195,9 @@ resource "aws_iam_policy_attachment" "s3_broker" {
   roles = [
     module.platform_role.role_name,
   ]
+  users = [
+    aws_iam_user.s3_broker_user.name
+  ]
 }
 
 resource "aws_iam_policy_attachment" "aws_broker" {
@@ -203,3 +216,15 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
+
+# Creds for the parent bosh (e.g. tooling-<region>) to access
+# the child bosh (e.g. <region><index>), used for CPI config
+resource "aws_iam_user" "parent_bosh_user" {
+  name = "tooling-${var.stack_description}-bosh"
+  path = "/bosh/"
+}
+
+
+resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
+  user    = aws_iam_user.parent_bosh_user.name
+}
