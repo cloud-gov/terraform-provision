@@ -161,7 +161,10 @@
           "elasticache:DecreaseReplicaCount",
           "elasticache:DescribeCacheSecurityGroups",
           "elasticache:ListTagsForResource",
-          "elasticache:ModifyReplicationGroupShardConfiguration"
+          "elasticache:ModifyReplicationGroupShardConfiguration",
+          "elasticache:DescribeSnapshots",
+          "elasticache:CopySnapshot",
+        
       ],
       "Resource": "*"
   }
