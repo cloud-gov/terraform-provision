@@ -256,6 +256,7 @@ jobs:
       TF_VAR_credhub_prod_rds_password: ((credhub_prod_rds_password))
       TF_VAR_credhub_staging_rds_password: ((credhub_staging_rds_password))
       TF_VAR_opsuaa_rds_password: ((opsuaa_rds_password))
+      TF_VAR_opslogin_hostname: ((tooling_opslogin_hostname))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
       TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
