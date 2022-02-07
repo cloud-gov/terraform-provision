@@ -176,7 +176,9 @@
           "elasticache:ListTagsForResource",
           "elasticache:ModifyReplicationGroupShardConfiguration",
           "elasticache:DescribeSnapshots",
-          "elasticache:CopySnapshot"
+          "elasticache:CopySnapshot",
+          "elasticache:DeleteSnapshot"
+	  
       ],
       "Resource": "*"
   }
