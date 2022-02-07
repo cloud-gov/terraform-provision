@@ -67,6 +67,18 @@
       ]
     },
     {
+        "Action": [
+            "s3:GetBucketLocation",
+            "s3:ListAllMyBuckets",
+            "s3:ListBucket",
+            "s3:GetBucketAcl"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+            "arn:aws-us-gov:s3:::*"
+        ]
+    },
+    {
       "Effect": "Allow",
       "Action": [
         "es:ESHttpGet",
