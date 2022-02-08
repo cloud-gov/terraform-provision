@@ -68,29 +68,31 @@ resource "aws_lb_listener_certificate" "main-staging" {
 module "stack" {
   source = "../../modules/stack/base"
 
-  stack_description                 = var.stack_description
-  vpc_cidr                          = var.vpc_cidr
-  az1                               = data.aws_availability_zones.available.names[0]
-  az2                               = data.aws_availability_zones.available.names[1]
-  aws_default_region                = var.aws_default_region
-  public_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 100)
-  public_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                    = cidrsubnet(var.vpc_cidr, 8, 1)
-  private_cidr_2                    = cidrsubnet(var.vpc_cidr, 8, 2)
-  restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
-  rds_private_cidr_1                = cidrsubnet(var.vpc_cidr, 8, 20)
-  rds_private_cidr_2                = cidrsubnet(var.vpc_cidr, 8, 21)
-  rds_password                      = var.rds_password
-  credhub_rds_password              = var.credhub_rds_password
-  rds_multi_az                      = var.rds_multi_az
-  rds_security_groups               = [module.stack.bosh_security_group]
-  rds_security_groups_count         = "1"
-  rds_db_engine_version             = var.rds_db_engine_version
-  rds_parameter_group_family        = var.rds_parameter_group_family
-  rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
-  rds_apply_immediately             = var.rds_apply_immediately
-  bosh_default_ssh_public_key        = var.bosh_default_ssh_public_key
+  stack_description                      = var.stack_description
+  vpc_cidr                               = var.vpc_cidr
+  az1                                    = data.aws_availability_zones.available.names[0]
+  az2                                    = data.aws_availability_zones.available.names[1]
+  aws_default_region                     = var.aws_default_region
+  public_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                         = cidrsubnet(var.vpc_cidr, 8, 1)
+  private_cidr_2                         = cidrsubnet(var.vpc_cidr, 8, 2)
+  restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
+  rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_password                           = var.rds_password
+  credhub_rds_password                   = var.credhub_rds_password
+  rds_multi_az                           = var.rds_multi_az
+  rds_security_groups                    = [module.stack.bosh_security_group]
+  rds_security_groups_count              = "1"
+  rds_db_engine_version                  = var.rds_db_engine_version
+  rds_parameter_group_family             = var.rds_parameter_group_family
+  rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
+  rds_apply_immediately                  = var.rds_apply_immediately
+  bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
+  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31)]
+  target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
 }
 
 module "concourse_production" {
