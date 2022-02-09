@@ -3,7 +3,36 @@ terraform {
   }
 }
 
+
 provider "aws" {
+  # endpoints from # These endpoints are form https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-govcloud-endpoints.html
+  # with help from https://github.com/Kaydub00/terraform-aws-fips/blob/master/govcloud-west.tf
+  endpoints {
+    # cloudtrail: Non-fips is n/a
+    # cloudwatch: non-fips is n/a
+    # cloudwatchevents: non-fips is n/a
+    # cloudwatchlogs: non-fips is n/a
+    # ec2             : non-fips is n/a
+    efs = "https://elasticfilesystem-fips.us-gov-west-1.amazonaws.com"
+    # elb: non-fips is n/a
+    es = "https://es-fips.us-gov-west-1.amazonaws.com"
+    firehose = "https://firehose-fips.us-gov-west-1.amazonaws.com"
+    # glacier: non-fips is n/a
+    # guardduty: non-fips is n/a
+    # iam: non-fips is n/a
+    # kinesis: non-fips is n/a
+    kms = "https://kms-fips.us-gov-west-1.amazonaws.com"
+    lambda = "https://lambda-fips.us-gov-west-1.amazonaws.com"
+    # organizations: non-fips is n/a
+    # rds: non-fips is n/a
+    # route53:non-fips is n/a
+    s3 = "https://s3-fips.us-gov-west-1.amazonaws.com"
+    # ses: non-fips is n/a
+    # sns: non-fips is n/a
+    # sqs: non-fips is n/a
+    # ssm: non-fips is n/a
+    wafv2 = "wafv2-fips.us-gov-west-1.amazonaws.com"
+  }
 }
 
 data "terraform_remote_state" "target_vpc" {
