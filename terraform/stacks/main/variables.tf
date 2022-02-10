@@ -126,3 +126,8 @@ variable "az1_index" {
 variable "az2_index" {
   default = "1"
 }
+
+variable "include_tcp_routes" {
+  type = bool
+  default = false
+}

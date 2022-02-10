@@ -215,6 +215,8 @@ module "cf" {
   services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
   bucket_prefix         = var.bucket_prefix
   log_bucket_name       = module.log_bucket.elb_bucket_name
+
+  tcp_lb_count          = var.include_tcp_routes ? 1 : 0
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {

@@ -99,3 +99,15 @@ output "logsearch_archive_bucket_name" {
 output "cf_uaa_waf_core_arn" {
   value = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
+
+output "tcp_lb_names" {
+  value = aws_lb.cf_apps_tcp.*.name
+}
+
+output "tcp_lb_dns_names" {
+  value = aws_lb.cf_apps_tcp.*.dns_name
+}
+
+output "tcp_lb_target_groups" {
+  value = aws_lb_target_group.cf_apps_target_tcp.*.name
+}

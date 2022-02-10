@@ -357,6 +357,7 @@ jobs:
       TF_VAR_bosh_default_ssh_public_key: ((development_ssh_key))
       TF_VAR_stack_description: development
       TF_VAR_force_restricted_network: "yes"
+      TF_VAR_include_tcp_routing: ((development_include_tcp_routes))
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
       # IDs from `data` resources.
@@ -477,6 +478,7 @@ jobs:
       TF_VAR_bosh_default_ssh_public_key: ((staging_ssh_key))
       TF_VAR_stack_description: staging
       TF_VAR_force_restricted_network: "no"
+      TF_VAR_include_tcp_routing: ((staging_include_tcp_routes))
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
       # IDs from `data` resources.
@@ -595,6 +597,7 @@ jobs:
       TF_VAR_bosh_default_ssh_public_key: ((production_ssh_key))
       TF_VAR_stack_description: production
       TF_VAR_force_restricted_network: "no"
+      TF_VAR_include_tcp_routing: ((production_include_tcp_routes))
       # Do not copy the pattern below.  You should not need separate variables
       # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
       # IDs from `data` resources.
