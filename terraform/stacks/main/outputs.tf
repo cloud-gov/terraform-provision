@@ -593,3 +593,16 @@ output "parent_bosh_user_secret_access_key_curr" {
 output "default_key_name" {
   value = module.stack.default_key_name
 }
+
+
+output "tcp_lb_names" {
+  value = module.cf.tcp_lb_names
+}
+
+output "tcp_lb_dns_names" {
+  value = module.cf.tcp_lb_dns_names
+}
+
+output "tcp_lb_target_groups" {
+  value = module.cf.tcp_lb_target_groups
+}

@@ -104,3 +104,6 @@ variable "bucket_prefix" {
 variable "log_bucket_name" {
 }
 
+variable "tcp_lb_count" {
+  default = 0
+}
