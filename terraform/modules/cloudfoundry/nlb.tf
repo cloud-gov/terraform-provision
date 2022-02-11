@@ -1,10 +1,11 @@
 resource "aws_lb" "cf_apps_tcp" {
-  count           = var.tcp_lb_count
-  name            = "${var.stack_description}-cf-tcp-${count.index}"
-  subnets         = var.elb_subnets
-  security_groups = var.elb_security_groups
-  ip_address_type = "dualstack"
-  idle_timeout    = 3600
+  count              = var.tcp_lb_count
+  name               = "${var.stack_description}-cf-tcp-${count.index}"
+  load_balancer_type = "network"
+  subnets            = var.elb_subnets
+  security_groups    = var.elb_security_groups
+  ip_address_type    = "dualstack"
+  idle_timeout       = 3600
   access_logs {
     bucket  = var.log_bucket_name
     prefix  = var.stack_description
