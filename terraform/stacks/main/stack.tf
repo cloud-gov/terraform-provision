@@ -202,7 +202,7 @@ module "cf" {
   rds_subnet_group    = module.stack.rds_subnet_group
   rds_security_groups = [module.stack.rds_postgres_security_group]
   rds_instance_type   = var.cf_rds_instance_type
-  stack_prefix        = var.stack_prefix
+  stack_prefix        = "cf-${var.stack_description}"
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately

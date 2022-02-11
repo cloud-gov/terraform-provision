@@ -84,17 +84,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_external_region))
       TF_VAR_stack_description: staging
       TF_VAR_aws_default_region: ((aws_external_region))
-      # Do not copy the pattern below.  You should not need separate variables
-      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
-      # IDs from `data` resources.
-      TF_VAR_cdn_broker_username: ((cdn_broker_username_staging))
-      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_staging))
-      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_staging))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
-      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_staging))
       TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
-      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_staging))
   - &notify-slack
     put: slack
     params:
@@ -147,17 +139,9 @@ jobs:
       AWS_DEFAULT_REGION: ((aws_external_region))
       TF_VAR_stack_description: production
       TF_VAR_aws_default_region: ((aws_external_region))
-      # Do not copy the pattern below.  You should not need separate variables
-      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
-      # IDs from `data` resources.
-      TF_VAR_cdn_broker_username: ((cdn_broker_username_production))
-      TF_VAR_cdn_broker_bucket: ((cdn_broker_bucket_production))
-      TF_VAR_cdn_broker_cloudfront_prefix: ((cdn_broker_cloudfront_prefix_production))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
       TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
-      TF_VAR_external_domain_broker_cloudfront_prefix: ((external_domain_broker_cloudfront_prefix_production))
       TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
-      TF_VAR_external_domain_broker_username: ((external_domain_broker_username_production))
   - *notify-slack
 
 - name: bootstrap-external-production
@@ -375,7 +359,6 @@ jobs:
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
       TF_VAR_wildcard_apps_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-      TF_VAR_stack_prefix: cf-development
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
@@ -383,9 +366,6 @@ jobs:
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
-      TF_VAR_challenge_bucket: development-domains-broker-challenge
-      TF_VAR_iam_cert_prefix: "/domains/development/*"
-      TF_VAR_alb_prefix: "development-domains-*"
       TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
       # Not used in dev
@@ -495,7 +475,6 @@ jobs:
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((staging_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr-stage.cloud.gov
       TF_VAR_wildcard_apps_certificate_name_prefix: star.fr-stage.cloud.gov
-      TF_VAR_stack_prefix: cf-staging
       TF_VAR_bucket_prefix: staging-cg
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
@@ -503,9 +482,6 @@ jobs:
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
-      TF_VAR_challenge_bucket: staging-domains-broker-challenge
-      TF_VAR_iam_cert_prefix: "/domains/staging/*"
-      TF_VAR_alb_prefix: "staging-domains-*"
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
       # Not used in staging
@@ -614,7 +590,6 @@ jobs:
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_wildcard_certificate_name_prefix: star.fr.cloud.gov
       TF_VAR_wildcard_apps_certificate_name_prefix: star.app.cloud.gov
-      TF_VAR_stack_prefix: cf-production
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
@@ -622,9 +597,6 @@ jobs:
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "6"
-      TF_VAR_challenge_bucket: production-domains-broker-challenge
-      TF_VAR_iam_cert_prefix: "/domains/production/*"
-      TF_VAR_alb_prefix: "production-domains-*"
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
