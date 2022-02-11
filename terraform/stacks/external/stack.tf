@@ -33,7 +33,7 @@ module "cdn_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   aws_partition     = data.aws_partition.current.partition
   username          = "cdn-broker-${var.stack_description}"
-  bucket            = "cdn-broker-le-verify-${var.cdn_broker_bucket}"
+  bucket            = "cdn-broker-le-verify-${var.stack_description}"
   cloudfront_prefix = "cg-${var.stack_description}/*"
   hosted_zone       = var.cdn_broker_hosted_zone
 }
