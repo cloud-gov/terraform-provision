@@ -67,8 +67,6 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   type = list(string)
 }
 
-variable "stack_prefix" {
-}
 
 variable "bucket_prefix" {
 }

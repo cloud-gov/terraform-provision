@@ -8,17 +8,6 @@ variable "domains_broker_rds_username" {
 variable "domains_broker_rds_password" {
 }
 
-variable "challenge_bucket" {
-}
-
-variable "iam_cert_prefix" {
-  default = "/domains/*"
-}
-
-variable "alb_prefix" {
-  default = "domains-*"
-}
-
 /* Broker internal load balancer */
 resource "aws_lb" "domains_broker_internal" {
   name    = "${var.stack_description}-domains-internal"
@@ -231,7 +220,7 @@ output "domains_broker_listener_arns" {
    - new domains + cdn broker
  */
 resource "aws_s3_bucket" "domains_bucket" {
-  bucket = var.challenge_bucket
+  bucket = "${var.stack_description}-domains-broker-challenge"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -243,7 +232,7 @@ resource "aws_s3_bucket" "domains_bucket" {
         "AWS": "*"
       },
       "Action": "s3:GetObject",
-      "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.challenge_bucket}/*"
+      "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.stack_description}-domains-broker-challenge/*"
     }
   ]
 }
@@ -300,7 +289,7 @@ resource "aws_iam_policy" "domains_broker" {
         "iam:DeleteServerCertificate"
       ],
       "Resource": [
-        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate${var.iam_cert_prefix}"
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/domains/${var.stack_description}/*"
       ]
     },
     {
@@ -311,7 +300,7 @@ resource "aws_iam_policy" "domains_broker" {
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:${data.aws_partition.current.partition}:s3:::${var.challenge_bucket}/*"
+        "arn:${data.aws_partition.current.partition}:s3:::${var.stack_description}-domains-broker-challenge/*"
       ]
     },
     {

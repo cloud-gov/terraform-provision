@@ -64,7 +64,7 @@ module "s3_broker_policy" {
   account_id    = data.aws_caller_identity.current.account_id
   aws_partition = data.aws_partition.current.partition
   bucket_prefix = var.bucket_prefix
-  iam_path      = "/${var.stack_prefix}/s3/"
+  iam_path      = "/cg-${var.stack_description}/s3/"
 }
 
 module "aws_broker_policy" {
