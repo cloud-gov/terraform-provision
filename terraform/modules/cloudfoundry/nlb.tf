@@ -1,6 +1,6 @@
 resource "aws_lb" "cf_apps_tcp" {
   count = var.tcp_lb_count
-  name            = "${var.stack_description}-cloudfoundry-apps-tcp-${count.index}"
+  name            = "${var.stack_description}-cf-tcp-${count.index}"
   subnets         = var.elb_subnets
   security_groups = var.elb_security_groups
   ip_address_type = "dualstack"
@@ -14,7 +14,7 @@ resource "aws_lb" "cf_apps_tcp" {
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
   count = var.tcp_lb_count
-  name     = "${var.stack_description}-cf-apps-tcp-${count.index}"
+  name     = "${var.stack_description}-cf-tcp-${count.index}"
   port     = 443
   protocol = "TCP"
   vpc_id   = var.vpc_id
