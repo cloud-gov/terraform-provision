@@ -5,11 +5,6 @@ resource "aws_lb" "cf_apps_tcp" {
   subnets            = var.elb_subnets
   ip_address_type    = "dualstack"
   idle_timeout       = 3600
-  access_logs {
-    bucket  = var.log_bucket_name
-    prefix  = var.stack_description
-    enabled = true
-  }
 }
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
