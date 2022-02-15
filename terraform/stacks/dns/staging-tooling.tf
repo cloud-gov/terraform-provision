@@ -1,6 +1,6 @@
 
 resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "prometheus.fr-stage.cloud.gov."
   type    = "A"
 
@@ -12,7 +12,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "prometheus.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -24,7 +24,7 @@ resource "aws_route53_record" "cloud_gov_prometheus_fr-stage_cloud_gov_aaaa" {
 }
 
 resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "alertmanager.fr-stage.cloud.gov."
   type    = "A"
 
@@ -36,7 +36,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "alertmanager.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -48,7 +48,7 @@ resource "aws_route53_record" "cloud_gov_alertmanager_fr-stage_cloud_gov_aaaa" {
 }
 
 resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "grafana.fr-stage.cloud.gov."
   type    = "A"
 
@@ -60,7 +60,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "grafana.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -72,7 +72,7 @@ resource "aws_route53_record" "cloud_gov_grafana_fr-stage_cloud_gov_aaaa" {
 }
 
 resource "aws_route53_record" "cloud_gov_doomsday_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "doomsday.fr-stage.cloud.gov."
   type    = "A"
 
@@ -84,7 +84,7 @@ resource "aws_route53_record" "cloud_gov_doomsday_fr-stage_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_doomsday_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "doomsday.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -96,7 +96,7 @@ resource "aws_route53_record" "cloud_gov_doomsday_fr-stage_cloud_gov_aaaa" {
 }
 
 resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "ci.fr-stage.cloud.gov."
   type    = "A"
 
@@ -108,7 +108,7 @@ resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "ci.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -120,7 +120,7 @@ resource "aws_route53_record" "cloud_gov_ci-stage_fr_cloud_gov_aaaa" {
 }
 
 resource "aws_route53_record" "cloud_gov_credhub-stage_fr_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "credhub.fr-stage.cloud.gov."
   type    = "A"
 
@@ -132,7 +132,7 @@ resource "aws_route53_record" "cloud_gov_credhub-stage_fr_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_credhub-stage_fr_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "credhub.fr-stage.cloud.gov."
   type    = "AAAA"
 
