@@ -1,4 +1,1 @@
-
-terraform {
-  required_version = ">= 0.12"
-}
+../main/versions.tf
