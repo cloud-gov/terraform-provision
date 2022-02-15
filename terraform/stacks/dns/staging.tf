@@ -2,13 +2,13 @@ resource "aws_route53_zone" "staging_zone" {
     name = "fr-stage.cloud.gov"
 }
 
-# resource "aws_route53_record" "staging_ns" {
-#   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-#   name    = "fr-stage.cloud.gov"
-#   type    = "NS"
-#   ttl     = "30"
-#   records = aws_route53_zone.staging_zone.name_servers
-# }
+resource "aws_route53_record" "staging_ns" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "fr-stage.cloud.gov"
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.staging_zone.name_servers
+}
 
 
 module "staging_dns" {
