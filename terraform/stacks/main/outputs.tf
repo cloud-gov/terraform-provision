@@ -606,3 +606,7 @@ output "tcp_lb_dns_names" {
 output "tcp_lb_target_groups" {
   value = module.cf.tcp_lb_target_groups
 }
+
+output "tcp_lb_listener_ports" {
+  value = module.cf.tcp_lb_listener_ports
+}
