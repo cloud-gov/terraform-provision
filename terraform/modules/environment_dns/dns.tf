@@ -15,7 +15,7 @@ resource "aws_route53_record" "star_admin_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -28,7 +28,7 @@ resource "aws_route53_record" "star_admin_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -40,7 +40,7 @@ resource "aws_route53_record" "star_app_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -52,7 +52,7 @@ resource "aws_route53_record" "star_app_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -64,7 +64,7 @@ resource "aws_route53_record" "admin_ui_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.admin_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -76,7 +76,7 @@ resource "aws_route53_record" "admin_ui_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.admin_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -88,7 +88,7 @@ resource "aws_route53_record" "uaa_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -100,7 +100,7 @@ resource "aws_route53_record" "uaa_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -112,7 +112,7 @@ resource "aws_route53_record" "login_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -123,7 +123,7 @@ resource "aws_route53_record" "login_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -135,7 +135,7 @@ resource "aws_route53_record" "logs_platform_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -147,7 +147,7 @@ resource "aws_route53_record" "logs_platform_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -159,7 +159,7 @@ resource "aws_route53_record" "idp_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -171,7 +171,7 @@ resource "aws_route53_record" "idp_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -184,7 +184,7 @@ resource "aws_route53_record" "ssh_a" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.diego_elb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -196,7 +196,7 @@ resource "aws_route53_record" "ssh_aaaa" {
 
   alias {
     name                   = "dualstack.${data.terraform_remote_state.stack.outputs.diego_elb_dns_name}"
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
 }
@@ -209,7 +209,7 @@ resource "aws_route53_record" "tcp_a" {
   type = "A"
   alias {
     name                   = each.key
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.nlb_zone_id
     evaluate_target_health = false
   }
 }
@@ -221,7 +221,7 @@ resource "aws_route53_record" "tcp_aaaa" {
   type = "AAAA"
   alias {
     name                   = each.key
-    zone_id                = var.cloudfront_zone_id
+    zone_id                = var.nlb_zone_id
     evaluate_target_health = false
   }
 }
