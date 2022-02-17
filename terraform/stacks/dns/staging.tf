@@ -15,6 +15,7 @@ module "staging_dns" {
   source              = "../../modules/environment_dns"
   stack_name          = "staging"
   zone_id             = aws_route53_zone.staging_zone.zone_id
+  domain              = "fr-stage.cloud.gov"
   app_subdomain       = "app.fr-stage.cloud.gov"
   admin_subdomain     = "fr-stage.cloud.gov"
   remote_state_bucket = var.remote_state_bucket
