@@ -200,3 +200,28 @@ resource "aws_route53_record" "ssh_aaaa" {
     evaluate_target_health = false
   }
 }
+
+
+resource "aws_route53_record" "tcp_a" {
+  for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
+  zone_id = var.zone_id
+  name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
+  type = "A"
+  alias {
+    name                   = each.key
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "tcp_aaaa" {
+  for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
+  zone_id = var.zone_id
+  name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
+  type = "AAAA"
+  alias {
+    name                   = each.key
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}

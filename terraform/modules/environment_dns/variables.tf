@@ -9,6 +9,10 @@ variable "admin_subdomain" {
 
 }
 
+variable "domain" {
+
+}
+
 variable "stack_name" {
 
 }
