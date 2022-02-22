@@ -72,6 +72,26 @@ data "aws_iam_server_certificate" "wildcard_apps" {
   latest      = true
 }
 
+# data "aws_iam_server_certificate" "pages" {
+#   name_prefix = var.pages_certificate_name_prefix
+#   latest      = true
+# }
+
+# data "aws_iam_server_certificate" "wildcard_pages" {
+#   name_prefix = var.wildcard_pages_certificate_name_prefix
+#   latest      = true
+# }
+
+# data "aws_iam_server_certificate" "wildcard_sites_pages" {
+#   name_prefix = var.wildcard_sites_pages_certificate_name_prefix
+#   latest      = true
+# }
+
+data "aws_iam_server_certificate" "pages_staging" {
+  name_prefix = var.pages_staging_certificate_name_prefix
+  latest      = true
+}
+
 data "aws_iam_server_certificate" "wildcard_pages_staging" {
   name_prefix = var.wildcard_pages_staging_certificate_name_prefix
   latest      = true
@@ -79,6 +99,21 @@ data "aws_iam_server_certificate" "wildcard_pages_staging" {
 
 data "aws_iam_server_certificate" "wildcard_sites_pages_staging" {
   name_prefix = var.wildcard_sites_pages_staging_certificate_name_prefix
+  latest      = true
+}
+
+data "aws_iam_server_certificate" "pages_dev" {
+  name_prefix = var.pages_dev_certificate_name_prefix
+  latest      = true
+}
+
+data "aws_iam_server_certificate" "wildcard_pages_dev" {
+  name_prefix = var.wildcard_pages_dev_certificate_name_prefix
+  latest      = true
+}
+
+data "aws_iam_server_certificate" "wildcard_sites_pages_dev" {
+  name_prefix = var.wildcard_sites_pages_dev_certificate_name_prefix
   latest      = true
 }
 
@@ -190,8 +225,15 @@ module "cf" {
   aws_partition               = data.aws_partition.current.partition
   elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
   elb_apps_cert_id            = data.aws_iam_server_certificate.wildcard_apps.arn
+  # main_pages_cert_id          = data.aws_iam_server_certificate.pages.arn
+  # pages_cert_id               = data.aws_iam_server_certificate.wildcard_pages.arn
+  # sites_pages_cert_id         = data.aws_iam_server_certificate.wildcard_sites_pages.arn
+  main_pages_staging_cert_id  = data.aws_iam_server_certificate.pages_staging.arn
   pages_staging_cert_id       = data.aws_iam_server_certificate.wildcard_pages_staging.arn
   sites_pages_staging_cert_id = data.aws_iam_server_certificate.wildcard_sites_pages_staging.arn
+  main_pages_dev_cert_id      = data.aws_iam_server_certificate.pages_dev.arn
+  pages_dev_cert_id           = data.aws_iam_server_certificate.wildcard_pages_dev.arn
+  sites_pages_dev_cert_id     = data.aws_iam_server_certificate.wildcard_sites_pages_dev.arn
   elb_subnets                 = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
 
   elb_security_groups = [
