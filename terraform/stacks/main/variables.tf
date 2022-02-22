@@ -39,11 +39,39 @@ variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
+# variable "pages_certificate_name_prefix" {
+#   default = ""
+# }
+
+# variable "wildcard_pages_certificate_name_prefix" {
+#   default = ""
+# }
+
+# variable "wildcard_sites_pages_certificate_name_prefix" {
+#   default = ""
+# }
+
+variable "pages_staging_certificate_name_prefix" {
+  default = ""
+}
+
 variable "wildcard_pages_staging_certificate_name_prefix" {
   default = ""
 }
 
 variable "wildcard_sites_pages_staging_certificate_name_prefix" {
+  default = ""
+}
+
+variable "pages_dev_certificate_name_prefix" {
+  default = ""
+}
+
+variable "wildcard_pages_dev_certificate_name_prefix" {
+  default = ""
+}
+
+variable "wildcard_sites_pages_dev_certificate_name_prefix" {
   default = ""
 }
 

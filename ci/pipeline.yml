@@ -24,8 +24,15 @@ groups:
   - acme-certificate-staging-pages-sites
   - acme-certificate-production
   - acme-certificate-production-apps
+  # - acme-certificate-pages
+  # - acme-certificate-wildcard-pages
+  # - acme-certificate-wildcard-pages-sites
   - acme-certificate-staging-pages
-  - acme-certificate-staging-pages-sites
+  - acme-certificate-staging-wildcard-pages
+  - acme-certificate-staging-wildcard-pages-sites
+  - acme-certificate-dev-pages
+  - acme-certificate-dev-wildcard-pages
+  - acme-certificate-dev-wildcard-pages-sites
 
 jobs:
 - name: pull-status-check
@@ -369,8 +376,15 @@ jobs:
       TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
       # Not used in dev
+      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
+      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
+      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
+      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
       TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
+      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
+      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
+      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
   - *notify-slack
 
 - name: bootstrap-development
@@ -485,8 +499,15 @@ jobs:
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
       # Not used in staging
+      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
+      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
+      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
+      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
       TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
+      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
+      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
+      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
   - *notify-slack
 
 - name: bootstrap-staging
@@ -599,8 +620,15 @@ jobs:
       TF_VAR_domains_broker_alb_count: "6"
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
+      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
+      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
+      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
+      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
       TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
       TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
+      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
+      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
+      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
   - *notify-slack
 
 - name: bootstrap-production
@@ -817,7 +845,159 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
+# - name: acme-certificate-pages
+#   plan:
+#   - in_parallel:
+#     - get: acme-timer
+#       trigger: true
+#     - get: cg-provision-repo
+#     - get: terraform-yaml-tooling
+#       resource: terraform-yaml-tooling
+#     - get: terraform-yaml-external
+#       resource: terraform-yaml-external-production
+#   - task: check-certificates
+#     file: cg-provision-repo/ci/check-certificates.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#   - task: provision-certificate
+#     file: cg-provision-repo/ci/provision-certificate.yml
+#     params:
+#       CERT_PREFIX: pages.cloud.gov
+#       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+#       DOMAIN: "pages.cloud.gov"
+#       EMAIL: cloud-gov-operations@gsa.gov
+#   - task: upload-certificate
+#     file: cg-provision-repo/ci/upload-certificate.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#       CERT_PREFIX: pages.cloud.gov
+#   on_failure:
+#     put: slack
+#     params:
+#       text: |
+#         :x: Failed to check ACME certificates for pages.cloud.gov
+#         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+#       channel: ((slack-channel))
+#       username: ((slack-username))
+#       icon_url: ((slack-icon-url))
+
+# - name: acme-certificate-pages
+#   plan:
+#   - in_parallel:
+#     - get: acme-timer
+#       trigger: true
+#     - get: cg-provision-repo
+#     - get: terraform-yaml-tooling
+#       resource: terraform-yaml-tooling
+#     - get: terraform-yaml-external
+#       resource: terraform-yaml-external-production
+#   - task: check-certificates
+#     file: cg-provision-repo/ci/check-certificates.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#   - task: provision-certificate
+#     file: cg-provision-repo/ci/provision-certificate.yml
+#     params:
+#       CERT_PREFIX: star.pages.cloud.gov
+#       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+#       DOMAIN: "*.pages.cloud.gov"
+#       EMAIL: cloud-gov-operations@gsa.gov
+#   - task: upload-certificate
+#     file: cg-provision-repo/ci/upload-certificate.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#       CERT_PREFIX: star.pages.cloud.gov
+#   on_failure:
+#     put: slack
+#     params:
+#       text: |
+#         :x: Failed to check ACME certificates for *.pages.cloud.gov
+#         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+#       channel: ((slack-channel))
+#       username: ((slack-username))
+#       icon_url: ((slack-icon-url))
+
+# - name: acme-certificate-pages-sites
+#   plan:
+#   - in_parallel:
+#     - get: acme-timer
+#       trigger: true
+#     - get: cg-provision-repo
+#     - get: terraform-yaml-tooling
+#       resource: terraform-yaml-tooling
+#     - get: terraform-yaml-external
+#       resource: terraform-yaml-external-production
+#   - task: check-certificates
+#     file: cg-provision-repo/ci/check-certificates.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#   - task: provision-certificate
+#     file: cg-provision-repo/ci/provision-certificate.yml
+#     params:
+#       CERT_PREFIX: star.sites.pages.cloud.gov
+#       ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+#       DOMAIN: "*.sites.pages.cloud.gov"
+#       EMAIL: cloud-gov-operations@gsa.gov
+#   - task: upload-certificate
+#     file: cg-provision-repo/ci/upload-certificate.yml
+#     params:
+#       AWS_DEFAULT_REGION: ((aws_default_region))
+#       CERT_PATH: /lets-encrypt/production/
+#       CERT_PREFIX: star.sites.pages.cloud.gov
+#   on_failure:
+#     put: slack
+#     params:
+#       text: |
+#         :x: Failed to check ACME certificates for *.sites.pages.cloud.gov
+#         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+#       channel: ((slack-channel))
+#       username: ((slack-username))
+#       icon_url: ((slack-icon-url))
+
 - name: acme-certificate-staging-pages
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: pages-staging.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "pages-staging.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: pages-staging.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for pages-staging.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-staging-wildcard-pages
   plan:
   - in_parallel:
     - get: acme-timer
@@ -855,7 +1035,7 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
-- name: acme-certificate-staging-pages-sites
+- name: acme-certificate-staging-wildcard-pages-sites
   plan:
   - in_parallel:
     - get: acme-timer
@@ -888,6 +1068,120 @@ jobs:
     params:
       text: |
         :x: Failed to check ACME certificates for *.sites.pages-staging.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-dev-pages
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: pages-dev.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "pages-dev.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: pages-dev.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for pages-dev.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-dev-wildcard-pages
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.pages-dev.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.pages-dev.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: star.pages-dev.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.pages-dev.cloud.gov
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: acme-certificate-dev-wildcard-pages-sites
+  plan:
+  - in_parallel:
+    - get: acme-timer
+      trigger: true
+    - get: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external-production
+  - task: check-certificates
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+  - task: provision-certificate
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.sites.pages-dev.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.sites.pages-dev.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws_default_region))
+      CERT_PATH: /lets-encrypt/production/
+      CERT_PREFIX: star.sites.pages-dev.cloud.gov
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: Failed to check ACME certificates for *.sites.pages-dev.cloud.gov
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: ((slack-channel))
       username: ((slack-username))
