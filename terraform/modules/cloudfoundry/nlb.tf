@@ -1,4 +1,5 @@
 resource "aws_security_group" "nlb_traffic" {
+  count = var.tcp_lb_count > 0 ? 1 : 0
   description = "Allow traffic in to NLB"
   vpc_id      = var.vpc_id
 
