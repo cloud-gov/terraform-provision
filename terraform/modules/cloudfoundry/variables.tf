@@ -115,3 +115,10 @@ variable "listeners_per_tcp_lb" {
 variable "tcp_first_port" {
   default = 10000
 }
+
+variable "tcp_allow_cidrs_ipv4" {
+  default = ["0.0.0.0/0"]
+}
+variable "tcp_allow_cidrs_ipv6" {
+  default = ["::/0"]
+}
