@@ -22,7 +22,7 @@ resource "aws_lb" "cf_apps_tcp" {
   load_balancer_type = "network"
   subnets            = var.elb_subnets
   ip_address_type    = "dualstack"
-  security_groups    = [aws_security_group.nlb_traffic.id]
+  security_groups    = [aws_security_group.nlb_traffic[0].id]
 }
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
