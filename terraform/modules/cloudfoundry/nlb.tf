@@ -25,9 +25,9 @@ resource "aws_lb" "cf_apps_tcp" {
 }
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
-  count    = var.tcp_lb_count
+  count    = var.tcp_lb_count * var.listeners_per_tcp_lb
   name     = "${var.stack_description}-cf-tcp-${count.index}"
-  port     = 443
+  port     = var.tcp_first_port + count.index
   protocol = "TCP"
   vpc_id   = var.vpc_id
 
