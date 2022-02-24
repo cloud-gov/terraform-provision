@@ -612,5 +612,5 @@ output "tcp_lb_listener_ports" {
 }
 
 output "tcp_lb_security_groups" {
-  value = [module.cf.tcp_lb_security_groups.*.id, module.stack.bosh_security_group]
+  value = concat(module.cf.tcp_lb_security_groups.*.id, [module.stack.bosh_security_group])
 }
