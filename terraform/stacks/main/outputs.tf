@@ -612,5 +612,5 @@ output "tcp_lb_listener_ports" {
 }
 
 output "tcp_lb_security_groups" {
-  value = [module.cf.tcp_lb_security_groups.*, module.stack.bosh_security_group]
+  value = [module.cf.tcp_lb_security_groups.*.name, module.stack.bosh_security_group]
 }
