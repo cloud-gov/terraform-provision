@@ -610,3 +610,7 @@ output "tcp_lb_target_groups" {
 output "tcp_lb_listener_ports" {
   value = module.cf.tcp_lb_listener_ports
 }
+
+output "tcp_lb_security_groups" {
+  value = [module.cf.tcp_lb_security_groups.*, module.stack.bosh_security_group]
+}
