@@ -115,3 +115,7 @@ output "tcp_lb_target_groups" {
 output "tcp_lb_listener_ports" {
   value = aws_lb_listener.cf_apps_tcp.*.port
 }
+
+output "tcp_lb_security_groups" {
+  value = aws_security_group.nlb_traffic.*
+}
