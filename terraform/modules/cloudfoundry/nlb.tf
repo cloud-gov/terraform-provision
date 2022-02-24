@@ -41,7 +41,7 @@ resource "aws_lb_listener" "cf_apps_tcp" {
 
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target_tcp[floor(count.index/var.listeners_per_tcp_lb)].arn
+    target_group_arn = aws_lb_target_group.cf_apps_target_tcp[count].arn
     type             = "forward"
   }
 }
