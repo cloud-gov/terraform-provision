@@ -72,48 +72,21 @@ data "aws_iam_server_certificate" "wildcard_apps" {
   latest      = true
 }
 
-# data "aws_iam_server_certificate" "pages" {
-#   name_prefix = var.pages_certificate_name_prefix
-#   latest      = true
-# }
-
-# data "aws_iam_server_certificate" "wildcard_pages" {
-#   name_prefix = var.wildcard_pages_certificate_name_prefix
-#   latest      = true
-# }
-
-# data "aws_iam_server_certificate" "wildcard_sites_pages" {
-#   name_prefix = var.wildcard_sites_pages_certificate_name_prefix
-#   latest      = true
-# }
-
-data "aws_iam_server_certificate" "pages_staging" {
-  name_prefix = var.pages_staging_certificate_name_prefix
+data "aws_iam_server_certificate" "pages" {
+  for_each    = var.pages_cert_patterns
+  name_prefix = each.key
   latest      = true
 }
 
-data "aws_iam_server_certificate" "wildcard_pages_staging" {
-  name_prefix = var.wildcard_pages_staging_certificate_name_prefix
+data "aws_iam_server_certificate" "pages_wildcard" {
+  for_each    = var.pages_cert_patterns
+  name_prefix = "star.${each.key}"
   latest      = true
 }
 
-data "aws_iam_server_certificate" "wildcard_sites_pages_staging" {
-  name_prefix = var.wildcard_sites_pages_staging_certificate_name_prefix
-  latest      = true
-}
-
-data "aws_iam_server_certificate" "pages_dev" {
-  name_prefix = var.pages_dev_certificate_name_prefix
-  latest      = true
-}
-
-data "aws_iam_server_certificate" "wildcard_pages_dev" {
-  name_prefix = var.wildcard_pages_dev_certificate_name_prefix
-  latest      = true
-}
-
-data "aws_iam_server_certificate" "wildcard_sites_pages_dev" {
-  name_prefix = var.wildcard_sites_pages_dev_certificate_name_prefix
+data "aws_iam_server_certificate" "pages_wildcard_sites" {
+  for_each    = var.pages_cert_patterns
+  name_prefix = "star.sites.${each.key}"
   latest      = true
 }
 
@@ -123,6 +96,14 @@ data "aws_caller_identity" "tooling" {
 
 data "aws_arn" "parent_role_arn" {
   arn = var.parent_assume_arn
+}
+
+locals {
+  pages_cert_ids          = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
+  pages_wildcard_cert_ids = concat(
+    [for k, cert in data.aws_iam_server_certificate.pages_wildcard : cert.arn],
+    [for k, cert in data.aws_iam_server_certificate.pages_wildcard_sites : cert.arn]
+  )
 }
 
 resource "aws_lb" "main" {
@@ -225,15 +206,8 @@ module "cf" {
   aws_partition               = data.aws_partition.current.partition
   elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
   elb_apps_cert_id            = data.aws_iam_server_certificate.wildcard_apps.arn
-  # main_pages_cert_id          = data.aws_iam_server_certificate.pages.arn
-  # pages_cert_id               = data.aws_iam_server_certificate.wildcard_pages.arn
-  # sites_pages_cert_id         = data.aws_iam_server_certificate.wildcard_sites_pages.arn
-  main_pages_staging_cert_id  = data.aws_iam_server_certificate.pages_staging.arn
-  pages_staging_cert_id       = data.aws_iam_server_certificate.wildcard_pages_staging.arn
-  sites_pages_staging_cert_id = data.aws_iam_server_certificate.wildcard_sites_pages_staging.arn
-  main_pages_dev_cert_id      = data.aws_iam_server_certificate.pages_dev.arn
-  pages_dev_cert_id           = data.aws_iam_server_certificate.wildcard_pages_dev.arn
-  sites_pages_dev_cert_id     = data.aws_iam_server_certificate.wildcard_sites_pages_dev.arn
+  pages_cert_ids              = local.pages_cert_ids
+  pages_wildcard_cert_ids     = local.pages_wildcard_cert_ids
   elb_subnets                 = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
 
   elb_security_groups = [

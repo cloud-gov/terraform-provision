@@ -4,40 +4,14 @@ variable "elb_main_cert_id" {
 variable "elb_apps_cert_id" {
 }
 
-# variable "main_pages_cert_id" {
-
-# }
-
-# variable "pages_cert_id" {
-
-# }
-
-# variable "sites_pages_cert_id" {
-  
-# }
-
-variable "main_pages_staging_cert_id" {
-
+variable "pages_cert_ids" {
+  default = []
+  type = set(string)
 }
 
-variable "pages_staging_cert_id" {
-
-}
-
-variable "sites_pages_staging_cert_id" {
-  
-}
-
-variable "main_pages_dev_cert_id" {
-
-}
-
-variable "pages_dev_cert_id" {
-
-}
-
-variable "sites_pages_dev_cert_id" {
-  
+variable "pages_wildcard_cert_ids" {
+  default = []
+  type = set(string)
 }
 
 variable "elb_subnets" {

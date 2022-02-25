@@ -375,16 +375,7 @@ jobs:
       TF_VAR_domains_broker_alb_count: "2"
       TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
-      # Not used in dev
-      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
-      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
-      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
-      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
-      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
-      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
-      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
+      TF_VAR_pages_cert_patterns: '[]'
   - *notify-slack
 
 - name: bootstrap-development
@@ -498,16 +489,7 @@ jobs:
       TF_VAR_domains_broker_alb_count: "2"
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
-      # Not used in staging
-      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
-      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
-      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
-      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
-      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
-      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
-      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
+      TF_VAR_pages_cert_patterns: '[]'
   - *notify-slack
 
 - name: bootstrap-staging
@@ -620,15 +602,7 @@ jobs:
       TF_VAR_domains_broker_alb_count: "6"
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
-      # TF_VAR_pages_certificate_name_prefix: pages.cloud.gov
-      # TF_VAR_wildcard_pages_certificate_name_prefix: star.pages.cloud.gov
-      # TF_VAR_wildcard_sites_pages_certificate_name_prefix: star.sites.pages.cloud.gov
-      TF_VAR_pages_staging_certificate_name_prefix: pages-staging.cloud.gov
-      TF_VAR_wildcard_pages_staging_certificate_name_prefix: star.pages-staging.cloud.gov
-      TF_VAR_wildcard_sites_pages_staging_certificate_name_prefix: star.sites.pages-staging.cloud.gov
-      TF_VAR_pages_dev_certificate_name_prefix: pages-dev.cloud.gov
-      TF_VAR_wildcard_pages_dev_certificate_name_prefix: star.pages-dev.cloud.gov
-      TF_VAR_wildcard_sites_pages_dev_certificate_name_prefix: star.sites.pages-dev.cloud.gov
+      TF_VAR_pages_cert_patterns: '["pages-staging.cloud.gov","pages-dev.cloud.gov"]'
   - *notify-slack
 
 - name: bootstrap-production

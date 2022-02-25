@@ -51,51 +51,16 @@ resource "aws_lb_listener" "cf_apps_http" {
   }
 }
 
-
-
-# resource "aws_lb_listener_certificate" "main_pages" {
-#   listener_arn    = aws_lb_listener.cf_apps.arn
-#   certificate_arn = var.main_pages_cert_id
-# }
-
-# resource "aws_lb_listener_certificate" "pages" {
-#   listener_arn    = aws_lb_listener.cf_apps.arn
-#   certificate_arn = var.pages_cert_id
-# }
-
-# resource "aws_lb_listener_certificate" "sites_pages" {
-#   listener_arn    = aws_lb_listener.cf_apps.arn
-#   certificate_arn = var.sites_pages_cert_id
-# }
-
-resource "aws_lb_listener_certificate" "main_pages_staging" {
+resource "aws_lb_listener_certificate" "pages" {
+  for_each        = var.pages_cert_ids
   listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.main_pages_staging_cert_id
+  certificate_arn = each.key
 }
 
-resource "aws_lb_listener_certificate" "pages_staging" {
+resource "aws_lb_listener_certificate" "pages_wildcard" {
+  for_each        = var.pages_wildcard_cert_ids
   listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.pages_staging_cert_id
-}
-
-resource "aws_lb_listener_certificate" "sites_pages_staging" {
-  listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.sites_pages_staging_cert_id
-}
-
-resource "aws_lb_listener_certificate" "main_pages_dev" {
-  listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.main_pages_dev_cert_id
-}
-
-resource "aws_lb_listener_certificate" "pages_dev" {
-  listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.pages_dev_cert_id
-}
-
-resource "aws_lb_listener_certificate" "sites_pages_dev" {
-  listener_arn    = aws_lb_listener.cf_apps.arn
-  certificate_arn = var.sites_pages_dev_cert_id
+  certificate_arn = each.key
 }
 
 resource "aws_wafv2_web_acl_association" "cf_apps_waf_core" {
