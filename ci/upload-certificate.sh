@@ -13,7 +13,7 @@ if [[ -n "${ASSUME_ROLE_ARN}" ]]; then
 fi
 
 # Upload new certificate if present
-if [ -s acme/cert.pem ]; then
+if [[ -s acme/cert.pem ]]; then
   aws iam upload-server-certificate \
     --path "${CERT_PATH}" \
     --server-certificate-name "${CERT_PREFIX}-$(date +%Y-%m-%d-%H-%M)" \

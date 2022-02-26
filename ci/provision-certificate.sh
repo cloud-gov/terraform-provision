@@ -18,7 +18,7 @@ expiration=$(
   ./jq -r --arg prefix "${CERT_PREFIX}-" \
     '.ServerCertificateMetadataList | map(select(.ServerCertificateName | startswith($prefix))) | sort_by(.Expiration) | .[-1].Expiration' \
     < certificates/metadata)
-if [ $(date --date "+30 days" +%s) -lt $(date --date "${expiration}" +%s) ]; then
+if [[ $(date --date "+30 days" +%s) -lt $(date --date "${expiration}" +%s) ]]; then
   exit 0
 fi
 
