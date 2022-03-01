@@ -124,6 +124,7 @@ jobs:
       STATE_FILE: terraform.tfstate
   - put: terraform-yaml-external-development
     params:
+      file: terraform-yaml/state.yml
 
 - name: plan-bootstrap-external-staging
   plan:
