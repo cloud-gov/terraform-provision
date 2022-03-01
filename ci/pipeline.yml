@@ -3,12 +3,14 @@ groups:
   jobs:
   - apply-dns
   - bootstrap-development
+  - bootstrap-external-development
   - bootstrap-external-production
   - bootstrap-external-staging
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
   - plan-bootstrap-development
+  - plan-bootstrap-external-development
   - plan-bootstrap-external-production
   - plan-bootstrap-external-staging
   - plan-bootstrap-production
@@ -729,7 +731,7 @@ jobs:
     - get: terraform-yaml-tooling
       resource: terraform-yaml-tooling
     - get: terraform-yaml-external
-      resource: terraform-yaml-external-staging
+      resource: terraform-yaml-external-development
   - task: check-certificates
     file: cg-provision-repo/ci/check-certificates.yml
     params:
@@ -1268,6 +1270,15 @@ resources:
     bucket: ((aws_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_production))
     region_name: ((aws_default_region))
+
+- name: terraform-yaml-external-development
+  type: s3
+  source:
+    bucket: ((aws_external_s3_tfstate_bucket))
+    versioned_file: ((tf_state_file_external_development))
+    access_key_id: ((aws_external_access_key_id))
+    secret_access_key: ((aws_external_secret_access_key))
+    region_name: ((aws_external_region))
 
 - name: terraform-yaml-external-staging
   type: s3
