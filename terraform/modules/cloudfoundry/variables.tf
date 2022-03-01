@@ -124,3 +124,7 @@ variable "tcp_allow_cidrs_ipv4" {
 variable "tcp_allow_cidrs_ipv6" {
   default = ["::/0"]
 }
+
+variable "waf_regular_expressions" {
+  type = list(string)
+}

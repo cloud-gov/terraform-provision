@@ -235,6 +235,7 @@ module "cf" {
   tcp_lb_count          = var.include_tcp_routes ? 1 : 0
   tcp_allow_cidrs_ipv4  = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
   tcp_allow_cidrs_ipv6  = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
+  waf_regular_expressions   = var.waf_regular_expressions
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {

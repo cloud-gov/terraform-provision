@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: '3.10'
+
+inputs:
+  - name: cg-provision-repo
+  - name: waf-rule-tests-development
+
+run:
+  path: cg-provision-repo/ci/test-waf-rules.sh

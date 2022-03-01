@@ -3,7 +3,10 @@ resource "aws_wafv2_regex_pattern_set" "jndi_regex" {
   description = "Regex Pattern Set for JNDI"
   scope       = "REGIONAL"
 
-  regular_expression {
-    regex_string = "(\\$|\\%24)(\\{|\\%7[bB])jndi(:|\\%3[aA])"
+  dynamic "regular_expression" {
+    for_each = var.waf_regular_expressions
+    content {
+      regex_string = regular_expression.value
+    }
   }
 }
