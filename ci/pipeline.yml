@@ -69,6 +69,60 @@ jobs:
         status: failure
         context: validate-terraform
 
+- name: plan-bootstrap-external-development
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-external-development
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &external-development-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: external-development
+      TEMPLATE_SUBDIR: terraform/stacks/external
+      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+      AWS_DEFAULT_REGION: ((aws_external_region))
+      TF_VAR_stack_description: development
+      TF_VAR_aws_default_region: ((aws_external_region))
+      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
+      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
+      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
+  - &notify-slack
+    put: slack
+    params:
+      text_file: terraform-state/message.txt
+      text:  |
+        :terraform: $BUILD_JOB_NAME needs review
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
+- name: bootstrap-external-development
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-external-development]
+  - task: create-update-external-development
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *external-development-params
+      TERRAFORM_ACTION: apply
+  - task: terraform-state-to-yaml
+    file: pipeline-tasks/terraform12-state-to-yaml.yml
+    params:
+      STATE_FILE: terraform.tfstate
+  - put: terraform-yaml-external-development
+    params:
+
 - name: plan-bootstrap-external-staging
   plan:
   - in_parallel:
