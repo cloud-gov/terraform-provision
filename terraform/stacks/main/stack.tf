@@ -3,26 +3,6 @@ terraform {
   }
 }
 
-provider "aws" {
-  # this is for CI 
-  # run deployments, provide jumpboxes, check on things, etc
-  alias = "tooling"
-}
-provider "aws" {
-  # this is for the tooling bosh 
-  # deploy and monitor vms, scrape metrics, compliance agents, and smtp
-  alias = "parentbosh"
-  region = var.aws_default_region
-  assume_role {
-    role_arn = var.parent_assume_arn
-  }
-}
-provider "aws" {
-  region = var.aws_default_region
-  assume_role {
-    role_arn = var.assume_arn
-  }
-}
 
 data "terraform_remote_state" "target_vpc" {
   # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
@@ -336,3 +316,20 @@ module "external_domain_broker_govcloud" {
   stack_description = var.stack_description
 }
 
+module "dns" {
+  providers = {
+    aws = aws.commercial
+  }
+  source              = "../../modules/environment_dns"
+  stack_name          = var.stack_description
+  domain              = var.domain
+  app_subdomain       = var.app_subdomain
+  admin_subdomain     = var.admin_subdomain
+  cf_apps_lb_dns_name = module.cf.apps_lb_dns_name
+  cf_uaa_lb_dns_name  = module.cf.uaa_lb_dns_name
+  diego_elb_dns_name  = module.diego.diego_elb_dns_name
+  admin_lb_dns_name   = module.admin.admin_lb_dns_name
+  cf_lb_dns_name      = module.cf.lb_dns_name
+  main_lb_dns_name    = aws_lb.main.dns_name
+  tcp_lb_dns_names    = module.cf.tcp_lb_dns_names
+}

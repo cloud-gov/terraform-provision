@@ -126,3 +126,31 @@ variable "include_tcp_routes" {
   type = bool
   default = false
 }
+
+variable "aws_commercial_default_region" {
+
+}
+
+variable "commercial_assume_arn" {
+
+}
+
+variable "aws_commercial_access_key" {
+
+}
+
+variable "aws_commercial_secret_key" {
+
+}
+
+variable "admin_subdomain" {
+
+}
+
+variable "app_subdomain" {
+
+}
+
+variable "domain" {
+
+}

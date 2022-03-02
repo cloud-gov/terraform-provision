@@ -21,9 +21,31 @@ variable "alb_zone_id" {
 variable "nlb_zone_id" {
   default = "ZMG1MZ2THAWF1" # this is for us-gov-west-1. See others here: https://docs.aws.amazon.com/general/latest/gr/elb.html
 }
-variable "remote_state_bucket" {
+
+variable "admin_lb_dns_name" {
 
 }
-variable "remote_state_region" {
 
+variable "cf_apps_lb_dns_name" {
+
+}
+
+variable "cf_lb_dns_name" {
+
+}
+
+variable "main_lb_dns_name" {
+
+}
+
+variable "diego_elb_dns_name" {
+
+}
+
+variable "cf_uaa_lb_dns_name" {
+
+}
+
+variable "tcp_lb_dns_names" {
+  
 }
