@@ -4,6 +4,13 @@ terraform {
 }
 
 provider "aws" {
+  alias = "apex"
+}
+provider "aws" {
+  region = var.commercial_aws_default_region
+  assume_role {
+    role_arn = var.commercial_assume_arn
+  }
 }
 
 data "aws_partition" "current" {
@@ -51,6 +58,17 @@ module "health_check_user" {
 module "lets_encrypt_user" {
   source        = "../../modules/iam_user/lets_encrypt"
   aws_partition = data.aws_partition.current.partition
-  hosted_zone   = var.lets_encrypt_hosted_zone
+  hosted_zone   = var.domain
   username      = "lets-encrypt-${var.stack_description}"
+}
+
+module "dns_zone" {
+  source = "../../modules/dns_zone"
+  count  = var.domain == "cloud.gov" ? 0 : 1
+  providers = {
+    aws      = aws
+    aws.apex = aws.apex
+  }
+  domain = var.domain
+  parent_zone_id = var.cloud_gov_zone_zone_id
 }

@@ -8,8 +8,12 @@ data "terraform_remote_state" "stack" {
   }
 }
 
+data "aws_route53_zone" "zone" {
+  name = var.domain
+}
+
 resource "aws_route53_record" "star_admin_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "*.${var.admin_subdomain}."
   type    = "A"
 
@@ -22,7 +26,7 @@ resource "aws_route53_record" "star_admin_a" {
 
 
 resource "aws_route53_record" "star_admin_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "*.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -34,7 +38,7 @@ resource "aws_route53_record" "star_admin_aaaa" {
 }
 
 resource "aws_route53_record" "star_app_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "*.${var.app_subdomain}."
   type    = "A"
 
@@ -46,7 +50,7 @@ resource "aws_route53_record" "star_app_a" {
 }
 
 resource "aws_route53_record" "star_app_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "*.${var.app_subdomain}."
   type    = "AAAA"
 
@@ -58,7 +62,7 @@ resource "aws_route53_record" "star_app_aaaa" {
 }
 
 resource "aws_route53_record" "admin_ui_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "admin.${var.admin_subdomain}."
   type    = "A"
 
@@ -70,7 +74,7 @@ resource "aws_route53_record" "admin_ui_a" {
 }
 
 resource "aws_route53_record" "admin_ui_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "admin.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -82,7 +86,7 @@ resource "aws_route53_record" "admin_ui_aaaa" {
 }
 
 resource "aws_route53_record" "uaa_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "uaa.${var.admin_subdomain}."
   type    = "A"
 
@@ -94,7 +98,7 @@ resource "aws_route53_record" "uaa_a" {
 }
 
 resource "aws_route53_record" "uaa_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "uaa.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -106,7 +110,7 @@ resource "aws_route53_record" "uaa_aaaa" {
 }
 
 resource "aws_route53_record" "login_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "login.${var.admin_subdomain}."
   type    = "A"
 
@@ -117,7 +121,7 @@ resource "aws_route53_record" "login_a" {
   }
 }
 resource "aws_route53_record" "login_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "login.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -129,7 +133,7 @@ resource "aws_route53_record" "login_aaaa" {
 }
 
 resource "aws_route53_record" "logs_platform_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "logs-platform.${var.admin_subdomain}."
   type    = "A"
 
@@ -141,7 +145,7 @@ resource "aws_route53_record" "logs_platform_a" {
 }
 
 resource "aws_route53_record" "logs_platform_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "logs-platform.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -153,7 +157,7 @@ resource "aws_route53_record" "logs_platform_aaaa" {
 }
 
 resource "aws_route53_record" "idp_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "idp.${var.admin_subdomain}."
   type    = "A"
 
@@ -165,7 +169,7 @@ resource "aws_route53_record" "idp_a" {
 }
 
 resource "aws_route53_record" "idp_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "idp.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -178,7 +182,7 @@ resource "aws_route53_record" "idp_aaaa" {
 
 
 resource "aws_route53_record" "ssh_a" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "ssh.${var.admin_subdomain}."
   type    = "A"
 
@@ -190,7 +194,7 @@ resource "aws_route53_record" "ssh_a" {
 }
 
 resource "aws_route53_record" "ssh_aaaa" {
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "ssh.${var.admin_subdomain}."
   type    = "AAAA"
 
@@ -204,7 +208,7 @@ resource "aws_route53_record" "ssh_aaaa" {
 
 resource "aws_route53_record" "tcp_a" {
   for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
   type = "A"
   alias {
@@ -216,7 +220,7 @@ resource "aws_route53_record" "tcp_a" {
 
 resource "aws_route53_record" "tcp_aaaa" {
   for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
   type = "AAAA"
   alias {

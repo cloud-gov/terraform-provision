@@ -1,6 +1,3 @@
-variable "zone_id" {
-
-}
 
 variable "app_subdomain" {
 
