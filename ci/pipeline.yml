@@ -95,6 +95,8 @@ jobs:
       TF_VAR_aws_default_region: ((aws_external_region))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
       TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
+      TF_VAR_commercial_aws_default_region: ((aws_external_region))
+      TF_VAR_commercial_assume_arn: ((commercial_assume_arn_development))
   - &notify-slack
     put: slack
     params:
@@ -150,6 +152,8 @@ jobs:
       TF_VAR_aws_default_region: ((aws_external_region))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
       TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
+      TF_VAR_commercial_aws_default_region: ((aws_external_region))
+      TF_VAR_commercial_assume_arn: ((commercial_assume_arn_staging))
   - &notify-slack
     put: slack
     params:
@@ -205,6 +209,8 @@ jobs:
       TF_VAR_aws_default_region: ((aws_external_region))
       TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
       TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
+      TF_VAR_commercial_aws_default_region: ((aws_external_region))
+      TF_VAR_commercial_assume_arn: ((commercial_assume_arn_production))
   - *notify-slack
 
 - name: bootstrap-external-production
