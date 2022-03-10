@@ -5,47 +5,20 @@ terraform {
 
 
 provider "aws" {
-  # endpoints from # These endpoints are form https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-govcloud-endpoints.html
-  # with help from https://github.com/Kaydub00/terraform-aws-fips/blob/master/govcloud-west.tf
-  region = "us-gov-west-1"
+  # FIPS endpoints from 
+  #    https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-govcloud-endpoints.html
+  #    with help from https://github.com/Kaydub00/terraform-aws-fips/blob/master/govcloud-west.tf
+  # Most endpoints are already FIPS, as of 2022-03-10, so there's no need to
+  #    specify a FIPS-enabled endpoint.
+  # For S3, no FIPS specification needed. They're only to be used with 
+  #    Virtual Hosted-Style addressing. E.g., https://bucket.s3-fips.us-east-2.amazonaws.com.
   endpoints {
-    # cloudtrail: Non-fips is n/a
-    # cloudwatch: non-fips is n/a
-    # cloudwatchevents: non-fips is n/a
-    # cloudwatchlogs: non-fips is n/a
-    # ec2             : non-fips is n/a
-    efs = "https://elasticfilesystem-fips.us-gov-west-1.amazonaws.com"
-    # elb: non-fips is n/a
-    es = "https://es-fips.us-gov-west-1.amazonaws.com"
-    firehose = "https://firehose-fips.us-gov-west-1.amazonaws.com"
-    # glacier: non-fips is n/a
-    # guardduty: non-fips is n/a
-    # iam: non-fips is n/a
-    # kinesis: non-fips is n/a
-    kms = "https://kms-fips.us-gov-west-1.amazonaws.com"
-    lambda = "https://lambda-fips.us-gov-west-1.amazonaws.com"
-    # organizations: non-fips is n/a
-    # rds: non-fips is n/a
-    # route53:non-fips is n/a
-    # S3 not needed. AWS says: These Endpoints can only be used with Virtual Hosted-Style addressing. For example: https://bucket.s3-fips.us-east-2.amazonaws.com. Visit the Amazon S3 Documentation page for more information.s3 = "https://s3-fips.us-gov-west-1.amazonaws.com"
-    # ses: non-fips is n/a
-    # sns: non-fips is n/a
-    # sqs: non-fips is n/a
-    # ssm: non-fips is n/a
-    wafv2 = "https://wafv2-fips.us-gov-west-1.amazonaws.com"
-  }
-}
-
-provider "aws" {
-  alias = "gov-cloud-east"
-  region = "us-gov-east-1"
-    endpoints {
-    efs = "https://elasticfilesystem-fips.us-gov-east-1.amazonaws.com"
-    es = "https://es-fips.us-gov-east-1.amazonaws.com"
-    firehose = "https://firehose-fips.us-gov-east-1.amazonaws.com"
-    kms = "https://kms-fips.us-gov-east-1.amazonaws.com"
-    lambda = "https://lambda-fips.us-gov-east-1.amazonaws.com"
-    wafv2 = "https://wafv2-fips.us-gov-east-1.amazonaws.com"
+    efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
+    es = "https://es-fips.${var.aws_region}.amazonaws.com"
+    firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
+    kms = "https://kms-fips.${var.aws_region}.amazonaws.com"
+    lambda = "https://lambda-fips.${var.aws_region}.amazonaws.com"
+    wafv2 = "https://wafv2-fips.${var.aws_region}.amazonaws.com"
   }
 }
 
