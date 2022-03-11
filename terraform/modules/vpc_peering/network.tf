@@ -1,10 +1,3 @@
-provider aws {
-
-}
-# note, we'll need to move this to terraform.required_providers.aws.configuration_aliases when we update to 1.x (or maybe 0.15?)
-provider aws {
-  alias = "tooling"
-}
 /*
  * Variables required:
  *   peer_owner_id

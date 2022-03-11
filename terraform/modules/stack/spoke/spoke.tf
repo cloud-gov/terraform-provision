@@ -1,11 +1,3 @@
-provider aws {
-}
-provider aws {
-  alias = "parent"
-}
-provider aws {
-  alias = "tooling"
-}
 module "base" {
   source                            = "../base"
   stack_description                 = var.stack_description
@@ -102,6 +94,9 @@ module "vpc_peering_parentbosh" {
 module "vpc_security_parent_to_source" {
   # toolingbosh -> envbosh
   source = "../../vpc_peering_sg"
+  providers = {
+    aws = aws
+  }
 
   target_bosh_security_group = module.base.bosh_security_group
   source_vpc_cidr            = var.parent_vpc_cidr
