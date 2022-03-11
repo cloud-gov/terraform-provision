@@ -53,7 +53,7 @@ output "domains_broker_internal_target_group" {
 
 /* Broker database */
 resource "aws_db_instance" "domains_broker" {
-  name                        = "domains_broker"
+  db_name                     = "domains_broker"
   storage_type                = "gp2"
   allocated_storage           = 10
   instance_class              = "db.t2.micro"
@@ -221,6 +221,10 @@ output "domains_broker_listener_arns" {
  */
 resource "aws_s3_bucket" "domains_bucket" {
   bucket = "${var.stack_description}-domains-broker-challenge"
+}
+
+resource "aws_s3_bucket_policy" "domains_bucket_policy" {
+  bucket = aws_s3_bucket.domains_bucket.id
   policy = <<EOF
 {
   "Version": "2012-10-17",

@@ -17,7 +17,7 @@ resource "aws_db_instance" "rds_database" {
 
   auto_minor_version_upgrade = true
 
-  name              = var.rds_db_name
+  db_name              = var.rds_db_name
   allocated_storage = var.rds_db_size
   storage_type      = var.rds_db_storage_type
   iops              = var.rds_db_iops

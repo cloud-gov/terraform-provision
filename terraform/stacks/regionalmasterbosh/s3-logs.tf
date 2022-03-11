@@ -2,6 +2,10 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
   bucket        = var.cloudtrail_bucket
   force_destroy = true
 
+}
+
+resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
+  bucket = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
   policy = <<POLICY
 {
     "Version": "2012-10-17",

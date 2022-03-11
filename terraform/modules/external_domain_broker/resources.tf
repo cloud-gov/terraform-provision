@@ -52,27 +52,33 @@ resource "aws_iam_user_policy" "iam_policy" {
 data "aws_canonical_user_id" "current_user" {
 }
 
-resource "aws_s3_bucket" "cloudfrond_log_bucket" {
+resource "aws_s3_bucket" "cloudfront_log_bucket" {
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
-  grant {
-    id          = data.aws_canonical_user_id.current_user.id
-    type        = "CanonicalUser"
-    permissions = ["FULL_CONTROL"]
-  }
+} 
+resource "aws_s3_bucket_acl" "cloudfront_log_bucket_acl" {
+  bucket = aws_s3_bucket.cloudfront_log_bucket.id
 
-  grant {
-    type        = "CanonicalUser"
-    permissions = ["FULL_CONTROL"]
+  access_control_policy {
+    owner {
+      id = data.aws_canonical_user_id.current_user.id
+    }
 
-    # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#AccessLogsBucketAndFileOwnership
-    # canonical user id of awslogsdelivery
-    id = "c4c1ede66af53448b93c283ce9448c4ba468c9432aa01d700d3878632f77d2d0"
-  }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
+    grant {
+      permission = "FULL_CONTROL"
+      grantee {
+        # https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#AccessLogsBucketAndFileOwnership
+        # canonical user id of awslogsdelivery
+        id   = "c4c1ede66af53448b93c283ce9448c4ba468c9432aa01d700d3878632f77d2d0"
+        type = "CanonicalUser"
       }
+    }
+  }
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "cloudfront_log_bucket_sse_config" {
+  bucket = aws_s3_bucket.cloudfront_log_bucket.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
