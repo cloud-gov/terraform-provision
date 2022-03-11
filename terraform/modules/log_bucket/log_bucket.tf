@@ -28,12 +28,21 @@ locals {
 
 resource "aws_s3_bucket" "log_bucket" {
   bucket        = var.log_bucket_name
-  acl           = var.log_bucket_acl
   force_destroy = var.log_bucket_force_destroy
+}
 
-  lifecycle_rule {
-    prefix  = ""
-    enabled = true
+resource "aws_s3_bucket_acl" "log_bucket_acl" {
+  bucket        = aws_s3_bucket.log_bucket.id
+  acl           = var.log_bucket_acl
+}
+resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
+  bucket = aws_s3_bucket.log_bucket.id
+  rule {
+    id = "all"
+    filter {
+      prefix  = ""
+    }
+    status = "Enabled"
     transition {
       days          = 90
       storage_class = "ONEZONE_IA"
@@ -42,7 +51,9 @@ resource "aws_s3_bucket" "log_bucket" {
       days = 180
     }
   }
-
+}
+resource "aws_s3_bucket_policy" "log_bucket_policy" {
+  bucket = aws_s3_bucket.log_bucket.id
   policy = <<EOF
 {
     "Version": "2012-10-17",

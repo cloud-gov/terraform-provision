@@ -1,17 +1,25 @@
 
 resource "aws_s3_bucket" "log_bucket" {
   bucket        = "${var.stack_description}-platform-logs"
+}
+resource "aws_s3_bucket_acl" "log_bucket_acl" {
+  bucket        = aws_s3_bucket.log_bucket.id
   acl           = "private"
-
-  lifecycle_rule {
-    prefix  = ""
-    enabled = true
+}
+resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
+  bucket = aws_s3_bucket.log_bucket.id
+  rule {
+    id = "all"
+    filter {
+      prefix  = ""
+    }
+    status = "Enabled"
     transition {
-      days          = 180
+      days          = 90
       storage_class = "ONEZONE_IA"
     }
     expiration {
-      days = 365
+      days = 180
     }
   }
 }
