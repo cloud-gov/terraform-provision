@@ -12,9 +12,11 @@ status=0
 TERRAFORM="${TERRAFORM_BIN:-terraform}"
 
 for dir in $dirs; do
+  pushd ${dir}
   echo "Validating terraform directory $dir"
-  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} init -backend=false ${dir}
-  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} validate ${dir} || status=1
+  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} init -backend=false 
+  AWS_DEFAULT_REGION=us-gov-west-1 ${TERRAFORM} validate || status=1
+  popd
 done
 
 exit ${status}
