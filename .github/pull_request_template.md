@@ -4,4 +4,4 @@
 -
 
 ## security considerations
-[Note the any security considerations here, or make note of why there are none]
+[Note any security considerations here, or make note of why there are none]
