@@ -14,9 +14,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypted_bucket_
 }
 
 resource "aws_s3_bucket_versioning" "encrypted_bucket_versioning" {
+  count = var.versioning ? 1 : 0
   bucket = aws_s3_bucket.encrypted_bucket.id
   versioning_configuration {
-    status = var.versioning ? "Enabled" : "Suspended"
+    status = "Enabled"
   }
 }
 resource "aws_s3_bucket_acl" "encrypted_bucket_acl" {
