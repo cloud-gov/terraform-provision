@@ -233,6 +233,7 @@ output "bosh_rds_username" {
 
 output "bosh_rds_password" {
   value = module.stack.bosh_rds_password
+  sensitive = true
 }
 
 /* Main LB */
@@ -282,6 +283,7 @@ output "s3_logstash_access_key_id_prev" {
 
 output "s3_logstash_secret_access_key_prev" {
   value = module.s3_logstash.secret_access_key_prev
+  sensitive = true
 }
 
 output "s3_logstash_access_key_id_curr" {
@@ -290,6 +292,7 @@ output "s3_logstash_access_key_id_curr" {
 
 output "s3_logstash_secret_access_key_curr" {
   value = module.s3_logstash.secret_access_key_curr
+  sensitive = true
 }
 
 /* rds storage user */
@@ -303,6 +306,7 @@ output "rds_storage_alert_access_key_id" {
 
 output "rds_storage_alert_secret_access_key" {
   value = module.rds_storage_alert.secret_access_key
+  sensitive = true
 }
 
 /* iam cert provision user */
@@ -316,6 +320,7 @@ output "iam_cert_provision_access_key_id_prev" {
 
 output "iam_cert_provision_secret_access_key_prev" {
   value = module.iam_cert_provision_user.secret_access_key_prev
+  sensitive = true
 }
 
 output "iam_cert_provision_access_key_id_curr" {
@@ -324,6 +329,7 @@ output "iam_cert_provision_access_key_id_curr" {
 
 output "iam_cert_provision_secret_access_key_curr" {
   value = module.iam_cert_provision_user.secret_access_key_curr
+  sensitive = true
 }
 
 /* iam roles */
@@ -417,6 +423,7 @@ output "credhub_rds_username" {
 
 output "credhub_rds_password" {
   value = module.stack.credhub_rds_password
+  sensitive = true
 }
 
 output "default_key_name" {
@@ -437,4 +444,5 @@ output "bosh_blobstore_user_access_key_id_curr" {
 
 output "bosh_blobstore_user_secret_access_key_curr" {
   value = aws_iam_access_key.bosh_blobstore_user_key_v1.secret
+  sensitive = true
 }
