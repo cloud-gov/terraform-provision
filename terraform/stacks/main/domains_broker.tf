@@ -71,7 +71,8 @@ output "domains_broker_rds_username" {
 }
 
 output "domains_broker_rds_password" {
-  value = aws_db_instance.domains_broker.password
+  value     = aws_db_instance.domains_broker.password
+  sensitive = true
 }
 
 output "domains_broker_rds_address" {
@@ -357,6 +358,7 @@ output "legacy_domain_certificate_renewer_access_key_id_curr" {
 
 output "legacy_domain_certificate_renewer_secret_access_key_curr" {
   value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  sensitive = true
 }
 
 output "domains_broker_profile" {

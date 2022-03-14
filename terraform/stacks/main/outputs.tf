@@ -352,7 +352,8 @@ output "bosh_rds_username" {
 }
 
 output "bosh_rds_password" {
-  value = module.stack.bosh_rds_password
+  value     = module.stack.bosh_rds_password
+  sensitive = true
 }
 
 /* CloudFoundry RDS */
@@ -374,6 +375,7 @@ output "cf_rds_username" {
 
 output "cf_rds_password" {
   value = module.cf.cf_rds_password
+  sensitive = true
 }
 
 output "cf_rds_engine" {
@@ -399,6 +401,7 @@ output "credhub_rds_username" {
 
 output "credhub_rds_password" {
   value = module.stack.credhub_rds_password
+  sensitive = true
 }
 
 /* Diego ELB */
@@ -445,6 +448,7 @@ output "platform_logs_bucket_access_key_id_curr" {
 
 output "platform_logs_bucket_secret_access_key_curr" {
   value = module.logsearch.platform_logs_bucket_secret_access_key_curr
+  sensitive = true
 }
 output "platform_logs_bucket_name" {
   value = module.logsearch.platform_logs_bucket_name
@@ -512,6 +516,7 @@ output "external_domain_broker_gov_access_key_id_curr" {
 
 output "external_domain_broker_gov_secret_access_key_curr" {
   value = module.external_domain_broker_govcloud.secret_access_key_curr
+  sensitive = true
 }
 
 output "external_domain_broker_gov_access_key_id_prev" {
@@ -520,6 +525,7 @@ output "external_domain_broker_gov_access_key_id_prev" {
 
 output "external_domain_broker_gov_secret_access_key_prev" {
   value = module.external_domain_broker_govcloud.secret_access_key_prev
+  sensitive = true
 }
 
 output "bosh_static_ip" {
@@ -572,6 +578,7 @@ output "s3_broker_user_access_key_id_curr" {
 
 output "s3_broker_user_secret_access_key_curr" {
   value = aws_iam_access_key.s3_broker_user_key_v1.secret
+  sensitive = true
 }
 
 output "parent_bosh_user_access_key_id_prev" {
@@ -588,6 +595,7 @@ output "parent_bosh_user_access_key_id_curr" {
 
 output "parent_bosh_user_secret_access_key_curr" {
   value = aws_iam_access_key.parent_bosh_user_key_v1.secret
+  sensitive = true
 }
 
 output "default_key_name" {
