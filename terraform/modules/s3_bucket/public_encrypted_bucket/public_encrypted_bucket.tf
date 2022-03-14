@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "public_encrypted_bucket" {
 resource "aws_s3_bucket_versioning" "public_encrypted_bucket_versioning" {
   bucket = aws_s3_bucket.public_encrypted_bucket.id
   versioning_configuration {
-    status = var.versioning ? "Enabled" : "Disabled"
+    status = var.versioning ? "Enabled" : "Suspended"
   }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "public_encrypted_bucket_sse_config" {
