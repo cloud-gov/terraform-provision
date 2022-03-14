@@ -3,9 +3,10 @@ resource "aws_s3_bucket" "public_encrypted_bucket" {
   force_destroy = var.force_destroy
 }
 resource "aws_s3_bucket_versioning" "public_encrypted_bucket_versioning" {
+  count = var.versioning ? 1 : 0
   bucket = aws_s3_bucket.public_encrypted_bucket.id
   versioning_configuration {
-    status = var.versioning ? "Enabled" : "Suspended"
+    status = "Enabled"
   }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "public_encrypted_bucket_sse_config" {
