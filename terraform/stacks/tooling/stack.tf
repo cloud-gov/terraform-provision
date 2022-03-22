@@ -245,5 +245,6 @@ module "smtp" {
 }
 
 module "ecr" {
+  source              = "../../modules/ecr"
   repository_name     = "cloud-gov-test"
 }
