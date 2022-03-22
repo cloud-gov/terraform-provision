@@ -190,3 +190,8 @@ resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
   ]
 }
 
+module "ecr_user" {
+  source         = "../../modules/iam_user/billing_user"
+  username       = "cg-ecr"
+  aws_partition  = data.aws_partition.current.partition
+}

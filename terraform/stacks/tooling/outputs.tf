@@ -656,6 +656,29 @@ output "iam_cert_provision_secret_access_key_curr" {
   sensitive = true
 }
 
+/* ecr user */
+output "ecr_username" {
+  value = module.ecr_user.username
+}
+
+output "ecr_access_key_id_prev" {
+  value = module.ecr_user.access_key_id_prev
+}
+
+output "ecr_secret_access_key_prev" {
+  value = module.ecr_user.secret_access_key_prev
+  sensitive = true
+}
+
+output "ecr_access_key_id_curr" {
+  value = module.ecr_user.access_key_id_curr
+}
+
+output "ecr_secret_access_key_curr" {
+  value = module.ecr_user.secret_access_key_curr
+  sensitive = true
+}
+
 /* iam roles */
 output "default_profile" {
   value = module.default_role.profile_name

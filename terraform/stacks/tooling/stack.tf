@@ -244,3 +244,6 @@ module "smtp" {
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
 
+module "ecr" {
+  repository_name     = "cloud-gov-test"
+}
