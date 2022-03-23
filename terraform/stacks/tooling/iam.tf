@@ -190,3 +190,7 @@ resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
   ]
 }
 
+module "ecr_user" {
+  source         = "../../modules/iam_user/ecr_user"
+  username       = "cg-ecr"
+}
