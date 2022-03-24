@@ -9,7 +9,10 @@ image_resource:
 
 inputs:
   - name: cg-provision-repo
-  - name: waf-rule-tests-development
+  - name: waf-test-files
 
 run:
-  path: cg-provision-repo/ci/test-waf-rules.sh
+  path: cg-provision-repo/ci/waf-tests/test-waf-rules.sh
+
+params:
+  WAF_TEST_APP_URL:

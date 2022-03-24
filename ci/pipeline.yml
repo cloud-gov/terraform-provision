@@ -399,6 +399,7 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
+      WAF_TEST_APP_URL: ((development_waf_test_app_url))
       TF_VAR_assume_arn: ((development_assume_arn))
       TF_VAR_parent_assume_arn: ((development_parent_assume_arn))
       TF_VAR_parent_stack_name: ((development_parent_stack_name))
@@ -504,9 +505,10 @@ jobs:
       resource: cg-provision-repo-development
       passed: [bootstrap-development]
       trigger: true
-    - get: waf-rule-tests-development
+    - get: waf-test-files
+      resource: waf-tests-development
   - task: test-waf-rules
-    file: cg-provision-repo/ci/test-waf-rules.yml
+    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
 
 - name: plan-bootstrap-staging
   plan:
@@ -1287,6 +1289,15 @@ resources:
     versioned_file: ((tf_state_file_production))
     region_name: ((aws_default_region))
 
+- name: waf-tests-development
+  type: s3
+  source:
+    bucket: ((waf_rules_bucket))
+    versioned_file: ((development_waf_test_file))
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: ((aws_default_region))
+
 - name: terraform-yaml-external-development
   type: s3
   source:
@@ -1313,15 +1324,6 @@ resources:
     access_key_id: ((aws_external_access_key_id))
     secret_access_key: ((aws_external_secret_access_key))
     region_name: ((aws_external_region))
-
-- name: waf-rule-tests-development
-  type: s3
-  source:
-    bucket: ((waf_rules_bucket))
-    versioned_file: ((development_waf_test_file))
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: ((aws_default_region))
 
 - name: plan-timer
   type: time
