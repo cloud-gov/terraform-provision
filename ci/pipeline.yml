@@ -399,7 +399,6 @@ jobs:
       TEMPLATE_SUBDIR: terraform/stacks/main
       S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
       AWS_DEFAULT_REGION: ((aws_default_region))
-      WAF_TEST_APP_URL: ((development_waf_test_app_url))
       TF_VAR_assume_arn: ((development_assume_arn))
       TF_VAR_parent_assume_arn: ((development_parent_assume_arn))
       TF_VAR_parent_stack_name: ((development_parent_stack_name))
@@ -509,6 +508,8 @@ jobs:
       resource: waf-tests-development
   - task: test-waf-rules
     file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+    params:
+      WAF_TEST_APP_URL: ((development_waf_test_app_url))
 
 - name: plan-bootstrap-staging
   plan:
