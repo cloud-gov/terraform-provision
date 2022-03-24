@@ -5,7 +5,7 @@ import os
 app_url = os.environ.get('WAF_TEST_APP_URL')
 
 test_strings = []
-with open('~/waf-test-files/test_strings.txt') as f:
+with open('../../../waf-test-files/test_strings.txt') as f:
     for line in f:
         test_strings.append(line.strip('\n'))
 
