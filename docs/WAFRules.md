@@ -19,12 +19,11 @@ If any of the automated or manual testing yields an issue, steps 1 through 5 are
 In order to test that a new WAF rule is working properly, the steps we will either take or automate are the following:
 
 1. Write a failing custom rule test (e.g. we want to block:, https://app.($CLOUD_GOV_ENV)/vulnerableURL, which will return a `403` when the url is successfully blocked.
-  1. Tests are written in `Python` and stored in s3
-1. Run our test and ensure the test fails (because it doesn’t yet return 403)
+  1. Test urls and corresponding variables are stored in s3
+1. Run our tests and ensure the tests fail (because they don't yet return 403)
 1. Create and test the new custom WAF rule (e.g., a RegEx rule: ^\vulnerableURL$) in the WebUI in the dev environment. Once it’s working, remove it.
 1. Apply the new or modified rule to the custom WAF rule set in Terraform.
   1. Regex patterns are specified in the corresponding pipeline variable
-  1. Other Rules are stored in s3
     1. NOTE: Both the tests and rules will use the same storage backend. If either of them exhausts credhub, then they’ll both move to s3vars.
 1. Deploy the changes into the development environment (or whichever environment we’re currently targeting)
 1. Ensure the test we created in step 1 now passes. 
