@@ -19,6 +19,8 @@ groups:
   - plan-dns
   - pull-status-check
   - webacl-test-development
+  - webacl-test-staging
+  - webacl-test-production
 - name: certs
   jobs:
   - acme-certificate-development
@@ -506,10 +508,29 @@ jobs:
       trigger: true
     - get: waf-test-files
       resource: waf-tests-development
+      trigger: true
   - task: test-waf-rules
     file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
     params:
       WAF_TEST_APP_URL: ((development_waf_test_app_url))
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: WAF Rules Test Development FAILED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+  on_success:
+    put: slack
+    params:
+      text: |
+        :white_check_mark: WAF Rules Test Development PASSED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: plan-bootstrap-staging
   plan:
@@ -625,6 +646,39 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
+- name: webacl-test-staging
+  plan:
+  - in_parallel:
+    - get: cg-provision-repo
+      resource: cg-provision-repo
+      passed: [bootstrap-staging]
+      trigger: true
+    - get: waf-test-files
+      resource: waf-tests-staging
+      trigger: true
+  - task: test-waf-rules
+    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+    params:
+      WAF_TEST_APP_URL: ((staging_waf_test_app_url))
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: WAF Rules Test Staging FAILED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+  on_success:
+    put: slack
+    params:
+      text: |
+        :white_check_mark: WAF Rules Test Staging PASSED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+
 - name: plan-bootstrap-production
   plan:
   - in_parallel:
@@ -739,6 +793,38 @@ jobs:
       params:
         file: terraform-yaml/state.yml
 
+- name: webacl-test-production
+  plan:
+  - in_parallel:
+    - get: cg-provision-repo
+      resource: cg-provision-repo
+      passed: [bootstrap-production]
+      trigger: true
+    - get: waf-test-files
+      resource: waf-tests-production
+      trigger: true
+  - task: test-waf-rules
+    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+    params:
+      WAF_TEST_APP_URL: ((production_waf_test_app_url))
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: WAF Rules Test Production FAILED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
+  on_success:
+    put: slack
+    params:
+      text: |
+        :white_check_mark: WAF Rules Test Production PASSED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: ((slack-icon-url))
 
 - name: acme-certificate-development
   plan:
@@ -1295,6 +1381,24 @@ resources:
   source:
     bucket: ((waf_rules_bucket))
     versioned_file: ((development_waf_test_file))
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: ((aws_default_region))
+
+- name: waf-tests-staging
+  type: s3
+  source:
+    bucket: ((waf_rules_bucket))
+    versioned_file: ((staging_waf_test_file))
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: ((aws_default_region))
+
+- name: waf-tests-production
+  type: s3
+  source:
+    bucket: ((waf_rules_bucket))
+    versioned_file: ((production_waf_test_file))
     access_key_id: ((aws_access_key_id))
     secret_access_key: ((aws_secret_access_key))
     region_name: ((aws_default_region))
