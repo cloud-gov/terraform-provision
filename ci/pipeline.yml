@@ -583,7 +583,7 @@ jobs:
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
       TF_VAR_pages_cert_patterns: '[]'
-      #TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
+      TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -730,7 +730,7 @@ jobs:
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
       TF_VAR_pages_cert_patterns: '["pages-staging.cloud.gov","pages-dev.cloud.gov"]'
-      #TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
+      TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
   - *notify-slack
 
 - name: bootstrap-production
