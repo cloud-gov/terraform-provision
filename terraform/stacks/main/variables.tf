@@ -126,3 +126,7 @@ variable "include_tcp_routes" {
   type = bool
   default = false
 }
+
+variable "waf_regular_expressions" {
+  type = list(string)
+}
