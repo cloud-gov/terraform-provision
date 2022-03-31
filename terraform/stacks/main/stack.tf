@@ -13,6 +13,7 @@ provider "aws" {
   # For S3, no FIPS specification needed. They're only to be used with 
   #    Virtual Hosted-Style addressing. E.g., https://bucket.s3-fips.us-east-2.amazonaws.com.
   endpoints {
+    ecr = "https://ecr-fips.${var.aws_region}.amazonaws.com"
     efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
     es = "https://es-fips.${var.aws_region}.amazonaws.com"
     firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
