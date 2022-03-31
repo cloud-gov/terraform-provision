@@ -3,7 +3,24 @@ terraform {
   }
 }
 
+
 provider "aws" {
+  # FIPS endpoints from 
+  #    https://docs.aws.amazon.com/govcloud-us/latest/UserGuide/using-govcloud-endpoints.html
+  #    with help from https://github.com/Kaydub00/terraform-aws-fips/blob/master/govcloud-west.tf
+  # Most endpoints are already FIPS, as of 2022-03-10, so there's no need to
+  #    specify a FIPS-enabled endpoint.
+  # For S3, no FIPS specification needed. They're only to be used with 
+  #    Virtual Hosted-Style addressing. E.g., https://bucket.s3-fips.us-east-2.amazonaws.com.
+  endpoints {
+    ecr = "https://ecr-fips.${var.aws_region}.amazonaws.com"
+    efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
+    es = "https://es-fips.${var.aws_region}.amazonaws.com"
+    firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
+    kms = "https://kms-fips.${var.aws_region}.amazonaws.com"
+    lambda = "https://lambda-fips.${var.aws_region}.amazonaws.com"
+    wafv2 = "https://wafv2-fips.${var.aws_region}.amazonaws.com"
+  }
 }
 
 data "terraform_remote_state" "target_vpc" {
