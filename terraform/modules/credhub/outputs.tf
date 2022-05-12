@@ -1,9 +1,18 @@
-output "credhub_subnet" {
-  value = aws_subnet.credhub.id
+output "credhub_subnet_az1" {
+  value = aws_subnet.credhub_az1.id
 }
 
-output "credhub_subnet_cidr" {
-  value = aws_subnet.credhub.cidr_block
+output "credhub_subnet_az2" {
+  value = aws_subnet.credhub_az2.id
+}
+
+
+output "credhub_subnet_cidr_az1" {
+  value = aws_subnet.credhub_az1.cidr_block
+}
+
+output "credhub_subnet_cidr_az2" {
+  value = aws_subnet.credhub_az2.cidr_block
 }
 
 output "credhub_security_group" {

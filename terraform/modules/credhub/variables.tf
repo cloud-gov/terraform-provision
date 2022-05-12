@@ -1,12 +1,20 @@
 variable "stack_description" {
 }
 
-variable "credhub_cidr" {
+variable "credhub_cidr_az1" {
   default = "10.0.30.0/24"
 }
 
-variable "credhub_az" {
+variable "credhub_cidr_az2" {
+  default = "10.0.31.0/24"
+}
+
+variable "credhub_az1" {
   default = "us-gov-west-1a"
+}
+
+variable "credhub_az2" {
+  default = "us-gov-west-1b"
 }
 
 variable "rds_db_name" {
@@ -67,8 +75,12 @@ variable "rds_allow_major_version_upgrade" {
 variable "rds_apply_immediately" {
 }
 
-variable "route_table_id" {
+variable "route_table_id_az1" {
 }
+
+variable "route_table_id_az2" {
+}
+
 
 variable "vpc_id" {
 }
