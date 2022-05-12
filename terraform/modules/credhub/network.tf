@@ -1,6 +1,6 @@
 resource "aws_subnet" "credhub_az1" {
   vpc_id            = var.vpc_id
-  cidr_block        = var.credhub_cidr_az2
+  cidr_block        = var.credhub_cidr_az1
   availability_zone = var.credhub_az1
 
   tags = {
