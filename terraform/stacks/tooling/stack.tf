@@ -166,7 +166,7 @@ module "credhub_production" {
 
 module "credhub_staging" {
   source                          = "../../modules/credhub"
-  stack_description               = var.stack_description
+  stack_description               = "staging-credhub"
   vpc_id                          = module.stack.vpc_id
   credhub_cidr_az1                = cidrsubnet(var.vpc_cidr, 8, 34)
   credhub_cidr_az2                = cidrsubnet(var.vpc_cidr, 8, 36)
