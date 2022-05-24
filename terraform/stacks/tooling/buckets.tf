@@ -59,3 +59,16 @@ module "build_artifacts_bucket" {
   versioning    = "true"
 }
 
+module "cvd_meta_bucket" {
+  source        = "../../modules/s3_bucket/encrypted_bucket"
+  bucket        = "cg-clamav-meta"
+  aws_partition = data.aws_partition.current.partition
+  versioning    = "true"
+}
+
+module "cvd_database_bucket" {
+  source        = "../../modules/cvd_mirror"
+  bucket        = "cg-clamav-mirror"
+  aws_partition = data.aws_partition.current.partition
+  versioning    = "false"
+}
