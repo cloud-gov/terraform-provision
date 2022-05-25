@@ -26,9 +26,7 @@ resource "aws_s3_bucket_policy" "public_encrypted_bucket_policy" {
         {
             "Sid": "AllowRead",
             "Effect": "Allow",
-            "Principal": {
-                "*"
-            },
+            "Principal": "*",
             "Action": "s3:GetObject",
             "Resource": "arn:${var.aws_partition}:s3:::${var.bucket}/*"
         },
