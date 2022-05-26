@@ -814,3 +814,26 @@ output "production_smtp_private_ip" {
   value = local.production_smtp_private_ip
 }
 
+/* clamav sync user */
+output "cvd_sync_username" {
+  value = module.cvd_sync_user.username
+}
+
+output "cvd_sync_access_key_id_prev" {
+  value = module.cvd_sync_user.access_key_id_prev
+}
+
+output "cvd_sync_secret_access_key_prev" {
+  value = module.cvd_sync_user.secret_access_key_prev
+  sensitive = true
+}
+
+output "cvd_sync_access_key_id_curr" {
+  value = module.cvd_sync_user.access_key_id_curr
+}
+
+output "cvd_sync_secret_access_key_curr" {
+  value = module.cvd_sync_user.secret_access_key_curr
+  sensitive = true
+}
+
