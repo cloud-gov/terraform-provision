@@ -17,4 +17,5 @@ module cvd_sync_user {
   username = "clamav_mirror_sync"
   cvd_database_bucket = "cg-clamav-mirror"
   cvd_metadata_bucket = "cg-clamav-meta"
+  aws_partition = data.aws_partition.current.partition
 }
