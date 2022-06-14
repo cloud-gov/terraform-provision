@@ -143,9 +143,12 @@ module "credhub_production" {
   source                          = "../../modules/credhub"
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
-  credhub_cidr                    = cidrsubnet(var.vpc_cidr, 8, 35)
-  credhub_az                      = data.aws_availability_zones.available.names[0]
-  route_table_id                  = module.stack.private_route_table_az1
+  credhub_cidr_az1                = cidrsubnet(var.vpc_cidr, 8, 35)
+  credhub_cidr_az2                = cidrsubnet(var.vpc_cidr, 8, 37)
+  credhub_az1                     = data.aws_availability_zones.available.names[0]
+  credhub_az2                     = data.aws_availability_zones.available.names[1]
+  route_table_id_az1              = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = var.credhub_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -163,11 +166,14 @@ module "credhub_production" {
 
 module "credhub_staging" {
   source                          = "../../modules/credhub"
-  stack_description               = var.stack_description
+  stack_description               = "staging"
   vpc_id                          = module.stack.vpc_id
-  credhub_cidr                    = cidrsubnet(var.vpc_cidr, 8, 34)
-  credhub_az                      = data.aws_availability_zones.available.names[1]
-  route_table_id                  = module.stack.private_route_table_az2
+  credhub_cidr_az1                = cidrsubnet(var.vpc_cidr, 8, 34)
+  credhub_cidr_az2                = cidrsubnet(var.vpc_cidr, 8, 36)
+  credhub_az1                     = data.aws_availability_zones.available.names[0]
+  credhub_az2                     = data.aws_availability_zones.available.names[1]
+  route_table_id_az1              = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = var.credhub_staging_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -244,8 +250,3 @@ module "smtp" {
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
 
-module "ecr" {
-  source              = "../../modules/ecr"
-  stack_description   = var.stack_description
-  repository_name     = "cloud-gov-test"
-}

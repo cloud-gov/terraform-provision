@@ -393,20 +393,36 @@ output "staging_concourse_lb_target_group" {
 }
 
 /* Production credhub */
-output "production_credhub_subnet" {
-  value = module.credhub_production.credhub_subnet
+output "production_credhub_subnet_az1" {
+  value = module.credhub_production.credhub_subnet_az1
 }
 
-output "production_credhub_subnet_reserved" {
-  value = "${cidrhost(module.credhub_production.credhub_subnet_cidr, 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidr, 3)}"
+output "production_credhub_subnet_az2" {
+  value = module.credhub_production.credhub_subnet_az2
 }
 
-output "production_credhub_subnet_cidr" {
-  value = module.credhub_production.credhub_subnet_cidr
+output "production_credhub_subnet_az1_reserved" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidr_az1, 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidr_az1, 3)}"
 }
 
-output "production_credhub_subnet_gateway" {
-  value = cidrhost(module.credhub_production.credhub_subnet_cidr, 1)
+output "production_credhub_subnet_az2_reserved" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidr_az2, 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidr_az2, 3)}"
+}
+
+output "production_credhub_subnet_cidr_az1" {
+  value = module.credhub_production.credhub_subnet_cidr_az1
+}
+
+output "production_credhub_subnet_cidr_az2" {
+  value = module.credhub_production.credhub_subnet_cidr_az2
+}
+
+output "production_credhub_subnet_az1_gateway" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidr_az1, 1)
+}
+
+output "production_credhub_subnet_az2_gateway" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidr_az2, 1)
 }
 
 output "production_credhub_security_group" {
@@ -447,20 +463,38 @@ output "production_credhub_lb_target_group" {
 }
 
 /* Staging credhub */
-output "staging_credhub_subnet" {
-  value = module.credhub_staging.credhub_subnet
+output "staging_credhub_subnet_az1" {
+  value = module.credhub_staging.credhub_subnet_az1
 }
 
-output "staging_credhub_subnet_reserved" {
-  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidr, 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidr, 3)}"
+output "staging_credhub_subnet_az2" {
+  value = module.credhub_staging.credhub_subnet_az2
 }
 
-output "staging_credhub_subnet_cidr" {
-  value = module.credhub_staging.credhub_subnet_cidr
+output "staging_credhub_subnet_az1_reserved" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidr_az1, 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidr_az1, 3)}"
 }
 
-output "staging_credhub_subnet_gateway" {
-  value = cidrhost(module.credhub_staging.credhub_subnet_cidr, 1)
+output "staging_credhub_subnet_az2_reserved" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidr_az2, 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidr_az2, 3)}"
+}
+
+
+output "staging_credhub_subnet_cidr_az1" {
+  value = module.credhub_staging.credhub_subnet_cidr_az1
+}
+
+output "staging_credhub_subnet_cidr_az2" {
+  value = module.credhub_staging.credhub_subnet_cidr_az2
+}
+
+
+output "staging_credhub_subnet_az1_gateway" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidr_az1, 1)
+}
+
+output "staging_credhub_subnet_az2_gateway" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidr_az2, 1)
 }
 
 output "staging_credhub_security_group" {
@@ -778,5 +812,28 @@ output "smtp_security_group" {
 
 output "production_smtp_private_ip" {
   value = local.production_smtp_private_ip
+}
+
+/* clamav sync user */
+output "cvd_sync_username" {
+  value = module.cvd_sync_user.username
+}
+
+output "cvd_sync_access_key_id_prev" {
+  value = module.cvd_sync_user.access_key_id_prev
+}
+
+output "cvd_sync_secret_access_key_prev" {
+  value = module.cvd_sync_user.secret_access_key_prev
+  sensitive = true
+}
+
+output "cvd_sync_access_key_id_curr" {
+  value = module.cvd_sync_user.access_key_id_curr
+}
+
+output "cvd_sync_secret_access_key_curr" {
+  value = module.cvd_sync_user.secret_access_key_curr
+  sensitive = true
 }
 
