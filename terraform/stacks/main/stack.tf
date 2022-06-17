@@ -8,13 +8,13 @@ provider "aws" {
   # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_region}.amazonaws.com"
+    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
+    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 provider "aws" {
@@ -26,13 +26,13 @@ provider "aws" {
     role_arn = var.parent_assume_arn
   }
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_region}.amazonaws.com"
+    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
+    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 provider "aws" {
@@ -41,13 +41,13 @@ provider "aws" {
     role_arn = var.assume_arn
   }
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_region}.amazonaws.com"
+    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
+    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 
