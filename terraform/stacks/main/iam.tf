@@ -82,14 +82,6 @@ module "elasticache_broker_policy" {
   policy_name = "${var.stack_description}-elasticache-broker"
 }
 
-module "ecr_policy" {
-  source      = "../../modules/iam_role_policy/ecr"
-  policy_name = "${var.stack_description}-ecr"
-  aws_partition      = data.aws_partition.current.partition
-  aws_default_region = var.aws_default_region
-  account_id         = data.aws_caller_identity.current.account_id
-}
-
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"

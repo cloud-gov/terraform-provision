@@ -87,7 +87,7 @@ module "cloudwatch_policy" {
 }
 module "ecr_policy" {
   source      = "../../modules/iam_role_policy/ecr"
-  policy_name = "${var.stack_description}-ecr"
+  policy_name = "ecr"
   aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
   account_id         = data.aws_caller_identity.current.account_id
