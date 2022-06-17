@@ -13,6 +13,11 @@ terraform {
 }
 
 provider "aws" {
+  # cloudfront and route53 are regionless...
+  endpoints {
+    cloudfront = "https://cloudfront-fips.amazonaws.com"
+    route53 = "https://route53-fips.amazonaws.com"
+  }
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.aws_region

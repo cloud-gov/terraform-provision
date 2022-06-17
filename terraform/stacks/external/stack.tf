@@ -4,6 +4,11 @@ terraform {
 }
 
 provider "aws" {
+  # cloudfront and route53 are regionless...
+  endpoints {
+    cloudfront = "https://cloudfront-fips.amazonaws.com"
+    route53 = "https://route53-fips.amazonaws.com"
+  }
 }
 
 data "aws_partition" "current" {
