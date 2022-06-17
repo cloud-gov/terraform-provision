@@ -82,6 +82,14 @@ module "elasticache_broker_policy" {
   policy_name = "${var.stack_description}-elasticache-broker"
 }
 
+module "ecr_policy" {
+  source      = "../../modules/iam_role_policy/ecr"
+  policy_name = "${var.stack_description}-ecr"
+  aws_partition      = data.aws_partition.current.partition
+  aws_default_region = var.aws_default_region
+  account_id         = data.aws_caller_identity.current.account_id
+}
+
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
@@ -216,6 +224,14 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
+resource "aws_iam_policy_attachment" "ecr" {
+  name       = "${var.stack_description}-ecr"
+  policy_arn = module.ecr_policy.arn
+
+  roles = [
+    module.concourse_worker_role.role_name,
+  ]
+}
 
 # Creds for the parent bosh (e.g. tooling-<region>) to access
 # the child bosh (e.g. <region><index>), used for CPI config
