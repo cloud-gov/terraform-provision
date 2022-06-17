@@ -224,15 +224,6 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "ecr" {
-  name       = "${var.stack_description}-ecr"
-  policy_arn = module.ecr_policy.arn
-
-  roles = [
-    module.concourse_worker_role.role_name,
-  ]
-}
-
 # Creds for the parent bosh (e.g. tooling-<region>) to access
 # the child bosh (e.g. <region><index>), used for CPI config
 resource "aws_iam_user" "parent_bosh_user" {
