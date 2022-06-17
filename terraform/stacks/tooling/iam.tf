@@ -85,6 +85,13 @@ module "cloudwatch_policy" {
   source      = "../../modules/iam_role_policy/cloudwatch"
   policy_name = "${var.stack_description}-cloudwatch"
 }
+module "ecr_policy" {
+  source      = "../../modules/iam_role_policy/ecr"
+  policy_name = "${var.stack_description}-ecr"
+  aws_partition      = data.aws_partition.current.partition
+  aws_default_region = var.aws_default_region
+  account_id         = data.aws_caller_identity.current.account_id
+}
 
 module "self_managed_credentials" {
   source        = "../../modules/iam_role_policy/self_managed_credentials"
@@ -187,6 +194,15 @@ resource "aws_iam_policy_attachment" "concourse_iaas_worker" {
 
   roles = [
     module.concourse_iaas_worker_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "ecr" {
+  name       = "${var.stack_description}-ecr"
+  policy_arn = module.ecr_policy.arn
+
+  roles = [
+    module.concourse_worker_role.role_name,
   ]
 }
 
