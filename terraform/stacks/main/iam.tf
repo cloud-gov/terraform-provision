@@ -216,7 +216,6 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
-
 # Creds for the parent bosh (e.g. tooling-<region>) to access
 # the child bosh (e.g. <region><index>), used for CPI config
 resource "aws_iam_user" "parent_bosh_user" {
