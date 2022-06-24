@@ -4,11 +4,19 @@
       {
         "Effect": "Allow",
         "Action": [
-          "ecr:ListImages",
-          "ecr:GetAuthorizationToken"
+          "ecr:ListImages"
         ],
         "Resource": [
           "arn:${aws_partition}:ecr:${aws_default_region}:${account_id}:repository/*"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+            "ecr:GetAuthorizationToken"
+        ],
+        "Resource": [
+            "*"
         ]
       }
     ]
