@@ -61,7 +61,7 @@ module "build_artifacts_bucket" {
 
 module "pgp_keys_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket"
-  bucket        = "cg-pgp-keys"
+  bucket        = var.pgp_keys_bucket_name
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }

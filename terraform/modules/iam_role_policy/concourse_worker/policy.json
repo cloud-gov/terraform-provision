@@ -41,7 +41,9 @@
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}",
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}/*",
         "arn:${aws_partition}:s3:::${concourse_varz_bucket}",
-        "arn:${aws_partition}:s3:::${concourse_varz_bucket}/*"
+        "arn:${aws_partition}:s3:::${concourse_varz_bucket}/*",
+        "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}",
+        "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*"
       ]
     },
     {
@@ -62,7 +64,8 @@
         "arn:${aws_partition}:s3:::${billing_bucket}/*",
         "arn:${aws_partition}:s3:::${varz_bucket}/*-bosh-state.json",
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}/*",
-        "arn:${aws_partition}:s3:::${terraform_state_bucket}/*"
+        "arn:${aws_partition}:s3:::${terraform_state_bucket}/*",
+        "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*"
       ]
     }
   ]

@@ -14,6 +14,7 @@ data "template_file" "policy" {
     cg_binaries_bucket      = var.cg_binaries_bucket
     log_bucket              = var.log_bucket
     concourse_varz_bucket   = var.concourse_varz_bucket
+    pgp_keys_bucket_name    = var.pgp_keys_bucket_name
   }
 }
 
