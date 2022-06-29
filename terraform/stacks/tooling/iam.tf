@@ -74,6 +74,7 @@ module "concourse_worker_policy" {
   cg_binaries_bucket      = var.cg_binaries_bucket
   log_bucket              = var.log_bucket_name
   concourse_varz_bucket   = var.concourse_varz_bucket
+  pgp_keys_bucket         = var.pgp_keys_bucket
 }
 
 module "concourse_iaas_worker_policy" {
