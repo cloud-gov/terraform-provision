@@ -38,6 +38,6 @@ variable "concourse_varz_bucket" {
 }
 
 variable "pgp_keys_bucket_name" {
-    type = "string"
+    type = string
     description = "Name of S3 bucket for PGP keys"
 }
