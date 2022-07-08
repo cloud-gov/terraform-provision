@@ -11,9 +11,20 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Effect": "Allow",
         "Resource": "*",
         "Principal": "*"
+        "Condition": {
+          "ForAllValues:StringEquals": {
+            "aws:PrincipalAccount": ${account_id},
+            "aws:ResourceAccount": ${account_id}"
+          }				
+        }        
     }]
 }
 EOF
 
 }
 
+data "aws_caller_identity" "current" {}
+
+locals {
+    account_id = data.aws_caller_identity.current.account_id
+}
