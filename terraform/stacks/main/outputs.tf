@@ -326,6 +326,15 @@ output "elasticsearch_security_group" {
   value = module.elasticsearch_broker.elasticsearch_security_group
 }
 
+/* S3 Gateway Endpoint CIDRs for CF ASGs*/
+output "s3_gateway_endpoint_cidr_1" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[0]
+}
+
+output "s3_gateway_endpoint_cidr_2" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[1]
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = module.stack.bosh_rds_url_curr
