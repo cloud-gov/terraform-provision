@@ -32,12 +32,16 @@ resource "aws_vpc_endpoint" "customer_s3" {
   subnet_ids          = [aws_subnet.az1_public.id, aws_subnet.az2_public.id]
 }
 
-data "aws_network_interface" "vpce_customer_s3_az1"{
-  id = aws_vpc_endpoint.private-s3.network_interface_ids[0]
+data "aws_network_interface" "vpce_customer_s3_if1"{
+  id = local.network_interface_ids[0]
 }
 
-data "aws_network_interface" "vpce_customer_s3_az2"{
-  id = aws_vpc_endpoint.private-s3.network_interface_ids[1]
+data "aws_network_interface" "vpce_customer_s3_if2"{
+  id = local.network_interface_ids[1] 
 }
 
 data "aws_caller_identity" "current" {}
+
+locals {
+  network_interface_ids = tolist(aws_vpc_endpoint.customer_s3.network_interface_ids)
+}
