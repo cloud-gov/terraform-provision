@@ -88,7 +88,7 @@ output "vpc_endpoint_customer_s3_if1_ip" {
 }
 
 output "vpc_endpoint_customer_s3_if2_ip" {
-  value = data.aws_network_interface.vpce_customer_s3_if1.private_ip
+  value = data.aws_network_interface.vpce_customer_s3_if2.private_ip
 }
 
 /* DNS for the S3 Private Endpoint */
