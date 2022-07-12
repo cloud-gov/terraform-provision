@@ -1,6 +1,7 @@
 resource "aws_vpc_endpoint" "private-s3" {
   vpc_id          = aws_vpc.main_vpc.id
   service_name    = "com.amazonaws.${var.aws_default_region}.s3"
+  vpc_endpoint_type = "Gateway"
   route_table_ids = [aws_route_table.az1_private_route_table.id, aws_route_table.az2_private_route_table.id]
   policy          = <<EOF
 {
@@ -21,6 +22,22 @@ resource "aws_vpc_endpoint" "private-s3" {
 }
 EOF
 
+}
+
+resource "aws_vpc_endpoint" "customer_s3" {
+  vpc_id              = aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.${var.aws_default_region}.s3"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.bosh.id]
+  subnet_ids          = [aws_subnet.az1_public.id, aws_subnet.az2_public.id]
+}
+
+data "aws_network_interface" "vpce_customer_s3_az1"{
+  id = aws_vpc_endpoint.private-s3.network_interface_ids[0]
+}
+
+data "aws_network_interface" "vpce_customer_s3_az2"{
+  id = aws_vpc_endpoint.private-s3.network_interface_ids[1]
 }
 
 data "aws_caller_identity" "current" {}
