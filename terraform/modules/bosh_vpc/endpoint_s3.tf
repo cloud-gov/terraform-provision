@@ -14,8 +14,8 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Principal": "*",
         "Condition": {
           "ForAllValues:StringEquals": {
-            "aws:PrincipalAccount": ${data.aws_caller_identity.current.account_id},
-            "aws:ResourceAccount": ${data.aws_caller_identity.current.account_id}
+            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)}
+            "aws:ResourceAccount": ${jsonencode(local.policy_account_list)}
           }				
         }        
     }]
@@ -44,4 +44,5 @@ data "aws_caller_identity" "current" {}
 
 locals {
   network_interface_ids = tolist(aws_vpc_endpoint.customer_s3.network_interface_ids)
+  policy_account_list = concat(var.s3_gateway_policy_accounts, data.aws_caller_identity.current.account_id)
 }
