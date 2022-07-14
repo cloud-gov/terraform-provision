@@ -40,6 +40,10 @@ output "vpc_endpoint_customer_s3_if2_ip"{
   value = module.base.vpc_endpoint_customer_s3_if2_ip
 }
 
+output "vpc_endpoint_customer_s3_dns" {
+  value = module.base.vpc_endpoint_customer_s3_dns
+}
+
 /* Public network */
 output "public_subnet_az1" {
   value = module.base.public_subnet_az1
