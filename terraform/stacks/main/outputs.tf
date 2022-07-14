@@ -335,6 +335,15 @@ output "s3_gateway_endpoint_cidr_2" {
   value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[1]
 }
 
+/* s3 private gateway endpoint ips for public egress */
+output "vpc_endpoint_customer_s3_if1_ip"{
+  value = module.stack.vpc_endpoint_customer_s3_if1_ip
+}
+
+output "vpc_endpoint_customer_s3_if2_ip"{
+  value = module.stack.vpc_endpoint_customer_s3_if2_ip
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = module.stack.bosh_rds_url_curr
@@ -610,7 +619,6 @@ output "parent_bosh_user_secret_access_key_curr" {
 output "default_key_name" {
   value = module.stack.default_key_name
 }
-
 
 output "tcp_lb_names" {
   value = module.cf.tcp_lb_names
