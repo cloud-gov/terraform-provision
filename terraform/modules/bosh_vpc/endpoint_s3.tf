@@ -11,11 +11,11 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Action": "s3:*",
         "Effect": "Allow",
         "Resource": "*",
-        "Principal": "*"
+        "Principal": "*",
         "Condition": {
           "ForAllValues:StringEquals": {
-            "aws:PrincipalAccount": ${ data.aws_caller_identity.current.account_id},
-            "aws:ResourceAccount": ${ data.aws_caller_identity.current.account_id}
+            "aws:PrincipalAccount": ${data.aws_caller_identity.current.account_id},
+            "aws:ResourceAccount": ${data.aws_caller_identity.current.account_id}
           }				
         }        
     }]
