@@ -15,7 +15,7 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Condition": {
           "ForAllValues:StringEquals": {
             "aws:PrincipalAccount": ${ data.aws_caller_identity.current.account_id},
-            "aws:ResourceAccount": ${ data.aws_caller_identity.current.account_id}"
+            "aws:ResourceAccount": ${ data.aws_caller_identity.current.account_id}
           }				
         }        
     }]

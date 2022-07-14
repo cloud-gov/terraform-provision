@@ -32,6 +32,14 @@ output "private_cidr_az2" {
   value = module.vpc.private_cidr_az2
 }
 
+output "vpc_endpoint_customer_s3_if1_ip"{
+  value = module.vpc.vpc_endpoint_customer_s3_if1_ip
+}
+
+output "vpc_endpoint_customer_s3_if2_ip"{
+  value = module.vpc.vpc_endpoint_customer_s3_if2_ip
+}
+
 /* Public network */
 output "public_subnet_az1" {
   value = module.vpc.public_subnet_az1
