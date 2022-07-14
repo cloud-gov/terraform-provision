@@ -125,6 +125,10 @@ data "aws_arn" "parent_role_arn" {
   arn = var.parent_assume_arn
 }
 
+data "aws_prefix_list" s3_gw_cidrs{
+  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+}
+
 locals {
   pages_cert_ids          = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(

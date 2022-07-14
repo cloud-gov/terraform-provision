@@ -81,3 +81,17 @@ output "restricted_web_traffic_security_group" {
 output "default_key_name" {
   value = aws_key_pair.bosh.key_name
 }
+
+/* S3 Private Endpoint for region*/
+output "vpc_endpoint_customer_s3_if1_ip" {
+  value = data.aws_network_interface.vpce_customer_s3_if1.private_ip
+}
+
+output "vpc_endpoint_customer_s3_if2_ip" {
+  value = data.aws_network_interface.vpce_customer_s3_if2.private_ip
+}
+
+/* DNS for the S3 Private Endpoint */
+output "vpc_endpoint_customer_s3_dns"{
+  value = aws_vpc_endpoint.customer_s3.dns_entry
+}
