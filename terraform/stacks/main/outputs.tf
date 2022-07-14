@@ -344,6 +344,10 @@ output "vpc_endpoint_customer_s3_if2_ip"{
   value = module.stack.vpc_endpoint_customer_s3_if2_ip
 }
 
+output "vpc_endpoint_customer_s3_dns" {
+  value = module.stack.vpc_endpoint_customer_s3_dns
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = module.stack.bosh_rds_url_curr
