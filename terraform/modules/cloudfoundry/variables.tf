@@ -6,12 +6,12 @@ variable "elb_apps_cert_id" {
 
 variable "pages_cert_ids" {
   default = []
-  type = set(string)
+  type    = set(string)
 }
 
 variable "pages_wildcard_cert_ids" {
   default = []
-  type = set(string)
+  type    = set(string)
 }
 
 variable "elb_subnets" {
@@ -118,9 +118,14 @@ variable "tcp_first_port" {
   default = 10000
 }
 
+variable "tcp_additional_ports" {
+  default = [443]
+}
+
 variable "tcp_allow_cidrs_ipv4" {
   default = ["0.0.0.0/0"]
 }
+
 variable "tcp_allow_cidrs_ipv6" {
   default = ["::/0"]
 }
