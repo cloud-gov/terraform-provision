@@ -111,14 +111,14 @@ output "tcp_lb_dns_names" {
 output "tcp_lb_target_groups" {
   value = concat(
     aws_lb_target_group.cf_apps_target_tcp.*.name,
-    aws_lb_target_group.cf_apps_target_tcp_additional.*.name,
+    aws_lb_target_group.cf_apps_target_tcp_443.*.name,
   )
 }
 
 output "tcp_lb_listener_ports" {
   value = distinct(concat(
     aws_lb_listener.cf_apps_tcp.*.port,
-    # aws_lb_listener.cf_apps_tcp_additional.*.port
+    aws_lb_listener.cf_apps_tcp_443.*.port
   ))
 }
 

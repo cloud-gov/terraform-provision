@@ -1,7 +1,3 @@
-locals {
-  additional_tcp_targets = var.tcp_lb_count * length(var.tcp_additional_ports)
-}
-
 resource "aws_security_group" "nlb_traffic" {
   count       = var.tcp_lb_count > 0 ? 1 : 0
   description = "Allow traffic in to NLB"
@@ -15,15 +11,12 @@ resource "aws_security_group" "nlb_traffic" {
     ipv6_cidr_blocks = var.tcp_allow_cidrs_ipv6
   }
 
-  dynamic "ingress" {
-    for_each = var.tcp_additional_ports
-    content {
-      from_port        = setting.value
-      to_port          = setting.value
-      protocol         = "tcp"
-      cidr_blocks      = var.tcp_allow_cidrs_ipv4
-      ipv6_cidr_blocks = var.tcp_allow_cidrs_ipv6
-    }
+  ingress {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = var.tcp_allow_cidrs_ipv4
+    ipv6_cidr_blocks = var.tcp_allow_cidrs_ipv6
   }
 
   tags = {
@@ -47,10 +40,10 @@ resource "aws_lb_target_group" "cf_apps_target_tcp" {
   vpc_id   = var.vpc_id
 }
 
-resource "aws_lb_target_group" "cf_apps_target_tcp_additional" {
-  count    = local.additional_tcp_targets
-  name     = "${var.stack_description}-cf-tcp-additional-${count.index}"
-  port     = var.tcp_additional_ports[floor(count.index / local.additional_tcp_targets)]
+resource "aws_lb_target_group" "cf_apps_target_tcp_443" {
+  count    = var.tcp_lb_count
+  name     = "${var.stack_description}-cf-tcp-443-${count.index}"
+  port     = 443
   protocol = "TCP"
   vpc_id   = var.vpc_id
 }
@@ -67,14 +60,14 @@ resource "aws_lb_listener" "cf_apps_tcp" {
   }
 }
 
-# resource "aws_lb_listener" "cf_apps_tcp_additional" {
-#   count             = var.tcp_lb_count
-#   load_balancer_arn = aws_lb.cf_apps_tcp[count.index].arn
-#   protocol          = "TCP"
-#   port              = 443
+resource "aws_lb_listener" "cf_apps_tcp_443" {
+  count             = var.tcp_lb_count
+  load_balancer_arn = aws_lb.cf_apps_tcp[count.index].arn
+  protocol          = "TCP"
+  port              = 443
 
-#   default_action {
-#     target_group_arn = aws_lb_target_group.cf_apps_target_tcp_443[count.index].arn
-#     type             = "forward"
-#   }
-# }
+  default_action {
+    target_group_arn = aws_lb_target_group.cf_apps_target_tcp_443[count.index].arn
+    type             = "forward"
+  }
+}

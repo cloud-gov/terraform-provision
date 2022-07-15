@@ -118,10 +118,6 @@ variable "tcp_first_port" {
   default = 10000
 }
 
-variable "tcp_additional_ports" {
-  default = [443]
-}
-
 variable "tcp_allow_cidrs_ipv4" {
   default = ["0.0.0.0/0"]
 }
