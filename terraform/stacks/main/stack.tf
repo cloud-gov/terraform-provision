@@ -4,35 +4,35 @@ terraform {
 }
 
 provider "aws" {
-  # this is for CI 
+  # this is for CI
   # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    ecr      = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs      = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es       = "https://es-fips.${var.aws_default_region}.amazonaws.com"
     firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
+    kms      = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda   = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2    = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 provider "aws" {
-  # this is for the tooling bosh 
+  # this is for the tooling bosh
   # deploy and monitor vms, scrape metrics, compliance agents, and smtp
-  alias = "parentbosh"
+  alias  = "parentbosh"
   region = var.aws_default_region
   assume_role {
     role_arn = var.parent_assume_arn
   }
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    ecr      = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs      = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es       = "https://es-fips.${var.aws_default_region}.amazonaws.com"
     firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
+    kms      = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda   = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2    = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 provider "aws" {
@@ -41,18 +41,18 @@ provider "aws" {
     role_arn = var.assume_arn
   }
   endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
+    ecr      = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
+    efs      = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
+    es       = "https://es-fips.${var.aws_default_region}.amazonaws.com"
     firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
+    kms      = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
+    lambda   = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
+    wafv2    = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
 }
 
 data "terraform_remote_state" "target_vpc" {
-  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474
   # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
   # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
 
@@ -65,7 +65,7 @@ data "terraform_remote_state" "target_vpc" {
 }
 
 data "terraform_remote_state" "parent_vpc" {
-  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474
   # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
   # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
 
@@ -125,12 +125,12 @@ data "aws_arn" "parent_role_arn" {
   arn = var.parent_assume_arn
 }
 
-data "aws_prefix_list" s3_gw_cidrs{
+data "aws_prefix_list" "s3_gw_cidrs" {
   name = "com.amazonaws.${data.aws_region.current.name}.s3"
 }
 
 locals {
-  pages_cert_ids          = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
+  pages_cert_ids = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(
     [for k, cert in data.aws_iam_server_certificate.pages_wildcard : cert.arn],
     [for k, cert in data.aws_iam_server_certificate.pages_wildcard_sites : cert.arn]
@@ -178,7 +178,7 @@ module "stack" {
   source = "../../modules/stack/spoke"
 
   providers = {
-    aws = aws
+    aws         = aws
     aws.tooling = aws.tooling
     aws.parent  = aws.parentbosh
   }
@@ -206,10 +206,10 @@ module "stack" {
   target_account_id                 = data.aws_caller_identity.tooling.account_id
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
 
-  target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
-  target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
-  target_az1_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
-  target_az2_route_table     = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
+  target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
+  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
+  target_az1_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
+  target_az2_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
   target_concourse_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
@@ -231,15 +231,15 @@ module "stack" {
 module "cf" {
   source = "../../modules/cloudfoundry"
 
-  az1                         = data.aws_availability_zones.available.names[var.az1_index]
-  az2                         = data.aws_availability_zones.available.names[var.az2_index]
-  stack_description           = var.stack_description
-  aws_partition               = data.aws_partition.current.partition
-  elb_main_cert_id            = data.aws_iam_server_certificate.wildcard.arn
-  elb_apps_cert_id            = data.aws_iam_server_certificate.wildcard_apps.arn
-  pages_cert_ids              = local.pages_cert_ids
-  pages_wildcard_cert_ids     = local.pages_wildcard_cert_ids
-  elb_subnets                 = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  az1                     = data.aws_availability_zones.available.names[var.az1_index]
+  az2                     = data.aws_availability_zones.available.names[var.az2_index]
+  stack_description       = var.stack_description
+  aws_partition           = data.aws_partition.current.partition
+  elb_main_cert_id        = data.aws_iam_server_certificate.wildcard.arn
+  elb_apps_cert_id        = data.aws_iam_server_certificate.wildcard_apps.arn
+  pages_cert_ids          = local.pages_cert_ids
+  pages_wildcard_cert_ids = local.pages_wildcard_cert_ids
+  elb_subnets             = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
 
   elb_security_groups = [
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,
@@ -258,15 +258,15 @@ module "cf" {
   private_route_table_az1 = module.stack.private_route_table_az1
   private_route_table_az2 = module.stack.private_route_table_az2
 
-  services_cidr_1       = cidrsubnet(var.vpc_cidr, 8, 30)
-  services_cidr_2       = cidrsubnet(var.vpc_cidr, 8, 31)
-  bucket_prefix         = var.bucket_prefix
-  log_bucket_name       = module.log_bucket.elb_bucket_name
+  services_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 30)
+  services_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 31)
+  bucket_prefix   = var.bucket_prefix
+  log_bucket_name = module.log_bucket.elb_bucket_name
 
-  tcp_lb_count          = var.include_tcp_routes ? 1 : 0
-  tcp_allow_cidrs_ipv4  = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
-  tcp_allow_cidrs_ipv6  = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
-  waf_regular_expressions   = var.waf_regular_expressions
+  include_tcp_routes      = var.include_tcp_routes
+  tcp_allow_cidrs_ipv4    = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
+  tcp_allow_cidrs_ipv6    = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
+  waf_regular_expressions = var.waf_regular_expressions
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
@@ -295,14 +295,14 @@ module "diego" {
 module "logsearch" {
   source = "../../modules/logsearch"
 
-  stack_description       = var.stack_description
-  vpc_id                  = module.stack.vpc_id
-  private_elb_subnets     = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  bosh_security_group     = module.stack.bosh_security_group
-  listener_arn            = aws_lb_listener.main.arn
-  hosts                   = var.platform_kibana_hosts
-  elb_log_bucket_name     = module.log_bucket.elb_bucket_name
-  aws_partition           = data.aws_partition.current.partition
+  stack_description   = var.stack_description
+  vpc_id              = module.stack.vpc_id
+  private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
+  bosh_security_group = module.stack.bosh_security_group
+  listener_arn        = aws_lb_listener.main.arn
+  hosts               = var.platform_kibana_hosts
+  elb_log_bucket_name = module.log_bucket.elb_bucket_name
+  aws_partition       = data.aws_partition.current.partition
 }
 
 module "shibboleth" {

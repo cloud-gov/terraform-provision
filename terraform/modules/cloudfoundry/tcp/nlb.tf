@@ -6,8 +6,8 @@ resource "aws_security_group" "nlb_traffic" {
     from_port        = var.tcp_first_port
     to_port          = var.listeners_per_tcp_lb + var.tcp_first_port
     protocol         = "tcp"
-    cidr_blocks      = [var.tcp_allow_cidrs_ipv4]
-    ipv6_cidr_blocks = [var.tcp_allow_cidrs_ipv6]
+    cidr_blocks      = var.tcp_allow_cidrs_ipv4
+    ipv6_cidr_blocks = var.tcp_allow_cidrs_ipv6
   }
 
   tags = {

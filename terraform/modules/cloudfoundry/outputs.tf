@@ -101,21 +101,21 @@ output "cf_uaa_waf_core_arn" {
 }
 
 output "tcp_lb_names" {
-  value = aws_lb.cf_apps_tcp.*.name
+  value = module.tcp_platform.tcp_lb_names
 }
 
 output "tcp_lb_dns_names" {
-  value = aws_lb.cf_apps_tcp.*.dns_name
+  value = module.tcp_platform.tcp_lb_dns_names
 }
 
 output "tcp_lb_target_groups" {
-  value = aws_lb_target_group.cf_apps_target_tcp.*.name
+  value = module.tcp_platform.tcp_lb_target_groups
 }
 
 output "tcp_lb_listener_ports" {
-  value = aws_lb_listener.cf_apps_tcp.*.port
+  value = module.tcp_platform.tcp_lb_listener_ports
 }
 
 output "tcp_lb_security_groups" {
-  value = aws_security_group.nlb_traffic.*
+  value = module.tcp_platform.tcp_lb_security_groups
 }
