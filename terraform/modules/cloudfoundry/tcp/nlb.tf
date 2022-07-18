@@ -10,9 +10,9 @@ resource "aws_security_group" "nlb_traffic" {
     ipv6_cidr_blocks = var.tcp_allow_cidrs_ipv6
   }
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.stack_description} - Incoming TCP Traffic"
-  }
+  })
 }
 
 resource "aws_lb" "cf_apps_tcp" {
@@ -20,6 +20,7 @@ resource "aws_lb" "cf_apps_tcp" {
   load_balancer_type = "network"
   subnets            = var.elb_subnets
   ip_address_type    = "dualstack"
+  tags               = var.tags
 }
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
@@ -28,6 +29,7 @@ resource "aws_lb_target_group" "cf_apps_target_tcp" {
   port     = var.tcp_first_port + count.index
   protocol = "TCP"
   vpc_id   = var.vpc_id
+  tags     = var.tags
 }
 
 resource "aws_lb_listener" "cf_apps_tcp" {
@@ -35,6 +37,7 @@ resource "aws_lb_listener" "cf_apps_tcp" {
   load_balancer_arn = aws_lb.cf_apps_tcp[floor(count.index / var.listeners_per_tcp_lb)].arn
   protocol          = "TCP"
   port              = var.tcp_first_port + count.index
+  tags              = var.tags
 
   default_action {
     target_group_arn = aws_lb_target_group.cf_apps_target_tcp[count.index].arn

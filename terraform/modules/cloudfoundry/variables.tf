@@ -110,10 +110,6 @@ variable "include_tcp_routes" {
   type = bool
 }
 
-variable "tcp_lb_count" {
-  default = 0
-}
-
 variable "tcp_allow_cidrs_ipv4" {
   default = ["0.0.0.0/0"]
 }

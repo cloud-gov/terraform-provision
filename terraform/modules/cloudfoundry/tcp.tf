@@ -8,4 +8,10 @@ module "tcp_platform" {
   tcp_allow_cidrs_ipv6 = var.tcp_allow_cidrs_ipv6
   tcp_first_port       = 10000
   vpc_id               = var.vpc_id
+
+  tags = {
+    Stack    = var.stack_description
+    Customer = "cloud-gov"
+    Usage    = "internal"
+  }
 }

@@ -8,6 +8,10 @@ variable "listeners_per_tcp_lb" {
 
 variable "stack_description" {}
 
+variable "tags" {
+  type = map(string)
+}
+
 variable "tcp_allow_cidrs_ipv4" {
   default = ["0.0.0.0/0"]
 }
