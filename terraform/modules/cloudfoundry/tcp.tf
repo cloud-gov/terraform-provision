@@ -1,6 +1,6 @@
 module "tcp_platform" {
   count  = var.include_tcp_routes ? 1 : 0
-  source = "./tcp"
+  source = "../tcp"
 
   elb_subnets          = var.elb_subnets
   stack_description    = var.stack_description
