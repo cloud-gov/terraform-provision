@@ -1,9 +1,9 @@
 output "tcp_lb_names" {
-  value = aws_lb.cf_apps_tcp.name
+  value = aws_lb.cf_apps_tcp.*.name
 }
 
 output "tcp_lb_dns_names" {
-  value = aws_lb.cf_apps_tcp.dns_name
+  value = aws_lb.cf_apps_tcp.*.dns_name
 }
 
 output "tcp_lb_target_groups" {
@@ -15,5 +15,5 @@ output "tcp_lb_listener_ports" {
 }
 
 output "tcp_lb_security_group" {
-  value = aws_security_group.nlb_traffic
+  value = aws_security_group.nlb_traffic[*]
 }

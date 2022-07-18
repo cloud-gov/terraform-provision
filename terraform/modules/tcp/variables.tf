@@ -24,5 +24,9 @@ variable "tcp_first_port" {
   type = number
 }
 
+variable "tcp_lb_count" {
+  default = 1
+}
+
 variable "vpc_id" {}
 
