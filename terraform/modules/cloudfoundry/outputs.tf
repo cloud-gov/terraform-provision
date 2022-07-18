@@ -101,21 +101,21 @@ output "cf_uaa_waf_core_arn" {
 }
 
 output "tcp_lb_names" {
-  value = module.tcp_platform.tcp_lb_names
+  value = module.tcp_platform[*].tcp_lb_names
 }
 
 output "tcp_lb_dns_names" {
-  value = module.tcp_platform.tcp_lb_dns_names
+  value = module.tcp_platform[*].tcp_lb_dns_names
 }
 
 output "tcp_lb_target_groups" {
-  value = module.tcp_platform.tcp_lb_target_groups
+  value = module.tcp_platform[*].tcp_lb_target_groups
 }
 
 output "tcp_lb_listener_ports" {
-  value = module.tcp_platform.tcp_lb_listener_ports
+  value = module.tcp_platform[*].tcp_lb_listener_ports
 }
 
 output "tcp_lb_security_groups" {
-  value = module.tcp_platform.tcp_lb_security_groups
+  value = module.tcp_platform[*].tcp_lb_security_group.id
 }
