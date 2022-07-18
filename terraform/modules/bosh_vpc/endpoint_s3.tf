@@ -14,7 +14,7 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Principal": "*",
         "Condition": {
           "ForAllValues:StringEquals": {
-            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)}
+            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)},
             "aws:ResourceAccount": ${jsonencode(local.policy_account_list)}
           }				
         }        
