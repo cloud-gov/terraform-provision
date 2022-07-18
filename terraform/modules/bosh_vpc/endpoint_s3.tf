@@ -11,19 +11,22 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Action": "s3:*",
         "Effect": "Allow",
         "Resource": "*",
-        "Principal": "*",
-        "Condition": {
-          "ForAllValues:StringEquals": {
-            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)},
-            "aws:ResourceAccount": ${jsonencode(local.policy_account_list)}
-          }				
-        }        
+        "Principal": "*"      
     }]
 }
 EOF
 
 }
 
+/* This needs to be in place for trusted s3 egress to work. Removing from policy ^^ due to ECR build issues with federalist
+        ,
+        "Condition": {
+          "ForAllValues:StringEquals": {
+            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)},
+            "aws:ResourceAccount": ${jsonencode(local.policy_account_list)}
+          }				
+        } 
+*/
 resource "aws_vpc_endpoint" "customer_s3" {
   vpc_id              = aws_vpc.main_vpc.id
   service_name        = "com.amazonaws.${var.aws_default_region}.s3"
