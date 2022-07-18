@@ -130,3 +130,8 @@ variable "include_tcp_routes" {
 variable "waf_regular_expressions" {
   type = list(string)
 }
+
+variable "s3_gateway_policy_accounts"{
+  type    = list(string)
+  default = []
+}
