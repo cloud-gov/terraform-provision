@@ -11,8 +11,24 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Action": "s3:*",
         "Effect": "Allow",
         "Resource": "*",
-        "Principal": "*"      
-    }]
+        "Principal": "*",
+        "Condition": {
+          "ForAllValues:StringEquals": {
+            "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)},
+            "aws:ResourceAccount": ${jsonencode(local.policy_account_list)}
+          }				
+        }        
+    },
+    {
+      "Sid": "Access-to-ecr-buckets",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::prod-us-gov-west-1-starport-layer-bucket/*"
+      ]
+    }
+    ]
 }
 EOF
 
