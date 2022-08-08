@@ -25,7 +25,9 @@ resource "aws_vpc_endpoint" "private-s3" {
       "Principal": "*",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::prod-us-gov-west-1-starport-layer-bucket/*"
+        "arn:aws:s3:::prod-us-gov-west-1-starport-layer-bucket/*",
+        "arn:aws:s3:::prod-us-gov-east-1-starport-layer-bucket/*",
+        "arn:aws:s3:::prod-us-east-1-starport-layer-bucket/*",
       ]
     }
     ]
