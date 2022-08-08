@@ -321,6 +321,7 @@ jobs:
       TF_VAR_oidc_client: ((tooling_oidc_client))
       TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
       TF_VAR_payer_account_id: ((payer_account_id))
+      TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
   - *notify-slack
 
 - name: bootstrap-tooling
