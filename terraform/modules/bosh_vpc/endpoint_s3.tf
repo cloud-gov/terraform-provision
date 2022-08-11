@@ -12,7 +12,12 @@ resource "aws_vpc_endpoint" "private-s3" {
         "Action": "s3:*",
         "Effect": "Allow",
         "Resource": "*",
-        "Principal": "*",
+        "Principal": "*"
+      }
+    ]
+}
+EOF
+/*      "Principal": "*",
         "Condition": {
           "ForAllValues:StringEquals": {
             "aws:PrincipalAccount": ${jsonencode(local.policy_account_list)},
@@ -32,9 +37,7 @@ resource "aws_vpc_endpoint" "private-s3" {
       ]
     }
   ]
-}
-EOF
-
+} */
 }
 
 resource "aws_vpc_endpoint" "customer_s3" {
