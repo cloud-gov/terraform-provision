@@ -125,6 +125,10 @@ data "aws_arn" "parent_role_arn" {
   arn = var.parent_assume_arn
 }
 
+data "aws_prefix_list" s3_gw_cidrs{
+  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+}
+
 locals {
   pages_cert_ids          = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(
@@ -201,6 +205,7 @@ module "stack" {
   parent_account_id                 = data.aws_arn.parent_role_arn.account
   target_account_id                 = data.aws_caller_identity.tooling.account_id
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
+  s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
 
   target_vpc_id              = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr            = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
