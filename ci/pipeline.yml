@@ -726,7 +726,7 @@ jobs:
       TF_VAR_admin_hosts: '["admin.fr.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
-      TF_VAR_domains_broker_alb_count: "6"
+      TF_VAR_domains_broker_alb_count: "7"
       TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
       TF_VAR_pages_cert_patterns: '["pages-staging.cloud.gov","pages-dev.cloud.gov"]'
