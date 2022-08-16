@@ -6,7 +6,8 @@ resource "aws_vpc_endpoint" "private-s3" {
   policy          = <<EOF
 {
     "Version": "2012-10-17",
-    "Statement": [{
+    "Statement": [
+      {
         "Sid": "PrivateS3Access",
         "Action": "s3:*",
         "Effect": "Allow",
@@ -25,15 +26,14 @@ resource "aws_vpc_endpoint" "private-s3" {
       "Principal": "*",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::prod-us-gov-west-1-starport-layer-bucket/*",
-        "arn:aws:s3:::prod-us-gov-east-1-starport-layer-bucket/*",
-        "arn:aws:s3:::prod-us-east-1-starport-layer-bucket/*",
+        "arn:aws-us-gov:s3:::prod-us-gov-west-1-starport-layer-bucket/*",
+        "arn:aws-us-gov:s3:::prod-us-gov-east-1-starport-layer-bucket/*",
+        "arn:aws:s3:::prod-us-east-1-starport-layer-bucket/*"
       ]
     }
-    ]
-}
+  ]
+} 
 EOF
-
 }
 
 resource "aws_vpc_endpoint" "customer_s3" {
