@@ -177,3 +177,7 @@ variable "bosh_default_ssh_public_key" {
 
 }
 
+variable "s3_gateway_policy_accounts"{
+  type    = list(string)
+  default = []
+}
