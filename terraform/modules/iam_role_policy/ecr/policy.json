@@ -4,7 +4,13 @@
       {
         "Effect": "Allow",
         "Action": [
-          "ecr:ListImages"
+          "ecr:BatchGetImage",
+          "ecr:DescribeImages",
+          "ecr:DescribeRepositories",
+          "ecr:BatchDeleteImage",
+          "ecr:ListImages",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetRepositoryPolicy"
         ],
         "Resource": [
           "arn:${aws_partition}:ecr:${aws_default_region}:${account_id}:repository/*"
