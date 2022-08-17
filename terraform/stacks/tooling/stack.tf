@@ -93,6 +93,7 @@ module "stack" {
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
   target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31)]
   target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
+  s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
 }
 
 module "concourse_production" {
