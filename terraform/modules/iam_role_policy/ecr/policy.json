@@ -10,7 +10,8 @@
           "ecr:BatchDeleteImage",
           "ecr:ListImages",
           "ecr:BatchCheckLayerAvailability",
-          "ecr:GetRepositoryPolicy"
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetDownloadUrlForLayer"
         ],
         "Resource": [
           "arn:${aws_partition}:ecr:${aws_default_region}:${account_id}:repository/*"
