@@ -33,7 +33,7 @@ resource "aws_route53_record" "cloud_gov_zendesk_support_cname" {
   records = ["cloud-gov-new.zendesk.com."]
 }
 
-resource "aws_route53_record" "cloud_gov_zendesk_support_cname" {
+resource "aws_route53_record" "cloud_gov_pages_zendesk_support_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "pages-support.cloud.gov."
   type    = "CNAME"
