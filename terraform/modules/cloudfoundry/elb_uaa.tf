@@ -1,9 +1,9 @@
 resource "aws_lb" "cf_uaa" {
-  name = "${var.stack_description}-cloudfoundry-uaa"
-  subnets = var.elb_subnets
+  name            = "${var.stack_description}-cloudfoundry-uaa"
+  subnets         = var.elb_subnets
   security_groups = var.elb_security_groups
   ip_address_type = "dualstack"
-  idle_timeout = 3600
+  idle_timeout    = 3600
   access_logs {
     bucket  = var.log_bucket_name
     prefix  = var.stack_description
@@ -32,7 +32,7 @@ resource "aws_lb_listener" "cf_uaa" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
-  certificate_arn = var.elb_main_cert_id
+  certificate_arn   = var.elb_main_cert_id
 
   default_action {
     target_group_arn = aws_lb_target_group.cf_uaa_target.arn
@@ -66,11 +66,33 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
+    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    priority = 0
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-ManagedRulesAmazonIpReputationList"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = "AWS-KnownBadInputsRuleSet"
     priority = 5
 
     override_action {
-      none{}
+      none {}
     }
 
     statement {
@@ -89,10 +111,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 10  
+    priority = 10
     action {
       block {}
-    }  
+    }
     statement {
       or_statement {
         statement {
@@ -103,7 +125,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "NONE"
+              type     = "NONE"
             }
           }
         }
@@ -115,7 +137,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "NONE"
+              type     = "NONE"
             }
           }
         }
@@ -127,7 +149,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "NONE"
+              type     = "NONE"
             }
           }
         }
@@ -141,7 +163,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "NONE"
+              type     = "NONE"
             }
           }
         }
@@ -155,12 +177,12 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
             text_transformation {
               priority = 0
-              type = "NONE"
+              type     = "NONE"
             }
           }
         }
       }
-    }  
+    }
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
