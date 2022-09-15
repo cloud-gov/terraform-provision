@@ -15,7 +15,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
     }
     status = "Enabled"
     transition {
-      days          = 90
+      days          = 365
       storage_class = "ONEZONE_IA"
     }
     expiration {
