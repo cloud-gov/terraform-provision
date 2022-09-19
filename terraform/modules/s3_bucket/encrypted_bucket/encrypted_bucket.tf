@@ -32,6 +32,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
     filter {
       prefix  = ""
     }
+    #if expiration_days is 0 then the rule is disabled
     status = var.expiration_days == 0 ? "Disabled" : "Enabled"
     expiration {
       # Hack: Set expiration days to 30 if unset; objects won't actually be expired because the rule will be disabled
