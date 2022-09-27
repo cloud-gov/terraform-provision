@@ -4,7 +4,7 @@ terraform {
 }
 
 provider "aws" {
-  # this is for CI 
+  # this is for CI
   # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
   endpoints {
@@ -18,7 +18,7 @@ provider "aws" {
   }
 }
 provider "aws" {
-  # this is for the tooling bosh 
+  # this is for the tooling bosh
   # deploy and monitor vms, scrape metrics, compliance agents, and smtp
   alias = "parentbosh"
   region = var.aws_default_region
@@ -52,7 +52,7 @@ provider "aws" {
 }
 
 data "terraform_remote_state" "target_vpc" {
-  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474
   # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
   # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
 
@@ -65,7 +65,7 @@ data "terraform_remote_state" "target_vpc" {
 }
 
 data "terraform_remote_state" "parent_vpc" {
-  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474
   # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
   # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
 
@@ -369,3 +369,10 @@ module "external_domain_broker_govcloud" {
   stack_description = var.stack_description
 }
 
+module "dns_logging" {
+  source = "../../modules/dns_logging"
+
+  stack_description = var.stack_description
+  vpc_id = module.stack.vpc_id
+  aws_partition = data.aws_partition.current.partition
+}
