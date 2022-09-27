@@ -7,4 +7,5 @@ module "production_dns" {
   admin_subdomain     = "fr.cloud.gov"
   remote_state_bucket = var.remote_state_bucket
   remote_state_region = var.remote_state_region
+  aws_partition       = data.aws_partition.current.partition
 }

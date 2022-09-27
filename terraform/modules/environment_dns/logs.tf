@@ -16,5 +16,5 @@ resource "aws_route53_resolver_query_log_config" "resolver_config" {
 
 resource "aws_route53_resolver_query_log_config_association" "resolver_config_association" {
   resolver_query_log_config_id = aws_route53_resolver_query_log_config.resolver_config.id
-  resource_id                  = data.terraform_remote_state.stack.output.vpc_id
+  resource_id                  = data.terraform_remote_state.stack.outputs.vpc_id
 }
