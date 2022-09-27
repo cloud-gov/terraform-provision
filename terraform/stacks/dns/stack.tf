@@ -80,6 +80,9 @@ data "terraform_remote_state" "development" {
   }
 }
 
+data "aws_partition" "current" {
+}
+
 resource "aws_route53_zone" "cloud_gov_zone" {
   name = "cloud.gov."
 

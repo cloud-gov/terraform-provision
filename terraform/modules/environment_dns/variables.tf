@@ -30,3 +30,7 @@ variable "remote_state_bucket" {
 variable "remote_state_region" {
 
 }
+
+variable "aws_partition" {
+  type = string
+}

@@ -5,7 +5,6 @@ module "bosh_blobstore_bucket" {
   force_destroy = "true"
 }
 
-
 module "log_bucket" {
   source          = "../../modules/log_bucket"
   aws_partition   = data.aws_partition.current.partition
