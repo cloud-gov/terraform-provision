@@ -3,7 +3,7 @@ module "dns_resolver_logs_bucket" {
   bucket          = "${var.stack_description}-query-resolver-logs"
   aws_partition   = var.aws_partition
   expiration_days = 930 # 31 days * 30 months = 930 days
-  # need to exclude bucket policy otherwise we get access denied errors from rout53
+  # need to exclude bucket policy otherwise we get access denied errors from Route53
   # query resolver logging configuration
   include_require_encrypted_put_bucket_policy = false
 }
