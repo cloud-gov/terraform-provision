@@ -5,6 +5,7 @@ module "dns_resolver_logs_bucket" {
   expiration_days = 930 # 31 days * 30 months = 930 days
   # need to exclude bucket policy otherwise we get access denied errors from Route53
   # query resolver logging configuration
+  # The bucket's default encryption setting is still enforced to ensure "encryption at rest"
   include_require_encrypted_put_bucket_policy = false
 }
 
