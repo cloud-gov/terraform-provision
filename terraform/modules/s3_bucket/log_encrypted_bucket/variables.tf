@@ -20,3 +20,9 @@ variable "expiration_days" {
   default = 0
 }
 
+variable "include_require_encrypted_put_bucket_policy" {
+  description = "True to include bucket policy to required encrypted PUTs"
+  type = bool
+  default = true
+}
+
