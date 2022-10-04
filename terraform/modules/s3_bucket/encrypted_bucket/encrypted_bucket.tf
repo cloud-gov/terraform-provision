@@ -43,6 +43,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
 }
 
 resource "aws_s3_bucket_policy" "encrypted_bucket_policy" {
+  count = var.include_require_encrypted_put_bucket_policy ? 1 : 0
   bucket = aws_s3_bucket.encrypted_bucket.id
   policy = <<EOF
 {
