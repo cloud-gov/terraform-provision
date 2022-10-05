@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_log_group" "query_resolver_Logs" {
+resource "aws_cloudwatch_log_group" "query_resolver_logs" {
   name = "${var.stack_description}-query-resolver-logs"
   # Keep for 5 years. This is the only option that is greater than the
   # minimum requirement of 30 months for M-21-31 Passive DNS data.
