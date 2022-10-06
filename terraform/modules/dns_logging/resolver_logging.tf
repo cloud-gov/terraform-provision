@@ -1,17 +1,18 @@
-module "dns_resolver_logs_bucket" {
-  source          = "../s3_bucket/log_encrypted_bucket"
-  bucket          = "${var.stack_description}-query-resolver-logs"
-  aws_partition   = var.aws_partition
-  expiration_days = 930 # 31 days * 30 months = 930 days
-  # need to exclude bucket policy otherwise we get access denied errors from Route53
-  # query resolver logging configuration
-  # The bucket's default encryption setting is still enforced to ensure "encryption at rest"
-  include_require_encrypted_put_bucket_policy = false
+resource "aws_cloudwatch_log_group" "query_resolver_logs" {
+  name = "${var.stack_description}-query-resolver-logs"
+  # Keep for 5 years. This is the only option that is greater than the
+  # minimum requirement of 30 months for M-21-31 Passive DNS data.
+  retention_in_days = 1827
+
+  tags = {
+    Environment = var.stack_description
+  }
 }
+
 
 resource "aws_route53_resolver_query_log_config" "resolver_config" {
   name            = "${var.stack_description}-query-resolver-logs"
-  destination_arn = module.dns_resolver_logs_bucket.bucket_arn
+  destination_arn = aws_cloudwatch_log_group.query_resolver_logs.arn
 
   tags = {
     Environment = var.stack_description
