@@ -15,6 +15,10 @@ variable "route_table_id" {
 variable "vpc_id" {
 }
 
+variable "vpc_cidr" {
+  type = string
+}
+
 variable "listener_arn" {
 }
 
