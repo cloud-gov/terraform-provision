@@ -21,6 +21,7 @@ groups:
   - webacl-test-development
   - webacl-test-staging
   - webacl-test-production
+  - plan-cloudfront
 - name: certs
   jobs:
   - acme-certificate-development
@@ -269,6 +270,33 @@ jobs:
     params:
       <<: *dns-params
       TERRAFORM_ACTION: apply
+
+- name: plan-cloudfront
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-cloudfront
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &cloudfront-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: cloudfront
+      TEMPLATE_SUBDIR: terraform/stacks/cloudfront
+      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+      TF_VAR_aws_access_key: ((aws_external_access_key_id))
+      TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
+      TF_VAR_aws_region: ((aws_external_region))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_remote_state_region: ((aws_default_region))
+      TF_VAR_tooling_stack_name: tooling
+      TF_VAR_production_stack_name: production
+      TF_VAR_staging_stack_name: staging
+      TF_VAR_development_stack_name: development
+  - *notify-slack
 
 - name: plan-bootstrap-tooling
   plan:
