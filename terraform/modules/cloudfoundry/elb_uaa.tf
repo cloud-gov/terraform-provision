@@ -66,8 +66,30 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    name = "AWS-AWSManagedRulesAnonymousIpList"
     priority = 0
+    
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAnonymousIpList"
+        vendor_name = "AWS"
+
+        excluded_rule {
+          name = "HostingProviderIPList"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesAnonymousIpList"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    priority = 1
 
     override_action {
       none {}
@@ -89,7 +111,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-KnownBadInputsRuleSet"
-    priority = 5
+    priority = 2
 
     override_action {
       none {}
@@ -111,7 +133,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 10
+    priority = 3
     action {
       block {}
     }
