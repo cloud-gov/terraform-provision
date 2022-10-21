@@ -66,8 +66,30 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    name = "AWS-AWSManagedRulesAnonymousIpList"
     priority = 0
+    
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAnonymousIpList"
+        vendor_name = "AWS"
+
+        excluded_rule {
+          name = "HostingProviderIPList"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesAnonymousIpList"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    priority = 1
 
     override_action {
       none {}
@@ -77,6 +99,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       managed_rule_group_statement {
         name        = "AWSManagedRulesAmazonIpReputationList"
         vendor_name = "AWS"
+
+        excluded_rule {
+          name = "AWSManagedIPReputationList"
+        }
       }
     }
 
@@ -89,7 +115,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-KnownBadInputsRuleSet"
-    priority = 5
+    priority = 2
 
     override_action {
       none {}
@@ -110,8 +136,66 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
+    name     = "AWSManagedRule-CoreRuleSet"
+    priority = 3
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+
+        excluded_rule {
+          name = "CrossSiteScripting_BODY"
+        }
+
+        excluded_rule {
+          name = "EC2MetaDataSSRF_BODY"
+        }
+
+        excluded_rule {
+          name = "EC2MetaDataSSRF_QUERYARGUMENTS"
+        }
+
+        excluded_rule {
+          name = "GenericRFI_BODY"
+        }
+
+        excluded_rule {
+          name = "NoUserAgent_HEADER"
+        }
+
+        excluded_rule {
+          name = "SizeRestrictions_BODY"
+        }
+
+        excluded_rule {
+          name = "SizeRestrictions_Cookie_HEADER"
+        }
+
+        excluded_rule {
+          name = "SizeRestrictions_QUERYSTRING"
+        }
+
+        excluded_rule {
+          name = "SizeRestrictions_URIPATH"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = "CG-RegexPatternSets"
-    priority = 10
+    priority = 5
     action {
       block {}
     }
@@ -183,28 +267,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         }
       }
     }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWSManagedRule-CoreRuleSet"
-    priority = 20
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesCommonRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"

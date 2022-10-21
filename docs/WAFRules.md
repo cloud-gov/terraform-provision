@@ -1,4 +1,7 @@
-# WAF Rules Creation and Testing
+# Custom WAF Rules Creation and Testing
+
+> **Note**: It is not necessary to write tests when adding [AWS managed rule sets](https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html), but we should follow the normal process
+of deploying changes first in development, then to staging, and then production.
 
 ## Step 1: Implementation
 
@@ -26,7 +29,7 @@ In order to test that a new WAF rule is working properly, the steps we will eith
   1. Regex patterns are specified in the corresponding pipeline variable
     1. NOTE: Both the tests and rules will use the same storage backend. If either of them exhausts credhub, then they’ll both move to s3vars.
 1. Deploy the changes into the development environment (or whichever environment we’re currently targeting)
-1. Ensure the test we created in step 1 now passes. 
+1. Ensure the test we created in step 1 now passes.
 
 ## Step 4: Promote to Staging Environment
 
