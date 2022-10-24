@@ -144,7 +144,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     priority = 3
 
     override_action {
-      count {}
+      none {}
     }
 
     statement {
@@ -199,7 +199,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 5
+    priority = 4
     action {
       block {}
     }
