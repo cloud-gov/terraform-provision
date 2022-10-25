@@ -209,8 +209,11 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       rate_based_statement {
         limit = 250000
         aggregate_key_type = "FORWARDED_IP"
-        # Requests without forwarded IP headers will be counted towards the rate limit
-        fallback_behavior = "MATCH"
+
+        forwarded_ip_config {
+          # Requests without forwarded IP headers will be counted towards the rate limit
+          fallback_behavior = "MATCH"
+        }
       }
     }
 
