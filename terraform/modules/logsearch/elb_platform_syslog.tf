@@ -5,6 +5,8 @@ resource "aws_elb" "platform_syslog_elb" {
   idle_timeout    = 60
   internal        = true
 
+  enable_deletion_protection  = true
+
   listener {
     lb_port           = 5514
     lb_protocol       = "tcp"

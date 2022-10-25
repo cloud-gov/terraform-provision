@@ -3,6 +3,8 @@ resource "aws_elb" "elasticache_elb" {
   subnets         = var.elb_subnets
   security_groups = var.elb_security_groups
   internal        = true
+  
+  enable_deletion_protection  = true
 
   listener {
     lb_port           = 80
