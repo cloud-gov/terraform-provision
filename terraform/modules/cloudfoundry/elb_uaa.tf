@@ -213,6 +213,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         forwarded_ip_config {
           # Requests without forwarded IP headers will be counted towards the rate limit
           fallback_behavior = "MATCH"
+          header_name = "X-Forwarded-For"
         }
       }
     }
