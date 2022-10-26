@@ -145,6 +145,10 @@ data "aws_prefix_list" s3_gw_cidrs{
   name = "com.amazonaws.${data.aws_region.current.name}.s3"
 }
 
+data "aws_sns_topic" "cg_notifications"{
+  name = var.sns_name
+}
+
 locals {
   pages_cert_ids          = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(
@@ -393,4 +397,12 @@ module "dns_logging" {
   stack_description = var.stack_description
   vpc_id = module.stack.vpc_id
   aws_partition = data.aws_partition.current.partition
+}
+
+module "cloud_watch" {
+  source = "../../modules/cloud_watch"
+
+  stack_description = var.stack_description
+  sns_arn = data.aws_sns_topic.cg_notifications.arn
+  load_balancer_dns = module.cf.lb_dns_name
 }
