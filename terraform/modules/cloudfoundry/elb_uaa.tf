@@ -198,8 +198,36 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "CG-RegexPatternSets"
+    name = "RateLimitByForwardedHeader"
     priority = 4
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit = 250000
+        aggregate_key_type = "FORWARDED_IP"
+
+        forwarded_ip_config {
+          # Requests without forwarded IP headers will be counted towards the rate limit
+          fallback_behavior = "MATCH"
+          header_name = "X-Forwarded-For"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-RateLimitNonCDN"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "CG-RegexPatternSets"
+    priority = 5
     action {
       block {}
     }
