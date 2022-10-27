@@ -198,7 +198,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name = "RateLimitNonCDN"
+    name = "RateLimitByForwardedHeader"
     priority = 4
 
     action {
