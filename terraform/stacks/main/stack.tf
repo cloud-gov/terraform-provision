@@ -404,5 +404,5 @@ module "cloud_watch" {
 
   stack_description = var.stack_description
   sns_arn = data.aws_sns_topic.cg_notifications.arn
-  load_balancer_dns = module.cf.lb_dns_name
+  load_balancer_dns = module.cf.lb_arn_suffix
 }

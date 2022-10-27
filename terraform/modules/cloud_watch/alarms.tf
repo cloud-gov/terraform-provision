@@ -2,12 +2,14 @@ resource "aws_cloudwatch_metric_alarm" "lb_404_anomaly_detection" {
     alarm_name = "${var.stack_description} CF Load Balancer High 404 Response Rate"
     comparison_operator = "GreaterThanUpperThreshold"
     evaluation_periods = 2
+    datapoints_to_alarm = 2
     threshold_metric_id = "ad1"
     alarm_description = "An alert for when the targets are returning a higher than normal rate of 404s"
     insufficient_data_actions = []
     actions_enabled = true
     ok_actions = []
     alarm_actions = [var.sns_arn]
+    treat_missing_data = "missing"
 
     metric_query {
         id = "ad1"
