@@ -147,8 +147,6 @@ resource "aws_lb" "main" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
 
-  enable_deletion_protection  = true
-
   access_logs {
     bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
