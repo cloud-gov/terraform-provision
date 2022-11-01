@@ -4,8 +4,6 @@ resource "aws_elb" "elasticache_elb" {
   security_groups = var.elb_security_groups
   internal        = true
   
-  enable_deletion_protection  = true
-
   listener {
     lb_port           = 80
     lb_protocol       = "HTTP"

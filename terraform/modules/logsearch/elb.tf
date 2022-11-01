@@ -5,8 +5,6 @@ resource "aws_elb" "logsearch_elb" {
   idle_timeout    = 3600
   internal        = true
 
-  enable_deletion_protection  = true
-
   listener {
     instance_port     = 9200
     instance_protocol = "tcp"

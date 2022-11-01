@@ -38,6 +38,7 @@ resource "aws_lb" "main" {
     bucket  = var.log_bucket_name
     prefix  = var.stack_description
     enabled = true
+  enable_deletion_protection  = true
   }
 }
 

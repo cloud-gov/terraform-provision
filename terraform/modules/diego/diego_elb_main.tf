@@ -48,8 +48,6 @@ resource "aws_elb" "diego_elb_main" {
   subnets         = var.elb_subnets
   security_groups = [aws_security_group.diego-elb-sg.id]
 
-  enable_deletion_protection  = true
-
   listener {
     lb_port           = 2222
     lb_protocol       = "TCP"

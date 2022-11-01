@@ -4,8 +4,6 @@ resource "aws_lb_target_group" "concourse_target" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
-  enable_deletion_protection  = true
-
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 10
