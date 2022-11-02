@@ -14,6 +14,7 @@ resource "aws_lb" "domains_broker_internal" {
   subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
   security_groups = [module.stack.bosh_security_group]
   internal        = true
+  enable_deletion_protection  = true
   access_logs {
     bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
@@ -92,6 +93,7 @@ resource "aws_lb" "domains_broker" {
   security_groups = [module.stack.web_traffic_security_group]
   ip_address_type = "dualstack"
   idle_timeout    = 3600
+  enable_deletion_protection  = true
   access_logs {
     bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description

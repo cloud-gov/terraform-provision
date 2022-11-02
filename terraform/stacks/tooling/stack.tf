@@ -39,6 +39,7 @@ resource "aws_lb" "main" {
     prefix  = var.stack_description
     enabled = true
   }
+  enable_deletion_protection  = true
 }
 
 resource "aws_lb_listener" "main" {
