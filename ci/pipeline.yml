@@ -247,9 +247,9 @@ jobs:
       STACK_NAME: dns
       TEMPLATE_SUBDIR: terraform/stacks/dns
       S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      TF_VAR_aws_access_key: ((aws_external_access_key_id))
-      TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
-      TF_VAR_aws_region: ((aws_external_region))
+      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+      AWS_DEFAULT_REGION: ((aws_external_region))
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_remote_state_region: ((aws_default_region))
       TF_VAR_tooling_stack_name: tooling
