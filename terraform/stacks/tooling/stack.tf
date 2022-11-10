@@ -39,6 +39,7 @@ resource "aws_lb" "main" {
     prefix  = var.stack_description
     enabled = true
   }
+  enable_deletion_protection  = true
 }
 
 resource "aws_lb_listener" "main" {
@@ -194,6 +195,7 @@ module "monitoring_production" {
   source             = "../../modules/monitoring"
   stack_description  = "production"
   vpc_id             = module.stack.vpc_id
+  vpc_cidr           = var.vpc_cidr
   monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 32)
   monitoring_az      = data.aws_availability_zones.available.names[0]
   route_table_id     = module.stack.private_route_table_az1
@@ -208,6 +210,7 @@ module "monitoring_staging" {
   source             = "../../modules/monitoring"
   stack_description  = "staging"
   vpc_id             = module.stack.vpc_id
+  vpc_cidr           = var.vpc_cidr
   monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 33)
   monitoring_az      = data.aws_availability_zones.available.names[1]
   route_table_id     = module.stack.private_route_table_az2

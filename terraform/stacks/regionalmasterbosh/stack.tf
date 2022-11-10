@@ -29,7 +29,7 @@ data "aws_region" "current" {
 }
 
 data "terraform_remote_state" "target_vpc" {
-  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474 
+  # N.B. according to this issue comment https://github.com/hashicorp/terraform/issues/18611#issuecomment-410883474
   # the backend here should use the default credentials, which actually belong to the aws.tooling provider.
   # This is what we want, since we're trying to get the tooling state from a bucket in tooling as a tooling user.
 
@@ -57,6 +57,8 @@ resource "aws_lb" "main" {
     prefix  = var.stack_description
     enabled = true
   }
+ 
+  enable_deletion_protection  = true
 }
 
 resource "aws_lb_listener" "main" {
@@ -99,7 +101,7 @@ module "stack" {
   rds_multi_az                      = var.rds_multi_az
   rds_security_groups               = [module.stack.bosh_security_group]
   rds_security_groups_count         = "1"
-  rds_instance_type                 = var.rds_instance_type 
+  rds_instance_type                 = var.rds_instance_type
   rds_db_engine_version             = var.rds_db_engine_version
   rds_parameter_group_family        = var.rds_parameter_group_family
   rds_allow_major_version_upgrade   = var.rds_allow_major_version_upgrade
@@ -129,6 +131,7 @@ module "monitoring_production" {
   source             = "../../modules/monitoring"
   stack_description  = "production"
   vpc_id             = module.stack.vpc_id
+  vpc_cidr           = var.vpc_cidr
   monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 32)
   monitoring_az      = data.aws_availability_zones.available.names[0]
   route_table_id     = module.stack.private_route_table_az1
