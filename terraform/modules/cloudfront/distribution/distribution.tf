@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 }
 
 resource "aws_wafv2_web_acl_association" "acl_association" {
-  resource_arn = aws_cloudfront_distribution.distribution
+  resource_arn = aws_cloudfront_distribution.distribution.arn
   web_acl_arn  = var.acl_arn
 }
 
