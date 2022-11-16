@@ -10,13 +10,21 @@ non-public information about using this repository.
 
 ### Terraform
 
-The main terraform directories are:
+Our Terraform code is organized by two concepts, with two corresponding directories.
 
-* `modules`: where we decompose our configuration into [Terraform
-  modules](https://www.terraform.io/docs/configuration-0-11/modules.html)
-* `modules/stack/base` & `modules/stack/spoke`: the main modules that define
-  the bulk of each environment
-* `stacks`: the various "environments"
+* **Modules** are reusable units of terraform code. Each module describes a single useful concept in our infrastructure. Modules are parameterized by terraform variables for reuse, and are located in `terraform/modules`.
+  * Two important modules are `modules/stack/base` and `modules/stack/spoke`.
+  * Read more about Terraform modules: https://developer.hashicorp.com/terraform/language/modules
+* **Stacks** combine and configure modules for use in an environment. They are also parameterized by variables, such as the name of the environment. Stacks are located in `terraform/stacks`.
+
+As an example, how could we write terraform code to deploy CloudFront distributions in front of three load balancers in an environment?
+
+* A good `cloudfront` module might declare a CloudFront distribution, a Shield Advanced resource to protect it, and an ACL association between the distribution and an ACL. (The ACL itself is not declared in the module.) It could take an origin, a list of domains, and an ACL ARN as variables.
+* A good `cloudfront` stack might reuse the `cloudfront` module three times, once for each load balancer in the environment. It would pass an external domain and load balancer domain to each module. It could also declare a single ACL for the environment and pass its ARN to each `cloudfront` module. The stack could take an environment name as a variable.
+
+Lastly, you would add a job to Concourse for each environment. Each job would deploy the `cloudfront` stack, passing in the environment name as a variable.
+
+In the future, we would like to add a third concept: An entire **runtime environment**. An environment would combine multiple stacks to represent the entire cloud.gov runtime stack. This collection of resources could be deployed as a single unit to a new AWS region or multiple times in the same region.
 
 #### Environments
 
@@ -63,6 +71,34 @@ To add a new `main` environment, see the [README here](./scripts/add_environment
 ### BOSH
 
 The `bosh` directory contains vars and opsfiles for use by the BOSH directors.
+
+## How Concourse Creates AWS Resources
+
+The Concourse worker VMs must have AWS access to create and apply Terraform plans. How they are given that access depends on the partition being changed.
+
+You can determine how a failing Concourse container is configured by hijacking it. Connect to the container (see `fly hijack --help`) and run `aws configure list` to see the current configuration.
+
+### GovCloud
+
+The Concourse worker VMs are associated with an IAM role with read-write access to GovCloud resources. The AWS SDK in the Concourse containers is automatically configured to fetch credentials from the [Instance metadata service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html). No further configuration is necessary - note that no access keys are passed to GovCloud jobs in [pipeline.yml](./ci/pipeline.yml).
+
+AWS IAM roles documentation: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
+
+### Commercial Stacks
+
+Each Concourse job that manages AWS Commercial resources must override the Concourse worker's IAM role. The jobs set the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables to do this. Environment variables [have higher precedence](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-precedence) in the AWS SDK, so they are used instead of the IAM role. No further configuration in Terraform is necessary.
+
+### DNS Stack
+
+The DNS stack is a special case because it must read state from GovCloud but read and write resources and state to Commercial. AWS IAM users [cannot have cross-partition permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html), so the job must use two separate AWS accounts (one for each partition).
+
+To achieve this, the Concourse jobs pass an access key to a Commercial IAM user as a TF_VAR instead of using the standard `AWS_*` environment variables. (Setting `AWS_` variables would make the AWS SDK use them by default, and we want it to continue using the GovCloud IAM role by default.)
+
+The IAM role and `TF_VAR_` credentials are used as follows:
+
+* The `terraform init` command is run with the Commercial credentials using [this script](https://github.com/cloud-gov/cg-pipeline-tasks/blob/ca4120f9ca5c56cb16b8550de16d5b097190e466/terraform-apply.sh#L40-L48). This configures the s3 backend for the DNS stack to be set up in the Commercial account.
+* The terraform provider is configured with the Commercial credentials, ensuring that all resources will be created in the Commercial account.
+* The `terraform_remote_state` data blocks for each GovCloud s3 state object are configured with the GovCloud region. Because they are accessed using Terraform's initialization process, but separately from the initial `terraform init`, they are not passed the Commercial credentials. Without any credentials set explicitly, the AWS SDK uses the GovCloud IAM role.
 
 ## Development Workflow
 
