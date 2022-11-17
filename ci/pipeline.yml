@@ -21,7 +21,7 @@ groups:
   - webacl-test-development
   - webacl-test-staging
   - webacl-test-production
-  - plan-cloudfront
+  - plan-cloudfront-staging
 - name: certs
   jobs:
   - acme-certificate-development
