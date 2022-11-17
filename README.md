@@ -12,17 +12,16 @@ non-public information about using this repository.
 
 Our Terraform code is organized by two concepts, with two corresponding directories.
 
-* **Modules** are reusable units of terraform code. Each module describes a single useful concept in our infrastructure. Modules are parameterized by terraform variables for reuse, and are located in `terraform/modules`.
+* **Modules** are reusable units of terraform code. Each module describes a useful concept in our infrastructure. A module can be reused in different contexts by declaring variables that the caller must pass in. Modules are located in `terraform/modules`.
   * Two important modules are `modules/stack/base` and `modules/stack/spoke`.
   * Read more about Terraform modules: https://developer.hashicorp.com/terraform/language/modules
-* **Stacks** combine and configure modules for use in an environment. They are also parameterized by variables, such as the name of the environment. Stacks are located in `terraform/stacks`.
+* **Stacks** combine and configure modules for use in an environment. They are also parameterized by variables, with values such as the environment name. Stacks are located in `terraform/stacks`.
 
-As an example, how could we write terraform code to deploy CloudFront distributions in front of three load balancers in an environment?
+As an example, if we wanted to write terraform code to deploy several CloudFront distributions in front of three load balancers in an environment, we could:
 
-* A good `cloudfront` module might declare a CloudFront distribution, a Shield Advanced resource to protect it, and an ACL association between the distribution and an ACL. (The ACL itself is not declared in the module.) It could take an origin, a list of domains, and an ACL ARN as variables.
-* A good `cloudfront` stack might reuse the `cloudfront` module three times, once for each load balancer in the environment. It would pass an external domain and load balancer domain to each module. It could also declare a single ACL for the environment and pass its ARN to each `cloudfront` module. The stack could take an environment name as a variable.
-
-Lastly, you would add a job to Concourse for each environment. Each job would deploy the `cloudfront` stack, passing in the environment name as a variable.
+1. Create a `cloudfront` module that declares a CloudFront distribution, a Shield Advanced resource to protect it, and an Access Control List (ACL) association between the distribution and an ACL. (The ACL itself is not declared in the module.) It could take an origin, a list of domains, and an ACL ARN as variables.
+2. Create a `cloudfront` stack uses the `cloudfront` module three times, once for each load balancer in the environment. It would pass an external domain and load balancer domain to each module. It could also declare a single ACL for the environment and pass its ARN to each `cloudfront` module. The stack could take an environment name as a variable.
+3. Add a job to Concourse for each environment. Each job would deploy the `cloudfront` stack and pass the environment name as a variable.
 
 In the future, we would like to add a third concept: An entire **runtime environment**. An environment would combine multiple stacks to represent the entire cloud.gov runtime stack. This collection of resources could be deployed as a single unit to a new AWS region or multiple times in the same region.
 
