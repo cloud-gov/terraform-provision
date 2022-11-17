@@ -29,7 +29,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 
   default_cache_behavior {
     allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods  = ["GET", "HEAD"]
+    cached_methods  = []
     forwarded_values {
       cookies {
         forward = "all"
