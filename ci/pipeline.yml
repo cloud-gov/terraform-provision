@@ -1,6 +1,7 @@
 groups:
 - name: terraform
   jobs:
+  - apply-cloudfront-staging
   - apply-dns
   - bootstrap-development
   - bootstrap-external-development
@@ -16,12 +17,12 @@ groups:
   - plan-bootstrap-production
   - plan-bootstrap-staging
   - plan-bootstrap-tooling
+  - plan-cloudfront-staging
   - plan-dns
   - pull-status-check
   - webacl-test-development
-  - webacl-test-staging
   - webacl-test-production
-  - plan-cloudfront-staging
+  - webacl-test-staging
 - name: certs
   jobs:
   - acme-certificate-development
