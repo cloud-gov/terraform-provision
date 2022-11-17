@@ -1,3 +1,7 @@
+variable "stack_description" {
+  type = string
+}
+
 variable "remote_state_bucket" {
   type = string
 }
