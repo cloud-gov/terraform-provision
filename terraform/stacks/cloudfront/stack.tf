@@ -36,7 +36,7 @@ data "terraform_remote_state" "govcloud" {
 resource "aws_wafv2_web_acl" "commercial_acl" {
   name        = "${var.stack_description}-commercial-acl"
   description = "ACL for use with CloudFront and Shield Advanced."
-  scope       = "REGIONAL"
+  scope       = "CLOUDFRONT"
 
   default_action {
     # no rules needed; they'll be added by Shield Advanced.
