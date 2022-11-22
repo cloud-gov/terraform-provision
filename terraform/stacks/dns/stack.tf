@@ -1,3 +1,6 @@
+# Most stacks do not pass credentials this way. For an explanation of why
+# access and state are managed differently in the DNS stack compared to the
+# other stacks, see README.md, "DNS Stack" in the root of the repo.
 variable "aws_access_key" {
 }
 
