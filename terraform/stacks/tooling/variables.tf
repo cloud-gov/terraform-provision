@@ -164,6 +164,10 @@ variable "pgp_keys_bucket_name" {
   default = "cg-pgp-keys"
 }
 
+variable "container_scanning_bucket_name" {
+  default = "cg-container-scanning"
+}
+
 variable "oidc_client" {
 }
 
