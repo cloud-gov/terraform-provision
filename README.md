@@ -87,7 +87,7 @@ AWS IAM roles documentation: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide
 
 Each Concourse job that manages AWS Commercial resources must override the Concourse worker's IAM role. The jobs set the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` environment variables to do this. Environment variables [have higher precedence](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-precedence) in the AWS SDK, so they are used instead of the IAM role. No further configuration in Terraform is necessary.
 
-### DNS Stack
+### DNS and CloudFront Stacks
 
 The DNS stack is a special case because it must read state from GovCloud but read and write resources and state to Commercial. AWS IAM users [cannot have cross-partition permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html), so the job must use two separate AWS accounts (one for each partition).
 

@@ -6,7 +6,7 @@
   https://github.com/pburkholder/Dotfiles/blob/master/bin/aws_emit)
 * Set up a temp directory and get the env vars from, say, the tooling pipeline:
 
-```
+```sh
 export TF_STACK=$(pwd)
 mkdir tmp/
 cd tmp/
