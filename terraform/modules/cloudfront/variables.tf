@@ -12,7 +12,7 @@ variable "origin" {
 
 variable "aliases" {
   type    = set(string)
-  default = [""]
+  default = []
 }
 
 variable "acl_arn" {
