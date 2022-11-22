@@ -41,3 +41,8 @@ variable "pgp_keys_bucket_name" {
     type = string
     description = "Name of S3 bucket for PGP keys"
 }
+
+variable "container_scanning_bucket_name" {
+    type = string
+    description = "Name of S3 bucket for container scanning config"
+}
