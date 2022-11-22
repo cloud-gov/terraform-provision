@@ -43,11 +43,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     # Use the default until we cut over DNS to point to the distribution.
     cloudfront_default_certificate = true
   }
-}
-
-resource "aws_wafv2_web_acl_association" "acl_association" {
-  resource_arn = aws_cloudfront_distribution.distribution.arn
-  web_acl_arn  = var.acl_arn
+  web_acl_id = var.acl_arn
 }
 
 resource "aws_shield_protection" "shield_protection" {
