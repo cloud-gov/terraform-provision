@@ -19,21 +19,6 @@ resource "aws_security_group" "diego-elb-sg" {
     cidr_blocks = var.ingress_cidrs
   }
 
-  # 22 / 443 are alternate ports available for manually use by customers with restrictive firewalls
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.ingress_cidrs
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = var.ingress_cidrs
-  }
-
   # outbound internet access
   egress {
     from_port   = 0
@@ -54,21 +39,7 @@ resource "aws_elb" "diego_elb_main" {
     instance_port     = 2222
     instance_protocol = "TCP"
   }
-
-  listener {
-    lb_port           = 22
-    lb_protocol       = "TCP"
-    instance_port     = 2222
-    instance_protocol = "TCP"
-  }
-
-  listener {
-    lb_port           = 443
-    lb_protocol       = "TCP"
-    instance_port     = 2222
-    instance_protocol = "TCP"
-  }
-
+  
   health_check {
     healthy_threshold   = 10
     interval            = 30
