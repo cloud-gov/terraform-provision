@@ -866,8 +866,7 @@ jobs:
     - get: pipeline-tasks
     - get: cg-provision-repo
       trigger: true
-    - get: plan-timer
-      trigger: true
+      passed: [plan-bootstrap-gov-root]
   - task: plan
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
