@@ -855,6 +855,7 @@ jobs:
       TF_VAR_aws_access_key: ((gov_root_bootstrapper_access_key_id))
       TF_VAR_aws_secret_key: ((gov_root_bootstrapper_secret_access_key))
       TF_VAR_aws_region: ((aws_default_region))
+      TF_VAR_config_delegated_administrator_account_id: ((aws_config_delegated_administrator_account_id))
   - *notify-slack
 
 - name: bootstrap-gov-root
