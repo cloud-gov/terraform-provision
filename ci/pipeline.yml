@@ -10,6 +10,7 @@ groups:
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
+  - bootstrap-gov-root
   - plan-bootstrap-development
   - plan-bootstrap-external-development
   - plan-bootstrap-external-production
@@ -19,6 +20,7 @@ groups:
   - plan-bootstrap-tooling
   - plan-cloudfront-staging
   - plan-dns
+  - plan-bootstrap-gov-root
   - pull-status-check
   - webacl-test-development
   - webacl-test-production
