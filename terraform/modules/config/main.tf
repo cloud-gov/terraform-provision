@@ -25,7 +25,7 @@ resource "aws_iam_role" "aws_config_role" {
 POLICY
 }
 
-resource "aws_iam_role_policy" "p" {
+resource "aws_iam_role_policy" "config_bucket_access_policy" {
   name = "${stack_prefix}-config-bucket-access-policy"
   role = aws_iam_role.r.id
 
