@@ -852,7 +852,7 @@ jobs:
     params: &gov-root-params
       TERRAFORM_ACTION: plan
       STACK_NAME: root
-      TEMPLATE_SUBDIR: terraform/stacks/root
+      TEMPLATE_SUBDIR: terraform/accounts/root
       S3_TFSTATE_BUCKET: ((gov_root_s3_tfstate_bucket))
       TF_VAR_aws_access_key: ((gov_root_bootstrapper_access_key_id))
       TF_VAR_aws_secret_key: ((gov_root_bootstrapper_secret_access_key))
