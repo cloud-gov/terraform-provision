@@ -1,3 +1,7 @@
+variable "aws_default_region" {
+  default = "us-gov-west-1"
+}
+
 variable "aws_access_key" {
   type        = string
   description = "AWS access key ID for deploying to target account"
