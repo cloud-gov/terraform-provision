@@ -4,9 +4,6 @@ terraform {
 }
 
 provider "aws" {
-}
-
-provider "aws" {
   region = var.aws_default_region
 
   endpoints {
