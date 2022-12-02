@@ -37,32 +37,29 @@ The `tooling` stack is the same as the `regionalmasterbosh` stack, but has some 
 and multi-account:
   - concourse and staging concourse
   - buckets that we need only one of across all accounts and regions
-  - some things that really should be in child environment accounts 
+  - some things that really should be in child environment accounts
   - nessus
-In the future, we should work towards disentagling these pieces out, so the old tooling is deployed as a regionalmasterbosh and the 
+In the future, we should work towards disentagling these pieces out, so the old tooling is deployed as a regionalmasterbosh and the
 _other_ stuff is its own stack(s)
 
 The `external` and `dns` stacks are both outside of GovCloud (commercial AWS).
-
-I believe the `test` stack is unused, and there's [a story to remove
-it](https://github.com/18F/cg-product/issues/1277).
 
 #### Wiring up users
 
 As mentioned above, we have four categories of environment:
 - `main` - this is the thing we're actually after. It's the pieces that directly
-  support the platform components. There should be several of these across multiple 
+  support the platform components. There should be several of these across multiple
   AWS accounts
 - `tooling` - this is used to support the things in the `main` platform - our CI
   system, managment tools such as Nessus, etc.
 - `external` - this manages some things that don't (or historically didn't) exist
-  in govcloud (really just cloudfront and the users, etc, to support it). There's 
+  in govcloud (really just cloudfront and the users, etc, to support it). There's
   one of these per `main` environment
 - `dns` - this manages route53. There's exactly one of these, although we really
   should split it out to one per `main` + one for `tooling`
 
 To allow the `tooling` environment to manage the `main` environment, there's a
-`tooling-terraform` role associated with each `main` environment, which has an 
+`tooling-terraform` role associated with each `main` environment, which has an
 assumerole policy allowing access by concourse workers in the `tooling` account.
 
 To add a new `main` environment, see the [README here](./scripts/add_environment/README.md)
