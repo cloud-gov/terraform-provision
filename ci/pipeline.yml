@@ -11,6 +11,7 @@ groups:
   - bootstrap-staging
   - bootstrap-tooling
   - bootstrap-gov-root
+  - bootstrap-gov-prd-plat
   - plan-bootstrap-development
   - plan-bootstrap-external-development
   - plan-bootstrap-external-production
@@ -21,6 +22,7 @@ groups:
   - plan-cloudfront-staging
   - plan-dns
   - plan-bootstrap-gov-root
+  - plan-bootstrap-gov-prd-plat
   - pull-status-check
   - webacl-test-development
   - webacl-test-production
@@ -872,6 +874,41 @@ jobs:
     input_mapping: {terraform-templates: cg-provision-repo}
     params:
       <<: *gov-root-params
+      TERRAFORM_ACTION: apply
+  - *notify-slack
+
+- name: plan-bootstrap-gov-prd-plat
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-gov-prd-plat
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &prd-plat-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: prd-plat
+      TEMPLATE_SUBDIR: terraform/accounts/gov/prd-plat
+      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+      AWS_DEFAULT_REGION: ((aws_default_region))
+  - *notify-slack
+
+- name: bootstrap-gov-prd-plat
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-bootstrap-gov-prd-plat]
+  - task: create-update-gov-prd-plat
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *prd-plat-params
       TERRAFORM_ACTION: apply
   - *notify-slack
 
