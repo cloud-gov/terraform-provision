@@ -4,7 +4,15 @@ terraform {
 }
 
 provider "aws" {
+  default_tags {
+    tags = {
+      deployment = "tooling"
+      account    = data.aws_iam_account_alias.current.account_alias
+    }
+  }
 }
+
+data "aws_iam_account_alias" "current" {}
 
 data "aws_partition" "current" {
 }

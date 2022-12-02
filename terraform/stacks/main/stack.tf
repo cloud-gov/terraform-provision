@@ -16,6 +16,11 @@ provider "aws" {
     lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
     wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
+  default_tags {
+    tags = {
+      deployment     = "bosh-tooling"
+    }
+  }
 }
 provider "aws" {
   # this is for the tooling bosh
@@ -34,6 +39,11 @@ provider "aws" {
     lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
     wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
+  default_tags {
+    tags = {
+      deployment     = "bosh-parent"
+    }
+  }
 }
 provider "aws" {
   region = var.aws_default_region
@@ -48,6 +58,12 @@ provider "aws" {
     kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
     lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
     wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
+  }
+  default_tags {
+    tags = {
+      deployment = "cf-${var.stack_description}"
+      account    = data.aws_iam_account_alias.current.account_alias
+    }
   }
 }
 
@@ -88,6 +104,8 @@ data "aws_caller_identity" "current" {
 
 data "aws_region" "current" {
 }
+
+data "aws_iam_account_alias" "current" {}
 
 data "aws_iam_server_certificate" "wildcard" {
   name_prefix = var.wildcard_certificate_name_prefix
