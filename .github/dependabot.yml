@@ -5,19 +5,15 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
-    directory: "/terraform/accounts/root"
+    directory: "/terraform/accounts/gov/prd-plat"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/accounts/gov/root"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/admin"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/bootstrap_buckets"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/bootstrap_concourse"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -38,6 +34,14 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/concourse"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/config_delegated_administrator"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/config_recorder_rules"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -270,10 +274,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/stacks/regionalmasterbosh"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/stacks/test"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
