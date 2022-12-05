@@ -3,13 +3,28 @@ terraform {
   }
 }
 
+data "aws_iam_account_alias" "current" {}
+
 provider "aws" {
   alias = "tooling"
+
+  default_tags {
+    tags = {
+      deployment = "bosh-tooling"
+    }
+  }
 }
+
 provider "aws" {
   region = var.aws_default_region
   assume_role {
     role_arn = var.assume_arn
+  }
+  default_tags {
+    tags = {
+      deployment = "regional-master-bosh-${var.stack_description}"
+      account    = data.aws_iam_account_alias.current.account_alias
+    }
   }
 }
 

@@ -16,10 +16,19 @@ terraform {
   }
 }
 
+data "aws_iam_account_alias" "current" {}
+
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
   region     = var.aws_region
+
+  default_tags {
+    tags = {
+      deployment = "cloudfront-${var.stack_description}"
+      account    = data.aws_iam_account_alias.current.account_alias
+    }
+  }
 }
 
 data "terraform_remote_state" "govcloud" {

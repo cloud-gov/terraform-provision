@@ -1,4 +1,12 @@
+data "aws_iam_account_alias" "current" {}
+
 provider "aws" {
+  default_tags {
+    tags = {
+      deployment = "managed-account-${var.environment_name}"
+      account    = data.aws_iam_account_alias.current.account_alias
+    }
+  }
 }
 
 resource "aws_iam_role" "tfrole" {
