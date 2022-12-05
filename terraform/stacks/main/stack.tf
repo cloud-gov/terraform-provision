@@ -62,7 +62,7 @@ provider "aws" {
   default_tags {
     tags = {
       deployment = "cf-${var.stack_description}"
-      account    = data.aws_iam_account_alias.current.account_alias
+      stack = "${var.stack_description}"
     }
   }
 }
@@ -104,8 +104,6 @@ data "aws_caller_identity" "current" {
 
 data "aws_region" "current" {
 }
-
-data "aws_iam_account_alias" "current" {}
 
 data "aws_iam_server_certificate" "wildcard" {
   name_prefix = var.wildcard_certificate_name_prefix

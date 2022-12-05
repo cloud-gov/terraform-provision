@@ -3,8 +3,6 @@ terraform {
   }
 }
 
-data "aws_iam_account_alias" "current" {}
-
 provider "aws" {
   alias = "tooling"
 
@@ -23,7 +21,7 @@ provider "aws" {
   default_tags {
     tags = {
       deployment = "regional-master-bosh-${var.stack_description}"
-      account    = data.aws_iam_account_alias.current.account_alias
+      stack = "${var.stack_description}"
     }
   }
 }

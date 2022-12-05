@@ -3,13 +3,11 @@ terraform {
   }
 }
 
-data "aws_iam_account_alias" "current" {}
-
 provider "aws" {
   default_tags {
     tags = {
       deployment = "external-${var.stack_description}"
-      account    = data.aws_iam_account_alias.current.account_alias
+      stack = "${var.stack_description}"
     }
   }
 }
