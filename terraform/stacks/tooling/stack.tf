@@ -4,6 +4,12 @@ terraform {
 }
 
 provider "aws" {
+  default_tags {
+    tags = {
+      deployment = "tooling"
+      stack = "tooling"
+    }
+  }
 }
 
 data "aws_partition" "current" {

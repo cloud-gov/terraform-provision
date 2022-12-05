@@ -1,4 +1,10 @@
 provider "aws" {
+  default_tags {
+    tags = {
+      deployment = "managed-account-${var.environment_name}"
+      stack = "${var.environment_name}"
+    }
+  }
 }
 
 resource "aws_iam_role" "tfrole" {
