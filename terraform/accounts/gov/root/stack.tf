@@ -11,7 +11,14 @@ provider "aws" {
   endpoints {
     s3 = "https://s3-fips.${var.aws_default_region}.amazonaws.com"
   }
+
+  default_tags {
+    tags = {
+      account = "gov-root"
+    }
+  }
 }
 
 data "aws_partition" "current" {
+
 }

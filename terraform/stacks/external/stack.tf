@@ -4,6 +4,12 @@ terraform {
 }
 
 provider "aws" {
+  default_tags {
+    tags = {
+      deployment = "external-${var.stack_description}"
+      stack = "${var.stack_description}"
+    }
+  }
 }
 
 data "aws_partition" "current" {
