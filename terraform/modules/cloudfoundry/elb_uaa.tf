@@ -64,6 +64,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   description = "UAA ELB WAF Rules"
   scope       = "REGIONAL"
 
+  # see https://github.com/hashicorp/terraform-provider-aws/issues/24386#issuecomment-1109340765
+  ignore_changes = [tags_all]
+
   default_action {
     allow {}
   }
