@@ -10,7 +10,6 @@ groups:
   - bootstrap-production
   - bootstrap-staging
   - bootstrap-tooling
-  - bootstrap-gov-root
   - plan-bootstrap-development
   - plan-bootstrap-external-development
   - plan-bootstrap-external-production
@@ -20,7 +19,6 @@ groups:
   - plan-bootstrap-tooling
   - plan-cloudfront-staging
   - plan-dns
-  - plan-bootstrap-gov-root
   - pull-status-check
   - webacl-test-development
   - webacl-test-production
@@ -837,43 +835,6 @@ jobs:
     - put: terraform-yaml-production
       params:
         file: terraform-yaml/state.yml
-
-- name: plan-bootstrap-gov-root
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &gov-root-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: root
-      TEMPLATE_SUBDIR: terraform/accounts/root
-      S3_TFSTATE_BUCKET: ((gov_root_s3_tfstate_bucket))
-      TF_VAR_aws_access_key: ((gov_root_bootstrapper_access_key_id))
-      TF_VAR_aws_secret_key: ((gov_root_bootstrapper_secret_access_key))
-      TF_VAR_aws_region: ((aws_default_region))
-      TF_VAR_config_delegated_administrator_account_id: ((aws_config_delegated_administrator_account_id))
-  - *notify-slack
-
-- name: bootstrap-gov-root
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-      passed: [plan-bootstrap-gov-root]
-  - task: plan
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *gov-root-params
-      TERRAFORM_ACTION: apply
-  - *notify-slack
 
 - name: webacl-test-production
   plan:
