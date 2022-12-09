@@ -176,3 +176,7 @@ variable "s3_gateway_policy_accounts"{
   type    = list(string)
   default = []
 }
+
+variable "sns_name" {
+  
+}

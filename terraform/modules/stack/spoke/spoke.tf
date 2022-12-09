@@ -27,6 +27,7 @@ module "base" {
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
+  sns_name                          = var.sns_name
   
   rds_security_groups = [
     module.base.bosh_security_group,
