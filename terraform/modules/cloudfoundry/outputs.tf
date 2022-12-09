@@ -6,6 +6,10 @@ output "lb_dns_name" {
   value = aws_lb.cf.dns_name
 }
 
+output "lb_arn_suffix" {
+  value = aws_lb.cf.arn_suffix
+}
+
 output "apps_lb_name" {
   value = aws_lb.cf_apps.name
 }
