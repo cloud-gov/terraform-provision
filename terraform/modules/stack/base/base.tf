@@ -17,7 +17,6 @@ module "vpc" {
   concourse_security_group_cidrs         = var.target_concourse_security_group_cidrs
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
-  sns_name                               = var.sns_name
 }
 
 module "rds_network" {
