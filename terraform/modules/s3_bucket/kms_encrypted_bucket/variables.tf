@@ -14,6 +14,11 @@ variable "bucket_name" {
   description = "Name of S3 bucket"
 }
 
+variable "enable_bucket_versioning" {
+  type = bool
+  description = "true to enable versioning of objects stored in bucket"
+}
+
 variable "kms_account_id" {
   type = string
   description = "Account ID making requests to KMS key"
