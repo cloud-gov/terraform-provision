@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "config_bucket_policy" {
     ]
 
     resources = [
-      "arn:aws:s3:::${aws_s3_bucket.kms_encrypted_bucket.id}/*"
+      "arn:${var.aws_partition}:s3:::${aws_s3_bucket.kms_encrypted_bucket.id}/*"
     ]
 
     condition {
@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "config_bucket_policy" {
     ]
 
     resources = [
-      "arn:aws:s3:::${aws_s3_bucket.kms_encrypted_bucket.id}/*"
+      "arn:${var.aws_partition}:s3:::${aws_s3_bucket.kms_encrypted_bucket.id}/*"
     ]
 
     condition {
