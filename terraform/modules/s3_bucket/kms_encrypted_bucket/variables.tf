@@ -33,7 +33,7 @@ variable "lifecycle_rules" {
   # lifecycle_rules = [
   #   {
   #     id      = "log"
-  #     enabled = true
+  #     status = "Enabled"
   #
   #     prefix = "log/"
   #

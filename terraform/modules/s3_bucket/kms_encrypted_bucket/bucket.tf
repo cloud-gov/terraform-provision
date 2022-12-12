@@ -37,9 +37,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
     for_each = var.lifecycle_rules
 
     content {
-      id      = lookup(rule.value, "id", null)
-      prefix  = lookup(rule.value, "prefix", null)
-      enabled = rule.value.enabled
+      id     = lookup(rule.value, "id", null)
+      prefix = lookup(rule.value, "prefix", null)
+      status = rule.value.enabled
 
       dynamic "transition" {
         for_each = lookup(rule.value, "transition", [])
