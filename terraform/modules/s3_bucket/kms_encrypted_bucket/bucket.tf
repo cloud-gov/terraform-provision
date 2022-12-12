@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "kms_encrypted_bucket" {
   bucket = var.bucket_name
 }
 
-resource "aws_s3_bucket_versioning" "versioning_example" {
+resource "aws_s3_bucket_versioning" "kms_encrypted_bucket_versioning" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   versioning_configuration {
     status = var.enable_bucket_versioning ? "Enabled" : "Disabled"
@@ -20,18 +20,19 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sse_kms_config" {
   }
 }
 
-resource "aws_s3_bucket_acl" "encrypted_bucket_acl" {
+resource "aws_s3_bucket_acl" "kms_encrypted_bucket_acl" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   acl    = var.acl
 }
 
-resource "aws_s3_bucket_policy" "bucket_policy" {
+resource "aws_s3_bucket_policy" "kms_bucket_policy" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   policy = data.aws_iam_policy_document.kms_encrypted_bucket_policy.json
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle" {
+resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
+  count = length(var.lifecycle_rules) > 0 ? 1 : 0
 
   dynamic "rule" {
     for_each = var.lifecycle_rules
