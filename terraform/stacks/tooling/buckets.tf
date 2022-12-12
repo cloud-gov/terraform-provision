@@ -72,3 +72,12 @@ module "container_scanning_bucket" {
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
+
+module "credhub_backups_bucket" {
+  source                   = "../../modules/s3_bucket/kms_encrypted_bucket"
+  bucket_name              = "${var.stack_description}-credhub-backups"
+  aws_partition            = data.aws_partition.current.partition
+  region                   = data.aws_region.current.name
+  kms_account_id           = data.aws_caller_identity.current.account_id
+  enable_bucket_versioning = true
+}
