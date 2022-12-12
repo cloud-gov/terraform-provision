@@ -33,9 +33,8 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
 
-  dynamic "lifecycle_rule" {
-    for_each = local.lifecycle_rules
-    iterator = rule
+  dynamic "rule" {
+    for_each = var.lifecycle_rules
 
     content {
       id      = lookup(rule.value, "id", null)
