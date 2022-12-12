@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "config_bucket_policy" {
+data "aws_iam_policy_document" "kms_encrypted_bucket_policy" {
   statement {
     sid = "DenyIncorrectEncryptionHeader"
     effect = "Deny"
