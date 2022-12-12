@@ -45,7 +45,9 @@
         "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}",
         "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*",
         "arn:${aws_partition}:s3:::${container_scanning_bucket_name}",
-        "arn:${aws_partition}:s3:::${container_scanning_bucket_name}/*"
+        "arn:${aws_partition}:s3:::${container_scanning_bucket_name}/*",
+        "arn:${aws_partition}:s3:::${tooling_credhub_backups_bucket_name}",
+        "arn:${aws_partition}:s3:::${tooling_credhub_backups_bucket_name}/*"
       ]
     },
     {
@@ -67,7 +69,8 @@
         "arn:${aws_partition}:s3:::${varz_bucket}/*-bosh-state.json",
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}/*",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}/*",
-        "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*"
+        "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*",
+        "arn:${aws_partition}:s3:::${tooling_credhub_backups_bucket_name}/*"
       ]
     }
   ]
