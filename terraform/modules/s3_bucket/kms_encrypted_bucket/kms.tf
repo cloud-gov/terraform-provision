@@ -1,5 +1,55 @@
 data "aws_iam_policy_document" "kms_key_policy" {
   statement {
+    sid = "Enable IAM User Permissions"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${var.aws_partition}:iam::${var.kms_account_id}:root"]
+    }
+
+    actions = [
+      "kms:*"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid = "Allow access for Key Administrators"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [for role in var.kms_admin_roles : "arn:${var.aws_partition}:iam::${var.kms_account_id}:role/${role}"]
+    }
+
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid = "AllowKeyUse"
     effect = "Allow"
 
     principals {
