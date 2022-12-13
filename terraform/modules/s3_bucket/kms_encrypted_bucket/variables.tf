@@ -24,6 +24,11 @@ variable "kms_account_id" {
   description = "Account ID making requests to KMS key"
 }
 
+variable "kms_admin_roles" {
+  type = list(string)
+  default = ["Administrator"]
+}
+
 variable "lifecycle_rules" {
   description = "List of maps containing configuration of object lifecycle management."
   type        = any
