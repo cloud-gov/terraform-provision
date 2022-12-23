@@ -60,6 +60,7 @@ module "vpc_peering" {
   source_vpc_cidr        = module.base.vpc_cidr
   source_az1_route_table = module.base.private_route_table_az1
   source_az2_route_table = module.base.private_route_table_az2
+  stack_description      = var.stack_description
 }
 
 module "vpc_peering_parentbosh" {
@@ -78,7 +79,7 @@ module "vpc_peering_parentbosh" {
   source_vpc_cidr        = module.base.vpc_cidr
   source_az1_route_table = module.base.private_route_table_az1
   source_az2_route_table = module.base.private_route_table_az2
-  
+  stack_description      = var.stack_description
 }
 
  module "vpc_security_source_to_parent" {
