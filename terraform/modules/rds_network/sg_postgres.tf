@@ -4,6 +4,12 @@
  *   vpc_id
  */
 
+data "aws_region" "current" {}
+
+data "aws_prefix_list" "s3" {
+  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+}
+
 resource "aws_security_group" "rds_postgres" {
   description = "Allow access to incoming postgresql traffic"
   vpc_id      = var.vpc_id
@@ -32,6 +38,16 @@ resource "aws_security_group_rule" "egress_default" {
   to_port                  = 0
   protocol                 = "-1"
   source_security_group_id = element(var.security_groups, count.index)
+  security_group_id        = aws_security_group.rds_postgres.id
+}
+
+# allows pg rds to get to s3 for import and export
+resource "aws_security_group_rule" "egress_s3" {
+  type                     = "egress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  prefix_list_ids          = [data.aws_prefix_list.s3.id]
   security_group_id        = aws_security_group.rds_postgres.id
 }
 
