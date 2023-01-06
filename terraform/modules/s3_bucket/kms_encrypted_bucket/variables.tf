@@ -69,3 +69,8 @@ variable "region" {
   type = string
   description = "AWS region (e.g. us-gov-west-1)"
 }
+
+variable "source_bucket_policy_documents" {
+  type = list(string)
+  default = []
+}
