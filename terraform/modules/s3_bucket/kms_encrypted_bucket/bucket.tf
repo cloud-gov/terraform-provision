@@ -25,11 +25,6 @@ resource "aws_s3_bucket_acl" "kms_encrypted_bucket_acl" {
   acl    = var.acl
 }
 
-resource "aws_s3_bucket_policy" "kms_bucket_policy" {
-  bucket = aws_s3_bucket.kms_encrypted_bucket.id
-  policy = data.aws_iam_policy_document.kms_encrypted_bucket_policy.json
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   count = length(var.lifecycle_rules) > 0 ? 1 : 0
