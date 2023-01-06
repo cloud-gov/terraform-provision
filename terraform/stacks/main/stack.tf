@@ -18,7 +18,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      stack = "tooling"
+      stack = "bosh-tooling"
     }
   }
 }
@@ -41,7 +41,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      stack = "parent"
+      stack = "bosh-parent"
     }
   }
 }
