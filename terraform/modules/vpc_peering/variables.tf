@@ -25,6 +25,3 @@ variable "source_vpc_cidr" {
 variable "target_vpc_account_id" {
 
 }
-
-variable "stack_description" {
-}

@@ -185,5 +185,4 @@ module "concourse_vpc_peering" {
   source_vpc_cidr        = module.stack.vpc_cidr
   source_az1_route_table = module.stack.private_route_table_az1
   source_az2_route_table = module.stack.private_route_table_az2
-  stack_description      = var.stack_description
 }
