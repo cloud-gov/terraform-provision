@@ -18,7 +18,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      bosh_env = "tooling"
+      stack = "tooling"
     }
   }
 }
@@ -41,7 +41,7 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      bosh_env = "parent"
+      stack = "parent"
     }
   }
 }
