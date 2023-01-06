@@ -25,9 +25,9 @@ resource "aws_vpc_peering_connection" "peering" {
   auto_accept   = false
   vpc_id        = var.source_vpc_id
 
-  # lifecycle {
-  #   ignore_changes = [tags_all]
-  # }
+  lifecycle {
+    ignore_changes = [tags_all]
+  }
 
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
@@ -39,9 +39,9 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
   auto_accept               = true
 
-  # lifecycle {
-  #   ignore_changes = [tags_all]
-  # }
+  lifecycle {
+    ignore_changes = [tags_all]
+  }
 
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
