@@ -31,8 +31,8 @@ resource "aws_vpc_peering_connection" "peering" {
 
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
-    deployment = "cf-${var.stack_description}"
-    stack = "${var.stack_description}"
+    # deployment = "cf-${var.stack_description}"
+    # stack = "${var.stack_description}"
   }
 }
 
@@ -47,8 +47,8 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
 
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
-    deployment = "cf-${var.stack_description}"
-    stack = "${var.stack_description}"
+    # deployment = "cf-${var.stack_description}"
+    # stack = "${var.stack_description}"
   }
 }
 
