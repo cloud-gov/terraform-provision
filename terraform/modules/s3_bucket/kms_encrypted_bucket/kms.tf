@@ -81,6 +81,30 @@ data "aws_iam_policy_document" "kms_key_policy" {
       values = [var.kms_account_id]
     }
   }
+
+  dynamic "statement" {
+    for_each = var.allowed_external_account_ids
+    iterator = account
+
+    content {
+      sid = "AllowExternalKMSKeyAccess_${account.value}"
+      effect = "Allow"
+
+      principals {
+        type = "AWS"
+        identifiers = ["arn:${var.aws_partition}:iam::${account.value}:root"]
+      }
+
+      actions = [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ]
+
+      resources = [
+        "*"
+      ]
+    }
+  }
 }
 
 resource "aws_kms_key" "encryption_key" {
