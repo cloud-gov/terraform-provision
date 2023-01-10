@@ -74,3 +74,27 @@ variable "source_bucket_policy_documents" {
   type = list(string)
   default = []
 }
+
+variable "block_public_acls" {
+  description = "Whether Amazon S3 should block public ACLs for this bucket"
+  type        = bool
+  default     = false
+}
+
+variable "block_public_policy" {
+  description = "Whether Amazon S3 should block public bucket policies for this bucket"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_public_acls" {
+  description = "Whether Amazon S3 should ignore public ACLs for this bucket."
+  type        = bool
+  default     = false
+}
+
+variable "restrict_public_buckets" {
+  type        = bool
+  description = "Whether Amazon S3 should restrict public bucket policies for this bucket"
+  default     = false
+}
