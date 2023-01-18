@@ -306,6 +306,10 @@ output "elasticache_broker_elb_dns_name" {
 }
 
 /* Elasticsearch Network */
+output "elasticsearch_log_group_audit" {
+  value = module.elasticsearch_broker.elasticsearch_log_group_audit
+}
+
 output "elasticsearch_subnet_az1" {
   value = module.elasticsearch_broker.elasticsearch_subnet_az1
 }
