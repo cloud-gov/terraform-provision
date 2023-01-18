@@ -17,4 +17,7 @@ output "elasticsearch_private_cidr_2" {
 output "elasticsearch_security_group" {
   value = aws_security_group.elasticsearch.id
 }
+output "elasticsearch_log_group_audit" {
+  value = aws_cloudwatch_log_group.audit_log.arn
+}
 
