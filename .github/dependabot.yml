@@ -5,19 +5,7 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
-    directory: "/terraform/accounts/root"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/admin"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/bootstrap_buckets"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/bootstrap_concourse"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -26,6 +14,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/cdn_broker"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/cloud_watch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -213,6 +205,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/s3_bucket/kms_encrypted_bucket"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/s3_bucket/log_encrypted_bucket"
     schedule:
       interval: "weekly"
@@ -270,10 +266,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/stacks/regionalmasterbosh"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/stacks/test"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
