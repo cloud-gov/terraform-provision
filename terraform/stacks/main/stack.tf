@@ -16,11 +16,6 @@ provider "aws" {
     lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
     wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
-  default_tags {
-    tags = {
-      deployment = "bosh-tooling"
-    }
-  }
 }
 provider "aws" {
   # this is for the tooling bosh
@@ -38,11 +33,6 @@ provider "aws" {
     kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
     lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
     wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
-  }
-  default_tags {
-    tags = {
-      deployment = "bosh-parent"
-    }
   }
 }
 provider "aws" {
