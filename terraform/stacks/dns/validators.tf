@@ -21,7 +21,7 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
 
   records = [
     "v=spf1 include:mail.zendesk.com include:_spf.google.com ~all",
-    "google-site-verification=W6XRI1c1ebqaBV3vsGpkODQSirR5uN91uOG7Axrakzs",
+    "google-site-verification=jxczK0Pz1ybEFx79BlXIfeX2Cc5vs2YQuqvLnTYF9Bw",
   ]
 }
 
