@@ -99,12 +99,28 @@ output "rds_subnet_az2" {
   value = module.base.rds_subnet_az2
 }
 
+output "rds_subnet_az3" {
+  value = module.base.rds_subnet_az3
+}
+
+output "rds_subnet_az4" {
+  value = module.base.rds_subnet_az4
+}
+
 output "rds_private_cidr_1" {
   value = module.base.rds_private_cidr_1
 }
 
 output "rds_private_cidr_2" {
   value = module.base.rds_private_cidr_2
+}
+
+output "rds_private_cidr_3" {
+  value = module.base.rds_private_cidr_3
+}
+
+output "rds_private_cidr_4" {
+  value = module.base.rds_private_cidr_4
 }
 
 output "rds_subnet_group" {

@@ -88,6 +88,8 @@ module "stack" {
   restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
   rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20)
   rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
   rds_password                           = var.rds_password
   credhub_rds_password                   = var.credhub_rds_password
   rds_multi_az                           = var.rds_multi_az

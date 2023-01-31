@@ -31,6 +31,8 @@ module "rds_network" {
   security_groups_count = var.rds_security_groups_count
   rds_private_cidr_1    = var.rds_private_cidr_1
   rds_private_cidr_2    = var.rds_private_cidr_2
+  rds_private_cidr_3    = var.rds_private_cidr_3
+  rds_private_cidr_4    = var.rds_private_cidr_4
   az1_route_table       = module.vpc.private_route_table_az1
   az2_route_table       = module.vpc.private_route_table_az2
 }
