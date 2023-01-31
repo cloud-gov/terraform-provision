@@ -12,6 +12,8 @@ module "base" {
   nat_gateway_instance_type         = var.nat_gateway_instance_type
   rds_private_cidr_1                = var.rds_private_cidr_1
   rds_private_cidr_2                = var.rds_private_cidr_2
+  rds_private_cidr_3                = var.rds_private_cidr_3
+  rds_private_cidr_4                = var.rds_private_cidr_4
   rds_instance_type                 = var.rds_instance_type
   rds_db_size                       = var.rds_db_size
   rds_db_name                       = var.rds_db_name
