@@ -245,7 +245,7 @@ output "rds_subnet_az2" {
 }
 
 output "rds_subnet_az3" {
-  value = module.stack.rds_subnet_az1
+  value = module.stack.rds_subnet_az3
 }
 
 output "rds_subnet_az4" {
