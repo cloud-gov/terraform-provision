@@ -41,6 +41,12 @@ variable "rds_private_cidr_1" {
 variable "rds_private_cidr_2" {
 }
 
+variable "rds_private_cidr_3" {
+}
+
+variable "rds_private_cidr_4" {
+}
+
 variable "rds_instance_type" {
   default = "db.m4.large"
 }
