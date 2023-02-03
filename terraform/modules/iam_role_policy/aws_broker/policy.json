@@ -37,7 +37,8 @@
     {
       "Effect": "Allow",
       "Action": [
-        "rds:DescribeDBEngineVersions"
+        "rds:DescribeDBEngineVersions",
+        "rds:DescribeEngineDefaultParameters"
       ],
       "Resource": [
         "*"
