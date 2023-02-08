@@ -55,9 +55,13 @@ jobs:
     config:
       platform: linux
       image_resource:
-        type: docker-image
+        type: registry-image
         source:
-          repository: 18fgsa/concourse-task
+          aws_access_key_id: ((ecr_aws_key))
+          aws_secret_access_key: ((ecr_aws_secret))
+          repository: harden-concourse-task
+          aws_region: us-gov-west-1
+          semver_constraint: ">= 1.0.0"
       inputs:
       - name: pull-request
       params:
@@ -381,9 +385,13 @@ jobs:
       config:
         platform: linux
         image_resource:
-          type: docker-image
+          type: registry-image
           source:
-            repository: 18fgsa/concourse-task
+            aws_access_key_id: ((ecr_aws_key))
+            aws_secret_access_key: ((ecr_aws_secret))
+            repository: harden-concourse-task
+            aws_region: us-gov-west-1
+            semver_constraint: ">= 1.0.0"
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -399,9 +407,13 @@ jobs:
       config:
         platform: linux
         image_resource:
-          type: docker-image
+          type: registry-image
           source:
-            repository: 18fgsa/concourse-task
+            aws_access_key_id: ((ecr_aws_key))
+            aws_secret_access_key: ((ecr_aws_secret))
+            repository: harden-concourse-task
+            aws_region: us-gov-west-1
+            semver_constraint: ">= 1.0.0"
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -657,9 +669,13 @@ jobs:
         config:
           platform: linux
           image_resource:
-            type: docker-image
+            type: registry-image
             source:
-              repository: 18fgsa/concourse-task
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              semver_constraint: ">= 1.0.0"
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -675,9 +691,13 @@ jobs:
         config:
           platform: linux
           image_resource:
-            type: docker-image
+            type: registry-image
             source:
-              repository: 18fgsa/concourse-task
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              semver_constraint: ">= 1.0.0"
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -806,9 +826,13 @@ jobs:
         config:
           platform: linux
           image_resource:
-            type: docker-image
+            type: registry-image
             source:
-              repository: 18fgsa/concourse-task
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              semver_constraint: ">= 1.0.0"
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -824,9 +848,13 @@ jobs:
         config:
           platform: linux
           image_resource:
-            type: docker-image
+            type: registry-image
             source:
-              repository: 18fgsa/concourse-task
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              semver_constraint: ">= 1.0.0"
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
