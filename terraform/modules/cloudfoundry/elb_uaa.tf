@@ -159,6 +159,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       managed_rule_group_statement {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
+        
+        excluded_rule {
+          name = "CrossSiteScripting_COOKIE"
+        }
 
         excluded_rule {
           name = "CrossSiteScripting_BODY"
