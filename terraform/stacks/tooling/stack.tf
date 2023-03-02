@@ -82,11 +82,11 @@ module "stack" {
   aws_default_region                     = var.aws_default_region
   public_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 100)
   public_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                         = cidrsubnet(var.vpc_cidr, 8, 1)
+  private_cidr_1                         = cidrsubnet(var.vpc_cidr, 8, 1) # This is used by nessus, opsuaa and postfix
   private_cidr_2                         = cidrsubnet(var.vpc_cidr, 8, 2)
   restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
   restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
-  rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20) # This is used by nessus, opsuaa and postfix
+  rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20) 
   rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
   rds_private_cidr_3                = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
   rds_private_cidr_4                = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
