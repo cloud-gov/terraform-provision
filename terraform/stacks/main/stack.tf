@@ -239,7 +239,7 @@ module "stack" {
   target_concourse_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
-    [data.terraform_remote_state.target_vpc.outputs.nessus_static_ip],
+    data.terraform_remote_state.target_vpc.outputs.nessus_static_ip,
   ]
 
   parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id
