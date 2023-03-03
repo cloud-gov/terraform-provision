@@ -61,7 +61,7 @@ jobs:
           aws_secret_access_key: ((ecr_aws_secret))
           repository: harden-concourse-task
           aws_region: us-gov-west-1
-          semver_constraint: ">= 1.0.0"
+          tag: ((harden-concourse-task-tag))
       inputs:
       - name: pull-request
       params:
@@ -391,7 +391,7 @@ jobs:
             aws_secret_access_key: ((ecr_aws_secret))
             repository: harden-concourse-task
             aws_region: us-gov-west-1
-            semver_constraint: ">= 1.0.0"
+            tag: ((harden-concourse-task-tag))
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -413,7 +413,7 @@ jobs:
             aws_secret_access_key: ((ecr_aws_secret))
             repository: harden-concourse-task
             aws_region: us-gov-west-1
-            semver_constraint: ">= 1.0.0"
+            tag: ((harden-concourse-task-tag))
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -518,7 +518,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -540,7 +540,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -675,7 +675,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -697,7 +697,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -832,7 +832,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -854,7 +854,7 @@ jobs:
               aws_secret_access_key: ((ecr_aws_secret))
               repository: harden-concourse-task
               aws_region: us-gov-west-1
-              semver_constraint: ">= 1.0.0"
+              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
