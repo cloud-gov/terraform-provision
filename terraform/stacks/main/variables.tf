@@ -5,6 +5,10 @@ variable "aws_default_region" {
   default = "us-gov-west-1"
 }
 
+variable "aws_partition" {
+  default = "us-gov"
+}
+
 variable "vpc_cidr" {
 }
 

@@ -32,6 +32,11 @@ provider "aws" {
 provider "aws" {
   use_fips_endpoint = true
   region = var.aws_default_region
+
+  endpoints {
+    route53resolver = "https://route53.${var.aws_partition}.amazonaws.com"
+  }
+
   assume_role {
     role_arn = var.assume_arn
   }
