@@ -4,6 +4,7 @@ terraform {
 }
 
 provider "aws" {
+  use_fips_endpoint = true
   default_tags {
     tags = {
       deployment = "external-${var.stack_description}"
