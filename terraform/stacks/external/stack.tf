@@ -13,6 +13,22 @@ provider "aws" {
   }
 }
 
+# We can't use FIPS for all S3 resources
+# see https://github.com/hashicorp/terraform-provider-aws/issues/25717#issuecomment-1179797910
+provider "aws_no_fips" {
+  alias = "no-fips"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+  region     = var.aws_region
+
+  default_tags {
+    tags = {
+      deployment = "cloudfront-${var.stack_description}"
+      stack = "${var.stack_description}"
+    }
+  }
+}
+
 data "aws_partition" "current" {
 }
 
@@ -25,6 +41,11 @@ module "external_domain_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
+
+  providers = {
+    aws = aws
+    aws = aws.no-fips
+  }
 }
 
 module "external_domain_broker_tests" {
