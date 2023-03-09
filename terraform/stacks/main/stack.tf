@@ -34,7 +34,7 @@ provider "aws" {
   region = var.aws_default_region
 
   endpoints {
-    route53resolver = "https://route53.${var.aws_partition}.amazonaws.com"
+    route53resolver = "https://route53resolver.${var.aws_default_region}.amazonaws.com"
   }
 
   assume_role {
