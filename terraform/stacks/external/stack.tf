@@ -4,6 +4,8 @@ terraform {
 }
 
 provider "aws" {
+  alias = "fips"
+
   use_fips_endpoint = true
   default_tags {
     tags = {
@@ -16,7 +18,7 @@ provider "aws" {
 # We can't use FIPS for all S3 resources
 # see https://github.com/hashicorp/terraform-provider-aws/issues/25717#issuecomment-1179797910
 provider "aws" {
-  alias = "no-fips"
+  alias = "standard"
 
   default_tags {
     tags = {
@@ -40,8 +42,8 @@ module "external_domain_broker" {
   aws_partition     = data.aws_partition.current.partition
 
   providers = {
-    aws = aws
-    aws.no-fips = aws.no-fips
+    aws = aws.fips
+    aws.standard = aws.standard
   }
 }
 
@@ -50,6 +52,11 @@ module "external_domain_broker_tests" {
 
   aws_partition     = data.aws_partition.current.partition
   stack_description = var.stack_description
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
 
 module "cdn_broker" {
@@ -61,16 +68,31 @@ module "cdn_broker" {
   bucket            = "cdn-broker-le-verify-${var.stack_description}"
   cloudfront_prefix = "cg-${var.stack_description}/*"
   hosted_zone       = var.cdn_broker_hosted_zone
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
 
 module "limit_check_user" {
   source   = "../../modules/iam_user/limit_check_user"
   username = "limit-check-${var.stack_description}"
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
 
 module "health_check_user" {
   source   = "../../modules/iam_user/health_check"
   username = "health-check-${var.stack_description}"
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
 
 module "lets_encrypt_user" {
@@ -78,4 +100,9 @@ module "lets_encrypt_user" {
   aws_partition = data.aws_partition.current.partition
   hosted_zone   = var.lets_encrypt_hosted_zone
   username      = "lets-encrypt-${var.stack_description}"
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
