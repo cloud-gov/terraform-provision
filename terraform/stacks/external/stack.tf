@@ -15,7 +15,7 @@ provider "aws" {
 
 # We can't use FIPS for all S3 resources
 # see https://github.com/hashicorp/terraform-provider-aws/issues/25717#issuecomment-1179797910
-provider "aws_no_fips" {
+provider "aws" {
   alias = "no-fips"
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
@@ -44,7 +44,7 @@ module "external_domain_broker" {
 
   providers = {
     aws = aws
-    aws = aws.no-fips
+    aws.no-fips = aws.no-fips
   }
 }
 
