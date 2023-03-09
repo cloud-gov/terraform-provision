@@ -42,8 +42,8 @@ module "external_domain_broker" {
   aws_partition     = data.aws_partition.current.partition
 
   providers = {
-    aws = aws.fips
-    aws.standard = aws.standard
+    aws = aws.standard
+    # aws.standard = aws.standard
   }
 }
 
