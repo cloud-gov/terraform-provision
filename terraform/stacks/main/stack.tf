@@ -34,6 +34,7 @@ provider "aws" {
   region = var.aws_default_region
 
   endpoints {
+    # see https://github.com/hashicorp/terraform-provider-aws/issues/23619#issuecomment-1100198434
     route53resolver = "https://route53resolver.${var.aws_default_region}.amazonaws.com"
   }
 
