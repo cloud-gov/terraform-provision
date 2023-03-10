@@ -203,6 +203,14 @@ output "rds_subnet_az2" {
   value = module.stack.rds_subnet_az2
 }
 
+output "rds_subnet_az3" {
+  value = module.stack.rds_subnet_az3
+}
+
+output "rds_subnet_az4" {
+  value = module.stack.rds_subnet_az4
+}
+
 output "rds_subnet_group" {
   value = module.stack.rds_subnet_group
 }

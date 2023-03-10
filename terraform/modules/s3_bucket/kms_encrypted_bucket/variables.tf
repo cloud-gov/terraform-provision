@@ -71,6 +71,13 @@ variable "region" {
 }
 
 variable "source_bucket_policy_documents" {
+  description = "IAM policy documents to include in the S3 bucket policy"
+  type = list(string)
+  default = []
+}
+
+variable "source_kms_key_policy_documents" {
+  description = "IAM policy documents to include in the KMS key policy"
   type = list(string)
   default = []
 }

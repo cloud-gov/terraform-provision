@@ -37,7 +37,8 @@
     {
       "Effect": "Allow",
       "Action": [
-        "rds:DescribeDBEngineVersions"
+        "rds:DescribeDBEngineVersions",
+        "rds:DescribeEngineDefaultParameters"
       ],
       "Resource": [
         "*"
@@ -78,7 +79,7 @@
       "Resource": [
         "arn:aws-us-gov:s3:::*"
       ]
-    },    
+    },
     {
       "Effect": "Allow",
       "Action": [
@@ -132,6 +133,7 @@
         "iam:CreatePolicy",
         "iam:DeletePolicy",
         "iam:ListAttachedUserPolicies",
+        "iam:ListAttachedRolePolicies",
         "iam:AttachUserPolicy",
         "iam:DetachUserPolicy",
         "iam:ListRoles",

@@ -210,6 +210,8 @@ module "stack" {
   private_cidr_2                    = cidrsubnet(var.vpc_cidr, 8, 2)
   rds_private_cidr_1                = cidrsubnet(var.vpc_cidr, 8, 20)
   rds_private_cidr_2                = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
   restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   rds_password                      = var.rds_password
@@ -227,6 +229,7 @@ module "stack" {
   target_concourse_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.private_subnet_az1_cidr,
   ]
 
   parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id

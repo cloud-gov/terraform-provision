@@ -1,4 +1,6 @@
 data "aws_iam_policy_document" "kms_key_policy" {
+  source_policy_documents = var.source_kms_key_policy_documents
+
   statement {
     sid = "Enable IAM User Permissions"
     effect = "Allow"
