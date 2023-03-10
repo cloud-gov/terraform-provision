@@ -4,6 +4,22 @@ terraform {
 }
 
 provider "aws" {
+  alias = "fips"
+
+  use_fips_endpoint = true
+  default_tags {
+    tags = {
+      deployment = "external-${var.stack_description}"
+      stack = "${var.stack_description}"
+    }
+  }
+}
+
+# We can't use FIPS for all S3 resources
+# see https://github.com/hashicorp/terraform-provider-aws/issues/25717#issuecomment-1179797910
+provider "aws" {
+  alias = "standard"
+
   default_tags {
     tags = {
       deployment = "external-${var.stack_description}"
@@ -24,6 +40,11 @@ module "external_domain_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
+
+  providers = {
+    aws = aws.fips
+    aws.standard = aws.standard
+  }
 }
 
 module "external_domain_broker_tests" {

@@ -5,6 +5,7 @@ terraform {
 
 provider "aws" {
   alias = "tooling"
+  use_fips_endpoint = true
 
   default_tags {
     tags = {
@@ -14,6 +15,7 @@ provider "aws" {
 }
 
 provider "aws" {
+  use_fips_endpoint = true
   region = var.aws_default_region
   assume_role {
     role_arn = var.assume_arn
