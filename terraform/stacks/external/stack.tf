@@ -22,7 +22,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      deployment = "cloudfront-${var.stack_description}"
+      deployment = "external-${var.stack_description}"
       stack = "${var.stack_description}"
     }
   }
