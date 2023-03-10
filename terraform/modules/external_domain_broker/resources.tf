@@ -53,7 +53,7 @@ data "aws_canonical_user_id" "current_user" {
 }
 
 resource "aws_s3_bucket" "cloudfront_log_bucket" {
-  # provider = aws.standard
+  provider = aws.foo
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
 }
 
