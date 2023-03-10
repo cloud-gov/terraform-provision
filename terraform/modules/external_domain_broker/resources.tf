@@ -50,11 +50,11 @@ resource "aws_iam_user_policy" "iam_policy" {
 }
 
 data "aws_canonical_user_id" "current_user" {
-  provider = aws.foo
+  provider = aws.standard
 }
 
 resource "aws_s3_bucket" "cloudfront_log_bucket" {
-  provider = aws.foo
+  provider = aws.standard
   bucket = "external-domain-broker-cloudfront-logs-${var.stack_description}"
 }
 
