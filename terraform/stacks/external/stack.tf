@@ -52,11 +52,6 @@ module "external_domain_broker_tests" {
 
   aws_partition     = data.aws_partition.current.partition
   stack_description = var.stack_description
-
-  providers = {
-    aws = aws.fips
-    aws.standard = aws.standard
-  }
 }
 
 module "cdn_broker" {
