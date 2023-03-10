@@ -1,4 +1,5 @@
 provider "aws" {
+  use_fips_endpoint = true
   default_tags {
     tags = {
       deployment = "managed-account-${var.environment_name}"

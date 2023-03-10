@@ -4,20 +4,13 @@ terraform {
 }
 
 provider "aws" {
+  use_fips_endpoint = true
   # this is for CI
   # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
-  endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
-  }
 }
 provider "aws" {
+  use_fips_endpoint = true
   # this is for the tooling bosh
   # deploy and monitor vms, scrape metrics, compliance agents, and smtp
   alias = "parentbosh"
@@ -25,29 +18,18 @@ provider "aws" {
   assume_role {
     role_arn = var.parent_assume_arn
   }
-  endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
-  }
 }
 provider "aws" {
+  use_fips_endpoint = true
   region = var.aws_default_region
+
+  endpoints {
+    # see https://github.com/hashicorp/terraform-provider-aws/issues/23619#issuecomment-1100198434
+    route53resolver = "https://route53resolver.${var.aws_default_region}.amazonaws.com"
+  }
+
   assume_role {
     role_arn = var.assume_arn
-  }
-  endpoints {
-    ecr = "https://ecr-fips.${var.aws_default_region}.amazonaws.com"
-    efs = "https://elasticfilesystem-fips.${var.aws_default_region}.amazonaws.com"
-    es = "https://es-fips.${var.aws_default_region}.amazonaws.com"
-    firehose = "https://firehose-fips.${var.aws_default_region}.amazonaws.com"
-    kms = "https://kms-fips.${var.aws_default_region}.amazonaws.com"
-    lambda = "https://lambda-fips.${var.aws_default_region}.amazonaws.com"
-    wafv2 = "https://wafv2-fips.${var.aws_default_region}.amazonaws.com"
   }
   default_tags {
     tags = {
