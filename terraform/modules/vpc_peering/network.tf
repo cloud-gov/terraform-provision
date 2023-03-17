@@ -28,10 +28,6 @@ resource "aws_vpc_peering_connection" "peering" {
   tags = {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
   }
-
-  lifecycle {
-    ignore_changes = [tags_all]
-  }
 }
 
 resource "aws_vpc_peering_connection_accepter" "peer" {
