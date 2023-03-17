@@ -29,15 +29,17 @@ resource "aws_vpc_peering_connection" "peering" {
     Name = "${var.source_vpc_id} to ${var.target_vpc_id}"
   }
 
-  lifecycle {
-    ignore_changes = [tags_all]
-  }
+
 }
 
 resource "aws_vpc_peering_connection_accepter" "peer" {
   provider                  = aws.tooling
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
   auto_accept               = true
+
+  lifecycle {
+    ignore_changes = [tags_all]
+  }
 }
 
 # Add peering connection to target_az1_route_table with source_vpc_cidr
