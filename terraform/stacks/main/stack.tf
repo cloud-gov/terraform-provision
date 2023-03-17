@@ -8,6 +8,11 @@ provider "aws" {
   # this is for CI
   # run deployments, provide jumpboxes, check on things, etc
   alias = "tooling"
+  default_tags {
+    tags = {
+      deployment = "bosh-tooling"
+    }
+  }
 }
 provider "aws" {
   use_fips_endpoint = true
@@ -17,6 +22,11 @@ provider "aws" {
   region = var.aws_default_region
   assume_role {
     role_arn = var.parent_assume_arn
+  }
+  default_tags {
+    tags = {
+      deployment = "bosh-parent"
+    }
   }
 }
 provider "aws" {
