@@ -40,7 +40,7 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   auto_accept               = true
 
   lifecycle {
-    ignore_changes = [tags_all]
+    ignore_changes = [tags, tags_all]
   }
 }
 
