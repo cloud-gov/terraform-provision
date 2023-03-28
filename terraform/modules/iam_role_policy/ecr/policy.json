@@ -21,7 +21,10 @@
         "Effect": "Allow",
         "Action": [
             "ecr:CreateRepository",
-            "ecr:GetAuthorizationToken"
+            "ecr:GetAuthorizationToken",
+            "ecr:DeleteLifecyclePolicy",
+            "ecr:GetLifecyclePolicy",
+            "ecr:PutLifecyclePolicy"
         ],
         "Resource": [
             "*"
