@@ -57,18 +57,6 @@ resource "aws_route53_record" "star_app_aaaa" {
   }
 }
 
-resource "aws_route53_record" "admin_ui_aaaa" {
-  zone_id = var.zone_id
-  name    = "admin.${var.admin_subdomain}."
-  type    = "AAAA"
-
-  alias {
-    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.admin_lb_dns_name}"
-    zone_id                = var.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
 resource "aws_route53_record" "uaa_a" {
   zone_id = var.zone_id
   name    = "uaa.${var.admin_subdomain}."
