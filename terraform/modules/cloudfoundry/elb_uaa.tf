@@ -243,9 +243,17 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         arn = aws_waf_ipset.usa_gov_ipset.arn
         ip_set_forwarded_ip_config {
           # Match configuration from next rule, the rate limit
-          header_name = "X-Forwarded-For"
+          header_name       = "X-Forwarded-For"
+          fallback_behavior = "MATCH"
+          position          = "ANY"
         }
       }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AllowUSAGovLoadTestIPs"
+      sampled_requests_enabled   = true
     }
   }
 
