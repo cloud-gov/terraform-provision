@@ -45,7 +45,7 @@ variable "wildcard_apps_certificate_name_prefix" {
 
 variable "pages_cert_patterns" {
   default = []
-  type = set(string)
+  type    = set(string)
 }
 
 variable "admin_hosts" {
@@ -127,7 +127,7 @@ variable "az2_index" {
 }
 
 variable "include_tcp_routes" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -135,11 +135,19 @@ variable "waf_regular_expressions" {
   type = list(string)
 }
 
-variable "s3_gateway_policy_accounts"{
+variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
 
 variable "sns_name" {
-  
+
+}
+
+variable "usa_gov_load_ip_1" {
+  type = string
+}
+
+variable "usa_gov_load_ip_2" {
+  type = string
 }
