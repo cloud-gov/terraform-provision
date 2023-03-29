@@ -490,6 +490,8 @@ jobs:
       TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
       TF_VAR_s3_gateway_policy_accounts: ((development_s3_gateway_policy_accounts))
       TF_VAR_sns_name: cloud-gov-notifications
+      TF_VAR_usa_gov_load_ip_1: ((usa_gov_load_ip_1))
+      TF_VAR_usa_gov_load_ip_2: ((usa_gov_load_ip_2))
   - *notify-slack
 
 - name: bootstrap-development
@@ -648,6 +650,8 @@ jobs:
       TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
       TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
       TF_VAR_sns_name: cloud-gov-notifications
+      TF_VAR_usa_gov_load_ip_1: ((usa_gov_load_ip_1))
+      TF_VAR_usa_gov_load_ip_2: ((usa_gov_load_ip_2))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -805,6 +809,8 @@ jobs:
       TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
       TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
       TF_VAR_sns_name: cloud-gov-notifications
+      TF_VAR_usa_gov_load_ip_1: ((usa_gov_load_ip_1))
+      TF_VAR_usa_gov_load_ip_2: ((usa_gov_load_ip_2))
   - *notify-slack
 
 - name: bootstrap-production
