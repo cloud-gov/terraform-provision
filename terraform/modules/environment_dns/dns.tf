@@ -57,30 +57,6 @@ resource "aws_route53_record" "star_app_aaaa" {
   }
 }
 
-resource "aws_route53_record" "admin_ui_a" {
-  zone_id = var.zone_id
-  name    = "admin.${var.admin_subdomain}."
-  type    = "A"
-
-  alias {
-    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.admin_lb_dns_name}"
-    zone_id                = var.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "admin_ui_aaaa" {
-  zone_id = var.zone_id
-  name    = "admin.${var.admin_subdomain}."
-  type    = "AAAA"
-
-  alias {
-    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.admin_lb_dns_name}"
-    zone_id                = var.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
 resource "aws_route53_record" "uaa_a" {
   zone_id = var.zone_id
   name    = "uaa.${var.admin_subdomain}."
@@ -204,9 +180,9 @@ resource "aws_route53_record" "ssh_aaaa" {
 
 resource "aws_route53_record" "tcp_a" {
   for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
-  zone_id = var.zone_id
-  name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
-  type = "A"
+  zone_id  = var.zone_id
+  name     = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
+  type     = "A"
   alias {
     name                   = each.key
     zone_id                = var.nlb_zone_id
@@ -216,12 +192,13 @@ resource "aws_route53_record" "tcp_a" {
 
 resource "aws_route53_record" "tcp_aaaa" {
   for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
-  zone_id = var.zone_id
-  name = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
-  type = "AAAA"
+  zone_id  = var.zone_id
+  name     = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
+  type     = "AAAA"
   alias {
     name                   = each.key
     zone_id                = var.nlb_zone_id
     evaluate_target_health = false
   }
 }
+
