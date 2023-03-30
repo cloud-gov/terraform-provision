@@ -640,7 +640,6 @@ jobs:
       TF_VAR_bucket_prefix: staging-cg
       TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_admin_hosts: '["admin.fr-stage.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "2"
@@ -799,7 +798,6 @@ jobs:
       TF_VAR_bucket_prefix: cg
       TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_admin_hosts: '["admin.fr.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
       TF_VAR_domains_broker_alb_count: "8"
