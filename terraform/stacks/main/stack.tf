@@ -36,6 +36,7 @@ provider "aws" {
   endpoints {
     # see https://github.com/hashicorp/terraform-provider-aws/issues/23619#issuecomment-1100198434
     route53resolver = "https://route53resolver.${var.aws_default_region}.amazonaws.com"
+    waf             = "https://waf-regional-fips.${var.aws_default_region}.amazonaws.com"
   }
 
   assume_role {
