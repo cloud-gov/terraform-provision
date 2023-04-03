@@ -54,20 +54,6 @@ resource "aws_lb_listener" "cf_uaa_http" {
   }
 }
 
-resource "aws_waf_ipset" "usa_gov_ipset" {
-  name = "usaGovIPSet"
-
-  ip_set_descriptors {
-    type  = "IPV4"
-    value = var.usa_gov_load_ip_1
-  }
-
-  ip_set_descriptors {
-    type  = "IPV4"
-    value = var.usa_gov_load_ip_2
-  }
-}
-
 // For webacl rules using AWS managed rule sets or custom rules, checkout the AWS Govcloud WAF V2 console
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you
 // The rule in json format which will make it easier to translate to TF
@@ -231,35 +217,8 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "AllowUSAGovLoadTestIPs"
-    priority = 4
-
-    action {
-      allow {}
-    }
-
-    statement {
-      ip_set_reference_statement {
-        arn = aws_waf_ipset.usa_gov_ipset.arn
-        ip_set_forwarded_ip_config {
-          # Match configuration from next rule, the rate limit
-          header_name       = "X-Forwarded-For"
-          fallback_behavior = "MATCH"
-          position          = "ANY"
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AllowUSAGovLoadTestIPs"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
     name     = "RateLimitByForwardedHeader"
-    priority = 5
+    priority = 4
 
     action {
       block {}
@@ -289,7 +248,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 6
+    priority = 5
     action {
       block {}
     }

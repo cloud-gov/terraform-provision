@@ -275,9 +275,6 @@ module "cf" {
   tcp_allow_cidrs_ipv4    = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
   tcp_allow_cidrs_ipv6    = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
   waf_regular_expressions = var.waf_regular_expressions
-
-  usa_gov_load_ip_1 = var.usa_gov_load_ip_1
-  usa_gov_load_ip_2 = var.usa_gov_load_ip_2
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
