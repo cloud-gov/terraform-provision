@@ -128,11 +128,3 @@ variable "tcp_allow_cidrs_ipv6" {
 variable "waf_regular_expressions" {
   type = list(string)
 }
-
-variable "usa_gov_load_ip_1" {
-  type = string
-}
-
-variable "usa_gov_load_ip_2" {
-  type = string
-}

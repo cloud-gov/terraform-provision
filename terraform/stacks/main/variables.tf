@@ -143,11 +143,3 @@ variable "s3_gateway_policy_accounts" {
 variable "sns_name" {
 
 }
-
-variable "usa_gov_load_ip_1" {
-  type = string
-}
-
-variable "usa_gov_load_ip_2" {
-  type = string
-}
