@@ -257,7 +257,7 @@ output "bosh_rds_username" {
 }
 
 output "bosh_rds_password" {
-  value = module.stack.bosh_rds_password
+  value     = module.stack.bosh_rds_password
   sensitive = true
 }
 
@@ -279,7 +279,7 @@ output "credhub_rds_username" {
 }
 
 output "credhub_rds_password" {
-  value = module.stack.credhub_rds_password
+  value     = module.stack.credhub_rds_password
   sensitive = true
 }
 
@@ -338,7 +338,7 @@ output "production_concourse_rds_username" {
 }
 
 output "production_concourse_rds_password" {
-  value = module.concourse_production.concourse_rds_password
+  value     = module.concourse_production.concourse_rds_password
   sensitive = true
 }
 
@@ -392,7 +392,7 @@ output "staging_concourse_rds_username" {
 }
 
 output "staging_concourse_rds_password" {
-  value = module.concourse_staging.concourse_rds_password
+  value     = module.concourse_staging.concourse_rds_password
   sensitive = true
 }
 
@@ -462,7 +462,7 @@ output "production_credhub_rds_username" {
 }
 
 output "production_credhub_rds_password" {
-  value = module.credhub_production.credhub_rds_password
+  value     = module.credhub_production.credhub_rds_password
   sensitive = true
 }
 
@@ -534,7 +534,7 @@ output "staging_credhub_rds_username" {
 }
 
 output "staging_credhub_rds_password" {
-  value = module.credhub_staging.credhub_rds_password
+  value     = module.credhub_staging.credhub_rds_password
   sensitive = true
 }
 
@@ -602,7 +602,7 @@ output "billing_access_key_id_prev" {
 }
 
 output "billing_secret_access_key_prev" {
-  value = module.billing_user.secret_access_key_prev
+  value     = module.billing_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -611,7 +611,7 @@ output "billing_access_key_id_curr" {
 }
 
 output "billing_secret_access_key_curr" {
-  value = module.billing_user.secret_access_key_curr
+  value     = module.billing_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -625,7 +625,7 @@ output "federalist_auditor_access_key_id_prev" {
 }
 
 output "federalist_auditor_secret_access_key_prev" {
-  value = module.federalist_auditor_user.secret_access_key_prev
+  value     = module.federalist_auditor_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -634,7 +634,7 @@ output "federalist_auditor_access_key_id_curr" {
 }
 
 output "federalist_auditor_secret_access_key_curr" {
-  value = module.federalist_auditor_user.secret_access_key_curr
+  value     = module.federalist_auditor_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -648,7 +648,7 @@ output "s3_logstash_access_key_id_prev" {
 }
 
 output "s3_logstash_secret_access_key_prev" {
-  value = module.s3_logstash.secret_access_key_prev
+  value     = module.s3_logstash.secret_access_key_prev
   sensitive = true
 }
 
@@ -657,7 +657,7 @@ output "s3_logstash_access_key_id_curr" {
 }
 
 output "s3_logstash_secret_access_key_curr" {
-  value = module.s3_logstash.secret_access_key_curr
+  value     = module.s3_logstash.secret_access_key_curr
   sensitive = true
 }
 
@@ -671,7 +671,7 @@ output "rds_storage_alert_access_key_id" {
 }
 
 output "rds_storage_alert_secret_access_key" {
-  value = module.rds_storage_alert.secret_access_key
+  value     = module.rds_storage_alert.secret_access_key
   sensitive = true
 }
 
@@ -685,7 +685,7 @@ output "iam_cert_provision_access_key_id_prev" {
 }
 
 output "iam_cert_provision_secret_access_key_prev" {
-  value = module.iam_cert_provision_user.secret_access_key_prev
+  value     = module.iam_cert_provision_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -694,7 +694,7 @@ output "iam_cert_provision_access_key_id_curr" {
 }
 
 output "iam_cert_provision_secret_access_key_curr" {
-  value = module.iam_cert_provision_user.secret_access_key_curr
+  value     = module.iam_cert_provision_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -708,7 +708,7 @@ output "ecr_access_key_id_prev" {
 }
 
 output "ecr_secret_access_key_prev" {
-  value = module.ecr_user.secret_access_key_prev
+  value     = module.ecr_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -717,7 +717,7 @@ output "ecr_access_key_id_curr" {
 }
 
 output "ecr_secret_access_key_curr" {
-  value = module.ecr_user.secret_access_key_curr
+  value     = module.ecr_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -832,7 +832,7 @@ output "cvd_sync_access_key_id_prev" {
 }
 
 output "cvd_sync_secret_access_key_prev" {
-  value = module.cvd_sync_user.secret_access_key_prev
+  value     = module.cvd_sync_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -841,7 +841,7 @@ output "cvd_sync_access_key_id_curr" {
 }
 
 output "cvd_sync_secret_access_key_curr" {
-  value = module.cvd_sync_user.secret_access_key_curr
+  value     = module.cvd_sync_user.secret_access_key_curr
   sensitive = true
 }
 

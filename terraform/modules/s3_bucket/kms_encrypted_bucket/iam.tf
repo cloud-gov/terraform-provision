@@ -1,8 +1,8 @@
 data "aws_iam_policy_document" "kms_encrypted_bucket_policy" {
   source_policy_documents = var.source_bucket_policy_documents
-  
+
   statement {
-    sid = "DenyIncorrectEncryptionHeader"
+    sid    = "DenyIncorrectEncryptionHeader"
     effect = "Deny"
 
     principals {
@@ -19,14 +19,14 @@ data "aws_iam_policy_document" "kms_encrypted_bucket_policy" {
     ]
 
     condition {
-      test = "StringNotEquals"
+      test     = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
-      values = ["aws:kms"]
+      values   = ["aws:kms"]
     }
   }
 
   statement {
-    sid = "DenyUnEncryptedObjectUploads"
+    sid    = "DenyUnEncryptedObjectUploads"
     effect = "Deny"
 
     principals {
@@ -43,9 +43,9 @@ data "aws_iam_policy_document" "kms_encrypted_bucket_policy" {
     ]
 
     condition {
-      test = "Null"
+      test     = "Null"
       variable = "s3:x-amz-server-side-encryption"
-      values = [true]
+      values   = [true]
     }
   }
 
@@ -54,11 +54,11 @@ data "aws_iam_policy_document" "kms_encrypted_bucket_policy" {
     iterator = account
 
     content {
-      sid = "AllowExternalAccountAccess_${account.value}"
+      sid    = "AllowExternalAccountAccess_${account.value}"
       effect = "Allow"
 
       principals {
-        type = "AWS"
+        type        = "AWS"
         identifiers = ["arn:${var.aws_partition}:iam::${account.value}:root"]
       }
 

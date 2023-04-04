@@ -14,7 +14,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypted_bucket_
 }
 
 resource "aws_s3_bucket_versioning" "encrypted_bucket_versioning" {
-  count = var.versioning ? 1 : 0
+  count  = var.versioning ? 1 : 0
   bucket = aws_s3_bucket.encrypted_bucket.id
   versioning_configuration {
     status = "Enabled"
@@ -30,7 +30,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
   rule {
     id = "rule0"
     filter {
-      prefix  = ""
+      prefix = ""
     }
     #if expiration_days is 0 then the rule is disabled
     status = var.expiration_days == 0 ? "Disabled" : "Enabled"

@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "staging_zone" {
-    name = "fr-stage.cloud.gov"
+  name = "fr-stage.cloud.gov"
 }
 
 resource "aws_route53_record" "staging_ns" {

@@ -17,7 +17,7 @@ resource "aws_subnet" "az1_services" {
   availability_zone = var.az1
 
   tags = {
-    Name              = "${var.stack_description} (Services AZ1)"
+    Name = "${var.stack_description} (Services AZ1)"
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_subnet" "az2_services" {
   availability_zone = var.az2
 
   tags = {
-    Name              = "${var.stack_description} (Services AZ2)"
+    Name = "${var.stack_description} (Services AZ2)"
   }
 }
 

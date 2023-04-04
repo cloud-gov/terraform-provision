@@ -4,7 +4,7 @@ terraform {
 }
 
 provider "aws" {
-  alias = "tooling"
+  alias             = "tooling"
   use_fips_endpoint = true
 
   default_tags {
@@ -16,14 +16,14 @@ provider "aws" {
 
 provider "aws" {
   use_fips_endpoint = true
-  region = var.aws_default_region
+  region            = var.aws_default_region
   assume_role {
     role_arn = var.assume_arn
   }
   default_tags {
     tags = {
       deployment = "regional-master-bosh-${var.stack_description}"
-      stack = "${var.stack_description}"
+      stack      = "${var.stack_description}"
     }
   }
 }
@@ -72,8 +72,8 @@ resource "aws_lb" "main" {
     prefix  = var.stack_description
     enabled = true
   }
- 
-  enable_deletion_protection  = true
+
+  enable_deletion_protection = true
 }
 
 resource "aws_lb_listener" "main" {
@@ -133,7 +133,7 @@ module "stack" {
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
-  rds_allowed_cidrs                 = [
+  rds_allowed_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
   ]
@@ -177,7 +177,7 @@ module "concourse_vpc_peering" {
   source = "../../modules/vpc_peering"
 
   providers = {
-    aws = aws
+    aws         = aws
     aws.tooling = aws.tooling
   }
   target_vpc_account_id  = data.aws_caller_identity.tooling.account_id

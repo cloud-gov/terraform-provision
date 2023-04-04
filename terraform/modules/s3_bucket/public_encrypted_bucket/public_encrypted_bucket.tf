@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "public_encrypted_bucket" {
   force_destroy = var.force_destroy
 }
 resource "aws_s3_bucket_versioning" "public_encrypted_bucket_versioning" {
-  count = var.versioning ? 1 : 0
+  count  = var.versioning ? 1 : 0
   bucket = aws_s3_bucket.public_encrypted_bucket.id
   versioning_configuration {
     status = "Enabled"
@@ -13,7 +13,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "public_encrypted_
   bucket = aws_s3_bucket.public_encrypted_bucket.id
   rule {
     apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
+      sse_algorithm = "AES256"
     }
   }
 }

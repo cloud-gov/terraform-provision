@@ -146,12 +146,12 @@ resource "aws_security_group_rule" "bosh_credhub" {
 }
 
 resource "aws_security_group_rule" "node_exporter" {
-  type                     = "ingress"
-  from_port                = 9100
-  to_port                  = 9100
-  protocol                 = "tcp"
-  cidr_blocks              = var.monitoring_security_group_cidrs
-  security_group_id        = aws_security_group.bosh.id
+  type              = "ingress"
+  from_port         = 9100
+  to_port           = 9100
+  protocol          = "tcp"
+  cidr_blocks       = var.monitoring_security_group_cidrs
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "platform_kibana" {
@@ -164,39 +164,39 @@ resource "aws_security_group_rule" "platform_kibana" {
 }
 
 resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
-  type                     = "ingress"
-  from_port                = 9114
-  to_port                  = 9114
-  protocol                 = "tcp"
-  cidr_blocks              = var.monitoring_security_group_cidrs
-  security_group_id        = aws_security_group.bosh.id
+  type              = "ingress"
+  from_port         = 9114
+  to_port           = 9114
+  protocol          = "tcp"
+  cidr_blocks       = var.monitoring_security_group_cidrs
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_logsearch" {
-  type                     = "ingress"
-  from_port                = 9200
-  to_port                  = 9200
-  protocol                 = "tcp"
-  cidr_blocks              = var.concourse_security_group_cidrs
-  security_group_id        = aws_security_group.bosh.id
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  cidr_blocks       = var.concourse_security_group_cidrs
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_secureproxy" {
-  type                     = "ingress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  cidr_blocks              = var.concourse_security_group_cidrs
-  security_group_id        = aws_security_group.bosh.id
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = var.concourse_security_group_cidrs
+  security_group_id = aws_security_group.bosh.id
 }
 
 resource "aws_security_group_rule" "concourse_secureproxy_https" {
-  type                     = "ingress"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  cidr_blocks              = var.concourse_security_group_cidrs
-  security_group_id        = aws_security_group.bosh.id
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = var.concourse_security_group_cidrs
+  security_group_id = aws_security_group.bosh.id
 }
 
 

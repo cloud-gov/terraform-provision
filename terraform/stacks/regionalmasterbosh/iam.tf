@@ -6,7 +6,7 @@ resource "aws_iam_user" "bosh_blobstore_user" {
 }
 
 resource "aws_iam_access_key" "bosh_blobstore_user_key_v1" {
-  user    = aws_iam_user.bosh_blobstore_user.name
+  user = aws_iam_user.bosh_blobstore_user.name
 }
 module "s3_logstash" {
   source        = "../../modules/iam_user/s3_logstash"

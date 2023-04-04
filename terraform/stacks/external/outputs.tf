@@ -8,7 +8,7 @@ output "health_check_user_access_key_id_prev" {
 }
 
 output "health_check_user_secret_access_key_prev" {
-  value = module.health_check_user.secret_access_key_prev
+  value     = module.health_check_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -17,7 +17,7 @@ output "health_check_user_access_key_id_curr" {
 }
 
 output "health_check_user_secret_access_key_curr" {
-  value = module.health_check_user.secret_access_key_curr
+  value     = module.health_check_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -31,7 +31,7 @@ output "external_domain_broker_access_key_id_prev" {
 }
 
 output "external_domain_broker_secret_access_key_prev" {
-  value = module.external_domain_broker.secret_access_key_prev
+  value     = module.external_domain_broker.secret_access_key_prev
   sensitive = true
 }
 
@@ -40,7 +40,7 @@ output "external_domain_broker_access_key_id_curr" {
 }
 
 output "external_domain_broker_secret_access_key_curr" {
-  value = module.external_domain_broker.secret_access_key_curr
+  value     = module.external_domain_broker.secret_access_key_curr
   sensitive = true
 }
 
@@ -54,7 +54,7 @@ output "external_domain_broker_tests_access_key_id_prev" {
 }
 
 output "external_domain_broker_tests_secret_access_key_prev" {
-  value = module.external_domain_broker_tests.secret_access_key_prev
+  value     = module.external_domain_broker_tests.secret_access_key_prev
   sensitive = true
 }
 
@@ -63,7 +63,7 @@ output "external_domain_broker_tests_access_key_id_curr" {
 }
 
 output "external_domain_broker_tests_secret_access_key_curr" {
-  value = module.external_domain_broker_tests.secret_access_key_curr
+  value     = module.external_domain_broker_tests.secret_access_key_curr
   sensitive = true
 }
 
@@ -77,7 +77,7 @@ output "cdn_broker_access_key_id_prev" {
 }
 
 output "cdn_broker_secret_access_key_prev" {
-  value = module.cdn_broker.secret_access_key_prev
+  value     = module.cdn_broker.secret_access_key_prev
   sensitive = true
 }
 
@@ -86,7 +86,7 @@ output "cdn_broker_access_key_id_curr" {
 }
 
 output "cdn_broker_secret_access_key_curr" {
-  value = module.cdn_broker.secret_access_key_curr
+  value     = module.cdn_broker.secret_access_key_curr
   sensitive = true
 }
 
@@ -100,7 +100,7 @@ output "limit_check_access_key_id_prev" {
 }
 
 output "limit_check_secret_access_key_prev" {
-  value = module.limit_check_user.secret_access_key_prev
+  value     = module.limit_check_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -109,7 +109,7 @@ output "limit_check_access_key_id_curr" {
 }
 
 output "limit_check_secret_access_key_curr" {
-  value = module.limit_check_user.secret_access_key_curr
+  value     = module.limit_check_user.secret_access_key_curr
   sensitive = true
 }
 
@@ -123,7 +123,7 @@ output "lets_encrypt_access_key_id_prev" {
 }
 
 output "lets_encrypt_secret_access_key_prev" {
-  value = module.lets_encrypt_user.secret_access_key_prev
+  value     = module.lets_encrypt_user.secret_access_key_prev
   sensitive = true
 }
 
@@ -132,6 +132,6 @@ output "lets_encrypt_access_key_id_curr" {
 }
 
 output "lets_encrypt_secret_access_key_curr" {
-  value = module.lets_encrypt_user.secret_access_key_curr
+  value     = module.lets_encrypt_user.secret_access_key_curr
   sensitive = true
 }

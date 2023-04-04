@@ -2,7 +2,7 @@ resource "aws_iam_user" "s3_broker_user" {
   name = "s3-broker-${var.stack_description}"
 }
 resource "aws_iam_access_key" "s3_broker_user_key_v1" {
-  user    = aws_iam_user.s3_broker_user.name
+  user = aws_iam_user.s3_broker_user.name
 }
 
 module "blobstore_policy" {
@@ -153,7 +153,7 @@ resource "aws_iam_policy_attachment" "bosh" {
     module.bosh_role.role_name,
   ]
   users = [
-     aws_iam_user.parent_bosh_user.name
+    aws_iam_user.parent_bosh_user.name
   ]
 }
 
@@ -225,5 +225,5 @@ resource "aws_iam_user" "parent_bosh_user" {
 
 
 resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
-  user    = aws_iam_user.parent_bosh_user.name
+  user = aws_iam_user.parent_bosh_user.name
 }

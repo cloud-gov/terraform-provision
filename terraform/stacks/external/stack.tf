@@ -10,7 +10,7 @@ provider "aws" {
   default_tags {
     tags = {
       deployment = "external-${var.stack_description}"
-      stack = "${var.stack_description}"
+      stack      = "${var.stack_description}"
     }
   }
 }
@@ -23,7 +23,7 @@ provider "aws" {
   default_tags {
     tags = {
       deployment = "external-${var.stack_description}"
-      stack = "${var.stack_description}"
+      stack      = "${var.stack_description}"
     }
   }
 }
@@ -42,7 +42,7 @@ module "external_domain_broker" {
   aws_partition     = data.aws_partition.current.partition
 
   providers = {
-    aws = aws.fips
+    aws          = aws.fips
     aws.standard = aws.standard
   }
 }

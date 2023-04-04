@@ -14,7 +14,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "log_encrypted_buc
 }
 
 resource "aws_s3_bucket_versioning" "log_encrypted_bucket_versioning" {
-  count = var.versioning ? 1 : 0
+  count  = var.versioning ? 1 : 0
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   versioning_configuration {
     status = "Enabled"
@@ -30,7 +30,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
   rule {
     id = "log-rule"
     filter {
-      prefix  = ""
+      prefix = ""
     }
     #if expiration_days is 0 then the rule is disabled
     status = var.expiration_days == 0 ? "Disabled" : "Enabled"
@@ -51,7 +51,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
 }
 
 resource "aws_s3_bucket_policy" "log_encrypted_bucket_policy" {
-  count = var.include_require_encrypted_put_bucket_policy ? 1 : 0
+  count  = var.include_require_encrypted_put_bucket_policy ? 1 : 0
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   policy = <<EOF
 {

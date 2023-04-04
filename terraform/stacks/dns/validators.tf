@@ -48,7 +48,7 @@ resource "aws_route53_record" "cloud_gov_gsuite_dkim_txt" {
   ttl     = 5
 
   records = [
-     "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjaTlZow4cEXZt/gUvZaVPrlsxzo4grF136MoAXLE5gz314FqsdXsHtCJzVHK+8zA4GajtZ8FLDUTqf+E+fJ9xaWUTfOxhtOccOOMKxTUuXcq+V3+mMad1MFOUxMSNfYtJmvWvpVlo+\"\"TGk70sZSRhhyUcMGqQobdPlAdv67iQsQZLj1I12EbPqByT+lZI57p8C1dVEYHxdzmPEFcaeIX97OPUNEOszDez5glQabg+UJPidgs/h+w+fTs8B2Jf6GN/Q/qLmjZSnGU3xbCqy4jWpNNvISu8jFmqXedwEG/xXv1Yk8oL361J5Oz/Y2mC/dlvbXLJWe8dBOLaKC0vesIMXQIDAQAB",
+    "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjaTlZow4cEXZt/gUvZaVPrlsxzo4grF136MoAXLE5gz314FqsdXsHtCJzVHK+8zA4GajtZ8FLDUTqf+E+fJ9xaWUTfOxhtOccOOMKxTUuXcq+V3+mMad1MFOUxMSNfYtJmvWvpVlo+\"\"TGk70sZSRhhyUcMGqQobdPlAdv67iQsQZLj1I12EbPqByT+lZI57p8C1dVEYHxdzmPEFcaeIX97OPUNEOszDez5glQabg+UJPidgs/h+w+fTs8B2Jf6GN/Q/qLmjZSnGU3xbCqy4jWpNNvISu8jFmqXedwEG/xXv1Yk8oL361J5Oz/Y2mC/dlvbXLJWe8dBOLaKC0vesIMXQIDAQAB",
   ]
 }
 

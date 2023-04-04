@@ -43,20 +43,20 @@ resource "aws_security_group_rule" "egress_default" {
 
 # allows pg rds to get to s3 for import and export
 resource "aws_security_group_rule" "egress_s3" {
-  type                     = "egress"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  prefix_list_ids          = [data.aws_prefix_list.s3.id]
-  security_group_id        = aws_security_group.rds_postgres.id
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  prefix_list_ids   = [data.aws_prefix_list.s3.id]
+  security_group_id = aws_security_group.rds_postgres.id
 }
 
 resource "aws_security_group_rule" "ingress_tooling" {
 
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  cidr_blocks              = var.allowed_cidrs
-  security_group_id        = aws_security_group.rds_postgres.id
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidrs
+  security_group_id = aws_security_group.rds_postgres.id
 }

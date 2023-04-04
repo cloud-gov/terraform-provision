@@ -92,6 +92,6 @@ output "vpc_endpoint_customer_s3_if2_ip" {
 }
 
 /* DNS for the S3 Private Endpoint */
-output "vpc_endpoint_customer_s3_dns"{
+output "vpc_endpoint_customer_s3_dns" {
   value = aws_vpc_endpoint.customer_s3.dns_entry
 }

@@ -5,7 +5,7 @@ resource "aws_lb" "cf_apps" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
 
-  enable_deletion_protection  = true
+  enable_deletion_protection = true
 
   access_logs {
     bucket  = var.log_bucket_name

@@ -40,10 +40,10 @@ POLICY
 }
 
 resource "aws_cloudtrail" "cg-s3-cloudtrail-trail" {
-  name           = "s3-audit-logs"
-  s3_bucket_name = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
+  name                       = "s3-audit-logs"
+  s3_bucket_name             = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
   enable_log_file_validation = true
-  
+
   event_selector {
     read_write_type           = "All"
     include_management_events = true

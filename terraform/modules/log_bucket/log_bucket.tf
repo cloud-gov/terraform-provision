@@ -32,15 +32,15 @@ resource "aws_s3_bucket" "log_bucket" {
 }
 
 resource "aws_s3_bucket_acl" "log_bucket_acl" {
-  bucket        = aws_s3_bucket.log_bucket.id
-  acl           = var.log_bucket_acl
+  bucket = aws_s3_bucket.log_bucket.id
+  acl    = var.log_bucket_acl
 }
 resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
   rule {
     id = "all"
     filter {
-      prefix  = ""
+      prefix = ""
     }
     status = "Enabled"
     transition {
