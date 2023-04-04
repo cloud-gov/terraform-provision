@@ -97,9 +97,11 @@ variable "aws_partition" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
 
 variable "credhub_rds_password" {
+  sensitive = true
 }
 
 variable "target_vpc_id" {
@@ -161,7 +163,7 @@ variable "bosh_default_ssh_public_key" {
 
 }
 
-variable "s3_gateway_policy_accounts"{
+variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }

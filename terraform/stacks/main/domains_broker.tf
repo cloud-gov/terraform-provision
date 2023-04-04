@@ -6,15 +6,16 @@ variable "domains_broker_rds_username" {
 }
 
 variable "domains_broker_rds_password" {
+  sensitive = true
 }
 
 /* Broker internal load balancer */
 resource "aws_lb" "domains_broker_internal" {
-  name    = "${var.stack_description}-domains-internal"
-  subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  security_groups = [module.stack.bosh_security_group]
-  internal        = true
-  enable_deletion_protection  = true
+  name                       = "${var.stack_description}-domains-internal"
+  subnets                    = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
+  security_groups            = [module.stack.bosh_security_group]
+  internal                   = true
+  enable_deletion_protection = true
   access_logs {
     bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
@@ -88,12 +89,12 @@ output "domains_broker_rds_port" {
 resource "aws_lb" "domains_broker" {
   count = var.domains_broker_alb_count
 
-  name    = "${var.stack_description}-domains-${count.index}"
-  subnets = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
-  security_groups = [module.stack.web_traffic_security_group]
-  ip_address_type = "dualstack"
-  idle_timeout    = 3600
-  enable_deletion_protection  = true
+  name                       = "${var.stack_description}-domains-${count.index}"
+  subnets                    = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  security_groups            = [module.stack.web_traffic_security_group]
+  ip_address_type            = "dualstack"
+  idle_timeout               = 3600
+  enable_deletion_protection = true
   access_logs {
     bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
@@ -359,7 +360,7 @@ output "legacy_domain_certificate_renewer_access_key_id_curr" {
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_curr" {
-  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
   sensitive = true
 }
 

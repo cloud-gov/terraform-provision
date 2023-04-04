@@ -36,7 +36,8 @@ output "concourse_rds_username" {
 }
 
 output "concourse_rds_password" {
-  value = module.rds_96.rds_password
+  value     = module.rds_96.rds_password
+  sensitive = true
 }
 
 output "concourse_lb_target_group" {

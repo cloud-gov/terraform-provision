@@ -17,15 +17,20 @@ variable "rds_db_size" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
+
 variable "rds_instance_type" {
-  default = "db.m4.large"
+  default   = "db.m4.large"
+  sensitive = true
 }
 
 variable "cf_rds_password" {
+  sensitive = true
 }
 
 variable "credhub_rds_password" {
+  sensitive = true
 }
 
 variable "remote_state_bucket" {

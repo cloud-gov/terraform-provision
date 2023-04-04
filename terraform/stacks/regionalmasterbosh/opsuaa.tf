@@ -1,4 +1,5 @@
 variable "opsuaa_rds_password" {
+  sensitive = true
 }
 
 module "opsuaa_db" {
@@ -34,7 +35,8 @@ output "opsuaa_rds_username" {
 }
 
 output "opsuaa_rds_password" {
-  value = module.opsuaa_db.rds_password
+  value     = module.opsuaa_db.rds_password
+  sensitive = true
 }
 
 output "opsuaa_rds_engine" {

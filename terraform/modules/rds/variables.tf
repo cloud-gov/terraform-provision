@@ -32,6 +32,7 @@ variable "rds_username" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
 
 variable "rds_subnet_group" {

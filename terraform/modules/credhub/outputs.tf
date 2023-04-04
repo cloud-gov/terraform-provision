@@ -45,7 +45,8 @@ output "credhub_rds_username" {
 }
 
 output "credhub_rds_password" {
-  value = module.rds_96.rds_password
+  value     = module.rds_96.rds_password
+  sensitive = true
 }
 
 output "credhub_lb_target_group" {

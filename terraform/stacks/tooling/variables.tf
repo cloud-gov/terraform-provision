@@ -10,9 +10,11 @@ variable "vpc_cidr" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
 
 variable "credhub_rds_password" {
+  sensitive = true
 }
 
 variable "rds_multi_az" {
@@ -39,18 +41,22 @@ variable "remote_state_bucket" {
 }
 
 variable "concourse_prod_rds_password" {
+  sensitive = true
 }
 
 variable "concourse_staging_rds_password" {
+  sensitive = true
 }
 
 variable "concourse_varz_bucket" {
 }
 
 variable "credhub_prod_rds_password" {
+  sensitive = true
 }
 
 variable "credhub_staging_rds_password" {
+  sensitive = true
 }
 
 variable "wildcard_production_certificate_name_prefix" {
@@ -181,7 +187,7 @@ variable "bosh_default_ssh_public_key" {
 
 }
 
-variable "s3_gateway_policy_accounts"{
+variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
