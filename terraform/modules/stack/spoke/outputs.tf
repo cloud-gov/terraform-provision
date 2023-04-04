@@ -32,11 +32,11 @@ output "private_cidr_az2" {
   value = module.base.private_cidr_az2
 }
 
-output "vpc_endpoint_customer_s3_if1_ip"{
+output "vpc_endpoint_customer_s3_if1_ip" {
   value = module.base.vpc_endpoint_customer_s3_if1_ip
 }
 
-output "vpc_endpoint_customer_s3_if2_ip"{
+output "vpc_endpoint_customer_s3_if2_ip" {
   value = module.base.vpc_endpoint_customer_s3_if2_ip
 }
 
@@ -169,7 +169,8 @@ output "bosh_rds_username" {
 }
 
 output "bosh_rds_password" {
-  value = module.base.bosh_rds_password
+  value     = module.base.bosh_rds_password
+  sensitive = true
 }
 
 /*
@@ -193,7 +194,8 @@ output "credhub_rds_username" {
 }
 
 output "credhub_rds_password" {
-  value = module.base.credhub_rds_password
+  value     = module.base.credhub_rds_password
+  sensitive = true
 }
 
 output "default_key_name" {

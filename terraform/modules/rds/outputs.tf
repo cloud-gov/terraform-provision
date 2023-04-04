@@ -23,7 +23,8 @@ output "rds_username" {
 }
 
 output "rds_password" {
-  value = aws_db_instance.rds_database.password
+  value     = aws_db_instance.rds_database.password
+  sensitive = true
 }
 
 output "rds_engine" {

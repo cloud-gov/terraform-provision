@@ -10,9 +10,11 @@ variable "vpc_cidr" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
 
 variable "credhub_rds_password" {
+  sensitive = true
 }
 
 variable "rds_multi_az" {

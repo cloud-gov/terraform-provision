@@ -55,7 +55,8 @@ output "cf_rds_username" {
 }
 
 output "cf_rds_password" {
-  value = module.cf_database_96.rds_password
+  value     = module.cf_database_96.rds_password
+  sensitive = true
 }
 
 output "cf_rds_engine" {

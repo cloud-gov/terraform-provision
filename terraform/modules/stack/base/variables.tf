@@ -84,6 +84,7 @@ variable "rds_username" {
 }
 
 variable "rds_password" {
+  sensitive = true
 }
 
 variable "restricted_ingress_web_cidrs" {
@@ -156,6 +157,7 @@ variable "credhub_rds_username" {
 }
 
 variable "credhub_rds_password" {
+  sensitive = true
 }
 
 variable "credhub_rds_db_engine_version" {
@@ -178,7 +180,7 @@ variable "bosh_default_ssh_public_key" {
 
 }
 
-variable "s3_gateway_policy_accounts"{
+variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
