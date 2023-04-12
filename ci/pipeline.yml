@@ -46,73 +46,77 @@ jobs:
   - get: pull-request
     version: every
     trigger: true
-  - put: pull-request
-    params:
-      path: pull-request
-      status: pending
-      context: format-terraform
-  - put: pull-request
-    params:
-      path: pull-request
-      status: pending
-      context: validate-terraform
-  - task: format-terraform
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          aws_access_key_id: ((ecr_aws_key))
-          aws_secret_access_key: ((ecr_aws_secret))
-          repository: harden-concourse-task
-          aws_region: us-gov-west-1
-          tag: ((harden-concourse-task-tag))
-      inputs:
-      - name: pull-request
-      params:
-      run:
-        dir: pull-request
-        path: ci/scripts/terraform_fmt.sh
-    on_success:
-      put: pull-request
-      params:
-        path: pull-request
-        status: success
-        context: format-terraform
-    on_failure:
-      put: pull-request
-      params:
-        path: pull-request
-        status: failure
-        context: format-terraform
-  - task: validate-terraform
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          aws_access_key_id: ((ecr_aws_key))
-          aws_secret_access_key: ((ecr_aws_secret))
-          repository: harden-concourse-task
-          aws_region: us-gov-west-1
-          tag: ((harden-concourse-task-tag))
-      inputs:
-      - name: pull-request
-      params:
-      run:
-        path: pull-request/validate.sh
-    on_success:
-      put: pull-request
-      params:
-        path: pull-request
-        status: success
-        context: validate-terraform
-    on_failure:
-      put: pull-request
-      params:
-        path: pull-request
-        status: failure
-        context: validate-terraform
+  - in_parallel:
+      steps:
+      - put: pull-request
+        params:
+          path: pull-request
+          status: pending
+          context: format-terraform
+      - put: pull-request
+        params:
+          path: pull-request
+          status: pending
+          context: validate-terraform
+  - in_parallel:
+      steps:
+      - task: format-terraform
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              tag: ((harden-concourse-task-tag))
+          inputs:
+          - name: pull-request
+          params:
+          run:
+            dir: pull-request
+            path: ci/scripts/terraform_fmt.sh
+        on_success:
+          put: pull-request
+          params:
+            path: pull-request
+            status: success
+            context: format-terraform
+        on_failure:
+          put: pull-request
+          params:
+            path: pull-request
+            status: failure
+            context: format-terraform
+      - task: validate-terraform
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: harden-concourse-task
+              aws_region: us-gov-west-1
+              tag: ((harden-concourse-task-tag))
+          inputs:
+          - name: pull-request
+          params:
+          run:
+            path: pull-request/validate.sh
+        on_success:
+          put: pull-request
+          params:
+            path: pull-request
+            status: success
+            context: validate-terraform
+        on_failure:
+          put: pull-request
+          params:
+            path: pull-request
+            status: failure
+            context: validate-terraform
 
 - name: plan-bootstrap-external-development
   plan:
