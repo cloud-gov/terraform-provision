@@ -1,6 +1,6 @@
 
 resource "aws_route53_zone" "dev_zone" {
-  name = "dev.us-gov-west-1.aws-us-gov.cloud.gov"
+  name     = "dev.us-gov-west-1.aws-us-gov.cloud.gov"
 }
 
 resource "aws_route53_record" "dev_ns" {
