@@ -11,8 +11,7 @@ data "aws_caller_identity" "current" {
 
 resource "aws_default_vpc" "bootstrap" {
   tags = {
-    Name    = "DEFAULT"
-    Another = "else"
+    Name = "DEFAULT"
   }
 }
 
