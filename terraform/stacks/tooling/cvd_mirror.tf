@@ -12,10 +12,10 @@ module "cvd_database_bucket" {
   versioning    = "false"
 }
 
-module cvd_sync_user {
-  source = "../../modules/iam_user/cvd_sync"
-  username = "clamav_mirror_sync"
+module "cvd_sync_user" {
+  source              = "../../modules/iam_user/cvd_sync"
+  username            = "clamav_mirror_sync"
   cvd_database_bucket = "cg-clamav-mirror"
   cvd_metadata_bucket = "cg-clamav-meta"
-  aws_partition = data.aws_partition.current.partition
+  aws_partition       = data.aws_partition.current.partition
 }

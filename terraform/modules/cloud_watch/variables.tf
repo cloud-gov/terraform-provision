@@ -7,5 +7,5 @@ variable "sns_arn" {
 }
 
 variable "load_balancer_dns" {
-    
+
 }

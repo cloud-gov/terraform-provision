@@ -89,8 +89,8 @@ module "cloudwatch_policy" {
   policy_name = "${var.stack_description}-cloudwatch"
 }
 module "ecr_policy" {
-  source      = "../../modules/iam_role_policy/ecr"
-  policy_name = "ecr"
+  source             = "../../modules/iam_role_policy/ecr"
+  policy_name        = "ecr"
   aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
   account_id         = data.aws_caller_identity.current.account_id
@@ -210,6 +210,6 @@ resource "aws_iam_policy_attachment" "ecr" {
 }
 
 module "ecr_user" {
-  source         = "../../modules/iam_user/ecr_user"
-  username       = "cg-ecr"
+  source   = "../../modules/iam_user/ecr_user"
+  username = "cg-ecr"
 }

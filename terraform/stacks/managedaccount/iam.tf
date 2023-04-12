@@ -3,15 +3,15 @@ provider "aws" {
   default_tags {
     tags = {
       deployment = "managed-account-${var.environment_name}"
-      stack = "${var.environment_name}"
+      stack      = "${var.environment_name}"
     }
   }
 }
 
 resource "aws_iam_role" "tfrole" {
-  name               = "${var.environment_name}-tooling-concourse-worker"
-  path               = "/terraform/"
-  description        = "policy to allow terraform to run from tooling"
+  name        = "${var.environment_name}-tooling-concourse-worker"
+  path        = "/terraform/"
+  description = "policy to allow terraform to run from tooling"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -29,18 +29,18 @@ resource "aws_iam_role" "tfrole" {
 }
 
 resource "aws_iam_policy" "tfpolicy" {
-  name  = "${var.environment_name}-tooling-terraform-policy"
+  name = "${var.environment_name}-tooling-terraform-policy"
   policy = jsonencode({
-  Version = "2012-10-17"
-  Statement = [
-    {
-      Action = [
-        "*",
-      ]
-      Effect   = "Allow"
-      Resource = "*"
-    },
-  ]
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
   })
 
 }
@@ -51,9 +51,9 @@ resource "aws_iam_role_policy_attachment" "tfrolepolicy" {
 }
 
 resource "aws_iam_role" "certuploadrole" {
-  name               = "${var.environment_name}-tooling-cert-uploader"
-  path               = "/terraform/"
-  description        = "policy to allow terraform to run from tooling"
+  name        = "${var.environment_name}-tooling-cert-uploader"
+  path        = "/terraform/"
+  description = "policy to allow terraform to run from tooling"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -69,7 +69,7 @@ resource "aws_iam_role" "certuploadrole" {
   })
 
 }
-data "aws_partition" "current"{
+data "aws_partition" "current" {
 
 }
 
@@ -77,20 +77,20 @@ data "aws_caller_identity" "current" {
 
 }
 resource "aws_iam_policy" "certuploadpolicy" {
-  name  = "${var.environment_name}-tooling-cert-uploader-policy"
+  name = "${var.environment_name}-tooling-cert-uploader-policy"
   policy = jsonencode({
-  Version = "2012-10-17"
-  Statement = [
-    {
-      Action = [
-        "iam:ListServerCertificates",
-        "iam:UploadServerCertificate",
-        "iam:DeleteServerCertificate"
-      ]
-      Effect   = "Allow"
-      Resource = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/lets-encrypt/*"
-    },
-  ]
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "iam:ListServerCertificates",
+          "iam:UploadServerCertificate",
+          "iam:DeleteServerCertificate"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/lets-encrypt/*"
+      },
+    ]
   })
 
 }

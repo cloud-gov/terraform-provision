@@ -2,7 +2,7 @@ data "aws_iam_policy_document" "kms_key_policy" {
   source_policy_documents = var.source_kms_key_policy_documents
 
   statement {
-    sid = "Enable IAM User Permissions"
+    sid    = "Enable IAM User Permissions"
     effect = "Allow"
 
     principals {
@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "kms_key_policy" {
   }
 
   statement {
-    sid = "Allow access for Key Administrators"
+    sid    = "Allow access for Key Administrators"
     effect = "Allow"
 
     principals {
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "kms_key_policy" {
   }
 
   statement {
-    sid = "AllowKeyUse"
+    sid    = "AllowKeyUse"
     effect = "Allow"
 
     principals {
@@ -72,15 +72,15 @@ data "aws_iam_policy_document" "kms_key_policy" {
     ]
 
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "kms:ViaService"
-      values = ["s3.${var.region}.amazonaws.com"]
+      values   = ["s3.${var.region}.amazonaws.com"]
     }
 
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "kms:CallerAccount"
-      values = [var.kms_account_id]
+      values   = [var.kms_account_id]
     }
   }
 
@@ -89,11 +89,11 @@ data "aws_iam_policy_document" "kms_key_policy" {
     iterator = account
 
     content {
-      sid = "AllowExternalKMSKeyAccess_${account.value}"
+      sid    = "AllowExternalKMSKeyAccess_${account.value}"
       effect = "Allow"
 
       principals {
-        type = "AWS"
+        type        = "AWS"
         identifiers = ["arn:${var.aws_partition}:iam::${account.value}:root"]
       }
 

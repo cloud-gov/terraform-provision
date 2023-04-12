@@ -39,7 +39,7 @@ resource "aws_elb" "diego_elb_main" {
     instance_port     = 2222
     instance_protocol = "TCP"
   }
-  
+
   health_check {
     healthy_threshold   = 10
     interval            = 30

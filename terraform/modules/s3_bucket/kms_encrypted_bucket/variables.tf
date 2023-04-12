@@ -1,31 +1,31 @@
 variable "acl" {
-  type = string
+  type        = string
   description = "ACL to apply to objects"
-  default = "private"
+  default     = "private"
 }
 
 variable "aws_partition" {
-  type = string
+  type        = string
   description = "Name of AWS partition (e.g. aws)"
 }
 
 variable "bucket_name" {
-  type = string
+  type        = string
   description = "Name of S3 bucket"
 }
 
 variable "enable_bucket_versioning" {
-  type = bool
+  type        = bool
   description = "true to enable versioning of objects stored in bucket"
 }
 
 variable "kms_account_id" {
-  type = string
+  type        = string
   description = "Account ID making requests to KMS key"
 }
 
 variable "kms_admin_roles" {
-  type = list(string)
+  type    = list(string)
   default = ["Administrator"]
 }
 
@@ -61,25 +61,25 @@ variable "lifecycle_rules" {
 }
 
 variable "allowed_external_account_ids" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "AWS region (e.g. us-gov-west-1)"
 }
 
 variable "source_bucket_policy_documents" {
   description = "IAM policy documents to include in the S3 bucket policy"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "source_kms_key_policy_documents" {
   description = "IAM policy documents to include in the KMS key policy"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "block_public_acls" {

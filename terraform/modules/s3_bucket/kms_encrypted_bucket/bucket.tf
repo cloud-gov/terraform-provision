@@ -36,7 +36,7 @@ resource "aws_s3_bucket_acl" "kms_encrypted_bucket_acl" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
-  count = length(var.lifecycle_rules) > 0 ? 1 : 0
+  count  = length(var.lifecycle_rules) > 0 ? 1 : 0
 
   dynamic "rule" {
     for_each = var.lifecycle_rules

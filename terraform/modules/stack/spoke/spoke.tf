@@ -29,14 +29,14 @@ module "base" {
   restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
-  
+
   rds_security_groups = [
     module.base.bosh_security_group,
   ]
-  rds_security_groups_count         = 1
+  rds_security_groups_count = 1
 
-  rds_allowed_cidrs = var.target_concourse_security_group_cidrs
-  rds_allowed_cidrs_count         = 1
+  rds_allowed_cidrs       = var.target_concourse_security_group_cidrs
+  rds_allowed_cidrs_count = 1
 
 
   target_monitoring_security_group_cidrs = var.parent_monitoring_security_group_cidrs
@@ -50,7 +50,7 @@ module "vpc_peering" {
   source = "../../vpc_peering"
 
   providers = {
-    aws = aws
+    aws         = aws
     aws.tooling = aws.tooling
   }
   target_vpc_account_id  = var.target_account_id
@@ -68,7 +68,7 @@ module "vpc_peering_parentbosh" {
   source = "../../vpc_peering"
 
   providers = {
-    aws = aws
+    aws         = aws
     aws.tooling = aws.parent
   }
   target_vpc_account_id  = var.parent_account_id
@@ -82,16 +82,16 @@ module "vpc_peering_parentbosh" {
   source_az2_route_table = module.base.private_route_table_az2
 }
 
- module "vpc_security_source_to_parent" {
+module "vpc_security_source_to_parent" {
   # and bosh -> monitoring stack
-   providers = {
-     aws = aws.parent
-   }
-   source = "../../vpc_peering_sg"
- 
-   target_bosh_security_group = var.parent_bosh_security_group
-   source_vpc_cidr            = module.base.vpc_cidr
- }
+  providers = {
+    aws = aws.parent
+  }
+  source = "../../vpc_peering_sg"
+
+  target_bosh_security_group = var.parent_bosh_security_group
+  source_vpc_cidr            = module.base.vpc_cidr
+}
 
 module "vpc_security_parent_to_source" {
   # toolingbosh -> envbosh

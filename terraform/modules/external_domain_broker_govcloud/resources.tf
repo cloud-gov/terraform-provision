@@ -6,8 +6,8 @@ data "template_file" "policy" {
   template = file("${path.module}/policy.json")
 
   vars = {
-    account_id      = var.account_id
-    stack           = var.stack_description
+    account_id = var.account_id
+    stack      = var.stack_description
   }
 }
 

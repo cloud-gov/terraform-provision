@@ -1,5 +1,5 @@
 resource "aws_security_group" "nlb_traffic" {
-  count = var.tcp_lb_count > 0 ? 1 : 0
+  count       = var.tcp_lb_count > 0 ? 1 : 0
   description = "Allow traffic in to NLB"
   vpc_id      = var.vpc_id
 
@@ -17,12 +17,12 @@ resource "aws_security_group" "nlb_traffic" {
 }
 
 resource "aws_lb" "cf_apps_tcp" {
-  count              = var.tcp_lb_count
-  name               = "${var.stack_description}-cf-tcp-${count.index}"
-  load_balancer_type = "network"
-  subnets            = var.elb_subnets
-  ip_address_type    = "dualstack"
-  enable_deletion_protection  = true
+  count                      = var.tcp_lb_count
+  name                       = "${var.stack_description}-cf-tcp-${count.index}"
+  load_balancer_type         = "network"
+  subnets                    = var.elb_subnets
+  ip_address_type            = "dualstack"
+  enable_deletion_protection = true
 }
 
 resource "aws_lb_target_group" "cf_apps_target_tcp" {
@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "cf_apps_target_tcp" {
 
 resource "aws_lb_listener" "cf_apps_tcp" {
   count             = var.tcp_lb_count * var.listeners_per_tcp_lb
-  load_balancer_arn = aws_lb.cf_apps_tcp[floor(count.index/var.listeners_per_tcp_lb)].arn
+  load_balancer_arn = aws_lb.cf_apps_tcp[floor(count.index / var.listeners_per_tcp_lb)].arn
   protocol          = "TCP"
   port              = var.tcp_first_port + count.index
 

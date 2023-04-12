@@ -42,7 +42,7 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
 
 # Add peering connection to target_az1_route_table with source_vpc_cidr
 resource "aws_route" "target_az1_to_source_cidr" {
-  provider = aws.tooling
+  provider                  = aws.tooling
   route_table_id            = var.target_az1_route_table
   destination_cidr_block    = var.source_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
@@ -50,7 +50,7 @@ resource "aws_route" "target_az1_to_source_cidr" {
 
 # Add peering connection to target_az2_route_table with source_vpc_cidr
 resource "aws_route" "target_az2_to_source_cidr" {
-  provider = aws.tooling
+  provider                  = aws.tooling
   route_table_id            = var.target_az2_route_table
   destination_cidr_block    = var.source_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
