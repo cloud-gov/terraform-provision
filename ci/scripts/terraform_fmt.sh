@@ -6,6 +6,5 @@ which terraform > /dev/null 2>&1 || {
   exit 1
 }
 
-pwd
 terraform fmt -recursive
 git diff-index --quiet HEAD -- # exit 1 if dirty, 0 otherwise

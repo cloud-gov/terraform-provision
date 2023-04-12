@@ -71,7 +71,8 @@ jobs:
       - name: pull-request
       params:
       run:
-        path: pull-request/ci/scripts/terraform_fmt.sh
+        dir: pull-request
+        path: ci/scripts/terraform_fmt.sh
     on_success:
       put: pull-request
       params:
