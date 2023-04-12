@@ -323,11 +323,6 @@ module "shibboleth" {
   hosts             = var.shibboleth_hosts
 }
 
-resource "aws_wafv2_web_acl_association" "admin_waf_core" {
-  resource_arn = module.admin.admin_lb_arn
-  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
-}
-
 module "elasticache_broker_network" {
   source                     = "../../modules/elasticache_broker_network"
   az1                        = data.aws_availability_zones.available.names[var.az1_index]
