@@ -21,8 +21,7 @@ variable "rds_password" {
 }
 
 variable "rds_instance_type" {
-  default   = "db.m4.large"
-  sensitive = true
+  default = "db.m4.large"
 }
 
 variable "cf_rds_password" {
