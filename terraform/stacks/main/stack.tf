@@ -323,19 +323,6 @@ module "shibboleth" {
   hosts             = var.shibboleth_hosts
 }
 
-module "admin" {
-  source = "../../modules/admin"
-
-  stack_description = var.stack_description
-  vpc_id            = module.stack.vpc_id
-  certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
-  hosts             = var.admin_hosts
-  public_subnet_az1 = module.stack.public_subnet_az1
-  public_subnet_az2 = module.stack.public_subnet_az2
-  security_group    = module.stack.restricted_web_traffic_security_group
-  log_bucket_name   = module.log_bucket.elb_bucket_name
-}
-
 resource "aws_wafv2_web_acl_association" "admin_waf_core" {
   resource_arn = module.admin.admin_lb_arn
   web_acl_arn  = module.cf.cf_uaa_waf_core_arn

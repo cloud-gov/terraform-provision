@@ -52,10 +52,6 @@ variable "pages_cert_patterns" {
   type    = set(string)
 }
 
-variable "admin_hosts" {
-  type = list(string)
-}
-
 variable "shibboleth_hosts" {
   type = list(string)
 }
