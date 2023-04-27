@@ -137,6 +137,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
       }
+
+      excluded_rule {
+        name = "Log4JRCE"
+      }
     }
 
     visibility_config {
