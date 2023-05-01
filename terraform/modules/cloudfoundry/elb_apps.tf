@@ -22,7 +22,7 @@ resource "aws_lb_target_group" "cf_apps_target_https" {
 
   health_check {
     healthy_threshold   = 2
-    interval            = 5
+    interval            = 7
     port                = 81
     timeout             = 6
     unhealthy_threshold = 3

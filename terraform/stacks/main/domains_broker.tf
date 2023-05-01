@@ -176,7 +176,7 @@ resource "aws_lb_target_group" "domains_broker_apps_https" {
     healthy_threshold   = 2
     unhealthy_threshold = 3
     timeout             = 6
-    interval            = 5
+    interval            = 7
     port                = 81
     matcher             = 200
   }
