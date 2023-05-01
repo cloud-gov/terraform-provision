@@ -1,3 +1,7 @@
+locals {
+  known_bad_inputs_scope_down_statements = var.known_bad_inputs_scope_down_json == "" ? [] : jsondecode(var.known_bad_inputs_scope_down_json)
+}
+
 resource "aws_lb" "cf_uaa" {
   name            = "${var.stack_description}-cloudfoundry-uaa"
   subnets         = var.elb_subnets
@@ -137,8 +141,85 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
 
-        excluded_rule {
-          name = "Log4JRCE"
+        dynamic "scope_down_statement" {
+          for_each = local.known_bad_inputs_scope_down_statements
+          iterator = statement
+
+          content {
+            dynamic "and_statement" {
+              for_each = length(lookup(statement.value, "and_statement", {})) == 0 ? [] : [lookup(statement.value, "and_statement", {})]
+
+              content {
+                dynamic "not_statement" {
+                  for_each = length(lookup(and_statement.value, "not_statement", {})) == 0 ? [] : [lookup(and_statement.value, "not_statement", {})]
+
+                  content {
+                    dynamic "byte_match_statement" {
+                      for_each = length(lookup(not_statement.value, "byte_match_statement", {})) == 0 ? [] : [lookup(not_statement.value, "byte_match_statement", {})]
+
+                      content {
+                        search_string = lookup(byte_match_statement.value, "search_string", null)
+                        positional_constraint = lookup(byte_match_statement.value, "positional_constraint", null)
+
+                        text_transformation {
+                          priority = lookup(byte_match_statement.value, "text_transform_priority", 0)
+                          type     = lookup(byte_match_statement.value, "text_transform_type", "NONE")
+                        }
+
+                        dynamic "field_to_match" {
+                          for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(byte_match_statement.value, "field_to_match", {})]
+
+                          content {
+                            dynamic "single_header" {
+                              for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
+                              content {
+                                name = lower(lookup(single_header.value, "name"))
+                              }
+                            }
+
+                            dynamic "uri_path" {
+                              for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
+                              content {}
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    dynamic "regex_match_statement" {
+                      for_each = length(lookup(not_statement.value, "regex_match_statement", {})) == 0 ? [] : [lookup(not_statement.value, "regex_match_statement", {})]
+                      content {
+                        regex_string = lookup(regex_match_statement.value, "regex_string")
+                        
+                        text_transformation {
+                          priority = lookup(regex_match_statement.value, "text_transform_priority", 0)
+                          type     = lookup(regex_match_statement.value, "text_transform_type", "NONE")
+                        }
+
+                        dynamic "field_to_match" {
+                          for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(regex_match_statement.value, "field_to_match", {})]
+
+                          content {
+                            dynamic "single_header" {
+                              for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
+                              content {
+                                name = lower(lookup(single_header.value, "name"))
+                              }
+                            }
+
+                            dynamic "uri_path" {
+                              for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
+                              content {}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

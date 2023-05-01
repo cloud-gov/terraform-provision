@@ -528,6 +528,7 @@ jobs:
       TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
       TF_VAR_s3_gateway_policy_accounts: ((development_s3_gateway_policy_accounts))
       TF_VAR_sns_name: cloud-gov-notifications
+      TF_VAR_known_bad_inputs_scope_down_json: ((development_known_bad_inputs_scope_down))
   - *notify-slack
 
 - name: bootstrap-development

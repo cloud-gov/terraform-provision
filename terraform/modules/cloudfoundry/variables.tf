@@ -129,3 +129,8 @@ variable "tcp_allow_cidrs_ipv6" {
 variable "waf_regular_expressions" {
   type = list(string)
 }
+
+variable "known_bad_inputs_scope_down_json" {
+  type = string
+  default = ""
+}
