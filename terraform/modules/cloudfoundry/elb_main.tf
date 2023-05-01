@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "cf_target_https" {
     healthy_threshold   = 2
     interval            = 5
     port                = 81
-    timeout             = 4
+    timeout             = 6
     unhealthy_threshold = 3
     matcher             = 200
   }
