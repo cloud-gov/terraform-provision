@@ -155,7 +155,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
                   content {
                     dynamic "not_statement" {
-                      for_each = length(lookup(and_statement.value, "not_statement", {})) == 0 ? [] : [lookup(and_statement.value, "not_statement", {})]
+                      for_each = length(lookup(statement.value, "not_statement", {})) == 0 ? [] : [lookup(statement.value, "not_statement", {})]
 
                       content {
                         statement {
