@@ -1,7 +1,3 @@
-locals {
-  known_bad_inputs_scope_down_statements = var.known_bad_inputs_scope_down_json == "" ? [] : jsondecode(var.known_bad_inputs_scope_down_json)
-}
-
 resource "aws_lb" "cf_uaa" {
   name            = "${var.stack_description}-cloudfoundry-uaa"
   subnets         = var.elb_subnets
