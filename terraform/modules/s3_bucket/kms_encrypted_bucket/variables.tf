@@ -1,9 +1,3 @@
-variable "acl" {
-  type        = string
-  description = "ACL to apply to objects"
-  default     = "private"
-}
-
 variable "aws_partition" {
   type        = string
   description = "Name of AWS partition (e.g. aws)"
