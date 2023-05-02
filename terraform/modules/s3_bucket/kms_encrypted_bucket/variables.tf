@@ -108,6 +108,6 @@ variable "restrict_public_buckets" {
 
 variable "object_ownership" {
   type        = string
-  default     = "BucketOwnerPreferred"
+  default     = ""
   description = "Object ownership strategy to use for S3 bucket"
 }
