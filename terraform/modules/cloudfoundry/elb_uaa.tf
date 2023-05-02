@@ -143,11 +143,11 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
         dynamic "scope_down_statement" {
           for_each = local.known_bad_inputs_scope_down_statements
-          iterator = statement
+          iterator = scope_down_statement
 
           content {
             dynamic "and_statement" {
-              for_each = length(lookup(statement.value, "and_statement", {})) == 0 ? [] : [lookup(statement.value, "and_statement", {})]
+              for_each = length(lookup(scope_down_statement.value, "and_statement", {})) == 0 ? [] : lookup(statement.value, "and_statement", [])
 
               content {
                 dynamic "statement" {
