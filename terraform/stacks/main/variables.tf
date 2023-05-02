@@ -145,6 +145,6 @@ variable "sns_name" {
 }
 
 variable "known_bad_inputs_scope_down_json" {
-  type = string
+  type    = string
   default = ""
 }
