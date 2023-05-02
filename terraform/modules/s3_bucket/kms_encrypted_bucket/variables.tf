@@ -1,3 +1,8 @@
+variable "acl" {
+  type        = string
+  description = "ACL to apply to objects"
+}
+
 variable "aws_partition" {
   type        = string
   description = "Name of AWS partition (e.g. aws)"
@@ -98,4 +103,9 @@ variable "restrict_public_buckets" {
   type        = bool
   description = "Whether Amazon S3 should restrict public bucket policies for this bucket"
   default     = false
+}
+
+variable "object_ownership" {
+  type = string
+  default = "BucketOwnerPreferred"
 }
