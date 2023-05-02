@@ -145,9 +145,9 @@ variable "sns_name" {
 }
 
 variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {
-  type    = string
+  type = string
 }
 
 variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
-  type    = string
+  type = string
 }

@@ -272,11 +272,13 @@ module "cf" {
   bucket_prefix   = var.bucket_prefix
   log_bucket_name = module.log_bucket.elb_bucket_name
 
-  tcp_lb_count                     = var.include_tcp_routes ? 1 : 0
-  tcp_allow_cidrs_ipv4             = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
-  tcp_allow_cidrs_ipv6             = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
-  waf_regular_expressions          = var.waf_regular_expressions
-  known_bad_inputs_scope_down_json = var.known_bad_inputs_scope_down_json
+  tcp_lb_count            = var.include_tcp_routes ? 1 : 0
+  tcp_allow_cidrs_ipv4    = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
+  tcp_allow_cidrs_ipv6    = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
+  waf_regular_expressions = var.waf_regular_expressions
+
+  scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+  scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {

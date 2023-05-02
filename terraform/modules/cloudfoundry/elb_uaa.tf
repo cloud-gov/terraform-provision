@@ -147,7 +147,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
               not_statement {
                 statement {
                   byte_match_statement {
-                    search_string = var.scope_down_known_bad_inputs_not_match_origin_search_string
+                    search_string         = var.scope_down_known_bad_inputs_not_match_origin_search_string
                     positional_constraint = "EXACTLY"
 
                     text_transformation {
