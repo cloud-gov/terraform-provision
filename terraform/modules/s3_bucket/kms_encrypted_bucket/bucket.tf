@@ -30,12 +30,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "sse_kms_config" {
 }
 
 resource "aws_s3_bucket_acl" "kms_encrypted_bucket_acl" {
-  count = var.acl != null ? 1 : 0
+  count  = var.acl != "" ? 1 : 0
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   acl    = var.acl
 }
 
-resource "aws_s3_bucket_ownership_controls" "kms_encrypted_bucket_acl_ownership" {
+resource "aws_s3_bucket_ownership_controls" "kms_encrypted_bucket_ownership" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
   rule {
     object_ownership = var.object_ownership

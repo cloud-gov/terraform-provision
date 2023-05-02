@@ -1,6 +1,7 @@
 variable "acl" {
   type        = string
   description = "ACL to apply to objects"
+  default     = ""
 }
 
 variable "aws_partition" {
@@ -106,6 +107,7 @@ variable "restrict_public_buckets" {
 }
 
 variable "object_ownership" {
-  type = string
-  default = "BucketOwnerPreferred"
+  type        = string
+  default     = "BucketOwnerPreferred"
+  description = "Object ownership strategy to use for S3 bucket"
 }
