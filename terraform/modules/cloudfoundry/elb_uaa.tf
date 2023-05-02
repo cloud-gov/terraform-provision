@@ -141,87 +141,42 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
 
-        dynamic "scope_down_statement" {
-          for_each = local.known_bad_inputs_scope_down_statements
-          iterator = scope_down_statement
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    search_string = var.scope_down_known_bad_inputs_not_match_origin_search_string
+                    positional_constraint = "EXACTLY"
 
-          content {
-            dynamic "and_statement" {
-              for_each = length(lookup(scope_down_statement.value, "and_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "and_statement", {})]
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
 
-              content {
-                dynamic "statement" {
-                  for_each = lookup(and_statement.value, "statements", {})
-
-                  content {
-                    dynamic "not_statement" {
-                      for_each = length(lookup(statement.value, "not_statement", {})) == 0 ? [] : [lookup(statement.value, "not_statement", {})]
-
-                      content {
-                        statement {
-                          dynamic "byte_match_statement" {
-                            for_each = length(lookup(not_statement.value, "byte_match_statement", {})) == 0 ? [] : [lookup(not_statement.value, "byte_match_statement", {})]
-
-                            content {
-                              search_string         = lookup(byte_match_statement.value, "search_string", null)
-                              positional_constraint = lookup(byte_match_statement.value, "positional_constraint", null)
-
-                              text_transformation {
-                                priority = lookup(byte_match_statement.value, "text_transform_priority", 0)
-                                type     = lookup(byte_match_statement.value, "text_transform_type", "NONE")
-                              }
-
-                              dynamic "field_to_match" {
-                                for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(byte_match_statement.value, "field_to_match", {})]
-
-                                content {
-                                  dynamic "single_header" {
-                                    for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
-                                    content {
-                                      name = lower(lookup(single_header.value, "name"))
-                                    }
-                                  }
-
-                                  dynamic "uri_path" {
-                                    for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
-                                    content {}
-                                  }
-                                }
-                              }
-                            }
-                          }
-
-                          dynamic "regex_match_statement" {
-                            for_each = length(lookup(not_statement.value, "regex_match_statement", {})) == 0 ? [] : [lookup(not_statement.value, "regex_match_statement", {})]
-                            content {
-                              regex_string = lookup(regex_match_statement.value, "regex_string")
-
-                              text_transformation {
-                                priority = lookup(regex_match_statement.value, "text_transform_priority", 0)
-                                type     = lookup(regex_match_statement.value, "text_transform_type", "NONE")
-                              }
-
-                              dynamic "field_to_match" {
-                                for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(regex_match_statement.value, "field_to_match", {})]
-
-                                content {
-                                  dynamic "single_header" {
-                                    for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
-                                    content {
-                                      name = lower(lookup(single_header.value, "name"))
-                                    }
-                                  }
-
-                                  dynamic "uri_path" {
-                                    for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
-                                    content {}
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
+                    field_to_match {
+                      single_header {
+                        name = "origin"
                       }
+                    }
+                  }
+                }
+              }
+            }
+            statement {
+              not_statement {
+                statement {
+                  regex_match_statement {
+                    regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+
+                    field_to_match {
+                      uri_path {}
                     }
                   }
                 }

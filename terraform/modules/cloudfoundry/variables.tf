@@ -130,7 +130,10 @@ variable "waf_regular_expressions" {
   type = list(string)
 }
 
-variable "known_bad_inputs_scope_down_json" {
+variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {
   type    = string
-  default = ""
+}
+
+variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
+  type    = string
 }
