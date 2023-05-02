@@ -147,7 +147,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
           content {
             dynamic "and_statement" {
-              for_each = length(lookup(scope_down_statement.value, "and_statement", {})) == 0 ? [] : lookup(scope_down_statement.value, "and_statement", [])
+              for_each = length(lookup(scope_down_statement.value, "and_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "and_statement", {})]
 
               content {
                 dynamic "statement" {
