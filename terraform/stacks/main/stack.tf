@@ -276,6 +276,9 @@ module "cf" {
   tcp_allow_cidrs_ipv4    = var.force_restricted_network == "no" ? ["0.0.0.0/0"] : var.restricted_ingress_web_cidrs
   tcp_allow_cidrs_ipv6    = var.force_restricted_network == "no" ? ["::/0"] : var.restricted_ingress_web_ipv6_cidrs
   waf_regular_expressions = var.waf_regular_expressions
+
+  scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+  scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
