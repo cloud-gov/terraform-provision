@@ -21,10 +21,10 @@ resource "aws_lb_target_group" "cf_uaa_target" {
   vpc_id   = var.vpc_id
 
   health_check {
-    healthy_threshold   = 2
-    interval            = 5
+    healthy_threshold   = 3
+    interval            = 15
     port                = 81
-    timeout             = 4
+    timeout             = 10
     unhealthy_threshold = 3
     matcher             = 200
   }
