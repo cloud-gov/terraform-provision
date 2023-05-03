@@ -136,6 +136,50 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       managed_rule_group_statement {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    search_string         = var.scope_down_known_bad_inputs_not_match_origin_search_string
+                    positional_constraint = "EXACTLY"
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+
+                    field_to_match {
+                      single_header {
+                        name = "origin"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement {
+              not_statement {
+                statement {
+                  regex_match_statement {
+                    regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+
+                    field_to_match {
+                      uri_path {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
 
