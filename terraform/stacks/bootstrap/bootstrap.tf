@@ -24,7 +24,7 @@ resource "aws_default_subnet" "default_az1" {
 }
 
 resource "aws_security_group" "bootstrap" {
-  name = "${var.stack_description}-bootstrap"
+  name = "bootstrap-sg"
   ingress {
     from_port   = 22
     to_port     = 22
