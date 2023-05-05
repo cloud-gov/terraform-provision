@@ -5,6 +5,7 @@
  */
 
 resource "aws_security_group" "rds_oracle" {
+  name = "${var.stack_description}-incoming-db-oracle"
   description = "Allow access to incoming Oracle traffic"
   vpc_id      = var.vpc_id
 

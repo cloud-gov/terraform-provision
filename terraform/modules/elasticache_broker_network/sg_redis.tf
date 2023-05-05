@@ -1,4 +1,5 @@
 resource "aws_security_group" "elasticache_redis" {
+  name = "${var.stack_description}-incoming-redis"
   description = "Allow access to incoming redis traffic"
   vpc_id      = var.vpc_id
 

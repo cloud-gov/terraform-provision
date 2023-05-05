@@ -7,6 +7,7 @@
  */
 
 resource "aws_security_group" "restricted_web_traffic" {
+  name = "${var.stack_description}-restricted-incoming-web"
   description = "Restricted web type traffic"
   vpc_id      = aws_vpc.main_vpc.id
 
