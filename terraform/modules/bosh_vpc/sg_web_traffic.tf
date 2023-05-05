@@ -7,7 +7,7 @@
  */
 
 resource "aws_security_group" "web_traffic" {
-  name = "${var.stack_description}-allow-incoming-web"
+  name        = "${var.stack_description}-allow-incoming-web"
   description = "Allow access to incoming web type traffic"
   vpc_id      = aws_vpc.main_vpc.id
 

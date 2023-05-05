@@ -1,5 +1,5 @@
 resource "aws_security_group" "bosh_uaa_traffic" {
-  name = "${var.stack_description}-incoming-bosh-uaa"
+  name        = "${var.stack_description}-incoming-bosh-uaa"
   description = "Allow access to incoming BOSH UAA traffic for operations"
   vpc_id      = module.stack.vpc_id
 

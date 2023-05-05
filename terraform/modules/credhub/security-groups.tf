@@ -5,7 +5,7 @@
  */
 
 resource "aws_security_group" "credhub" {
-  name = "${var.stack_description}-allow-incoming-credhub"
+  name        = "${var.stack_description}-allow-incoming-credhub"
   description = "Allow access to incoming credhub traffic"
   vpc_id      = var.vpc_id
 

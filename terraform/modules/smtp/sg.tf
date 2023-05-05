@@ -1,5 +1,5 @@
 resource "aws_security_group" "smtp" {
-  name = "${var.stack_description}-smtp"
+  name        = "${var.stack_description}-smtp"
   description = "Allow access to smtp service from all our internal hosts, and outbound access to 587 too"
   vpc_id      = var.vpc_id
 
