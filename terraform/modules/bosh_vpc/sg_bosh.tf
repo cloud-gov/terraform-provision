@@ -10,7 +10,6 @@
 
 # this security group is applied to all the vms in this stack, including the bosh director
 resource "aws_security_group" "bosh" {
-  name        = "${var.stack_description}-bosh"
   description = "BOSH security group"
   vpc_id      = aws_vpc.main_vpc.id
 

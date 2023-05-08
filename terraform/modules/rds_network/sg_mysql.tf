@@ -5,7 +5,6 @@
  */
 
 resource "aws_security_group" "rds_mysql" {
-  name        = "${var.stack_description}-incoming-db-mysql"
   description = "Allow access to incoming mysql traffic"
   vpc_id      = var.vpc_id
 
