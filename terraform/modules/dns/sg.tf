@@ -1,4 +1,5 @@
 resource "aws_security_group" "dns_axfr" {
+  name        = "${var.stack_description}-dns-axfr"
   description = "Allow access from public DNS for AXFR"
   vpc_id      = var.vpc_id
 
@@ -22,6 +23,7 @@ resource "aws_security_group" "dns_axfr" {
 }
 
 resource "aws_security_group" "dns_public" {
+  name        = "${var.stack_description}-incoming-dns"
   description = "Allow access to incoming DNS traffic"
   vpc_id      = var.vpc_id
 

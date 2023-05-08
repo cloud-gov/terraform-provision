@@ -5,6 +5,7 @@
  */
 
 resource "aws_security_group" "concourse" {
+  name        = "${var.stack_description}-allow-incoming-concourse"
   description = "Allow access to incoming concourse traffic"
   vpc_id      = var.vpc_id
 

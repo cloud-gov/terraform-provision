@@ -7,6 +7,7 @@
  */
 
 resource "aws_security_group" "local_vpc_traffic" {
+  name        = "${var.stack_description}-local-vpc-traffic"
   description = "Enable access to all VPC CIDR block ips"
   vpc_id      = aws_vpc.main_vpc.id
 

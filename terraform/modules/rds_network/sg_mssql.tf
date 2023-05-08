@@ -5,6 +5,7 @@
  */
 
 resource "aws_security_group" "rds_mssql" {
+  name        = "${var.stack_description}-incoming-db-mssql"
   description = "Allow access to incoming mssql traffic"
   vpc_id      = var.vpc_id
 

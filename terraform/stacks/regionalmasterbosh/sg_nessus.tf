@@ -7,6 +7,7 @@
  */
 
 resource "aws_security_group" "nessus_traffic" {
+  name        = "${var.stack_description}-incoming-nessus"
   description = "Allow access to incoming nessus traffic"
   vpc_id      = module.stack.vpc_id
 

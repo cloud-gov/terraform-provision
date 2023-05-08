@@ -11,6 +11,7 @@ data "aws_prefix_list" "s3" {
 }
 
 resource "aws_security_group" "rds_postgres" {
+  name        = "${var.stack_description}-incoming-db-postgresql"
   description = "Allow access to incoming postgresql traffic"
   vpc_id      = var.vpc_id
 
