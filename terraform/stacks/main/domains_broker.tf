@@ -174,10 +174,10 @@ resource "aws_lb_target_group" "domains_broker_apps_https" {
   vpc_id   = module.stack.vpc_id
 
   health_check {
-    healthy_threshold   = 3
+    healthy_threshold   = 2
     unhealthy_threshold = 3
-    timeout             = 10
-    interval            = 15
+    timeout             = 4
+    interval            = 5
     port                = 81
     matcher             = 200
   }
