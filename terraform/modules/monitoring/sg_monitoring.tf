@@ -5,7 +5,6 @@
  */
 
 resource "aws_security_group" "monitoring" {
-  name        = "${var.stack_description}-incoming-monitoring"
   description = "Allow access to incoming monitoring traffic"
   vpc_id      = var.vpc_id
 
