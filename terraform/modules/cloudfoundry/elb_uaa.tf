@@ -391,7 +391,7 @@ resource "aws_cloudwatch_log_group" "cf_uaa_waf_core_cloudwatch_log_group" {
 // create default logging ruleset which is log all and associate to the correct cloudwatch log group
 
 resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
-  log_destination_configs = [aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group]
+  log_destination_configs = [aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn]
   resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
 
