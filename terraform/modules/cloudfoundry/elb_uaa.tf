@@ -378,6 +378,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 }
 
+// create the cloudwatch log group to log traffic and set cloudwatch retention to 6 months
+
+resource "aws_cloudwatch_log_group" "cf_uaa_waf_core" {
+  name = "aws-waf-logs-${var.stack_description}"
+  retention_in_days = 180
+  tags = {
+    Environment = "${var.stack_description}"
+  }
+}
+
+// create default logging ruleset which is log all and associate to the correct cloudwatch log group
+
+resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
+  log_destination_configs = aws_cloudwatch_log_group.cf_uaa-waf_core.arn
+  resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+}
+
 resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
   web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
