@@ -378,6 +378,19 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "cf_uaa_waf_core_cloudwatch_log_group" {
+  name = "aws-waf-logs-${var.stack_description}"
+  retention_in_days = 180
+  tags = {
+    Environment = "${var.stack_description}"
+  }
+}
+
+resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
+  log_destination_configs = [aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn]
+  resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+}
+
 resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
   web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
