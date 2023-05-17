@@ -49,7 +49,7 @@ resource "aws_cloudtrail" "cg-s3-cloudtrail-trail" {
 
     data_resource {
       type   = "AWS::S3::Object"
-      values = ["arn:${data.aws_partition.current.partition}:s3:::cg-*/*"]
+      values = ["arn:${data.aws_partition.current.partition}:s3:::"]
     }
   }
 }
