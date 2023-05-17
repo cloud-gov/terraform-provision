@@ -67,6 +67,7 @@
         "arn:${aws_partition}:s3:::${billing_bucket}",
         "arn:${aws_partition}:s3:::${billing_bucket}/*",
         "arn:${aws_partition}:s3:::${varz_bucket}/*-bosh-state.json",
+        "arn:${aws_partition}:s3:::${varz_bucket}/*-creds.yml",
         "arn:${aws_partition}:s3:::${build_artifacts_bucket}/*",
         "arn:${aws_partition}:s3:::${terraform_state_bucket}/*",
         "arn:${aws_partition}:s3:::${pgp_keys_bucket_name}/*",
