@@ -12,7 +12,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       http_port              = var.origin.lb_http_port
       https_port             = var.origin.lb_https_port
       origin_protocol_policy = "https-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+      origin_ssl_protocols   = ["TLSv1.3"]
     }
   }
 
