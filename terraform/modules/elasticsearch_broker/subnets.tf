@@ -25,7 +25,7 @@ resource "aws_subnet" "az3_elasticsearch" {
   availability_zone = var.az1
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ1)"
+    Name = "${var.stack_description} (elasticsearch Broker AZ3)"
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "az4_elasticsearch" {
   availability_zone = var.az2
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ2)"
+    Name = "${var.stack_description} (elasticsearch Broker AZ4)"
   }
 }
 
