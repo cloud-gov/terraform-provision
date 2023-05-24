@@ -15,6 +15,12 @@ variable "elasticsearch_private_cidr_1" {
 variable "elasticsearch_private_cidr_2" {
 }
 
+variable "elasticsearch_private_cidr_3" {
+}
+
+variable "elasticsearch_private_cidr_4" {
+}
+
 variable "az1_route_table" {
 }
 
