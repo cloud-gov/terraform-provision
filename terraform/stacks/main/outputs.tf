@@ -335,12 +335,28 @@ output "elasticsearch_subnet_az2" {
   value = module.elasticsearch_broker.elasticsearch_subnet_az2
 }
 
+output "elasticsearch_subnet_az3" {
+  value = module.elasticsearch_broker.elasticsearch_subnet_az3
+}
+
+output "elasticsearch_subnet_az4" {
+  value = module.elasticsearch_broker.elasticsearch_subnet_az4
+}
+
 output "elasticsearch_subnet_cidr_az1" {
   value = module.elasticsearch_broker.elasticsearch_private_cidr_1
 }
 
 output "elasticsearch_subnet_cidr_az2" {
   value = module.elasticsearch_broker.elasticsearch_private_cidr_2
+}
+
+output "elasticsearch_subnet_cidr_az3" {
+  value = module.elasticsearch_broker.elasticsearch_private_cidr_3
+}
+
+output "elasticsearch_subnet_cidr_az4" {
+  value = module.elasticsearch_broker.elasticsearch_private_cidr_4
 }
 
 output "elasticsearch_security_group" {
