@@ -76,7 +76,6 @@ module "concourse_worker_policy" {
   concourse_varz_bucket               = var.concourse_varz_bucket
   pgp_keys_bucket_name                = var.pgp_keys_bucket_name
   container_scanning_bucket_name      = var.container_scanning_bucket_name
-  tooling_credhub_backups_bucket_name = module.credhub_backups_bucket.bucket_name
 }
 
 module "concourse_iaas_worker_policy" {
