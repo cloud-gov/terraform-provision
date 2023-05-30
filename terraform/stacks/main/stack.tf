@@ -349,6 +349,8 @@ module "elasticsearch_broker" {
   az2                          = data.aws_availability_zones.available.names[var.az2_index]
   elasticsearch_private_cidr_1 = cidrsubnet(var.vpc_cidr, 8, 40)
   elasticsearch_private_cidr_2 = cidrsubnet(var.vpc_cidr, 8, 42)
+  elasticsearch_private_cidr_3 = cidrsubnet(var.vpc_cidr, 7, 25)
+  elasticsearch_private_cidr_4 = cidrsubnet(var.vpc_cidr, 7, 27)
   az1_route_table              = module.stack.private_route_table_az1
   az2_route_table              = module.stack.private_route_table_az2
   vpc_id                       = module.stack.vpc_id
