@@ -6,46 +6,52 @@ This stack is used before the bootstrap stack for new hubs to:
  - Hopefully: the s3 backend and any other dependencies we don't yet know about
 
 
+## Verify first attempt
 
-To run this stack, from a laptop with aws-vault access configured clone the repo and switch to the new stack:
+
+Comment out the backend definition in `stacks/bootstrap-hub/bootstrap.tf` so the file is created locally :
+
+```
+#terraform {
+#  backend "s3" {
+#  }
+#}
+```
+
+To run this stack, from a laptop with `aws-vault` access configured, clone the repo and switch to the new stack:
 
 ```
 git clone https://github.com/cloud-gov/cg-provision
 cd cg-provision/terraform/stacks/bootstrap-hub
-mkdir terraform-state
 ```
 
 
 
-Now run the init and plan:
+Now run the init, plan, and apply:
 
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
 STACK_NAME=bootstrap-hub
-BASE="$(pwd)"
+S3_TFSTATE_BUCKET=terraform-state-hub
 
 init_args=(
   "-backend=true"
-  "-backend-config=path=terraform-state/terraform.tfstate"
+  "-backend-config=path=terraform.tfstate"
 )
 
-terraform init "${init_args[@]}" 
+terraform init "${init_args[@]}" -upgrade
 
+terraform plan
 
-terraform plan -refresh=true -input=false -out=${BASE}/terraform-state/terraform.tfplan \
-    > ${BASE}/terraform-state/terraform-plan-output.txt
+terraform apply
 ```
 
-To apply
+
+This will output values for the `aws_s3_tfstate_bucket`, `aws_access_key_id` and `aws_secret_access_key` for `credentials.yml` aka `cg-provision.yml`:
 
 ```
-terraform apply -refresh=true -input=false -auto-approve
-```
-
-This will output values for the `aws_access_key_id` and `aws_secret_access_key` for `credentials.yml` aka `cg-provision.yml`:
-
-```
+aws_s3_tfstate_bucket = "terraform-state-hub"
 terraform_provision_access_id = "XXXXXXXXXXXXXXXXXXXX"
 terraform_provision_access_secret = <sensitive>
 ```
@@ -54,4 +60,79 @@ To get the value of the access secret, run:
 
 ```
 terraform output -json terraform_provision_access_secret
+```
+
+Copy up the tfstate file to the newly created bucket since it only local:
+
+```
+aws s3 cp terraform.tfstate "s3://terraform-state-hub/${STACK_NAME}/terraform.tfstate" --sse AES256
+```
+
+
+## Now try and migrate this deployment over to the new bucket
+
+Add this back to stacks/bootstrap-hub/bootstrap.tf :
+
+```
+terraform {
+  backend "s3" {
+  }
+}
+```
+
+Back on the command line, rerun:
+
+```
+init_args=(
+  "-backend=true"
+  "-backend-config=encrypt=true"
+  "-backend-config=bucket=${S3_TFSTATE_BUCKET}"
+  "-backend-config=key=${STACK_NAME}/terraform.tfstate"
+)
+
+terraform init "${init_args[@]}" -upgrade
+
+terraform apply
+```
+
+You should see this as output:
+
+```
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+```
+
+Now you can remove the local copy of the terraform tfstate files:
+
+```
+rm terraform.tfstate
+rm terraform.tfstate.backup
+```
+
+The repo is now safe to commit.
+
+## Running the second and subsequent times
+
+The terraform state file is now in the bucket this stack creates, to make changes which don't involve DELETING the bucket, run:
+
+```
+aws-vault exec gov-pipeline-admin -- bash
+
+STACK_NAME=bootstrap-hub
+S3_TFSTATE_BUCKET=terraform-state-hub
+
+init_args=(
+  "-backend=true"
+  "-backend-config=encrypt=true"
+  "-backend-config=bucket=${S3_TFSTATE_BUCKET}"
+  "-backend-config=key=${STACK_NAME}/terraform.tfstate"
+)
+
+terraform init "${init_args[@]}" -upgrade
+
+terraform apply
+
 ```
