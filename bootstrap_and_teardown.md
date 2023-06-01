@@ -2,7 +2,7 @@
 
 Follow this procedure to setup a bootstrap instance of concourse and deploy minimal components to bring up a permanant instance of concourse deployed by a bosh director.
 
-1. Clone this repository: `git clone https://github.com/18F/cg-provision`
+1. Clone this repository: `git clone https://github.com/cloud-gov/cg-provision`
 1. Get the rest of the necessary repositories: `./cg-provision/scripts/bootstrap/setup-bootstrap.sh`
 1. `cd cg-provision`
 1. Make a copy of `env.example.sh` and populate with AWS credentials, etc. (`cp env.example.sh env.sh`)

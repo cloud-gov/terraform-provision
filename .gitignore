@@ -12,6 +12,8 @@ tmp/*
 .terraform*
 *.tfvars
 .terraform.lock.hcl
+*.tfplan
+terraform-plan-output.txt
 
 # Eclipse IDE files
 .project
