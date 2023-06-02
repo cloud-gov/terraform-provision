@@ -1,6 +1,20 @@
 resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
   bucket        = var.cloudtrail_bucket
   force_destroy = true
+  logging {
+    target_bucket = var.cloudtrail_accesslog_bucket
+    target_prefix = "log/"
+  }
+}
+
+resource "aws_s3_bucket" "cloudtrail_accesslog_bucket" {
+  bucket = var.cloudtrail_accesslog_bucket
+  acl    = "log-delivery-write"
+
+  logging {
+    target_bucket = var.cloudtrail_accesslog_bucket
+    target_prefix = "log/"
+  }
 }
 
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
@@ -29,6 +43,25 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"
+                }
+            }
+        },
+        {
+            "Sid": "S3ServerAccessLogsPolicy",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+            },
+            "Action": [
+                "s3:PutObject"
+            ],
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_accesslog_bucket}/log/*",
+            "Condition": {
+                "ArnLike": {
+                    "aws:SourceArn": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}"
+                },
+                "StringEquals": {
+                    "aws:SourceAccount": “${data.aws_caller_identity.current.account_id}"
                 }
             }
         }
