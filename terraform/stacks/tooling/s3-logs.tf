@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
   bucket        = var.cloudtrail_bucket
   force_destroy = true
   logging {
-    target_bucket = "${aws_s3_bucket.cloudtrail_accesslog_bucket.id}"
+    target_bucket = var.cloudtrail_accesslog_bucket
     target_prefix = "log/"
   }
 }
