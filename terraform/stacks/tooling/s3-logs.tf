@@ -61,7 +61,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
                     "aws:SourceArn": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}"
                 },
                 "StringEquals": {
-                    "aws:SourceAccount": “${data.aws_caller_identity.current.account_id}"
+                    "aws:SourceAccount": "${data.aws_caller_identity.current.account_id}"
                 }
             }
         }
