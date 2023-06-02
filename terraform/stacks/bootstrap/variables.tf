@@ -3,22 +3,22 @@ variable "use_vpc_peering" {
 }
 
 variable "tooling_state_bucket" {
-  default = "tooling-hub"
+  default = "terraform-state-hub"
 }
 
 variable "tooling_stack_name" {
   default = "hub"
 }
 
-variable "varz_bucket_name" {
+# These are missing from tooling
+variable "varz_bucket" {
     default = "cloud-gov-varz-hub"
 }
+
 variable "semver_bucket_name" {
     default = "cg-semver-hub"
 }
-variable "bosh_releases_bucket_name" {
-    default = "cloud-gov-bosh-releases-hub"
-}
-variable "bosh_releases_blobstore_bucket_name" {
-    default = "cloud-gov-release-blobstore-hub"
+
+variable "varz_bucket_stage" {
+  default = "cloud-gov-varz-stage-hub"
 }
