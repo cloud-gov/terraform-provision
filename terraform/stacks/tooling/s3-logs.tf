@@ -14,6 +14,13 @@ resource "aws_s3_bucket" "cloudtrail-accesslog-bucket" {
   bucket = var.cloudtrail_accesslog_bucket
 }
 
+resource "aws_s3_bucket_ownership_controls" "cloudtrail-accesslog-bucket-ownership" {
+  bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "cloudtrail-accesslog-bucket-acl" {
   bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
   acl    = "log-delivery-write"
@@ -57,7 +64,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
             "Action": [
                 "s3:PutObject"
             ],
-            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_accesslog_bucket}/log/*",
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_accesslog_bucket}/*",
             "Condition": {
                 "ArnLike": {
                     "aws:SourceArn": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}"
