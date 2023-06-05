@@ -55,7 +55,18 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
                     "s3:x-amz-acl": "bucket-owner-full-control"
                 }
             }
-        },
+        }
+    ]
+}
+POLICY
+}
+
+resource "aws_s3_bucket_policy" "cloudtrail_accesslog_bucket_policy" {
+  bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
         {
             "Sid": "S3ServerAccessLogsPolicy",
             "Effect": "Allow",
@@ -78,7 +89,6 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
     ]
 }
 POLICY
-
 }
 
 resource "aws_cloudtrail" "cg-s3-cloudtrail-trail" {
