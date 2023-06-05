@@ -22,7 +22,7 @@ resource "aws_s3_bucket_ownership_controls" "cloudtrail-accesslog-bucket-ownersh
 }
 
 resource "aws_s3_bucket_acl" "cloudtrail-accesslog-bucket-acl" {
-  depends_on = [aws_s3_bucket_ownership_controls.cloudtrail-accesslog-bucket-acl]
+  depends_on = [aws_s3_bucket_ownership_controls.cloudtrail-accesslog-bucket-ownership]
   bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
   acl    = "log-delivery-write"
 }
