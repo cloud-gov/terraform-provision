@@ -1,14 +1,14 @@
 module "billing_user" {
   source         = "../../modules/iam_user/billing_user"
   username       = "cg-billing"
-  billing_bucket = var.billing_bucket
+  billing_bucket = "${var.bucket_prefix}-cg-billing-*"
   aws_partition  = data.aws_partition.current.partition
 }
 
 module "s3_logstash" {
   source        = "../../modules/iam_user/s3_logstash"
   username      = "s3-logstash"
-  log_bucket    = var.log_bucket_name
+  log_bucket    = var.module.log_bucket.bucket_name
   aws_partition = data.aws_partition.current.partition
 }
 
@@ -41,7 +41,7 @@ module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "blobstore"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = var.blobstore_bucket_name
+  bucket_name   = module.bosh_release_bucket.bucket_name
 }
 
 module "bosh_policy" {
@@ -49,33 +49,33 @@ module "bosh_policy" {
   policy_name   = "${var.stack_description}-bosh"
   aws_partition = data.aws_partition.current.partition
   account_id    = data.aws_caller_identity.current.account_id
-  bucket_name   = var.blobstore_bucket_name
+  bucket_name   = module.bosh_release_bucket.bucket_name
 }
 
 module "bosh_compilation_policy" {
   source        = "../../modules/iam_role_policy/bosh_compilation"
   policy_name   = "${var.stack_description}-bosh-compilation"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = var.blobstore_bucket_name
+  bucket_name   = module.bosh_release_bucket.bucket_name
 }
 
 module "concourse_worker_policy" {
   source                         = "../../modules/iam_role_policy/concourse_worker"
   policy_name                    = "concourse-worker"
   aws_partition                  = data.aws_partition.current.partition
-  varz_bucket                    = var.varz_bucket
-  varz_staging_bucket            = var.varz_bucket_stage
-  bosh_release_bucket            = var.bosh_release_bucket
+  varz_bucket                    = module.varz_bucket.bucket_name
+  varz_staging_bucket            = module.varz_bucket_stage.bucket_name
+  bosh_release_bucket            = module.bosh_release_bucket.bucket_name
   terraform_state_bucket         = var.terraform_state_bucket
-  build_artifacts_bucket         = var.build_artifacts_bucket
-  semver_bucket                  = var.semver_bucket
-  buildpack_notify_bucket        = var.buildpack_notify_bucket
-  billing_bucket                 = var.billing_bucket
-  cg_binaries_bucket             = var.cg_binaries_bucket
-  log_bucket                     = var.log_bucket_name
-  concourse_varz_bucket          = var.concourse_varz_bucket
-  pgp_keys_bucket_name           = var.pgp_keys_bucket_name
-  container_scanning_bucket_name = var.container_scanning_bucket_name
+  build_artifacts_bucket         = module.build_artifacts_bucket.bucket_name
+  semver_bucket                  = module.semver_bucket.bucket_name
+  buildpack_notify_bucket        = "${var.bucket_prefix}-buildpack-notify-state-*"
+  billing_bucket                 = "${var.bucket_prefix}-cg-billing-*"
+  cg_binaries_bucket             = module.cg_binaries_bucket.bucket_name
+  log_bucket                     = module.log_bucket.bucket_name
+  concourse_varz_bucket          = module.concourse_varz_bucket.bucket_name
+  pgp_keys_bucket_name           = module.pgp_keys_bucket.bucket_name
+  container_scanning_bucket_name = module.container_scanning_bucket.bucket_name
 }
 
 module "concourse_iaas_worker_policy" {

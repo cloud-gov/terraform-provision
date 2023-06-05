@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
-  bucket        = var.cloudtrail_bucket
+  bucket        = module.cloudtrail_bucket.bucket_name
   force_destroy = true
 }
 
@@ -16,7 +16,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}"
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${module.cloudtrail_bucket.bucket_name}"
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -25,7 +25,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.cloudtrail_bucket}/*",
+            "Resource": "arn:${data.aws_partition.current.partition}:s3:::${module.cloudtrail_bucket.bucket_name}/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"

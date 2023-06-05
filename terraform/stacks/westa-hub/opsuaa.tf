@@ -1,6 +1,7 @@
-variable "opsuaa_rds_password" {
-  sensitive = true
-}
+# Replaced with random_string.opsuaa_rds_password.result
+#variable "opsuaa_rds_password" {
+#  sensitive = true
+#}
 
 module "opsuaa_db" {
   source = "../../modules/rds"
@@ -9,7 +10,7 @@ module "opsuaa_db" {
   rds_instance_type               = "db.t2.medium"
   rds_db_name                     = "opsuaa"
   rds_username                    = "opsuaa"
-  rds_password                    = var.opsuaa_rds_password
+  rds_password                    = random_string.opsuaa_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_db_engine_version           = var.rds_db_engine_version

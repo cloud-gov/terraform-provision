@@ -3,22 +3,10 @@ variable "use_vpc_peering" {
 }
 
 variable "tooling_state_bucket" {
-  default = "terraform-state-hub"
+  default = "westa-hub-terraform-state"
 }
 
 variable "tooling_stack_name" {
-  default = "hub"
+  default = "westa-hub"
 }
 
-# These are missing from tooling
-variable "varz_bucket" {
-    default = "cloud-gov-varz-hub"
-}
-
-variable "semver_bucket_name" {
-    default = "cg-semver-hub"
-}
-
-variable "varz_bucket_stage" {
-  default = "cloud-gov-varz-stage-hub"
-}

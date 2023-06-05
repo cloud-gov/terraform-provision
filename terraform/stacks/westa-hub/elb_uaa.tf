@@ -6,7 +6,7 @@ resource "aws_lb" "opsuaa" {
   idle_timeout               = 3600
   enable_deletion_protection = true
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.bucket_name
     prefix  = var.stack_description
     enabled = true
   }

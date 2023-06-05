@@ -15,6 +15,12 @@ provider "aws" {
   }
 }
 
+# Use either "local" or "s3", cannot have both uncommented at the same time
+
+#terraform {
+#  backend "local" {}
+#}
+
 terraform {
   backend "s3" {
   }

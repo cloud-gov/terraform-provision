@@ -42,7 +42,7 @@ resource "aws_lb" "main" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
   access_logs {
-    bucket  = var.log_bucket_name
+    bucket  = module.log_bucket.bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -91,8 +91,8 @@ module "stack" {
   rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
   rds_private_cidr_3                     = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
   rds_private_cidr_4                     = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  rds_password                           = var.rds_password
-  credhub_rds_password                   = var.credhub_rds_password
+  rds_password                           = random_string.rds_password.result
+  credhub_rds_password                   = random_string.credhub_rds_password.result
   rds_multi_az                           = var.rds_multi_az
   rds_security_groups                    = [module.stack.bosh_security_group]
   rds_security_groups_count              = "1"
@@ -135,7 +135,7 @@ module "concourse_staging" {
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
   concourse_az                    = data.aws_availability_zones.available.names[1]
   route_table_id                  = module.stack.private_route_table_az2
-  rds_password                    = var.concourse_staging_rds_password
+  rds_password                    = random_string.concourse_staging_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-concourse-staging"
@@ -160,7 +160,7 @@ module "credhub_production" {
   credhub_az2                     = data.aws_availability_zones.available.names[1]
   route_table_id_az1              = module.stack.private_route_table_az1
   route_table_id_az2              = module.stack.private_route_table_az2
-  rds_password                    = var.credhub_prod_rds_password
+  rds_password                    = random_string.credhub_prod_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-credhub-production"
@@ -185,7 +185,7 @@ module "credhub_staging" {
   credhub_az2                     = data.aws_availability_zones.available.names[1]
   route_table_id_az1              = module.stack.private_route_table_az1
   route_table_id_az2              = module.stack.private_route_table_az2
-  rds_password                    = var.credhub_staging_rds_password
+  rds_password                    = random_string.credhub_staging_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-credhub-staging"

@@ -22,7 +22,7 @@ To run this stack, from a laptop with `aws-vault` access configured, clone the r
 
 ```
 git clone https://github.com/cloud-gov/cg-provision
-cd cg-provision/terraform/stacks/bootstrap-hub
+cd cg-provision/terraform/stacks/bootstrap-westa-hub
 ```
 
 
@@ -32,8 +32,9 @@ Now run the init, plan, and apply:
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
-STACK_NAME=bootstrap-hub
-S3_TFSTATE_BUCKET=terraform-state-hub
+STACK_NAME=bootstrap-westa-hub
+S3_TFSTATE_BUCKET=westa-hub-terraform-state
+TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
 
 init_args=(
   "-backend=true"
@@ -42,8 +43,6 @@ init_args=(
 
 terraform init "${init_args[@]}" -upgrade
 
-terraform plan
-
 terraform apply
 ```
 
@@ -51,7 +50,7 @@ terraform apply
 This will output values for the `aws_s3_tfstate_bucket`, `aws_access_key_id` and `aws_secret_access_key` for `credentials.yml` aka `cg-provision.yml`:
 
 ```
-aws_s3_tfstate_bucket = "terraform-state-hub"
+aws_s3_tfstate_bucket = "westa-hub-terraform-state"
 terraform_provision_access_id = "XXXXXXXXXXXXXXXXXXXX"
 terraform_provision_access_secret = <sensitive>
 ```
@@ -65,7 +64,7 @@ terraform output -json terraform_provision_access_secret
 Copy up the tfstate file to the newly created bucket since it only local:
 
 ```
-aws s3 cp terraform.tfstate "s3://terraform-state-hub/${STACK_NAME}/terraform.tfstate" --sse AES256
+aws s3 cp terraform.tfstate "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" --sse AES256
 ```
 
 
@@ -83,6 +82,11 @@ terraform {
 Back on the command line, rerun:
 
 ```
+
+STACK_NAME=bootstrap-westa-hub
+S3_TFSTATE_BUCKET=westa-hub-terraform-state
+TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
+
 init_args=(
   "-backend=true"
   "-backend-config=encrypt=true"

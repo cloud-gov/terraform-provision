@@ -22,18 +22,6 @@ output "security_group_id" {
   value = aws_security_group.bootstrap.id
 }
 
-output "varz_bucket" {
-    value = module.varz_bucket.bucket_name
-}
-
-output "varz_bucket_stage" {
-    value = module.varz_bucket_staging.bucket_name
-}
-
-output "semver_bucket" {
-    value = module.semver_bucket.bucket_name
-}
-
 
 
 
