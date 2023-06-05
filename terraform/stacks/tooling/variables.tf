@@ -163,7 +163,7 @@ variable "cloudtrail_bucket" {
 }
 
 variable "cloudtrail_accesslog_bucket" {
-  default = "cloud-gov-organization-cloudtrail-logs-archive"
+  default = "cg-accesslogs"
 }
 
 variable "log_bucket_name" {

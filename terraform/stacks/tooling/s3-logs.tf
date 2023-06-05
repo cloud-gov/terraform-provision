@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
   }
 }
 
-resource "aws_s3_bucket" "cloudtrail_accesslog_bucket" {
+resource "aws_s3_bucket" "cloudtrail-accesslog-bucket" {
   bucket = var.cloudtrail_accesslog_bucket
   acl    = "log-delivery-write"
 
