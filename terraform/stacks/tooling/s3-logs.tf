@@ -1,20 +1,18 @@
 resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
   bucket        = var.cloudtrail_bucket
   force_destroy = true
-  logging {
-    target_bucket = var.cloudtrail_accesslog_bucket
-    target_prefix = "log/"
-  }
+}
+
+resource "aws_s3_bucket_logging" "cg-s3-cloudtrail-bucket-logging" {
+  bucket = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
+
+  target_bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
+  target_prefix = "log/"
 }
 
 resource "aws_s3_bucket" "cloudtrail-accesslog-bucket" {
   bucket = var.cloudtrail_accesslog_bucket
   acl    = "log-delivery-write"
-
-  logging {
-    target_bucket = var.cloudtrail_accesslog_bucket
-    target_prefix = "log/"
-  }
 }
 
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
