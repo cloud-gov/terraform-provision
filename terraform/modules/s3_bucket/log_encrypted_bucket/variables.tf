@@ -2,7 +2,7 @@ variable "bucket" {
 }
 
 variable "acl" {
-  default = "private"
+  default = ""
 }
 
 variable "versioning" {
@@ -24,5 +24,41 @@ variable "include_require_encrypted_put_bucket_policy" {
   description = "True to include bucket policy to required encrypted PUTs"
   type        = bool
   default     = true
+}
+
+variable "source_bucket_policy_documents" {
+  description = "IAM policy documents to include in the S3 bucket policy"
+  type        = list(string)
+  default     = []
+}
+
+variable "block_public_acls" {
+  description = "Whether Amazon S3 should block public ACLs for this bucket"
+  type        = bool
+  default     = true
+}
+
+variable "block_public_policy" {
+  description = "Whether Amazon S3 should block public bucket policies for this bucket"
+  type        = bool
+  default     = true
+}
+
+variable "ignore_public_acls" {
+  description = "Whether Amazon S3 should ignore public ACLs for this bucket."
+  type        = bool
+  default     = true
+}
+
+variable "restrict_public_buckets" {
+  type        = bool
+  description = "Whether Amazon S3 should restrict public bucket policies for this bucket"
+  default     = true
+}
+
+variable "object_ownership" {
+  type        = string
+  default     = ""
+  description = "Object ownership strategy to use for S3 bucket"
 }
 
