@@ -38,5 +38,5 @@ data "aws_iam_policy_document" "log_encrypted_bucket_policy" {
 resource "aws_s3_bucket_policy" "log_encrypted_bucket_policy" {
   count  = var.include_require_encrypted_put_bucket_policy || length(var.source_bucket_policy_documents) > 0 ? 1 : 0
   bucket = aws_s3_bucket.log_encrypted_bucket.id
-  policy = data.aws_iam_policy_document.log_encrypted_bucket_policy.json
+  policy = data.aws_iam_policy_document.log_encrypted_bucket_policy[0].json
 }
