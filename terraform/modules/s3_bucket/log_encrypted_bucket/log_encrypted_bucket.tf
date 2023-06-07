@@ -37,7 +37,7 @@ resource "aws_s3_bucket_versioning" "log_encrypted_bucket_versioning" {
   }
 }
 resource "aws_s3_bucket_acl" "log_encrypted_bucket_acl" {
-  count = var.acl != "" ? 1 : 0
+  count  = var.acl != "" ? 1 : 0
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   acl    = var.acl
 }
