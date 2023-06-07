@@ -162,6 +162,10 @@ variable "cloudtrail_bucket" {
   default = "cg-s3-cloudtrail"
 }
 
+variable "cloudtrail_accesslog_bucket" {
+  default = "cg-accesslogs"
+}
+
 variable "log_bucket_name" {
   default = "cg-elb-logs"
 }
