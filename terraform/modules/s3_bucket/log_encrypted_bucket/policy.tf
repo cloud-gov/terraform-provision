@@ -1,6 +1,5 @@
 data "aws_iam_policy_document" "log_encrypted_bucket_deny_unencrypted_policy" {
   count                   = var.include_require_encrypted_put_bucket_policy ? 1 : 0
-  source_policy_documents = var.source_bucket_policy_documents
 
   statement {
     sid    = "DenyUnencryptedPut"
