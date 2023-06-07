@@ -17,11 +17,11 @@ Now run the init, plan, and apply:
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
-STACK_NAME=bootstrap
-S3_TFSTATE_BUCKET=westa-hub-terraform-state
-TF_VAR_use_vpc_peering="0"
-TF_VAR_tooling_state_bucket="westa-hub-terraform-state"
-TF_VAR_tooling_stack_name="westa-hub"
+export STACK_NAME=bootstrap
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+export TF_VAR_use_vpc_peering="0"
+export TF_VAR_tooling_state_bucket="westa-hub-terraform-state"
+export TF_VAR_tooling_stack_name="westa-hub"
 
 
 
@@ -39,16 +39,16 @@ terraform apply
 
 ## Where to next?
 
-Now deploy the `tooling` stack.  When that is complete, come back here to set `use_vpc_peering` to "1" and run:
+Now deploy the `westa-hub` stack.  When that is complete, come back here to set `use_vpc_peering` to "1" and run:
 
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
-STACK_NAME=bootstrap
-S3_TFSTATE_BUCKET=westa-hub-terraform-state
-TF_VAR_use_vpc_peering="1"
-TF_VAR_tooling_state_bucket="westa-hub-terraform-state"
-TF_VAR_tooling_stack_name="westa-hub"
+export STACK_NAME=bootstrap
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+export TF_VAR_use_vpc_peering="1"
+export TF_VAR_tooling_state_bucket="westa-hub-terraform-state"
+export TF_VAR_tooling_stack_name="westa-hub"
 
 
 

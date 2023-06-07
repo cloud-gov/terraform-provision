@@ -1,5 +1,5 @@
 variable "stack_description" {
-  default = "hub"
+  default = "westa-hub"
 }
 
 variable "aws_default_region" {
@@ -8,16 +8,6 @@ variable "aws_default_region" {
 
 variable "vpc_cidr" {
 }
-
-# Replaced by random_string.rds_password.result
-#variable "rds_password" {
-#  sensitive = true
-#}
-
-# Replaced with random_string.credhub_rds_password.result
-#variable "credhub_rds_password" {
-#  sensitive = true
-#}
 
 variable "rds_multi_az" {
   default = "true"
@@ -41,30 +31,6 @@ variable "rds_parameter_group_family" {
 
 variable "remote_state_bucket" {
 }
-
-# Replaced with random_string.concourse_prod_rds_password.result
-#variable "concourse_prod_rds_password" {
-#  sensitive = true
-#}
-
-# Replaced with random_string.concourse_staging_rds_password.result
-#variable "concourse_staging_rds_password" {
-#  sensitive = true
-#}
-
-# Uses default naming now "${var.bucket_prefix}-concourse-credentials"
-#variable "concourse_varz_bucket" {
-#}
-
-# Replaced with random_string.credhub_prod_rds_password.result
-#variable "credhub_prod_rds_password" {
-#  sensitive = true
-#}
-
-# Replaced with random_string.credhub_staging_rds_password.result
-#variable "credhub_staging_rds_password" {
-#  sensitive = true
-#}
 
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
@@ -110,10 +76,6 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   type = list(string)
 }
 
-# Now assigned by "${var.bucket_prefix}-bosh-blobstore"
-#variable "blobstore_bucket_name" {
-#}
-
 variable "bucket_prefix" {
   default = ""
 }
@@ -125,6 +87,78 @@ variable "dns_eip_count_production" {
 variable "dns_eip_count_staging" {
   default = 2
 }
+
+variable "terraform_state_bucket" {
+  default = "westa-hub-terraform-state"
+}
+
+variable "smtp_ingress_cidr_blocks" {
+  type = list(string)
+}
+
+variable "oidc_client" {
+}
+
+variable "opslogin_hostname" {
+}
+
+variable "s3_gateway_policy_accounts" {
+  type    = list(string)
+  default = []
+}
+
+## New
+variable "credhub_staging_rds_instance_type" {
+  default = "db.m5.large"
+}
+
+variable "concourse_staging_rds_instance_type" {
+  default = "db.m5.large"
+}
+
+variable "credhub_production_rds_instance_type" {
+  default = "db.m5.large"
+}
+
+## Retired
+
+# Replaced by random_string.rds_password.result
+#variable "rds_password" {
+#  sensitive = true
+#}
+
+# Replaced with random_string.credhub_rds_password.result
+#variable "credhub_rds_password" {
+#  sensitive = true
+#}
+
+# Replaced with random_string.concourse_prod_rds_password.result
+#variable "concourse_prod_rds_password" {
+#  sensitive = true
+#}
+
+# Replaced with random_string.concourse_staging_rds_password.result
+#variable "concourse_staging_rds_password" {
+#  sensitive = true
+#}
+
+# Uses default naming now "${var.bucket_prefix}-concourse-credentials"
+#variable "concourse_varz_bucket" {
+#}
+
+# Replaced with random_string.credhub_prod_rds_password.result
+#variable "credhub_prod_rds_password" {
+#  sensitive = true
+#}
+
+# Replaced with random_string.credhub_staging_rds_password.result
+#variable "credhub_staging_rds_password" {
+#  sensitive = true
+#}
+
+# Now assigned by "${var.bucket_prefix}-bosh-blobstore"
+#variable "blobstore_bucket_name" {
+#}
 
 # Uses default naming now "${var.bucket_prefix}-cloud-gov-varz"
 #variable "varz_bucket" {
@@ -140,10 +174,6 @@ variable "dns_eip_count_staging" {
 #variable "bosh_release_bucket" {
 #  default = "hub-cloud-gov-bosh-releases"
 #}
-
-variable "terraform_state_bucket" {
-  default = "terraform-state-hub"
-}
 
 # Uses default naming now "${var.bucket_prefix}-cg-semver"
 #variable "semver_bucket" {
@@ -170,10 +200,6 @@ variable "terraform_state_bucket" {
 #  default = "hub-cg-binaries"
 #}
 
-variable "smtp_ingress_cidr_blocks" {
-  type = list(string)
-}
-
 # Uses default naming now "${var.bucket_prefix}-cg-s3-cloudtrail"
 #variable "cloudtrail_bucket" {
 #  default = "cg-s3-cloudtrail"
@@ -194,21 +220,12 @@ variable "smtp_ingress_cidr_blocks" {
 #  default = "hub-cg-container-scanning"
 #}
 
-variable "oidc_client" {
-}
-
-variable "oidc_client_secret" {
-}
-
-variable "opslogin_hostname" {
-}
+# Uses generated password now with random_string.oidc_client_secret.result
+#variable "oidc_client_secret" {
+#}
 
 # Now created in key_pair.tf
 #variable "bosh_default_ssh_public_key" {
 #
 #}
 
-variable "s3_gateway_policy_accounts" {
-  type    = list(string)
-  default = []
-}

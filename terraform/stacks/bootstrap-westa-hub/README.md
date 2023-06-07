@@ -3,7 +3,7 @@
 This stack is used before the bootstrap stack for new hubs to:
 
  - Create the terraform-provision iam user.  This will generate aws access key and secret needed to create a cg-provision.yml (aka credentials) file
- - Hopefully: the s3 backend and any other dependencies we don't yet know about
+ - The s3 backend for all of the rest of the terraform runs in this hub
 
 
 ## Verify first attempt
@@ -32,9 +32,9 @@ Now run the init, plan, and apply:
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
-STACK_NAME=bootstrap-westa-hub
-S3_TFSTATE_BUCKET=westa-hub-terraform-state
-TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
+export STACK_NAME=bootstrap-westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+export TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
 
 init_args=(
   "-backend=true"
@@ -83,9 +83,9 @@ Back on the command line, rerun:
 
 ```
 
-STACK_NAME=bootstrap-westa-hub
-S3_TFSTATE_BUCKET=westa-hub-terraform-state
-TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
+export STACK_NAME=bootstrap-westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+export TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
 
 init_args=(
   "-backend=true"
@@ -125,8 +125,9 @@ The terraform state file is now in the bucket this stack creates, to make change
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
-STACK_NAME=bootstrap-hub
-S3_TFSTATE_BUCKET=terraform-state-hub
+export STACK_NAME=bootstrap-hub
+export S3_TFSTATE_BUCKET=terraform-state-hub
+export TF_VAR_tfstate_bucket_name=westa-hub-terraform-state
 
 init_args=(
   "-backend=true"

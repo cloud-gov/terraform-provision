@@ -42,7 +42,7 @@ resource "aws_lb" "main" {
   ip_address_type = "dualstack"
   idle_timeout    = 3600
   access_logs {
-    bucket  = module.log_bucket.bucket_name
+    bucket  = module.log_bucket.elb_bucket_name
     prefix  = var.stack_description
     enabled = true
   }
@@ -108,7 +108,7 @@ module "stack" {
 
 module "concourse_production" {
   source                          = "../../modules/concourse"
-  stack_description               = var.stack_description
+  stack_description               = "hub"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
   concourse_az                    = data.aws_availability_zones.available.names[0]
@@ -130,7 +130,7 @@ module "concourse_production" {
 
 module "concourse_staging" {
   source                          = "../../modules/concourse"
-  stack_description               = var.stack_description
+  stack_description               = "hub"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
   concourse_az                    = data.aws_availability_zones.available.names[1]
@@ -143,7 +143,7 @@ module "concourse_staging" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m4.large"
+  rds_instance_type               = var.concourse_staging_rds_instance_type
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
@@ -168,7 +168,7 @@ module "credhub_production" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m4.large"
+  rds_instance_type               = var.credhub_production_rds_instance_type
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
@@ -193,7 +193,7 @@ module "credhub_staging" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m4.large"
+  rds_instance_type               = var.credhub_staging_rds_instance_type
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
@@ -211,7 +211,7 @@ module "monitoring_production" {
   listener_arn       = aws_lb_listener.main.arn
   hosts              = var.monitoring_production_hosts
   oidc_client        = var.oidc_client
-  oidc_client_secret = var.oidc_client_secret
+  oidc_client_secret = random_string.oidc_client_secret.result
   opslogin_hostname  = var.opslogin_hostname
 }
 
@@ -226,7 +226,7 @@ module "monitoring_staging" {
   listener_arn       = aws_lb_listener.main.arn
   hosts              = var.monitoring_staging_hosts
   oidc_client        = var.oidc_client
-  oidc_client_secret = var.oidc_client_secret
+  oidc_client_secret = random_string.oidc_client_secret.result
   opslogin_hostname  = var.opslogin_hostname
 }
 

@@ -8,7 +8,7 @@ module "billing_user" {
 module "s3_logstash" {
   source        = "../../modules/iam_user/s3_logstash"
   username      = "s3-logstash"
-  log_bucket    = var.module.log_bucket.bucket_name
+  log_bucket    = module.log_bucket.elb_bucket_name
   aws_partition = data.aws_partition.current.partition
 }
 
@@ -72,7 +72,7 @@ module "concourse_worker_policy" {
   buildpack_notify_bucket        = "${var.bucket_prefix}-buildpack-notify-state-*"
   billing_bucket                 = "${var.bucket_prefix}-cg-billing-*"
   cg_binaries_bucket             = module.cg_binaries_bucket.bucket_name
-  log_bucket                     = module.log_bucket.bucket_name
+  log_bucket                     = module.log_bucket.elb_bucket_name
   concourse_varz_bucket          = module.concourse_varz_bucket.bucket_name
   pgp_keys_bucket_name           = module.pgp_keys_bucket.bucket_name
   container_scanning_bucket_name = module.container_scanning_bucket.bucket_name
