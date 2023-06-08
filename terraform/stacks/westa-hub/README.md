@@ -166,12 +166,27 @@ Be sure to have created the certificates in the previous section before attempti
 
 A couple notes:
 
- - `TF_VAR_wildcard_production_certificate_name_prefix` should match the value in `CERT_PREFIX_PRODUCTION` in the previous section.
- - `TF_VAR_wildcard_staging_certificate_name_prefix` should match the value in `CERT_PREFIX_STAGING` in the previous section.
+ - `TF_VAR_*` are not used since they would be commited in github history and contain ip addresses.  Instead, use a `<stackname>.tfvars` file that you create and manually upload to the terraform state bucket.
+ - `wildcard_production_certificate_name_prefix` should match the value in `CERT_PREFIX_PRODUCTION` in the previous section.
+ - `wildcard_staging_certificate_name_prefix` should match the value in `CERT_PREFIX_STAGING` in the previous section.
  - `aws-vault` needs to use the new govcloud account for this hub and should match where the certificates were uploaded (not created) to.
- - The URLs for `TF_VAR_*` variables are defined in: https://github.com/cloud-gov/internal-docs/blob/main/docs/ADRs/design-decisions/hub-spoke-naming.md
+ - The URLs for `TF_VAR_*_hosts` variables are defined in: https://github.com/cloud-gov/internal-docs/blob/main/docs/ADRs/design-decisions/hub-spoke-naming.md
+ - `vpc_cidr` CIDR ranges have been mapped out to https://docs.google.com/spreadsheets/d/1oF8w6Tme2hYdcZCgW1Y7jq-Okmfu7CXvtCIGjkfFa4Q/edit#gid=0
 
-Deployment is done manually leveraging `aws-vault`:
+
+Create a tfvars file and upload it to the terraform state s3 bucket:
+
+```
+aws-vault exec gov-pipeline-admin -- bash
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+
+vim "${STACK_NAME}.tfvars"                  # And create the file (TODO: create example file)
+aws s3 cp "${STACK_NAME}.tfvars" "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/${STACK_NAME}.tfvars" --sse AES256
+```
+
+
+Now we can move on to deploying this stack manually leveraging `aws-vault`:
 
 ```
 git clone https://github.com/cloud-gov/cg-provision
@@ -179,15 +194,16 @@ cd cg-provision/terraform/stacks/westa-hub
 ```
 
 
-Now run the init, plan, and apply:
+Now run the init, pull down the tfvars file and apply:
 
 ```
 aws-vault exec gov-pipeline-admin -- bash
 
 export STACK_NAME=westa-hub
 export S3_TFSTATE_BUCKET=westa-hub-terraform-state
-export TF_VAR_terraform_state_bucket="westa-hub-terraform-state"
-redacted...
+
+# Note: the rest of the variables are in the westa-hub.tfvars file, grab a copy from the s3 bucket
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/${STACK_NAME}.tfvars" "${STACK_NAME}.tfvars" --sse AES256
 
 init_args=(
   "-backend=true"
@@ -198,9 +214,7 @@ init_args=(
 
 terraform init "${init_args[@]}" -upgrade
 
-terraform plan
-
-terraform apply
+terraform apply -var-file=filename
 ```
 
 
