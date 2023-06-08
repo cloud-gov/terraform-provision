@@ -111,3 +111,8 @@ variable "object_ownership" {
   default     = ""
   description = "Object ownership strategy to use for S3 bucket"
 }
+
+variable "deployment_arn" {
+  type = string
+  default = ""
+}
