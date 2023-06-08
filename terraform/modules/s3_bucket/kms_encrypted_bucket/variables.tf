@@ -112,7 +112,7 @@ variable "object_ownership" {
   description = "Object ownership strategy to use for S3 bucket"
 }
 
-variable "deployment_arn" {
-  type = string
-  default = ""
+variable "deployer_arn" {
+  type    = string
+  description = "ARN of IAM resource that needs permissions to manage the KMS key"
 }

@@ -2,12 +2,12 @@ data "aws_iam_policy_document" "kms_key_policy" {
   source_policy_documents = var.source_kms_key_policy_documents
 
   statement {
-    sid    = "Deployment Permissions"
+    sid    = "Deployer Permissions"
     effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = [var.deployment_arn]
+      identifiers = [var.deployer_arn]
     }
 
     actions = [
