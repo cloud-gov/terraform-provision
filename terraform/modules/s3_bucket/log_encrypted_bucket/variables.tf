@@ -70,6 +70,6 @@ variable "access_logging_target_bucket" {
 
 variable "access_logging_target_bucket_prefix" {
   type = string
-  default = null
+  default = ""
   description = "Prefix to use when writing access logs of bucket created by this module. Requires access_logging_target_bucket to be set."
 }
