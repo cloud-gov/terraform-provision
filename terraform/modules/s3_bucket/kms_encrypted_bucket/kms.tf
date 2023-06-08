@@ -2,20 +2,27 @@ data "aws_iam_policy_document" "kms_key_policy" {
   source_policy_documents = var.source_kms_key_policy_documents
 
   statement {
-    sid    = "Deployer Permissions"
+    sid    = "Enable IAM User Permissions"
     effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = [var.deployer_arn]
+      identifiers = ["arn:${var.aws_partition}:iam::${var.kms_account_id}:root"]
     }
 
     actions = [
-      "kms:DescribeKey",
-      "kms:GetKeyPolicy",
-      "kms:GetKeyRotationStatus",
-      "kms:ListResourceTags",
-      "kms:PutKeyPolicy"
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
     ]
 
     resources = [
