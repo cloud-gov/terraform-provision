@@ -113,6 +113,6 @@ variable "object_ownership" {
 }
 
 variable "deployer_arn" {
-  type    = string
+  type        = string
   description = "ARN of IAM resource that needs permissions to manage the KMS key"
 }
