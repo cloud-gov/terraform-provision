@@ -62,3 +62,14 @@ variable "object_ownership" {
   description = "Object ownership strategy to use for S3 bucket"
 }
 
+variable "access_logging_target_bucket" {
+  type = string
+  default = ""
+  description = "Target S3 bucket name to use for access logging of bucket created by this module"
+}
+
+variable "access_logging_target_bucket_prefix" {
+  type = string
+  default = null
+  description = "Prefix to use when writing access logs of bucket created by this module. Requires access_logging_target_bucket to be set."
+}

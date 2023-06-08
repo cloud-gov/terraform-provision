@@ -66,3 +66,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
     }
   }
 }
+
+resource "aws_s3_bucket_logging" "log_encrypted_bucket_access_logging" {
+  count = var.access_logging_target_bucket != "" ? 1 : 0
+  bucket = aws_s3_bucket.log_encrypted_bucket.id
+  target_bucket = var.access_logging_target_bucket
+  target_prefix = var.access_logging_target_bucket_prefix
+}
