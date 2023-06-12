@@ -279,6 +279,8 @@ module "cf" {
 
   scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
+  waf_label_host_0                                            = var.waf_label_host_0
+  waf_hostname_0                                              = var.waf_hostname_0
 }
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
