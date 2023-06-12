@@ -82,11 +82,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
 
     rule_label {
-      name = "${var.waf_label_host_0}"
-    }
-
-    rule_label {
-      name = "${var.waf_label_host_0}-test2"
+      name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
     }
 
     statement {
