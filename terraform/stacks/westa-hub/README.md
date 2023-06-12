@@ -214,7 +214,7 @@ init_args=(
 
 terraform init "${init_args[@]}" -upgrade
 
-terraform apply -var-file=filename
+terraform apply -var-file="${STACK_NAME}.tfvars"
 ```
 
 
