@@ -137,3 +137,13 @@ variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {
 variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
   type = string
 }
+
+# created for first label rule to exlude CloudWatch logging of certain traffic
+
+variable "waf_label_host_0" {
+  type = string
+}
+
+variable "waf_hostname_0" {
+  type = string
+}
