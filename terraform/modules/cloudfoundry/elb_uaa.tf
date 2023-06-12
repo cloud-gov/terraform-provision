@@ -77,6 +77,10 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     name     = var.waf_label_host_0
     priority = 0
 
+    override_action {
+      none {}
+    }
+
     rule_label {
       name = var.waf_label_host_0
     }
