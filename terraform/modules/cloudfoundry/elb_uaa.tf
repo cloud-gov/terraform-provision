@@ -410,7 +410,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       sampled_requests_enabled   = true
     }
   }
-
+  override_action {
+      none {}
+    }
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "${var.stack_description}-cf-uaa-waf-core-metric"
