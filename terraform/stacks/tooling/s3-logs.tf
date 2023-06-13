@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "cloudtrail-accesslog-bucket" {
   bucket = var.cloudtrail_accesslog_bucket
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "s3_audit_logs_trail_bucket_lifecycle" {
+resource "aws_s3_bucket_lifecycle_configuration" "s3_access_logs_trail_bucket_lifecycle" {
   bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
   rule {
     id = "all-logs-rule"
