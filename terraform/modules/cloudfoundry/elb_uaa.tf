@@ -75,7 +75,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   # created for first label rule to exlude CloudWatch logging of certain traffic
   rule {
     name     = var.waf_label_host_0
-    priority = 0
+    priority = 1
 
     override_action {
       none {}
@@ -112,7 +112,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-AWSManagedRulesAnonymousIpList"
-    priority = 1
+    priority = 0
 
     override_action {
       none {}
