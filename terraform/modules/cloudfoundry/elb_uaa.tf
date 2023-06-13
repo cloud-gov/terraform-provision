@@ -75,42 +75,42 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   # created for first label rule to exlude CloudWatch logging of certain traffic
-  rule {
-    name     = var.waf_label_host_0
-    priority = 0
-
-    override_action {
-      none {}
-    }
-
-    rule_label {
-      name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
-    }
-
-    statement {
-      byte_match_statement {
-        field_to_match {
-          single_header {
-            name = "host"
-          }
-        }
-
-        positional_constraint = "CONTAINS"
-        search_string         = var.waf_hostname_0
-
-        text_transformation {
-          priority = "0"
-          type     = "NONE"
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = "true"
-      metric_name                = var.waf_label_host_0
-      sampled_requests_enabled   = "true"
-    }
-  }
+  #rule {
+  #  name     = var.waf_label_host_0
+  #  priority = 0
+#
+  #  override_action {
+  #    none {}
+  #  }
+#
+  #  rule_label {
+  #    name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+  #  }
+#
+  #  statement {
+  #    byte_match_statement {
+  #      field_to_match {
+  #        single_header {
+  #          name = "host"
+  #        }
+  #      }
+#
+  #      positional_constraint = "CONTAINS"
+  #      search_string         = var.waf_hostname_0
+#
+  #      text_transformation {
+  #        priority = "0"
+  #        type     = "NONE"
+  #      }
+  #    }
+  #  }
+#
+  #  visibility_config {
+  #    cloudwatch_metrics_enabled = "true"
+  #    metric_name                = var.waf_label_host_0
+  #    sampled_requests_enabled   = "true"
+  #  }
+  #}
 
   rule {
     name     = "AWS-AWSManagedRulesAnonymousIpList"
