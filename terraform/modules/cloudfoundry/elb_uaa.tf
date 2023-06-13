@@ -78,9 +78,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   rule {
     name     = var.waf_label_host_0
     priority = 0
-
-    override_action {
-      none {}
+  
+    action {
+      allow {}
     }
 
     statement {
@@ -100,7 +100,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         }
       }
     }
-    
+
     rule_label {
       name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
     }
