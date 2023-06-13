@@ -125,9 +125,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesAnonymousIpList"
         vendor_name = "AWS"
 
-        excluded_rule {
-          name = "HostingProviderIPList"
-        }
+        #excluded_rule {
+        #  name = "HostingProviderIPList"
+        #}
       }
     }
 
@@ -151,9 +151,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesAmazonIpReputationList"
         vendor_name = "AWS"
 
-        excluded_rule {
-          name = "AWSManagedIPReputationList"
-        }
+        #excluded_rule {
+        #  name = "AWSManagedIPReputationList"
+        #}
       }
     }
 
@@ -243,53 +243,53 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
 
-        excluded_rule {
-          name = "CrossSiteScripting_COOKIE"
-        }
-
-        excluded_rule {
-          name = "CrossSiteScripting_BODY"
-        }
-
-        excluded_rule {
-          name = "EC2MetaDataSSRF_BODY"
-        }
-
-        excluded_rule {
-          name = "EC2MetaDataSSRF_QUERYARGUMENTS"
-        }
-
-        excluded_rule {
-          name = "GenericLFI_BODY"
-        }
-
-        excluded_rule {
-          name = "GenericRFI_BODY"
-        }
-
-        excluded_rule {
-          name = "GenericRFI_QUERYARGUMENTS"
-        }
-
-        excluded_rule {
-          name = "NoUserAgent_HEADER"
-        }
-
-        excluded_rule {
-          name = "SizeRestrictions_BODY"
-        }
-
-        excluded_rule {
-          name = "SizeRestrictions_Cookie_HEADER"
-        }
-
-        excluded_rule {
-          name = "SizeRestrictions_QUERYSTRING"
-        }
-
-        excluded_rule {
-          name = "SizeRestrictions_URIPATH"
-        }
+        #excluded_rule {
+        #  name = "CrossSiteScripting_COOKIE"
+        #}
+#
+        #excluded_rule {
+        #  name = "CrossSiteScripting_BODY"
+        #}
+#
+        #excluded_rule {
+        #  name = "EC2MetaDataSSRF_BODY"
+        #}
+#
+        #excluded_rule {
+        #  name = "EC2MetaDataSSRF_QUERYARGUMENTS"
+        #}
+#
+        #excluded_rule {
+        #  name = "GenericLFI_BODY"
+        #}
+#
+        #excluded_rule {
+        #  name = "GenericRFI_BODY"
+        #}
+#
+        #excluded_rule {
+        #  name = "GenericRFI_QUERYARGUMENTS"
+        #}
+#
+        #excluded_rule {
+        #  name = "NoUserAgent_HEADER"
+        #}
+#
+        #excluded_rule {
+        #  name = "SizeRestrictions_BODY"
+        #}
+#
+        #excluded_rule {
+        #  name = "SizeRestrictions_Cookie_HEADER"
+        #}
+#
+        #excluded_rule {
+        #  name = "SizeRestrictions_QUERYSTRING"
+        #}
+#
+        #excluded_rule {
+        #  name = "SizeRestrictions_URIPATH"
+        #}
       }
     }
 
