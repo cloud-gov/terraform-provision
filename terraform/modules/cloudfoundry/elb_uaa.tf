@@ -59,9 +59,8 @@ resource "aws_lb_listener" "cf_uaa_http" {
 // The rule in json format which will make it easier to translate to TF
 // NOTE - webacl sets have rule capacity limits - make sure your total rule counts do not exceed the limit
 
-#resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
+resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
-resource "aws_wafv2_rule_group" "cf_uaa_waf_core" {
   name        = "${var.stack_description}-cf-uaa-waf-core"
   description = "UAA ELB WAF Rules"
   scope       = "REGIONAL"
@@ -84,9 +83,9 @@ resource "aws_wafv2_rule_group" "cf_uaa_waf_core" {
       none {}
     }
 
-    rule_label {
-      name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
-    }
+    #rule_label {
+    #  name = "${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+    #}
 
     statement {
       byte_match_statement {
