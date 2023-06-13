@@ -3,7 +3,7 @@ output "rds_identifier" {
 }
 
 output "rds_name" {
-  value = aws_db_instance.rds_database.name
+  value = aws_db_instance.rds_database.db_name
 }
 
 output "rds_url" {
