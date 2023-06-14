@@ -23,11 +23,11 @@ module "droplets" {
 }
 
 module "logsearch-archive" {
-  source          = "../s3_bucket/log_encrypted_bucket"
-  bucket          = "logsearch-${var.stack_prefix}"
-  aws_partition   = var.aws_partition
-  expiration_days = 930 # 31 days * 30 months = 930 days
-  acl = "private"
+  source           = "../s3_bucket/log_encrypted_bucket"
+  bucket           = "logsearch-${var.stack_prefix}"
+  aws_partition    = var.aws_partition
+  expiration_days  = 930 # 31 days * 30 months = 930 days
+  acl              = "private"
   object_ownership = "ObjectWriter"
 }
 
