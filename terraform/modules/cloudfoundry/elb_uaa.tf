@@ -72,12 +72,12 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     allow {}
   }
 
-# New rule for dropping logging for a specific host
+  # New rule for dropping logging for a specific host
 
   rule {
     name     = var.waf_label_host_0
     priority = 0
-  
+
     action {
       allow {}
     }
@@ -430,15 +430,15 @@ resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
   resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 
   logging_filter {
-  default_behavior = "KEEP"
-  filter {
-    behavior = "DROP"
-    condition {
-      label_name_condition {
-        label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+    default_behavior = "KEEP"
+    filter {
+      behavior = "DROP"
+      condition {
+        label_name_condition {
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+        }
       }
-    }
-    requirement = "MEETS_ANY"
+      requirement = "MEETS_ANY"
     }
   }
 }
