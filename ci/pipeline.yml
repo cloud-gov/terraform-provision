@@ -403,6 +403,8 @@ jobs:
       TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
       TF_VAR_payer_account_id: ((payer_account_id))
       TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
+      TF_VAR_waf_label_host_0: ((waf_label_host_0))
+      TF_VAR_waf_hostname_0: ((waf_hostname_0))
   - *notify-slack
 
 - name: bootstrap-tooling
@@ -530,6 +532,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((development_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+      TF_VAR_waf_label_host_0: ((waf_label_host_0))
+      TF_VAR_waf_hostname_0: ((waf_hostname_0))
   - *notify-slack
 
 - name: bootstrap-development
@@ -689,6 +693,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((staging_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+      TF_VAR_waf_label_host_0: ((waf_label_host_0))
+      TF_VAR_waf_hostname_0: ((waf_hostname_0))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -847,6 +853,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+      TF_VAR_waf_label_host_0: ((waf_label_host_0))
+      TF_VAR_waf_hostname_0: ((waf_hostname_0))
   - *notify-slack
 
 - name: bootstrap-production
