@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "log_encrypted_bucket_deny_unencrypted_policy" {
     effect = "Deny"
 
     principals {
-      type        = "*"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "log_encrypted_bucket_deny_unencrypted_policy" {
     condition {
       test     = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
-      values   = ["AES:256"]
+      values   = ["AES256"]
     }
   }
 }
