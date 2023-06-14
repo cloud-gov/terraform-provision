@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "log_encrypted_bucket_deny_unencrypted_policy" {
     effect = "Deny"
 
     principals {
-      type        = "AWS"
+      type        = "*"
       identifiers = ["*"]
     }
 
