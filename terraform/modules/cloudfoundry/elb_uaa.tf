@@ -72,9 +72,48 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     allow {}
   }
 
+  # New rule for dropping logging for a specific host
+
+  rule {
+    name     = var.waf_label_host_0
+    priority = 0
+
+    action {
+      allow {}
+    }
+
+    statement {
+      byte_match_statement {
+        field_to_match {
+          single_header {
+            name = "host"
+          }
+        }
+
+        positional_constraint = "CONTAINS"
+        search_string         = var.waf_hostname_0
+
+        text_transformation {
+          priority = "0"
+          type     = "NONE"
+        }
+      }
+    }
+
+    rule_label {
+      name = var.waf_label_host_0
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = "true"
+      metric_name                = var.waf_label_host_0
+      sampled_requests_enabled   = "true"
+    }
+  }
+
   rule {
     name     = "AWS-AWSManagedRulesAnonymousIpList"
-    priority = 0
+    priority = 1
 
     override_action {
       none {}
@@ -100,7 +139,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
-    priority = 1
+    priority = 2
 
     override_action {
       none {}
@@ -126,7 +165,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-KnownBadInputsRuleSet"
-    priority = 2
+    priority = 3
 
     override_action {
       none {}
@@ -192,7 +231,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWSManagedRule-CoreRuleSet"
-    priority = 3
+    priority = 4
 
     override_action {
       none {}
@@ -262,7 +301,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitByForwardedHeader"
-    priority = 4
+    priority = 5
 
     action {
       block {}
@@ -292,7 +331,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 5
+    priority = 6
     action {
       block {}
     }
@@ -389,9 +428,24 @@ resource "aws_cloudwatch_log_group" "cf_uaa_waf_core_cloudwatch_log_group" {
 resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
   log_destination_configs = [aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn]
   resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+
+  logging_filter {
+    default_behavior = "KEEP"
+    filter {
+      behavior = "DROP"
+      condition {
+        label_name_condition {
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+        }
+      }
+      requirement = "MEETS_ANY"
+    }
+  }
 }
 
 resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
   web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
+
+data "aws_caller_identity" "current" {}
