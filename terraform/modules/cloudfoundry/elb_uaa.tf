@@ -139,7 +139,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
-    priority = 1
+    priority = 2
 
     override_action {
       none {}
@@ -165,7 +165,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-KnownBadInputsRuleSet"
-    priority = 2
+    priority = 3
 
     override_action {
       none {}
@@ -231,7 +231,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWSManagedRule-CoreRuleSet"
-    priority = 3
+    priority = 4
 
     override_action {
       none {}
@@ -301,7 +301,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitByForwardedHeader"
-    priority = 4
+    priority = 5
 
     action {
       block {}
@@ -331,7 +331,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "CG-RegexPatternSets"
-    priority = 5
+    priority = 6
     action {
       block {}
     }
