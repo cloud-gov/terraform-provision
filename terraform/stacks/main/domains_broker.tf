@@ -370,10 +370,10 @@ output "domains_broker_profile" {
 }
 
 
-data "dns_a_record_set" "${var.stack_description}-domains-internal-lb_ips" {
-  host = aws_lb."${var.stack_description}-domains-internal".dns_name
+data "dns_a_record_set" "domains-internal-lb_ips" {
+  host = aws_lb.var.stack_description-domains-internal.dns_name
 }
 
-output "${var.stack_description}-domains-internal-ips" {
-  value = join(",", data.dns_a_record_set."${var.stack_description}-domains-internal-lb_ips".addrs)
+output "domains-internal-ips" {
+  value = join(",", data.dns_a_record_set.domains-internal-lb_ips.addrs)
 }
