@@ -107,7 +107,7 @@ module "concourse_production" {
   source                          = "../../modules/concourse_v2"
   stack_description               = "production"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
-  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31),cidrsubnet(var.vpc_cidr, 8, 30)]
+  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31),cidrsubnet(var.vpc_cidr, 8, 32)]
   concourse_availability_zones    = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
   route_table_ids                  = module.stack.private_route_table_ids
   rds_password                    = random_string.concourse_prod_rds_password.result
