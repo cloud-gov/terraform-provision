@@ -1,7 +1,7 @@
 variable "stack_description" {
 }
 
-variable "concourse_cidr" {
+variable "concourse_cidrs" {
   type    = list(string)
   default = ["10.0.30.0/24"]
 }
