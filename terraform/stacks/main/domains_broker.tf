@@ -385,9 +385,9 @@ locals {
 }
 
 output "domains-internal-ip-az1" {
-  value = "${ cidrhost(local.services-az1-net,0) == cidrhost("${local.domain-lb-ips[0]}/24",0) ? "slot0_is_in_az1" : "slot0_is_not_in_az1"}"
+  value = "${ cidrhost(local.services-az1-net,0) == cidrhost("${local.domain-lb-ips[0]}/24",0) ? local.domain-lb-ips[0] : local.domain-lb-ips[1]}"
 }
 
 output "domains-internal-ip-az2" {
-  value = "${ cidrhost(local.services-az2-net,0) == cidrhost("${local.domain-lb-ips[1]}/24",0) ? "slot0_is_in_az2" : "slot0_is_not_in_az2"}"
+  value = "${ cidrhost(local.services-az2-net,0) == cidrhost("${local.domain-lb-ips[1]}/24",0) ? local.domain-lb-ips[1] : local.domain-lb-ips[0]}"
 }
