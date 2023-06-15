@@ -192,7 +192,7 @@ module "credhub_staging" {
 }
 
 module "monitoring_production" {
-  source                        = "../../modules/monitoring"
+  source                        = "../../modules/monitoring_v2"
   stack_description             = "production"
   vpc_id                        = module.stack.vpc_id
   vpc_cidr                      = var.vpc_cidr
@@ -207,7 +207,7 @@ module "monitoring_production" {
 }
 
 module "monitoring_staging" {
-  source             = "../../modules/monitoring"
+  source             = "../../modules/monitoring_v2"
   stack_description  = "staging"
   vpc_id             = module.stack.vpc_id
   vpc_cidr           = var.vpc_cidr
