@@ -70,12 +70,8 @@ variable "rds_allow_major_version_upgrade" {
 variable "rds_apply_immediately" {
 }
 
-variable "route_table_id_az1" {
+variable "route_table_ids" {
 }
-
-variable "route_table_id_az2" {
-}
-
 
 variable "vpc_id" {
 }
