@@ -370,7 +370,7 @@ output "domains_broker_profile" {
 }
 
 
-data "dns_a_record_set"  {
+data "dns_a_record_set" "${var.stack_description}-domains-internal-lb_ips" {
   host = aws_lb."${var.stack_description}-domains-internal".dns_name
 }
 
