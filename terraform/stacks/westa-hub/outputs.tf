@@ -8,7 +8,7 @@ locals { ##
     cidrhost(module.stack.private_cidrs[1], 4),
     cidrhost(module.stack.private_cidrs[2], 4),
   ]
-  production_smtp_private_ip = cidrhost(module.stack.private_cidr_az1, 12)
+  production_smtp_private_ip = cidrhost(module.stack.private_cidrs[0], 12)
 }
 
   #staging_dns_private_ips = [
@@ -701,9 +701,9 @@ output "dns_public_security_group" {
   value = module.dns.public_security_group
 }
 
-output "staging_dns_private_ips" {
-  value = local.staging_dns_private_ips
-}
+#output "staging_dns_private_ips" {
+#  value = local.staging_dns_private_ips
+#}
 
 #output "production_dns_public_ips" {
 #  value = [aws_eip.production_dns_eip.*.public_ip]

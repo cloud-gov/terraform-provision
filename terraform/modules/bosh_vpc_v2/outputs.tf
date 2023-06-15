@@ -8,7 +8,7 @@ output "vpc_cidr" {
 }
 
 /* Private network */
-output "private_subnets_ids" {
+output "private_subnet_ids" {
   value = aws_subnet.subnet_private[*].id
 }
 
@@ -16,7 +16,7 @@ output "private_cidrs" {
   value = aws_subnet.subnet_private[*].cidr_block
 }
 
-output "private_route_tables_ids" {
+output "private_route_table_ids" {
   value = aws_route_table.private_route_table[*].id
 }
 
@@ -29,7 +29,7 @@ output "public_cidrs" {
   value = aws_subnet.subnet_public[*].cidr_block
 }
 
-output "public_route_tables" {
+output "public_route_table_ids" {
   value = aws_route_table.public_network[*].id
 }
 
@@ -59,8 +59,12 @@ output "default_key_name" {
 }
 
 /* S3 Private Endpoint for region*/
-output "vpc_endpoint_customer_s3_ips" {
-  value = data.aws_network_interface.vpce_customer_s3[*].private_ip
+output "vpc_endpoint_customer_s3_if1_ip" {
+  value = data.aws_network_interface.vpce_customer_s3_if1.private_ip
+}
+
+output "vpc_endpoint_customer_s3_if2_ip" {
+  value = data.aws_network_interface.vpce_customer_s3_if2.private_ip
 }
 
 /* DNS for the S3 Private Endpoint */
