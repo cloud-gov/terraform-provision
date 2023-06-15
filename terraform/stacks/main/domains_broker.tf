@@ -368,3 +368,12 @@ output "legacy_domain_certificate_renewer_secret_access_key_curr" {
 output "domains_broker_profile" {
   value = aws_iam_instance_profile.domains_broker.name
 }
+
+
+data "dns_a_record_set"  {
+  host = aws_lb."${var.stack_description}-domains-internal".dns_name
+}
+
+output "${var.stack_description}-domains-internal-ips" {
+  value = join(",", data.dns_a_record_set."${var.stack_description}-domains-internal-lb_ips".addrs)
+}
