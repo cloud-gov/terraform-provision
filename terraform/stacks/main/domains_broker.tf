@@ -375,5 +375,5 @@ data "dns_a_record_set" "domains-internal-lb_ips" {
 }
 
 output "domains-internal-ips" {
-  value = join(",", data.dns_a_record_set.domains-internal-lb_ips.addrs)
+  value = data.dns_a_record_set.domains-internal-lb_ips.addrs
 }
