@@ -380,10 +380,10 @@ output "domains-internal-ips" {
 
 output "domains-internal-ip-az1" {
   services-az1-net  = module.cf.services_cidr_1
-  value = ${ cidrhost(module.cf.services_cidr_1,0) == cidrhost(domains-internal-ips[0],0) ? "slot0_is_in_az1" : "slot0_is_not_in_az1"}
+  value = "${ cidrhost(module.cf.services_cidr_1,0) == cidrhost(domains-internal-ips[0],0) ? "slot0_is_in_az1" : "slot0_is_not_in_az1"}"
 }
 
 output "domains-internal-ip-az2" {
   services-az2-net  = module.cf.services_cidr_2
-  value = ${ cidrhost(module.cf.services_cidr_2,0) == cidrhost(domains-internal-ips[0],0) ? "slot0_is_in_az2" : "slot0_is_not_in_az2"}
+  value = "${ cidrhost(module.cf.services_cidr_2,0) == cidrhost(domains-internal-ips[0],0) ? "slot0_is_in_az2" : "slot0_is_not_in_az2"}"
 }
