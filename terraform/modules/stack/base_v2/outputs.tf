@@ -21,7 +21,7 @@ output "private_cidrs" {
 }
 
 output "vpc_endpoint_customer_s3_ips" {
-  value = module.vpc.vpc_endpoint_customer_s3_ips
+  value = module.vpc.vpc_endpoint_customer_s3_if_ips
 }
 
 output "vpc_endpoint_customer_s3_dns" {
