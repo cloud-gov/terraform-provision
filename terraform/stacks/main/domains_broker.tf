@@ -374,10 +374,6 @@ data "dns_a_record_set" "domains-internal-lb_ips" {
   host = aws_lb.domains_broker_internal.dns_name
 }
 
-output "domains-internal-ips" {
-  value = data.dns_a_record_set.domains-internal-lb_ips.addrs
-}
-
 locals {
   services-az1-net  = module.cf.services_cidr_1
   services-az2-net  = module.cf.services_cidr_2
