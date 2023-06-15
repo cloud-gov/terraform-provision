@@ -26,7 +26,7 @@ module "rds_network" {
   security_groups       = var.rds_security_groups
   security_groups_count = var.rds_security_groups_count
   rds_private_cidrs    = var.rds_private_cidrs
-  route_table_ids          = module.vpc.private_route_tables_ids
+  route_table_ids          = module.vpc.private_route_table_ids
 }
 
 module "rds" {
