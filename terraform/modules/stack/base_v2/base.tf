@@ -17,7 +17,7 @@ module "vpc" {
 }
 
 module "rds_network" {
-  source = "../../rds_network"
+  source = "../../rds_network_v2"
 
   stack_description     = var.stack_description
   vpc_id                = module.vpc.vpc_id
@@ -25,7 +25,7 @@ module "rds_network" {
   allowed_cidrs         = var.target_concourse_security_group_cidrs
   security_groups       = var.rds_security_groups
   security_groups_count = var.rds_security_groups_count
-  rds_private_cidrrs    = var.rds_private_cidrs
+  rds_private_cidrs    = var.rds_private_cidrs
   route_table_ids          = module.vpc.private_route_tables_ids
 }
 
