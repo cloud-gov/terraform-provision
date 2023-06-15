@@ -371,7 +371,7 @@ output "domains_broker_profile" {
 
 
 data "dns_a_record_set" "domains-internal-lb_ips" {
-  host = aws_lb.var.stack_description-domains-internal.dns_name
+  host = aws_lb.domains_broker_internal.dns_name
 }
 
 output "domains-internal-ips" {
