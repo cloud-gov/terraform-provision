@@ -8,6 +8,9 @@ locals { ##
     cidrhost(module.stack.private_cidrs[1], 4),
     cidrhost(module.stack.private_cidrs[2], 4),
   ]
+  production_smtp_private_ip = cidrhost(module.stack.private_cidr_az1, 12)
+}
+
   #staging_dns_private_ips = [
   #  cidrhost(module.stack.private_cidr_az1, 8),
   #  cidrhost(module.stack.private_cidr_az1, 9),
@@ -16,8 +19,6 @@ locals { ##
   #  cidrhost(module.stack.private_cidr_az1, 10),
   #  cidrhost(module.stack.private_cidr_az1, 11),
   #]
-  production_smtp_private_ip = cidrhost(module.stack.private_cidr_az1, 12)
-}
 
 output "availability_zone_names" {
   value = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
@@ -62,11 +63,12 @@ output "master_bosh_reserved" { ##
     local.private_subnet_reserved,
     [local.master_bosh_static_ip],
     local.bosh_uaa_static_ips,
-  #  local.staging_dns_private_ips,
-  #  local.production_dns_private_ips,
     [local.production_smtp_private_ip],
   )
 }
+
+  #  local.staging_dns_private_ips,
+  #  local.production_dns_private_ips,
 
 output "private_subnet_reserved" { ##
   value = local.private_subnet_reserved
@@ -81,7 +83,7 @@ output "production_monitoring_subnet_reserved" {
 }
 
 output "staging_monitoring_subnet_reserved" {
-  value = ["${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 3)}","${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 3)}","${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidra[2], 3)}"]
+  value = ["${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 3)}","${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 3)}","${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 3)}"]
 }
 
 output "production_monitoring_subnet_cidrs" {
@@ -97,7 +99,7 @@ output "production_monitoring_subnet_gateways" {
 }
 
 output "staging_monitoring_subnet_gateways" {
-  value = [cidrhost(module.monitoring_staging.monitoring_cidr[0], 1),cidrhost(module.monitoring_staging.monitoring_cidr[1], 1),cidrhost(module.monitoring_staging.monitoring_cidr[2], 1)]
+  value = [cidrhost(module.monitoring_staging.monitoring_cidrs[0], 1),cidrhost(module.monitoring_staging.monitoring_cidrs[1], 1),cidrhost(module.monitoring_staging.monitoring_cidrs[2], 1)]
 }
 
 output "master_bosh_static_ip" {
@@ -462,7 +464,7 @@ output "staging_credhub_lb_target_group" {
 
 /* Production Monitoring */
 output "production_monitoring_az" { ## might not be needed
-  value = module.monitoring_production.monitoring_az
+  value = module.monitoring_production.monitoring_availability_zones
 }
 
 output "production_monitoring_subnet_ids" {
@@ -491,7 +493,7 @@ output "monitoring_security_groups" {
 
 /* Staging Monitoring */
 output "staging_monitoring_az" {## might not be needed
-  value = module.monitoring_staging.monitoring_az
+  value = module.monitoring_staging.monitoring_availability_zones
 }
 
 output "staging_monitoring_subnet_ids" {
@@ -670,7 +672,7 @@ output "nessus_target_group" {
 }
 
 output "nessus_static_ip" {
-  value = cidrhost(module.stack.private_cidr_az1, 71)
+  value = cidrhost(module.stack.private_cidrs[0], 71)
 }
 
 /* BOSH UAA elb */
