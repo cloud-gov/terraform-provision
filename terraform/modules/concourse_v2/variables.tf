@@ -6,7 +6,7 @@ variable "concourse_cidr" {
   default = ["10.0.30.0/24"]
 }
 
-variable "availability_zones" {
+variable "concourse_availability_zones" {
   type    = list(string)
   default = ["us-gov-west-1a"]
 }
@@ -70,7 +70,7 @@ variable "rds_allow_major_version_upgrade" {
 variable "rds_apply_immediately" {
 }
 
-variable "route_table_id" {
+variable "route_table_ids" {
 }
 
 variable "vpc_id" {
