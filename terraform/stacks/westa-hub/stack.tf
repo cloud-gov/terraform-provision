@@ -104,7 +104,7 @@ module "stack" {
 }
 
 module "concourse_production" {
-  source                          = "../../modules/concourse"
+  source                          = "../../modules/concourse_v2"
   stack_description               = "production"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31),cidrsubnet(var.vpc_cidr, 8, 30)]
@@ -126,7 +126,7 @@ module "concourse_production" {
 }
 
 module "concourse_staging" {
-  source                          = "../../modules/concourse"
+  source                          = "../../modules/concourse_v2"
   stack_description               = "staging"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 33),cidrsubnet(var.vpc_cidr, 8, 34),cidrsubnet(var.vpc_cidr, 8, 35)]
@@ -148,7 +148,7 @@ module "concourse_staging" {
 }
 
 module "credhub_production" {
-  source                          = "../../modules/credhub"
+  source                          = "../../modules/credhub_v2"
   stack_description               = "production"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 36), cidrsubnet(var.vpc_cidr, 8, 37), cidrsubnet(var.vpc_cidr, 8, 38)]
@@ -170,7 +170,7 @@ module "credhub_production" {
 }
 
 module "credhub_staging" {
-  source                          = "../../modules/credhub"
+  source                          = "../../modules/credhub_v2"
   stack_description               = "staging"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 39), cidrsubnet(var.vpc_cidr, 8, 40), cidrsubnet(var.vpc_cidr, 8, 41)]
