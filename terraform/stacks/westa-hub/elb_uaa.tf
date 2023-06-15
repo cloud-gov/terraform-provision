@@ -1,6 +1,6 @@
 resource "aws_lb" "opsuaa" {
   name                       = "${var.stack_description}-opsuaa"
-  subnets                    = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  subnets                    = module.stack.public_subnet_ids
   security_groups            = [module.stack.restricted_web_traffic_security_group]
   ip_address_type            = "dualstack"
   idle_timeout               = 3600
