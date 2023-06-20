@@ -33,7 +33,9 @@ certbot certonly \
   --dns-route53 \
   --config-dir "${config_path}" \
   --email "${EMAIL}" \
-  --domain "${DOMAIN}"
+  --domain "${DOMAIN}" \
+  --rsa-key-size 2048 \
+  --key-type rsa 
 
 out_path=$(ls -d -1 ${config_path}/live/*/)
 cp ${out_path}/*.pem acme
