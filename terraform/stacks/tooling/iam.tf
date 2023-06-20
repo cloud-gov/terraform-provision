@@ -133,18 +133,18 @@ module "concourse_worker_role" {
 }
 
 module "concourse_iaas_worker_role" {
-  source                 = "../../modules/iam_role"
-  role_name              = "tooling-concourse-iaas-worker"
+  source    = "../../modules/iam_role"
+  role_name = "tooling-concourse-iaas-worker"
   iam_assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-          "AWS":  "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/tooling-concourse-iaas-worker",
-          "Service": "ec2.amazonaws.com"
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/tooling-concourse-iaas-worker",
+          "Service" : "ec2.amazonaws.com"
         },
-        "Effect": "Allow"
+        "Effect" : "Allow"
       }
     ]
   })
