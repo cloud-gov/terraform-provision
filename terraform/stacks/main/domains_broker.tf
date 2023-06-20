@@ -368,3 +368,20 @@ output "legacy_domain_certificate_renewer_secret_access_key_curr" {
 output "domains_broker_profile" {
   value = aws_iam_instance_profile.domains_broker.name
 }
+
+data "dns_a_record_set" "domains-internal-lb_ips" {
+  host = aws_lb.domains_broker_internal.dns_name
+}
+
+locals {
+  services-az1-net = module.cf.services_cidr_1
+  services-az2-net = module.cf.services_cidr_2
+  domain-lb-ips    = data.dns_a_record_set.domains-internal-lb_ips.addrs
+}
+
+output "domains-internal-ip-az1" {
+  value = cidrhost(local.services-az1-net, 0) == cidrhost("${local.domain-lb-ips[0]}/24", 0) ? local.domain-lb-ips[0] : local.domain-lb-ips[1]
+}
+output "domains-internal-ip-az2" {
+  value = cidrhost(local.services-az2-net, 0) == cidrhost("${local.domain-lb-ips[1]}/24", 0) ? local.domain-lb-ips[1] : local.domain-lb-ips[0]
+}
