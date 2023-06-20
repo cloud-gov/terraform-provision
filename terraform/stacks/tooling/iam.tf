@@ -140,10 +140,10 @@ module "concourse_iaas_worker_role" {
     "Statement": [
       {
         "Action": "sts:AssumeRole",
-  	    "Principal": {
+        "Principal": {
           "AWS":  "arn:${var.partition}:iam::${var.account_id}:role/bosh-passed/tooling-concourse-iaas-worker",
-  	  	  "Service": "ec2.amazonaws.com"
-  	    },
+          "Service": "ec2.amazonaws.com"
+        },
         "Effect": "Allow"
       }
     ]
