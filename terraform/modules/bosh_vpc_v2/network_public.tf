@@ -19,7 +19,7 @@ resource "aws_subnet" "subnet_public" {
   ipv6_cidr_block = cidrsubnet(
     aws_vpc.main_vpc.ipv6_cidr_block != "" ? aws_vpc.main_vpc.ipv6_cidr_block : "fd00::/8",
     8,
-    0,
+    count.index,
   )
   availability_zone = var.availability_zones[count.index]
 
