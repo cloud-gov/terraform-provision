@@ -40,3 +40,22 @@ certbot certonly \
 
 out_path=$(ls -d -1 ${config_path}/live/*/)
 cp ${out_path}/*.pem acme
+
+# Before provision exit - check that certificate and key are RSA based and 2048 bit length - if not error out task
+
+CERT_CHECK=$(cat acme/cert.pem | openssl x509 -text -noout | grep "Public-Key")
+KEY_CHECK=$(cat acme/privkey.pem | openssl rsa -text -noout | grep "Private-Key")
+
+if [[ "$CERT_CHECK" == *"2048 bit"* ]]; then
+    echo  "Certificate is 2048 bit and good"
+    else
+    echo "Certificate failed 2048 bit check and is bad/corrupt"
+    exit 1
+fi
+
+if [[ "$KEY_CHECK" == *"RSA Private"* ]]; then
+    echo  "Key is RSA based and good"
+    else
+    echo "Key is NOT RSA based and is bad/corrupt"
+    exit 1
+fi
