@@ -129,7 +129,7 @@ variable "credhub_rds_db_storage_type" {
 }
 
 variable "credhub_rds_instance_type" {
-  default = "db.t2.medium"
+  default = "db.t3.medium"
 }
 
 variable "credhub_rds_db_size" {
