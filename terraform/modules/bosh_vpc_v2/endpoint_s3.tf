@@ -45,7 +45,7 @@ resource "aws_vpc_endpoint" "customer_s3" {
 }
 
 data "aws_network_interface" "vpce_customer_s3_if" {
-  count = length(local.network_interface_ids)
+  count = 2
   id = local.network_interface_ids[count.index]
 }
 
