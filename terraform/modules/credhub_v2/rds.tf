@@ -1,7 +1,7 @@
 module "rds_96" {
   source = "../rds"
 
-  stack_description               = var.stack_description
+  stack_description               = "credhub-${var.stack_description}"
   rds_db_name                     = var.rds_db_name
   rds_instance_type               = var.rds_instance_type
   rds_db_size                     = var.rds_db_size

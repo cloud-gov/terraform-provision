@@ -105,7 +105,7 @@ module "stack" {
 
 module "concourse_production" {
   source                          = "../../modules/concourse_v2"
-  stack_description               = "production"  # var.stack_description is too long, max 32 length total
+  stack_description               = "${var.stack_description}-prod"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31),cidrsubnet(var.vpc_cidr, 8, 32)]
   concourse_availability_zones    = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
@@ -127,7 +127,7 @@ module "concourse_production" {
 
 module "concourse_staging" {
   source                          = "../../modules/concourse_v2"
-  stack_description               = "staging"  # var.stack_description is too long, max 32 length total
+  stack_description               = "${var.stack_description}-stage"  # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
   concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 33),cidrsubnet(var.vpc_cidr, 8, 34),cidrsubnet(var.vpc_cidr, 8, 35)]
   concourse_availability_zones    = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
@@ -149,7 +149,7 @@ module "concourse_staging" {
 
 module "credhub_production" {
   source                          = "../../modules/credhub_v2"
-  stack_description               = "production"
+  stack_description               = "${var.stack_description}-prod"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 36), cidrsubnet(var.vpc_cidr, 8, 37), cidrsubnet(var.vpc_cidr, 8, 38)]
   credhub_availability_zones      = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
@@ -171,7 +171,7 @@ module "credhub_production" {
 
 module "credhub_staging" {
   source                          = "../../modules/credhub_v2"
-  stack_description               = "staging"
+  stack_description               = "${var.stack_description}-stage"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 39), cidrsubnet(var.vpc_cidr, 8, 40), cidrsubnet(var.vpc_cidr, 8, 41)]
   credhub_availability_zones      = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
@@ -193,7 +193,7 @@ module "credhub_staging" {
 
 module "monitoring_production" {
   source                        = "../../modules/monitoring_v2"
-  stack_description             = "production"
+  stack_description             = "${var.stack_description}-prod"
   vpc_id                        = module.stack.vpc_id
   vpc_cidr                      = var.vpc_cidr
   monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 42),cidrsubnet(var.vpc_cidr, 8, 43),cidrsubnet(var.vpc_cidr, 8, 44)]
@@ -208,7 +208,7 @@ module "monitoring_production" {
 
 module "monitoring_staging" {
   source             = "../../modules/monitoring_v2"
-  stack_description  = "staging"
+  stack_description  = "${var.stack_description}-stage"
   vpc_id             = module.stack.vpc_id
   vpc_cidr           = var.vpc_cidr
   monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 45),cidrsubnet(var.vpc_cidr, 8, 46),cidrsubnet(var.vpc_cidr, 8, 47)]

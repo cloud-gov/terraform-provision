@@ -32,7 +32,7 @@ variable "rds_private_cidrs" {
 }
 
 variable "rds_instance_type" {
-  default = "db.m4.large"
+  default = "db.m5.large"
 }
 
 variable "rds_db_size" {
@@ -48,7 +48,7 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_name" {
-  default = "bosh"
+  default = "bosh-${var.stack_description}"
 }
 
 variable "rds_db_engine" {
@@ -121,7 +121,7 @@ variable "rds_multi_az" {
  * CredHub database variables
  */
 variable "credhub_rds_db_name" {
-  default = "credhub"
+  default = "bosh-credhub-${var.stack_description}"
 }
 
 variable "credhub_rds_db_storage_type" {
