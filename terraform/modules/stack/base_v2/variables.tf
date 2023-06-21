@@ -48,7 +48,7 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_name" {
-  default = "bosh-${var.stack_description}"
+  default = "bosh"
 }
 
 variable "rds_db_engine" {
@@ -121,7 +121,7 @@ variable "rds_multi_az" {
  * CredHub database variables
  */
 variable "credhub_rds_db_name" {
-  default = "bosh-credhub-${var.stack_description}"
+  default = "bosh-credhub"
 }
 
 variable "credhub_rds_db_storage_type" {
