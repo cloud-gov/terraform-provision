@@ -9,6 +9,5 @@ resource "aws_opensearch_domain" "opensearch" {
 
   vpc_options {
     subnet_ids = var.private_elb_subnets
-    #security_group_ids = var.bosh_security_group
   }
 }
