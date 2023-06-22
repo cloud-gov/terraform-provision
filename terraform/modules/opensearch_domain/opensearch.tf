@@ -7,7 +7,7 @@ resource "aws_opensearch_domain" "example" {
     zone_awareness_enabled = true
   }
   vpc_options {
-    subnet_ids = [aws_subnet.az1_public.id, aws_subnet.az2_public.id]
-    security_group_ids = [aws_security_group.bosh.id]
+    subnet_ids = var.private_elb_subnets
+    security_group_ids = var.bosh_security_group
   }
 }
