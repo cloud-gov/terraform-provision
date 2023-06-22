@@ -305,12 +305,12 @@ module "diego" {
   log_bucket_name = module.log_bucket.elb_bucket_name
 }
 
-module "opensearch" {
+module "opensearch_logs_customer" {
   source = "../../modules/opensearch_domain"
   instance_type= "t3.medium.search"
   private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
   engine= "OpenSearch_1.0"
-  domain= "test"
+  domain= "{var.stack_description}-logs-customer"
 }
 
 
