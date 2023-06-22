@@ -123,6 +123,48 @@
       ]
     },
     {
+      "Effect": "Allow",
+      "Action": [
+        "es:ESHttpGet",
+        "es:CreateDomain",
+        "es:ListTags",
+        "es:DescribeDomainConfig",
+        "es:ESHttpDelete",
+        "es:GetUpgradeHistory",
+        "es:AddTags",
+        "es:RemoveTags",
+        "es:ESHttpHead",
+        "es:DeleteDomain",
+        "es:DescribeDomain",
+        "es:UpgradeDomain",
+        "es:UpdateDomainConfig",
+        "es:ESHttpPost",
+        "es:GetCompatibleVersions",
+        "es:ESHttpPatch",
+        "es:GetUpgradeStatus",
+        "es:DescribeDomains",
+        "es:ESHttpPut"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:es:${aws_default_region}:${account_id}:domain/cg-*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "es:ListDomainNames",
+        "es:ListInstanceTypeDetails",
+        "es:CreateServiceRole",
+        "es:DeleteServiceRole",
+        "es:ListInstanceTypes",
+        "es:DescribeInstanceTypeLimits",
+        "es:ListVersions"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
       "Action": [
         "iam:GetUser",
         "iam:CreateUser",
