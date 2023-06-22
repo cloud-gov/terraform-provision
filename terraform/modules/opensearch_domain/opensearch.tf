@@ -1,9 +1,9 @@
 resource "aws_opensearch_domain" "example" {
-  domain_name    = var.domain2
-  engine_version = var.engine2
+  domain_name    = var.domain
+  engine_version = var.engine
 
   cluster_config {
-    instance_type          = var.instance_type2
+    instance_type          = var.instance_type
     zone_awareness_enabled = true
   }
   vpc_options {

@@ -1,9 +1,9 @@
-variable "instance_type2" {
+variable "instance_type" {
   
 }
-variable "engine2" {
+variable "engine" {
   
 }
-variable "domain2" {
+variable "domain" {
   
 }
