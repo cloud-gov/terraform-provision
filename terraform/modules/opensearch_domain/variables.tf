@@ -1,5 +1,5 @@
 variable "instance_type" {
-  
+  default = "t3.medium.search"
 }
 variable "engine" {
   type = string
@@ -8,6 +8,24 @@ variable "engine" {
 variable "domain_name" {
   
 }
+variable "instance_count" {
+    default = 1
+}
+
+variable "dedicated_master_count" {
+    default = 1
+  
+}
+variable "dedicated_master_type" {
+    default = "t3.medium.search"
+}
+variable "dedicated_master_enabled" {
+   default = true
+}
+variable "internal_user_database_enabled" {
+  default = true
+}
+
 variable "master_user_name" {
   
 }
