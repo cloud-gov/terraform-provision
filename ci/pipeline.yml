@@ -520,6 +520,9 @@ jobs:
       TF_VAR_bucket_prefix: development-cg
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_deploy_opensearch_logs_customer: 1
+      TF_VAR_master_user_name: ((development_master_user_name))
+      TF_VAR_master_password: ((development_master_password))
       TF_VAR_admin_hosts: '["admin.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
