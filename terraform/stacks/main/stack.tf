@@ -307,7 +307,6 @@ module "diego" {
 
 module "opensearch_logs_customer" {
   source = "../../modules/opensearch_domain"
-  instance_type= "t3.medium.search"
   private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
   domain= "{var.stack_description}-logs-customer"
   master_user_name = var.master_user_name
