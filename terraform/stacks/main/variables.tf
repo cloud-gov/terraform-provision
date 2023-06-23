@@ -133,13 +133,7 @@ variable "include_tcp_routes" {
   type    = bool
   default = false
 }
-variable "master_user_name"{
 
-}
-
-variable "master_password"{
-  
-} 
 variable "waf_regular_expressions" {
   type = list(string)
 }
