@@ -75,7 +75,7 @@ variable "bucket_prefix" {
 variable "blobstore_bucket_name" {
 }
 variable "deploy_opensearch_logs_customer" {
-  default = 0  
+  default = "false"
 }
 
 variable "upstream_blobstore_bucket_name" {
