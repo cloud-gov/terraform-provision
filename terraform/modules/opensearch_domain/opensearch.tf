@@ -3,6 +3,7 @@ resource "aws_opensearch_domain" "opensearch" {
   engine_version = var.engine
 
   advanced_security_options {
+    enabled = true
     internal_user_database_enabled = var.internal_user_database_enabled
     master_user_options {
       master_user_name     = var.master_user_name
