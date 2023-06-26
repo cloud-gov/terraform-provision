@@ -388,13 +388,13 @@ jobs:
       TF_VAR_smtp_ingress_cidr_blocks: '["((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_blobstore_bucket_name: bosh-tooling-blobsxtore
       TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
       TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
       TF_VAR_credhub_production_hosts: '["credhub.fr.cloud.gov"]'
       TF_VAR_credhub_staging_hosts: '["credhub.fr-stage.cloud.gov"]'
-      TF_VAR_master_user_name: ((tooling_master_user_name))
-      TF_VAR_master_password: ((tooling_master_password))
+      TF_VAR_opensearch_logs_customer_master_username: ((tooling_master_user_name))
+      TF_VAR_opensearch_logs_customer_master_password: ((tooling_master_password))
       TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
       TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
       TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
@@ -523,8 +523,8 @@ jobs:
       TF_VAR_blobstore_bucket_name: bosh-development-blobstore
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_deploy_opensearch_logs_customer: "true"
-      TF_VAR_master_user_name: ((development_master_user_name))
-      TF_VAR_master_password: ((development_master_password))
+      TF_VAR_opensearch_logs_customer_master_username: ((development_master_user_name))
+      TF_VAR_opensearch_logs_customer_master_password: ((development_master_password))
       TF_VAR_admin_hosts: '["admin.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
@@ -689,8 +689,8 @@ jobs:
       TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
       TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
       TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
-      TF_VAR_master_user_name: ((staging_master_user_name))
-      TF_VAR_master_password: ((staging_master_password))
+      TF_VAR_opensearch_logs_customer_master_username: ((staging_master_user_name))
+      TF_VAR_opensearch_logs_customer_master_password: ((staging_master_password))
       TF_VAR_domains_broker_alb_count: "2"
       TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
       TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
@@ -858,8 +858,8 @@ jobs:
       TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
       TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
       TF_VAR_sns_name: cloud-gov-notifications
-      TF_VAR_master_user_name: ((production_master_user_name))
-      TF_VAR_master_password: ((production_master_password))
+      TF_VAR_opensearch_logs_customer_master_username: ((production_master_user_name))
+      TF_VAR_opensearch_logs_customer_master_password: ((production_master_password))
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
       TF_VAR_waf_label_host_0: ((waf_label_host_0))
