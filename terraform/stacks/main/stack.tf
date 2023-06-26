@@ -309,7 +309,7 @@ module "opensearch_logs_customer" {
   count                = var.deploy_opensearch_logs_customer ? 1 : 0
   source               = "../../modules/opensearch_domain"
   private_elb_subnets  = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  domain_name          = "{var.stack_description}"
+  domain_name          = "${var.stack_description}-logs-customer"
   master_user_name     = var.opensearch_logs_customer_master_username
   master_user_password = var.opensearch_logs_customer_master_password
 }
