@@ -76,7 +76,7 @@ variable "blobstore_bucket_name" {
 }
 variable "deploy_opensearch_logs_customer" {
   default = false
-  type = bool
+  type    = bool
 }
 variable "opensearch_logs_customer_master_username" {
   type = string
