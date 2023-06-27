@@ -539,6 +539,9 @@ jobs:
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
       TF_VAR_waf_label_host_0: ((waf_label_host_0))
       TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_master_user: ((development_master_user_name))
+      TF_VAR_master_user_password: ((development_master_password))
+
   - *notify-slack
 
 - name: bootstrap-development
