@@ -67,7 +67,7 @@ resource "aws_db_instance" "domains_broker" {
   skip_final_snapshot         = true
   vpc_security_group_ids      = [module.stack.rds_postgres_security_group]
   allow_major_version_upgrade = true
-  backup_retention_period     = 14
+  backup_retention_period     = 0
   storage_encrypted           = true
 }
 
