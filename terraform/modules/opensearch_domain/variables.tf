@@ -4,7 +4,7 @@ variable "instance_type" {
 }
 variable "engine" {
   type    = string
-  default = "Opensearch_2.5"
+  default = "OpenSearch_2.5"
 }
 variable "domain_name" {
   type = string

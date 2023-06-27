@@ -64,9 +64,11 @@ resource "aws_db_instance" "domains_broker" {
   engine                      = "postgres"
   engine_version              = var.domains_broker_rds_version
   db_subnet_group_name        = module.stack.rds_subnet_group
+  skip_final_snapshot         = true
   vpc_security_group_ids      = [module.stack.rds_postgres_security_group]
   allow_major_version_upgrade = true
   backup_retention_period     = 14
+  storage_encrypted           = true
 }
 
 output "domains_broker_rds_username" {
