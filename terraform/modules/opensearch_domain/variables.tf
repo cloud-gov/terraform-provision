@@ -15,7 +15,7 @@ variable "instance_count" {
 }
 
 variable "dedicated_master_count" {
-  default = 1
+  default = 3
   type    = number
 }
 variable "dedicated_master_type" {
