@@ -14,7 +14,6 @@ resource "aws_opensearch_domain" "opensearch" {
   ebs_options {
     ebs_enabled               = true
     volume_size               = 15
-   #volume_type               = gp2
   }
 
   domain_endpoint_options {
