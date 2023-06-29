@@ -58,7 +58,7 @@ resource "aws_db_instance" "domains_broker" {
   db_name                     = "domains_broker"
   storage_type                = "gp2"
   allocated_storage           = 10
-  instance_class              = "db.t2.micro"
+  instance_class              = "db.t2.small"
   username                    = var.domains_broker_rds_username
   password                    = var.domains_broker_rds_password
   engine                      = "postgres"
@@ -69,7 +69,7 @@ resource "aws_db_instance" "domains_broker" {
   vpc_security_group_ids      = [module.stack.rds_postgres_security_group]
   allow_major_version_upgrade = true
   backup_retention_period     = 14
-  #storage_encrypted           = true
+  storage_encrypted           = true
 }
 
 output "domains_broker_rds_username" {
