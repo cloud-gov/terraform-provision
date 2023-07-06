@@ -47,3 +47,8 @@ variable "container_scanning_bucket_name" {
   description = "Name of S3 bucket for container scanning config"
 }
 
+variable "github_backups_bucket_name" {
+  type        = string
+  description = "Github Backups bucket"
+}
+
