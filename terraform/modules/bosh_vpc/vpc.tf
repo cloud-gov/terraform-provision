@@ -18,6 +18,8 @@ resource "aws_vpc" "main_vpc" {
 # Create CloudWatch log group
 resource "aws_cloudwatch_log_group" "main_vpc_flow_log_cloudwatch_log_group" {
   name = "${var.stack_description}-flow-log-group"
+  # Lowest allowed value that fulfills M-21-31 reqs of storing for 30 months
+  retention_in_days = 1827
 }
 
 # Create IAM role for sending flow logs
