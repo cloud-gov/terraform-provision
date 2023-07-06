@@ -195,3 +195,8 @@ variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
+
+variable "github_backups_bucket_name" {
+  type    = string
+  default = "github-backups"
+}
