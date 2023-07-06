@@ -13,6 +13,8 @@ resource "aws_cloudwatch_log_group" "query_resolver_logs" {
 resource "aws_route53_resolver_query_log_config" "resolver_config" {
   name            = "${var.stack_description}-query-resolver-logs"
   destination_arn = aws_cloudwatch_log_group.query_resolver_logs.arn
+  # Lowest allowed value that fulfills M-21-31 reqs of storing for 30 months
+  retention_in_days = 1827
 
   tags = {
     Environment = var.stack_description
