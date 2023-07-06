@@ -5,6 +5,11 @@ variable "zone_id" {
 variable "app_subdomain" {
 
 }
+
+variable "app_internal_subdomain" {
+
+}
+
 variable "admin_subdomain" {
 
 }

@@ -18,12 +18,24 @@ output "apps_lb_dns_name" {
   value = aws_lb.cf_apps.dns_name
 }
 
+output "apps_internal_lb_name" {
+  value = aws_lb.cf_apps_internal.name
+}
+
+output "apps_internal_lb_dns_name" {
+  value = aws_lb.cf_apps_internal.dns_name
+}
+
 output "lb_target_https_group" {
   value = aws_lb_target_group.cf_target_https.name
 }
 
 output "apps_lb_target_https_group" {
   value = aws_lb_target_group.cf_apps_target_https.name
+}
+
+output "apps_internal_lb_target_https_group" {
+  value = aws_lb_target_group.cf_apps_internal_target_https.name
 }
 
 output "uaa_lb_name" {

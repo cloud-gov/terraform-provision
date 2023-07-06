@@ -54,6 +54,62 @@ resource "aws_lb_listener" "cf_apps_http" {
   }
 }
 
+# Internal apps elb to prevent back to front traffic through WAF
+resource "aws_lb" "cf_apps_internal" {
+  name                        = "${var.stack_description}-cloudfoundry-apps-internal"
+  subnets                     = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
+  security_groups             = [module.stack.bosh_security_group]
+
+  internal                    = true
+  enable_deletion_protection  = true
+
+  access_logs {
+    bucket  = var.log_bucket_name
+    prefix  = var.stack_description
+    enabled = true
+  }
+}
+
+resource "aws_lb_target_group" "cf_apps__internal_target_https" {
+  name     = "${var.stack_description}-cf-apps-internal-https"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 81
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+  }
+}
+
+resource "aws_lb_listener" "cf_apps_internal" {
+  load_balancer_arn = aws_lb.cf_apps_internal.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
+  certificate_arn   = var.elb_apps_cert_id
+
+  default_action {
+    target_group_arn = aws_lb_target_group.cf_apps_internal_target_https.arn
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_listener" "cf_apps_internal_http" {
+  load_balancer_arn = aws_lb.cf_apps_internal.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_lb_target_group.cf_apps_internal_target_https.arn
+    type             = "forward"
+  }
+}
+
 resource "aws_lb_listener_certificate" "pages" {
   for_each        = var.pages_cert_ids
   listener_arn    = aws_lb_listener.cf_apps.arn

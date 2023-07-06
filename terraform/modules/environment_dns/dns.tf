@@ -57,6 +57,31 @@ resource "aws_route53_record" "star_app_aaaa" {
   }
 }
 
+# For internal apps lb
+resource "aws_route53_record" "star_app_internal_a" {
+  zone_id = var.zone_id
+  name    = "*.${var.app_internal_subdomain}."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_internal_lb_dns_name}"
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "star_app_internal_aaaa" {
+  zone_id = var.zone_id
+  name    = "*.${var.app_internal_subdomain}."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_internal_lb_dns_name}"
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "uaa_a" {
   zone_id = var.zone_id
   name    = "uaa.${var.admin_subdomain}."
