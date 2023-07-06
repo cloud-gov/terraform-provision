@@ -47,6 +47,10 @@ variable "wildcard_apps_certificate_name_prefix" {
   default = ""
 }
 
+variable "wildcard_apps_internal_certificate_name_prefix" {
+  default = ""
+}
+
 variable "pages_cert_patterns" {
   default = []
   type    = set(string)

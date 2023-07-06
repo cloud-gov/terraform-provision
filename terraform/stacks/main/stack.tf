@@ -98,6 +98,11 @@ data "aws_iam_server_certificate" "wildcard_apps" {
   latest      = true
 }
 
+data "aws_iam_server_certificate" "wildcard_app_internal" {
+  name_prefix = var.wildcard_apps_internal_certificate_name_prefix
+  latest      = true
+}
+
 data "aws_iam_server_certificate" "pages" {
   for_each    = var.pages_cert_patterns
   name_prefix = each.key
