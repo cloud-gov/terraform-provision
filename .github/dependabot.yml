@@ -5,10 +5,6 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/admin"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/bosh_vpc"
     schedule:
       interval: "weekly"
@@ -185,11 +181,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/opensearch_domain"
+    directory: "/terraform/modules/monitoring"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/monitoring"
+    directory: "/terraform/modules/opensearch_domain"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
