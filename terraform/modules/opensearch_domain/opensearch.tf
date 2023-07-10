@@ -39,6 +39,7 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 
   vpc_options {
-    subnet_ids = var.private_elb_subnets
+    subnet_ids         = var.subnet_ids
+    security_group_ids = [aws_security_group.opensearch_customer.id]
   }
 }

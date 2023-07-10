@@ -34,9 +34,22 @@ variable "internal_user_database_enabled" {
 variable "master_user_name" {
   type = string
 }
+
 variable "master_user_password" {
   type = string
 }
-variable "private_elb_subnets" {
-  type = list(string)
+
+variable "vpc_id" {
+  type        = string
+  description = "VPC ID to use"
+}
+
+variable "allow_incoming_traffic_security_group_ids" {
+  type        = list(string)
+  description = "Specifies AWS Security Group IDs that should be able to send incoming traffic to this domain"
+}
+
+variable "subnet_ids" {
+  type        = list(string)
+  description = "AWS Subnet IDs to use for Opensearch domain"
 }
