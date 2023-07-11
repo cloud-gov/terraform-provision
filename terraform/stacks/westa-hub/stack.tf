@@ -7,9 +7,9 @@ provider "aws" {
   use_fips_endpoint = true
   default_tags {
     tags = {
-      deployment = "tooling"
-      stack      = "westa-hub"
-      region     = "westa"
+      deployment  = "tooling"
+      stack       = "westa-hub"
+      region      = "westa"
       environment = "hub"
       provisioner = "terraform"
     }
@@ -105,11 +105,11 @@ module "stack" {
 
 module "concourse_production" {
   source                          = "../../modules/concourse_v2"
-  stack_description               = "${var.stack_description}-prod"  # var.stack_description is too long, max 32 length total
+  stack_description               = "${var.stack_description}-prod" # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
-  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30),cidrsubnet(var.vpc_cidr, 8, 31),cidrsubnet(var.vpc_cidr, 8, 32)]
-  concourse_availability_zones    = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
-  route_table_ids                  = module.stack.private_route_table_ids
+  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 32)]
+  concourse_availability_zones    = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
+  route_table_ids                 = module.stack.private_route_table_ids
   rds_password                    = random_string.concourse_prod_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -127,10 +127,10 @@ module "concourse_production" {
 
 module "concourse_staging" {
   source                          = "../../modules/concourse_v2"
-  stack_description               = "${var.stack_description}-stage"  # var.stack_description is too long, max 32 length total
+  stack_description               = "${var.stack_description}-stage" # var.stack_description is too long, max 32 length total
   vpc_id                          = module.stack.vpc_id
-  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 33),cidrsubnet(var.vpc_cidr, 8, 34),cidrsubnet(var.vpc_cidr, 8, 35)]
-  concourse_availability_zones    = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
+  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 33), cidrsubnet(var.vpc_cidr, 8, 34), cidrsubnet(var.vpc_cidr, 8, 35)]
+  concourse_availability_zones    = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids                 = module.stack.private_route_table_ids
   rds_password                    = random_string.concourse_staging_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
@@ -152,7 +152,7 @@ module "credhub_production" {
   stack_description               = "${var.stack_description}-prod"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 36), cidrsubnet(var.vpc_cidr, 8, 37), cidrsubnet(var.vpc_cidr, 8, 38)]
-  credhub_availability_zones      = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
+  credhub_availability_zones      = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids                 = module.stack.private_route_table_ids
   rds_password                    = random_string.credhub_prod_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
@@ -174,7 +174,7 @@ module "credhub_staging" {
   stack_description               = "${var.stack_description}-stage"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 39), cidrsubnet(var.vpc_cidr, 8, 40), cidrsubnet(var.vpc_cidr, 8, 41)]
-  credhub_availability_zones      = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
+  credhub_availability_zones      = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids                 = module.stack.private_route_table_ids
   rds_password                    = random_string.credhub_staging_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
@@ -196,8 +196,8 @@ module "monitoring_production" {
   stack_description             = "${var.stack_description}-prod"
   vpc_id                        = module.stack.vpc_id
   vpc_cidr                      = var.vpc_cidr
-  monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 42),cidrsubnet(var.vpc_cidr, 8, 43),cidrsubnet(var.vpc_cidr, 8, 44)]
-  monitoring_availability_zones = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
+  monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 42), cidrsubnet(var.vpc_cidr, 8, 43), cidrsubnet(var.vpc_cidr, 8, 44)]
+  monitoring_availability_zones = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids               = module.stack.private_route_table_ids
   listener_arn                  = aws_lb_listener.main.arn
   hosts                         = var.monitoring_production_hosts
@@ -207,18 +207,18 @@ module "monitoring_production" {
 }
 
 module "monitoring_staging" {
-  source             = "../../modules/monitoring_v2"
-  stack_description  = "${var.stack_description}-stage"
-  vpc_id             = module.stack.vpc_id
-  vpc_cidr           = var.vpc_cidr
-  monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 45),cidrsubnet(var.vpc_cidr, 8, 46),cidrsubnet(var.vpc_cidr, 8, 47)]
-  monitoring_availability_zones = [data.aws_availability_zones.available.names[0],data.aws_availability_zones.available.names[1],data.aws_availability_zones.available.names[2]]
+  source                        = "../../modules/monitoring_v2"
+  stack_description             = "${var.stack_description}-stage"
+  vpc_id                        = module.stack.vpc_id
+  vpc_cidr                      = var.vpc_cidr
+  monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 45), cidrsubnet(var.vpc_cidr, 8, 46), cidrsubnet(var.vpc_cidr, 8, 47)]
+  monitoring_availability_zones = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids               = module.stack.private_route_table_ids
-  listener_arn       = aws_lb_listener.main.arn
-  hosts              = var.monitoring_staging_hosts
-  oidc_client        = var.oidc_client
-  oidc_client_secret = random_string.oidc_client_secret.result
-  opslogin_hostname  = var.opslogin_hostname
+  listener_arn                  = aws_lb_listener.main.arn
+  hosts                         = var.monitoring_staging_hosts
+  oidc_client                   = var.oidc_client
+  oidc_client_secret            = random_string.oidc_client_secret.result
+  opslogin_hostname             = var.opslogin_hostname
 }
 
 resource "aws_eip" "production_dns_eip" {

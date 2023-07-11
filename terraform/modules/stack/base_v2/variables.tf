@@ -121,7 +121,7 @@ variable "rds_multi_az" {
  * CredHub database variables
  */
 variable "credhub_rds_db_name" {
-  default = "bosh-credhub"
+  default = "credhub"
 }
 
 variable "credhub_rds_db_storage_type" {

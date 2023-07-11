@@ -46,7 +46,7 @@ module "cg_binaries_bucket" {
 }
 
 module "log_bucket" {
-  source          = "../../modules/log_bucket"
+  source          = "../../modules/log_bucket_v2"
   aws_partition   = data.aws_partition.current.partition
   log_bucket_name = "${var.bucket_prefix}-cg-elb-logs"
   aws_region      = data.aws_region.current.name
