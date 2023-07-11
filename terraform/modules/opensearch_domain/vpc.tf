@@ -1,6 +1,6 @@
 resource "aws_security_group" "opensearch_customer" {
-  name        = "${var.domain_name}-incoming-elasticsearch"
-  description = "Allow access to incoming elasticsearch traffic"
+  name        = "${var.domain_name}-incoming-opensearch"
+  description = "Allow access to incoming opensearch traffic"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -18,7 +18,7 @@ resource "aws_security_group" "opensearch_customer" {
   }
 
   tags = {
-    Name = "${var.domain_name} - Incoming Elasticsearch Traffic"
+    Name = "${var.domain_name} - Incoming Opensearch Traffic"
   }
 }
 
