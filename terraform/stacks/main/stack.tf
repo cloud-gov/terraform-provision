@@ -306,12 +306,14 @@ module "diego" {
 }
 
 module "opensearch_logs_customer" {
-  count                = var.deploy_opensearch_logs_customer ? 1 : 0
-  source               = "../../modules/opensearch_domain"
-  private_elb_subnets  = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  domain_name          = "${var.stack_description}-logs-customer"
-  master_user_name     = var.opensearch_logs_customer_master_username
-  master_user_password = var.opensearch_logs_customer_master_password
+  count                                     = var.deploy_opensearch_logs_customer ? 1 : 0
+  source                                    = "../../modules/opensearch_domain"
+  domain_name                               = "${var.stack_description}-logs-customer"
+  master_user_name                          = var.opensearch_logs_customer_master_username
+  master_user_password                      = var.opensearch_logs_customer_master_password
+  vpc_id                                    = module.stack.vpc_id
+  allow_incoming_traffic_security_group_ids = [module.stack.bosh_security_group]
+  subnet_ids                                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
 }
 
 
