@@ -327,20 +327,20 @@ output "elasticsearch_log_group_audit" {
   value = module.elasticsearch_broker.elasticsearch_log_group_audit
 }
 
-output "elasticsearch_subnet_az1" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az1
+output "elasticsearch_subnet1_az1" {
+  value = module.elasticsearch_broker.elasticsearch_subnet1_az1
 }
 
-output "elasticsearch_subnet_az2" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az2
+output "elasticsearch_subnet2_az2" {
+  value = module.elasticsearch_broker.elasticsearch_subnet2_az2
 }
 
-output "elasticsearch_subnet_az3" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az3
+output "elasticsearch_subnet3_az1" {
+  value = module.elasticsearch_broker.elasticsearch_subnet3_az1
 }
 
-output "elasticsearch_subnet_az4" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az4
+output "elasticsearch_subnet4_az2" {
+  value = module.elasticsearch_broker.elasticsearch_subnet4_az2
 }
 
 output "elasticsearch_subnet_cidr_az1" {
