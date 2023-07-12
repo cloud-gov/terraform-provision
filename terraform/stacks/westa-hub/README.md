@@ -228,6 +228,40 @@ m1-terraform-provider-helper install hashicorp/template -v v2.2.0
 ```
 
 
+### Teardown help
+
+
+```
+aws-vault exec gov-pipeline-admin -- bash
+
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+
+terraform apply -var-file="${STACK_NAME}.tfvars" --destroy
+
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-atc-tooling-production
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-atc-tooling-staging
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-bosh-bosh-westa-hub
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-credhub-bosh-credhub-westa-hub
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-credhub-tooling-production
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-credhub-tooling-staging
+aws rds delete-db-snapshot --db-snapshot-identifier final-snapshot-opsuaa-opsuaa-westa-hub
+```
+
+A bit is turned on to prevent deletion, to temporarily turn this off modify:
+
+- `terraform/modules/bosh_vpc_v2/network_private.tf` - `prevent_destroy = false`
+- `terraform/modules/rds/database.tf` - `prevent_destroy = false`
+- `terraform/stacks/westa-hub/buckets.tf` - `log_bucket_force_destroy = true`
+- `terraform/stacks/westa-hub/elb_uaa.tf` - `enable_deletion_protection = false`
+- `terraform/stacks/westa-hub/stack.tf` - `enable_deletion_protection = false`, `prevent_destroy = false` x2
+
+
+
+
+
+
+
 
 
 
