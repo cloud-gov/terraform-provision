@@ -1,16 +1,16 @@
-output "elasticsearch_subnet_az1" {
+output "elasticsearch_subnet1_az1" {
   value = aws_subnet.az1_elasticsearch.id
 }
 
-output "elasticsearch_subnet_az2" {
+output "elasticsearch_subnet2_az2" {
   value = aws_subnet.az2_elasticsearch.id
 }
 
-output "elasticsearch_subnet_az3" {
+output "elasticsearch_subnet3_az1" {
   value = aws_subnet.az3_elasticsearch.id
 }
 
-output "elasticsearch_subnet_az4" {
+output "elasticsearch_subnet4_az2" {
   value = aws_subnet.az4_elasticsearch.id
 }
 
