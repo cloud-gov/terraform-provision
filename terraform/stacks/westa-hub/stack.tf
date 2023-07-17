@@ -254,3 +254,15 @@ module "smtp" {
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
 
+
+
+module "jumpbox" {
+  count = var.create_jumpbox ? 1 : 0
+  source                 = "../../modules/jumpbox"
+  subnet_id              = module.stack.private_subnet_ids[0]
+  vpc_security_group_ids = [module.stack.bosh_security_group]
+  stack_description      = var.stack_description
+  private_ip             = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 245) # This is from the private subnet, the ip offset is just higher in the range so bosh never tries to use it.  Change if there is a conflict later on
+  instance_type          = "t3.medium"
+  iam_instance_profile   = "master-bosh"
+}

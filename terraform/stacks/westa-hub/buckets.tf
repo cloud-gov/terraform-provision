@@ -2,7 +2,7 @@ module "bosh_blobstore_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.bucket_prefix}-bosh-blobstore"
   aws_partition = data.aws_partition.current.partition
-  force_destroy = "true"
+  # force_destroy = "true"
 }
 
 module "bosh_release_bucket" {
@@ -10,7 +10,7 @@ module "bosh_release_bucket" {
   bucket        = "${var.bucket_prefix}-cloud-gov-bosh-releases"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
-  force_destroy = "true"
+  # force_destroy = "true"
 }
 
 module "billing_bucket_staging" {
@@ -46,10 +46,11 @@ module "cg_binaries_bucket" {
 }
 
 module "log_bucket" {
-  source          = "../../modules/log_bucket_v2"
-  aws_partition   = data.aws_partition.current.partition
-  log_bucket_name = "${var.bucket_prefix}-cg-elb-logs"
-  aws_region      = data.aws_region.current.name
+  source                   = "../../modules/log_bucket_v2"
+  aws_partition            = data.aws_partition.current.partition
+  log_bucket_name          = "${var.bucket_prefix}-cg-elb-logs"
+  aws_region               = data.aws_region.current.name
+  log_bucket_force_destroy = false
 }
 
 module "build_artifacts_bucket" {
@@ -74,39 +75,27 @@ module "container_scanning_bucket" {
 }
 
 
-#Buckets which need to be created for bootstrapping for env.sh:
+#Buckets which need to be created for bootstrapping, not originally part of this stack
 
-# TODO: will need to revisit this one to make it match the original bucket permissions
+# Existing is a private bucket requiring AES256 encryption
 module "varz_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.bucket_prefix}-cloud-gov-varz"
   aws_partition = data.aws_partition.current.partition
-  force_destroy = "true"
+  # force_destroy = "true"
   versioning    = "true"
 }
 
-
-# TODO: will need to revisit this one to make it match the original bucket permissions
+# Existing is a private bucket requiring AES256 encryption
 module "varz_bucket_stage" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.bucket_prefix}-cloud-gov-varz-stage"
   aws_partition = data.aws_partition.current.partition
-  force_destroy = "true"
+  # force_destroy = "true"
   versioning    = "true"
 }
 
-
-# TODO: will need to revisit this one to make it match the original bucket permissions
-module "semver_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-cg-semver"
-  aws_partition = data.aws_partition.current.partition
-  force_destroy = "true"
-  versioning    = "true"
-}
-
-
-# TODO: will need to revisit this one to make it match the original bucket permissions
+# Existing is a private bucket requiring AES256 encryption
 module "concourse_varz_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.bucket_prefix}-concourse-credentials"
@@ -114,13 +103,16 @@ module "concourse_varz_bucket" {
   versioning    = "true"
 }
 
-
-
-# TODO: will need to revisit this one to make it match the original bucket permissions
-module "cloudtrail_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-cg-s3-cloudtrail"
+# Creating a whole new module for this one
+module "semver_bucket" {
+  source        = "../../modules/s3_bucket/semver_bucket"
+  bucket        = "${var.bucket_prefix}-cg-semver"
   aws_partition = data.aws_partition.current.partition
-  versioning    = "true"
 }
+
+
+
+
+
+
 

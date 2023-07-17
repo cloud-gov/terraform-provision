@@ -1,6 +1,6 @@
 # Create new tooling environment
 
-This stack is run after `bootstrap` and `bootstrap-hub` are created so that there is an s3 bucket to store the state file for this terraform run.
+This stack is run after `bootstrap` and `bootstrap-westa-hub` are created so that there is an s3 bucket to store the state file for this terraform run.
 
 ## First deployment - Create Certificates
 
@@ -226,6 +226,45 @@ brew install kreuzwerker/taps/m1-terraform-provider-helper
 m1-terraform-provider-helper activate
 m1-terraform-provider-helper install hashicorp/template -v v2.2.0
 ```
+
+### Creating a jumpbox
+
+This is a temporary EC2 instance to live as long as needed to bootstrap the protoBOSH and Tooling BOSH.
+
+In the tfvars file add the following line and run the terraform:
+
+```
+create_jumpbox = "true"
+```
+
+To know which EC2 instance was created as the jumpbox, run:
+
+```
+terraform show -json | jq -r ".values.outputs.jumpbox_instance_id.value"
+```
+
+Once the EC2 instance is created, navigate to AWS Console > EC2 > Select the new EC2 Instance > Connect > Session Manager > Connect.
+
+This will connect via a web browser to a terminal session, it is suggested to switch to the `bash` shell once connected so the arrow keys work as expected.
+
+
+
+### Get the BOSH DB Connection String
+
+
+On the Session-Manager session, run the following to install the psql client:
+
+```
+sudo apt-get install -y postgresql-client
+```
+
+
+Run locally to get the psql statement to connect to the BOSH database:
+
+```
+terraform show -json | jq -r ".values.outputs.jumpbox_psql.value"
+```
+
 
 
 ### Teardown help

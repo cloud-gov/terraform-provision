@@ -756,3 +756,13 @@ output "bosh_default_ssh_private_key" {
   value     = tls_private_key.bosh_key.private_key_pem
   sensitive = true
 }
+
+## Experimental
+output "jumpbox_psql" {
+  value =  "psql \"postgres://bosh:${module.stack.bosh_rds_password}@${module.stack.bosh_rds_url_curr}/postgres\" "
+  sensitive = true
+}
+
+output "jumpbox_instance_id" {
+  value = try(module.jumpbox[0].jumpbox_instance_id, "")
+}
