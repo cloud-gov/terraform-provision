@@ -25,46 +25,51 @@ module "rds_network" {
   allowed_cidrs         = var.target_concourse_security_group_cidrs
   security_groups       = var.rds_security_groups
   security_groups_count = var.rds_security_groups_count
-  rds_private_cidrs    = var.rds_private_cidrs
-  route_table_ids          = module.vpc.private_route_table_ids
+  rds_private_cidrs     = var.rds_private_cidrs
+  route_table_ids       = module.vpc.private_route_table_ids
 }
 
 module "rds" {
   source = "../../rds"
 
   stack_description               = "bosh-${var.stack_description}"
-  rds_instance_type               = var.rds_instance_type
-  rds_db_size                     = var.rds_db_size
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
   rds_db_engine                   = var.rds_db_engine
   rds_db_engine_version           = var.rds_db_engine_version
   rds_db_name                     = var.rds_db_name
-  rds_username                    = var.rds_username
-  rds_password                    = var.rds_password
+  rds_db_size                     = var.rds_db_size
+  rds_db_storage_type             = var.rds_db_storage_type
+  rds_force_ssl                   = var.rds_force_ssl
+  rds_instance_type               = var.rds_instance_type
   rds_multi_az                    = var.rds_multi_az
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_subnet_group                = module.rds_network.rds_subnet_group
-  rds_security_groups             = [module.rds_network.rds_postgres_security_group]
   rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_parameter_group_name        = var.rds_parameter_group_name
+  rds_password                    = var.rds_password
+  rds_security_groups             = [module.rds_network.rds_postgres_security_group]
+  rds_subnet_group                = module.rds_network.rds_subnet_group
+  rds_username                    = var.rds_username
 }
 
-module "credhub_rds" {
+module "protobosh_rds" {
   source = "../../rds"
+  count  = var.create_protobosh_rds ? 1 : 0
 
-  stack_description               = "bosh-credhub-${var.stack_description}"
-  rds_db_name                     = var.credhub_rds_db_name
-  rds_instance_type               = var.credhub_rds_instance_type
-  rds_db_size                     = var.credhub_rds_db_size
-  rds_db_storage_type             = var.credhub_rds_db_storage_type
-  rds_db_engine_version           = var.credhub_rds_db_engine_version
-  rds_username                    = var.credhub_rds_username
-  rds_password                    = var.credhub_rds_password
-  rds_subnet_group                = module.rds_network.rds_subnet_group
-  rds_security_groups             = [module.rds_network.rds_postgres_security_group]
+  stack_description               = "protobosh-${var.stack_description}"
+  rds_allow_major_version_upgrade = var.protobosh_rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.protobosh_rds_apply_immediately
+  rds_db_engine_version           = var.protobosh_rds_db_engine_version
+  rds_db_name                     = var.protobosh_rds_db_name
+  rds_db_size                     = var.protobosh_rds_db_size
+  rds_db_storage_type             = var.protobosh_rds_db_storage_type
+  rds_force_ssl                   = var.protobosh_rds_force_ssl
+  rds_instance_type               = var.protobosh_rds_instance_type
+  rds_multi_az                    = var.protobosh_rds_multi_az
+  rds_parameter_group_family      = var.protobosh_rds_parameter_group_family
   rds_parameter_group_name        = var.rds_parameter_group_name
-  rds_force_ssl                   = var.credhub_rds_force_ssl
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_parameter_group_family      = var.credhub_rds_parameter_group_family
+  rds_password                    = var.protobosh_rds_password
+  rds_security_groups             = [module.rds_network.rds_postgres_security_group]
+  rds_subnet_group                = module.rds_network.rds_subnet_group
+  rds_username                    = var.protobosh_rds_username
 }
 

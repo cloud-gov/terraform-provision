@@ -7,7 +7,7 @@ resource "random_string" "concourse_prod_rds_password" {
   min_lower   = 5
 }
 
-resource "random_string" "credhub_rds_password" {
+resource "random_string" "protobosh_rds_password" {
   length      = 32
   special     = false
   min_special = 0

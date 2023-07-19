@@ -122,35 +122,35 @@ output "bosh_rds_password" {
 }
 
 /*
- * CredHub RDS Instance
+ * ProtoBOSH RDS Instance
  */
 
-output "credhub_rds_identifier" {
-  value = module.credhub_rds.rds_identifier
+output "protobosh_rds_identifier" {
+  value = try(module.protobosh_rds[0].rds_identifier, "")
 }
 
-output "credhub_rds_name" {
-  value = module.credhub_rds.rds_name
+output "protobosh_rds_name" {
+  value = try(module.protobosh_rds[0].rds_name, "")
 }
 
-output "credhub_rds_host" {
-  value = module.credhub_rds.rds_host
+output "protobosh_rds_host" {
+  value = try(module.protobosh_rds[0].rds_host, "")
 }
 
-output "credhub_rds_port" {
-  value = module.credhub_rds.rds_port
+output "protobosh_rds_port" {
+  value = try(module.protobosh_rds[0].rds_port, "")
 }
 
-output "credhub_rds_url" {
-  value = module.credhub_rds.rds_url
+output "protobosh_rds_url" {
+  value = try(module.protobosh_rds[0].rds_url, "")
 }
 
-output "credhub_rds_username" {
-  value = module.credhub_rds.rds_username
+output "protobosh_rds_username" {
+  value = try(module.protobosh_rds[0].rds_username, "")
 }
 
-output "credhub_rds_password" {
-  value     = module.credhub_rds.rds_password
+output "protobosh_rds_password" {
+  value     = try(module.protobosh_rds[0].rds_password, "")
   sensitive = true
 }
 

@@ -160,7 +160,7 @@ botocore.exceptions.SSLError: SSL validation failed for https://route53.amazonaw
 ```
 
 
-## First deployment - Run Terraform for this stack
+## First deployment - Create tfvars file
 
 Be sure to have created the certificates in the previous section before attempting to deploy the stack for the first time.
 
@@ -185,6 +185,8 @@ vim "${STACK_NAME}.tfvars"                  # And create the file (TODO: create 
 aws s3 cp "${STACK_NAME}.tfvars" "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/${STACK_NAME}.tfvars" --sse AES256
 ```
 
+
+## First deployment - Creating resources
 
 Now we can move on to deploying this stack manually leveraging `aws-vault`:
 
@@ -248,6 +250,26 @@ Once the EC2 instance is created, navigate to AWS Console > EC2 > Select the new
 This will connect via a web browser to a terminal session, it is suggested to switch to the `bash` shell once connected so the arrow keys work as expected.
 
 
+To configure the tools required, run the following:
+
+```
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install postgresql-client-15
+sudo apt  install awscli 
+```
+
+To use the aws cli, Configure the aws cli, make `~\.aws\config` look like:
+
+```
+[default]
+region = us-gov-west-1
+
+[profile bootstrap]
+credential_source = Ec2InstanceMetadata
+region = us-gov-west-1
+```
 
 ### Get the BOSH DB Connection String
 

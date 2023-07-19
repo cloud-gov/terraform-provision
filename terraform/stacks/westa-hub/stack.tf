@@ -88,15 +88,24 @@ module "stack" {
   restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
   restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
   rds_private_cidrs                      = [cidrsubnet(var.vpc_cidr, 8, 20), cidrsubnet(var.vpc_cidr, 8, 21), cidrsubnet(var.vpc_cidr, 8, 22)]
-  rds_password                           = random_string.rds_password.result
-  credhub_rds_password                   = random_string.credhub_rds_password.result
-  rds_multi_az                           = var.rds_multi_az
   rds_security_groups                    = [module.stack.bosh_security_group]
   rds_security_groups_count              = "1"
+
+  rds_password                           = random_string.rds_password.result
+  rds_multi_az                           = var.rds_multi_az
   rds_db_engine_version                  = var.rds_db_engine_version
   rds_parameter_group_family             = var.rds_parameter_group_family
   rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
   rds_apply_immediately                  = var.rds_apply_immediately
+
+  create_protobosh_rds                             = true
+  protobosh_rds_multi_az                           = var.rds_multi_az
+  protobosh_rds_db_engine_version                  = var.rds_db_engine_version
+  protobosh_rds_parameter_group_family             = var.rds_parameter_group_family
+  protobosh_rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
+  protobosh_rds_apply_immediately                  = var.rds_apply_immediately
+  protobosh_rds_password                           = random_string.protobosh_rds_password.result
+
   bosh_default_ssh_public_key            = tls_private_key.bosh_key.public_key_openssh
   target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 32), cidrsubnet(var.vpc_cidr, 8, 33), cidrsubnet(var.vpc_cidr, 8, 34), cidrsubnet(var.vpc_cidr, 8, 35), cidrsubnet(var.vpc_cidr, 8, 1)]
   target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 42), cidrsubnet(var.vpc_cidr, 8, 43), cidrsubnet(var.vpc_cidr, 8, 44)] //Why only Prod?
@@ -257,12 +266,12 @@ module "smtp" {
 
 
 module "jumpbox" {
-  count = var.create_jumpbox ? 1 : 0
+  count                  = var.create_jumpbox ? 1 : 0
   source                 = "../../modules/jumpbox"
   subnet_id              = module.stack.private_subnet_ids[0]
   vpc_security_group_ids = [module.stack.bosh_security_group]
   stack_description      = var.stack_description
-  private_ip             = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 245) # This is from the private subnet, the ip offset is just higher in the range so bosh never tries to use it.  Change if there is a conflict later on
-  instance_type          = "t3.medium"
-  iam_instance_profile   = "master-bosh"
+  private_ip             = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 220) # This is from the private subnet, the ip offset is just higher in the range so bosh never tries to use it.  Change if there is a conflict later on
+  instance_type          = "m5.large"
+  iam_instance_profile   = "bootstrap" #"westa-hub-protobosh" # "bootstrap" 
 }

@@ -120,35 +120,35 @@ variable "rds_multi_az" {
 /*
  * CredHub database variables
  */
-variable "credhub_rds_db_name" {
-  default = "credhub"
+variable "protobosh_rds_db_name" {
+  default = "bosh"
 }
 
-variable "credhub_rds_db_storage_type" {
+variable "protobosh_rds_db_storage_type" {
   default = "gp2"
 }
 
-variable "credhub_rds_instance_type" {
+variable "protobosh_rds_instance_type" {
   default = "db.t3.medium"
 }
 
-variable "credhub_rds_db_size" {
-  default = 100
+variable "protobosh_rds_db_size" {
+  default = 20
 }
 
-variable "credhub_rds_username" {
-  default = "credhub"
+variable "protobosh_rds_username" {
+  default = "bosh"
 }
 
-variable "credhub_rds_password" {
+variable "protobosh_rds_password" {
   sensitive = true
 }
 
-variable "credhub_rds_db_engine_version" {
+variable "protobosh_rds_db_engine_version" {
   default = "12.11"
 }
 
-variable "credhub_rds_parameter_group_family" {
+variable "protobosh_rds_parameter_group_family" {
   default = "postgres12"
 }
 
@@ -156,9 +156,31 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
-variable "credhub_rds_force_ssl" {
+variable "protobosh_rds_force_ssl" {
   default = 1
 }
+
+variable "protobosh_rds_multi_az" {
+  default = "true"
+}
+
+variable "protobosh_rds_allow_major_version_upgrade" {
+  default = "false"
+}
+
+variable "protobosh_rds_apply_immediately" {
+  default = "false"
+}
+
+variable "create_protobosh_rds" {
+  description = "Controls whether to create a protobosh rds (should be true for hubs, false for spokes)"
+  type        = bool
+  default     = false
+}
+
+/*
+ * END CredHub database variables
+ */
 
 variable "bosh_default_ssh_public_key" {
 
@@ -167,4 +189,13 @@ variable "bosh_default_ssh_public_key" {
 variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
+}
+
+
+variable "rds_force_ssl" {
+  default = 1
+}
+
+variable "rds_db_storage_type" {
+  default = "gp2"
 }

@@ -216,24 +216,24 @@ output "bosh_rds_password" {
 }
 
 /* CredHub RDS */
-output "credhub_rds_url" {
-  value = module.stack.credhub_rds_url
+output "protobosh_rds_url" {
+  value = module.stack.protobosh_rds_url
 }
 
-output "credhub_rds_host" {
-  value = module.stack.credhub_rds_host
+output "protobosh_rds_host" {
+  value = module.stack.protobosh_rds_host
 }
 
-output "credhub_rds_port" {
-  value = module.stack.credhub_rds_port
+output "protobosh_rds_port" {
+  value = module.stack.protobosh_rds_port
 }
 
-output "credhub_rds_username" {
-  value = module.stack.credhub_rds_username
+output "protobosh_rds_username" {
+  value = module.stack.protobosh_rds_username
 }
 
-output "credhub_rds_password" {
-  value     = module.stack.credhub_rds_password
+output "protobosh_rds_password" {
+  value     = module.stack.protobosh_rds_password
   sensitive = true
 }
 
@@ -646,8 +646,8 @@ output "default_profile" {
   value = module.default_role.profile_name
 }
 
-output "master_bosh_profile" {
-  value = module.master_bosh_role.profile_name
+output "protobosh_profile" {
+  value = module.protobosh_role.profile_name
 }
 
 output "bosh_profile" {
@@ -723,6 +723,10 @@ output "dns_public_security_group" {
 /* Bucket names */
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name
+}
+
+output "protobosh_blobstore_bucket" {
+  value = module.protobosh_blobstore_bucket.bucket_name
 }
 
 output "buildpack_notify_state_staging_bucket_name" {

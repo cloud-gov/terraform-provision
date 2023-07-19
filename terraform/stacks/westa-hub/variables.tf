@@ -22,11 +22,11 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.11"
+  default = "15.3"
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres12"
+  default = "postgres15"
 }
 
 variable "remote_state_bucket" {
@@ -230,7 +230,7 @@ variable "credhub_production_rds_instance_type" {
 #}
 
 
-## Beta
+## Experimental
 variable "create_jumpbox" {
   description = "Controls if an ec2 jumpbox is created"
   type        = bool

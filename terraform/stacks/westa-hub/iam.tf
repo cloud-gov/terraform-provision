@@ -114,9 +114,24 @@ module "default_role" {
   role_name = "${var.stack_description}-default"
 }
 
-module "master_bosh_role" {
+
+module "protobosh_role" {
   source    = "../../modules/iam_role"
-  role_name = "master-bosh"
+  role_name = "${var.stack_description}-protobosh"
+  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+  iam_assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh",
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Effect" : "Allow"
+      }
+    ]
+  })
 }
 
 module "bosh_role" {
@@ -169,7 +184,7 @@ resource "aws_iam_policy_attachment" "bosh" {
   policy_arn = module.bosh_policy.arn
 
   roles = [
-    module.master_bosh_role.role_name,
+    module.protobosh_role.role_name,
     module.bosh_role.role_name,
   ]
 }
