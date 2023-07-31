@@ -24,6 +24,11 @@ output "availability_zone_names" {
   value = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
 }
 
+output "az1" {
+  value = data.aws_availability_zones.available.names[0]
+}
+
+
 output "stack_description" {
   value = var.stack_description
 }
@@ -50,6 +55,10 @@ output "private_subnet_ids" {
   value = module.stack.private_subnet_ids
 }
 
+output "private_subnet_az1" {
+  value = module.stack.private_subnet_ids[0]
+}
+
 output "private_router_table_ids" {
   value = module.stack.private_route_table_ids
 }
@@ -57,6 +66,12 @@ output "private_router_table_ids" {
 output "private_subnet_cidrs" {
   value = module.stack.private_cidrs
 }
+
+
+output "private_subnet_az1_cidr" {
+  value = module.stack.private_cidrs[0]
+}
+
 
 output "protobosh_reserved" { ##
   value = concat(
@@ -77,6 +92,11 @@ output "private_subnet_reserved" { ##
 output "private_subnet_gateways" {
   value = [cidrhost(module.stack.private_cidrs[0], 1), cidrhost(module.stack.private_cidrs[1], 1), cidrhost(module.stack.private_cidrs[2], 1)]
 }
+
+output "private_subnet_az1_gateway" {
+  value = cidrhost(module.stack.private_cidrs[0], 1)
+}
+
 
 output "production_monitoring_subnet_reserved" {
   value = ["${cidrhost(module.monitoring_production.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[0], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[1], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[2], 3)}"]

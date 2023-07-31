@@ -258,6 +258,10 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-
 sudo apt-get update
 sudo apt-get -y install postgresql-client-15
 sudo apt  install awscli 
+cd ~
+wget -O bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v7.3.1/bosh-cli-7.3.1-linux-amd64
+chmod +x ./bosh
+sudo mv ./bosh /usr/local/bin/bosh
 ```
 
 To use the aws cli, Configure the aws cli, make `~\.aws\config` look like:
