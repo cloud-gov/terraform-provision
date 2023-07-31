@@ -601,7 +601,7 @@ output "tooling_bosh_static_ip" {
   value = data.terraform_remote_state.target_vpc.outputs.tooling_bosh_static_ip
 }
 
-output "master_bosh_static_ip" {
+output "protobosh_static_ip" {
   value = data.terraform_remote_state.target_vpc.outputs.master_bosh_static_ip
 }
 

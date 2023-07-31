@@ -1,7 +1,7 @@
 # Declare values used in multiple outputs
 locals { ##
   private_subnet_reserved = ["${cidrhost(module.stack.private_cidrs[0], 0)} - ${cidrhost(module.stack.private_cidrs[0], 3)}", "${cidrhost(module.stack.private_cidrs[1], 0)} - ${cidrhost(module.stack.private_cidrs[1], 3)}", "${cidrhost(module.stack.private_cidrs[2], 0)} - ${cidrhost(module.stack.private_cidrs[2], 3)}"]
-  master_bosh_static_ip   = cidrhost(module.stack.private_cidrs[0], 6)
+  protobosh_static_ip   = cidrhost(module.stack.private_cidrs[0], 6)
   bosh_static_ip          = cidrhost(module.stack.private_cidrs[2], 6)
   bosh_uaa_static_ips = [
     cidrhost(module.stack.private_cidrs[0], 4),
@@ -58,10 +58,10 @@ output "private_subnet_cidrs" {
   value = module.stack.private_cidrs
 }
 
-output "master_bosh_reserved" { ##
+output "protobosh_reserved" { ##
   value = concat(
     local.private_subnet_reserved,
-    [local.master_bosh_static_ip],
+    [local.protobosh_static_ip],
     local.bosh_uaa_static_ips,
     [local.production_smtp_private_ip],
   )
@@ -102,8 +102,8 @@ output "staging_monitoring_subnet_gateways" {
   value = [cidrhost(module.monitoring_staging.monitoring_cidrs[0], 1), cidrhost(module.monitoring_staging.monitoring_cidrs[1], 1), cidrhost(module.monitoring_staging.monitoring_cidrs[2], 1)]
 }
 
-output "master_bosh_static_ip" {
-  value = local.master_bosh_static_ip
+output "protobosh_static_ip" {
+  value = local.protobosh_static_ip
 }
 
 output "tooling_bosh_static_ip" {
