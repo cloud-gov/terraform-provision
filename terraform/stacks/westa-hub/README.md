@@ -321,13 +321,59 @@ A bit is turned on to prevent deletion, to temporarily turn this off modify:
 - `terraform/stacks/westa-hub/elb_uaa.tf` - `enable_deletion_protection = false`
 - `terraform/stacks/westa-hub/stack.tf` - `enable_deletion_protection = false`, `prevent_destroy = false` x2
 
+### Creating the state.yml file from the tfstate file
+
+```#!/usr/bin/env python3
+
+import yaml
+import sys
+import json
 
 
+def help():
+   print(sys.argv[0]+" filename")
+   sys.exit(-1)
 
+if len(sys.argv) == 2:
+    help
 
+# Get the command-line arguments, excluding the script name
+filename = sys.argv[1:][0]
 
+terraform_outputs_dict = {'terraform_outputs':{}}
+terraform_outputs = terraform_outputs_dict['terraform_outputs']
+outputs_yaml = open('./state.yml','w')
+terraform_outputs_file = open(filename)
+json_file = json.load(terraform_outputs_file)    
+outputs = json_file['outputs']
+for key in outputs:
+    terraform_outputs[key] = outputs[key]['value']
+yaml.dump(terraform_outputs_dict,outputs_yaml)
+outputs_yaml.close()
+terraform_outputs_file.close()
+```
 
+#### After this is created, cp it up to the bucket:
 
+#### first let's get into a bash shell via aws-vault so it's easier to run the aws commands:
+``` 
+aws-vault exec gov-pipeline-admin -- bash 
+```
+#### westa-hub-terraform-state/westa-hub/state.yml/
+``` 
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+```
+#### Note: the tfstate file is in the terraform.tfstate file, grab a copy from the tfstate s3 bucket
+```
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform.json --sse AES256
+```
 
-
-
+#### Then run the above script as such
+```
+python tfoutputs-to-yaml.py terraform.json
+```
+#### now copy the resulting state file back to the same bucket
+```
+aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}" --sse AES256
+```````
