@@ -49,7 +49,15 @@ module "bosh_policy" {
   policy_name   = "${var.stack_description}-bosh"
   aws_partition = data.aws_partition.current.partition
   account_id    = data.aws_caller_identity.current.account_id
-  bucket_name   = module.bosh_release_bucket.bucket_name
+  bucket_name   = module.bosh_blobstore_bucket.bucket_name
+}
+
+module "protobosh_policy" {
+  source        = "../../modules/iam_role_policy/bosh"
+  policy_name   = "${var.stack_description}-protobosh"
+  aws_partition = data.aws_partition.current.partition
+  account_id    = data.aws_caller_identity.current.account_id
+  bucket_name   = module.protobosh_blobstore_bucket.bucket_name
 }
 
 module "bosh_compilation_policy" {
@@ -212,8 +220,16 @@ resource "aws_iam_policy_attachment" "bosh" {
   policy_arn = module.bosh_policy.arn
 
   roles = [
-    module.protobosh_role.role_name,
     module.bosh_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "protobosh" {
+  name       = "${var.stack_description}-protobosh"
+  policy_arn = module.protobosh_policy.arn
+
+  roles = [
+    module.protobosh_role.role_name,
   ]
 }
 

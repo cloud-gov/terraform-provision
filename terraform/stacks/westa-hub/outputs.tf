@@ -787,6 +787,11 @@ output "jumpbox_psql" {
   sensitive = true
 }
 
+output "jumpbox_protobosh_psql" {
+  value =  "psql \"postgres://bosh:${module.stack.protobosh_rds_password}@${module.stack.protobosh_rds_url}/postgres\" "
+  sensitive = true
+}
+
 output "jumpbox_instance_id" {
   value = try(module.jumpbox[0].jumpbox_instance_id, "")
 }

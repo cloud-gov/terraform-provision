@@ -262,6 +262,10 @@ cd ~
 wget -O bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v7.3.1/bosh-cli-7.3.1-linux-amd64
 chmod +x ./bosh
 sudo mv ./bosh /usr/local/bin/bosh
+sudo  apt-get install build-essential
+sudo snap install ruby --classic
+sudo apt-get install -y build-essential zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3
+
 ```
 
 To use the aws cli, Configure the aws cli, make `~\.aws\config` look like:
@@ -291,6 +295,48 @@ Run locally to get the psql statement to connect to the BOSH database:
 terraform show -json | jq -r ".values.outputs.jumpbox_psql.value"
 ```
 
+Run locally to get the psql statement to connect to the ProtoBOSH database:
+
+```
+terraform show -json | jq -r ".values.outputs.jumpbox_protobosh_psql.value"
+```
+
+To bootstrap the databases and extensions:
+
+```
+\c postgres
+
+create database bosh;
+create database bosh_uaadb;
+create database credhub;
+
+\c bosh
+
+create extension if not exists "citext";
+create extension if not exists "pg_stat_statements";
+create extension if not exists "pgcrypto";
+create extension if not exists "plpgsql";
+create extension if not exists "uuid-ossp";
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+
+\c bosh_uaadb
+
+create extension if not exists "citext";
+create extension if not exists "pg_stat_statements";
+create extension if not exists "pgcrypto";
+create extension if not exists "plpgsql";
+create extension if not exists "uuid-ossp";
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+
+\c credhub
+
+create extension if not exists "citext";
+create extension if not exists "pg_stat_statements";
+create extension if not exists "pgcrypto";
+create extension if not exists "plpgsql";
+create extension if not exists "uuid-ossp";
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+```
 
 
 ### Teardown help
