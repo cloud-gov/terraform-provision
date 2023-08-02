@@ -369,7 +369,8 @@ A bit is turned on to prevent deletion, to temporarily turn this off modify:
 
 ### Creating the state.yml file from the tfstate file
 
-```#!/usr/bin/env python3
+```
+#!/usr/bin/env python3
 
 import yaml
 import sys
@@ -411,15 +412,99 @@ export STACK_NAME=westa-hub
 export S3_TFSTATE_BUCKET=westa-hub-terraform-state
 ```
 #### Note: the tfstate file is in the terraform.tfstate file, grab a copy from the tfstate s3 bucket
+
 ```
 aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform.json --sse AES256
 ```
 
 #### Then run the above script as such
+
 ```
 python tfoutputs-to-yaml.py terraform.json
 ```
 #### now copy the resulting state file back to the same bucket
+
 ```
 aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}" --sse AES256
-```````
+```
+
+
+## Creating the protoBOSH
+
+From the jumpbox run:
+
+```
+mkdir deploy_protobosh; cd deploy_protobosh
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+git clone https://github.com/cloudfoundry/bosh-deployment.git
+
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+
+COMMON_FILE="westa-hub-protobosh.yml"
+aws s3 cp "s3://westa-hub-cloud-gov-varz/${COMMON_FILE}" $COMMON_FILE --sse AES256
+
+
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
+bosh int cg-deploy-bosh/variables/terraform-westa-hub.yml -l state.yml > terraform.yml
+
+bosh create-env \
+  bosh-deployment/bosh.yml \
+  --state=./westa-hub-protobosh-state.json \
+  --ops-file bosh-deployment/aws/cpi.yml \
+  --ops-file bosh-deployment/aws/iam-instance-profile.yml \
+  --ops-file bosh-deployment/aws/cli-iam-instance-profile.yml \
+  --ops-file bosh-deployment/uaa.yml \
+  --ops-file bosh-deployment/credhub.yml \
+  --ops-file bosh-deployment/misc/source-releases/bosh.yml \
+  --ops-file bosh-deployment/misc/source-releases/credhub.yml \
+  --ops-file bosh-deployment/misc/source-releases/uaa.yml \
+  --ops-file bosh-deployment/jumpbox-user.yml \
+  --ops-file cg-deploy-bosh/operations/cpi.yml \
+  --ops-file cg-deploy-bosh/operations/encryption.yml \
+  --ops-file cg-deploy-bosh/operations/masterbosh-ntp.yml \
+  --ops-file cg-deploy-bosh/operations/external-db-protobosh.yml \
+  --ops-file cg-deploy-bosh/operations/s3-blobstore-protobosh.yml \
+  --ops-file cg-deploy-bosh/operations/ca.yml \
+  -v director_name=westa-hub-protobosh \
+  --vars-file ./state.yml \
+  --vars-file ./terraform.yml \
+  --vars-file ./westa-hub-protobosh.yml \
+  --vars-store=./creds.yml
+```
+
+Once completed, be sure to upload the bosh state file back to s3:
+
+```
+aws s3 cp westa-hub-protobosh-state.json "s3://westa-hub-cloud-gov-varz/westa-hub-protobosh-state.json" --sse AES256
+```
+
+Note to future self: you can generate the contents of vars-file `westa-hub-protobosh.yml` by running the create-env as a `bosh int ...`, the output will go into `creds.yml`.  Copy the contents of `creds.yml` and write it to `westa-hub-protobosh.yml`, upload this to the s3 bucket and then wipe the contents of `creds.yml` before running the `bosh create-env`
+
+### Logging into BOSH
+
+#### Configure local alias
+
+```
+bosh alias-env westa-hub-protobosh -e ip_address_of_director --ca-cert <(bosh int ./westa-hub-protobosh.yml --path /director_ssl/ca)
+```
+
+#### Log in to the Director
+
+```
+export BOSH_CLIENT=admin
+export BOSH_CLIENT_SECRET=`bosh int ./westa-hub-protobosh.yml --path /admin_password`
+```
+
+#### Query the Director for more info
+
+```
+bosh -e westa-hub-protobosh env
+```
+
+#### Upload a stemcell
+
+```
+bosh -e westa-hub-protobosh upload-stemcell --sha1 2e113e50c47df57bfe9fe31a0d2bee3fab20af37 \
+  https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-jammy-go_agent?v=1.181
+```
