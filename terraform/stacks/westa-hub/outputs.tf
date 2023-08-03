@@ -28,6 +28,9 @@ output "az1" {
   value = data.aws_availability_zones.available.names[0]
 }
 
+output "az2" {
+  value = data.aws_availability_zones.available.names[1]
+}
 
 output "stack_description" {
   value = var.stack_description
