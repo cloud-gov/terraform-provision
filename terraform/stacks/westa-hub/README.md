@@ -456,9 +456,6 @@ bosh create-env \
   --ops-file bosh-deployment/aws/cli-iam-instance-profile.yml \
   --ops-file bosh-deployment/uaa.yml \
   --ops-file bosh-deployment/credhub.yml \
-  --ops-file bosh-deployment/misc/source-releases/bosh.yml \
-  --ops-file bosh-deployment/misc/source-releases/credhub.yml \
-  --ops-file bosh-deployment/misc/source-releases/uaa.yml \
   --ops-file bosh-deployment/jumpbox-user.yml \
   --ops-file cg-deploy-bosh/operations/cpi.yml \
   --ops-file cg-deploy-bosh/operations/encryption.yml \
