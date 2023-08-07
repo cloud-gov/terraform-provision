@@ -505,3 +505,16 @@ bosh -e westa-hub-protobosh env
 bosh -e westa-hub-protobosh upload-stemcell --sha1 2e113e50c47df57bfe9fe31a0d2bee3fab20af37 \
   https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-jammy-go_agent?v=1.181
 ```
+
+### To configure cloud config
+```
+clone cg-deploy bosh
+cd cloud-config
+base.yml  - exists
+protobosh.yml - exists
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
+bosh -e westa-hub-protobosh update-cloud-config base.yml -o protobosh.yml --vars-file state.yml
+
+```
