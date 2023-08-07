@@ -36,6 +36,10 @@ resource "aws_instance" "jumpbox" {
   enclave_options {
     enabled = "false"
   }
+  
+  tags        = { 
+    "Name" = "jumpbox" 
+  }
 }
 
 

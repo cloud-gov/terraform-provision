@@ -8,7 +8,15 @@ locals { ##
     cidrhost(module.stack.private_cidrs[1], 4),
     cidrhost(module.stack.private_cidrs[2], 4),
   ]
+
+  bosh_uaa_static_ips_az1 = [ cidrhost(module.stack.private_cidrs[0], 4) ]
+  bosh_uaa_static_ips_az2 = [ cidrhost(module.stack.private_cidrs[1], 4) ]
+  bosh_uaa_static_ips_az3 = [ cidrhost(module.stack.private_cidrs[2], 4) ]
+
   production_smtp_private_ip = cidrhost(module.stack.private_cidrs[0], 12)
+  private_subnet_reserved_az1 = ["${cidrhost(module.stack.private_cidrs[0], 0)} - ${cidrhost(module.stack.private_cidrs[0], 3)}"]
+  private_subnet_reserved_az2 = ["${cidrhost(module.stack.private_cidrs[1], 0)} - ${cidrhost(module.stack.private_cidrs[1], 3)}"]
+  private_subnet_reserved_az3 = ["${cidrhost(module.stack.private_cidrs[2], 0)} - ${cidrhost(module.stack.private_cidrs[2], 3)}"]
 }
 
 #staging_dns_private_ips = [
@@ -30,6 +38,10 @@ output "az1" {
 
 output "az2" {
   value = data.aws_availability_zones.available.names[1]
+}
+
+output "az3" {
+  value = data.aws_availability_zones.available.names[2]
 }
 
 output "stack_description" {
@@ -62,6 +74,14 @@ output "private_subnet_az1" {
   value = module.stack.private_subnet_ids[0]
 }
 
+output "private_subnet_az2" {
+  value = module.stack.private_subnet_ids[1]
+}
+
+output "private_subnet_az3" {
+  value = module.stack.private_subnet_ids[2]
+}
+
 output "private_router_table_ids" {
   value = module.stack.private_route_table_ids
 }
@@ -70,11 +90,17 @@ output "private_subnet_cidrs" {
   value = module.stack.private_cidrs
 }
 
-
 output "private_subnet_az1_cidr" {
   value = module.stack.private_cidrs[0]
 }
 
+output "private_subnet_az2_cidr" {
+  value = module.stack.private_cidrs[1]
+}
+
+output "private_subnet_az3_cidr" {
+  value = module.stack.private_cidrs[2]
+}
 
 output "protobosh_reserved" { ##
   value = concat(
@@ -82,6 +108,29 @@ output "protobosh_reserved" { ##
     [local.protobosh_static_ip],
     local.bosh_uaa_static_ips,
     [local.production_smtp_private_ip],
+  )
+}
+
+output "protobosh_reserved_az1" { ##
+  value = concat(
+    local.private_subnet_reserved_az1,
+    [local.protobosh_static_ip],
+    local.bosh_uaa_static_ips_az1,
+    [local.production_smtp_private_ip],
+  )
+}
+
+output "protobosh_reserved_az2" { ##
+  value = concat(
+    local.private_subnet_reserved_az2,
+    local.bosh_uaa_static_ips_az2,
+  )
+}
+
+output "protobosh_reserved_az3" { ##
+  value = concat(
+    local.private_subnet_reserved_az3,
+    local.bosh_uaa_static_ips_az3,
   )
 }
 
@@ -100,6 +149,13 @@ output "private_subnet_az1_gateway" {
   value = cidrhost(module.stack.private_cidrs[0], 1)
 }
 
+output "private_subnet_az2_gateway" {
+  value = cidrhost(module.stack.private_cidrs[1], 1)
+}
+
+output "private_subnet_az3_gateway" {
+  value = cidrhost(module.stack.private_cidrs[2], 1)
+}
 
 output "production_monitoring_subnet_reserved" {
   value = ["${cidrhost(module.monitoring_production.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[0], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[1], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[2], 3)}"]

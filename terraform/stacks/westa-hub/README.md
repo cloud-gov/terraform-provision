@@ -425,7 +425,7 @@ python tfoutputs-to-yaml.py terraform.json
 #### now copy the resulting state file back to the same bucket
 
 ```
-aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}" --sse AES256
+aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" --sse AES256
 ```
 
 
