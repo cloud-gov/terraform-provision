@@ -369,7 +369,16 @@ A bit is turned on to prevent deletion, to temporarily turn this off modify:
 
 ### Creating the state.yml file from the tfstate file
 
+Install the python libraries if you haven't already done so:
+
 ```
+pip3 install pyyaml
+```
+
+
+#### Create a script called `tfoutputs-to-yaml.py` with the contents:
+
+```python
 #!/usr/bin/env python3
 
 import yaml
@@ -402,27 +411,29 @@ terraform_outputs_file.close()
 
 #### After this is created, cp it up to the bucket:
 
-#### first let's get into a bash shell via aws-vault so it's easier to run the aws commands:
+First let's get into a bash shell via aws-vault so it's easier to run the aws commands:
+
 ``` 
 aws-vault exec gov-pipeline-admin -- bash 
-```
-#### westa-hub-terraform-state/westa-hub/state.yml/
-``` 
+
 export STACK_NAME=westa-hub
 export S3_TFSTATE_BUCKET=westa-hub-terraform-state
 ```
-#### Note: the tfstate file is in the terraform.tfstate file, grab a copy from the tfstate s3 bucket
+
+*Note: the tfstate file is in the terraform.tfstate file, grab a copy from the tfstate s3 bucket*
 
 ```
 aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform.json --sse AES256
 ```
 
-#### Then run the above script as such
+Then run the above script as such:
 
 ```
-python tfoutputs-to-yaml.py terraform.json
+python3 tfoutputs-to-yaml.py terraform.json
 ```
-#### now copy the resulting state file back to the same bucket
+
+Now copy the resulting state file back to the same bucket:
+
 
 ```
 aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" --sse AES256
@@ -457,7 +468,7 @@ bosh create-env \
   --ops-file bosh-deployment/uaa.yml \
   --ops-file bosh-deployment/credhub.yml \
   --ops-file bosh-deployment/jumpbox-user.yml \
-  --ops-file cg-deploy-bosh/operations/cpi.yml \
+  --ops-file cg-deploy-bosh/operations/cpi-protobosh.yml \
   --ops-file cg-deploy-bosh/operations/encryption.yml \
   --ops-file cg-deploy-bosh/operations/masterbosh-ntp.yml \
   --ops-file cg-deploy-bosh/operations/external-db-protobosh.yml \
@@ -507,11 +518,16 @@ bosh -e westa-hub-protobosh upload-stemcell --sha1 2e113e50c47df57bfe9fe31a0d2be
 ```
 
 ### To configure cloud config
+
+On the jumpbox run:
+
 ```
-clone cg-deploy bosh
-cd cloud-config
-base.yml  - exists
-protobosh.yml - exists
+mkdir create-cloud-config; cd create-cloud-config
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+cd cg-deploy-bosh/cloud-config
+ls base.yml  # Verify it exists
+ls protobosh.yml # Verify it exists
+
 export STACK_NAME=westa-hub
 export S3_TFSTATE_BUCKET=westa-hub-terraform-state
 aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
