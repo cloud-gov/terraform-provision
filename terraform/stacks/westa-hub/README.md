@@ -186,7 +186,7 @@ aws s3 cp "${STACK_NAME}.tfvars" "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/${STAC
 ```
 
 
-## First deployment - Creating resources
+## First deployment - Creating resources (aka: run the terraform)
 
 Now we can move on to deploying this stack manually leveraging `aws-vault`:
 
@@ -517,4 +517,19 @@ export S3_TFSTATE_BUCKET=westa-hub-terraform-state
 aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
 bosh -e westa-hub-protobosh update-cloud-config base.yml -o protobosh.yml --vars-file state.yml
 
+```
+
+### To Upload the BOSH DNS Runtime Config
+
+From the jumpbox run:
+
+```
+mkdir deploy_rc; cd deploy_rc
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+git clone https://github.com/cloudfoundry/bosh-deployment.git
+
+
+bosh -n update-runtime-config --name dns \
+  bosh-deployment/runtime-configs/dns.yml \
+  --ops-file cg-deploy-bosh/operations/dns-aliases.yml
 ```

@@ -67,6 +67,13 @@ module "bosh_compilation_policy" {
   bucket_name   = module.bosh_release_bucket.bucket_name
 }
 
+module "protobosh_compilation_policy" {
+  source        = "../../modules/iam_role_policy/bosh_compilation"
+  policy_name   = "${var.stack_description}-protobosh-compilation"
+  aws_partition = data.aws_partition.current.partition
+  bucket_name   = module.protobosh_blobstore_bucket.bucket_name
+}
+
 module "concourse_worker_policy" {
   source                         = "../../modules/iam_role_policy/concourse_worker"
   policy_name                    = "concourse-worker"
@@ -164,7 +171,46 @@ module "bosh_role" {
 module "bosh_compilation_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-bosh-compilation"
+  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+
+  iam_assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh-compilation",
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Effect" : "Allow"
+      }
+    ]
+  })
 }
+
+
+module "protobosh_compilation_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-protobosh-compilation"
+  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+
+  iam_assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh-compilation",
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Effect" : "Allow"
+      }
+    ]
+  })
+
+}
+
+
 
 module "concourse_worker_role" {
   source    = "../../modules/iam_role"
@@ -239,6 +285,15 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
 
   roles = [
     module.bosh_compilation_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "protobosh_compilation" {
+  name       = "${var.stack_description}-protobosh-compilation"
+  policy_arn = module.protobosh_compilation_policy.arn
+
+  roles = [
+    module.protobosh_compilation_role.role_name,
   ]
 }
 

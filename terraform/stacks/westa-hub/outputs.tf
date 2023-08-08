@@ -737,6 +737,11 @@ output "bosh_compilation_profile" {
   value = module.bosh_compilation_role.profile_name
 }
 
+output "protobosh_compilation_profile" {
+  value = module.protobosh_compilation_role.profile_name
+}
+
+
 output "concourse_worker_profile" {
   value = module.concourse_worker_role.profile_name
 }
