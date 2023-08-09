@@ -127,6 +127,20 @@ module "ecr_policy" {
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
+  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+  iam_assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-default",
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Effect" : "Allow"
+      }
+    ]
+  })
 }
 
 
@@ -149,6 +163,8 @@ module "protobosh_role" {
   })
 }
 
+
+#TODO: I think this one can come out. westa-hub-default gets used on the tooling director for its deployments and the protobosh uses westa-hub-protobosh when its deploying the tooling bosh.
 module "bosh_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-bosh"
@@ -268,7 +284,7 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     module.bosh_role.role_name,
     module.protobosh_role.role_name,
-
+    module.default_role.role_name,
   ]
 }
 

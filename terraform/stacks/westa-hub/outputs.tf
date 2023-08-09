@@ -185,6 +185,10 @@ output "protobosh_static_ip" {
   value = local.protobosh_static_ip
 }
 
+output "master_bosh_static_ip" {
+  value = local.protobosh_static_ip
+}
+
 output "tooling_bosh_static_ip" {
   value = local.bosh_static_ip
 }
@@ -273,6 +277,8 @@ output "bosh_rds_host_curr" {
   value = module.stack.bosh_rds_host_curr
 }
 
+
+# Should delete this one off the face of the earth with extreme prejudice... TODO
 output "bosh_rds_url_prev" {
   value = module.stack.bosh_rds_url_prev
 }
