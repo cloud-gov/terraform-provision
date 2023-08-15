@@ -474,6 +474,7 @@ bosh create-env \
   --ops-file cg-deploy-bosh/operations/external-db-protobosh.yml \
   --ops-file cg-deploy-bosh/operations/s3-blobstore-protobosh.yml \
   --ops-file cg-deploy-bosh/operations/ca.yml \
+  --ops-file cg-deploy-bosh/operations/use-c5-large.yml \
   -v director_name=westa-hub-protobosh \
   --vars-file ./state.yml \
   --vars-file ./terraform.yml \
@@ -489,26 +490,14 @@ aws s3 cp westa-hub-protobosh-state.json "s3://westa-hub-cloud-gov-varz/westa-hu
 
 Note to future self: you can generate the contents of vars-file `westa-hub-protobosh.yml` by running the create-env as a `bosh int ...`, the output will go into `creds.yml`.  Copy the contents of `creds.yml` and write it to `westa-hub-protobosh.yml`, upload this to the s3 bucket and then wipe the contents of `creds.yml` before running the `bosh create-env`
 
-### Logging into BOSH
+### Logging into protoBOSH
 
-#### Configure local alias
-
-```
-bosh alias-env westa-hub-protobosh -e ip_address_of_director --ca-cert <(bosh int ./westa-hub-protobosh.yml --path /director_ssl/ca)
-```
-
-#### Log in to the Director
+Grab a copy of the `login-protobosh.rc` which you can then source with `source login-protobosh.rc`:
 
 ```
-export BOSH_CLIENT=admin
-export BOSH_CLIENT_SECRET=`bosh int ./westa-hub-protobosh.yml --path /admin_password`
+aws s3 cp "s3://westa-hub-cloud-gov-varz/login-protobosh.rc" login-protobosh.rc  --sse AES256
 ```
 
-#### Query the Director for more info
-
-```
-bosh -e westa-hub-protobosh env
-```
 
 #### Upload a stemcell
 
@@ -548,4 +537,53 @@ git clone https://github.com/cloudfoundry/bosh-deployment.git
 bosh -n update-runtime-config --name dns \
   bosh-deployment/runtime-configs/dns.yml \
   --ops-file cg-deploy-bosh/operations/dns-aliases.yml
+```
+
+## Creating ToolingBOSH
+
+On the jumpbox run:
+
+```
+mkdir deploy-tooling; cd deploy-tooling
+
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+git clone https://github.com/cloudfoundry/bosh-deployment.git
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
+
+
+COMMON_FILE="westa-hub-protobosh.yml"
+aws s3 cp "s3://westa-hub-cloud-gov-varz/${COMMON_FILE}" $COMMON_FILE --sse AES256
+
+
+bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
+ -o bosh-deployment/uaa.yml \
+ -o bosh-deployment/credhub.yml \
+ -o bosh-deployment/aws/cpi.yml \
+ -o bosh-deployment/aws/iam-instance-profile.yml \
+ -o cg-deploy-bosh/operations/name.yml \
+ -o cg-deploy-bosh/operations/s3-blobstore.yml \
+ -o cg-deploy-bosh/operations/external-db-bosh-rds.yml \
+ -o cg-deploy-bosh/operations/uaa-clients.yml \
+ -o cg-deploy-bosh/operations/cloud-config.yml \
+ -o cg-deploy-bosh/operations/use-z3.yml \
+ -o cg-deploy-bosh/operations/update.yml \
+ -o cg-deploy-bosh/operations/cron.yml \
+ -o cg-deploy-bosh/operations/cpi.yml \
+ -o cg-deploy-bosh/operations/dns.yml \
+ -o cg-deploy-bosh/operations/nist-ntp.yml \
+ -o cg-deploy-bosh/operations/name.yml \
+ -l cg-deploy-bosh/variables/westa-hub-tooling.yml \
+ -l state.yml \
+ -v default_key_name=westa-hub \
+ -l terraform.yml
+ ```
+
+### Logging into toolingBOSH
+
+Grab a copy of the `login-bosh.rc` which you can then source with `source login-bosh.rc`:
+
+```
+aws s3 cp "s3://westa-hub-cloud-gov-varz/login-bosh.rc" login-bosh.rc  --sse AES256
 ```
