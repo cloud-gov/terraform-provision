@@ -44,3 +44,7 @@ variable "stack_description" {
 variable "private_ip_offset" {
     default = 1
 }
+
+variable "ec2_name" {
+    default = "jumpbox"
+}

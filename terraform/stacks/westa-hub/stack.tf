@@ -266,6 +266,7 @@ module "smtp" {
 
 
 module "jumpbox" {
+  ec2_name               = "jumpbox" # This needs to be changed to protobosh-jumpbox or something like that
   count                  = var.create_jumpbox ? 1 : 0
   source                 = "../../modules/jumpbox"
   subnet_id              = module.stack.private_subnet_ids[0]
@@ -277,7 +278,8 @@ module "jumpbox" {
 }
 
 
-module "jumpbox2" {
+module "tooling_jumpbox" {
+ ec2_name               = "tooling-jumpbox"
  count                  = var.create_jumpbox ? 1 : 0
  source                 = "../../modules/jumpbox"
  subnet_id              = module.stack.private_subnet_ids[0]

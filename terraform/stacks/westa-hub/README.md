@@ -267,6 +267,9 @@ sudo snap install ruby --classic
 sudo apt-get install -y build-essential zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3
 
 ```
+If prompted for "Daemons using outdated libraries" tab to "Ok" and hit enter/return 
+For the unattended upgrade prompt select the only option (spacebar) and tab to Ok and hit enter/return
+For "Which services should be restarted?" tab to "Ok" and hit enter/return 
 
 To use the aws cli, Configure the aws cli, make `~\.aws\config` look like:
 
@@ -288,6 +291,7 @@ On the Session-Manager session, run the following to install the psql client:
 sudo apt-get install -y postgresql-client
 ```
 
+For the "Which services should be restarted?" tab to "Ok" and hit enter/return  
 
 Run locally to get the psql statement to connect to the BOSH database:
 
@@ -301,7 +305,7 @@ Run locally to get the psql statement to connect to the ProtoBOSH database:
 terraform show -json | jq -r ".values.outputs.jumpbox_protobosh_psql.value"
 ```
 
-To bootstrap the databases and extensions:
+To bootstrap the databases and extensions (copy each line or block and paste one at a time):
 
 ```
 \c postgres
@@ -336,6 +340,8 @@ create extension if not exists "pgcrypto";
 create extension if not exists "plpgsql";
 create extension if not exists "uuid-ossp";
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
+
+\q
 ```
 
 
@@ -367,14 +373,17 @@ A bit is turned on to prevent deletion, to temporarily turn this off modify:
 - `terraform/stacks/westa-hub/elb_uaa.tf` - `enable_deletion_protection = false`
 - `terraform/stacks/westa-hub/stack.tf` - `enable_deletion_protection = false`, `prevent_destroy = false` x2
 
-### Creating the state.yml file from the tfstate file
+### Creating the state.yml file from the tfstate file (to be done in your local terminal)
 
 Install the python libraries if you haven't already done so:
+
+Make sure that python3 is installed along with pip3
 
 ```
 pip3 install pyyaml
 ```
 
+cd to the westa-hub directory in cg-provision: terraform/stacks/westa-hub
 
 #### Create a script called `tfoutputs-to-yaml.py` with the contents:
 
@@ -409,7 +418,7 @@ outputs_yaml.close()
 terraform_outputs_file.close()
 ```
 
-#### After this is created, cp it up to the bucket:
+#### After the state file is created, cp it up to the bucket:
 
 First let's get into a bash shell via aws-vault so it's easier to run the aws commands:
 
@@ -445,7 +454,7 @@ aws s3 cp state.yml "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" --sse AE
 From the jumpbox run:
 
 ```
-mkdir deploy_protobosh; cd deploy_protobosh
+mkdir deploy-protobosh; cd deploy-protobosh
 git clone https://github.com/cloud-gov/cg-deploy-bosh.git
 git clone https://github.com/cloudfoundry/bosh-deployment.git
 
@@ -458,6 +467,10 @@ aws s3 cp "s3://westa-hub-cloud-gov-varz/${COMMON_FILE}" $COMMON_FILE --sse AES2
 
 aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
 bosh int cg-deploy-bosh/variables/terraform-westa-hub.yml -l state.yml > terraform.yml
+
+# The first time we copy westa-hub-protobosh-state.json it will throw errors, this is expected behavior
+# continue on
+aws s3 cp "s3://westa-hub-cloud-gov-varz/westa-hub-protobosh-state.json" westa-hub-protobosh-state.json --sse AES256 
 
 bosh create-env \
   bosh-deployment/bosh.yml \
@@ -495,7 +508,9 @@ Note to future self: you can generate the contents of vars-file `westa-hub-proto
 Grab a copy of the `login-protobosh.rc` which you can then source with `source login-protobosh.rc`:
 
 ```
+cd
 aws s3 cp "s3://westa-hub-cloud-gov-varz/login-protobosh.rc" login-protobosh.rc  --sse AES256
+source login-protobosh.rc
 ```
 
 
@@ -529,6 +544,7 @@ bosh -e westa-hub-protobosh update-cloud-config base.yml -o protobosh.yml --vars
 From the jumpbox run:
 
 ```
+cd
 mkdir deploy_rc; cd deploy_rc
 git clone https://github.com/cloud-gov/cg-deploy-bosh.git
 git clone https://github.com/cloudfoundry/bosh-deployment.git
@@ -544,6 +560,7 @@ bosh -n update-runtime-config --name dns \
 On the jumpbox run:
 
 ```
+cd
 mkdir deploy-tooling; cd deploy-tooling
 
 git clone https://github.com/cloud-gov/cg-deploy-bosh.git
@@ -556,6 +573,7 @@ aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AE
 COMMON_FILE="westa-hub-protobosh.yml"
 aws s3 cp "s3://westa-hub-cloud-gov-varz/${COMMON_FILE}" $COMMON_FILE --sse AES256
 
+bosh interpolate cg-deploy-bosh/variables/terraform.yml -l state.yml > terraform.yml
 
 bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
  -o bosh-deployment/uaa.yml \
@@ -577,7 +595,8 @@ bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
  -l cg-deploy-bosh/variables/westa-hub-tooling.yml \
  -l state.yml \
  -v default_key_name=westa-hub \
- -l terraform.yml
+ -l terraform.yml 
+ 
  ```
 
 ### Logging into toolingBOSH
@@ -585,5 +604,6 @@ bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
 Grab a copy of the `login-bosh.rc` which you can then source with `source login-bosh.rc`:
 
 ```
+cd
 aws s3 cp "s3://westa-hub-cloud-gov-varz/login-bosh.rc" login-bosh.rc  --sse AES256
 ```

@@ -38,7 +38,7 @@ resource "aws_instance" "jumpbox" {
   }
   
   tags        = { 
-    "Name" = "jumpbox" 
+    "Name" = var.ec2_name 
   }
 }
 

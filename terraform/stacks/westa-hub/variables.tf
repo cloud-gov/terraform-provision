@@ -234,5 +234,5 @@ variable "credhub_production_rds_instance_type" {
 variable "create_jumpbox" {
   description = "Controls if an ec2 jumpbox is created"
   type        = bool
-  default     = false
+  default     = true
 }
