@@ -601,9 +601,45 @@ bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
 
 ### Logging into toolingBOSH
 
+Login to Protobosh: `source ~/login-protobosh.rc`
+Then download the director_ssl.ca cert: `bosh -d toolingbosh scp bosh:/var/vcap/jobs/director/config/uaa_server_ca.cert director_ssl.ca`
+
 Grab a copy of the `login-bosh.rc` which you can then source with `source login-bosh.rc`:
 
 ```
 cd
 aws s3 cp "s3://westa-hub-cloud-gov-varz/login-bosh.rc" login-bosh.rc  --sse AES256
 ```
+
+### Create Runtime config for toolingbosh
+```
+cd
+source login-bosh.rc
+mkdir deploy_rc; cd deploy_rc
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+git clone https://github.com/cloudfoundry/bosh-deployment.git
+bosh -n update-runtime-config --name dns \
+  bosh-deployment/runtime-configs/dns.yml \
+  --ops-file cg-deploy-bosh/operations/dns-aliases.yml
+```
+### To configure cloud config for toolingbosh
+
+Locally run terraform init and apply:
+
+
+On the jumpbox run:
+
+```
+mkdir create-tooling-cloud-config; cd create-tooling-cloud-config
+git clone https://github.com/cloud-gov/cg-deploy-bosh.git
+cd cg-deploy-bosh/cloud-config
+ls base.yml  # Verify it exists
+ls hub-tooling.yml # Verify it exists
+
+export STACK_NAME=westa-hub
+export S3_TFSTATE_BUCKET=westa-hub-terraform-state
+aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AES256
+bosh -e westa-hub-protobosh update-cloud-config base.yml -o hub-tooling.yml --vars-file state.yml
+
+```
+

@@ -285,6 +285,7 @@ resource "aws_iam_policy_attachment" "bosh" {
     module.bosh_role.role_name,
     module.protobosh_role.role_name,
     module.default_role.role_name,
+    module.bosh_compilation_role.role_name,
   ]
 }
 

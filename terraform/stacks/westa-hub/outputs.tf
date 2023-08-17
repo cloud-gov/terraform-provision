@@ -140,6 +140,15 @@ output "protobosh_reserved_az3" { ##
 output "private_subnet_reserved" { ##
   value = local.private_subnet_reserved
 }
+output "private_subnet_reserved_az1" { ##
+  value = local.private_subnet_reserved[0]
+}
+output "private_subnet_reserved_az2" { ##
+  value = local.private_subnet_reserved[1]
+}
+output "private_subnet_reserved_az3" { ##
+  value = local.private_subnet_reserved[2]
+}
 
 output "private_subnet_gateways" {
   value = [cidrhost(module.stack.private_cidrs[0], 1), cidrhost(module.stack.private_cidrs[1], 1), cidrhost(module.stack.private_cidrs[2], 1)]
@@ -160,26 +169,88 @@ output "private_subnet_az3_gateway" {
 output "production_monitoring_subnet_reserved" {
   value = ["${cidrhost(module.monitoring_production.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[0], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[1], 3)}", "${cidrhost(module.monitoring_production.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[2], 3)}"]
 }
+output "production_monitoring_subnet_reserved_az1" {
+  value = "${cidrhost(module.monitoring_production.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[0], 3)}"
+}
+output "production_monitoring_subnet_reserved_az2" {
+  value = "${cidrhost(module.monitoring_production.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[1], 3)}"
+}
+output "production_monitoring_subnet_reserved_az3" {
+  value = "${cidrhost(module.monitoring_production.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_production.monitoring_cidrs[2], 3)}"
+}
 
 output "staging_monitoring_subnet_reserved" {
   value = ["${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 3)}", "${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 3)}", "${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 3)}"]
 }
 
+output "staging_monitoring_subnet_reserved_az1" {
+  value = "${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[0], 3)}"
+}
+output "staging_monitoring_subnet_reserved_az2" {
+  value = "${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[1], 3)}"
+}
+output "staging_monitoring_subnet_reserved_az3" {
+  value = "${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 0)} - ${cidrhost(module.monitoring_staging.monitoring_cidrs[2], 3)}"
+}
+
+
+
 output "production_monitoring_subnet_cidrs" {
   value = module.monitoring_production.monitoring_cidrs
+}
+output "production_monitoring_subnet_cidr_az1" {
+  value = module.monitoring_production.monitoring_cidrs[0]
+}
+output "production_monitoring_subnet_cidr_az2" {
+  value = module.monitoring_production.monitoring_cidrs[1]
+}
+output "production_monitoring_subnet_cidr_az3" {
+  value = module.monitoring_production.monitoring_cidrs[2]
 }
 
 output "staging_monitoring_subnet_cidrs" {
   value = module.monitoring_staging.monitoring_cidrs
 }
 
+output "staging_monitoring_subnet_cidr_az1" {
+  value = module.monitoring_staging.monitoring_cidrs[0]
+}
+output "staging_monitoring_subnet_cidr_az2" {
+  value = module.monitoring_staging.monitoring_cidrs[1]
+}
+output "staging_monitoring_subnet_cidr_az3" {
+  value = module.monitoring_staging.monitoring_cidrs[2]
+}
+
 output "production_monitoring_subnet_gateways" {
   value = [cidrhost(module.monitoring_production.monitoring_cidrs[0], 1), cidrhost(module.monitoring_production.monitoring_cidrs[1], 1), cidrhost(module.monitoring_production.monitoring_cidrs[2], 1)]
+}
+
+output "production_monitoring_subnet_gateway_az1" {
+  value = cidrhost(module.monitoring_production.monitoring_cidrs[0], 1)
+}
+output "production_monitoring_subnet_gateway_az2" {
+  value = cidrhost(module.monitoring_production.monitoring_cidrs[1], 1)
+}
+output "production_monitoring_subnet_gateway_az3" {
+  value = cidrhost(module.monitoring_production.monitoring_cidrs[2], 1)
 }
 
 output "staging_monitoring_subnet_gateways" {
   value = [cidrhost(module.monitoring_staging.monitoring_cidrs[0], 1), cidrhost(module.monitoring_staging.monitoring_cidrs[1], 1), cidrhost(module.monitoring_staging.monitoring_cidrs[2], 1)]
 }
+output "staging_monitoring_subnet_gateway_az1" {
+  value = cidrhost(module.monitoring_staging.monitoring_cidrs[0], 1)
+}
+
+output "staging_monitoring_subnet_gateway_az2" {
+  value = cidrhost(module.monitoring_staging.monitoring_cidrs[1], 1)
+}
+
+output "staging_monitoring_subnet_gateway_az3" {
+  value = cidrhost(module.monitoring_staging.monitoring_cidrs[2], 1)
+}
+
 
 output "protobosh_static_ip" {
   value = local.protobosh_static_ip
@@ -200,6 +271,17 @@ output "bosh_static_ip" {
 output "bosh_uaa_static_ips" {
   value = local.bosh_uaa_static_ips
 }
+output "bosh_uaa_static_ips_az1" {
+  value = local.bosh_uaa_static_ips[0]
+}
+output "bosh_uaa_static_ips_az2" {
+  value = local.bosh_uaa_static_ips[1]
+}
+output "bosh_uaa_static_ips_az3" {
+  value = local.bosh_uaa_static_ips[2]
+}
+
+
 
 output "bosh_network_static_ips" {
   value = concat([local.bosh_static_ip], local.bosh_uaa_static_ips)
@@ -208,6 +290,15 @@ output "bosh_network_static_ips" {
 /* Public network */
 output "public_subnet_ids" {
   value = module.stack.public_subnet_ids
+}
+output "public_subnet_az1" {
+  value = module.stack.public_subnet_ids[0]
+}
+output "public_subnet_az2" {
+  value = module.stack.public_subnet_ids[1]
+}
+output "public_subnet_az3" {
+  value = module.stack.public_subnet_ids[2]
 }
 
 output "public_subnet_cidrs" {
@@ -335,17 +426,60 @@ output "main_lb_dns_name" {
 output "production_concourse_subnet_ids" {
   value = module.concourse_production.concourse_subnet_ids
 }
+output "production_concourse_subnet_az1" {
+  value = module.concourse_production.concourse_subnet_ids[0]
+}
+output "production_concourse_subnet_az2" {
+  value = module.concourse_production.concourse_subnet_ids[1]
+}
+output "production_concourse_subnet_az3" {
+  value = module.concourse_production.concourse_subnet_ids[2]
+}
+
 
 output "production_concourse_subnet_reserved" {
   value = ["${cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 3)}", "${cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 3)}", "${cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 3)}"]
 }
 
+output "production_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 3)}"
+}
+output "production_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 3)}"
+}
+output "production_concourse_subnet_reserved_az3" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 3)}"
+}
+
+
+
+
 output "production_concourse_subnet_cidrs" {
   value = module.concourse_production.concourse_subnet_cidrs
 }
 
+output "production_concourse_subnet_cidr_az1" {
+  value = module.concourse_production.concourse_subnet_cidrs[0]
+}
+output "production_concourse_subnet_cidr_az2" {
+  value = module.concourse_production.concourse_subnet_cidrs[1]
+}
+output "production_concourse_subnet_cidr_az3" {
+  value = module.concourse_production.concourse_subnet_cidrs[2]
+}
+
+
 output "production_concourse_subnet_gateways" {
   value = [cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 1), cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 1), cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 1)]
+}
+output "production_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidrs[0], 1)
+}
+output "production_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidrs[1], 1)
+}
+output "production_concourse_subnet_gateway_az3" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidrs[2], 1)
 }
 
 output "production_concourse_security_group" {
@@ -389,17 +523,55 @@ output "production_concourse_lb_target_group" {
 output "staging_concourse_subnet_ids" {
   value = module.concourse_staging.concourse_subnet_ids
 }
-
+output "staging_concourse_subnet_az1" {
+  value = module.concourse_staging.concourse_subnet_ids[0]
+}
+output "staging_concourse_subnet_az2" {
+  value = module.concourse_staging.concourse_subnet_ids[1]
+}
+output "staging_concourse_subnet_az3" {
+  value = module.concourse_staging.concourse_subnet_ids[2]
+}
 output "staging_concourse_subnet_reserved" {
   value = ["${cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 3)}", "${cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 3)}", "${cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 3)}"]
+}
+output "staging_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az3" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 3)}"
 }
 
 output "staging_concourse_subnet_cidrs" {
   value = module.concourse_staging.concourse_subnet_cidrs
 }
 
-output "staging_concourse_subnet_gatewaya" {
+output "staging_concourse_subnet_cidr_az1" {
+  value = module.concourse_staging.concourse_subnet_cidrs[0]
+}
+output "staging_concourse_subnet_cidr_az2" {
+  value = module.concourse_staging.concourse_subnet_cidrs[1]
+}
+output "staging_concourse_subnet_cidr_az3" {
+  value = module.concourse_staging.concourse_subnet_cidrs[2]
+}
+
+output "staging_concourse_subnet_gateways" {
   value = [cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 1), cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 1), cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 1)]
+}
+output "staging_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidrs[0], 1)
+}
+output "staging_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidrs[1], 1)
+}
+output "staging_concourse_subnet_gateway_az3" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidrs[2], 1)
 }
 
 output "staging_concourse_security_group" {
@@ -443,17 +615,53 @@ output "staging_concourse_lb_target_group" {
 output "production_credhub_subnet_ids" {
   value = module.credhub_production.credhub_subnet_ids
 }
+output "production_credhub_subnet_az1" {
+  value = module.credhub_production.credhub_subnet_ids[0]
+}
+output "production_credhub_subnet_az2" {
+  value = module.credhub_production.credhub_subnet_ids[1]
+}
+output "production_credhub_subnet_az3" {
+  value = module.credhub_production.credhub_subnet_ids[2]
+}
 
 output "production_credhub_subnet_reserved" {
   value = ["${cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 3)}", "${cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 3)}", "${cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 3)}"]
+}
+output "production_credhub_subnet_reserved_az1" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 3)}"
+}
+output "production_credhub_subnet_reserved_az2" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 3)}"
+}
+output "production_credhub_subnet_reserved_az3" {
+  value = "${cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 0)} - ${cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 3)}"
 }
 
 output "production_credhub_subnet_cidrs" {
   value = module.credhub_production.credhub_subnet_cidrs
 }
+output "production_credhub_subnet_cidr_az1" {
+  value = module.credhub_production.credhub_subnet_cidrs[0]
+}
+output "production_credhub_subnet_cidr_az2" {
+  value = module.credhub_production.credhub_subnet_cidrs[1]
+}
+output "production_credhub_subnet_cidr_az3" {
+  value = module.credhub_production.credhub_subnet_cidrs[2]
+}
 
 output "production_credhub_subnet_gateways" {
   value = [cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 1), cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 1), cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 1)]
+}
+output "production_credhub_subnet_gateway_az1" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidrs[0], 1)
+}
+output "production_credhub_subnet_gateway_az2" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidrs[1], 1)
+}
+output "production_credhub_subnet_gateway_az3" {
+  value = cidrhost(module.credhub_production.credhub_subnet_cidrs[2], 1)
 }
 
 output "production_credhub_security_group" {
@@ -497,17 +705,53 @@ output "production_credhub_lb_target_group" {
 output "staging_credhub_subnet_ids" {
   value = module.credhub_staging.credhub_subnet_ids
 }
+output "staging_credhub_subnet_az1" {
+  value = module.credhub_staging.credhub_subnet_ids[0]
+}
+output "staging_credhub_subnet_az2" {
+  value = module.credhub_staging.credhub_subnet_ids[1]
+}
+output "staging_credhub_subnet_az3" {
+  value = module.credhub_staging.credhub_subnet_ids[2]
+}
 
 output "staging_credhub_subnet_reserved" {
   value = ["${cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 3)}", "${cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 3)}", "${cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 3)}"]
+}
+output "staging_credhub_subnet_reserved_az1" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 3)}"
+}
+output "staging_credhub_subnet_reserved_az2" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 3)}"
+}
+output "staging_credhub_subnet_reserved_az3" {
+  value = "${cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 0)} - ${cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 3)}"
 }
 
 output "staging_credhub_subnet_cidrs" {
   value = module.credhub_staging.credhub_subnet_cidrs
 }
+output "staging_credhub_subnet_cidr_az1" {
+  value = module.credhub_staging.credhub_subnet_cidrs[0]
+}
+output "staging_credhub_subnet_cidr_az2" {
+  value = module.credhub_staging.credhub_subnet_cidrs[1]
+}
+output "staging_credhub_subnet_cidr_az3" {
+  value = module.credhub_staging.credhub_subnet_cidrs[2]
+}
 
 output "staging_credhub_subnet_gateways" {
   value = [cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 1), cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 1), cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 1)]
+}
+output "staging_credhub_subnet_gateway_az1" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidrs[0], 1)
+}
+output "staging_credhub_subnet_gateway_az2" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidrs[1], 1)
+}
+output "staging_credhub_subnet_gateway_az3" {
+  value = cidrhost(module.credhub_staging.credhub_subnet_cidrs[2], 1)
 }
 
 output "staging_credhub_security_group" {
@@ -555,6 +799,15 @@ output "production_monitoring_az" { ## might not be needed
 output "production_monitoring_subnet_ids" {
   value = module.monitoring_production.monitoring_subnet_ids
 }
+output "production_monitoring_subnet_az1" {
+  value = module.monitoring_production.monitoring_subnet_ids[0]
+}
+output "production_monitoring_subnet_az2" {
+  value = module.monitoring_production.monitoring_subnet_ids[1]
+}
+output "production_monitoring_subnet_az3" {
+  value = module.monitoring_production.monitoring_subnet_ids[2]
+}
 
 output "production_monitoring_security_group" {
   value = module.monitoring_production.monitoring_security_group
@@ -583,6 +836,15 @@ output "staging_monitoring_az" { ## might not be needed
 
 output "staging_monitoring_subnet_ids" {
   value = module.monitoring_staging.monitoring_subnet_ids
+}
+output "staging_monitoring_subnet_az1" {
+  value = module.monitoring_staging.monitoring_subnet_ids[0]
+}
+output "staging_monitoring_subnet_az2" {
+  value = module.monitoring_staging.monitoring_subnet_ids[1]
+}
+output "staging_monitoring_subnet_az3" {
+  value = module.monitoring_staging.monitoring_subnet_ids[2]
 }
 
 output "staging_monitoring_security_group" {
@@ -762,7 +1024,7 @@ output "nessus_target_group" {
 }
 
 output "nessus_static_ip" {
-  value = cidrhost(module.stack.private_cidrs[0], 71)
+  value = cidrhost(module.stack.private_cidrs[2], 71)
 }
 
 /* BOSH UAA elb */
