@@ -185,10 +185,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/opensearch_domain"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/rds"
     schedule:
       interval: "weekly"
