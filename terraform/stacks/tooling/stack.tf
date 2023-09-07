@@ -196,7 +196,7 @@ module "credhub_staging" {
   rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
   rds_db_storage_type             = "gp3"
-  rds_db_iops                     = 0 #12000?
+  rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
