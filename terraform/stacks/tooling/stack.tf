@@ -121,7 +121,10 @@ module "concourse_production" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m4.xlarge"
+  rds_instance_type               = "db.m5.xlarge"
+  rds_db_size                     = 400
+  rds_db_storage_type             = "gp3"
+  rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
