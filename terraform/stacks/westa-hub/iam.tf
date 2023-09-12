@@ -322,6 +322,7 @@ resource "aws_iam_policy_attachment" "concourse_worker" {
   policy_arn = module.concourse_worker_policy.arn
 
   roles = [
+    module.bosh_role.role_name,
     module.concourse_worker_role.role_name,
   ]
 }
