@@ -59,6 +59,14 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
+variable "defectdojo_prod_rds_password" {
+  sensitive = true
+}
+
+variable "defectdojo_staging_rds_password" {
+  sensitive = true
+}
+
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
@@ -80,6 +88,14 @@ variable "credhub_production_hosts" {
 }
 
 variable "credhub_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_production_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_staging_hosts" {
   type = list(string)
 }
 
