@@ -1,9 +1,9 @@
 resource "aws_security_group" "defectdojo" {
-  description = "Allow access to incoming concourse traffic"
+  description = "Allow access to incoming defect dojo traffic"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.stack_description} - Incoming Concourse Traffic"
+    Name = "${var.stack_description} - Incoming Defect Dojo Traffic"
   }
 }
 
