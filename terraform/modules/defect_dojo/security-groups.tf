@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "self_reference" {
   from_port         = 0
   to_port           = 0
   protocol          = -1
-  security_group_id = aws_security_group.concourse.id
+  security_group_id = aws_security_group.defectdojo.id
 }
 
 resource "aws_security_group_rule" "defectdojo_web" {
@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "defectdojo_web" {
   to_port           = 8080
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.concourse.id
+  security_group_id = aws_security_group.defectdojo.id
 }
 
 resource "aws_security_group_rule" "outbound" {
@@ -31,5 +31,5 @@ resource "aws_security_group_rule" "outbound" {
   to_port           = 0
   protocol          = -1
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.concourse.id
+  security_group_id = aws_security_group.defectdojo.id
 }
