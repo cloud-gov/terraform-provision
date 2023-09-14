@@ -180,7 +180,7 @@ resource "aws_route53_record" "cloud_gov_ops_login_fr_cloud_gov_a" {
 
 resource "aws_route53_record" "cloud_gov_defectdojo_fr_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "defectdojo.fr.cloud.gov."
+  name    = "dojo.fr.cloud.gov."
   type    = "A"
 
   alias {
@@ -192,7 +192,7 @@ resource "aws_route53_record" "cloud_gov_defectdojo_fr_cloud_gov_a" {
 
 resource "aws_route53_record" "cloud_gov_defectdojo_fr_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "defectdojo.fr.cloud.gov."
+  name    = "dojo.fr.cloud.gov."
   type    = "AAAA"
 
   alias {

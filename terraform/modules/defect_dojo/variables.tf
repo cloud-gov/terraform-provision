@@ -43,7 +43,7 @@ variable "rds_db_engine_version" {
 }
 
 variable "rds_username" {
-  default = "defectdj"
+  default = "dojo"
 }
 
 variable "rds_password" {
