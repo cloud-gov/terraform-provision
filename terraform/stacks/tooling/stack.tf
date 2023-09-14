@@ -210,7 +210,7 @@ module "credhub_staging" {
 }
 
 module "defectdojo_production" {
-  source                          = "../../modules/defectdojo"
+  source                          = "../../modules/defect_dojo"
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   defectdojo_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
@@ -235,7 +235,7 @@ module "defectdojo_production" {
 }
 
 module "defectdojo_staging" {
-  source                          = "../../modules/defectdojo"
+  source                          = "../../modules/defect_dojo"
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   defectdojo_cidr                 = cidrsubnet(var.vpc_cidr, 8, 39)
