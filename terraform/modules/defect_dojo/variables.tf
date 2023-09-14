@@ -1,6 +1,15 @@
 variable "stack_description" {
 }
 
+variable "defectdojo_cidr" {
+  default = "10.0.30.0/24"
+}
+
+variable "defectdojo_az" {
+  default = "us-gov-west-1a"
+}
+
+
 variable "rds_db_name" {
   default = "defectdojo"
 }
@@ -58,4 +67,17 @@ variable "rds_allow_major_version_upgrade" {
 }
 
 variable "rds_apply_immediately" {
+}
+
+variable "route_table_id" {
+}
+
+variable "vpc_id" {
+}
+
+variable "listener_arn" {
+}
+
+variable "hosts" {
+  type = list(string)
 }
