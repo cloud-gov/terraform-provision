@@ -213,8 +213,8 @@ module "defectdojo_production" {
   source                          = "../../modules/defectdojo"
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
-  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
-  concourse_az                    = data.aws_availability_zones.available.names[0]
+  defectdojo_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
+  defectdojo_az                    = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
   rds_password                    = var.defectdojo_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
