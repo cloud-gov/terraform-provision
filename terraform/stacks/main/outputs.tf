@@ -450,20 +450,20 @@ output "cf_as_rds_host" {
 }
 
 output "cf_as_rds_port" {
-  value = module.autoscaler.cf_rds_port
+  value = module.autoscaler.cf_as_rds_port
 }
 
 output "cf_as_rds_username" {
-  value = module.autoscaler.cf_rds_username
+  value = module.autoscaler.cf_as_rds_username
 }
 
 output "cf_as_rds_password" {
-  value     = module.autoscaler.cf_rds_password
+  value     = module.autoscaler.cf_as_rds_password
   sensitive = true
 }
 
 output "cf_as_rds_engine" {
-  value = module.autoscaler.cf_rds_engine
+  value = module.autoscaler.cf_as_rds_engine
 }
 
 /* CredHub RDS */
