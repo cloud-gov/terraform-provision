@@ -442,11 +442,11 @@ output "cf_rds_engine" {
 
 /* CloudFoundry Autoscaler RDS */
 output "cf_as_rds_url" {
-  value = module.autoscaler.cf_rds_url
+  value = module.autoscaler.cf_as_rds_url
 }
 
 output "cf_as_rds_host" {
-  value = module.autoscaler.cf_rds_host
+  value = module.autoscaler.cf_as_rds_host
 }
 
 output "cf_as_rds_port" {
