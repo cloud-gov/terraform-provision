@@ -3,6 +3,7 @@ groups:
   jobs:
   - apply-cloudfront-staging
   - apply-dns
+  - apply-ecr
   - bootstrap-development
   - bootstrap-external-development
   - bootstrap-external-production
@@ -19,6 +20,7 @@ groups:
   - plan-bootstrap-tooling
   - plan-cloudfront-staging
   - plan-dns
+  - plan-ecr
   - pull-status-check
   - webacl-test-development
   - webacl-test-production
