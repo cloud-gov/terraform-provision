@@ -959,6 +959,40 @@ jobs:
       username: ((slack-username))
       icon_url: ((slack-icon-url))
 
+- name: plan-ecr
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    - get: plan-timer
+      trigger: true
+  - task: plan-update-ecr
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &tf-ecr
+      TERRAFORM_ACTION: plan
+      TEMPLATE_SUBDIR: terraform/stacks/ecr
+      STACK_NAME: ecr
+      S3_TFSTATE_BUCKET: ((ecr-tf-state-bucket))
+      AWS_DEFAULT_REGION: us-gov-west-1
+      TF_VAR_remote_state_bucket: ((ecr-tf-state-bucket))
+      TF_VAR_tooling_stack_name: tooling
+  - *notify-slack
+
+- name: apply-ecr
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      passed: [plan-ecr]
+  - task: create-update-ecr
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params:
+      <<: *tf-ecr
+      TERRAFORM_ACTION: apply
+
 - name: acme-certificate-development
   plan:
   - in_parallel:
