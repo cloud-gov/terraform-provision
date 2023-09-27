@@ -114,6 +114,11 @@ variable "cf_rds_instance_type" {
   default = "db.m4.large"
 }
 
+variable "cf_as_rds_instance_type" {
+  default = "db.t3.large"
+}
+
+
 variable "bosh_default_ssh_public_key" {
 
 }

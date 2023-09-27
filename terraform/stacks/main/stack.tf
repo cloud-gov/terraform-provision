@@ -293,7 +293,7 @@ module "autoscaler" {
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
-  # rds_instance_type             = var.cf_as_rds_instance_type
+  rds_instance_type               = var.cf_as_rds_instance_type
 
 }
 
