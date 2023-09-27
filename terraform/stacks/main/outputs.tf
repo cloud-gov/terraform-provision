@@ -440,6 +440,32 @@ output "cf_rds_engine" {
   value = module.cf.cf_rds_engine
 }
 
+/* CloudFoundry Autoscaler RDS */
+output "cf_as_rds_url" {
+  value = module.autoscaler.cf_as_rds_url
+}
+
+output "cf_as_rds_host" {
+  value = module.autoscaler.cf_as_rds_host
+}
+
+output "cf_as_rds_port" {
+  value = module.autoscaler.cf_as_rds_port
+}
+
+output "cf_as_rds_username" {
+  value = module.autoscaler.cf_as_rds_username
+}
+
+output "cf_as_rds_password" {
+  value     = module.autoscaler.cf_as_rds_password
+  sensitive = true
+}
+
+output "cf_as_rds_engine" {
+  value = module.autoscaler.cf_as_rds_engine
+}
+
 /* CredHub RDS */
 output "credhub_rds_url" {
   value = module.stack.credhub_rds_url
