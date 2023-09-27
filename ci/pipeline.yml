@@ -45,6 +45,7 @@ groups:
 jobs:
 - name: pull-status-check
   plan:
+  - get: general-task
   - get: pull-request
     version: every
     trigger: true
@@ -63,16 +64,9 @@ jobs:
   - in_parallel:
       steps:
       - task: format-terraform
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: pull-request
           params:
@@ -92,16 +86,9 @@ jobs:
             status: failure
             context: format-terraform
       - task: validate-terraform
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: pull-request
           params:
@@ -412,6 +399,7 @@ jobs:
 - name: bootstrap-tooling
   plan:
   - in_parallel:
+    - get: general-task
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-tooling]
@@ -424,16 +412,9 @@ jobs:
       TERRAFORM_ACTION: apply
   - in_parallel:
     - task: init-bosh-db
+      image: general-task
       config:
         platform: linux
-        image_resource:
-          type: registry-image
-          source:
-            aws_access_key_id: ((ecr_aws_key))
-            aws_secret_access_key: ((ecr_aws_secret))
-            repository: harden-concourse-task
-            aws_region: us-gov-west-1
-            tag: ((harden-concourse-task-tag))
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -446,16 +427,9 @@ jobs:
           - -c
           - cg-provision-repo/ci/scripts/update-bosh-db.sh
     - task: init-opsuaa-db
+      image: general-task
       config:
         platform: linux
-        image_resource:
-          type: registry-image
-          source:
-            aws_access_key_id: ((ecr_aws_key))
-            aws_secret_access_key: ((ecr_aws_secret))
-            repository: harden-concourse-task
-            aws_region: us-gov-west-1
-            tag: ((harden-concourse-task-tag))
         inputs:
         - name: cg-provision-repo
         - name: terraform-state
@@ -543,6 +517,7 @@ jobs:
 - name: bootstrap-development
   plan:
   - in_parallel:
+    - get: general-task
     - get: pipeline-tasks
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -557,16 +532,9 @@ jobs:
   - in_parallel:
     - do:
       - task: init-bosh-db
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -579,16 +547,10 @@ jobs:
             - -c
             - cg-provision-repo/ci/scripts/update-bosh-db.sh
       - task: init-cf-db
+        image: general-task
         config:
           platform: linux
           image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -612,6 +574,7 @@ jobs:
 - name: webacl-test-development
   plan:
   - in_parallel:
+    - get: general-task
     - get: cg-provision-repo
       resource: cg-provision-repo-development
       passed: [bootstrap-development]
@@ -620,6 +583,7 @@ jobs:
       resource: waf-tests-development
       trigger: true
   - task: test-waf-rules
+    image: general-task
     file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
     params:
       WAF_TEST_APP_URL: ((development_waf_test_app_url))
@@ -705,6 +669,7 @@ jobs:
 - name: bootstrap-staging
   plan:
   - in_parallel:
+    - get: general-task
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-staging]
@@ -718,16 +683,9 @@ jobs:
   - in_parallel:
     - do:
       - task: init-bosh-db
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -740,16 +698,9 @@ jobs:
             - -c
             - cg-provision-repo/ci/scripts/update-bosh-db.sh
       - task: init-cf-db
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -773,6 +724,7 @@ jobs:
 - name: webacl-test-staging
   plan:
   - in_parallel:
+    - get: general-task
     - get: cg-provision-repo
       resource: cg-provision-repo
       passed: [bootstrap-staging]
@@ -781,6 +733,7 @@ jobs:
       resource: waf-tests-staging
       trigger: true
   - task: test-waf-rules
+    image: general-task
     file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
     params:
       WAF_TEST_APP_URL: ((staging_waf_test_app_url))
@@ -866,6 +819,7 @@ jobs:
 - name: bootstrap-production
   plan:
   - in_parallel:
+    - get: general-task
     - get: pipeline-tasks
     - get: cg-provision-repo
       passed: [plan-bootstrap-production]
@@ -879,16 +833,9 @@ jobs:
   - in_parallel:
     - do:
       - task: init-bosh-db
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -901,16 +848,9 @@ jobs:
             - -c
             - cg-provision-repo/ci/scripts/update-bosh-db.sh
       - task: init-cf-db
+        image: general-task
         config:
           platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              aws_access_key_id: ((ecr_aws_key))
-              aws_secret_access_key: ((ecr_aws_secret))
-              repository: harden-concourse-task
-              aws_region: us-gov-west-1
-              tag: ((harden-concourse-task-tag))
           inputs:
           - name: cg-provision-repo
           - name: terraform-state
@@ -934,6 +874,7 @@ jobs:
 - name: webacl-test-production
   plan:
   - in_parallel:
+    - get: general-task
     - get: cg-provision-repo
       resource: cg-provision-repo
       passed: [bootstrap-production]
@@ -942,6 +883,7 @@ jobs:
       resource: waf-tests-production
       trigger: true
   - task: test-waf-rules
+    image: general-task
     file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
     params:
       WAF_TEST_APP_URL: ((production_waf_test_app_url))
@@ -1001,6 +943,7 @@ jobs:
 - name: acme-certificate-development
   plan:
   - in_parallel:
+    - get: general-task
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
@@ -1010,11 +953,13 @@ jobs:
     - get: terraform-yaml-external
       resource: terraform-yaml-external-development
   - task: check-certificates
+    image: general-task
     file: cg-provision-repo/ci/check-certificates.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/dev/
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
@@ -1022,6 +967,7 @@ jobs:
       DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1040,6 +986,7 @@ jobs:
 - name: acme-certificate-staging
   plan:
   - in_parallel:
+    - get: general-task
     - get: acme-timer
       trigger: true
     - get: cg-provision-repo
@@ -1048,11 +995,13 @@ jobs:
     - get: terraform-yaml-external
       resource: terraform-yaml-external-staging
   - task: check-certificates
+    image: general-task
     file: cg-provision-repo/ci/check-certificates.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/staging/
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.fr-stage.cloud.gov
@@ -1060,6 +1009,7 @@ jobs:
       DOMAIN: "*.fr-stage.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1077,20 +1027,24 @@ jobs:
 
 - name: acme-certificate-production
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
+  - in_parallel: &prod-certificate-resources
+      - get: general-task
+      - get: acme-timer
+        trigger: true
+      - get: cg-provision-repo
+      - get: terraform-yaml-tooling
+        resource: terraform-yaml-tooling
+      - get: terraform-yaml-external
+        resource: terraform-yaml-external-production
+  - &check-certificates-task
+    task: check-certificates
+    image: general-task
     file: cg-provision-repo/ci/check-certificates.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
       CERT_PATH: /lets-encrypt/production/
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.fr.cloud.gov
@@ -1098,6 +1052,7 @@ jobs:
       DOMAIN: "*.fr.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1115,20 +1070,10 @@ jobs:
 
 - name: acme-certificate-production-apps
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.app.cloud.gov
@@ -1136,6 +1081,7 @@ jobs:
       DOMAIN: "*.app.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1153,20 +1099,10 @@ jobs:
 
 - name: acme-certificate-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: pages.cloud.gov
@@ -1174,6 +1110,7 @@ jobs:
       DOMAIN: "pages.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1191,20 +1128,10 @@ jobs:
 
 - name: acme-certificate-wildcard-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.pages.cloud.gov
@@ -1212,6 +1139,7 @@ jobs:
       DOMAIN: "*.pages.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1229,20 +1157,10 @@ jobs:
 
 - name: acme-certificate-wildcard-pages-sites
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.sites.pages.cloud.gov
@@ -1250,6 +1168,7 @@ jobs:
       DOMAIN: "*.sites.pages.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1267,20 +1186,10 @@ jobs:
 
 - name: acme-certificate-staging-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: pages-staging.cloud.gov
@@ -1288,6 +1197,7 @@ jobs:
       DOMAIN: "pages-staging.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1305,20 +1215,10 @@ jobs:
 
 - name: acme-certificate-staging-wildcard-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.pages-staging.cloud.gov
@@ -1326,6 +1226,7 @@ jobs:
       DOMAIN: "*.pages-staging.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1343,20 +1244,10 @@ jobs:
 
 - name: acme-certificate-staging-wildcard-pages-sites
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.sites.pages-staging.cloud.gov
@@ -1364,6 +1255,7 @@ jobs:
       DOMAIN: "*.sites.pages-staging.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1381,20 +1273,10 @@ jobs:
 
 - name: acme-certificate-dev-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: pages-dev.cloud.gov
@@ -1402,6 +1284,7 @@ jobs:
       DOMAIN: "pages-dev.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1419,20 +1302,10 @@ jobs:
 
 - name: acme-certificate-dev-wildcard-pages
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.pages-dev.cloud.gov
@@ -1440,6 +1313,7 @@ jobs:
       DOMAIN: "*.pages-dev.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1457,20 +1331,10 @@ jobs:
 
 - name: acme-certificate-dev-wildcard-pages-sites
   plan:
-  - in_parallel:
-    - get: acme-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-production
-  - task: check-certificates
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
+  - in_parallel: *prod-certificate-resources
+  - *check-certificates-task
   - task: provision-certificate
+    image: general-task
     file: cg-provision-repo/ci/provision-certificate.yml
     params:
       CERT_PREFIX: star.sites.pages-dev.cloud.gov
@@ -1478,6 +1342,7 @@ jobs:
       DOMAIN: "*.sites.pages-dev.cloud.gov"
       EMAIL: cloud-gov-operations@gsa.gov
   - task: upload-certificate
+    image: general-task
     file: cg-provision-repo/ci/upload-certificate.yml
     params:
       AWS_DEFAULT_REGION: ((aws_default_region))
@@ -1552,7 +1417,7 @@ resources:
     region_name: ((aws_default_region))
 
 - name: waf-tests-development
-  type: s3
+  type: s3-iam
   source:
     bucket: ((waf_rules_bucket))
     versioned_file: ((development_waf_test_file))
@@ -1561,7 +1426,7 @@ resources:
     region_name: ((aws_default_region))
 
 - name: waf-tests-staging
-  type: s3
+  type: s3-iam
   source:
     bucket: ((waf_rules_bucket))
     versioned_file: ((staging_waf_test_file))
@@ -1570,7 +1435,7 @@ resources:
     region_name: ((aws_default_region))
 
 - name: waf-tests-production
-  type: s3
+  type: s3-iam
   source:
     bucket: ((waf_rules_bucket))
     versioned_file: ((production_waf_test_file))
@@ -1579,7 +1444,7 @@ resources:
     region_name: ((aws_default_region))
 
 - name: terraform-yaml-external-development
-  type: s3
+  type: s3-iam
   source:
     bucket: ((aws_external_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_external_development))
@@ -1588,7 +1453,7 @@ resources:
     region_name: ((aws_external_region))
 
 - name: terraform-yaml-external-staging
-  type: s3
+  type: s3-iam
   source:
     bucket: ((aws_external_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_external_staging))
@@ -1597,7 +1462,7 @@ resources:
     region_name: ((aws_external_region))
 
 - name: terraform-yaml-external-production
-  type: s3
+  type: s3-iam
   source:
     bucket: ((aws_external_s3_tfstate_bucket))
     versioned_file: ((tf_state_file_external_production))
@@ -1622,18 +1487,66 @@ resources:
   source:
     url: ((slack-webhook-url))
 
-resource_types:
-- name: pull-request
-  type: docker-image
+- name: general-task
+  type: registry-image
   source:
-    repository: teliaoss/github-pr-resource
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: general-task
+    aws_region: us-gov-west-1
+    tag: latest
+
+resource_types:
+- name: registry-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: registry-image-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
+- name: pull-request
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: github-pr-resource
+    aws_region: us-gov-west-1
+    tag: latest
 
 - name: s3-iam
-  type: docker-image
+  type: registry-image
   source:
-    repository: 18fgsa/s3-resource
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: s3-resource
+    aws_region: us-gov-west-1
+    tag: latest
 
 - name: slack-notification
-  type: docker-image
+  type: registry-image
   source:
-    repository: cfcommunity/slack-notification-resource
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: slack-notification-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
+- name: time
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: time-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
+- name: git
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: git-resource
+    aws_region: us-gov-west-1
+    tag: latest

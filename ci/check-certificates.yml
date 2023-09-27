@@ -1,15 +1,6 @@
 ---
 platform: linux
 
-image_resource:
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: harden-concourse-task
-    aws_region: us-gov-west-1
-    tag: ((harden-concourse-task-tag))
-
 inputs:
 - name: cg-provision-repo
 - name: terraform-yaml-tooling
