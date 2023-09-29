@@ -30,7 +30,7 @@ variable "rds_db_iops" {
 }
 
 variable "rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
 
 variable "rds_instance_type" {

@@ -56,7 +56,7 @@ output "domains_broker_internal_target_group" {
 /* Broker database */
 resource "aws_db_instance" "domains_broker" {
   db_name                     = "domains_broker"
-  storage_type                = "gp2"
+  storage_type                = "gp3"
   allocated_storage           = 10
   instance_class              = "db.t2.small"
   username                    = var.domains_broker_rds_username
