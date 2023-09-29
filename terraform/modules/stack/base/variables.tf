@@ -141,7 +141,7 @@ variable "credhub_rds_db_name" {
 }
 
 variable "credhub_rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
 
 variable "credhub_rds_instance_type" {
