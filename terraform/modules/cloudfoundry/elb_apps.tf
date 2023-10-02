@@ -70,7 +70,7 @@ resource "aws_lb_target_group" "cf_logstash_target_https" {
   }
 }
 
-resource "aws_lb_listener_rule" "lockstack_listener_rule" {
+resource "aws_lb_listener_rule" "lockstash_listener_rule" {
   listener_arn = aws_lb_listener.cf_apps.arn
 
   action {
