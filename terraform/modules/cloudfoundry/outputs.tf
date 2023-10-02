@@ -26,6 +26,10 @@ output "apps_lb_target_https_group" {
   value = aws_lb_target_group.cf_apps_target_https.name
 }
 
+output "logstack_lb_target_https_group" {
+  value = aws_lb_target_group.cf_logstack_target_https.name
+}
+
 output "uaa_lb_name" {
   value = aws_lb.cf_uaa.name
 }

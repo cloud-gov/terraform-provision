@@ -217,6 +217,10 @@ output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
 }
 
+output "cf_logstack_target_group" {
+  value = module.cf.logstack_lb_target_https_group
+}
+
 output "cf_uaa_target_group" {
   value = module.cf.uaa_lb_target_group
 }
