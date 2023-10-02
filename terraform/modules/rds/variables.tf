@@ -14,7 +14,7 @@ variable "rds_db_storage_type" {
 }
 
 variable "rds_db_iops" {
-  default = 3000
+  default = 0
 }
 
 variable "rds_db_name" {
