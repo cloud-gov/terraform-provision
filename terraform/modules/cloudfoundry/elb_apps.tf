@@ -72,7 +72,7 @@ resource "aws_lb_target_group" "cf_logstash_target_https" {
 
 resource "aws_lb_listener_rule" "logstash_listener_rule" {
   listener_arn = aws_lb_listener.cf_apps.arn
-  
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.cf_logstash_target_https.arn
