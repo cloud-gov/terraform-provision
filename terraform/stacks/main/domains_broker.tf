@@ -181,7 +181,7 @@ resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
 
   condition {
     host_header {
-      values = [element(var.logstash_hosts, count.index)]
+      values = var.logstash_hosts
     }
   }
 }
