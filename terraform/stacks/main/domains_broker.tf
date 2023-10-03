@@ -207,7 +207,7 @@ resource "aws_lb_target_group" "domains_broker_apps_https" {
 resource "aws_lb_target_group" "domains_broker_logstash_https" {
   count = var.domains_broker_alb_count
 
-  name     = "${var.stack_description}-domains-logstash-https-${count.index}"
+  name     = "${var.stack_description}-domains-logstash-${count.index}"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
