@@ -218,7 +218,10 @@ output "cf_apps_target_group" {
 }
 
 output "cf_logstash_target_group" {
-  value = module.cf.logstash_lb_target_https_group
+  value = concat(
+    [module.cf.logstash_lb_target_https_group],
+    aws_lb_target_group.domains_broker_logstash_https.*.name,
+  )
 }
 
 output "cf_uaa_target_group" {
