@@ -77,7 +77,7 @@ resource "aws_lb_listener_rule" "logstash_listener_rule" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.cf_logstash_target_https.arn
   }
-  
+
   condition {
     host_header {
       values = [var.waf_hostname_0]
