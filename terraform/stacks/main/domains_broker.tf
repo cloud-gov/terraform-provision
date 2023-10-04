@@ -168,10 +168,46 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 }
 
+## MAX 10 HOSTS
+resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
+  count = var.domains_broker_alb_count
+
+  listener_arn = aws_lb_listener.domains_broker_https[count.index].arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
+  }
+
+  condition {
+    host_header {
+      values = var.logstash_hosts
+    }
+  }
+}
+
 resource "aws_lb_target_group" "domains_broker_apps_https" {
   count = var.domains_broker_alb_count
 
   name     = "${var.stack_description}-domains-apps-https-${count.index}"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
+  }
+}
+
+resource "aws_lb_target_group" "domains_broker_logstash_https" {
+  count = var.domains_broker_alb_count
+
+  name     = "${var.stack_description}-domains-logstash-${count.index}"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
