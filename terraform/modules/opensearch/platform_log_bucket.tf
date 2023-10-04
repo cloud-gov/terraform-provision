@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "${var.stack_description}-platform-logs"
+  bucket = "${var.stack_description}-opensearch-logs"
 }
 resource "aws_s3_bucket_acl" "log_bucket_acl" {
   bucket = aws_s3_bucket.log_bucket.id
@@ -34,7 +34,7 @@ data "template_file" "policy" {
 }
 
 resource "aws_iam_user" "iam_user" {
-  name = "${var.stack_description}-platform-logs"
+  name = "${var.stack_description}-opensearch-logs"
 }
 
 resource "aws_iam_access_key" "iam_access_key_v1" {
