@@ -200,7 +200,7 @@ resource "aws_iam_policy_attachment" "logs_opensearch_ingestor" {
   name       = "logs_opensearch_ingestor"
   policy_arn = module.logs_opensearch_ingestor_policy.arn
   roles = [
-    module.logsearch_ingestor_role.role_name,
+    module.logs_opensearch_ingestor_role.role_name,
   ]
 }
 
