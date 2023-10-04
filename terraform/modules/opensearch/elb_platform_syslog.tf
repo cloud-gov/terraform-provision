@@ -1,5 +1,5 @@
 resource "aws_elb" "platform_syslog_elb" {
-  name            = "${var.stack_description}-platform-syslog"
+  name            = "${var.stack_description}-opensearch-syslog"
   subnets         = var.private_elb_subnets
   security_groups = [var.bosh_security_group]
   idle_timeout    = 60
@@ -21,7 +21,7 @@ resource "aws_elb" "platform_syslog_elb" {
   }
 
   tags = {
-    Name = "${var.stack_description}-platform-syslog"
+    Name = "${var.stack_description}-opensearch-syslog"
   }
 
   access_logs {
