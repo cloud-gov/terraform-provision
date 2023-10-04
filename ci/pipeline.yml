@@ -511,6 +511,7 @@ jobs:
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
       TF_VAR_waf_label_host_0: ((waf_label_host_0))
       TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_logstash_hosts: ((development_logstash_hosts))
 
   - *notify-slack
 
@@ -664,6 +665,7 @@ jobs:
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
       TF_VAR_waf_label_host_0: ((waf_label_host_0))
       TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_logstash_hosts: ((staging_logstash_hosts))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -814,6 +816,7 @@ jobs:
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
       TF_VAR_waf_label_host_0: ((waf_label_host_0))
       TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_logstash_hosts: ((production_logstash_hosts))
   - *notify-slack
 
 - name: bootstrap-production
