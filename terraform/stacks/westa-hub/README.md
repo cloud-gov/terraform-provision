@@ -399,7 +399,7 @@ def help():
    print(sys.argv[0]+" filename")
    sys.exit(-1)
 
-if len(sys.argv) == 2:
+if len(sys.argv) != 2:
     help
 
 # Get the command-line arguments, excluding the script name
