@@ -569,7 +569,7 @@ output "logsearch_ingestor_profile" {
 }
 
 output "logs_opensearch_ingestor_profile" {
-  value = module.logsearch_ingestor_role.profile_name
+  value = module.logs_opensearch_ingestor_role.profile_name
 }
 
 output "cf_blobstore_profile" {
