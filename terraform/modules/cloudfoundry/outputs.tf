@@ -105,6 +105,10 @@ output "logsearch_archive_bucket_name" {
   value = module.logsearch-archive.bucket_name
 }
 
+output "logs_opensearch_archive_bucket_name" {
+  value = module.logs-opensearch-archive.bucket_name
+}
+
 output "cf_uaa_waf_core_arn" {
   value = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }

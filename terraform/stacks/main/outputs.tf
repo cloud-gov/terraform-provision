@@ -569,7 +569,7 @@ output "logsearch_ingestor_profile" {
 }
 
 output "logs_opensearch_ingestor_profile" {
-  value = module.logsearch_ingestor_role.profile_name
+  value = module.logs_opensearch_ingestor_role.profile_name
 }
 
 output "cf_blobstore_profile" {
@@ -623,6 +623,10 @@ output "bosh_network_static_ips" {
 /* Buckets */
 output "logsearch_archive_bucket_name" {
   value = module.cf.logsearch_archive_bucket_name
+}
+
+output "logs_opensearch_archive_bucket_name" {
+  value = module.cf.logs_opensearch_archive_bucket_name
 }
 
 output "bosh_blobstore_bucket" {
