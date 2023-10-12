@@ -625,7 +625,7 @@ output "logsearch_archive_bucket_name" {
   value = module.cf.logsearch_archive_bucket_name
 }
 
-output "logs-opensearch_archive_bucket_name" {
+output "logs_opensearch_archive_bucket_name" {
   value = module.cf.logs_opensearch_archive_bucket_name
 }
 
