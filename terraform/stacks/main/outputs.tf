@@ -506,11 +506,11 @@ output "diego_elb_dns_name" {
 
 /* Opensearch network */
 output "logs_opensearch_elb_name" {
-  value = module.opensearch.logs_opensearch_elb_name
+  value = module.logs_opensearch.logs_opensearch_elb_name
 }
 
 output "logs_opensearch_elb_dns_name" {
-  value = module.opensearch.logs_opensearch_elb_dns_name
+  value = module.logs_opensearch.logs_opensearch_elb_dns_name
 }
 
 /* Logsearch network */
