@@ -161,6 +161,14 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
           name = "AWSManagedIPReputationList"
         }
+
+        rule_action_override {
+          action_to_use {
+            block {}
+          }
+
+          name = "AWSManagedIPDDoSList"
+        }
       }
     }
 
