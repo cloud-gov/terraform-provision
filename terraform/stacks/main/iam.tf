@@ -161,16 +161,17 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "bosh" {
-  name       = "${var.stack_description}-bosh"
-  policy_arn = module.bosh_policy.arn
-  roles = [
-    module.bosh_role.role_name,
-  ]
-  users = [
-    aws_iam_user.parent_bosh_user.name
-  ]
-}
+# No longer in use - McGowan 10/18/2023
+#resource "aws_iam_policy_attachment" "bosh" {
+#  name       = "${var.stack_description}-bosh"
+#  policy_arn = module.bosh_policy.arn
+#  roles = [
+#    module.bosh_role.role_name,
+#  ]
+#  users = [
+#    aws_iam_user.parent_bosh_user.name
+#  ]
+#}
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {
   name       = "${var.stack_description}-bosh-compilation"
@@ -239,14 +240,15 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   ]
 }
 
-# Creds for the parent bosh (e.g. tooling-<region>) to access
-# the child bosh (e.g. <region><index>), used for CPI config
-resource "aws_iam_user" "parent_bosh_user" {
-  name = "tooling-${var.stack_description}-bosh"
-  path = "/bosh/"
-}
+# No longer used - McGowan 10/18/2023
+## Creds for the parent bosh (e.g. tooling-<region>) to access
+## the child bosh (e.g. <region><index>), used for CPI config
+#resource "aws_iam_user" "parent_bosh_user" {
+#  name = "tooling-${var.stack_description}-bosh"
+#  path = "/bosh/"
+#}
 
 
-resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
-  user = aws_iam_user.parent_bosh_user.name
-}
+#resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
+#  user = aws_iam_user.parent_bosh_user.name
+#}

@@ -1,9 +1,10 @@
-# Creds for the child boshes (e.g. <region><index>-bosh) to access
-# the parent bosh's (e.g. tooling-<region>) blobstore
-resource "aws_iam_user" "bosh_blobstore_user" {
-  name = "tooling-${var.stack_description}-bosh"
-  path = "/bosh/"
-}
+# No longer used - McGowan - 10-18/2023
+## Creds for the child boshes (e.g. <region><index>-bosh) to access
+## the parent bosh's (e.g. tooling-<region>) blobstore
+#resource "aws_iam_user" "bosh_blobstore_user" {
+#  name = "tooling-${var.stack_description}-bosh"
+#  path = "/bosh/"
+#}
 
 resource "aws_iam_access_key" "bosh_blobstore_user_key_v1" {
   user = aws_iam_user.bosh_blobstore_user.name
