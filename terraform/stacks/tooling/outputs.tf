@@ -592,28 +592,29 @@ output "staging_doomsday_lb_target_group" {
   value = module.monitoring_staging.doomsday_lb_target_group
 }
 
-/* billing user */
-output "billing_username" {
-  value = module.billing_user.username
-}
-
-output "billing_access_key_id_prev" {
-  value = module.billing_user.access_key_id_prev
-}
-
-output "billing_secret_access_key_prev" {
-  value     = module.billing_user.secret_access_key_prev
-  sensitive = true
-}
-
-output "billing_access_key_id_curr" {
-  value = module.billing_user.access_key_id_curr
-}
-
-output "billing_secret_access_key_curr" {
-  value     = module.billing_user.secret_access_key_curr
-  sensitive = true
-}
+# Not in use - McGowan 10/18/23
+#/* billing user */
+#output "billing_username" {
+#  value = module.billing_user.username
+#}
+#
+#output "billing_access_key_id_prev" {
+#  value = module.billing_user.access_key_id_prev
+#}
+#
+#output "billing_secret_access_key_prev" {
+#  value     = module.billing_user.secret_access_key_prev
+#  sensitive = true
+#}
+#
+#output "billing_access_key_id_curr" {
+#  value = module.billing_user.access_key_id_curr
+#}
+#
+#output "billing_secret_access_key_curr" {
+#  value     = module.billing_user.secret_access_key_curr
+#  sensitive = true
+#}
 
 /* federalist auditor user */
 output "federalist_auditor_username" {
