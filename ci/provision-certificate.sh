@@ -44,7 +44,7 @@ cp ${out_path}/*.pem acme
 # Before provision exit - check that certificate and key are RSA based and 2048 bit length - if not error out task
 
 CERT_CHECK=$(cat acme/cert.pem | openssl x509 -text -noout | grep "Public-Key")
-KEY_CHECK=$(cat acme/privkey.pem | openssl rsa -text -noout | grep "Private-Key")
+KEY_CHECK=$(openssl rsa -in acme/privkey.pem -check -noout | grep "RSA key")
 
 if [[ "$CERT_CHECK" == *"2048 bit"* ]]; then
     echo  "Certificate is 2048 bit and good"
@@ -53,7 +53,7 @@ if [[ "$CERT_CHECK" == *"2048 bit"* ]]; then
     exit 1
 fi
 
-if [[ "$KEY_CHECK" == *"RSA Private"* ]]; then
+if [[ "$KEY_CHECK" == *"RSA key ok"* ]]; then
     echo  "Key is RSA based and good"
     else
     echo "Key is NOT RSA based and is bad/corrupt"
