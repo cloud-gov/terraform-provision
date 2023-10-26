@@ -605,6 +605,11 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             }
           }
         }
+
+        forwarded_ip_config {
+          fallback_behavior = "NO_MATCH"
+          header_name = var.forwarded_ip_header_name
+        }
       }
     }
 
@@ -616,8 +621,8 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "RateLimitBySourceIP-Block"
-    priority = 7
+    name     = "RateLimitCDNByForwardedIP-Block"
+    priority = 8
 
     action {
       block {}
@@ -625,8 +630,84 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     statement {
       rate_based_statement {
-        limit              = 4000
-        aggregate_key_type = "IP"
+        limit              = var.non_cdn_traffic_rate_limit_block_by_forwarded_ip
+        aggregate_key_type = "FORWARDED_IP"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.nat_egress_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.tooling_nat_egress_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.gsa_ip_range_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = var.user_agent_header_name
+                  }
+                }
+                                    
+                search_string = var.cloudfront_user_agent_header
+                positional_constraint = "EXACTLY"
+                
+                text_transformation {
+                  priority = 0
+                  type = "NONE"
+                }
+              }
+            }
+          }
+        }
+
+        forwarded_ip_config {
+          fallback_behavior = "NO_MATCH"
+          header_name = var.forwarded_ip_header_name
+        }
       }
     }
 

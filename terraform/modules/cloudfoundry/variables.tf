@@ -176,13 +176,19 @@ variable "forwarded_ip_header_name" {
 
 variable "non_cdn_traffic_rate_limit_challenge_by_source_ip" {
   type = integer
-  description = "Number of requests to allow per source IP per 5 minute interval before issuing a challenge"
+  description = "Number of requests to allow per source IP per 5 minute interval before challenging requests"
   default = 2000
 }
 
 variable "non_cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
   type = integer
-  description = "Number of requests to allow per forwarded IP per 5 minute interval before issuing a challenge"
+  description = "Number of requests to allow per forwarded IP per 5 minute interval before challenging requests"
+  default = 2000
+}
+
+variable "non_cdn_traffic_rate_limit_block_by_forwarded_ip" {
+  type = integer
+  description = "Number of requests to allow per forwarded IP per 5 minute interval before blocking requests"
   default = 2000
 }
 
