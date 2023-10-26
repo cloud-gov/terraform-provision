@@ -454,7 +454,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     statement {
       rate_based_statement {
-        limit              = 2000
+        limit              = var.non_cdn_traffic_rate_limit_challenge_by_source_ip
         aggregate_key_type = "IP"
 
         scope_down_statement {
@@ -482,10 +482,20 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             statement {
               not_statement {
                 statement {
+                  ip_set_reference_statement {
+                    arn = var.gsa_ip_range_ip_set_arn
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
                   byte_match_statement {
                     field_to_match {
                       single_header {
-                        name = "user-agent"
+                        name = var.user_agent_header_name
                       }
                     }
                                         
@@ -497,6 +507,99 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                       type = "NONE"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "RateLimitCDNByForwardedIP-Challenge"
+    priority = 7
+
+    action {
+      challenge {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.non_cdn_traffic_rate_limit_challenge_by_forwarded_ip
+        aggregate_key_type = "FORWARDED_IP"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.nat_egress_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.tooling_nat_egress_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.gsa_ip_range_ip_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = var.user_agent_header_name
+                  }
+                }
+                                    
+                search_string = var.cloudfront_user_agent_header
+                positional_constraint = "EXACTLY"
+                
+                text_transformation {
+                  priority = 0
+                  type = "NONE"
                 }
               }
             }
@@ -533,7 +636,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       sampled_requests_enabled   = false
     }
   }
-
 
   visibility_config {
     cloudwatch_metrics_enabled = true

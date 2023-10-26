@@ -168,3 +168,8 @@ variable "waf_hostname_0" {
 variable "logstash_hosts" {
   type = list(string)
 }
+
+variable "gsa_ip_range_ip_set_arn" {
+  type = string
+  description = "ARN of IP set identifying GSA IP CIDR ranges"
+}

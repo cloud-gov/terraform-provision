@@ -156,8 +156,37 @@ variable "tooling_nat_egress_ip_set_arn" {
   description = "ARN for IP set of CIDR ranges for NAT Gateways for the tooling environment"
 }
 
+variable "user_agent_header_name" {
+  type = string
+  description = "Header name to identify user agent"
+  default = "user-agent"
+}
+
 variable "cloudfront_user_agent_header" {
   type = string
   description = "User-Agent header value used to identify Cloudfront traffic"
   default = "Amazon Cloudfront"
+}
+
+variable "forwarded_ip_header_name" {
+  type = string
+  description = "Header name used to get forwarded IP addresses"
+  default = "X-Forwarded-For"
+}
+
+variable "non_cdn_traffic_rate_limit_challenge_by_source_ip" {
+  type = integer
+  description = "Number of requests to allow per source IP per 5 minute interval before issuing a challenge"
+  default = 2000
+}
+
+variable "non_cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
+  type = integer
+  description = "Number of requests to allow per forwarded IP per 5 minute interval before issuing a challenge"
+  default = 2000
+}
+
+variable "gsa_ip_range_ip_set_arn" {
+  type = string
+  description = "ARN of IP set identifying GSA IP CIDR ranges"
 }
