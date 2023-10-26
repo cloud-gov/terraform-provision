@@ -73,6 +73,10 @@ output "nat_egress_ip_az2" {
   value = module.vpc.nat_egress_ip_az2
 }
 
+output "nat_gateway_egress_ip_set_arn" {
+  value = module.vpc.nat_gateway_egress_ip_set_arn
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = module.vpc.bosh_security_group

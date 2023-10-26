@@ -146,8 +146,18 @@ variable "waf_hostname_0" {
   type = string
 }
 
-variable "nat_egress_ips" {
-  default = []
-  type    = set(string)
-  description = "IP CIDR ranges for NAT Gateways for this environment"
+variable "nat_egress_ip_set_arn" {
+  type    = string
+  description = "ARN for IP set of CIDR ranges for NAT Gateways for this environment"
+}
+
+variable "tooling_nat_egress_ip_set_arn" {
+  type    = string
+  description = "ARN for IP set of CIDR ranges for NAT Gateways for the tooling environment"
+}
+
+variable "cloudfront_user_agent_header" {
+  type = string
+  description = "User-Agent header value used to identify Cloudfront traffic"
+  default = "Amazon Cloudfront"
 }

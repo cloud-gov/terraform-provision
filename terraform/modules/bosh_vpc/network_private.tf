@@ -101,3 +101,13 @@ resource "aws_nat_gateway" "az2_private_nat_service" {
   }
 }
 
+resource "aws_wafv2_ip_set" "nat_gateway_egress_ips" {
+  name               = "${var.stack_description}-nat-gateway-ips"
+  description        = "NAT Gateway egress IPs"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+  addresses          = [
+    "${aws_nat_gateway.az1_private_nat_service.public_ip}/32",
+    "${aws_nat_gateway.az2_private_nat_service.public_ip}/32"
+  ]
+}

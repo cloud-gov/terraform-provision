@@ -54,14 +54,6 @@ resource "aws_lb_listener" "cf_uaa_http" {
   }
 }
 
-resource "aws_wafv2_ip_set" "cf_gateway_ips" {
-  name               = "${var.stack_description}-nat-gateway-ips"
-  description        = "NAT Gateway IPs for traffic from the CF environment"
-  scope              = "REGIONAL"
-  ip_address_version = "IPV4"
-  addresses          = var.nat_egress_ips
-}
-
 // For webacl rules using AWS managed rule sets or custom rules, checkout the AWS Govcloud WAF V2 console
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you
 // The rule in json format which will make it easier to translate to TF
@@ -453,7 +445,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "RateLimitBySourceIP-Challenge"
+    name     = "RateLimitNonCDNBySourceIP-Challenge"
     priority = 6
 
     action {
@@ -464,6 +456,52 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       rate_based_statement {
         limit              = 2000
         aggregate_key_type = "IP"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.nat_egress_ip_set_arn
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.tooling_nat_egress_ip_set_arn
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = "user-agent"
+                      }
+                    }
+                                        
+                    search_string = var.cloudfront_user_agent_header
+                    positional_constraint = "EXACTLY"
+                    
+                    text_transformation {
+                      priority = 0
+                      type = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
 

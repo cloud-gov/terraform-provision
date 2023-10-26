@@ -61,6 +61,10 @@ output "nat_egress_ip_az2" {
   value = join(",", aws_eip.az2_nat_eip.*.public_ip)
 }
 
+output "nat_gateway_egress_ip_set_arn" {
+  value = aws_wafv2_ip_set.nat_gateway_egress_ips.arn
+}
+
 /* Security Groups */
 output "bosh_security_group" {
   value = aws_security_group.bosh.id
