@@ -281,6 +281,11 @@ module "cf" {
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
   waf_label_host_0                                            = var.waf_label_host_0
   waf_hostname_0                                              = var.waf_hostname_0
+
+  nat_egress_ips = [
+    "${module.stack.nat_egress_ip_az1}/32",
+    "${module.stack.nat_egress_ip_az2}/32",
+  ]
 }
 
 

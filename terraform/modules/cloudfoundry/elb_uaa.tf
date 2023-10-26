@@ -54,13 +54,13 @@ resource "aws_lb_listener" "cf_uaa_http" {
   }
 }
 
-# resource "aws_wafv2_ip_set" "cf_gateway_ips" {
-#   name        = "${var.stack_description}-gateway-ips"
-#   description        = "NAT Gateway IPs for traffic from the CF environment"
-#   scope              = "REGIONAL"
-#   ip_address_version = "IPV4"
-#   addresses          = var.gateway_ips
-# }
+resource "aws_wafv2_ip_set" "cf_gateway_ips" {
+  name               = "${var.stack_description}-nat-gateway-ips"
+  description        = "NAT Gateway IPs for traffic from the CF environment"
+  scope              = "REGIONAL"
+  ip_address_version = "IPV4"
+  addresses          = var.nat_egress_ips
+}
 
 // For webacl rules using AWS managed rule sets or custom rules, checkout the AWS Govcloud WAF V2 console
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you

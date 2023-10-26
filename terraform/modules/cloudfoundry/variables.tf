@@ -145,3 +145,9 @@ variable "waf_label_host_0" {
 variable "waf_hostname_0" {
   type = string
 }
+
+variable "nat_egress_ips" {
+  default = []
+  type    = set(string)
+  description = "IP CIDR ranges for NAT Gateways for this environment"
+}
