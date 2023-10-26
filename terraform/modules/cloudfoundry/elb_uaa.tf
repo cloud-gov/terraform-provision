@@ -445,7 +445,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "BlockMaliciousFingerprints"
+    name     = "BlockMaliciousJA3FingerprintIDs"
     priority = 6
     action {
       block {}
