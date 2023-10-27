@@ -106,7 +106,7 @@ resource "aws_wafv2_ip_set" "nat_gateway_egress_ips" {
   description        = "NAT Gateway egress IPs"
   scope              = "REGIONAL"
   ip_address_version = "IPV4"
-  addresses          = [
+  addresses = [
     "${aws_nat_gateway.az1_private_nat_service.public_ip}/32",
     "${aws_nat_gateway.az2_private_nat_service.public_ip}/32"
   ]

@@ -285,8 +285,8 @@ module "cf" {
   nat_egress_ip_set_arn         = module.stack.nat_gateway_egress_ip_set_arn
   tooling_nat_egress_ip_set_arn = data.terraform_remote_state.target_vpc.outputs.nat_gateway_egress_ip_set_arn
   ## TODO: how do we create this in TF once, instead of once per env
-  gsa_ip_range_ip_set_arn       = var.gsa_ip_range_ip_set_arn
-  
+  gsa_ip_range_ip_set_arn = var.gsa_ip_range_ip_set_arn
+
   malicious_ja3_fingerprint_id = var.malicious_ja3_fingerprint_id
 }
 

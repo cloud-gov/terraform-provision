@@ -458,9 +458,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
           }
         }
         positional_constraint = "EXACTLY"
-        search_string = var.malicious_ja3_fingerprint_id
+        search_string         = var.malicious_ja3_fingerprint_id
         text_transformation {
-          type = "NONE"
+          type     = "NONE"
           priority = 0
         }
       }
@@ -526,13 +526,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                         name = var.user_agent_header_name
                       }
                     }
-                                        
-                    search_string = var.cloudfront_user_agent_header
+
+                    search_string         = var.cloudfront_user_agent_header
                     positional_constraint = "EXACTLY"
-                    
+
                     text_transformation {
                       priority = 0
-                      type = "NONE"
+                      type     = "NONE"
                     }
                   }
                 }
@@ -572,9 +572,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.nat_egress_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -588,9 +588,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.tooling_nat_egress_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -605,9 +605,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.gsa_ip_range_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -621,13 +621,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     name = var.user_agent_header_name
                   }
                 }
-                                    
-                search_string = var.cloudfront_user_agent_header
+
+                search_string         = var.cloudfront_user_agent_header
                 positional_constraint = "EXACTLY"
-                
+
                 text_transformation {
                   priority = 0
-                  type = "NONE"
+                  type     = "NONE"
                 }
               }
             }
@@ -636,7 +636,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
         forwarded_ip_config {
           fallback_behavior = "NO_MATCH"
-          header_name = var.forwarded_ip_header_name
+          header_name       = var.forwarded_ip_header_name
         }
       }
     }
@@ -670,9 +670,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.nat_egress_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -686,9 +686,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.tooling_nat_egress_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -702,9 +702,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     arn = var.gsa_ip_range_ip_set_arn
 
                     ip_set_forwarded_ip_config {
-                      header_name = var.forwarded_ip_header_name
+                      header_name       = var.forwarded_ip_header_name
                       fallback_behavior = "NO_MATCH"
-                      position = "FIRST"
+                      position          = "FIRST"
                     }
                   }
                 }
@@ -718,13 +718,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                     name = var.user_agent_header_name
                   }
                 }
-                                    
-                search_string = var.cloudfront_user_agent_header
+
+                search_string         = var.cloudfront_user_agent_header
                 positional_constraint = "EXACTLY"
-                
+
                 text_transformation {
                   priority = 0
-                  type = "NONE"
+                  type     = "NONE"
                 }
               }
             }
@@ -733,7 +733,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
         forwarded_ip_config {
           fallback_behavior = "NO_MATCH"
-          header_name = var.forwarded_ip_header_name
+          header_name       = var.forwarded_ip_header_name
         }
       }
     }

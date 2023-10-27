@@ -170,11 +170,11 @@ variable "logstash_hosts" {
 }
 
 variable "gsa_ip_range_ip_set_arn" {
-  type = string
+  type        = string
   description = "ARN of IP set identifying GSA IP CIDR ranges"
 }
 
 variable "malicious_ja3_fingerprint_id" {
-  type = string
+  type        = string
   description = "JA3 fingerprint ID associated with malicious traffic"
 }

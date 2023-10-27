@@ -147,57 +147,57 @@ variable "waf_hostname_0" {
 }
 
 variable "nat_egress_ip_set_arn" {
-  type    = string
+  type        = string
   description = "ARN for IP set of CIDR ranges for NAT Gateways for this environment"
 }
 
 variable "tooling_nat_egress_ip_set_arn" {
-  type    = string
+  type        = string
   description = "ARN for IP set of CIDR ranges for NAT Gateways for the tooling environment"
 }
 
 variable "user_agent_header_name" {
-  type = string
+  type        = string
   description = "Header name to identify user agent"
-  default = "user-agent"
+  default     = "user-agent"
 }
 
 variable "cloudfront_user_agent_header" {
-  type = string
+  type        = string
   description = "User-Agent header value used to identify Cloudfront traffic"
-  default = "Amazon Cloudfront"
+  default     = "Amazon Cloudfront"
 }
 
 variable "forwarded_ip_header_name" {
-  type = string
+  type        = string
   description = "Header name used to get forwarded IP addresses"
-  default = "X-Forwarded-For"
+  default     = "X-Forwarded-For"
 }
 
 variable "non_cdn_traffic_rate_limit_challenge_by_source_ip" {
-  type = number
+  type        = number
   description = "Number of requests to allow per source IP per 5 minute interval before challenging requests"
-  default = 2000
+  default     = 2000
 }
 
 variable "non_cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
-  type = number
+  type        = number
   description = "Number of requests to allow per forwarded IP per 5 minute interval before challenging requests"
-  default = 2000
+  default     = 2000
 }
 
 variable "non_cdn_traffic_rate_limit_block_by_forwarded_ip" {
-  type = number
+  type        = number
   description = "Number of requests to allow per forwarded IP per 5 minute interval before blocking requests"
-  default = 5000
+  default     = 5000
 }
 
 variable "gsa_ip_range_ip_set_arn" {
-  type = string
+  type        = string
   description = "ARN of IP set identifying GSA IP CIDR ranges"
 }
 
 variable "malicious_ja3_fingerprint_id" {
-  type = string
+  type        = string
   description = "JA3 fingerprint ID associated with malicious traffic"
 }
