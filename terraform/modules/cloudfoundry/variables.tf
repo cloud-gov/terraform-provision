@@ -206,3 +206,8 @@ variable "api_data_gov_hosts_regex_pattern_arn" {
   type = string
   description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }
+
+variable "customer_whitelist_ip_ranges_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
+}
