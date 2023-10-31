@@ -188,3 +188,13 @@ variable "customer_whitelist_ip_ranges_set_arn" {
   type        = string
   description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
 }
+
+variable "internal_vpc_cidrs_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying IP CIDR ranges for VPCs"
+}
+
+variable "cg_egress_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
+}

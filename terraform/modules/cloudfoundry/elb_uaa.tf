@@ -518,17 +518,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
               not_statement {
                 statement {
                   ip_set_reference_statement {
-                    arn = var.nat_egress_ip_set_arn
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.tooling_nat_egress_ip_set_arn
+                    arn = var.cg_egress_ip_set_arn
                   }
                 }
               }
@@ -565,6 +555,22 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 }
               }
             }
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.internal_vpc_cidrs_set_arn
+
+                    ip_set_forwarded_ip_config {
+                      header_name       = var.forwarded_ip_header_name
+                      fallback_behavior = "NO_MATCH"
+                      position          = "FIRST"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -596,7 +602,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
               not_statement {
                 statement {
                   ip_set_reference_statement {
-                    arn = var.nat_egress_ip_set_arn
+                    arn = var.cg_egress_ip_set_arn
 
                     ip_set_forwarded_ip_config {
                       header_name       = var.forwarded_ip_header_name
@@ -607,23 +613,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 }
               }
             }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.tooling_nat_egress_ip_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
-              }
-            }
-
 
             statement {
               not_statement {

@@ -146,16 +146,6 @@ variable "waf_hostname_0" {
   type = string
 }
 
-variable "nat_egress_ip_set_arn" {
-  type        = string
-  description = "ARN for IP set of CIDR ranges for NAT Gateways for this environment"
-}
-
-variable "tooling_nat_egress_ip_set_arn" {
-  type        = string
-  description = "ARN for IP set of CIDR ranges for NAT Gateways for the tooling environment"
-}
-
 variable "user_agent_header_name" {
   type        = string
   description = "Header name to identify user agent"
@@ -210,4 +200,14 @@ variable "api_data_gov_hosts_regex_pattern_arn" {
 variable "customer_whitelist_ip_ranges_set_arn" {
   type        = string
   description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
+}
+
+variable "internal_vpc_cidrs_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying IP CIDR ranges for VPCs"
+}
+
+variable "cg_egress_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
 }
