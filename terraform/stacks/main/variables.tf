@@ -180,7 +180,7 @@ variable "malicious_ja3_fingerprint_id" {
 }
 
 variable "api_data_gov_hosts_regex_pattern_arn" {
-  type = string
+  type        = string
   description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }
 
