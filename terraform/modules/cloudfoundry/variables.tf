@@ -189,7 +189,7 @@ variable "non_cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
 variable "non_cdn_traffic_rate_limit_block_by_forwarded_ip" {
   type        = number
   description = "Number of requests to allow per forwarded IP per 5 minute interval before blocking requests"
-  default     = 5000
+  default     = 250000
 }
 
 variable "gsa_ip_range_ip_set_arn" {
@@ -200,4 +200,9 @@ variable "gsa_ip_range_ip_set_arn" {
 variable "malicious_ja3_fingerprint_id" {
   type        = string
   description = "JA3 fingerprint ID associated with malicious traffic"
+}
+
+variable "api_data_gov_hosts_regex_pattern_arn" {
+  type = string
+  description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }

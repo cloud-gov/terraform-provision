@@ -448,7 +448,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     name     = "BlockMaliciousJA3FingerprintIDs"
     priority = 6
     action {
-      block {}
+      count {}
     }
     statement {
       byte_match_statement {
@@ -473,8 +473,35 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "RateLimitNonCDNBySourceIP-Challenge"
+    name     = "CountAPIDataGovRequests"
     priority = 7
+    action {
+      count {}
+    }
+    statement {
+      regex_pattern_set_reference_statement  {
+        arn = var.api_data_gov_hosts_regex_pattern_arn
+        field_to_match {
+          single_header {
+            name = "host"
+          }
+        }
+        text_transformation {
+          priority = 0
+          type = "NONE"
+        }
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "RateLimitNonCDNBySourceIP-Challenge"
+    priority = 8
 
     action {
       challenge {}
@@ -552,7 +579,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Challenge"
-    priority = 8
+    priority = 9
 
     action {
       challenge {}
@@ -650,7 +677,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Block"
-    priority = 9
+    priority = 10
 
     action {
       block {}

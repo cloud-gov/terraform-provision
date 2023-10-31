@@ -514,6 +514,7 @@ jobs:
       TF_VAR_logstash_hosts: ((development_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
+      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
 
   - *notify-slack
 
@@ -670,6 +671,7 @@ jobs:
       TF_VAR_logstash_hosts: ((staging_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
+      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -823,6 +825,7 @@ jobs:
       TF_VAR_logstash_hosts: ((production_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
+      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
   - *notify-slack
 
 - name: bootstrap-production
