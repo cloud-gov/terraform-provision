@@ -170,16 +170,16 @@ variable "non_cdn_traffic_rate_limit_challenge_by_source_ip" {
   default     = 2000
 }
 
-variable "non_cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
+variable "cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
   type        = number
   description = "Number of requests to allow per forwarded IP per 5 minute interval before challenging requests"
   default     = 2000
 }
 
-variable "non_cdn_traffic_rate_limit_block_by_forwarded_ip" {
+variable "non_cdn_traffic_rate_limit_block_by_source_ip" {
   type        = number
-  description = "Number of requests to allow per forwarded IP per 5 minute interval before blocking requests"
-  default     = 250000
+  description = "Number of requests to allow per source IP per 5 minute interval before blocking requests"
+  default     = 5000
 }
 
 variable "gsa_ip_range_ip_set_arn" {
