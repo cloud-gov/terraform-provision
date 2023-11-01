@@ -282,7 +282,7 @@ module "cf" {
   waf_label_host_0                                            = var.waf_label_host_0
   waf_hostname_0                                              = var.waf_hostname_0
 
-  ## TODO: how do we create this in TF once, instead of once per env
+  ## TODO: manage these IP sets in Terraform somewhere
   gsa_ip_range_ip_set_arn              = var.gsa_ip_range_ip_set_arn
   api_data_gov_hosts_regex_pattern_arn = var.api_data_gov_hosts_regex_pattern_arn
   customer_whitelist_ip_ranges_set_arn = var.customer_whitelist_ip_ranges_set_arn

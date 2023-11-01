@@ -473,35 +473,8 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "CountAPIDataGovRequests"
-    priority = 7
-    action {
-      count {}
-    }
-    statement {
-      regex_pattern_set_reference_statement {
-        arn = var.api_data_gov_hosts_regex_pattern_arn
-        field_to_match {
-          single_header {
-            name = "host"
-          }
-        }
-        text_transformation {
-          priority = 0
-          type     = "NONE"
-        }
-      }
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
-      sampled_requests_enabled   = false
-    }
-  }
-
-  rule {
     name     = "RateLimitNonCDNBySourceIP-Challenge"
-    priority = 8
+    priority = 7
 
     action {
       challenge {}
@@ -559,6 +532,27 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             statement {
               not_statement {
                 statement {
+                  regex_pattern_set_reference_statement {
+                    arn = var.api_data_gov_hosts_regex_pattern_arn
+
+                    field_to_match {
+                      single_header {
+                        name = "host"
+                      }
+                    }
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
                   ip_set_reference_statement {
                     arn = var.internal_vpc_cidrs_set_arn
 
@@ -585,7 +579,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Challenge"
-    priority = 9
+    priority = 8
 
     action {
       challenge {}
@@ -682,7 +676,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Block"
-    priority = 10
+    priority = 9
 
     action {
       block {}
