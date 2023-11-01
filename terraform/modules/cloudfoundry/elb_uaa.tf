@@ -587,7 +587,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     statement {
       rate_based_statement {
-        limit              = var.non_cdn_traffic_rate_limit_challenge_by_forwarded_ip
+        limit              = var.cdn_traffic_rate_limit_challenge_by_forwarded_ip
         aggregate_key_type = "FORWARDED_IP"
 
         scope_down_statement {
@@ -675,17 +675,17 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "RateLimitCDNByForwardedIP-Block"
+    name     = "RateLimitNonCDNBySourceIP-Block"
     priority = 9
 
     action {
-      block {}
+      count {}
     }
 
     statement {
       rate_based_statement {
-        limit              = var.non_cdn_traffic_rate_limit_block_by_forwarded_ip
-        aggregate_key_type = "FORWARDED_IP"
+        limit              = var.non_cdn_traffic_rate_limit_block_by_source_ip
+        aggregate_key_type = "IP"
 
         scope_down_statement {
           and_statement {
@@ -694,12 +694,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 statement {
                   ip_set_reference_statement {
                     arn = var.cg_egress_ip_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
                   }
                 }
               }
@@ -710,6 +704,59 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 statement {
                   ip_set_reference_statement {
                     arn = var.gsa_ip_range_ip_set_arn
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = var.user_agent_header_name
+                      }
+                    }
+
+                    search_string         = var.cloudfront_user_agent_header
+                    positional_constraint = "EXACTLY"
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  regex_pattern_set_reference_statement {
+                    arn = var.api_data_gov_hosts_regex_pattern_arn
+
+                    field_to_match {
+                      single_header {
+                        name = "host"
+                      }
+                    }
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  ip_set_reference_statement {
+                    arn = var.internal_vpc_cidrs_set_arn
 
                     ip_set_forwarded_ip_config {
                       header_name       = var.forwarded_ip_header_name
@@ -720,37 +767,14 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 }
               }
             }
-
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = var.user_agent_header_name
-                  }
-                }
-
-                search_string         = var.cloudfront_user_agent_header
-                positional_constraint = "EXACTLY"
-
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
-              }
-            }
           }
-        }
-
-        forwarded_ip_config {
-          fallback_behavior = "NO_MATCH"
-          header_name       = var.forwarded_ip_header_name
         }
       }
     }
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPBlock"
+      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
       sampled_requests_enabled   = false
     }
   }
