@@ -168,3 +168,33 @@ variable "waf_hostname_0" {
 variable "logstash_hosts" {
   type = list(string)
 }
+
+variable "gsa_ip_range_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying GSA IP CIDR ranges"
+}
+
+variable "malicious_ja3_fingerprint_id" {
+  type        = string
+  description = "JA3 fingerprint ID associated with malicious traffic"
+}
+
+variable "api_data_gov_hosts_regex_pattern_arn" {
+  type        = string
+  description = "ARN of regex pattern set used to identify hosts for api.data.gov"
+}
+
+variable "customer_whitelist_ip_ranges_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
+}
+
+variable "internal_vpc_cidrs_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying IP CIDR ranges for VPCs"
+}
+
+variable "cg_egress_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
+}

@@ -145,3 +145,69 @@ variable "waf_label_host_0" {
 variable "waf_hostname_0" {
   type = string
 }
+
+variable "user_agent_header_name" {
+  type        = string
+  description = "Header name to identify user agent"
+  default     = "user-agent"
+}
+
+variable "cloudfront_user_agent_header" {
+  type        = string
+  description = "User-Agent header value used to identify Cloudfront traffic"
+  default     = "Amazon Cloudfront"
+}
+
+variable "forwarded_ip_header_name" {
+  type        = string
+  description = "Header name used to get forwarded IP addresses"
+  default     = "X-Forwarded-For"
+}
+
+variable "non_cdn_traffic_rate_limit_challenge_by_source_ip" {
+  type        = number
+  description = "Number of requests to allow per source IP per 5 minute interval before challenging requests"
+  default     = 2000
+}
+
+variable "cdn_traffic_rate_limit_challenge_by_forwarded_ip" {
+  type        = number
+  description = "Number of requests to allow per forwarded IP per 5 minute interval before challenging requests"
+  default     = 2000
+}
+
+variable "non_cdn_traffic_rate_limit_block_by_source_ip" {
+  type        = number
+  description = "Number of requests to allow per source IP per 5 minute interval before blocking requests"
+  default     = 5000
+}
+
+variable "gsa_ip_range_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying GSA IP CIDR ranges"
+}
+
+variable "malicious_ja3_fingerprint_id" {
+  type        = string
+  description = "JA3 fingerprint ID associated with malicious traffic"
+}
+
+variable "api_data_gov_hosts_regex_pattern_arn" {
+  type        = string
+  description = "ARN of regex pattern set used to identify hosts for api.data.gov"
+}
+
+variable "customer_whitelist_ip_ranges_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
+}
+
+variable "internal_vpc_cidrs_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying IP CIDR ranges for VPCs"
+}
+
+variable "cg_egress_ip_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
+}
