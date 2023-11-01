@@ -272,28 +272,29 @@ output "monitoring_security_groups" {
   }
 }
 
-/* s3 logstash user */
-output "s3_logstash_username" {
-  value = module.s3_logstash.username
-}
+# No longer used - McGowan - 10-18/2023
+#/* s3 logstash user */
+#output "s3_logstash_username" {
+#  value = module.s3_logstash.username
+#}
 
-output "s3_logstash_access_key_id_prev" {
-  value = module.s3_logstash.access_key_id_prev
-}
-
-output "s3_logstash_secret_access_key_prev" {
-  value     = module.s3_logstash.secret_access_key_prev
-  sensitive = true
-}
-
-output "s3_logstash_access_key_id_curr" {
-  value = module.s3_logstash.access_key_id_curr
-}
-
-output "s3_logstash_secret_access_key_curr" {
-  value     = module.s3_logstash.secret_access_key_curr
-  sensitive = true
-}
+#output "s3_logstash_access_key_id_prev" {
+#  value = module.s3_logstash.access_key_id_prev
+#}
+#
+#output "s3_logstash_secret_access_key_prev" {
+#  value     = module.s3_logstash.secret_access_key_prev
+#  sensitive = true
+#}
+#
+#output "s3_logstash_access_key_id_curr" {
+#  value = module.s3_logstash.access_key_id_curr
+#}
+#
+#output "s3_logstash_secret_access_key_curr" {
+#  value     = module.s3_logstash.secret_access_key_curr
+#  sensitive = true
+#}
 
 /* rds storage user */
 output "rds_storage_alert_username" {

@@ -168,10 +168,11 @@ updates:
     directory: "/terraform/modules/iam_user/rds_storage_alert"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/s3_logstash"
-    schedule:
-      interval: "weekly"
+  # No longer used - McGowan - 10-18/2023
+  #- package-ecosystem: "terraform"
+  #  directory: "/terraform/modules/iam_user/s3_logstash"
+  #  schedule:
+  #    interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/log_bucket"
     schedule:
