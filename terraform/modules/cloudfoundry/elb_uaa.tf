@@ -445,63 +445,8 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "BlockMaliciousJA3FingerprintIDs"
-    priority = 6
-    action {
-      count {}
-    }
-    statement {
-      byte_match_statement {
-        field_to_match {
-          ja3_fingerprint {
-            fallback_behavior = "NO_MATCH"
-          }
-        }
-        positional_constraint = "EXACTLY"
-        search_string         = var.malicious_ja3_fingerprint_id
-        text_transformation {
-          type     = "NONE"
-          priority = 0
-        }
-      }
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
-      sampled_requests_enabled   = false
-    }
-  }
-
-  rule {
-    name     = "CountAPIDataGovRequests"
-    priority = 7
-    action {
-      count {}
-    }
-    statement {
-      regex_pattern_set_reference_statement {
-        arn = var.api_data_gov_hosts_regex_pattern_arn
-        field_to_match {
-          single_header {
-            name = "host"
-          }
-        }
-        text_transformation {
-          priority = 0
-          type     = "NONE"
-        }
-      }
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
-      sampled_requests_enabled   = false
-    }
-  }
-
-  rule {
     name     = "RateLimitNonCDNBySourceIP-Challenge"
-    priority = 8
+    priority = 6
 
     action {
       challenge {}
@@ -585,7 +530,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Challenge"
-    priority = 9
+    priority = 7
 
     action {
       challenge {}
@@ -682,7 +627,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Block"
-    priority = 10
+    priority = 8
 
     action {
       block {}
