@@ -161,17 +161,17 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   ]
 }
 
-# No longer in use - McGowan 10/18/2023
-#resource "aws_iam_policy_attachment" "bosh" {
-#  name       = "${var.stack_description}-bosh"
-#  policy_arn = module.bosh_policy.arn
-#  roles = [
-#    module.bosh_role.role_name,
-#  ]
-#  users = [
-#    aws_iam_user.parent_bosh_user.name
-#  ]
-#}
+
+resource "aws_iam_policy_attachment" "bosh" {
+  name       = "${var.stack_description}-bosh"
+  policy_arn = module.bosh_policy.arn
+  roles = [
+    module.bosh_role.role_name,
+  ]
+  users = [
+    aws_iam_user.parent_bosh_user.name
+  ]
+}
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {
   name       = "${var.stack_description}-bosh-compilation"
