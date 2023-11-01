@@ -155,7 +155,7 @@ variable "user_agent_header_name" {
 variable "cloudfront_user_agent_header" {
   type        = string
   description = "User-Agent header value used to identify Cloudfront traffic"
-  default     = "Amazon Cloudfront"
+  default     = "Amazon CloudFront"
 }
 
 variable "forwarded_ip_header_name" {
