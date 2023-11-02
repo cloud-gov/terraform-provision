@@ -417,8 +417,8 @@ module "dns_logging" {
   aws_partition     = data.aws_partition.current.partition
 }
 
-module "cloud_watch" {
-  source = "../../modules/cloud_watch"
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
 
   stack_description = var.stack_description
   sns_arn           = data.aws_sns_topic.cg_notifications.arn
