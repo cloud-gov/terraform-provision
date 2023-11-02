@@ -168,10 +168,10 @@ resource "aws_iam_policy_attachment" "bosh" {
   roles = [
     module.bosh_role.role_name,
   ]
-# No longer used - McGowan 10/18/2023
-#  users = [
-#    aws_iam_user.parent_bosh_user.name
-#  ]
+  # No longer used - McGowan 10/18/2023
+  #  users = [
+  #    aws_iam_user.parent_bosh_user.name
+  #  ]
 }
 
 resource "aws_iam_policy_attachment" "bosh_compilation" {

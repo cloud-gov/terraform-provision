@@ -439,11 +439,12 @@ output "bosh_blobstore_user_secret_access_key_prev" {
   value = ""
 }
 
-output "bosh_blobstore_user_access_key_id_curr" {
-  value = aws_iam_access_key.bosh_blobstore_user_key_v1.id
-}
-
-output "bosh_blobstore_user_secret_access_key_curr" {
-  value     = aws_iam_access_key.bosh_blobstore_user_key_v1.secret
-  sensitive = true
-}
+# No longer used - McGowan - 10-18/2023
+#output "bosh_blobstore_user_access_key_id_curr" {
+#  value = aws_iam_access_key.bosh_blobstore_user_key_v1.id
+#}
+#
+#output "bosh_blobstore_user_secret_access_key_curr" {
+#  value     = aws_iam_access_key.bosh_blobstore_user_key_v1.secret
+#  sensitive = true
+#}
