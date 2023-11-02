@@ -676,22 +676,23 @@ output "s3_broker_user_secret_access_key_curr" {
   sensitive = true
 }
 
-output "parent_bosh_user_access_key_id_prev" {
-  value = ""
-}
-
-output "parent_bosh_user_secret_access_key_prev" {
-  value = ""
-}
-
-output "parent_bosh_user_access_key_id_curr" {
-  value = aws_iam_access_key.parent_bosh_user_key_v1.id
-}
-
-output "parent_bosh_user_secret_access_key_curr" {
-  value     = aws_iam_access_key.parent_bosh_user_key_v1.secret
-  sensitive = true
-}
+# No longer used - McGowan 10/18/2023
+#output "parent_bosh_user_access_key_id_prev" {
+#  value = ""
+#}
+#
+#output "parent_bosh_user_secret_access_key_prev" {
+#  value = ""
+#}
+#
+#output "parent_bosh_user_access_key_id_curr" {
+#  value = aws_iam_access_key.parent_bosh_user_key_v1.id
+#}
+#
+#output "parent_bosh_user_secret_access_key_curr" {
+#  value     = aws_iam_access_key.parent_bosh_user_key_v1.secret
+#  sensitive = true
+#}
 
 output "default_key_name" {
   value = module.stack.default_key_name

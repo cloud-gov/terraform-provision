@@ -1,16 +1,18 @@
-module "billing_user" {
-  source         = "../../modules/iam_user/billing_user"
-  username       = "cg-billing"
-  billing_bucket = "cg-billing-*"
-  aws_partition  = data.aws_partition.current.partition
-}
+# cg-billing user is not in use - McGowan 10/18/23
+#module "billing_user" {
+#  source         = "../../modules/iam_user/billing_user"
+#  username       = "cg-billing"
+#  billing_bucket = "cg-billing-*"
+#  aws_partition  = data.aws_partition.current.partition
+#}
 
-module "s3_logstash" {
-  source        = "../../modules/iam_user/s3_logstash"
-  username      = "s3-logstash"
-  log_bucket    = var.log_bucket_name
-  aws_partition = data.aws_partition.current.partition
-}
+# No longer used - McGowan - 10-18/2023
+#module "s3_logstash" {
+#  source        = "../../modules/iam_user/s3_logstash"
+#  username      = "s3-logstash"
+#  log_bucket    = var.log_bucket_name
+#  aws_partition = data.aws_partition.current.partition
+#}
 
 module "rds_storage_alert" {
   source   = "../../modules/iam_user/rds_storage_alert"
