@@ -13,7 +13,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloud_watch"
+    directory: "/terraform/modules/cloudwatch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
