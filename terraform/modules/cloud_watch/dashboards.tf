@@ -1,7 +1,8 @@
 /*
 It is easier to iterate on CloudWatch dashboards directly in the console than in Terraform.
 If you do so, click "Actions > View/edit source", copy the entire source, and replace the
-object passed into `dashboard_body = jsonencode()` with the source.
+entire object passed into `dashboard_body = jsonencode()` with the source. Make sure your
+editor is configured to format terraform code on save.
 */
 resource "aws_cloudwatch_dashboard" "production_waf" {
   dashboard_name = "Production WAF"
