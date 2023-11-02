@@ -4,8 +4,8 @@ If you do so, click "Actions > View/edit source", copy the entire source, and re
 entire object passed into `dashboard_body = jsonencode()` with the source. Make sure your
 editor is configured to format terraform code on save.
 */
-resource "aws_cloudwatch_dashboard" "production_waf" {
-  dashboard_name = "Production WAF"
+resource "aws_cloudwatch_dashboard" "waf_dashboard" {
+  dashboard_name = "WAF_${var.stack_description}"
   dashboard_body = jsonencode({
     "widgets" : [
       {
