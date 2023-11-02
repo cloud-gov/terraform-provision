@@ -1,8 +1,10 @@
 /*
 It is easier to iterate on CloudWatch dashboards directly in the console than in Terraform.
 If you do so, click "Actions > View/edit source", copy the entire source, and replace the
-entire object passed into `dashboard_body = jsonencode()` with the source. Make sure your
-editor is configured to format terraform code on save.
+entire object passed into `dashboard_body = jsonencode()` with the source. Then find/replace
+references to the environment -- for example, "production" -- with ${var.stack_description}.
+
+As with the entire repo, make sure your editor is configured to format terraform code on save.
 */
 resource "aws_cloudwatch_dashboard" "waf_dashboard" {
   dashboard_name = "WAF_${var.stack_description}"
@@ -16,23 +18,23 @@ resource "aws_cloudwatch_dashboard" "waf_dashboard" {
         "type" : "metric",
         "properties" : {
           "metrics" : [
-            ["AWS/WAFV2", "AllowedRequests", "Region", "us-gov-west-1", "Rule", "data-gov-logstash", "WebACL", "production-cf-uaa-waf-core", { "region" : "us-gov-west-1" }],
-            ["...", "production-AWS-AWSManagedRulesAnonymousIpList", ".", ".", { "region" : "us-gov-west-1" }],
+            ["AWS/WAFV2", "AllowedRequests", "Region", "us-gov-west-1", "Rule", "data-gov-logstash", "WebACL", "${var.stack_description}-cf-uaa-waf-core", { "region" : "us-gov-west-1" }],
+            ["...", "${var.stack_description}-AWS-AWSManagedRulesAnonymousIpList", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "BlockedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CaptchaRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "ChallengeRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
-            [".", "AllowedRequests", ".", ".", ".", "production-AWS-ManagedRulesAmazonIpReputationList", ".", ".", { "region" : "us-gov-west-1" }],
+            [".", "AllowedRequests", ".", ".", ".", "${var.stack_description}-AWS-ManagedRulesAmazonIpReputationList", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "BlockedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CaptchaRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "ChallengeRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
-            [".", "AllowedRequests", ".", ".", ".", "production-AWS-KnownBadInputsRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
+            [".", "AllowedRequests", ".", ".", ".", "${var.stack_description}-AWS-KnownBadInputsRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "BlockedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CaptchaRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "ChallengeRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
-            [".", "AllowedRequests", ".", ".", ".", "production-AWS-AWSManagedRulesCommonRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
+            [".", "AllowedRequests", ".", ".", ".", "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "BlockedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "CaptchaRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
@@ -41,14 +43,14 @@ resource "aws_cloudwatch_dashboard" "waf_dashboard" {
             [".", "CountedRequests", ".", ".", ".", "CountAPIDataGovRequests", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "ChallengeRequests", ".", ".", ".", "RateLimitBySourceIP-Mboyd-test", ".", ".", { "region" : "us-gov-west-1" }],
             ["...", "RateLimitByForwardedIP-Mboyd-test", ".", ".", { "region" : "us-gov-west-1" }],
-            [".", "BlockedRequests", ".", ".", ".", "production-RateLimitNonCDN", ".", ".", { "region" : "us-gov-west-1" }],
-            ["...", "production-AWS-AWSManagedRulesCommonRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
+            [".", "BlockedRequests", ".", ".", ".", "${var.stack_description}-RateLimitNonCDN", ".", ".", { "region" : "us-gov-west-1" }],
+            ["...", "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "AllowedRequests", ".", ".", ".", "ALL", ".", ".", { "region" : "us-gov-west-1", "visible" : false }],
             [".", "BlockedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1", "visible" : false }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1", "visible" : false }],
             [".", "CaptchaRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1", "visible" : false }],
             [".", "ChallengeRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1", "visible" : false }],
-            [".", "AllowedRequests", ".", ".", ".", "production-cf-uaa-waf-core-metric", ".", ".", { "region" : "us-gov-west-1" }]
+            [".", "AllowedRequests", ".", ".", ".", "${var.stack_description}-cf-uaa-waf-core-metric", ".", ".", { "region" : "us-gov-west-1" }]
           ],
           "stat" : "Sum",
           "view" : "timeSeries",
@@ -73,7 +75,7 @@ resource "aws_cloudwatch_dashboard" "waf_dashboard" {
         "x" : 0,
         "type" : "log",
         "properties" : {
-          "query" : "SOURCE 'aws-waf-logs-production' | stats count(*) as requestCount by httpRequest.clientIp\n| sort requestCount desc\n| limit 100",
+          "query" : "SOURCE 'aws-waf-logs-${var.stack_description}' | stats count(*) as requestCount by httpRequest.clientIp\n| sort requestCount desc\n| limit 100",
           "region" : "us-gov-west-1",
           "stacked" : false,
           "title" : "Top 100 Source IPs by Request Count",
@@ -88,7 +90,7 @@ resource "aws_cloudwatch_dashboard" "waf_dashboard" {
         "type" : "metric",
         "properties" : {
           "metrics" : [
-            ["AWS/WAFV2", "AllowedRequests", "WebACL", "production-cf-uaa-waf-core", "Region", "us-gov-west-1", "Rule", "ALL", { "region" : "us-gov-west-1" }],
+            ["AWS/WAFV2", "AllowedRequests", "WebACL", "${var.stack_description}-cf-uaa-waf-core", "Region", "us-gov-west-1", "Rule", "ALL", { "region" : "us-gov-west-1" }],
             [".", "CountedRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "ChallengeRequests", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
             [".", "RequestsWithValidChallengeToken", ".", ".", ".", ".", ".", ".", { "region" : "us-gov-west-1" }],
@@ -117,7 +119,7 @@ resource "aws_cloudwatch_dashboard" "waf_dashboard" {
         "x" : 6,
         "type" : "log",
         "properties" : {
-          "query" : "SOURCE 'aws-waf-logs-production' | fields @timestamp, @message, action\n| parse @message /(?i)\"name\":\"[Hh]ost\",\"value\":\"(?<host>[^\"]+)/\n| stats count() as count group by host, action\n| sort count desc\n| limit 20",
+          "query" : "SOURCE 'aws-waf-logs-${var.stack_description}' | fields @timestamp, @message, action\n| parse @message /(?i)\"name\":\"[Hh]ost\",\"value\":\"(?<host>[^\"]+)/\n| stats count() as count group by host, action\n| sort count desc\n| limit 20",
           "region" : "us-gov-west-1",
           "stacked" : false,
           "view" : "table",
