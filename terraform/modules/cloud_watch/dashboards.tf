@@ -66,7 +66,7 @@ resource "aws_cloudwatch_dashboard" "production_waf" {
         }
       },
       {
-        "height" : 6,
+        "height" : 9,
         "width" : 6,
         "y" : 9,
         "x" : 0,
@@ -76,20 +76,6 @@ resource "aws_cloudwatch_dashboard" "production_waf" {
           "region" : "us-gov-west-1",
           "stacked" : false,
           "title" : "Top 100 Source IPs by Request Count",
-          "view" : "table"
-        }
-      },
-      {
-        "height" : 4,
-        "width" : 6,
-        "y" : 15,
-        "x" : 0,
-        "type" : "log",
-        "properties" : {
-          "query" : "SOURCE 'aws-waf-logs-production' | fields @timestamp, @message, @logStream, @log\n| filter @message like \"count-api-data-gov-requests\"\n| parse @message /\\{\"name\":\"(H|h)ost\",\"value\":\"(?<host>.*?)\"\\}/\n| stats count(*) as requestCount by host\n| sort requestCount desc\n| limit 100",
-          "region" : "us-gov-west-1",
-          "stacked" : false,
-          "title" : "Top 100 data.gov Target Hosts by Request Count",
           "view" : "table"
         }
       },
@@ -124,7 +110,7 @@ resource "aws_cloudwatch_dashboard" "production_waf" {
         }
       },
       {
-        "height" : 10,
+        "height" : 9,
         "width" : 8,
         "y" : 9,
         "x" : 6,
