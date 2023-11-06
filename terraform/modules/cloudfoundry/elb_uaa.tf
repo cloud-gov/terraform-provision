@@ -445,8 +445,99 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   rule {
-    name     = "BlockMaliciousJA3FingerprintIDs"
+    name     = "AllowTrustedIPs"
     priority = 6
+
+    action {
+      allow {}
+    }
+
+    statement {
+      or_statement {
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.gsa_ip_range_ip_set_arn
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.gsa_ip_range_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.internal_vpc_cidrs_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.customer_whitelist_ip_ranges_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AllowTrustedIPs"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "BlockMaliciousJA3FingerprintIDs"
+    priority = 7
     action {
       count {}
     }
@@ -468,13 +559,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
-      sampled_requests_enabled   = false
+      sampled_requests_enabled   = true
     }
   }
 
   rule {
     name     = "RateLimitNonCDNBySourceIP-Challenge"
-    priority = 7
+    priority = 8
 
     action {
       challenge {}
@@ -490,26 +581,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             statement {
               not_statement {
                 statement {
-                  ip_set_reference_statement {
-                    arn = var.cg_egress_ip_set_arn
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.gsa_ip_range_ip_set_arn
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
                   byte_match_statement {
                     field_to_match {
                       single_header {
@@ -549,22 +620,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 }
               }
             }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.internal_vpc_cidrs_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -573,13 +628,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
-      sampled_requests_enabled   = false
+      sampled_requests_enabled   = true
     }
   }
 
   rule {
     name     = "RateLimitCDNByForwardedIP-Challenge"
-    priority = 8
+    priority = 9
 
     action {
       challenge {}
@@ -591,71 +646,19 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "FORWARDED_IP"
 
         scope_down_statement {
-          and_statement {
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.cg_egress_ip_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
+          byte_match_statement {
+            field_to_match {
+              single_header {
+                name = var.user_agent_header_name
               }
             }
 
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.gsa_ip_range_ip_set_arn
+            search_string         = var.cloudfront_user_agent_header
+            positional_constraint = "EXACTLY"
 
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
-              }
-            }
-
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = var.user_agent_header_name
-                  }
-                }
-
-                search_string         = var.cloudfront_user_agent_header
-                positional_constraint = "EXACTLY"
-
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.customer_whitelist_ip_ranges_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
-              }
+            text_transformation {
+              priority = 0
+              type     = "NONE"
             }
           }
         }
@@ -670,13 +673,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
-      sampled_requests_enabled   = false
+      sampled_requests_enabled   = true
     }
   }
 
   rule {
     name     = "RateLimitNonCDNBySourceIP-Block"
-    priority = 9
+    priority = 10
 
     action {
       count {}
@@ -692,26 +695,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
             statement {
               not_statement {
                 statement {
-                  ip_set_reference_statement {
-                    arn = var.cg_egress_ip_set_arn
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.gsa_ip_range_ip_set_arn
-                  }
-                }
-              }
-            }
-
-            statement {
-              not_statement {
-                statement {
                   byte_match_statement {
                     field_to_match {
                       single_header {
@@ -751,22 +734,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                 }
               }
             }
-
-            statement {
-              not_statement {
-                statement {
-                  ip_set_reference_statement {
-                    arn = var.internal_vpc_cidrs_set_arn
-
-                    ip_set_forwarded_ip_config {
-                      header_name       = var.forwarded_ip_header_name
-                      fallback_behavior = "NO_MATCH"
-                      position          = "FIRST"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -775,7 +742,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
-      sampled_requests_enabled   = false
+      sampled_requests_enabled   = true
     }
   }
 
