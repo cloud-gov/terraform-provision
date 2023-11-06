@@ -58,6 +58,9 @@ resource "aws_lb_listener" "cf_uaa_http" {
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you
 // The rule in json format which will make it easier to translate to TF
 // NOTE - webacl sets have rule capacity limits - make sure your total rule counts do not exceed the limit
+//
+// NOTE - Update documentation as you change WAF rule configuration:
+// https://github.com/cloud-gov/cg-site/blob/main/_docs/technology/platform-protections.md
 resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   name        = "${var.stack_description}-cf-uaa-waf-core"
   description = "UAA ELB WAF Rules"
