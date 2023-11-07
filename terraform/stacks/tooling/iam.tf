@@ -34,10 +34,11 @@ module "iam_cert_provision_user" {
 # USER AND MODULE (yes, even with the same permissions).  Having separate users
 # with the same permissions simplifies our work when we have to rotate
 # credentials.
-module "federalist_auditor_user" {
-  source   = "../../modules/iam_user/federalist_auditor"
-  username = "federalist-s3-bucket-auditor"
-}
+# No longer used - McGowan - 11/7/2023
+#module "federalist_auditor_user" {
+#  source   = "../../modules/iam_user/federalist_auditor"
+#  username = "federalist-s3-bucket-auditor"
+#}
 
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
