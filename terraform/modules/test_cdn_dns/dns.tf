@@ -6,7 +6,7 @@ locals {
 
 resource "aws_route53_record" "test_cdn_acmechallenge" {
   zone_id = var.route53_zone_id
-  name    = "_acme-challenge-${local.test_cdn_subdomain}"
+  name    = "_acme-challenge.${local.test_cdn_subdomain}"
   type    = "CNAME"
 
   ttl = 600
@@ -21,5 +21,5 @@ resource "aws_route53_record" "test_cdn_cname" {
   type    = "CNAME"
 
   ttl     = 600
-  records = ["${local.external_domain_broker_app_domain}"]
+  records = [local.external_domain_broker_app_domain]
 }

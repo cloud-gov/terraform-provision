@@ -8,3 +8,10 @@ module "production_dns" {
   remote_state_bucket = var.remote_state_bucket
   remote_state_region = var.remote_state_region
 }
+
+module "test_cdn_dns" {
+  source                     = "../../modules/test_cdn_dns"
+  route53_zone_id            = aws_route53_zone.cloud_gov_zone.zone_id
+  test_cdn_domain            = "fr.cloud.gov"
+  external_domain_broker_env = "production"
+}
