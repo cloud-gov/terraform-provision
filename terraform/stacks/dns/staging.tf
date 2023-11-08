@@ -22,7 +22,7 @@ module "staging_dns" {
   remote_state_region = var.remote_state_region
 }
 
-module "test_cdn_dns" {
+module "test_cdn_dns_staging" {
   source                     = "../../modules/test_cdn_dns"
   route53_zone_id            = aws_route53_zone.staging_zone.zone_id
   test_cdn_domain            = "fr-stage.cloud.gov"
