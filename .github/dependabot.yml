@@ -144,10 +144,11 @@ updates:
     directory: "/terraform/modules/iam_user/ecr_user"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/federalist_auditor"
-    schedule:
-      interval: "weekly"
+  # No longer used - McGowan - 11/6/23   
+  #- package-ecosystem: "terraform"
+  #  directory: "/terraform/modules/iam_user/federalist_auditor"
+  #  schedule:
+  #    interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/health_check"
     schedule:

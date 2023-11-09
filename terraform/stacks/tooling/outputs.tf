@@ -616,28 +616,29 @@ output "staging_doomsday_lb_target_group" {
 #  sensitive = true
 #}
 
-/* federalist auditor user */
-output "federalist_auditor_username" {
-  value = module.federalist_auditor_user.username
-}
-
-output "federalist_auditor_access_key_id_prev" {
-  value = module.federalist_auditor_user.access_key_id_prev
-}
-
-output "federalist_auditor_secret_access_key_prev" {
-  value     = module.federalist_auditor_user.secret_access_key_prev
-  sensitive = true
-}
-
-output "federalist_auditor_access_key_id_curr" {
-  value = module.federalist_auditor_user.access_key_id_curr
-}
-
-output "federalist_auditor_secret_access_key_curr" {
-  value     = module.federalist_auditor_user.secret_access_key_curr
-  sensitive = true
-}
+# Not in use - McGowan 11/9/2023
+#/* federalist auditor user */
+#output "federalist_auditor_username" {
+#  value = module.federalist_auditor_user.username
+#}
+#
+#output "federalist_auditor_access_key_id_prev" {
+#  value = module.federalist_auditor_user.access_key_id_prev
+#}
+#
+#output "federalist_auditor_secret_access_key_prev" {
+#  value     = module.federalist_auditor_user.secret_access_key_prev
+#  sensitive = true
+#}
+#
+#output "federalist_auditor_access_key_id_curr" {
+#  value = module.federalist_auditor_user.access_key_id_curr
+#}
+#
+#output "federalist_auditor_secret_access_key_curr" {
+#  value     = module.federalist_auditor_user.secret_access_key_curr
+#  sensitive = true
+#}
 
 # No longer used - McGowan - 10-18/2023
 #/* s3 logstash user */

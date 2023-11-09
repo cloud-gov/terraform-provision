@@ -6,7 +6,8 @@
 # USER AND MODULE (yes, even with the same permissions).  Having separate users
 # with the same permissions simplifies our work when we have to rotate
 # credentials.
-
+# No longer used - McGowan - 11/6/23 
+# remove this and the whole module folder
 resource "aws_iam_user" "iam_user" {
   name = var.username
 }
