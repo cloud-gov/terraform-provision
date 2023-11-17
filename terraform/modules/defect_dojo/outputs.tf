@@ -1,9 +1,16 @@
-output "defectdojo_subnet" {
-  value = aws_subnet.defectdojo.id
+output "defectdojo_subnet_az1" {
+  value = aws_subnet.defectdojo_az1.id
+}
+output "defectdojo_subnet_az2" {
+  value = aws_subnet.defectdojo_az2.id
 }
 
-output "defectdojo_subnet_cidr" {
-  value = aws_subnet.defectdojo.cidr_block
+output "defectdojo_subnet_cidr_az1" {
+  value = aws_subnet.defectdojo_az1.cidr_block
+}
+
+output "defectdojo_subnet_cidr_az2" {
+  value = aws_subnet.defectdojo_az2.cidr_block
 }
 
 output "defectdojo_security_group" {

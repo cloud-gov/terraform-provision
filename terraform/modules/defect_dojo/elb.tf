@@ -1,5 +1,5 @@
 resource "aws_lb_target_group" "defectdojo_target" {
-  name     = "${var.stack_description}-defectdojo-${var.defectdojo_az}"
+  name     = "${var.stack_description}-defectdojo-${var.defectdojo_az1}"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id
