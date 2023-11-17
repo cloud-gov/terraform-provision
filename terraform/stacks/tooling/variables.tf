@@ -59,9 +59,6 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
-variable "defectdojo_prod_rds_password" {
-  sensitive = true
-}
 
 variable "defectdojo_staging_rds_password" {
   sensitive = true
@@ -88,10 +85,6 @@ variable "credhub_production_hosts" {
 }
 
 variable "credhub_staging_hosts" {
-  type = list(string)
-}
-
-variable "defectdojo_production_hosts" {
   type = list(string)
 }
 
