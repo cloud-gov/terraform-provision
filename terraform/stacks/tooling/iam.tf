@@ -1,19 +1,3 @@
-# cg-billing user is not in use - McGowan 10/18/23
-#module "billing_user" {
-#  source         = "../../modules/iam_user/billing_user"
-#  username       = "cg-billing"
-#  billing_bucket = "cg-billing-*"
-#  aws_partition  = data.aws_partition.current.partition
-#}
-
-# No longer used - McGowan - 10-18/2023
-#module "s3_logstash" {
-#  source        = "../../modules/iam_user/s3_logstash"
-#  username      = "s3-logstash"
-#  log_bucket    = var.log_bucket_name
-#  aws_partition = data.aws_partition.current.partition
-#}
-
 module "rds_storage_alert" {
   source   = "../../modules/iam_user/rds_storage_alert"
   username = "cg-rds-storage-alert"
@@ -34,11 +18,6 @@ module "iam_cert_provision_user" {
 # USER AND MODULE (yes, even with the same permissions).  Having separate users
 # with the same permissions simplifies our work when we have to rotate
 # credentials.
-# No longer used - McGowan - 11/7/2023
-#module "federalist_auditor_user" {
-#  source   = "../../modules/iam_user/federalist_auditor"
-#  username = "federalist-s3-bucket-auditor"
-#}
 
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
