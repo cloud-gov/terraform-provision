@@ -542,6 +542,76 @@ output "staging_credhub_lb_target_group" {
   value = module.credhub_staging.credhub_lb_target_group
 }
 
+/* Staging Defect Dojo */
+output "staging_defectdojo_subnet_az1" {
+  value = module.defectdojo_staging.defectdojo_subnet_az1
+}
+
+output "staging_defectdojo_subnet_az2" {
+  value = module.defectdojo_staging.defectdojo_subnet_az2
+}
+
+output "staging_defectdojo_subnet_az1_reserved" {
+  value = "${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az1, 0)} - ${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az1, 3)}"
+}
+
+output "staging_defectdojo_subnet_az2_reserved" {
+  value = "${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az2, 0)} - ${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az2, 3)}"
+}
+
+output "staging_defectdojo_subnet_cidr_az1" {
+  value = module.defectdojo_staging.defectdojo_subnet_cidr_az1
+}
+
+output "staging_defectdojo_subnet_cidr_az2" {
+  value = module.defectdojo_staging.defectdojo_subnet_cidr_az2
+}
+
+output "staging_defectdojo_subnet_az1_gateway" {
+  value = cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az1, 1)
+}
+
+output "staging_defectdojo_subnet_az2_gateway" {
+  value = cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az2, 1)
+}
+
+output "staging_defectdojo_security_group" {
+  value = module.defectdojo_staging.defectdojo_security_group
+}
+
+output "staging_defectdojo_rds_identifier" {
+  value = module.defectdojo_staging.defectdojo_rds_identifier
+}
+
+output "staging_defectdojo_rds_name" {
+  value = module.defectdojo_staging.defectdojo_rds_name
+}
+
+output "staging_defectdojo_rds_host" {
+  value = module.defectdojo_staging.defectdojo_rds_host
+}
+
+output "staging_defectdojo_rds_port" {
+  value = module.defectdojo_staging.defectdojo_rds_port
+}
+
+output "staging_defectdojo_rds_url" {
+  value = module.defectdojo_staging.defectdojo_rds_url
+}
+
+output "staging_defectdojo_rds_username" {
+  value = module.defectdojo_staging.defectdojo_rds_username
+}
+
+output "staging_defectdojo_rds_password" {
+  value     = module.defectdojo_staging.defectdojo_rds_password
+  sensitive = true
+}
+
+output "staging_defectdojo_lb_target_group" {
+  value = module.defectdojo_staging.defectdojo_lb_target_group
+}
+
 /* Production Monitoring */
 output "production_monitoring_az" {
   value = module.monitoring_production.monitoring_az
