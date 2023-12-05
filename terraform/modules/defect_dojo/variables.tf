@@ -17,7 +17,7 @@ variable "defectdojo_az2" {
 }
 
 variable "rds_db_name" {
-  default = "defectdojo"
+  default = "dojo"
 }
 
 variable "rds_parameter_group_name" {
