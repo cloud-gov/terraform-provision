@@ -966,7 +966,7 @@ jobs:
   plan:
   - in_parallel:
     - get: general-task
-    - get: acme-timer
+    - get: staging-weekly-timer
       trigger: true
     - get: cg-provision-repo
       resource: cg-provision-repo-development
@@ -1009,7 +1009,7 @@ jobs:
   plan:
   - in_parallel:
     - get: general-task
-    - get: acme-timer
+    - get: staging-weekly-timer
       trigger: true
     - get: cg-provision-repo
     - get: terraform-yaml-tooling
@@ -1051,7 +1051,7 @@ jobs:
   plan:
   - in_parallel: &prod-certificate-resources
       - get: general-task
-      - get: acme-timer
+      - get: prod-biweekly-timer
         trigger: true
       - get: cg-provision-repo
       - get: terraform-yaml-tooling
@@ -1498,10 +1498,22 @@ resources:
     interval: 24h
     location: America/New_York
 
-- name: acme-timer
+- name: prod-biweekly-timer
   type: time
   source:
     interval: 24h
+    start: 10:00 AM
+    stop: 3:00 PM
+    days: [Tuesday,Thursday]
+    location: America/New_York
+
+- name: staging-weekly-timer
+  type: time
+  source:
+    interval: 24h
+    start: 10:00 AM
+    stop: 3:00 PM
+    days: [Wednesday]
     location: America/New_York
 
 - name: slack
