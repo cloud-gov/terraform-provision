@@ -7,7 +7,7 @@ module "cvd_meta_bucket" {
 
 
 module "cvd_database_bucket" {
-  source        = "../../modules/cvd_mirror"
+  source        = "../../modules/cvd_mirror_v2"
   bucket        = "${var.bucket_prefix}-cg-clamav-mirror"
   aws_partition = data.aws_partition.current.partition
   versioning    = "false"
