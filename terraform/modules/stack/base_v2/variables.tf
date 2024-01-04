@@ -56,11 +56,11 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.11"
+  default = "15.3"
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres12"
+  default = "postgres15"
 }
 
 variable "rds_username" {
@@ -125,7 +125,7 @@ variable "protobosh_rds_db_name" {
 }
 
 variable "protobosh_rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
 
 variable "protobosh_rds_instance_type" {
@@ -145,11 +145,11 @@ variable "protobosh_rds_password" {
 }
 
 variable "protobosh_rds_db_engine_version" {
-  default = "12.11"
+  default = "15.3"
 }
 
 variable "protobosh_rds_parameter_group_family" {
-  default = "postgres12"
+  default = "postgres15"
 }
 
 variable "rds_parameter_group_name" {
@@ -197,5 +197,5 @@ variable "rds_force_ssl" {
 }
 
 variable "rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
