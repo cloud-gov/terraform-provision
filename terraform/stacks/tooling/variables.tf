@@ -30,7 +30,7 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.11"
+  default = "12.14"
 }
 
 variable "rds_parameter_group_family" {
@@ -59,6 +59,11 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
+
+variable "defectdojo_staging_rds_password" {
+  sensitive = true
+}
+
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
@@ -80,6 +85,10 @@ variable "credhub_production_hosts" {
 }
 
 variable "credhub_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_staging_hosts" {
   type = list(string)
 }
 
@@ -162,12 +171,12 @@ variable "cloudtrail_bucket" {
   default = "cg-s3-cloudtrail"
 }
 
-variable "log_bucket_name" {
-  default = "cg-elb-logs"
+variable "cloudtrail_accesslog_bucket" {
+  default = "cg-accesslogs"
 }
 
-variable "pgp_keys_bucket_name" {
-  default = "cg-pgp-keys"
+variable "log_bucket_name" {
+  default = "cg-elb-logs"
 }
 
 variable "container_scanning_bucket_name" {
@@ -190,4 +199,9 @@ variable "bosh_default_ssh_public_key" {
 variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
+}
+
+variable "github_backups_bucket_name" {
+  type    = string
+  default = "github-backups"
 }

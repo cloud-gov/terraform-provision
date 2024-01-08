@@ -5,7 +5,8 @@ set -eu
 curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 chmod +x ./jq
 
-pip install certbot certbot-dns-route53
+pip install certbot==2.6.0 
+pip install certbot-dns-route53==2.6.0
 
 #spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
 #  | ./jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
@@ -33,7 +34,28 @@ certbot certonly \
   --dns-route53 \
   --config-dir "${config_path}" \
   --email "${EMAIL}" \
-  --domain "${DOMAIN}"
+  --domain "${DOMAIN}" \
+  --rsa-key-size 2048 \
+  --key-type rsa 
 
 out_path=$(ls -d -1 ${config_path}/live/*/)
 cp ${out_path}/*.pem acme
+
+# Before provision exit - check that certificate and key are RSA based and 2048 bit length - if not error out task
+
+CERT_CHECK=$(cat acme/cert.pem | openssl x509 -text -noout | grep "Public-Key")
+KEY_CHECK=$(openssl rsa -in acme/privkey.pem -check -noout | grep "RSA key")
+
+if [[ "$CERT_CHECK" == *"2048 bit"* ]]; then
+    echo  "Certificate is 2048 bit and good"
+    else
+    echo "Certificate failed 2048 bit check and is bad/corrupt"
+    exit 1
+fi
+
+if [[ "$KEY_CHECK" == *"RSA key ok"* ]]; then
+    echo  "Key is RSA based and good"
+    else
+    echo "Key is NOT RSA based and is bad/corrupt"
+    exit 1
+fi

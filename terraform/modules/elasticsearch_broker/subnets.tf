@@ -4,7 +4,7 @@ resource "aws_subnet" "az1_elasticsearch" {
   availability_zone = var.az1
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ1)"
+    Name = "${var.stack_description} (elasticsearch Broker 1 - AZ1)"
   }
 }
 
@@ -14,28 +14,31 @@ resource "aws_subnet" "az2_elasticsearch" {
   availability_zone = var.az2
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ2)"
+    Name = "${var.stack_description} (elasticsearch Broker 2 - AZ2)"
   }
 }
 
-
+# This is actually AZ 1, not a third AZ. We can't rename the resource without
+# destroying the subnet though.
 resource "aws_subnet" "az3_elasticsearch" {
   vpc_id            = var.vpc_id
   cidr_block        = var.elasticsearch_private_cidr_3
   availability_zone = var.az1
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ3)"
+    Name = "${var.stack_description} (elasticsearch Broker 3 - AZ1)"
   }
 }
 
+# This is actually AZ 2, not a fourth AZ. We can't rename the resource without
+# destroying the subnet though.
 resource "aws_subnet" "az4_elasticsearch" {
   vpc_id            = var.vpc_id
   cidr_block        = var.elasticsearch_private_cidr_4
   availability_zone = var.az2
 
   tags = {
-    Name = "${var.stack_description} (elasticsearch Broker AZ4)"
+    Name = "${var.stack_description} (elasticsearch Broker 4 - AZ2)"
   }
 }
 

@@ -204,7 +204,6 @@ output "cf_router_target_groups" {
   value = concat(
     [module.cf.lb_target_https_group],
     [module.cf.apps_lb_target_https_group],
-    [module.cf.uaa_lb_target_group],
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
   )
@@ -216,6 +215,13 @@ output "cf_target_group" {
 
 output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
+}
+
+output "cf_logstash_target_group" {
+  value = concat(
+    [module.cf.logstash_lb_target_https_group],
+    aws_lb_target_group.domains_broker_logstash_https.*.name,
+  )
 }
 
 output "cf_uaa_target_group" {
@@ -327,20 +333,20 @@ output "elasticsearch_log_group_audit" {
   value = module.elasticsearch_broker.elasticsearch_log_group_audit
 }
 
-output "elasticsearch_subnet_az1" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az1
+output "elasticsearch_subnet1_az1" {
+  value = module.elasticsearch_broker.elasticsearch_subnet1_az1
 }
 
-output "elasticsearch_subnet_az2" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az2
+output "elasticsearch_subnet2_az2" {
+  value = module.elasticsearch_broker.elasticsearch_subnet2_az2
 }
 
-output "elasticsearch_subnet_az3" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az3
+output "elasticsearch_subnet3_az1" {
+  value = module.elasticsearch_broker.elasticsearch_subnet3_az1
 }
 
-output "elasticsearch_subnet_az4" {
-  value = module.elasticsearch_broker.elasticsearch_subnet_az4
+output "elasticsearch_subnet4_az2" {
+  value = module.elasticsearch_broker.elasticsearch_subnet4_az2
 }
 
 output "elasticsearch_subnet_cidr_az1" {
@@ -441,6 +447,32 @@ output "cf_rds_engine" {
   value = module.cf.cf_rds_engine
 }
 
+/* CloudFoundry Autoscaler RDS */
+output "cf_as_rds_url" {
+  value = module.autoscaler.cf_as_rds_url
+}
+
+output "cf_as_rds_host" {
+  value = module.autoscaler.cf_as_rds_host
+}
+
+output "cf_as_rds_port" {
+  value = module.autoscaler.cf_as_rds_port
+}
+
+output "cf_as_rds_username" {
+  value = module.autoscaler.cf_as_rds_username
+}
+
+output "cf_as_rds_password" {
+  value     = module.autoscaler.cf_as_rds_password
+  sensitive = true
+}
+
+output "cf_as_rds_engine" {
+  value = module.autoscaler.cf_as_rds_engine
+}
+
 /* CredHub RDS */
 output "credhub_rds_url" {
   value = module.stack.credhub_rds_url
@@ -470,6 +502,15 @@ output "diego_elb_name" {
 
 output "diego_elb_dns_name" {
   value = module.diego.diego_elb_dns_name
+}
+
+/* Opensearch network */
+output "logs_opensearch_elb_name" {
+  value = module.logs_opensearch.logs_opensearch_elb_name
+}
+
+output "logs_opensearch_elb_dns_name" {
+  value = module.logs_opensearch.logs_opensearch_elb_dns_name
 }
 
 /* Logsearch network */
@@ -536,6 +577,10 @@ output "logsearch_ingestor_profile" {
   value = module.logsearch_ingestor_role.profile_name
 }
 
+output "logs_opensearch_ingestor_profile" {
+  value = module.logs_opensearch_ingestor_role.profile_name
+}
+
 output "cf_blobstore_profile" {
   value = module.cf_blobstore_role.profile_name
 }
@@ -589,6 +634,10 @@ output "logsearch_archive_bucket_name" {
   value = module.cf.logsearch_archive_bucket_name
 }
 
+output "logs_opensearch_archive_bucket_name" {
+  value = module.cf.logs_opensearch_archive_bucket_name
+}
+
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name
 }
@@ -630,23 +679,6 @@ output "s3_broker_user_access_key_id_curr" {
 
 output "s3_broker_user_secret_access_key_curr" {
   value     = aws_iam_access_key.s3_broker_user_key_v1.secret
-  sensitive = true
-}
-
-output "parent_bosh_user_access_key_id_prev" {
-  value = ""
-}
-
-output "parent_bosh_user_secret_access_key_prev" {
-  value = ""
-}
-
-output "parent_bosh_user_access_key_id_curr" {
-  value = aws_iam_access_key.parent_bosh_user_key_v1.id
-}
-
-output "parent_bosh_user_secret_access_key_curr" {
-  value     = aws_iam_access_key.parent_bosh_user_key_v1.secret
   sensitive = true
 }
 

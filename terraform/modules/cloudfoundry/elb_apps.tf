@@ -54,6 +54,37 @@ resource "aws_lb_listener" "cf_apps_http" {
   }
 }
 
+resource "aws_lb_target_group" "cf_logstash_target_https" {
+  name     = "${var.stack_description}-cf-logstash-https"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 81
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+  }
+}
+
+resource "aws_lb_listener_rule" "logstash_listener_rule" {
+  listener_arn = aws_lb_listener.cf_apps.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.cf_logstash_target_https.arn
+  }
+
+  condition {
+    host_header {
+      values = [var.waf_hostname_0]
+    }
+  }
+}
+
 resource "aws_lb_listener_certificate" "pages" {
   for_each        = var.pages_cert_ids
   listener_arn    = aws_lb_listener.cf_apps.arn

@@ -10,11 +10,11 @@ variable "rds_db_size" {
 }
 
 variable "rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
 
 variable "rds_db_iops" {
-  default = 0
+  default = null
 }
 
 variable "rds_db_name" {
@@ -25,7 +25,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.11"
+  default = "12.14"
 }
 
 variable "rds_username" {

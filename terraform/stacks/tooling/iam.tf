@@ -1,17 +1,3 @@
-module "billing_user" {
-  source         = "../../modules/iam_user/billing_user"
-  username       = "cg-billing"
-  billing_bucket = "cg-billing-*"
-  aws_partition  = data.aws_partition.current.partition
-}
-
-module "s3_logstash" {
-  source        = "../../modules/iam_user/s3_logstash"
-  username      = "s3-logstash"
-  log_bucket    = var.log_bucket_name
-  aws_partition = data.aws_partition.current.partition
-}
-
 module "rds_storage_alert" {
   source   = "../../modules/iam_user/rds_storage_alert"
   username = "cg-rds-storage-alert"
@@ -32,10 +18,6 @@ module "iam_cert_provision_user" {
 # USER AND MODULE (yes, even with the same permissions).  Having separate users
 # with the same permissions simplifies our work when we have to rotate
 # credentials.
-module "federalist_auditor_user" {
-  source   = "../../modules/iam_user/federalist_auditor"
-  username = "federalist-s3-bucket-auditor"
-}
 
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
@@ -74,8 +56,8 @@ module "concourse_worker_policy" {
   cg_binaries_bucket             = var.cg_binaries_bucket
   log_bucket                     = var.log_bucket_name
   concourse_varz_bucket          = var.concourse_varz_bucket
-  pgp_keys_bucket_name           = var.pgp_keys_bucket_name
   container_scanning_bucket_name = var.container_scanning_bucket_name
+  github_backups_bucket_name     = var.github_backups_bucket_name
 }
 
 module "concourse_iaas_worker_policy" {
@@ -135,6 +117,19 @@ module "concourse_worker_role" {
 module "concourse_iaas_worker_role" {
   source    = "../../modules/iam_role"
   role_name = "tooling-concourse-iaas-worker"
+  iam_assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRole",
+        "Principal" : {
+          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/tooling-concourse-iaas-worker",
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Effect" : "Allow"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_policy_attachment" "blobstore" {

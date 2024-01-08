@@ -5,10 +5,6 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/admin"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/bosh_vpc"
     schedule:
       interval: "weekly"
@@ -17,7 +13,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloud_watch"
+    directory: "/terraform/modules/cloudwatch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -149,10 +145,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/federalist_auditor"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/health_check"
     schedule:
       interval: "weekly"
@@ -170,10 +162,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/rds_storage_alert"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/s3_logstash"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
