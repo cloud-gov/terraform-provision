@@ -68,12 +68,13 @@ module "build_artifacts_bucket" {
   versioning    = "true"
 }
 
-module "pgp_keys_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-cg-pgp-keys"
-  aws_partition = data.aws_partition.current.partition
-  versioning    = "true"
-}
+# Removed from tooling on branch main
+# module "pgp_keys_bucket" {
+#   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
+#   bucket        = "${var.bucket_prefix}-cg-pgp-keys"
+#   aws_partition = data.aws_partition.current.partition
+#   versioning    = "true"
+# }
 
 module "container_scanning_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"

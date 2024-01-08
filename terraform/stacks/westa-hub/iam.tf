@@ -1,17 +1,3 @@
-module "billing_user" {
-  source         = "../../modules/iam_user/billing_user"
-  username       = "cg-billing"
-  billing_bucket = "${var.bucket_prefix}-cg-billing-*"
-  aws_partition  = data.aws_partition.current.partition
-}
-
-module "s3_logstash" {
-  source        = "../../modules/iam_user/s3_logstash"
-  username      = "s3-logstash"
-  log_bucket    = module.log_bucket.elb_bucket_name
-  aws_partition = data.aws_partition.current.partition
-}
-
 module "rds_storage_alert" {
   source   = "../../modules/iam_user/rds_storage_alert"
   username = "cg-rds-storage-alert"
@@ -24,18 +10,6 @@ module "iam_cert_provision_user" {
   account_id    = data.aws_caller_identity.current.account_id
 }
 
-# This user has access to all cloudtrail events in the account, as there
-# doesn't seem to be a way of constraining to just cloudfront events relevant
-# to a set of S3 buckets (or all S3 buckets, for that matter).
-#
-# If you need cloudtrail auditor access for another reason, PLEASE CREATE A NEW
-# USER AND MODULE (yes, even with the same permissions).  Having separate users
-# with the same permissions simplifies our work when we have to rotate
-# credentials.
-module "federalist_auditor_user" {
-  source   = "../../modules/iam_user/federalist_auditor"
-  username = "federalist-s3-bucket-auditor"
-}
 
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
@@ -89,8 +63,8 @@ module "concourse_worker_policy" {
   cg_binaries_bucket             = module.cg_binaries_bucket.bucket_name
   log_bucket                     = module.log_bucket.elb_bucket_name
   concourse_varz_bucket          = module.concourse_varz_bucket.bucket_name
-  pgp_keys_bucket_name           = module.pgp_keys_bucket.bucket_name
   container_scanning_bucket_name = module.container_scanning_bucket.bucket_name
+  github_backups_bucket_name     = var.github_backups_bucket_name
 }
 
 module "concourse_iaas_worker_policy" {

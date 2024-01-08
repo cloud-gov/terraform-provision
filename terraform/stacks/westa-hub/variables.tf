@@ -56,6 +56,10 @@ variable "credhub_staging_hosts" {
   type = list(string)
 }
 
+variable "defectdojo_staging_hosts" {
+  type = list(string)
+}
+
 variable "monitoring_production_hosts" {
   type = list(string)
 }
@@ -116,8 +120,28 @@ variable "concourse_staging_rds_instance_type" {
   default = "db.m5.large"
 }
 
+variable "concourse_production_rds_instance_type" {
+  default = "db.m5.xlarge"
+}
+
 variable "credhub_production_rds_instance_type" {
   default = "db.m5.large"
+}
+
+
+variable "defectdojo_staging_rds_password" {
+  sensitive = true
+}
+
+
+variable "cloudtrail_accesslog_bucket" {
+  default = "cg-accesslogs"
+}
+
+
+variable "github_backups_bucket_name" {
+  type    = string
+  default = "github-backups"
 }
 
 ## Retired
