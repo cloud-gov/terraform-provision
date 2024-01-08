@@ -58,6 +58,9 @@ resource "aws_lb_listener" "cf_uaa_http" {
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you
 // The rule in json format which will make it easier to translate to TF
 // NOTE - webacl sets have rule capacity limits - make sure your total rule counts do not exceed the limit
+//
+// NOTE - Update documentation as you change WAF rule configuration:
+// https://github.com/cloud-gov/cg-site/blob/main/_docs/technology/platform-protections.md
 resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   name        = "${var.stack_description}-cf-uaa-waf-core"
   description = "UAA ELB WAF Rules"
@@ -72,9 +75,48 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     allow {}
   }
 
+  # New rule for dropping logging for a specific host
+
+  rule {
+    name     = var.waf_label_host_0
+    priority = 0
+
+    action {
+      allow {}
+    }
+
+    statement {
+      byte_match_statement {
+        field_to_match {
+          single_header {
+            name = "host"
+          }
+        }
+
+        positional_constraint = "CONTAINS"
+        search_string         = var.waf_hostname_0
+
+        text_transformation {
+          priority = "0"
+          type     = "NONE"
+        }
+      }
+    }
+
+    rule_label {
+      name = var.waf_label_host_0
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = "true"
+      metric_name                = var.waf_label_host_0
+      sampled_requests_enabled   = "true"
+    }
+  }
+
   rule {
     name     = "AWS-AWSManagedRulesAnonymousIpList"
-    priority = 0
+    priority = 1
 
     override_action {
       none {}
@@ -85,7 +127,11 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesAnonymousIpList"
         vendor_name = "AWS"
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "HostingProviderIPList"
         }
       }
@@ -100,7 +146,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
-    priority = 1
+    priority = 2
 
     override_action {
       none {}
@@ -111,8 +157,20 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesAmazonIpReputationList"
         vendor_name = "AWS"
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "AWSManagedIPReputationList"
+        }
+
+        rule_action_override {
+          action_to_use {
+            block {}
+          }
+
+          name = "AWSManagedIPDDoSList"
         }
       }
     }
@@ -126,7 +184,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWS-KnownBadInputsRuleSet"
-    priority = 2
+    priority = 3
 
     override_action {
       none {}
@@ -192,7 +250,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   rule {
     name     = "AWSManagedRule-CoreRuleSet"
-    priority = 3
+    priority = 4
 
     override_action {
       none {}
@@ -203,51 +261,99 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "CrossSiteScripting_COOKIE"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "CrossSiteScripting_BODY"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "EC2MetaDataSSRF_BODY"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "EC2MetaDataSSRF_QUERYARGUMENTS"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "GenericLFI_BODY"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "GenericRFI_BODY"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "GenericRFI_QUERYARGUMENTS"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "NoUserAgent_HEADER"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "SizeRestrictions_BODY"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "SizeRestrictions_Cookie_HEADER"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "SizeRestrictions_QUERYSTRING"
         }
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "SizeRestrictions_URIPATH"
         }
       }
@@ -256,36 +362,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "RateLimitByForwardedHeader"
-    priority = 4
-
-    action {
-      block {}
-    }
-
-    statement {
-      rate_based_statement {
-        limit              = 250000
-        aggregate_key_type = "FORWARDED_IP"
-
-        forwarded_ip_config {
-          # Match status to apply if the request doesn’t have a valid IP address in the specified position.
-          # Note that, if the specified header isn’t present at all in the request, AWS WAF doesn’t apply
-          # the rule to the request. (From AWS Console)
-          fallback_behavior = "MATCH"
-          header_name       = "X-Forwarded-For"
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitNonCDN"
       sampled_requests_enabled   = true
     }
   }
@@ -371,6 +447,308 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
   }
 
+  rule {
+    name     = "AllowTrustedIPs"
+    priority = 6
+
+    action {
+      allow {}
+    }
+
+    statement {
+      or_statement {
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.gsa_ip_range_ip_set_arn
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.gsa_ip_range_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.internal_vpc_cidrs_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.cg_egress_ip_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
+            arn = var.customer_whitelist_ip_ranges_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AllowTrustedIPs"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "BlockMaliciousJA3FingerprintIDs"
+    priority = 7
+    action {
+      count {}
+    }
+    statement {
+      byte_match_statement {
+        field_to_match {
+          ja3_fingerprint {
+            fallback_behavior = "NO_MATCH"
+          }
+        }
+        positional_constraint = "EXACTLY"
+        search_string         = var.malicious_ja3_fingerprint_id
+        text_transformation {
+          type     = "NONE"
+          priority = 0
+        }
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-BlockMaliciousFingerprints"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "RateLimitNonCDNBySourceIP-Challenge"
+    priority = 8
+
+    action {
+      challenge {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.non_cdn_traffic_rate_limit_challenge_by_source_ip
+        aggregate_key_type = "IP"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = var.user_agent_header_name
+                      }
+                    }
+
+                    search_string         = var.cloudfront_user_agent_header
+                    positional_constraint = "EXACTLY"
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  regex_pattern_set_reference_statement {
+                    arn = var.api_data_gov_hosts_regex_pattern_arn
+
+                    field_to_match {
+                      single_header {
+                        name = "host"
+                      }
+                    }
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "RateLimitCDNByForwardedIP-Challenge"
+    priority = 9
+
+    action {
+      challenge {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.cdn_traffic_rate_limit_challenge_by_forwarded_ip
+        aggregate_key_type = "FORWARDED_IP"
+
+        scope_down_statement {
+          byte_match_statement {
+            field_to_match {
+              single_header {
+                name = var.user_agent_header_name
+              }
+            }
+
+            search_string         = var.cloudfront_user_agent_header
+            positional_constraint = "EXACTLY"
+
+            text_transformation {
+              priority = 0
+              type     = "NONE"
+            }
+          }
+        }
+
+        forwarded_ip_config {
+          fallback_behavior = "NO_MATCH"
+          header_name       = var.forwarded_ip_header_name
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "RateLimitNonCDNBySourceIP-Block"
+    priority = 10
+
+    action {
+      count {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.non_cdn_traffic_rate_limit_block_by_source_ip
+        aggregate_key_type = "IP"
+
+        scope_down_statement {
+          and_statement {
+            statement {
+              not_statement {
+                statement {
+                  byte_match_statement {
+                    field_to_match {
+                      single_header {
+                        name = var.user_agent_header_name
+                      }
+                    }
+
+                    search_string         = var.cloudfront_user_agent_header
+                    positional_constraint = "EXACTLY"
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+
+            statement {
+              not_statement {
+                statement {
+                  regex_pattern_set_reference_statement {
+                    arn = var.api_data_gov_hosts_regex_pattern_arn
+
+                    field_to_match {
+                      single_header {
+                        name = "host"
+                      }
+                    }
+
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "${var.stack_description}-cf-uaa-waf-core-metric"
@@ -389,9 +767,24 @@ resource "aws_cloudwatch_log_group" "cf_uaa_waf_core_cloudwatch_log_group" {
 resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
   log_destination_configs = [aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn]
   resource_arn            = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+
+  logging_filter {
+    default_behavior = "KEEP"
+    filter {
+      behavior = "DROP"
+      condition {
+        label_name_condition {
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+        }
+      }
+      requirement = "MEETS_ANY"
+    }
+  }
 }
 
 resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
   resource_arn = aws_lb.cf_uaa.arn
   web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
+
+data "aws_caller_identity" "current" {}

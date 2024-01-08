@@ -11,7 +11,8 @@
           "ecr:ListImages",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetRepositoryPolicy",
-          "ecr:GetDownloadUrlForLayer"
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:PutImageTagMutability"
         ],
         "Resource": [
           "arn:${aws_partition}:ecr:${aws_default_region}:${account_id}:repository/*"

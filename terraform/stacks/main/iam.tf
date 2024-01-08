@@ -48,6 +48,14 @@ module "logsearch_ingestor_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
+module "logs_opensearch_ingestor_policy" {
+  source             = "../../modules/iam_role_policy/logs_opensearch_ingestor"
+  policy_name        = "${var.stack_description}-logs_opensearch_ingestor"
+  aws_partition      = data.aws_partition.current.partition
+  aws_default_region = var.aws_default_region
+  account_id         = data.aws_caller_identity.current.account_id
+}
+
 module "cf_blobstore_policy" {
   source            = "../../modules/iam_role_policy/cf_blobstore"
   policy_name       = "${var.stack_description}-cf-blobstore"
@@ -102,6 +110,11 @@ module "logsearch_ingestor_role" {
   role_name = "${var.stack_description}-logsearch-ingestor"
 }
 
+module "logs_opensearch_ingestor_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logs-opensearch-ingestor"
+}
+
 module "cf_blobstore_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-cf-blobstore"
@@ -124,6 +137,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.default_role.role_name,
     module.bosh_role.role_name,
     module.logsearch_ingestor_role.role_name,
+    module.logs_opensearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -139,6 +153,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.bosh_role.role_name,
     module.bosh_compilation_role.role_name,
     module.logsearch_ingestor_role.role_name,
+    module.logs_opensearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -146,14 +161,12 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
   ]
 }
 
+
 resource "aws_iam_policy_attachment" "bosh" {
   name       = "${var.stack_description}-bosh"
   policy_arn = module.bosh_policy.arn
   roles = [
     module.bosh_role.role_name,
-  ]
-  users = [
-    aws_iam_user.parent_bosh_user.name
   ]
 }
 
@@ -178,6 +191,14 @@ resource "aws_iam_policy_attachment" "logsearch_ingestor" {
   policy_arn = module.logsearch_ingestor_policy.arn
   roles = [
     module.logsearch_ingestor_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logs_opensearch_ingestor" {
+  name       = "logs_opensearch_ingestor"
+  policy_arn = module.logs_opensearch_ingestor_policy.arn
+  roles = [
+    module.logs_opensearch_ingestor_role.role_name,
   ]
 }
 
@@ -214,16 +235,4 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   roles = [
     module.elasticache_broker_role.role_name,
   ]
-}
-
-# Creds for the parent bosh (e.g. tooling-<region>) to access
-# the child bosh (e.g. <region><index>), used for CPI config
-resource "aws_iam_user" "parent_bosh_user" {
-  name = "tooling-${var.stack_description}-bosh"
-  path = "/bosh/"
-}
-
-
-resource "aws_iam_access_key" "parent_bosh_user_key_v1" {
-  user = aws_iam_user.parent_bosh_user.name
 }

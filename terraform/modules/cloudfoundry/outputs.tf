@@ -26,6 +26,10 @@ output "apps_lb_target_https_group" {
   value = aws_lb_target_group.cf_apps_target_https.name
 }
 
+output "logstash_lb_target_https_group" {
+  value = aws_lb_target_group.cf_logstash_target_https.name
+}
+
 output "uaa_lb_name" {
   value = aws_lb.cf_uaa.name
 }
@@ -99,6 +103,10 @@ output "droplets_bucket_name" {
 
 output "logsearch_archive_bucket_name" {
   value = module.logsearch-archive.bucket_name
+}
+
+output "logs_opensearch_archive_bucket_name" {
+  value = module.logs-opensearch-archive.bucket_name
 }
 
 output "cf_uaa_waf_core_arn" {

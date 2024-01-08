@@ -279,7 +279,41 @@ module "cf" {
 
   scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
+  waf_label_host_0                                            = var.waf_label_host_0
+  waf_hostname_0                                              = var.waf_hostname_0
+
+  ## TODO: manage these IP sets in Terraform somewhere
+  gsa_ip_range_ip_set_arn              = var.gsa_ip_range_ip_set_arn
+  api_data_gov_hosts_regex_pattern_arn = var.api_data_gov_hosts_regex_pattern_arn
+  customer_whitelist_ip_ranges_set_arn = var.customer_whitelist_ip_ranges_set_arn
+  malicious_ja3_fingerprint_id         = var.malicious_ja3_fingerprint_id
+  internal_vpc_cidrs_set_arn           = var.internal_vpc_cidrs_set_arn
+  cg_egress_ip_set_arn                 = var.cg_egress_ip_set_arn
 }
+
+
+module "autoscaler" {
+  source = "../../modules/autoscaler"
+
+  stack_description               = var.stack_description
+  rds_password                    = random_string.autoscaler_rds_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_instance_type               = var.cf_as_rds_instance_type
+
+}
+
+resource "random_string" "autoscaler_rds_password" {
+  length      = 32
+  special     = false
+  min_special = 0
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
 
 resource "aws_wafv2_web_acl_association" "main_waf_core" {
   resource_arn = aws_lb.main.arn
@@ -303,7 +337,6 @@ module "diego" {
   log_bucket_name = module.log_bucket.elb_bucket_name
 }
 
-
 module "logsearch" {
   source = "../../modules/logsearch"
 
@@ -313,6 +346,18 @@ module "logsearch" {
   bosh_security_group = module.stack.bosh_security_group
   listener_arn        = aws_lb_listener.main.arn
   hosts               = var.platform_kibana_hosts
+  elb_log_bucket_name = module.log_bucket.elb_bucket_name
+  aws_partition       = data.aws_partition.current.partition
+}
+
+module "logs_opensearch" {
+  source = "../../modules/logs_opensearch"
+
+  stack_description   = var.stack_description
+  vpc_id              = module.stack.vpc_id
+  private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
+  bosh_security_group = module.stack.bosh_security_group
+  listener_arn        = aws_lb_listener.main.arn
   elb_log_bucket_name = module.log_bucket.elb_bucket_name
   aws_partition       = data.aws_partition.current.partition
 }
@@ -372,8 +417,8 @@ module "dns_logging" {
   aws_partition     = data.aws_partition.current.partition
 }
 
-module "cloud_watch" {
-  source = "../../modules/cloud_watch"
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
 
   stack_description = var.stack_description
   sns_arn           = data.aws_sns_topic.cg_notifications.arn

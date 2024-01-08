@@ -72,7 +72,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.11"
+  default = "12.14"
 }
 
 variable "rds_parameter_group_family" {
@@ -141,7 +141,7 @@ variable "credhub_rds_db_name" {
 }
 
 variable "credhub_rds_db_storage_type" {
-  default = "gp2"
+  default = "gp3"
 }
 
 variable "credhub_rds_instance_type" {
@@ -161,7 +161,7 @@ variable "credhub_rds_password" {
 }
 
 variable "credhub_rds_db_engine_version" {
-  default = "12.11"
+  default = "12.14"
 }
 
 variable "credhub_rds_parameter_group_family" {

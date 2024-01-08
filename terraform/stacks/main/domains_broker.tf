@@ -56,17 +56,20 @@ output "domains_broker_internal_target_group" {
 /* Broker database */
 resource "aws_db_instance" "domains_broker" {
   db_name                     = "domains_broker"
-  storage_type                = "gp2"
-  allocated_storage           = 10
-  instance_class              = "db.t2.micro"
+  storage_type                = "gp3"
+  allocated_storage           = 20
+  instance_class              = "db.t2.small"
   username                    = var.domains_broker_rds_username
   password                    = var.domains_broker_rds_password
   engine                      = "postgres"
   engine_version              = var.domains_broker_rds_version
   db_subnet_group_name        = module.stack.rds_subnet_group
+  skip_final_snapshot         = true
+  final_snapshot_identifier   = "${var.stack_description}-domains-broker-final-snapshot"
   vpc_security_group_ids      = [module.stack.rds_postgres_security_group]
   allow_major_version_upgrade = true
   backup_retention_period     = 14
+  storage_encrypted           = true
 }
 
 output "domains_broker_rds_username" {
@@ -165,10 +168,46 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 }
 
+## MAX 10 HOSTS
+resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
+  count = var.domains_broker_alb_count
+
+  listener_arn = aws_lb_listener.domains_broker_https[count.index].arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
+  }
+
+  condition {
+    host_header {
+      values = var.logstash_hosts
+    }
+  }
+}
+
 resource "aws_lb_target_group" "domains_broker_apps_https" {
   count = var.domains_broker_alb_count
 
   name     = "${var.stack_description}-domains-apps-https-${count.index}"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 4
+    interval            = 5
+    port                = 81
+    matcher             = 200
+  }
+}
+
+resource "aws_lb_target_group" "domains_broker_logstash_https" {
+  count = var.domains_broker_alb_count
+
+  name     = "${var.stack_description}-domains-logstash-${count.index}"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
@@ -367,4 +406,21 @@ output "legacy_domain_certificate_renewer_secret_access_key_curr" {
 
 output "domains_broker_profile" {
   value = aws_iam_instance_profile.domains_broker.name
+}
+
+data "dns_a_record_set" "domains-internal-lb_ips" {
+  host = aws_lb.domains_broker_internal.dns_name
+}
+
+locals {
+  services-az1-net = module.cf.services_cidr_1
+  services-az2-net = module.cf.services_cidr_2
+  domain-lb-ips    = data.dns_a_record_set.domains-internal-lb_ips.addrs
+}
+
+output "domains-internal-ip-az1" {
+  value = cidrhost(local.services-az1-net, 0) == cidrhost("${local.domain-lb-ips[0]}/24", 0) ? local.domain-lb-ips[0] : local.domain-lb-ips[1]
+}
+output "domains-internal-ip-az2" {
+  value = cidrhost(local.services-az2-net, 0) == cidrhost("${local.domain-lb-ips[1]}/24", 0) ? local.domain-lb-ips[1] : local.domain-lb-ips[0]
 }
