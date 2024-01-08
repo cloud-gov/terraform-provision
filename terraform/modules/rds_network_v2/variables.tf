@@ -2,8 +2,8 @@ variable "stack_description" {
 }
 
 variable "availability_zones" {
-  type = list(string)
-  default = ["us-gov-west-1a","us-gov-west-1b"]
+  type    = list(string)
+  default = ["us-gov-west-1a", "us-gov-west-1b"]
 }
 
 variable "rds_private_cidrs" {

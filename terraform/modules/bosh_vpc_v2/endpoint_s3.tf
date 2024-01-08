@@ -46,7 +46,7 @@ resource "aws_vpc_endpoint" "customer_s3" {
 
 data "aws_network_interface" "vpce_customer_s3_if" {
   count = 2
-  id = local.network_interface_ids[count.index]
+  id    = local.network_interface_ids[count.index]
 }
 
 data "aws_caller_identity" "current" {}

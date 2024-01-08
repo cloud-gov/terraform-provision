@@ -2,12 +2,12 @@ variable "stack_description" {
 }
 
 variable "monitoring_cidrs" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "monitoring_availability_zones" {
   type    = list(string)
-  default = ["us-gov-west-1a","us-gov-west-1a"]
+  default = ["us-gov-west-1a", "us-gov-west-1a"]
 }
 
 variable "route_table_ids" {

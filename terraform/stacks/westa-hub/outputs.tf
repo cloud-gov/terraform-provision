@@ -1,7 +1,7 @@
 # Declare values used in multiple outputs
 locals { ##
   private_subnet_reserved = ["${cidrhost(module.stack.private_cidrs[0], 0)} - ${cidrhost(module.stack.private_cidrs[0], 3)}", "${cidrhost(module.stack.private_cidrs[1], 0)} - ${cidrhost(module.stack.private_cidrs[1], 3)}", "${cidrhost(module.stack.private_cidrs[2], 0)} - ${cidrhost(module.stack.private_cidrs[2], 3)}"]
-  protobosh_static_ip   = cidrhost(module.stack.private_cidrs[0], 6)
+  protobosh_static_ip     = cidrhost(module.stack.private_cidrs[0], 6)
   bosh_static_ip          = cidrhost(module.stack.private_cidrs[2], 6)
   bosh_uaa_static_ips = [
     cidrhost(module.stack.private_cidrs[0], 4),
@@ -9,11 +9,11 @@ locals { ##
     cidrhost(module.stack.private_cidrs[2], 4),
   ]
 
-  bosh_uaa_static_ips_az1 = [ cidrhost(module.stack.private_cidrs[0], 4) ]
-  bosh_uaa_static_ips_az2 = [ cidrhost(module.stack.private_cidrs[1], 4) ]
-  bosh_uaa_static_ips_az3 = [ cidrhost(module.stack.private_cidrs[2], 4) ]
+  bosh_uaa_static_ips_az1 = [cidrhost(module.stack.private_cidrs[0], 4)]
+  bosh_uaa_static_ips_az2 = [cidrhost(module.stack.private_cidrs[1], 4)]
+  bosh_uaa_static_ips_az3 = [cidrhost(module.stack.private_cidrs[2], 4)]
 
-  production_smtp_private_ip = cidrhost(module.stack.private_cidrs[0], 12)
+  production_smtp_private_ip  = cidrhost(module.stack.private_cidrs[0], 12)
   private_subnet_reserved_az1 = ["${cidrhost(module.stack.private_cidrs[0], 0)} - ${cidrhost(module.stack.private_cidrs[0], 3)}"]
   private_subnet_reserved_az2 = ["${cidrhost(module.stack.private_cidrs[1], 0)} - ${cidrhost(module.stack.private_cidrs[1], 3)}"]
   private_subnet_reserved_az3 = ["${cidrhost(module.stack.private_cidrs[2], 0)} - ${cidrhost(module.stack.private_cidrs[2], 3)}"]
@@ -1117,12 +1117,12 @@ output "bosh_default_ssh_private_key" {
 
 ## Experimental
 output "jumpbox_psql" {
-  value =  "psql \"postgres://bosh:${module.stack.bosh_rds_password}@${module.stack.bosh_rds_url_curr}/postgres\" "
+  value     = "psql \"postgres://bosh:${module.stack.bosh_rds_password}@${module.stack.bosh_rds_url_curr}/postgres\" "
   sensitive = true
 }
 
 output "jumpbox_protobosh_psql" {
-  value =  "psql \"postgres://bosh:${module.stack.protobosh_rds_password}@${module.stack.protobosh_rds_url}/postgres\" "
+  value     = "psql \"postgres://bosh:${module.stack.protobosh_rds_password}@${module.stack.protobosh_rds_url}/postgres\" "
   sensitive = true
 }
 

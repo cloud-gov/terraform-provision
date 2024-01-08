@@ -1,7 +1,7 @@
 
 # Create the terraform-provision user, output is fed to cg-provision.yml in aws_access_key_id and aws_secret_access_key
 module "terraform_provision_user" {
-  source   = "../../modules/iam_user/terraform_provision"
+  source = "../../modules/iam_user/terraform_provision"
 }
 
 provider "aws" {
@@ -9,7 +9,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      deployment = "cg-provision"
+      deployment  = "cg-provision"
       provisioner = "terraform"
     }
   }

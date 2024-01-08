@@ -3,12 +3,12 @@ variable "stack_description" {
 
 variable "credhub_cidrs" {
   type    = list(string)
-  default = ["10.0.36.0/24","10.0.37.0/24"]
+  default = ["10.0.36.0/24", "10.0.37.0/24"]
 }
 
 variable "credhub_availability_zones" {
   type    = list(string)
-  default = ["us-gov-west-1a","us-gov-west-1b"]
+  default = ["us-gov-west-1a", "us-gov-west-1b"]
 }
 
 variable "rds_db_name" {

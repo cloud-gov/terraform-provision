@@ -7,7 +7,7 @@
  */
 
 resource "aws_subnet" "subnet_rds" {
-  count             = length(var.availability_zones)
+  count = length(var.availability_zones)
 
   vpc_id            = var.vpc_id
   cidr_block        = var.rds_private_cidrs[count.index]
@@ -25,7 +25,7 @@ resource "aws_db_subnet_group" "rds" {
 }
 
 resource "aws_route_table_association" "rds_rta" {
-  count          = length(var.availability_zones)
+  count = length(var.availability_zones)
 
   subnet_id      = aws_subnet.subnet_rds[count.index].id
   route_table_id = var.route_table_ids[count.index]

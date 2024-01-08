@@ -92,7 +92,7 @@ module "varz_bucket" {
   bucket        = "${var.bucket_prefix}-cloud-gov-varz"
   aws_partition = data.aws_partition.current.partition
   # force_destroy = "true"
-  versioning    = "true"
+  versioning = "true"
 }
 
 # Existing is a private bucket requiring AES256 encryption
@@ -101,7 +101,7 @@ module "varz_bucket_stage" {
   bucket        = "${var.bucket_prefix}-cloud-gov-varz-stage"
   aws_partition = data.aws_partition.current.partition
   # force_destroy = "true"
-  versioning    = "true"
+  versioning = "true"
 }
 
 # Existing is a private bucket requiring AES256 encryption

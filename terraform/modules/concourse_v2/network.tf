@@ -9,7 +9,7 @@
  */
 
 resource "aws_subnet" "concourse" {
-  count             = length(var.concourse_availability_zones)
+  count = length(var.concourse_availability_zones)
 
   vpc_id            = var.vpc_id
   cidr_block        = var.concourse_cidrs[count.index]
@@ -21,7 +21,7 @@ resource "aws_subnet" "concourse" {
 }
 
 resource "aws_route_table_association" "concourse_rta" {
-  count          = length(var.concourse_availability_zones)
+  count = length(var.concourse_availability_zones)
 
   subnet_id      = aws_subnet.concourse[count.index].id
   route_table_id = var.route_table_ids[count.index]

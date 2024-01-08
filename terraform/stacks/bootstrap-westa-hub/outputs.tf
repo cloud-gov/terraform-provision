@@ -10,5 +10,5 @@ output "terraform_provision_access_secret" {
 }
 
 output "aws_s3_tfstate_bucket" {
-  value     = module.tfstate_bucket.bucket_name
+  value = module.tfstate_bucket.bucket_name
 }

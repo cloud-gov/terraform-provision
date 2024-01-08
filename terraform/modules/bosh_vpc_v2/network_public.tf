@@ -10,7 +10,7 @@
  */
 
 resource "aws_subnet" "subnet_public" {
-  count  = length(var.availability_zones)
+  count = length(var.availability_zones)
 
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = var.public_cidrs[count.index]
@@ -53,7 +53,7 @@ resource "aws_route_table" "public_network" {
 }
 
 resource "aws_route_table_association" "public_rta" {
-  count  = length(var.availability_zones)
+  count          = length(var.availability_zones)
   subnet_id      = aws_subnet.subnet_public[count.index].id
   route_table_id = aws_route_table.public_network.id
 }

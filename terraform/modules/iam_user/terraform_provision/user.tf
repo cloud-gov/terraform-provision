@@ -9,5 +9,5 @@ resource "aws_iam_user_policy_attachment" "terraform_provision" {
 }
 
 resource "aws_iam_access_key" "iam_access_key_v1" {
-  user    = aws_iam_user.terraform_provision.name
+  user = aws_iam_user.terraform_provision.name
 }

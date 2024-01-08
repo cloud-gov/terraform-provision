@@ -19,8 +19,8 @@ resource "aws_s3_bucket_website_configuration" "bucket_website_configuration" {
 
 resource "aws_s3_bucket_policy" "public_encrypted_bucket_policy" {
 
-  depends_on = [ aws_s3_bucket_public_access_block.cvd_public_access_block ]
-	
+  depends_on = [aws_s3_bucket_public_access_block.cvd_public_access_block]
+
   bucket = aws_s3_bucket.cvd_bucket.id
   policy = <<EOF
 {

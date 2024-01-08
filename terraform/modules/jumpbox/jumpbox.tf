@@ -3,8 +3,8 @@ resource "aws_instance" "jumpbox" {
   iam_instance_profile                 = var.iam_instance_profile
   instance_type                        = var.instance_type
   key_name                             = var.stack_description
-  subnet_id                            = var.subnet_id 
-  vpc_security_group_ids               = var.vpc_security_group_ids 
+  subnet_id                            = var.subnet_id
+  vpc_security_group_ids               = var.vpc_security_group_ids
   private_ip                           = var.private_ip
   associate_public_ip_address          = "false"
   get_password_data                    = "false"
@@ -36,15 +36,15 @@ resource "aws_instance" "jumpbox" {
   enclave_options {
     enabled = "false"
   }
-  
-  tags        = { 
-    "Name" = var.ec2_name 
+
+  tags = {
+    "Name" = var.ec2_name
   }
 }
 
 
 
-  
+
 
 ## TODO: Probably worth locking down the jumpbox if it is going to be around for any length of time
 

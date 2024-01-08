@@ -79,32 +79,32 @@ resource "aws_lb_listener_certificate" "main-staging" {
 module "stack" {
   source = "../../modules/stack/base_v2"
 
-  stack_description                      = var.stack_description
-  vpc_cidr                               = var.vpc_cidr
-  availability_zones                     = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
-  aws_default_region                     = var.aws_default_region
-  public_cidrs                           = [cidrsubnet(var.vpc_cidr, 8, 100), cidrsubnet(var.vpc_cidr, 8, 101), cidrsubnet(var.vpc_cidr, 8, 102)]
-  private_cidrs                          = [cidrsubnet(var.vpc_cidr, 8, 1), cidrsubnet(var.vpc_cidr, 8, 2), cidrsubnet(var.vpc_cidr, 8, 3)]
-  restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
-  rds_private_cidrs                      = [cidrsubnet(var.vpc_cidr, 8, 20), cidrsubnet(var.vpc_cidr, 8, 21), cidrsubnet(var.vpc_cidr, 8, 22)]
-  rds_security_groups                    = [module.stack.bosh_security_group]
-  rds_security_groups_count              = "1"
+  stack_description                 = var.stack_description
+  vpc_cidr                          = var.vpc_cidr
+  availability_zones                = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
+  aws_default_region                = var.aws_default_region
+  public_cidrs                      = [cidrsubnet(var.vpc_cidr, 8, 100), cidrsubnet(var.vpc_cidr, 8, 101), cidrsubnet(var.vpc_cidr, 8, 102)]
+  private_cidrs                     = [cidrsubnet(var.vpc_cidr, 8, 1), cidrsubnet(var.vpc_cidr, 8, 2), cidrsubnet(var.vpc_cidr, 8, 3)]
+  restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
+  rds_private_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 20), cidrsubnet(var.vpc_cidr, 8, 21), cidrsubnet(var.vpc_cidr, 8, 22)]
+  rds_security_groups               = [module.stack.bosh_security_group]
+  rds_security_groups_count         = "1"
 
-  rds_password                           = random_string.rds_password.result
-  rds_multi_az                           = var.rds_multi_az
-  rds_db_engine_version                  = var.rds_db_engine_version
-  rds_parameter_group_family             = var.rds_parameter_group_family
-  rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
-  rds_apply_immediately                  = var.rds_apply_immediately
+  rds_password                    = random_string.rds_password.result
+  rds_multi_az                    = var.rds_multi_az
+  rds_db_engine_version           = var.rds_db_engine_version
+  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
 
-  create_protobosh_rds                             = true
-  protobosh_rds_multi_az                           = var.rds_multi_az
-  protobosh_rds_db_engine_version                  = var.rds_db_engine_version
-  protobosh_rds_parameter_group_family             = var.rds_parameter_group_family
-  protobosh_rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
-  protobosh_rds_apply_immediately                  = var.rds_apply_immediately
-  protobosh_rds_password                           = random_string.protobosh_rds_password.result
+  create_protobosh_rds                      = true
+  protobosh_rds_multi_az                    = var.rds_multi_az
+  protobosh_rds_db_engine_version           = var.rds_db_engine_version
+  protobosh_rds_parameter_group_family      = var.rds_parameter_group_family
+  protobosh_rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  protobosh_rds_apply_immediately           = var.rds_apply_immediately
+  protobosh_rds_password                    = random_string.protobosh_rds_password.result
 
   bosh_default_ssh_public_key            = tls_private_key.bosh_key.public_key_openssh
   target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 32), cidrsubnet(var.vpc_cidr, 8, 33), cidrsubnet(var.vpc_cidr, 8, 34), cidrsubnet(var.vpc_cidr, 8, 35), cidrsubnet(var.vpc_cidr, 8, 1)]

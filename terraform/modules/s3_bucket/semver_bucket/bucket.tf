@@ -33,7 +33,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypted_bucket_
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = aws_s3_bucket.semver_bucket.id
-    policy = <<POLICY
+  policy = <<POLICY
 {
   "Statement": [
     {

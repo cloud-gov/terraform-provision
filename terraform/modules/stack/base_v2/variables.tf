@@ -7,7 +7,7 @@ variable "vpc_cidr" {
 
 variable "availability_zones" {
   type    = list(string)
-  default = ["us-gov-west-1a","us-gov-west-1b"]
+  default = ["us-gov-west-1a", "us-gov-west-1b"]
 }
 
 
@@ -17,11 +17,11 @@ variable "aws_default_region" {
 
 variable "public_cidrs" {
   type    = list(string)
-  default = ["10.0.100.0/24","10.0.101.0/24"]
+  default = ["10.0.100.0/24", "10.0.101.0/24"]
 }
 
 variable "private_cidrs" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "nat_gateway_instance_type" {
