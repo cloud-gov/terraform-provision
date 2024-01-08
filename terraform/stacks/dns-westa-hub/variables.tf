@@ -10,7 +10,7 @@ variable "aws_region" {
 
 
 variable "cloudfront_zone_id" {
-  default = "Z33AYJ8TM3BH4J" 
+  default     = "Z33AYJ8TM3BH4J"
   description = "This is a hard coded value based on the region being used, not a sensitive values"
 }
 
