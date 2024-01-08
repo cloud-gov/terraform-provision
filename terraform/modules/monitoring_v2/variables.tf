@@ -3,7 +3,6 @@ variable "stack_description" {
 
 variable "monitoring_cidrs" {
   type    = list(string)
-  default = ["10.99.42.0/24","10.99.43.0/24"]
 }
 
 variable "monitoring_availability_zones" {
