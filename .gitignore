@@ -2,6 +2,7 @@
 environment.sh
 env.sh
 credentials.yml
+state.yml
 
 tmp/
 tmp/*
@@ -12,6 +13,9 @@ tmp/*
 .terraform*
 *.tfvars
 .terraform.lock.hcl
+*.tfplan
+terraform-plan-output.txt
+terraform.json
 
 # Eclipse IDE files
 .project

@@ -1,15 +1,3 @@
-variable "use_vpc_peering" {
-  default = "0"
-}
-
-variable "tooling_state_bucket" {
-  default = "tooling"
-}
-
-variable "tooling_stack_name" {
-  default = "tooling"
-}
-
 data "terraform_remote_state" "tooling_vpc" {
   count = var.use_vpc_peering
 
