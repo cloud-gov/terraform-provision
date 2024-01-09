@@ -150,7 +150,13 @@
         "iam:GetPolicy",
         "iam:GetPolicyVersion",
         "iam:CreatePolicyVersion",
-        "iam:DeletePolicyVersion"
+        "iam:DeletePolicyVersion",
+        "iam:TagUser",
+        "iam:UntagUser",
+        "iam:TagPolicy",
+        "iam:UntagPolicy",
+        "iam:TagRole",
+        "iam:UntagRole"
       ],
       "Effect": "Allow",
       "Resource": [

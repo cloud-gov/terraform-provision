@@ -23,7 +23,11 @@
         "iam:DeletePolicy",
         "iam:ListAttachedUserPolicies",
         "iam:AttachUserPolicy",
-        "iam:DetachUserPolicy"
+        "iam:DetachUserPolicy",
+        "iam:TagUser",
+        "iam:UntagUser",
+        "iam:TagPolicy",
+        "iam:UntagPolicy"
       ],
       "Effect": "Allow",
       "Resource": [
