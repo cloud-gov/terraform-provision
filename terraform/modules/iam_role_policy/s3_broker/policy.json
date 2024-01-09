@@ -25,7 +25,9 @@
         "iam:AttachUserPolicy",
         "iam:DetachUserPolicy",
         "iam:TagUser",
-        "iam:UntagUser"
+        "iam:UntagUser",
+        "iam:TagPolicy",
+        "iam:UntagPolicy"
       ],
       "Effect": "Allow",
       "Resource": [
