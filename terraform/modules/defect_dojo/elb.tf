@@ -24,6 +24,20 @@ resource "aws_lb_listener_rule" "defectdojo_listener_rule" {
   listener_arn = var.listener_arn
 
   action {
+    type = "authenticate-oidc"
+    authenticate_oidc {
+      # https://opslogin.fr.cloud.gov/.well-known/openid-configuration
+      authorization_endpoint     = "https://${var.opslogin_hostname}/oauth/authorize"
+      client_id                  = var.oidc_client
+      client_secret              = var.oidc_client_secret
+      issuer                     = "https://${var.opslogin_hostname}/oauth/token"
+      token_endpoint             = "https://${var.opslogin_hostname}/oauth/token"
+      user_info_endpoint         = "https://${var.opslogin_hostname}/userinfo"
+      on_unauthenticated_request = "authenticate"
+    }
+  }
+
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.defectdojo_target.arn
   }
