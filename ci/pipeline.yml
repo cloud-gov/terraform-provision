@@ -396,6 +396,8 @@ jobs:
       TF_VAR_waf_hostname_0: ((waf_hostname_0))
       TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
       TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
+      TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
+      TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
   - *notify-slack
 
 - name: bootstrap-tooling
