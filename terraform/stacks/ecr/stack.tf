@@ -29,6 +29,8 @@ variable "repositories" {
     "sql-clients",
     "time-resource",
     "ubuntu-hardened",
+    "pages-dind-v25",
+    "pages-node-v20",
   ]
 }
 
