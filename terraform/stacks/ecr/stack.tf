@@ -31,6 +31,7 @@ variable "repositories" {
     "ubuntu-hardened",
     "pages-dind-v25",
     "pages-node-v20",
+    "pages-python-v3.11",
   ]
 }
 
