@@ -18,7 +18,7 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
-  default = "15.3"
+  default = "15.5"
 }
 
 variable "rds_parameter_group_family" {
