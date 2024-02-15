@@ -520,6 +520,7 @@ jobs:
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
       TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
       TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
   - *notify-slack
@@ -679,6 +680,7 @@ jobs:
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
       TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
       TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
   - *notify-slack
@@ -836,6 +838,7 @@ jobs:
       TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
       TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
       TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
   - *notify-slack
