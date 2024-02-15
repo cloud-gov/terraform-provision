@@ -471,6 +471,12 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
         statement {
           ip_set_reference_statement {
+            arn = var.customer_whitelist_source_ip_ranges_set_arn
+          }
+        }
+
+        statement {
+          ip_set_reference_statement {
             arn = var.cg_egress_ip_set_arn
 
             ip_set_forwarded_ip_config {
