@@ -199,7 +199,12 @@ variable "api_data_gov_hosts_regex_pattern_arn" {
 
 variable "customer_whitelist_ip_ranges_set_arn" {
   type        = string
-  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted"
+  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted by X-Forwarded-For header"
+}
+
+variable "customer_whitelist_source_ip_ranges_set_arn" {
+  type        = string
+  description = "ARN of IP set identifying customer IP CIDR ranges that should be whitelisted by source IP address"
 }
 
 variable "internal_vpc_cidrs_set_arn" {
