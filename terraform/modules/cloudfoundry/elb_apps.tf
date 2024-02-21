@@ -30,8 +30,8 @@ resource "aws_lb_target_group" "cf_apps_target_https" {
   }
 }
 
-resource "aws_lb_target_group" "cf_gorouter_apps_target_https" {
-  name     = "${var.stack_description}-cf-gorouter-apps-https"
+resource "aws_lb_target_group" "cf_gr_apps_target_https" {
+  name     = "${var.stack_description}-cf-gr-apps-https"
   port     = 10443
   protocol = "HTTPS"
   vpc_id   = var.vpc_id
