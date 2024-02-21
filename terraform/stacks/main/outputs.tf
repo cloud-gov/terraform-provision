@@ -219,7 +219,8 @@ output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
 }
 
-output "cf_gr_target_group" {
+/* Temp target groups */
+output "cf_gr_target_group" { 
   value = module.cf.lb_gr_target_https_group
 }
 
