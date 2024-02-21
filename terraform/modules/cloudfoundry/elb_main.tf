@@ -30,6 +30,22 @@ resource "aws_lb_target_group" "cf_target_https" {
   }
 }
 
+resource "aws_lb_target_group" "cf_gorouter_target_https" {
+  name     = "${var.stack_description}-cf-gorouter-https"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+  }
+}
+
 resource "aws_lb_listener" "cf" {
   load_balancer_arn = aws_lb.cf.arn
   port              = "443"
