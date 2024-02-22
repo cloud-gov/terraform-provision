@@ -174,7 +174,7 @@ module "credhub_production" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m4.large"
+  rds_instance_type               = "db.m5.large"
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
