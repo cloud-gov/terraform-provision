@@ -43,6 +43,8 @@ resource "aws_lb_target_group" "cf_gr_target_https" {
     timeout             = 4
     unhealthy_threshold = 3
     matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
   }
 }
 
