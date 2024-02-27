@@ -26,7 +26,7 @@ variable "stack_description" {
 }
 
 variable "rds_instance_type" {
-  default = "db.m4.large"
+  default = "db.m5.large"
 }
 
 variable "rds_db_size" {

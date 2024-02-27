@@ -6,7 +6,7 @@ module "opsuaa_db" {
   source = "../../modules/rds"
 
   stack_description               = var.stack_description
-  rds_instance_type               = "db.t2.medium"
+  rds_instance_type               = "db.t3.medium"
   rds_db_name                     = "opsuaa"
   rds_username                    = "opsuaa"
   rds_password                    = var.opsuaa_rds_password

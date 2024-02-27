@@ -21,7 +21,7 @@ variable "rds_password" {
 }
 
 variable "rds_instance_type" {
-  default = "db.m4.large"
+  default = "db.m5.large"
 }
 
 variable "cf_rds_password" {
@@ -108,10 +108,10 @@ variable "parent_stack_name" {
 }
 
 variable "domains_broker_rds_version" {
-  default = "11"
+  default = "12.17"
 }
 variable "cf_rds_instance_type" {
-  default = "db.m4.large"
+  default = "db.m5.large"
 }
 
 variable "cf_as_rds_instance_type" {
