@@ -189,12 +189,6 @@ variable "oidc_client" {
 variable "oidc_client_secret" {
 }
 
-variable "defectdojo_staging_oidc_client" {
-}
-
-variable "defectdojo_staging_oidc_client_secret" {
-}
-
 variable "opslogin_hostname" {
 }
 
