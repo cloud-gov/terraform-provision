@@ -90,13 +90,3 @@ variable "listener_arn" {
 variable "hosts" {
   type = list(string)
 }
-
-variable "oidc_client" {
-}
-
-variable "oidc_client_secret" {
-}
-
-variable "opslogin_hostname" {
-
-}

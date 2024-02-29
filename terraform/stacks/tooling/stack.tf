@@ -235,9 +235,6 @@ module "defectdojo_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_staging_hosts
-  oidc_client                     = var.defectdojo_staging_oidc_client
-  oidc_client_secret              = var.defectdojo_staging_oidc_client_secret
-  opslogin_hostname               = var.opslogin_hostname
 }
 
 module "monitoring_production" {
