@@ -19,7 +19,6 @@ variable "repositories" {
     "harden-concourse-task-staging",
     "harden-s3-resource-simple",
     "harden-s3-resource-simple-staging",
-    "oracle-client",
     "registry-image-resource",
     "s3-resource",
     "s3-resource-simple",
