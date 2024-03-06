@@ -213,6 +213,7 @@ module "stack" {
   target_account_id                 = data.aws_caller_identity.tooling.account_id
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
+  block_range_20                    = var.block_range_20
 
   target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
   target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr

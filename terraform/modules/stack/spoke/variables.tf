@@ -167,3 +167,9 @@ variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
+
+
+#Placeholder for real value, passed as a secret
+variable "block_range_20" {
+  default = "192.168.0.0/32"
+}
