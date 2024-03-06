@@ -9,6 +9,7 @@ variable "repositories" {
   default = [
     "cf-cli-resource",
     "cf-resource",
+    "cloud-service-broker",
     "concourse-task",
     "cron-resource",
     "email-resource",
@@ -17,8 +18,12 @@ variable "repositories" {
     "github-pr-resource",
     "harden-concourse-task",
     "harden-concourse-task-staging",
+    "harden-playwright",
     "harden-s3-resource-simple",
     "harden-s3-resource-simple-staging",
+    "pages-dind-v25",
+    "pages-node-v20",
+    "pages-python-v3.11",
     "registry-image-resource",
     "s3-resource",
     "s3-resource-simple",
@@ -27,11 +32,7 @@ variable "repositories" {
     "slack-notification-resource",
     "sql-clients",
     "time-resource",
-    "ubuntu-hardened",
-    "pages-dind-v25",
-    "pages-node-v20",
-    "pages-python-v3.11",
-    "harden-playwright"
+    "ubuntu-hardened"
   ]
 }
 
