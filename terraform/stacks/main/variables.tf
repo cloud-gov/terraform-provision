@@ -203,3 +203,8 @@ variable "cg_egress_ip_set_arn" {
   type        = string
   description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
 }
+
+#Placeholder for real value, passed as a secret
+variable "block_range_20" {
+  default = "192.168.0.0/32"
+}
