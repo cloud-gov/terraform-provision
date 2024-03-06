@@ -93,7 +93,7 @@ resource "aws_network_acl_rule" "deny_rule_ingress_rule_20" {
 resource "aws_network_acl_rule" "deny_rule_egress_rule_20" {
   count          = length(data.aws_network_acls.default.ids)
   rule_number    = 20
-  network_acl_id = data.aws_network_acls.default.id[count.index]
+  network_acl_id = data.aws_network_acls.default.ids[count.index]
   rule_action    = "deny"
   protocol       = "-1"
   cidr_block     = var.block_range_20
