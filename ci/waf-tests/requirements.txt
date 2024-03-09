@@ -1,5 +1,5 @@
 attrs==21.4.0
-certifi==2021.10.8
+certifi==2023.7.22
 charset-normalizer==2.0.12
 idna==3.3
 iniconfig==1.1.1
@@ -8,6 +8,6 @@ pluggy==1.0.0
 py==1.11.0
 pyparsing==3.0.7
 pytest==7.0.1
-requests==2.27.1
+requests==2.31.0
 tomli==2.0.1
-urllib3==1.26.8
+urllib3==1.26.18
