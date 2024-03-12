@@ -30,6 +30,24 @@ resource "aws_lb_target_group" "cf_target_https" {
   }
 }
 
+resource "aws_lb_target_group" "cf_gr_target_https" {
+  name     = "${var.stack_description}-cf-gr-https"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_lb_listener" "cf" {
   load_balancer_arn = aws_lb.cf.arn
   port              = "443"
@@ -38,8 +56,17 @@ resource "aws_lb_listener" "cf" {
   certificate_arn   = var.elb_main_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.cf_target_https.arn
+      }
+
+      target_group {
+        arn = aws_lb_target_group.cf_gr_target_https.arn
+      }
+    }
   }
 }
 
@@ -49,8 +76,17 @@ resource "aws_lb_listener" "cf_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.cf_target_https.arn
+      }
+
+      target_group {
+        arn = aws_lb_target_group.cf_gr_target_https.arn
+      }
+    }
   }
 }
 

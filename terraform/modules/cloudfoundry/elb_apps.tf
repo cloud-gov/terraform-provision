@@ -38,8 +38,17 @@ resource "aws_lb_listener" "cf_apps" {
   certificate_arn   = var.elb_apps_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.cf_apps_target_https.arn
+      }
+
+      target_group {
+        arn = aws_lb_target_group.cf_gr_apps_target_https.arn
+      }
+    }
   }
 }
 
@@ -49,8 +58,17 @@ resource "aws_lb_listener" "cf_apps_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.cf_apps_target_https.arn
+      }
+
+      target_group {
+        arn = aws_lb_target_group.cf_gr_apps_target_https.arn
+      }
+    }
   }
 }
 

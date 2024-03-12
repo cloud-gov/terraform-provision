@@ -204,6 +204,8 @@ output "cf_router_target_groups" {
   value = concat(
     [module.cf.lb_target_https_group],
     [module.cf.apps_lb_target_https_group],
+    [module.cf.lb_gr_target_https_group],
+    [module.cf.apps_lb_gr_target_https_group],
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
   )
@@ -215,6 +217,15 @@ output "cf_target_group" {
 
 output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
+}
+
+/* Temp target groups */
+output "cf_gr_target_group" {
+  value = module.cf.lb_gr_target_https_group
+}
+
+output "cf_apps_gr_target_group" {
+  value = module.cf.apps_lb_gr_target_https_group
 }
 
 output "cf_logstash_target_group" {
