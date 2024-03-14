@@ -79,26 +79,26 @@ data "aws_network_acls" "default" {
 }
 
 resource "aws_network_acl_rule" "deny_rule_ingress_rules" {
-  count = length(data.aws_network_acls.default.ids) * length(var.cidr_blocks)
+  count          = length(var.cidr_blocks)
 
   rule_number    = 201 + count.index
-  network_acl_id = data.aws_network_acls.default.ids[count.index / length(var.cidr_blocks)]
+  network_acl_id = data.aws_network_acls.default.ids[0]
   rule_action    = "deny"
   protocol       = "-1"
-  cidr_block     = var.cidr_blocks[count.index % length(var.cidr_blocks)]
+  cidr_block     = var.cidr_blocks[count.index]
   from_port      = 0
   to_port        = 0
   egress         = false
 }
 
 resource "aws_network_acl_rule" "deny_rule_egress_rules" {
-  count = length(data.aws_network_acls.default.ids) * length(var.cidr_blocks)
+  count          = length(var.cidr_blocks)
 
   rule_number    = 201 + count.index
-  network_acl_id = data.aws_network_acls.default.ids[count.index / length(var.cidr_blocks)]
+  network_acl_id = data.aws_network_acls.default.ids[0]
   rule_action    = "deny"
   protocol       = "-1"
-  cidr_block     = var.cidr_blocks[count.index % length(var.cidr_blocks)]
+  cidr_block     = var.cidr_blocks[count.index]
   from_port      = 0
   to_port        = 0
   egress         = true
