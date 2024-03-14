@@ -187,6 +187,7 @@ variable "s3_gateway_policy_accounts" {
 
 
 #Placeholder for real value, passed as a secret
-variable "block_range_20" {
-  default = "192.168.0.0/32"
+variable "cidr_blocks" {
+  type    = list(string)
+  default = ["192.168.0.0/32", "192.168.0.1/32"]
 }

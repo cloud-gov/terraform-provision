@@ -78,25 +78,27 @@ data "aws_network_acls" "default" {
   vpc_id = aws_vpc.main_vpc.id
 }
 
-resource "aws_network_acl_rule" "deny_rule_ingress_rule_20" {
-  count          = length(data.aws_network_acls.default.ids)
-  rule_number    = 20
-  network_acl_id = data.aws_network_acls.default.ids[count.index]
+resource "aws_network_acl_rule" "deny_rule_ingress_rules" {
+  count = length(data.aws_network_acls.default.ids) * length(var.cidr_blocks)
+
+  rule_number    = 201 + count.index
+  network_acl_id = data.aws_network_acls.default.ids[count.index / length(var.cidr_blocks)]
   rule_action    = "deny"
   protocol       = "-1"
-  cidr_block     = var.block_range_20
+  cidr_block     = var.cidr_blocks[count.index % length(var.cidr_blocks)]
   from_port      = 0
   to_port        = 0
   egress         = false
 }
 
-resource "aws_network_acl_rule" "deny_rule_egress_rule_20" {
-  count          = length(data.aws_network_acls.default.ids)
-  rule_number    = 20
-  network_acl_id = data.aws_network_acls.default.ids[count.index]
+resource "aws_network_acl_rule" "deny_rule_egress_rules" {
+  count = length(data.aws_network_acls.default.ids) * length(var.cidr_blocks)
+
+  rule_number    = 201 + count.index
+  network_acl_id = data.aws_network_acls.default.ids[count.index / length(var.cidr_blocks)]
   rule_action    = "deny"
   protocol       = "-1"
-  cidr_block     = var.block_range_20
+  cidr_block     = var.cidr_blocks[count.index % length(var.cidr_blocks)]
   from_port      = 0
   to_port        = 0
   egress         = true
