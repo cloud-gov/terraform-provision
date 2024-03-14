@@ -1407,8 +1407,8 @@ resources:
 - name: cg-provision-repo-development
   type: git
   source:
-    uri: cidr_blocks #((cg_provision_git_url))
-    branch: ((cg_provision_git_branch_development))
+    uri: ((cg_provision_git_url))
+    branch: cidr_blocks #((cg_provision_git_branch_development))
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: pull-request
