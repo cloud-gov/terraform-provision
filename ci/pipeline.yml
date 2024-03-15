@@ -684,7 +684,7 @@ jobs:
       TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
-      TF_VAR_block_range_20: ((block_range_20))
+      TF_VAR_cidr_blocks: ((cidr_blocks))
   - *notify-slack
 
 - name: bootstrap-staging
@@ -843,7 +843,7 @@ jobs:
       TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
-      TF_VAR_block_range_20: ((block_range_20))
+      TF_VAR_cidr_blocks: ((cidr_blocks))
 
   - *notify-slack
 
