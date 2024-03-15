@@ -79,7 +79,7 @@ data "aws_network_acls" "default" {
 }
 
 resource "aws_network_acl_rule" "deny_rule_ingress_rules" {
-  count          = length(var.cidr_blocks)
+  count = length(var.cidr_blocks)
 
   rule_number    = 20 + count.index
   network_acl_id = data.aws_network_acls.default.ids[0]
@@ -92,7 +92,7 @@ resource "aws_network_acl_rule" "deny_rule_ingress_rules" {
 }
 
 resource "aws_network_acl_rule" "deny_rule_egress_rules" {
-  count          = length(var.cidr_blocks)
+  count = length(var.cidr_blocks)
 
   rule_number    = 20 + count.index
   network_acl_id = data.aws_network_acls.default.ids[0]
