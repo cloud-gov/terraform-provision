@@ -66,9 +66,8 @@ variable "s3_gateway_policy_accounts" {
   default = []
 }
 
-#Placeholder for real value, passed as a secret
 variable "cidr_blocks" {
   type    = list(string)
-  default = ["192.168.0.0/32", "192.168.0.1/32"]
+  default = []
 }
 
