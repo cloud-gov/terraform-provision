@@ -24,6 +24,7 @@ variable "repositories" {
     "pages-dind-v25",
     "pages-node-v20",
     "pages-python-v3.11",
+    "pages-playwright-v1",
     "registry-image-resource",
     "s3-resource",
     "s3-resource-simple",
