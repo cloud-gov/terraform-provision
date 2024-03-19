@@ -70,7 +70,7 @@ resource "aws_lb_listener_rule" "domains_lbgroup_logstash_listener_rule" {
 resource "aws_lb_target_group" "domains_lbgroup_apps_https" {
   count = var.domains_lbgroup_count
 
-  name     = "${var.stack_description}-dlbgroup-apps-https-${count.index}"
+  name     = "${var.stack_description}-dlbg-apps-https-${count.index}"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = var.vpc_id
@@ -88,7 +88,7 @@ resource "aws_lb_target_group" "domains_lbgroup_apps_https" {
 resource "aws_lb_target_group" "domains_lbgroup_logstash_https" {
   count = var.domains_lbgroup_count
 
-  name     = "${var.stack_description}-dlbgroup-logstash-${count.index}"
+  name     = "${var.stack_description}-dlbg-logstash-${count.index}"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = var.vpc_id
