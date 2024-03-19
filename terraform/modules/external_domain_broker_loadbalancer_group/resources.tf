@@ -40,7 +40,7 @@ resource "aws_lb_listener" "domains_lbgroup_https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
-  certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
+  certificate_arn   = var.wildcard_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.domains_lbgroup_apps_https[count.index].arn

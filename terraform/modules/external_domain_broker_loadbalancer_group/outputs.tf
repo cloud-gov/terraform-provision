@@ -6,10 +6,6 @@ output "domains_lbgroup_target_group_apps_https_names" {
   value = aws_lb_target_group.domains_lbgroup_apps_https.*.name
 }
 
-output "domains_lbgroup_target_group_challenge_names" {
-  value = aws_lb_target_group.domains_lbgroup_challenge.*.name
-}
-
 output "domains_lbgroup_listener_arns" {
   value = aws_lb_listener.domains_lbgroup_http.*.arn
 }

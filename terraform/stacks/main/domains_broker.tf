@@ -101,7 +101,8 @@ module "loadbalancer_groups" {
   waf_arn               = module.cf.cf_uaa_waf_core_arn
   logstash_hosts        = var.logstash_hosts
   vpc_id                = module.stack.vpc_id
-  domains_lbgroup_count = 4
+  domains_lbgroup_count = var.domains_lbgroup_count
+  wildcard_arn          = data.aws_iam_server_certificate.wildcard.arn
 }
 
 /* old domains broker alb */

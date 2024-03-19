@@ -1,6 +1,7 @@
 variable "stack_description" {
 
 }
+
 variable "domains_lbgroup_count" {
   default = 2
 }
@@ -25,5 +26,9 @@ variable "vpc_id" {
 }
 
 variable "waf_arn" {
+
+}
+
+variable "wildcard_arn" {
 
 }
