@@ -89,6 +89,20 @@ output "domains_broker_rds_port" {
   value = aws_db_instance.domains_broker.port
 }
 
+/* new load balancer groups */
+module "loadbalancer_groups" {
+  count             = 2
+  source            = "../../modules/external_domain_broker_loadbalancer_group"
+  stack_description = var.stack_description
+
+  subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  security_groups = [module.stack.web_traffic_security_group]
+  elb_bucket_name = module.log_bucket.elb_bucket_name
+  waf_arn         = module.cf.cf_uaa_waf_core_arn
+  logstash_hosts  = var.logstash_hosts
+  vpc_id          = module.stack.vpc_id
+}
+
 /* old domains broker alb */
 resource "aws_lb" "domains_broker" {
   count = var.domains_broker_alb_count
