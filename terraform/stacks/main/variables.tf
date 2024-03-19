@@ -208,3 +208,6 @@ variable "cidr_blocks" {
   type    = list(string)
   default = []
 }
+
+variable "domains_lbgroup_count" {
+}

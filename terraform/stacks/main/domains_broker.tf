@@ -91,16 +91,17 @@ output "domains_broker_rds_port" {
 
 /* new load balancer groups */
 module "loadbalancer_groups" {
-  count             = 2
+  count             = 1
   source            = "../../modules/external_domain_broker_loadbalancer_group"
   stack_description = var.stack_description
 
-  subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
-  security_groups = [module.stack.web_traffic_security_group]
-  elb_bucket_name = module.log_bucket.elb_bucket_name
-  waf_arn         = module.cf.cf_uaa_waf_core_arn
-  logstash_hosts  = var.logstash_hosts
-  vpc_id          = module.stack.vpc_id
+  subnets               = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  security_groups       = [module.stack.web_traffic_security_group]
+  elb_bucket_name       = module.log_bucket.elb_bucket_name
+  waf_arn               = module.cf.cf_uaa_waf_core_arn
+  logstash_hosts        = var.logstash_hosts
+  vpc_id                = module.stack.vpc_id
+  domains_lbgroup_count = 4
 }
 
 /* old domains broker alb */
