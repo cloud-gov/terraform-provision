@@ -48,45 +48,12 @@ resource "aws_lb_listener" "domains_lbgroup_https" {
   }
 }
 
-resource "aws_lb_listener_rule" "lbgroup_static_http" {
-  count = var.domains_lbgroup_count
-
-  listener_arn = aws_lb_listener.domains_lbgroup_http[count.index].arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.domains_lbgroup_challenge[count.index].arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/.well-known/acme-challenge/*"]
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "lbgroup_static_https" {
-  count = var.domains_lbgroup_count
-
-  listener_arn = aws_lb_listener.domains_lbgroup_https[count.index].arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.domains_lbgroup_challenge[count.index].arn
-  }
-
-  condition {
-    path_pattern {
-      values = ["/.well-known/acme-challenge/*"]
-    }
-  }
-}
 
 ## MAX 10 HOSTS
 resource "aws_lb_listener_rule" "domains_lbgroup_logstash_listener_rule" {
   count = var.domains_lbgroup_count
 
-  listener_arn = aws_lb_listener.domains_lbroup_https[count.index].arn
+  listener_arn = aws_lb_listener.domains_lbgroup_https[count.index].arn
 
   action {
     type             = "forward"
@@ -133,19 +100,6 @@ resource "aws_lb_target_group" "domains_lbgroup_logstash_https" {
     interval            = 5
     port                = 81
     matcher             = 200
-  }
-}
-
-resource "aws_lb_target_group" "domains_dlbg_challenge" {
-  count = var.domains_lbgroup_count
-
-  name     = "${var.stack_description}-dlbgroup-acme-${count.index}"
-  port     = 8081
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-
-  health_check {
-    path = "/health"
   }
 }
 

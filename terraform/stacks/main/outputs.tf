@@ -204,7 +204,7 @@ output "cf_router_target_groups" {
   value = concat(
     [module.cf.lb_target_https_group],
     [module.cf.apps_lb_target_https_group],
-    [module.loadbalancer_groups.domains_lbgroup_names],
+    module.loadbalancer_groups.domains_lbgroup_names,
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
   )
