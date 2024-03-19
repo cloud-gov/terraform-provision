@@ -94,6 +94,7 @@ module "loadbalancer_groups" {
   count             = 1
   source            = "../../modules/external_domain_broker_loadbalancer_group"
   stack_description = var.stack_description
+  base_index        = count.index
 
   subnets               = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
   security_groups       = [module.stack.web_traffic_security_group]
