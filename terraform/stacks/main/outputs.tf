@@ -204,7 +204,7 @@ output "cf_router_target_groups" {
   value = flatten(concat(
     [module.cf.lb_target_https_group],
     [module.cf.apps_lb_target_https_group],
-    module.loadbalancer_groups.*.domains_lbgroup_target_group_apps_https_names,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_apps_https_names,
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
   ))
@@ -622,11 +622,11 @@ output "external_domain_broker_gov_secret_access_key_prev" {
 }
 
 output "domains_dedicated_lbgroup_target_group_apps_https_names" {
-  value = module.loadbalancer_groups.0.domains_lbgroup_target_group_apps_https_names
+  value = module.dedicated_loadbalancer_group.domains_lbgroup_target_group_apps_https_names
 }
 
 output "domains_dedicated_lbgroup_listener_arns" {
-  value = module.loadbalancer_groups.0.domains_lbgroup_listener_arns
+  value = module.dedicated_loadbalancer_group.domains_lbgroup_listener_arns
 }
 
 output "bosh_static_ip" {
