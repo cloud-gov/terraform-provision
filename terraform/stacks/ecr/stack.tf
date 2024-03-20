@@ -18,7 +18,7 @@ variable "repositories" {
     "github-pr-resource",
     "harden-concourse-task",
     "harden-concourse-task-staging",
-    "harden-playwright",
+    "playwright-python",
     "harden-s3-resource-simple",
     "harden-s3-resource-simple-staging",
     "pages-dind-v25",
