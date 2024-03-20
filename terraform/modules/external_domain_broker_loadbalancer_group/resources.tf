@@ -7,7 +7,7 @@ Domain Loadbalancer Groups
 resource "aws_lb" "domains_lbgroup" {
   count = var.domains_lbgroup_count
 
-  name                       = "${var.stack_description}-domains-${var.base_index}-lbgroup-${count.index}"
+  name                       = "${var.stack_description}-domains-lbgroup-${count.index}"
   subnets                    = var.subnets
   security_groups            = var.security_groups
   ip_address_type            = "dualstack"

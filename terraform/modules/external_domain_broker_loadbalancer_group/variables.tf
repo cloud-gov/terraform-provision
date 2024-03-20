@@ -32,7 +32,3 @@ variable "waf_arn" {
 variable "wildcard_arn" {
 
 }
-
-variable "base_index" {
-
-}
