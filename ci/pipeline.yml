@@ -524,6 +524,7 @@ jobs:
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
+      TF_VAR_domains_lbgroup_count: 2
   - *notify-slack
 
 - name: bootstrap-development
@@ -685,6 +686,7 @@ jobs:
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
+      TF_VAR_domains_lbgroup_count: 3
   - *notify-slack
 
 - name: bootstrap-staging
@@ -844,7 +846,7 @@ jobs:
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
-
+      TF_VAR_domains_lbgroup_count: 4
   - *notify-slack
 
 - name: bootstrap-production
