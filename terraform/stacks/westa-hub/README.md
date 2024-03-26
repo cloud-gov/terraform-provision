@@ -233,6 +233,12 @@ m1-terraform-provider-helper activate
 m1-terraform-provider-helper install hashicorp/template -v v2.2.0
 ```
 
+If you see an error releated to iam roles `role/bosh-passed/*`, you will need to edit the iam.tf file. 
+- Search for `passed` and comment out the `iam_assume_role_policy` blocks. There are 6 total roles you will need to do this for.
+- Rerun `terraform apply`.
+- Remove the comments you added above.
+- Rerun `terraform apply`.
+
 ### Creating a jumpbox
 
 This is a temporary EC2 instance to live as long as needed to bootstrap the protoBOSH and Tooling BOSH.
