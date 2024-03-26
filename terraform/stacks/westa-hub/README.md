@@ -8,6 +8,8 @@ Certificates need to be created for production and staging, the steps below are 
 
 ***Note that this uses the `com-prd-plat-admin` commercial account, not the govcloud account.***
 
+***Note you will need to disable zscaler to run certbot commands.***
+
 ```
 git clone https://github.com/cloud-gov/cg-provision
 cd cg-provision
@@ -67,6 +69,8 @@ Key is saved at:         /Users/pickles/projects/cg-provision/certs/production/l
 This certificate expires on 2023-09-05.
 These files will be updated when the certificate renews.
 ```
+
+***Note you can safely re-enable zscaler now.***
 
 
 ### Upload new certificates
