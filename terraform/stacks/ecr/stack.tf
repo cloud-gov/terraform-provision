@@ -23,7 +23,6 @@ variable "repositories" {
     "harden-s3-resource-simple-staging",
     "pages-dind-v25",
     "pages-node-v20",
-    "pages-playwright-v1",
     "pages-python-v3.11",
     "playwright-python",
     "registry-image-resource",
