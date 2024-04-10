@@ -270,7 +270,7 @@ output "domains_broker_target_group_challenge_names" {
 }
 
 output "domains_broker_listener_arns" {
-  value = aws_lb_listener.domains_broker_http.*.arn
+  value = aws_lb_listener.domains_broker_https.*.arn
 }
 
 /* n.b. this bucket is used for:
