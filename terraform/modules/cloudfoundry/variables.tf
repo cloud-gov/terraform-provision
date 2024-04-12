@@ -188,7 +188,7 @@ variable "gsa_ip_range_ip_set_arn" {
 }
 
 variable "malicious_ja3_fingerprint_ids" {
-  type        = []
+  type        = list(string)
   description = "JA3 fingerprint IDs associated with malicious traffic"
 }
 
