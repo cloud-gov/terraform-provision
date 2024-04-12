@@ -548,20 +548,29 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     name     = "BlockMaliciousJA3FingerprintIDs"
     priority = 7
     action {
-      count {}
+      block {}
     }
     statement {
-      byte_match_statement {
-        field_to_match {
-          ja3_fingerprint {
-            fallback_behavior = "NO_MATCH"
+      or_statement {
+        dynamic "statement" {
+          for_each = var.malicious_ja3_fingerprint_ids
+          iterator = fingerprint
+
+          content {
+            byte_match_statement {
+              field_to_match {
+                ja3_fingerprint {
+                  fallback_behavior = "NO_MATCH"
+                }
+              }
+              positional_constraint = "EXACTLY"
+              search_string         = fingerprint.value
+              text_transformation {
+                type     = "NONE"
+                priority = 0
+              }
+            }
           }
-        }
-        positional_constraint = "EXACTLY"
-        search_string         = var.malicious_ja3_fingerprint_id
-        text_transformation {
-          type     = "NONE"
-          priority = 0
         }
       }
     }
