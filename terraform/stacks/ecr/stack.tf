@@ -21,6 +21,7 @@ variable "repositories" {
     "harden-concourse-task-staging",
     "harden-s3-resource-simple",
     "harden-s3-resource-simple-staging",
+    "oci-build-task",
     "pages-dind-v25",
     "pages-node-v20",
     "pages-python-v3.11",
