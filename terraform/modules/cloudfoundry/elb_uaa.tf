@@ -548,7 +548,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     name     = "BlockMaliciousJA3FingerprintIDs"
     priority = 7
     action {
-      block {}
+      count {}
     }
     statement {
       or_statement {
