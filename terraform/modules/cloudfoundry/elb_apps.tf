@@ -88,6 +88,24 @@ resource "aws_lb_target_group" "cf_logstash_target_https" {
   }
 }
 
+resource "aws_lb_target_group" "cf_gr_logstash_target_https" {
+  name     = "${var.stack_description}-cf-gr-logstash-https"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_lb_listener_rule" "logstash_listener_rule" {
   listener_arn = aws_lb_listener.cf_apps.arn
 

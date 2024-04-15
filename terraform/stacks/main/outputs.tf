@@ -231,14 +231,22 @@ output "cf_apps_gr_target_group" {
 }
 
 output "cf_logstash_target_group" {
-  value = concat(
+  value = flatten(concat(
     [module.cf.logstash_lb_target_https_group],
+    [module.cf.gr_logstash_lb_target_https_group],
     aws_lb_target_group.domains_broker_logstash_https.*.name,
-  )
+  ))
 }
 
 output "cf_uaa_target_group" {
   value = module.cf.uaa_lb_target_group
+}
+
+output "cf_router_main_target_group" {
+  value = flatten(concat(
+    module.cf.uaa_lb_target_group,
+    module.cf.uaa_lb_gr_target_https_group,
+  ))
 }
 
 /* Security Groups */
