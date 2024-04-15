@@ -39,7 +39,7 @@ output "apps_lb_gr_target_https_group" {
 }
 
 output "uaa_lb_gr_target_https_group" {
-  value = aws_lb_target_group.cf_gr_uaa_target_https.name
+  value = aws_lb_target_group.cf_gr_uaa_target.name
 }
 
 output "uaa_lb_name" {
