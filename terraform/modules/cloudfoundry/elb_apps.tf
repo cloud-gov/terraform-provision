@@ -20,6 +20,9 @@ resource "aws_lb_target_group" "cf_apps_target_https" {
   protocol = "HTTPS"
   vpc_id   = var.vpc_id
 
+  load_balancing_algorithm_type     = "weighted_random"
+  load_balancing_anomaly_mitigation = "on"
+
   health_check {
     healthy_threshold   = 2
     interval            = 5
