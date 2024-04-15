@@ -233,7 +233,7 @@ output "cf_apps_gr_target_group" {
 output "cf_logstash_target_group" {
   value = flatten(concat(
     [module.cf.logstash_lb_target_https_group],
-    [module.cf.gr_logstash_lb_target_https_group],
+    [module.cf.logstash_gr_lb_target_https_group],
     aws_lb_target_group.domains_broker_logstash_https.*.name,
   ))
 }
