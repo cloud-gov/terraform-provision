@@ -244,8 +244,8 @@ output "cf_uaa_target_group" {
 
 output "cf_router_main_target_group" {
   value = concat(
-    module.cf.uaa_lb_target_group,
-    module.cf.uaa_lb_gr_target_https_group,
+    [module.cf.uaa_lb_target_group],
+    [module.cf.uaa_lb_gr_target_https_group],
   )
 }
 
