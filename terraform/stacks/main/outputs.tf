@@ -207,6 +207,7 @@ output "cf_router_target_groups" {
     [module.cf.lb_gr_target_https_group],
     [module.cf.apps_lb_gr_target_https_group],
     module.dedicated_loadbalancer_group.domains_lbgroup_target_group_apps_https_names,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_apps_https_names,
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_challenge.*.name,
   ))
@@ -234,6 +235,8 @@ output "cf_logstash_target_group" {
   value = flatten(concat(
     [module.cf.logstash_lb_target_https_group],
     [module.cf.logstash_gr_lb_target_https_group],
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_logstash_https_names,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names,
     aws_lb_target_group.domains_broker_logstash_https.*.name,
   ))
 }
