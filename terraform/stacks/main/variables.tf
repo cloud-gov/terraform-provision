@@ -149,7 +149,7 @@ variable "sns_name" {
 
 }
 
-variable "slack_sns_name" {
+variable "sns_slack_name" {
 
 }
 

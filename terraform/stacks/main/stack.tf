@@ -132,7 +132,7 @@ data "aws_sns_topic" "cg_notifications" {
   name = var.sns_name
 }
 
-data "aws_slack_sns_topic" "cg_platform_notifications" {
+data "aws_sns_topic" "cg_platform_notifications" {
   name = var.sns_slack_name
 }
 
@@ -428,6 +428,6 @@ module "cloudwatch" {
 
   stack_description = var.stack_description
   sns_arn           = data.aws_sns_topic.cg_notifications.arn
-  slack_sns_arn     = data.aws_slack_sns_topic.cg_platform_notifications.arn
+  slack_sns_arn     = data.aws_sns_topic.cg_platform_notifications.arn
   load_balancer_dns = module.cf.lb_arn_suffix
 }
