@@ -240,7 +240,7 @@ resource "aws_lb_target_group" "domains_broker_logstash_https" {
 resource "aws_lb_target_group" "domains_broker_gr_apps_https" {
   count = var.domains_broker_alb_count
 
-  name     = "${var.stack_description}-domains-gr-apps-https-${count.index}"
+  name     = "${var.stack_description}-domains-gapps-https-${count.index}"
   port     = 10443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
@@ -260,7 +260,7 @@ resource "aws_lb_target_group" "domains_broker_gr_apps_https" {
 resource "aws_lb_target_group" "domains_broker_gr_logstash_https" {
   count = var.domains_broker_alb_count
 
-  name     = "${var.stack_description}-domains-gr-logstash-${count.index}"
+  name     = "${var.stack_description}-domains-glogstash-${count.index}"
   port     = 10443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
