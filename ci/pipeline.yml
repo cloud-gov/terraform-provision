@@ -511,7 +511,7 @@ jobs:
           TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((development_s3_gateway_policy_accounts))
           TF_VAR_sns_name: cloud-gov-notifications
-          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_sns_slack_name: cg-slack-notifications
           TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((development_scope_down_known_bad_inputs_not_match_origin_search_string))
           TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
@@ -674,7 +674,7 @@ jobs:
           TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
           TF_VAR_sns_name: cloud-gov-notifications
-          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_sns_slack_name: cg-slack-notifications
           TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((staging_scope_down_known_bad_inputs_not_match_origin_search_string))
           TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
@@ -835,7 +835,7 @@ jobs:
           TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
           TF_VAR_sns_name: cloud-gov-notifications
-          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_sns_slack_name: cg-slack-notifications
           TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
           TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
