@@ -38,7 +38,7 @@ module "bosh_compilation_policy" {
   source        = "../../modules/iam_role_policy/bosh_compilation"
   policy_name   = "${var.stack_description}-bosh-compilation"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = module.bosh_release_bucket.bucket_name
+  bucket_name   = module.bosh_blobstore_bucket.bucket_name
 }
 
 module "protobosh_compilation_policy" {
