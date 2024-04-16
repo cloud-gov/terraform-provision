@@ -15,7 +15,7 @@ module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "blobstore"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = module.bosh_release_bucket.bucket_name
+  bucket_name   = module.bosh_blobstore_bucket.bucket_name
 }
 
 module "bosh_policy" {
@@ -101,7 +101,7 @@ module "ecr_policy" {
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+  # TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
   iam_assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
