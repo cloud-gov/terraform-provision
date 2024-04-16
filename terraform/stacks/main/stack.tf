@@ -132,6 +132,10 @@ data "aws_sns_topic" "cg_notifications" {
   name = var.sns_name
 }
 
+data "aws_slack_sns_topic" "cg_platform_notifications" {
+  name = var.sns_slack_name
+}
+
 locals {
   pages_cert_ids = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(
@@ -424,5 +428,6 @@ module "cloudwatch" {
 
   stack_description = var.stack_description
   sns_arn           = data.aws_sns_topic.cg_notifications.arn
+  slack_sns_arn     = data.aws_slack_sns_topic.cg_platform_notifications.arn
   load_balancer_dns = module.cf.lb_arn_suffix
 }

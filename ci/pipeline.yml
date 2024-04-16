@@ -1,1597 +1,1600 @@
 groups:
-- name: terraform
-  jobs:
-  - apply-cloudfront-staging
-  - apply-dns
-  - apply-ecr
-  - bootstrap-development
-  - bootstrap-external-development
-  - bootstrap-external-production
-  - bootstrap-external-staging
-  - bootstrap-production
-  - bootstrap-staging
-  - bootstrap-tooling
-  - plan-bootstrap-development
-  - plan-bootstrap-external-development
-  - plan-bootstrap-external-production
-  - plan-bootstrap-external-staging
-  - plan-bootstrap-production
-  - plan-bootstrap-staging
-  - plan-bootstrap-tooling
-  - plan-cloudfront-staging
-  - plan-dns
-  - plan-ecr
-  - pull-status-check
-  - webacl-test-development
-  - webacl-test-production
-  - webacl-test-staging
-- name: certs
-  jobs:
-  - acme-certificate-development
-  - acme-certificate-staging
-  - acme-certificate-staging-pages
-  - acme-certificate-production
-  - acme-certificate-production-apps
-  - acme-certificate-pages
-  - acme-certificate-wildcard-pages
-  - acme-certificate-wildcard-pages-sites
-  - acme-certificate-staging-pages
-  - acme-certificate-staging-wildcard-pages
-  - acme-certificate-staging-wildcard-pages-sites
-  - acme-certificate-dev-pages
-  - acme-certificate-dev-wildcard-pages
-  - acme-certificate-dev-wildcard-pages-sites
+  - name: terraform
+    jobs:
+      - apply-cloudfront-staging
+      - apply-dns
+      - apply-ecr
+      - bootstrap-development
+      - bootstrap-external-development
+      - bootstrap-external-production
+      - bootstrap-external-staging
+      - bootstrap-production
+      - bootstrap-staging
+      - bootstrap-tooling
+      - plan-bootstrap-development
+      - plan-bootstrap-external-development
+      - plan-bootstrap-external-production
+      - plan-bootstrap-external-staging
+      - plan-bootstrap-production
+      - plan-bootstrap-staging
+      - plan-bootstrap-tooling
+      - plan-cloudfront-staging
+      - plan-dns
+      - plan-ecr
+      - pull-status-check
+      - webacl-test-development
+      - webacl-test-production
+      - webacl-test-staging
+  - name: certs
+    jobs:
+      - acme-certificate-development
+      - acme-certificate-staging
+      - acme-certificate-staging-pages
+      - acme-certificate-production
+      - acme-certificate-production-apps
+      - acme-certificate-pages
+      - acme-certificate-wildcard-pages
+      - acme-certificate-wildcard-pages-sites
+      - acme-certificate-staging-pages
+      - acme-certificate-staging-wildcard-pages
+      - acme-certificate-staging-wildcard-pages-sites
+      - acme-certificate-dev-pages
+      - acme-certificate-dev-wildcard-pages
+      - acme-certificate-dev-wildcard-pages-sites
 
 jobs:
-- name: pull-status-check
-  plan:
-  - get: general-task
-  - get: pull-request
-    version: every
-    trigger: true
-  - in_parallel:
-      steps:
-      - put: pull-request
-        params:
-          path: pull-request
-          status: pending
-          context: format-terraform
-      - put: pull-request
-        params:
-          path: pull-request
-          status: pending
-          context: validate-terraform
-  - in_parallel:
-      steps:
-      - task: format-terraform
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: pull-request
-          params:
-          run:
-            dir: pull-request
-            path: ci/scripts/terraform_fmt.sh
-        on_success:
-          put: pull-request
-          params:
-            path: pull-request
-            status: success
-            context: format-terraform
-        on_failure:
-          put: pull-request
-          params:
-            path: pull-request
-            status: failure
-            context: format-terraform
-      - task: validate-terraform
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: pull-request
-          params:
-          run:
-            path: pull-request/validate.sh
-        on_success:
-          put: pull-request
-          params:
-            path: pull-request
-            status: success
-            context: validate-terraform
-        on_failure:
-          put: pull-request
-          params:
-            path: pull-request
-            status: failure
-            context: validate-terraform
-
-- name: plan-bootstrap-external-development
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-external-development
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &external-development-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: external-development
-      TEMPLATE_SUBDIR: terraform/stacks/external
-      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
-      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
-      AWS_DEFAULT_REGION: ((aws_external_region))
-      TF_VAR_stack_description: development
-      TF_VAR_aws_default_region: ((aws_external_region))
-      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
-      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
-  - &notify-slack
-    put: slack
-    params:
-      text_file: terraform-state/message.txt
-      text:  |
-        :terraform: $BUILD_JOB_NAME needs review
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: bootstrap-external-development
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-external-development]
-  - task: create-update-external-development
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *external-development-params
-      TERRAFORM_ACTION: apply
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform12-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-external-development
-    params:
-      file: terraform-yaml/state.yml
-
-- name: plan-bootstrap-external-staging
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-external-staging
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &external-staging-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: external-staging
-      TEMPLATE_SUBDIR: terraform/stacks/external
-      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
-      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
-      AWS_DEFAULT_REGION: ((aws_external_region))
-      TF_VAR_stack_description: staging
-      TF_VAR_aws_default_region: ((aws_external_region))
-      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
-      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
-  - &notify-slack
-    put: slack
-    params:
-      text_file: terraform-state/message.txt
-      text:  |
-        :terraform: $BUILD_JOB_NAME needs review
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: bootstrap-external-staging
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-external-staging]
-  - task: create-update-external-staging
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *external-staging-params
-      TERRAFORM_ACTION: apply
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform12-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-external-staging
-    params:
-      file: terraform-yaml/state.yml
-
-- name: plan-bootstrap-external-production
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-external-production
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &external-production-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: external-production
-      TEMPLATE_SUBDIR: terraform/stacks/external
-      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
-      AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
-      AWS_DEFAULT_REGION: ((aws_external_region))
-      TF_VAR_stack_description: production
-      TF_VAR_aws_default_region: ((aws_external_region))
-      TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
-      TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
-      TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
-  - *notify-slack
-
-- name: bootstrap-external-production
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-external-production]
-  - task: create-update-external-production
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *external-production-params
-      TERRAFORM_ACTION: apply
-  - task: terraform-state-to-yaml
-    file: pipeline-tasks/terraform12-state-to-yaml.yml
-    params:
-      STATE_FILE: terraform.tfstate
-  - put: terraform-yaml-external-production
-    params:
-      file: terraform-yaml/state.yml
-
-- name: plan-dns
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-dns
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &dns-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: dns
-      TEMPLATE_SUBDIR: terraform/stacks/dns
-      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      TF_VAR_aws_access_key: ((aws_external_access_key_id))
-      TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
-      TF_VAR_aws_region: ((aws_external_region))
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_remote_state_region: ((aws_default_region))
-      TF_VAR_tooling_stack_name: tooling
-      TF_VAR_production_stack_name: production
-      TF_VAR_staging_stack_name: staging
-      TF_VAR_development_stack_name: development
-  - *notify-slack
-
-- name: apply-dns
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-dns]
-  - task: create-update-dns
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *dns-params
-      TERRAFORM_ACTION: apply
-
-- name: plan-cloudfront-staging
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-cloudfront
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &cloudfront-staging-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: cloudfront-staging
-      TEMPLATE_SUBDIR: terraform/stacks/cloudfront
-      S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-      TF_VAR_aws_access_key: ((aws_external_access_key_id))
-      TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
-      TF_VAR_aws_region: ((aws_external_region))
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_remote_state_region: ((aws_default_region))
-      TF_VAR_stack_description: staging
-  - *notify-slack
-
-- name: apply-cloudfront-staging
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-cloudfront-staging]
-  - task: create-update-cloudfront
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *cloudfront-staging-params
-      TERRAFORM_ACTION: apply
-
-- name: plan-bootstrap-tooling
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-tooling
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &tooling-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: tooling
-      TEMPLATE_SUBDIR: terraform/stacks/tooling
-      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_aws_default_region: ((aws_default_region))
-      TF_VAR_rds_password: ((tooling_rds_password))
-      TF_VAR_bosh_default_ssh_public_key: ((tooling_ssh_key))
-      # Enable for database upgrades:
-      #TF_VAR_rds_apply_immediately: "true"
-      #TF_VAR_rds_allow_major_version_upgrade: "true"
-      TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
-      TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
-      TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
-      TF_VAR_credhub_prod_rds_password: ((credhub_prod_rds_password))
-      TF_VAR_credhub_staging_rds_password: ((credhub_staging_rds_password))
-      TF_VAR_opsuaa_rds_password: ((opsuaa_rds_password))
-      TF_VAR_opslogin_hostname: opslogin.fr.cloud.gov
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
-      TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
-      TF_VAR_smtp_ingress_cidr_blocks: '["((development_private_cidr_1))", "((development_private_cidr_2))","((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
-      TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
-      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
-      TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
-      TF_VAR_credhub_production_hosts: '["credhub.fr.cloud.gov"]'
-      TF_VAR_credhub_staging_hosts: '["credhub.fr-stage.cloud.gov"]'
-      TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
-      TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
-      TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
-      TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
-      TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
-      TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
-      TF_VAR_oidc_client: ((tooling_oidc_client))
-      TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
-      TF_VAR_payer_account_id: ((payer_account_id))
-      TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
-      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
-      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
-      TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
-      TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
-      TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
-      TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
-  - *notify-slack
-
-- name: bootstrap-tooling
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-tooling]
-  - task: create-update-tooling
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *tooling-params
-      TERRAFORM_ACTION: apply
-  - in_parallel:
-    - task: init-bosh-db
-      image: general-task
-      config:
-        platform: linux
-        inputs:
-        - name: cg-provision-repo
-        - name: terraform-state
-        params:
-          STATE_FILE_PATH: terraform-state/terraform.tfstate
-        run:
-          path: sh
-          args:
-          - -e
-          - -c
-          - cg-provision-repo/ci/scripts/update-bosh-db.sh
-    - task: init-opsuaa-db
-      image: general-task
-      config:
-        platform: linux
-        inputs:
-        - name: cg-provision-repo
-        - name: terraform-state
-        params:
-          STATE_FILE_PATH: terraform-state/terraform.tfstate
-        run:
-          path: sh
-          args:
-          - -e
-          - -c
-          - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
-    - do:
-      - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform12-state-to-yaml.yml
-        params:
-          STATE_FILE: terraform.tfstate
-      - put: terraform-yaml-tooling
-        params:
-          file: terraform-yaml/state.yml
-
-- name: plan-bootstrap-development
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-development
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &development-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: development
-      TEMPLATE_SUBDIR: terraform/stacks/main
-      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_assume_arn: ((development_assume_arn))
-      TF_VAR_parent_assume_arn: ((development_parent_assume_arn))
-      TF_VAR_parent_stack_name: ((development_parent_stack_name))
-      TF_VAR_bosh_default_ssh_public_key: ((development_ssh_key))
-      TF_VAR_stack_description: development
-      TF_VAR_force_restricted_network: "yes"
-      TF_VAR_include_tcp_routes: ((development_include_tcp_routes))
-      # Do not copy the pattern below.  You should not need separate variables
-      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
-      # IDs from `data` resources.
-      TF_VAR_rds_password: ((development_rds_password))
-      TF_VAR_rds_db_size: ((development_rds_db_size))
-      # Enable for database upgrades:
-      #TF_VAR_rds_apply_immediately: "true"
-      #TF_VAR_rds_allow_major_version_upgrade: "true"
-      TF_VAR_rds_multi_az: "false"
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_vpc_cidr: ((development_vpc_cidr))
-      TF_VAR_cf_rds_password: ((development_cf_rds_password))
-      TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
-      TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
-      TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
-      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-      TF_VAR_wildcard_apps_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-      TF_VAR_bucket_prefix: development-cg
-      TF_VAR_blobstore_bucket_name: bosh-development-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_admin_hosts: '["admin.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
-      TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
-      TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
-      TF_VAR_domains_broker_alb_count: "2"
-      TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
-      TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
-      TF_VAR_pages_cert_patterns: '[]'
-      TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
-      TF_VAR_s3_gateway_policy_accounts: ((development_s3_gateway_policy_accounts))
-      TF_VAR_sns_name: cloud-gov-notifications
-      TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((development_scope_down_known_bad_inputs_not_match_origin_search_string))
-      TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
-      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
-      TF_VAR_logstash_hosts: ((development_logstash_hosts))
-      TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
-      TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
-      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
-      TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
-      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
-      TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
-      TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
-      TF_VAR_cidr_blocks: ((cidr_blocks))
-      TF_VAR_domains_lbgroup_count: 2
-  - *notify-slack
-
-- name: bootstrap-development
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-      passed: [plan-bootstrap-development]
-  - task: create-update-development
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *development-params
-      TERRAFORM_ACTION: apply
-  - in_parallel:
-    - do:
-      - task: init-bosh-db
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-bosh-db.sh
-      - task: init-cf-db
-        image: general-task
-        config:
-          platform: linux
-          image_resource:
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-cf-db.sh
-    - do:
-      - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform12-state-to-yaml.yml
-        params:
-          STATE_FILE: terraform.tfstate
-      - put: terraform-yaml-development
-        params:
-          file: terraform-yaml/state.yml
-
-- name: webacl-test-development
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-      passed: [bootstrap-development]
-      trigger: true
-    - get: waf-test-files
-      resource: waf-tests-development
-      trigger: true
-  - task: test-waf-rules
-    image: general-task
-    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
-    params:
-      WAF_TEST_APP_URL: ((development_waf_test_app_url))
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: WAF Rules Test Development FAILED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-  on_success:
-    put: slack
-    params:
-      text: |
-        :white_check_mark: WAF Rules Test Development PASSED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: plan-bootstrap-staging
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-staging
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &staging-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: staging
-      TEMPLATE_SUBDIR: terraform/stacks/main
-      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_assume_arn: ((staging_assume_arn))
-      TF_VAR_parent_assume_arn: ((staging_parent_assume_arn))
-      TF_VAR_parent_stack_name: ((staging_parent_stack_name))
-      TF_VAR_bosh_default_ssh_public_key: ((staging_ssh_key))
-      TF_VAR_stack_description: staging
-      TF_VAR_force_restricted_network: "no"
-      TF_VAR_include_tcp_routes: ((staging_include_tcp_routes))
-      # Do not copy the pattern below.  You should not need separate variables
-      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
-      # IDs from `data` resources.
-      TF_VAR_rds_password: ((staging_rds_password))
-      TF_VAR_rds_db_size: ((staging_rds_db_size))
-      # Enable for database upgrades:
-      #TF_VAR_rds_apply_immediately: "true"
-      #TF_VAR_rds_allow_major_version_upgrade: "true"
-      TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_vpc_cidr: ((staging_vpc_cidr))
-      TF_VAR_cf_rds_password: ((staging_cf_rds_password))
-      TF_VAR_cf_as_rds_instance_type: ((staging_cf_as_rds_instance_type))
-      TF_VAR_restricted_ingress_web_cidrs: ((staging_restricted_ingress_web_cidrs))
-      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((staging_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_wildcard_certificate_name_prefix: star.fr-stage.cloud.gov
-      TF_VAR_wildcard_apps_certificate_name_prefix: star.fr-stage.cloud.gov
-      TF_VAR_bucket_prefix: staging-cg
-      TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
-      TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
-      TF_VAR_domains_broker_alb_count: "2"
-      TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
-      TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
-      TF_VAR_pages_cert_patterns: '[]'
-      TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
-      TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
-      TF_VAR_sns_name: cloud-gov-notifications
-      TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((staging_scope_down_known_bad_inputs_not_match_origin_search_string))
-      TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
-      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
-      TF_VAR_logstash_hosts: ((staging_logstash_hosts))
-      TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
-      TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
-      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
-      TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
-      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
-      TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
-      TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
-      TF_VAR_cidr_blocks: ((cidr_blocks))
-      TF_VAR_domains_lbgroup_count: 3
-  - *notify-slack
-
-- name: bootstrap-staging
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-staging]
-  - task: create-update-staging
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *staging-params
-      TERRAFORM_ACTION: apply
-  - in_parallel:
-    - do:
-      - task: init-bosh-db
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-bosh-db.sh
-      - task: init-cf-db
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-cf-db.sh
-    - do:
-      - task: terraform-state-to-yaml
-        file: pipeline-tasks/terraform12-state-to-yaml.yml
-        params:
-          STATE_FILE: terraform.tfstate
-      - put: terraform-yaml-staging
-        params:
-          file: terraform-yaml/state.yml
-
-- name: webacl-test-staging
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: cg-provision-repo
-      resource: cg-provision-repo
-      passed: [bootstrap-staging]
-      trigger: true
-    - get: waf-test-files
-      resource: waf-tests-staging
-      trigger: true
-  - task: test-waf-rules
-    image: general-task
-    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
-    params:
-      WAF_TEST_APP_URL: ((staging_waf_test_app_url))
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: WAF Rules Test Staging FAILED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-  on_success:
-    put: slack
-    params:
-      text: |
-        :white_check_mark: WAF Rules Test Staging PASSED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: plan-bootstrap-production
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-production
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &production-params
-      TERRAFORM_ACTION: plan
-      STACK_NAME: production
-      TEMPLATE_SUBDIR: terraform/stacks/main
-      S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      TF_VAR_assume_arn: ((production_assume_arn))
-      TF_VAR_parent_assume_arn: ((production_parent_assume_arn))
-      TF_VAR_parent_stack_name: ((production_parent_stack_name))
-      TF_VAR_bosh_default_ssh_public_key: ((production_ssh_key))
-      TF_VAR_stack_description: production
-      TF_VAR_force_restricted_network: "no"
-      TF_VAR_include_tcp_routes: ((production_include_tcp_routes))
-      # Do not copy the pattern below.  You should not need separate variables
-      # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
-      # IDs from `data` resources.
-      TF_VAR_rds_password: ((production_rds_password))
-      TF_VAR_rds_db_size: ((production_rds_db_size))
-      # Enable for database upgrades:
-      #TF_VAR_rds_apply_immediately: "true"
-      #TF_VAR_rds_allow_major_version_upgrade: "true"
-      TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-      TF_VAR_vpc_cidr: ((production_vpc_cidr))
-      TF_VAR_cf_rds_password: ((production_cf_rds_password))
-      TF_VAR_cf_as_rds_instance_type: ((production_cf_as_rds_instance_type))
-      TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
-      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
-      TF_VAR_wildcard_certificate_name_prefix: star.fr.cloud.gov
-      TF_VAR_wildcard_apps_certificate_name_prefix: star.app.cloud.gov
-      TF_VAR_bucket_prefix: cg
-      TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
-      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
-      TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
-      TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
-      TF_VAR_domains_broker_alb_count: "11"
-      TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
-      TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
-      TF_VAR_pages_cert_patterns: '["pages.cloud.gov","pages-staging.cloud.gov","pages-dev.cloud.gov"]'
-      TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
-      TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
-      TF_VAR_sns_name: cloud-gov-notifications
-      TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
-      TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
-      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
-      TF_VAR_logstash_hosts: ((production_logstash_hosts))
-      TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
-      TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
-      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
-      TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
-      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
-      TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
-      TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
-      TF_VAR_cidr_blocks: ((cidr_blocks))
-      TF_VAR_domains_lbgroup_count: 4
-  - *notify-slack
-
-- name: bootstrap-production
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-bootstrap-production]
-  - task: create-update-production
-    tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *production-params
-      TERRAFORM_ACTION: apply
-  - in_parallel:
-    - do:
-      - task: init-bosh-db
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-bosh-db.sh
-      - task: init-cf-db
-        image: general-task
-        config:
-          platform: linux
-          inputs:
-          - name: cg-provision-repo
-          - name: terraform-state
-          params:
-            STATE_FILE_PATH: terraform-state/terraform.tfstate
-          run:
-            path: sh
-            args:
-            - -e
-            - -c
-            - cg-provision-repo/ci/scripts/update-cf-db.sh
-  - do:
-    - task: terraform-state-to-yaml
-      file: pipeline-tasks/terraform12-state-to-yaml.yml
-      params:
-        STATE_FILE: terraform.tfstate
-    - put: terraform-yaml-production
-      params:
-        file: terraform-yaml/state.yml
-
-- name: webacl-test-production
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: cg-provision-repo
-      resource: cg-provision-repo
-      passed: [bootstrap-production]
-      trigger: true
-    - get: waf-test-files
-      resource: waf-tests-production
-      trigger: true
-  - task: test-waf-rules
-    image: general-task
-    file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
-    params:
-      WAF_TEST_APP_URL: ((production_waf_test_app_url))
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: WAF Rules Test Production FAILED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-  on_success:
-    put: slack
-    params:
-      text: |
-        :white_check_mark: WAF Rules Test Production PASSED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: plan-ecr
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      trigger: true
-    - get: plan-timer
-      trigger: true
-  - task: plan-update-ecr
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params: &tf-ecr
-      TERRAFORM_ACTION: plan
-      TEMPLATE_SUBDIR: terraform/stacks/ecr
-      STACK_NAME: ecr
-      S3_TFSTATE_BUCKET: ((ecr-tf-state-bucket))
-      AWS_DEFAULT_REGION: us-gov-west-1
-      TF_VAR_remote_state_bucket: ((ecr-tf-state-bucket))
-      TF_VAR_tooling_stack_name: tooling
-  - *notify-slack
-
-- name: apply-ecr
-  plan:
-  - in_parallel:
-    - get: pipeline-tasks
-    - get: cg-provision-repo
-      passed: [plan-ecr]
-  - task: create-update-ecr
-    file: pipeline-tasks/terraform-apply.yml
-    input_mapping: {terraform-templates: cg-provision-repo}
-    params:
-      <<: *tf-ecr
-      TERRAFORM_ACTION: apply
-
-- name: acme-certificate-development
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: staging-weekly-timer
-      trigger: true
-    - get: cg-provision-repo
-      resource: cg-provision-repo-development
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-development
-  - task: check-certificates
-    image: general-task
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/dev/
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/dev/
-      CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: acme-certificate-staging
-  plan:
-  - in_parallel:
-    - get: general-task
-    - get: staging-weekly-timer
-      trigger: true
-    - get: cg-provision-repo
-    - get: terraform-yaml-tooling
-      resource: terraform-yaml-tooling
-    - get: terraform-yaml-external
-      resource: terraform-yaml-external-staging
-  - task: check-certificates
-    image: general-task
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/staging/
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.fr-stage.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.fr-stage.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/staging/
-      CERT_PREFIX: star.fr-stage.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificate for *.fr-stage.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
-
-- name: acme-certificate-production
-  plan:
-  - in_parallel: &prod-certificate-resources
+  - name: pull-status-check
+    plan:
       - get: general-task
-      - get: prod-biweekly-timer
+      - get: pull-request
+        version: every
         trigger: true
-      - get: cg-provision-repo
-      - get: terraform-yaml-tooling
-        resource: terraform-yaml-tooling
-      - get: terraform-yaml-external
-        resource: terraform-yaml-external-production
-  - &check-certificates-task
-    task: check-certificates
-    image: general-task
-    file: cg-provision-repo/ci/check-certificates.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.fr.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.fr.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.fr.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.fr.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+      - in_parallel:
+          steps:
+            - put: pull-request
+              params:
+                path: pull-request
+                status: pending
+                context: format-terraform
+            - put: pull-request
+              params:
+                path: pull-request
+                status: pending
+                context: validate-terraform
+      - in_parallel:
+          steps:
+            - task: format-terraform
+              image: general-task
+              config:
+                platform: linux
+                inputs:
+                  - name: pull-request
+                params:
+                run:
+                  dir: pull-request
+                  path: ci/scripts/terraform_fmt.sh
+              on_success:
+                put: pull-request
+                params:
+                  path: pull-request
+                  status: success
+                  context: format-terraform
+              on_failure:
+                put: pull-request
+                params:
+                  path: pull-request
+                  status: failure
+                  context: format-terraform
+            - task: validate-terraform
+              image: general-task
+              config:
+                platform: linux
+                inputs:
+                  - name: pull-request
+                params:
+                run:
+                  path: pull-request/validate.sh
+              on_success:
+                put: pull-request
+                params:
+                  path: pull-request
+                  status: success
+                  context: validate-terraform
+              on_failure:
+                put: pull-request
+                params:
+                  path: pull-request
+                  status: failure
+                  context: validate-terraform
 
-- name: acme-certificate-production-apps
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.app.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.app.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.app.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.app.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: plan-bootstrap-external-development
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-external-development
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &external-development-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: external-development
+          TEMPLATE_SUBDIR: terraform/stacks/external
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+          AWS_DEFAULT_REGION: ((aws_external_region))
+          TF_VAR_stack_description: development
+          TF_VAR_aws_default_region: ((aws_external_region))
+          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
+          TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
+          TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
+      - &notify-slack
+        put: slack
+        params:
+          text_file: terraform-state/message.txt
+          text: |
+            :terraform: $BUILD_JOB_NAME needs review
+            <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+          channel: ((slack-channel))
+          username: ((slack-username))
+          icon_url: ((slack-icon-url))
 
-- name: acme-certificate-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: pages.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "pages.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: pages.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for pages.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: bootstrap-external-development
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-external-development]
+      - task: create-update-external-development
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *external-development-params
+          TERRAFORM_ACTION: apply
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-external-development
+        params:
+          file: terraform-yaml/state.yml
 
-- name: acme-certificate-wildcard-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.pages.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.pages.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.pages.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.pages.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: plan-bootstrap-external-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-external-staging
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &external-staging-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: external-staging
+          TEMPLATE_SUBDIR: terraform/stacks/external
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+          AWS_DEFAULT_REGION: ((aws_external_region))
+          TF_VAR_stack_description: staging
+          TF_VAR_aws_default_region: ((aws_external_region))
+          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
+          TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
+          TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
+      - &notify-slack
+        put: slack
+        params:
+          text_file: terraform-state/message.txt
+          text: |
+            :terraform: $BUILD_JOB_NAME needs review
+            <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+          channel: ((slack-channel))
+          username: ((slack-username))
+          icon_url: ((slack-icon-url))
 
-- name: acme-certificate-wildcard-pages-sites
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.sites.pages.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.sites.pages.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.sites.pages.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.sites.pages.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: bootstrap-external-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-external-staging]
+      - task: create-update-external-staging
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *external-staging-params
+          TERRAFORM_ACTION: apply
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-external-staging
+        params:
+          file: terraform-yaml/state.yml
 
-- name: acme-certificate-staging-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: pages-staging.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "pages-staging.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: pages-staging.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for pages-staging.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: plan-bootstrap-external-production
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-external-production
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &external-production-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: external-production
+          TEMPLATE_SUBDIR: terraform/stacks/external
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+          AWS_DEFAULT_REGION: ((aws_external_region))
+          TF_VAR_stack_description: production
+          TF_VAR_aws_default_region: ((aws_external_region))
+          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
+          TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
+          TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
+      - *notify-slack
 
-- name: acme-certificate-staging-wildcard-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.pages-staging.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.pages-staging.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.pages-staging.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.pages-staging.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: bootstrap-external-production
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-external-production]
+      - task: create-update-external-production
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *external-production-params
+          TERRAFORM_ACTION: apply
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-external-production
+        params:
+          file: terraform-yaml/state.yml
 
-- name: acme-certificate-staging-wildcard-pages-sites
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.sites.pages-staging.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.sites.pages-staging.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.sites.pages-staging.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.sites.pages-staging.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: plan-dns
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-dns
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &dns-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: dns
+          TEMPLATE_SUBDIR: terraform/stacks/dns
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          TF_VAR_aws_access_key: ((aws_external_access_key_id))
+          TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
+          TF_VAR_aws_region: ((aws_external_region))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_remote_state_region: ((aws_default_region))
+          TF_VAR_tooling_stack_name: tooling
+          TF_VAR_production_stack_name: production
+          TF_VAR_staging_stack_name: staging
+          TF_VAR_development_stack_name: development
+      - *notify-slack
 
-- name: acme-certificate-dev-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: pages-dev.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "pages-dev.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: pages-dev.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for pages-dev.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: apply-dns
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-dns]
+      - task: create-update-dns
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *dns-params
+          TERRAFORM_ACTION: apply
 
-- name: acme-certificate-dev-wildcard-pages
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.pages-dev.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.pages-dev.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.pages-dev.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.pages-dev.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: plan-cloudfront-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-cloudfront
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &cloudfront-staging-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: cloudfront-staging
+          TEMPLATE_SUBDIR: terraform/stacks/cloudfront
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          TF_VAR_aws_access_key: ((aws_external_access_key_id))
+          TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
+          TF_VAR_aws_region: ((aws_external_region))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_remote_state_region: ((aws_default_region))
+          TF_VAR_stack_description: staging
+      - *notify-slack
 
-- name: acme-certificate-dev-wildcard-pages-sites
-  plan:
-  - in_parallel: *prod-certificate-resources
-  - *check-certificates-task
-  - task: provision-certificate
-    image: general-task
-    file: cg-provision-repo/ci/provision-certificate.yml
-    params:
-      CERT_PREFIX: star.sites.pages-dev.cloud.gov
-      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-      DOMAIN: "*.sites.pages-dev.cloud.gov"
-      EMAIL: cloud-gov-operations@gsa.gov
-  - task: upload-certificate
-    image: general-task
-    file: cg-provision-repo/ci/upload-certificate.yml
-    params:
-      AWS_DEFAULT_REGION: ((aws_default_region))
-      CERT_PATH: /lets-encrypt/production/
-      CERT_PREFIX: star.sites.pages-dev.cloud.gov
-  on_failure:
-    put: slack
-    params:
-      text: |
-        :x: Failed to check ACME certificates for *.sites.pages-dev.cloud.gov
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: ((slack-icon-url))
+  - name: apply-cloudfront-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-cloudfront-staging]
+      - task: create-update-cloudfront
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *cloudfront-staging-params
+          TERRAFORM_ACTION: apply
+
+  - name: plan-bootstrap-tooling
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-tooling
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &tooling-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: tooling
+          TEMPLATE_SUBDIR: terraform/stacks/tooling
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_aws_default_region: ((aws_default_region))
+          TF_VAR_rds_password: ((tooling_rds_password))
+          TF_VAR_bosh_default_ssh_public_key: ((tooling_ssh_key))
+          # Enable for database upgrades:
+          #TF_VAR_rds_apply_immediately: "true"
+          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
+          TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
+          TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
+          TF_VAR_credhub_prod_rds_password: ((credhub_prod_rds_password))
+          TF_VAR_credhub_staging_rds_password: ((credhub_staging_rds_password))
+          TF_VAR_opsuaa_rds_password: ((opsuaa_rds_password))
+          TF_VAR_opslogin_hostname: opslogin.fr.cloud.gov
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
+          TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
+          TF_VAR_smtp_ingress_cidr_blocks: '["((development_private_cidr_1))", "((development_private_cidr_2))","((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
+          TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
+          TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
+          TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
+          TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
+          TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
+          TF_VAR_credhub_production_hosts: '["credhub.fr.cloud.gov"]'
+          TF_VAR_credhub_staging_hosts: '["credhub.fr-stage.cloud.gov"]'
+          TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
+          TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
+          TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
+          TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
+          TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
+          TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
+          TF_VAR_oidc_client: ((tooling_oidc_client))
+          TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
+          TF_VAR_payer_account_id: ((payer_account_id))
+          TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
+          TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+          TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
+          TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
+          TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
+          TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
+          TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
+      - *notify-slack
+
+  - name: bootstrap-tooling
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-tooling]
+      - task: create-update-tooling
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *tooling-params
+          TERRAFORM_ACTION: apply
+      - in_parallel:
+          - task: init-bosh-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-bosh-db.sh
+          - task: init-opsuaa-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
+          - do:
+              - task: terraform-state-to-yaml
+                file: pipeline-tasks/terraform12-state-to-yaml.yml
+                params:
+                  STATE_FILE: terraform.tfstate
+              - put: terraform-yaml-tooling
+                params:
+                  file: terraform-yaml/state.yml
+
+  - name: plan-bootstrap-development
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            resource: cg-provision-repo-development
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-development
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &development-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: development
+          TEMPLATE_SUBDIR: terraform/stacks/main
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_assume_arn: ((development_assume_arn))
+          TF_VAR_parent_assume_arn: ((development_parent_assume_arn))
+          TF_VAR_parent_stack_name: ((development_parent_stack_name))
+          TF_VAR_bosh_default_ssh_public_key: ((development_ssh_key))
+          TF_VAR_stack_description: development
+          TF_VAR_force_restricted_network: "yes"
+          TF_VAR_include_tcp_routes: ((development_include_tcp_routes))
+          # Do not copy the pattern below.  You should not need separate variables
+          # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+          # IDs from `data` resources.
+          TF_VAR_rds_password: ((development_rds_password))
+          TF_VAR_rds_db_size: ((development_rds_db_size))
+          # Enable for database upgrades:
+          #TF_VAR_rds_apply_immediately: "true"
+          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_rds_multi_az: "false"
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_vpc_cidr: ((development_vpc_cidr))
+          TF_VAR_cf_rds_password: ((development_cf_rds_password))
+          TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
+          TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
+          TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
+          TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
+          TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+          TF_VAR_wildcard_apps_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+          TF_VAR_bucket_prefix: development-cg
+          TF_VAR_blobstore_bucket_name: bosh-development-blobstore
+          TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+          TF_VAR_admin_hosts: '["admin.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_domains_broker_alb_count: "2"
+          TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
+          TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
+          TF_VAR_pages_cert_patterns: "[]"
+          TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
+          TF_VAR_s3_gateway_policy_accounts: ((development_s3_gateway_policy_accounts))
+          TF_VAR_sns_name: cloud-gov-notifications
+          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((development_scope_down_known_bad_inputs_not_match_origin_search_string))
+          TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+          TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+          TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
+          TF_VAR_logstash_hosts: ((development_logstash_hosts))
+          TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
+          TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
+          TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
+          TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+          TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
+          TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
+          TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
+          TF_VAR_cidr_blocks: ((cidr_blocks))
+          TF_VAR_domains_lbgroup_count: 2
+      - *notify-slack
+
+  - name: bootstrap-development
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            resource: cg-provision-repo-development
+            passed: [plan-bootstrap-development]
+      - task: create-update-development
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *development-params
+          TERRAFORM_ACTION: apply
+      - in_parallel:
+          - do:
+              - task: init-bosh-db
+                image: general-task
+                config:
+                  platform: linux
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+              - task: init-cf-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+          - do:
+              - task: terraform-state-to-yaml
+                file: pipeline-tasks/terraform12-state-to-yaml.yml
+                params:
+                  STATE_FILE: terraform.tfstate
+              - put: terraform-yaml-development
+                params:
+                  file: terraform-yaml/state.yml
+
+  - name: webacl-test-development
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: cg-provision-repo
+            resource: cg-provision-repo-development
+            passed: [bootstrap-development]
+            trigger: true
+          - get: waf-test-files
+            resource: waf-tests-development
+            trigger: true
+      - task: test-waf-rules
+        image: general-task
+        file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+        params:
+          WAF_TEST_APP_URL: ((development_waf_test_app_url))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: WAF Rules Test Development FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: WAF Rules Test Development PASSED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: plan-bootstrap-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-staging
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &staging-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: staging
+          TEMPLATE_SUBDIR: terraform/stacks/main
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_assume_arn: ((staging_assume_arn))
+          TF_VAR_parent_assume_arn: ((staging_parent_assume_arn))
+          TF_VAR_parent_stack_name: ((staging_parent_stack_name))
+          TF_VAR_bosh_default_ssh_public_key: ((staging_ssh_key))
+          TF_VAR_stack_description: staging
+          TF_VAR_force_restricted_network: "no"
+          TF_VAR_include_tcp_routes: ((staging_include_tcp_routes))
+          # Do not copy the pattern below.  You should not need separate variables
+          # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+          # IDs from `data` resources.
+          TF_VAR_rds_password: ((staging_rds_password))
+          TF_VAR_rds_db_size: ((staging_rds_db_size))
+          # Enable for database upgrades:
+          #TF_VAR_rds_apply_immediately: "true"
+          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_vpc_cidr: ((staging_vpc_cidr))
+          TF_VAR_cf_rds_password: ((staging_cf_rds_password))
+          TF_VAR_cf_as_rds_instance_type: ((staging_cf_as_rds_instance_type))
+          TF_VAR_restricted_ingress_web_cidrs: ((staging_restricted_ingress_web_cidrs))
+          TF_VAR_restricted_ingress_web_ipv6_cidrs: ((staging_restricted_ingress_web_ipv6_cidrs))
+          TF_VAR_wildcard_certificate_name_prefix: star.fr-stage.cloud.gov
+          TF_VAR_wildcard_apps_certificate_name_prefix: star.fr-stage.cloud.gov
+          TF_VAR_bucket_prefix: staging-cg
+          TF_VAR_blobstore_bucket_name: bosh-staging-blobstore
+          TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+          TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
+          TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
+          TF_VAR_domains_broker_alb_count: "2"
+          TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
+          TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
+          TF_VAR_pages_cert_patterns: "[]"
+          TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
+          TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
+          TF_VAR_sns_name: cloud-gov-notifications
+          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((staging_scope_down_known_bad_inputs_not_match_origin_search_string))
+          TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+          TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+          TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
+          TF_VAR_logstash_hosts: ((staging_logstash_hosts))
+          TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
+          TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
+          TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
+          TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+          TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
+          TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
+          TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
+          TF_VAR_cidr_blocks: ((cidr_blocks))
+          TF_VAR_domains_lbgroup_count: 3
+      - *notify-slack
+
+  - name: bootstrap-staging
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-staging]
+      - task: create-update-staging
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *staging-params
+          TERRAFORM_ACTION: apply
+      - in_parallel:
+          - do:
+              - task: init-bosh-db
+                image: general-task
+                config:
+                  platform: linux
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+              - task: init-cf-db
+                image: general-task
+                config:
+                  platform: linux
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+          - do:
+              - task: terraform-state-to-yaml
+                file: pipeline-tasks/terraform12-state-to-yaml.yml
+                params:
+                  STATE_FILE: terraform.tfstate
+              - put: terraform-yaml-staging
+                params:
+                  file: terraform-yaml/state.yml
+
+  - name: webacl-test-staging
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: cg-provision-repo
+            resource: cg-provision-repo
+            passed: [bootstrap-staging]
+            trigger: true
+          - get: waf-test-files
+            resource: waf-tests-staging
+            trigger: true
+      - task: test-waf-rules
+        image: general-task
+        file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+        params:
+          WAF_TEST_APP_URL: ((staging_waf_test_app_url))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: WAF Rules Test Staging FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: WAF Rules Test Staging PASSED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: plan-bootstrap-production
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-production
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &production-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: production
+          TEMPLATE_SUBDIR: terraform/stacks/main
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_assume_arn: ((production_assume_arn))
+          TF_VAR_parent_assume_arn: ((production_parent_assume_arn))
+          TF_VAR_parent_stack_name: ((production_parent_stack_name))
+          TF_VAR_bosh_default_ssh_public_key: ((production_ssh_key))
+          TF_VAR_stack_description: production
+          TF_VAR_force_restricted_network: "no"
+          TF_VAR_include_tcp_routes: ((production_include_tcp_routes))
+          # Do not copy the pattern below.  You should not need separate variables
+          # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
+          # IDs from `data` resources.
+          TF_VAR_rds_password: ((production_rds_password))
+          TF_VAR_rds_db_size: ((production_rds_db_size))
+          # Enable for database upgrades:
+          #TF_VAR_rds_apply_immediately: "true"
+          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_vpc_cidr: ((production_vpc_cidr))
+          TF_VAR_cf_rds_password: ((production_cf_rds_password))
+          TF_VAR_cf_as_rds_instance_type: ((production_cf_as_rds_instance_type))
+          TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
+          TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
+          TF_VAR_wildcard_certificate_name_prefix: star.fr.cloud.gov
+          TF_VAR_wildcard_apps_certificate_name_prefix: star.app.cloud.gov
+          TF_VAR_bucket_prefix: cg
+          TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
+          TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+          TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
+          TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
+          TF_VAR_domains_broker_alb_count: "11"
+          TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
+          TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
+          TF_VAR_pages_cert_patterns: '["pages.cloud.gov","pages-staging.cloud.gov","pages-dev.cloud.gov"]'
+          TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
+          TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
+          TF_VAR_sns_name: cloud-gov-notifications
+          TF_VAR_slack_sns_name: cg-slack-notifications
+          TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
+          TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+          TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+          TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
+          TF_VAR_logstash_hosts: ((production_logstash_hosts))
+          TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
+          TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
+          TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
+          TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+          TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
+          TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
+          TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
+          TF_VAR_cidr_blocks: ((cidr_blocks))
+          TF_VAR_domains_lbgroup_count: 4
+      - *notify-slack
+
+  - name: bootstrap-production
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-bootstrap-production]
+      - task: create-update-production
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *production-params
+          TERRAFORM_ACTION: apply
+      - in_parallel:
+          - do:
+              - task: init-bosh-db
+                image: general-task
+                config:
+                  platform: linux
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+              - task: init-cf-db
+                image: general-task
+                config:
+                  platform: linux
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+      - do:
+          - task: terraform-state-to-yaml
+            file: pipeline-tasks/terraform12-state-to-yaml.yml
+            params:
+              STATE_FILE: terraform.tfstate
+          - put: terraform-yaml-production
+            params:
+              file: terraform-yaml/state.yml
+
+  - name: webacl-test-production
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: cg-provision-repo
+            resource: cg-provision-repo
+            passed: [bootstrap-production]
+            trigger: true
+          - get: waf-test-files
+            resource: waf-tests-production
+            trigger: true
+      - task: test-waf-rules
+        image: general-task
+        file: cg-provision-repo/ci/waf-tests/test-waf-rules.yml
+        params:
+          WAF_TEST_APP_URL: ((production_waf_test_app_url))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: WAF Rules Test Production FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: WAF Rules Test Production PASSED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: plan-ecr
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-ecr
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &tf-ecr
+          TERRAFORM_ACTION: plan
+          TEMPLATE_SUBDIR: terraform/stacks/ecr
+          STACK_NAME: ecr
+          S3_TFSTATE_BUCKET: ((ecr-tf-state-bucket))
+          AWS_DEFAULT_REGION: us-gov-west-1
+          TF_VAR_remote_state_bucket: ((ecr-tf-state-bucket))
+          TF_VAR_tooling_stack_name: tooling
+      - *notify-slack
+
+  - name: apply-ecr
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-ecr]
+      - task: create-update-ecr
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *tf-ecr
+          TERRAFORM_ACTION: apply
+
+  - name: acme-certificate-development
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: staging-weekly-timer
+            trigger: true
+          - get: cg-provision-repo
+            resource: cg-provision-repo-development
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-development
+      - task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/dev/
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.dev.us-gov-west-1.aws-us-gov.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/dev/
+          CERT_PREFIX: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-staging
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: staging-weekly-timer
+            trigger: true
+          - get: cg-provision-repo
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-staging
+      - task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.fr-stage.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.fr-stage.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: star.fr-stage.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificate for *.fr-stage.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-production
+    plan:
+      - in_parallel: &prod-certificate-resources
+          - get: general-task
+          - get: prod-biweekly-timer
+            trigger: true
+          - get: cg-provision-repo
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-production
+      - &check-certificates-task
+        task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.fr.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.fr.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.fr.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.fr.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-production-apps
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.app.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.app.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.app.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.app.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: pages.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "pages.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: pages.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for pages.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-wildcard-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.pages.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.pages.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.pages.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.pages.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-wildcard-pages-sites
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.sites.pages.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.sites.pages.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.sites.pages.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.sites.pages.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-staging-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: pages-staging.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "pages-staging.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: pages-staging.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for pages-staging.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-staging-wildcard-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.pages-staging.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.pages-staging.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.pages-staging.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.pages-staging.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-staging-wildcard-pages-sites
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.sites.pages-staging.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.sites.pages-staging.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.sites.pages-staging.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.sites.pages-staging.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: pages-dev.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "pages-dev.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: pages-dev.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for pages-dev.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev-wildcard-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.pages-dev.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.pages-dev.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.pages-dev.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.pages-dev.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev-wildcard-pages-sites
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.sites.pages-dev.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.sites.pages-dev.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/production/
+          CERT_PREFIX: star.sites.pages-dev.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.sites.pages-dev.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
 
 resources:
-- name: pipeline-tasks
-  type: git
-  source:
-    uri: ((pipeline_tasks_git_url))
-    branch: ((pipeline_tasks_git_branch))
-    commit_verification_keys: ((cloud-gov-pgp-keys))
+  - name: pipeline-tasks
+    type: git
+    source:
+      uri: ((pipeline_tasks_git_url))
+      branch: ((pipeline_tasks_git_branch))
+      commit_verification_keys: ((cloud-gov-pgp-keys))
 
-- name: cg-provision-repo
-  type: git
-  source:
-    uri: ((cg_provision_git_url))
-    branch: ((cg_provision_git_branch))
-    commit_verification_keys: ((cloud-gov-pgp-keys))
+  - name: cg-provision-repo
+    type: git
+    source:
+      uri: ((cg_provision_git_url))
+      branch: ((cg_provision_git_branch))
+      commit_verification_keys: ((cloud-gov-pgp-keys))
 
-- name: cg-provision-repo-development
-  type: git
-  source:
-    uri: ((cg_provision_git_url))
-    branch: ((cg_provision_git_branch_development))
-    commit_verification_keys: ((cloud-gov-pgp-keys))
+  - name: cg-provision-repo-development
+    type: git
+    source:
+      uri: ((cg_provision_git_url))
+      branch: ((cg_provision_git_branch_development))
+      commit_verification_keys: ((cloud-gov-pgp-keys))
 
-- name: pull-request
-  type: pull-request
-  check_every: 1m
-  source:
-    repository: ((cg_provision_git_repo))
-    access_token: ((status_access_token))
-    disable_forks: true
+  - name: pull-request
+    type: pull-request
+    check_every: 1m
+    source:
+      repository: ((cg_provision_git_repo))
+      access_token: ((status_access_token))
+      disable_forks: true
 
-- name: terraform-yaml-tooling
-  type: s3-iam
-  source:
-    bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_tooling))
-    region_name: ((aws_default_region))
+  - name: terraform-yaml-tooling
+    type: s3-iam
+    source:
+      bucket: ((aws_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_tooling))
+      region_name: ((aws_default_region))
 
-- name: terraform-yaml-development
-  type: s3-iam
-  source:
-    bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_development))
-    region_name: ((aws_default_region))
+  - name: terraform-yaml-development
+    type: s3-iam
+    source:
+      bucket: ((aws_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_development))
+      region_name: ((aws_default_region))
 
-- name: terraform-yaml-staging
-  type: s3-iam
-  source:
-    bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_staging))
-    region_name: ((aws_default_region))
+  - name: terraform-yaml-staging
+    type: s3-iam
+    source:
+      bucket: ((aws_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_staging))
+      region_name: ((aws_default_region))
 
-- name: terraform-yaml-production
-  type: s3-iam
-  source:
-    bucket: ((aws_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_production))
-    region_name: ((aws_default_region))
+  - name: terraform-yaml-production
+    type: s3-iam
+    source:
+      bucket: ((aws_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_production))
+      region_name: ((aws_default_region))
 
-- name: waf-tests-development
-  type: s3-iam
-  source:
-    bucket: ((waf_rules_bucket))
-    versioned_file: ((development_waf_test_file))
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: ((aws_default_region))
+  - name: waf-tests-development
+    type: s3-iam
+    source:
+      bucket: ((waf_rules_bucket))
+      versioned_file: ((development_waf_test_file))
+      access_key_id: ((aws_access_key_id))
+      secret_access_key: ((aws_secret_access_key))
+      region_name: ((aws_default_region))
 
-- name: waf-tests-staging
-  type: s3-iam
-  source:
-    bucket: ((waf_rules_bucket))
-    versioned_file: ((staging_waf_test_file))
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: ((aws_default_region))
+  - name: waf-tests-staging
+    type: s3-iam
+    source:
+      bucket: ((waf_rules_bucket))
+      versioned_file: ((staging_waf_test_file))
+      access_key_id: ((aws_access_key_id))
+      secret_access_key: ((aws_secret_access_key))
+      region_name: ((aws_default_region))
 
-- name: waf-tests-production
-  type: s3-iam
-  source:
-    bucket: ((waf_rules_bucket))
-    versioned_file: ((production_waf_test_file))
-    access_key_id: ((aws_access_key_id))
-    secret_access_key: ((aws_secret_access_key))
-    region_name: ((aws_default_region))
+  - name: waf-tests-production
+    type: s3-iam
+    source:
+      bucket: ((waf_rules_bucket))
+      versioned_file: ((production_waf_test_file))
+      access_key_id: ((aws_access_key_id))
+      secret_access_key: ((aws_secret_access_key))
+      region_name: ((aws_default_region))
 
-- name: terraform-yaml-external-development
-  type: s3-iam
-  source:
-    bucket: ((aws_external_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_external_development))
-    access_key_id: ((aws_external_access_key_id))
-    secret_access_key: ((aws_external_secret_access_key))
-    region_name: ((aws_external_region))
+  - name: terraform-yaml-external-development
+    type: s3-iam
+    source:
+      bucket: ((aws_external_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_external_development))
+      access_key_id: ((aws_external_access_key_id))
+      secret_access_key: ((aws_external_secret_access_key))
+      region_name: ((aws_external_region))
 
-- name: terraform-yaml-external-staging
-  type: s3-iam
-  source:
-    bucket: ((aws_external_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_external_staging))
-    access_key_id: ((aws_external_access_key_id))
-    secret_access_key: ((aws_external_secret_access_key))
-    region_name: ((aws_external_region))
+  - name: terraform-yaml-external-staging
+    type: s3-iam
+    source:
+      bucket: ((aws_external_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_external_staging))
+      access_key_id: ((aws_external_access_key_id))
+      secret_access_key: ((aws_external_secret_access_key))
+      region_name: ((aws_external_region))
 
-- name: terraform-yaml-external-production
-  type: s3-iam
-  source:
-    bucket: ((aws_external_s3_tfstate_bucket))
-    versioned_file: ((tf_state_file_external_production))
-    access_key_id: ((aws_external_access_key_id))
-    secret_access_key: ((aws_external_secret_access_key))
-    region_name: ((aws_external_region))
+  - name: terraform-yaml-external-production
+    type: s3-iam
+    source:
+      bucket: ((aws_external_s3_tfstate_bucket))
+      versioned_file: ((tf_state_file_external_production))
+      access_key_id: ((aws_external_access_key_id))
+      secret_access_key: ((aws_external_secret_access_key))
+      region_name: ((aws_external_region))
 
-- name: plan-timer
-  type: time
-  source:
-    interval: 24h
-    location: America/New_York
+  - name: plan-timer
+    type: time
+    source:
+      interval: 24h
+      location: America/New_York
 
-- name: prod-biweekly-timer
-  type: time
-  source:
-    interval: 24h
-    start: 10:00 AM
-    stop: 3:00 PM
-    days: [Tuesday,Thursday]
-    location: America/New_York
+  - name: prod-biweekly-timer
+    type: time
+    source:
+      interval: 24h
+      start: 10:00 AM
+      stop: 3:00 PM
+      days: [Tuesday, Thursday]
+      location: America/New_York
 
-- name: staging-weekly-timer
-  type: time
-  source:
-    interval: 24h
-    start: 10:00 AM
-    stop: 3:00 PM
-    days: [Wednesday]
-    location: America/New_York
+  - name: staging-weekly-timer
+    type: time
+    source:
+      interval: 24h
+      start: 10:00 AM
+      stop: 3:00 PM
+      days: [Wednesday]
+      location: America/New_York
 
-- name: slack
-  type: slack-notification
-  source:
-    url: ((slack-webhook-url))
+  - name: slack
+    type: slack-notification
+    source:
+      url: ((slack-webhook-url))
 
-- name: general-task
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: general-task
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: general-task
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: general-task
+      aws_region: us-gov-west-1
+      tag: latest
 
 resource_types:
-- name: registry-image
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: registry-image-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: registry-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: registry-image-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: pull-request
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: github-pr-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: pull-request
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: github-pr-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: s3-iam
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: s3-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: s3-iam
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: s3-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: slack-notification
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: slack-notification-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: slack-notification
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: slack-notification-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: time
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: time-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: time
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: time-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: git
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: git-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: git
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: git-resource
+      aws_region: us-gov-west-1
+      tag: latest

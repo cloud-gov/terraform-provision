@@ -149,6 +149,10 @@ variable "sns_name" {
 
 }
 
+variable "slack_sns_name" {
+
+}
+
 variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {
   type = string
 }

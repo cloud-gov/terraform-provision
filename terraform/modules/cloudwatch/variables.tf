@@ -6,6 +6,10 @@ variable "sns_arn" {
 
 }
 
+variable "slack_sns_arn" {
+
+}
+
 variable "load_balancer_dns" {
 
 }
