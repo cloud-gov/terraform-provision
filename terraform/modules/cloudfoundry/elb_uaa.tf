@@ -14,6 +14,24 @@ resource "aws_lb" "cf_uaa" {
   }
 }
 
+resource "aws_lb_target_group" "cf_gr_uaa_target" {
+  name     = "${var.stack_description}-cf-gr-uaa"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_lb_target_group" "cf_uaa_target" {
   name     = "${var.stack_description}-cf-uaa"
   port     = 443

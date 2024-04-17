@@ -237,6 +237,46 @@ resource "aws_lb_target_group" "domains_broker_logstash_https" {
   }
 }
 
+resource "aws_lb_target_group" "domains_broker_gr_apps_https" {
+  count = var.domains_broker_alb_count
+
+  name     = "${var.stack_description}-domains-gapps-https${count.index}"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
+resource "aws_lb_target_group" "domains_broker_gr_logstash_https" {
+  count = var.domains_broker_alb_count
+
+  name     = "${var.stack_description}-domains-glogstash-${count.index}"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = module.stack.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_lb_target_group" "domains_broker_challenge" {
   count = var.domains_broker_alb_count
 

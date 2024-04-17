@@ -103,6 +103,46 @@ resource "aws_lb_target_group" "domains_lbgroup_logstash_https" {
   }
 }
 
+resource "aws_lb_target_group" "domains_lbgroup_gr_apps_https" {
+  count = var.domains_lbgroup_count
+
+  name     = "${var.stack_description}-dlbg-gr-apps-https-${count.index}"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
+resource "aws_lb_target_group" "domains_lbgroup_gr_logstash_https" {
+  count = var.domains_lbgroup_count
+
+  name     = "${var.stack_description}-dlbg-gr-logstash-${count.index}"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_wafv2_web_acl_association" "domain_waf" {
   count = var.domains_lbgroup_count
 

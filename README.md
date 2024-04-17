@@ -6,6 +6,7 @@ to bootstrap our infrastructure.
 Be sure to read the internal developer documentation ("cg-provision") for
 non-public information about using this repository.
 
+
 ## Layout
 
 ### Terraform
