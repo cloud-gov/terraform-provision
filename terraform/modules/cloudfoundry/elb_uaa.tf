@@ -86,22 +86,28 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
 
     statement {
-      byte_match_statement {
-        field_to_match {
-          single_header {
-            name = "host"
-          }
-        }
+      or_statement (
+        dynamic "statement" {
+            for_each = var.waf_hostnames_0
+            iterator = app_name
 
-        positional_constraint = "CONTAINS"
-        search_string         = var.waf_hostname_0
-
-        text_transformation {
-          priority = "0"
-          type     = "NONE"
-        }
-      }
+            content {
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = "host"
+                  }
+                }
+                positional_constraint = "CONTAINS"
+                search_string         = app_name.value
+                text_transformation {
+                  priority = "0"
+                  type     = "NONE"
+                }
+              }
+        )
     }
+     
 
     rule_label {
       name = var.waf_label_host_0
