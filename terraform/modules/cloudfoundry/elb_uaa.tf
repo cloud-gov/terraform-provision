@@ -460,7 +460,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+      metric_name                = "${var.stack_description}-CG-RegexPatternSets"
       sampled_requests_enabled   = true
     }
   }
@@ -654,7 +654,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitNonCDNBySourceIPChallenge"
       sampled_requests_enabled   = true
     }
   }
@@ -699,7 +699,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitForwardedIPChallenge"
       sampled_requests_enabled   = true
     }
   }
@@ -768,7 +768,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitNonCDNBySourceIPBlock"
       sampled_requests_enabled   = true
     }
   }
