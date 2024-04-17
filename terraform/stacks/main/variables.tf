@@ -145,20 +145,15 @@ variable "s3_gateway_policy_accounts" {
   default = []
 }
 
-variable "sns_main_name" {
+variable "sns_cg_platform_notifications_email" {
+  type        = string
+  description = "Email to receive platform notifications"
 
 }
 
-variable "sns_slack_name" {
-
-}
-
-variable "sns_main_endpoint" {
-
-}
-
-variable "sns_slack_endpoint" {
-
+variable "sns_cg_platform_slack_notifications_email" {
+  type        = string
+  description = "Email to receive platform slack notifications"
 }
 
 variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {

@@ -418,17 +418,17 @@ module "dns_logging" {
 module "cloudwatch" {
   source = "../../modules/cloudwatch"
 
-  stack_description = var.stack_description
-  sns_main_arn      = module.sns.sns_main_arn
-  sns_slack_arn     = module.sns.sns_slack_arn
-  load_balancer_dns = module.cf.lb_arn_suffix
+  stack_description                   = var.stack_description
+  cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
+  cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
+  load_balancer_dns                   = module.cf.lb_arn_suffix
 }
 
 module "sns" {
   source = "../../modules/sns"
 
-  sns_main_name      = var.sns_main_name
-  sns_main_endpoint  = var.sns_main_endpoint
-  sns_slack_name     = var.sns_slack_name
-  sns_slack_endpoint = var.sns_slack_endpoint
+  sns_cg_platform_notifications_name        = "${var.stack_description}-platform-notifications"
+  sns_cg_platform_notifications_email       = var.sns_cg_platform_notifications_email
+  sns_cg_platform_slack_notifications_name  = "${var.stack_description}-platform-slack-notifications"
+  sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }

@@ -8,7 +8,7 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
   insufficient_data_actions = []
   actions_enabled           = true
   ok_actions                = []
-  alarm_actions             = [var.sns_main_arn]
+  alarm_actions             = [var.cg_platform_notifications_arn]
   treat_missing_data        = "missing"
 
   metric_query {
@@ -45,7 +45,7 @@ resource "aws_cloudwatch_metric_alarm" "load_balancer_request_spike" {
   insufficient_data_actions = []
   actions_enabled           = true
   ok_actions                = []
-  alarm_actions             = [var.sns_main_arn, var.sns_slack_arn]
+  alarm_actions             = [var.cg_platform_notifications_arn, var.cg_platform_slack_notifications_arn]
   treat_missing_data        = "missing"
 
   metric_query {
