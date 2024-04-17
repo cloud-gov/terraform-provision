@@ -83,7 +83,7 @@ resource "aws_lb_listener_rule" "logstash_listener_rule" {
     iterator = app_host_name
     content {
       host_header {
-        values = app_host_name.value
+        value = app_host_name.value
       }
     }
   }
