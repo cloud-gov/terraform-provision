@@ -76,21 +76,25 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   # New rule for dropping logging for a specific host
-
-  rule {
-    name     = var.waf_label_host_0
-    priority = 0
-
-    action {
-      allow {}
-    }
-
-    statement {
-      or_statement (
-        dynamic "statement" {
+  dynamic "rule" {
+    for_each = var.waf_hostnames_0
+    iterator = app_name
+    content {
+      name     = var.waf_label_host_0
+      priority = 0
+      action {
+        allow {}
+      }
+      visibility_config {
+        cloudwatch_metrics_enabled = "true"
+        metric_name                = var.waf_label_host_0
+        sampled_requests_enabled   = "true"
+      }
+      statement {
+        or_statement {
+          dynamic "statement" {
             for_each = var.waf_hostnames_0
             iterator = app_name
-
             content {
               byte_match_statement {
                 field_to_match {
@@ -105,18 +109,13 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
                   type     = "NONE"
                 }
               }
-        )
-    }
-     
-
-    rule_label {
-      name = var.waf_label_host_0
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = "true"
-      metric_name                = var.waf_label_host_0
-      sampled_requests_enabled   = "true"
+            }
+          }
+        }
+      }
+      rule_label {
+        name = var.waf_label_host_0
+      }
     }
   }
 
