@@ -13,3 +13,11 @@ output "domains_lbgroup_listener_arns" {
 output "domains_lbgroup_target_group_logstash_https_names" {
   value = aws_lb_target_group.domains_lbgroup_logstash_https.*.name
 }
+
+output "domains_lbgroup_target_group_gr_apps_https_names" {
+  value = aws_lb_target_group.domains_lbgroup_gr_apps_https.*.name
+}
+
+output "domains_lbgroup_target_group_gr_logstash_https_names" {
+  value = aws_lb_target_group.domains_lbgroup_gr_logstash_https.*.name
+}

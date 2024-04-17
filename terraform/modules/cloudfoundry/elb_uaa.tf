@@ -14,6 +14,24 @@ resource "aws_lb" "cf_uaa" {
   }
 }
 
+resource "aws_lb_target_group" "cf_gr_uaa_target" {
+  name     = "${var.stack_description}-cf-gr-uaa"
+  port     = 10443
+  protocol = "HTTPS"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 5
+    port                = 8443
+    timeout             = 4
+    unhealthy_threshold = 3
+    matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
+  }
+}
+
 resource "aws_lb_target_group" "cf_uaa_target" {
   name     = "${var.stack_description}-cf-uaa"
   port     = 443
@@ -447,7 +465,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-AWSManagedRulesCommonRuleSet"
+      metric_name                = "${var.stack_description}-CG-RegexPatternSets"
       sampled_requests_enabled   = true
     }
   }
@@ -650,7 +668,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitNonCDNBySourceIPChallenge"
       sampled_requests_enabled   = true
     }
   }
@@ -695,7 +713,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitForwardedIPChallenge"
       sampled_requests_enabled   = true
     }
   }
@@ -764,7 +782,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-RateLimitSourceIPChallenge"
+      metric_name                = "${var.stack_description}-RateLimitNonCDNBySourceIPBlock"
       sampled_requests_enabled   = true
     }
   }
