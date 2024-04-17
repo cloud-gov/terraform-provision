@@ -145,11 +145,19 @@ variable "s3_gateway_policy_accounts" {
   default = []
 }
 
-variable "sns_name" {
+variable "sns_main_name" {
 
 }
 
 variable "sns_slack_name" {
+
+}
+
+variable "sns_main_endpoint" {
+
+}
+
+variable "sns_slack_endpoint" {
 
 }
 
