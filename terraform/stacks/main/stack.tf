@@ -419,8 +419,8 @@ module "cloudwatch" {
   source = "../../modules/cloudwatch"
 
   stack_description = var.stack_description
-  sns_arn           = module.sns.sns_arn
-  slack_sns_arn     = module.sns.sns_slack_arn
+  sns_main_arn      = module.sns.sns_main_arn
+  sns_slack_arn     = module.sns.sns_slack_arn
   load_balancer_dns = module.cf.lb_arn_suffix
 }
 

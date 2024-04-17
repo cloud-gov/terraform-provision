@@ -2,11 +2,11 @@ variable "stack_description" {
 
 }
 
-variable "sns_arn" {
+variable "sns_main_arn" {
 
 }
 
-variable "slack_sns_arn" {
+variable "sns_slack_arn" {
 
 }
 
