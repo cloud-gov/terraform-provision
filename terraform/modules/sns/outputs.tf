@@ -1,4 +1,4 @@
-output "sns_arn" {
+output "sns_main_arn" {
   value = aws_sns_topic.cg_notifications.arn
 }
 
