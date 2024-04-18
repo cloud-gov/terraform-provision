@@ -145,7 +145,7 @@ variable "waf_drop_logs_label" {
 
 variable "waf_drop_logs_hostnames" {
   type        = list(string)
-  description = "List 0 for applying label 0 to traffic"
+  description = "List of hostnames that should WAF logs dropped"
 }
 
 variable "user_agent_header_name" {
