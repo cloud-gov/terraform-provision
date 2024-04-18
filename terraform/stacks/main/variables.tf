@@ -159,7 +159,7 @@ variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
 
 variable "waf_drop_logs_label" {
   type        = string
-  description = "Label 0 for applying label to list 0 traffic"
+  description = "Label for WAF rule that will drop logs based on hostname"
 }
 
 variable "waf_drop_logs_hostnames" {
