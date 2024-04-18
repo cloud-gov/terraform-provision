@@ -834,8 +834,8 @@ jobs:
           TF_VAR_pages_cert_patterns: '["pages.cloud.gov","pages-staging.cloud.gov","pages-dev.cloud.gov"]'
           TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((production_s3_gateway_policy_accounts))
-          TF_VAR_sns_cg_platform_notifications_email: ((sns_cg_platform_notifications_email))
-          TF_VAR_sns_cg_platform_slack_notifications_email: ((sns_cg_platform_slack_notifications_email))
+          TF_VAR_sns_cg_platform_notifications_email: ((production_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((production_sns_cg_platform_slack_notifications_email))
           TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
           TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
