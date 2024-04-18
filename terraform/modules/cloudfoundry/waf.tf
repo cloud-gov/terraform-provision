@@ -740,7 +740,7 @@ resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
       behavior = "DROP"
       condition {
         label_name_condition {
-          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_drop_logs_label}"
         }
       }
       requirement = "MEETS_ANY"
