@@ -128,10 +128,6 @@ data "aws_prefix_list" "s3_gw_cidrs" {
   name = "com.amazonaws.${data.aws_region.current.name}.s3"
 }
 
-data "aws_sns_topic" "cg_notifications" {
-  name = var.sns_name
-}
-
 locals {
   pages_cert_ids = [for k, cert in data.aws_iam_server_certificate.pages : cert.arn]
   pages_wildcard_cert_ids = concat(
@@ -280,8 +276,8 @@ module "cf" {
 
   scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
-  waf_drop_logs_label                                            = var.waf_drop_logs_label
-  waf_drop_logs_hostnames                                             = var.waf_drop_logs_hostnames
+  waf_drop_logs_label                                         = var.waf_drop_logs_label
+  waf_drop_logs_hostnames                                     = var.waf_drop_logs_hostnames
 
   ## TODO: manage these IP sets in Terraform somewhere
   gsa_ip_range_ip_set_arn                     = var.gsa_ip_range_ip_set_arn
@@ -422,7 +418,17 @@ module "dns_logging" {
 module "cloudwatch" {
   source = "../../modules/cloudwatch"
 
-  stack_description = var.stack_description
-  sns_arn           = data.aws_sns_topic.cg_notifications.arn
-  load_balancer_dns = module.cf.lb_arn_suffix
+  stack_description                   = var.stack_description
+  cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
+  cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
+  load_balancer_dns                   = module.cf.lb_arn_suffix
+}
+
+module "sns" {
+  source = "../../modules/sns"
+
+  sns_cg_platform_notifications_name        = "${var.stack_description}-platform-notifications"
+  sns_cg_platform_notifications_email       = var.sns_cg_platform_notifications_email
+  sns_cg_platform_slack_notifications_name  = "${var.stack_description}-platform-slack-notifications"
+  sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }
