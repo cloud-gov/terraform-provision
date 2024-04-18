@@ -116,7 +116,7 @@ resource "aws_lb_listener_rule" "logstash_listener_rule" {
 
   condition {
     host_header {
-      values = [var.waf_hostname_0]
+      values = var.waf_drop_logs_hostnames
     }
   }
 }

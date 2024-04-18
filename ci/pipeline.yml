@@ -374,7 +374,7 @@ jobs:
       TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
       TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
       TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
-      TF_VAR_smtp_ingress_cidr_blocks: '["((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
+      TF_VAR_smtp_ingress_cidr_blocks: '["((development_private_cidr_1))", "((development_private_cidr_2))","((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
       TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
       TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
       TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
@@ -392,8 +392,8 @@ jobs:
       TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
       TF_VAR_payer_account_id: ((payer_account_id))
       TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
-      TF_VAR_waf_label_host_0: ((waf_label_host_0))
-      TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
       TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
       TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
       TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
@@ -513,8 +513,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((development_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((development_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_label_host_0: ((waf_label_host_0))
-      TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
       TF_VAR_logstash_hosts: ((development_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
@@ -675,8 +675,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((staging_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((staging_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_label_host_0: ((waf_label_host_0))
-      TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
       TF_VAR_logstash_hosts: ((staging_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
@@ -835,8 +835,8 @@ jobs:
       TF_VAR_sns_name: cloud-gov-notifications
       TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((production_scope_down_known_bad_inputs_not_match_origin_search_string))
       TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((production_scope_down_known_bad_inputs_not_match_uri_path_regex_string))
-      TF_VAR_waf_label_host_0: ((waf_label_host_0))
-      TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
+      TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
       TF_VAR_logstash_hosts: ((production_logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
       TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
