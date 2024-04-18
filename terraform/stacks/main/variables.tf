@@ -162,7 +162,7 @@ variable "waf_drop_logs_label" {
   description = "Label for WAF rule that will drop logs based on hostname"
 }
 
-variable "waf_drop_logs_hostnames" {
+  description = "List of hostnames that should WAF logs dropped"
   type        = list(string)
   description = "List 0 for applying label 0 to traffic"
 }
