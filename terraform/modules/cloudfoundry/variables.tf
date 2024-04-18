@@ -138,12 +138,12 @@ variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
   type = string
 }
 
-variable "waf_label_host_0" {
+variable "waf_drop_logs_label" {
   type        = string
   description = "Label 0 for applying label to list 0 traffic"
 }
 
-variable "waf_hostnames_0" {
+variable "waf_drop_logs_hostnames" {
   type        = list(string)
   description = "List 0 for applying label 0 to traffic"
 }
