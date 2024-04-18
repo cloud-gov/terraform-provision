@@ -501,7 +501,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     iterator = rule
 
     content {
-      name     = "BlockMaliciousJA3FingerprintID-${fingerprint.key}"
+      name     = "BlockMaliciousJA3FingerprintID-${each.key}"
       priority = rule.value.priority
       action {
         count {}
@@ -523,7 +523,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       }
       visibility_config {
         cloudwatch_metrics_enabled = true
-        metric_name                = "${var.stack_description}-BlockMaliciousJA3FingerprintID-${fingerprint.key}"
+        metric_name                = "${var.stack_description}-BlockMaliciousJA3FingerprintID-${each.key}"
         sampled_requests_enabled   = true
       }
     }
