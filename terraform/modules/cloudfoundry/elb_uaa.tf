@@ -93,42 +93,43 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     allow {}
   }
 
-  # New rule for dropping logging for a specific host
-
+  # New rule for dropping logging for a specific set of hosts
   rule {
-    name     = var.waf_label_host_0
+    name     = var.waf_drop_logs_label
     priority = 0
-
     action {
       allow {}
     }
-
+    visibility_config {
+      cloudwatch_metrics_enabled = "true"
+      metric_name                = var.waf_drop_logs_label
+      sampled_requests_enabled   = "true"
+    }
     statement {
-      byte_match_statement {
-        field_to_match {
-          single_header {
-            name = "host"
+      or_statement {
+        dynamic "statement" {
+          for_each = var.waf_drop_logs_hostnames
+          iterator = app_name
+          content {
+            byte_match_statement {
+              field_to_match {
+                single_header {
+                  name = "host"
+                }
+              }
+              positional_constraint = "CONTAINS"
+              search_string         = app_name.value
+              text_transformation {
+                priority = "0"
+                type     = "NONE"
+              }
+            }
           }
-        }
-
-        positional_constraint = "CONTAINS"
-        search_string         = var.waf_hostname_0
-
-        text_transformation {
-          priority = "0"
-          type     = "NONE"
         }
       }
     }
-
     rule_label {
-      name = var.waf_label_host_0
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = "true"
-      metric_name                = var.waf_label_host_0
-      sampled_requests_enabled   = "true"
+      name = var.waf_drop_logs_label
     }
   }
 
@@ -807,7 +808,7 @@ resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
       behavior = "DROP"
       condition {
         label_name_condition {
-          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_label_host_0}"
+          label_name = "awswaf:${data.aws_caller_identity.current.account_id}:webacl:${var.stack_description}-cf-uaa-waf-core:${var.waf_drop_logs_label}"
         }
       }
       requirement = "MEETS_ANY"

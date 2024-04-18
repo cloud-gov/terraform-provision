@@ -157,12 +157,14 @@ variable "scope_down_known_bad_inputs_not_match_origin_search_string" {
   type = string
 }
 
-variable "waf_label_host_0" {
-  type = string
+variable "waf_drop_logs_label" {
+  type        = string
+  description = "Label for WAF rule that will drop logs based on hostname"
 }
 
-variable "waf_hostname_0" {
-  type = string
+variable "waf_drop_logs_hostnames" {
+  type        = list(string)
+  description = "List of hostnames that should WAF logs dropped"
 }
 
 variable "logstash_hosts" {

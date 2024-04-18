@@ -280,8 +280,8 @@ module "cf" {
 
   scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string
-  waf_label_host_0                                            = var.waf_label_host_0
-  waf_hostname_0                                              = var.waf_hostname_0
+  waf_drop_logs_label                                            = var.waf_drop_logs_label
+  waf_drop_logs_hostnames                                             = var.waf_drop_logs_hostnames
 
   ## TODO: manage these IP sets in Terraform somewhere
   gsa_ip_range_ip_set_arn                     = var.gsa_ip_range_ip_set_arn
