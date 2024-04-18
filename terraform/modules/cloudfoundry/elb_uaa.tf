@@ -93,7 +93,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     allow {}
   }
 
-  # New rule for dropping logging for a specific host
+  # New rule for dropping logging for a specific set of hosts
   rule {
     name     = var.waf_drop_logs_label
     priority = 0
