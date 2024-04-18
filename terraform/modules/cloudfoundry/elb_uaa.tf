@@ -94,46 +94,42 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   # New rule for dropping logging for a specific host
-  dynamic "rule" {
-    for_each = var.waf_drop_logs_hostnames
-    iterator = app_name
-    content {
-      name     = var.waf_drop_logs_label
-      priority = 0
-      action {
-        allow {}
-      }
-      visibility_config {
-        cloudwatch_metrics_enabled = "true"
-        metric_name                = var.waf_drop_logs_label
-        sampled_requests_enabled   = "true"
-      }
-      statement {
-        or_statement {
-          dynamic "statement" {
-            for_each = var.waf_drop_logs_hostnames
-            iterator = app_name
-            content {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = "host"
-                  }
+  rule {
+    name     = var.waf_drop_logs_label
+    priority = 0
+    action {
+      allow {}
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = "true"
+      metric_name                = var.waf_drop_logs_label
+      sampled_requests_enabled   = "true"
+    }
+    statement {
+      or_statement {
+        dynamic "statement" {
+          for_each = var.waf_drop_logs_hostnames
+          iterator = app_name
+          content {
+            byte_match_statement {
+              field_to_match {
+                single_header {
+                  name = "host"
                 }
-                positional_constraint = "CONTAINS"
-                search_string         = app_name.value
-                text_transformation {
-                  priority = "0"
-                  type     = "NONE"
-                }
+              }
+              positional_constraint = "CONTAINS"
+              search_string         = app_name.value
+              text_transformation {
+                priority = "0"
+                type     = "NONE"
               }
             }
           }
         }
       }
-      rule_label {
-        name = var.waf_drop_logs_label
-      }
+    }
+    rule_label {
+      name = var.waf_drop_logs_label
     }
   }
 
