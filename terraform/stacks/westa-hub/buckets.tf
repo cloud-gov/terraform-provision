@@ -13,6 +13,13 @@ module "bosh_release_bucket" {
   # force_destroy = "true"
 }
 
+module "bosh_release_blobstore_bucket" {
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
+  bucket        = "${var.bucket_prefix}-cloud-gov-release-blobstore"
+  aws_partition = data.aws_partition.current.partition
+  versioning    = "true"
+  # force_destroy = "true"
+}
 
 module "protobosh_blobstore_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
