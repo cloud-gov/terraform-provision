@@ -1083,6 +1083,14 @@ output "protobosh_blobstore_bucket" {
   value = module.protobosh_blobstore_bucket.bucket_name
 }
 
+output "bosh_release_bucket" {
+  value = module.bosh_release_bucket.bucket_name
+}
+
+output "varz_bucket" {
+  value = module.varz_bucket.bucket_name
+}
+
 output "buildpack_notify_state_staging_bucket_name" {
   value = module.buildpack_notify_state_staging.bucket_name
 }
