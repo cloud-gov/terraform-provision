@@ -434,7 +434,7 @@ module "sns" {
 }
 
 module "cloud_service_broker" {
-  source "../../modules/csb"
+  source = "../../modules/csb"
 
   stack_description = var.stack_description
 }
