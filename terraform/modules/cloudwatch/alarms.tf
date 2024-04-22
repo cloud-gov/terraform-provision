@@ -43,7 +43,7 @@ resource "aws_cloudwatch_metric_alarm" "load_balancer_request_spike" {
   threshold_metric_id       = "e1"
   alarm_description         = "There has been a large spike in load balancer requests to the ${var.stack_description} cloudfoundry apps loadbalancer"
   insufficient_data_actions = []
-  actions_enabled           = true
+  actions_enabled           = var.stack_description == "production" ? true : false
   ok_actions                = []
   alarm_actions             = [var.cg_platform_notifications_arn, var.cg_platform_slack_notifications_arn]
   treat_missing_data        = "missing"
