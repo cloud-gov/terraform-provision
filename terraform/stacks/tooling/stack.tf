@@ -131,6 +131,31 @@ module "concourse_production" {
   hosts                           = var.concourse_production_hosts
 }
 
+module "concourse_production_pages" {
+  source                          = "../../modules/concourse"
+  stack_description               = var.stack_description
+  vpc_id                          = module.stack.vpc_id
+  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
+  concourse_az                    = data.aws_availability_zones.available.names[1]
+  route_table_id                  = module.stack.private_route_table_az2
+  rds_password                    = var.concourse_prod_pages_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-concourse-production-pages"
+  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_db_engine_version           = var.rds_db_engine_version
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m5.large"
+  rds_db_size                     = 400
+  rds_db_storage_type             = "gp3"
+  rds_db_iops                     = 12000
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.concourse_production_pages_hosts
+}
+
 module "concourse_staging" {
   source                          = "../../modules/concourse"
   stack_description               = var.stack_description
