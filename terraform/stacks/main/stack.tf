@@ -433,7 +433,7 @@ module "sns" {
   sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }
 
-module "cloud_service_broker" {
+module "csb" {
   source = "../../modules/csb"
 
   stack_description = var.stack_description

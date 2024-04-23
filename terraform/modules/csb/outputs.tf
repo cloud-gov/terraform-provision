@@ -19,4 +19,3 @@ output "secret_access_key_curr" {
   value     = aws_iam_access_key.iam_access_key.secret
   sensitive = true
 }
-
