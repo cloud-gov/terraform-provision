@@ -28,8 +28,18 @@ resource "aws_lb_listener" "domains_lbgroup_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_lbgroup_apps_https[count.index].arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_gr_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -43,8 +53,18 @@ resource "aws_lb_listener" "domains_lbgroup_https" {
   certificate_arn   = var.wildcard_arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_lbgroup_apps_https[count.index].arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_gr_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -56,8 +76,18 @@ resource "aws_lb_listener_rule" "domains_lbgroup_logstash_listener_rule" {
   listener_arn = aws_lb_listener.domains_lbgroup_https[count.index].arn
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.domains_lbgroup_logstash_https[count.index].arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_logstash_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_lbgroup_gr_logstash_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 
   condition {

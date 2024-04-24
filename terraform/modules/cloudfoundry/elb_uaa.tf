@@ -56,8 +56,18 @@ resource "aws_lb_listener" "cf_uaa" {
   certificate_arn   = var.elb_main_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_uaa_target.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.cf_uaa_target.arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.cf_gr_uaa_target.arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -67,8 +77,18 @@ resource "aws_lb_listener" "cf_uaa_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_uaa_target.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.cf_uaa_target.arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.cf_gr_uaa_target.arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
