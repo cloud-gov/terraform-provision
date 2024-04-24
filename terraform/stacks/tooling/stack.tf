@@ -101,7 +101,7 @@ module "stack" {
   rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
   rds_apply_immediately                  = var.rds_apply_immediately
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
-  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 1)]
+  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
   target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
 }
@@ -135,9 +135,9 @@ module "concourse_production_pages" {
   source                          = "../../modules/concourse"
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
-  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
+  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
   concourse_az                    = data.aws_availability_zones.available.names[1]
-  route_table_id                  = module.stack.private_route_table_az2
+  route_table_id                  = module.stack.private_route_table_az1
   rds_password                    = var.concourse_prod_pages_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -146,7 +146,7 @@ module "concourse_production_pages" {
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m5.large"
+  rds_instance_type               = "db.m6i.large"
   rds_db_size                     = 400
   rds_db_storage_type             = "gp3"
   rds_db_iops                     = 12000
