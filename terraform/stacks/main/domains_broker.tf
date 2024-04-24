@@ -94,14 +94,16 @@ module "dedicated_loadbalancer_group" {
   source            = "../../modules/external_domain_broker_loadbalancer_group"
   stack_description = var.stack_description
 
-  subnets               = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
-  security_groups       = [module.stack.web_traffic_security_group]
-  elb_bucket_name       = module.log_bucket.elb_bucket_name
-  waf_arn               = module.cf.cf_uaa_waf_core_arn
-  logstash_hosts        = var.logstash_hosts
-  vpc_id                = module.stack.vpc_id
-  domains_lbgroup_count = var.domains_lbgroup_count
-  wildcard_arn          = data.aws_iam_server_certificate.wildcard.arn
+  subnets                              = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
+  security_groups                      = [module.stack.web_traffic_security_group]
+  elb_bucket_name                      = module.log_bucket.elb_bucket_name
+  waf_arn                              = module.cf.cf_uaa_waf_core_arn
+  logstash_hosts                       = var.logstash_hosts
+  vpc_id                               = module.stack.vpc_id
+  domains_lbgroup_count                = var.domains_lbgroup_count
+  wildcard_arn                         = data.aws_iam_server_certificate.wildcard.arn
+  loadbalancer_forward_original_weight = var.loadbalancer_forward_original_weight
+  loadbalancer_forward_new_weight      = var.loadbalancer_forward_new_weight
 }
 
 /* old domains broker alb */
@@ -129,8 +131,18 @@ resource "aws_lb_listener" "domains_broker_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_gr_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -144,8 +156,18 @@ resource "aws_lb_listener" "domains_broker_https" {
   certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.domains_broker_apps_https[count.index].arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_gr_apps_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -190,8 +212,18 @@ resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
   listener_arn = aws_lb_listener.domains_broker_https[count.index].arn
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.domains_broker_gr_logstash_https[count.index].arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 
   condition {
