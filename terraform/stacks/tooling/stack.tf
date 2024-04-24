@@ -112,6 +112,7 @@ module "concourse_production" {
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
   concourse_az                    = data.aws_availability_zones.available.names[0]
+  suffix                          = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
   rds_password                    = var.concourse_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
@@ -137,13 +138,14 @@ module "concourse_production_pages" {
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
   concourse_az                    = data.aws_availability_zones.available.names[1]
+  suffix                          = "production-pages"
   route_table_id                  = module.stack.private_route_table_az1
   rds_password                    = var.concourse_prod_pages_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-concourse-production-pages"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_db_engine_version           = var.rds_db_engine_version
+  rds_parameter_group_family      = "postgres15"
+  rds_db_engine_version           = "15.5"
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m6i.large"
@@ -162,6 +164,7 @@ module "concourse_staging" {
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
   concourse_az                    = data.aws_availability_zones.available.names[1]
+  suffix                          = data.aws_availability_zones.available.names[1]
   route_table_id                  = module.stack.private_route_table_az2
   rds_password                    = var.concourse_staging_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group

@@ -1,5 +1,5 @@
 resource "aws_lb_target_group" "concourse_target" {
-  name     = "${var.stack_description}-concourse-${var.concourse_az}"
+  name     = "${var.stack_description}-concourse-${var.suffix}"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id

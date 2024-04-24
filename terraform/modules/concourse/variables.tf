@@ -9,6 +9,10 @@ variable "concourse_az" {
   default = "us-gov-west-1a"
 }
 
+variable "suffix" {
+  default = "pickles"
+}
+
 variable "rds_db_name" {
   default = "atc"
 }
