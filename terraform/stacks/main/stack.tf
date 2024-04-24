@@ -434,6 +434,9 @@ module "sns" {
 }
 
 module "csb" {
+  // Deploy only to development while iterating.
+  // See progress at https://github.com/cloud-gov/product/issues/2512.
+  count  = var.stack_description == "development" ? 1 : 0
   source = "../../modules/csb"
 
   stack_description = var.stack_description
