@@ -11,12 +11,10 @@ output "secret_access_key_prev" {
 }
 
 output "access_key_id_curr" {
-  value     = aws_iam_access_key.iam_access_key.id
-  sensitive = true
+  value = aws_iam_access_key.iam_access_key.id
 }
 
 output "secret_access_key_curr" {
   value     = aws_iam_access_key.iam_access_key.secret
   sensitive = true
 }
-

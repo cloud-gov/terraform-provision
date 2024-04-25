@@ -288,6 +288,9 @@ module "cf" {
   malicious_ja3_fingerprint_ids               = var.malicious_ja3_fingerprint_ids
   internal_vpc_cidrs_set_arn                  = var.internal_vpc_cidrs_set_arn
   cg_egress_ip_set_arn                        = var.cg_egress_ip_set_arn
+
+  loadbalancer_forward_original_weight = var.loadbalancer_forward_original_weight
+  loadbalancer_forward_new_weight      = var.loadbalancer_forward_new_weight
 }
 
 
@@ -434,7 +437,7 @@ module "sns" {
   sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }
 
-module "cloud_service_broker" {
+module "csb" {
   source = "../../modules/csb"
 
   stack_description = var.stack_description

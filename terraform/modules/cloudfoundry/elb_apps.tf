@@ -56,8 +56,18 @@ resource "aws_lb_listener" "cf_apps" {
   certificate_arn   = var.elb_apps_cert_id
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.cf_apps_target_https.arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.cf_gr_apps_target_https.arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -67,8 +77,18 @@ resource "aws_lb_listener" "cf_apps_http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.cf_apps_target_https.arn
-    type             = "forward"
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.cf_apps_target_https.arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.cf_gr_apps_target_https.arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 }
 
@@ -110,8 +130,18 @@ resource "aws_lb_listener_rule" "logstash_listener_rule" {
   listener_arn = aws_lb_listener.cf_apps.arn
 
   action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.cf_logstash_target_https.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.cf_logstash_target_https.arn
+        weight = var.loadbalancer_forward_original_weight
+      }
+      target_group {
+        arn    = aws_lb_target_group.cf_gr_logstash_target_https.arn
+        weight = var.loadbalancer_forward_new_weight
+      }
+    }
   }
 
   condition {

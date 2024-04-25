@@ -218,3 +218,15 @@ variable "cg_egress_ip_set_arn" {
   type        = string
   description = "ARN of IP set identifying egress IP CIDR ranges for cloud.gov"
 }
+
+variable "loadbalancer_forward_original_weight" {
+  type        = number
+  description = "Weight of traffic to send to original target groups"
+  default     = 100
+}
+
+variable "loadbalancer_forward_new_weight" {
+  type        = number
+  description = "Weight of traffic to send to original target groups"
+  default     = 0
+}

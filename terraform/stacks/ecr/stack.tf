@@ -7,6 +7,7 @@ variable "tooling_stack_name" {
 variable "repositories" {
   type = set(string)
   default = [
+    "bosh-deployment-resource",
     "cf-cli-resource",
     "cf-resource",
     "cloud-service-broker",
@@ -17,6 +18,7 @@ variable "repositories" {
     "general-task",
     "git-resource",
     "github-pr-resource",
+    "github-release-resource",
     "harden-concourse-task",
     "harden-concourse-task-staging",
     "harden-s3-resource-simple",

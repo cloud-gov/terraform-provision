@@ -56,7 +56,7 @@ data "aws_iam_policy_document" "brokerpak_smtp" {
 }
 
 resource "aws_iam_policy" "brokerpak_smtp" {
-  name        = "brokerpak_smtp"
+  name        = "${var.stack_description}-brokerpak-smtp"
   description = "SMTP broker policy (covers SES, IAM, and supplementary Route53)"
   policy      = data.aws_iam_policy_document.brokerpak_smtp.json
 }
