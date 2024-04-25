@@ -366,6 +366,7 @@ jobs:
           #TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
           TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
+          TF_VAR_concourse_prod_pages_rds_password: ((concourse_prod_pages_rds_password))
           TF_VAR_concourse_staging_rds_password: ((concourse_staging_rds_password))
           TF_VAR_credhub_prod_rds_password: ((credhub_prod_rds_password))
           TF_VAR_credhub_staging_rds_password: ((credhub_staging_rds_password))
@@ -379,6 +380,7 @@ jobs:
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
           TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
           TF_VAR_concourse_production_hosts: '["ci.fr.cloud.gov"]'
+          TF_VAR_concourse_production_pages_hosts: '["ci-pages.fr.cloud.gov"]'
           TF_VAR_concourse_staging_hosts: '["ci.fr-stage.cloud.gov"]'
           TF_VAR_credhub_production_hosts: '["credhub.fr.cloud.gov"]'
           TF_VAR_credhub_staging_hosts: '["credhub.fr-stage.cloud.gov"]'

@@ -44,6 +44,10 @@ variable "concourse_prod_rds_password" {
   sensitive = true
 }
 
+variable "concourse_prod_pages_rds_password" {
+  sensitive = true
+}
+
 variable "concourse_staging_rds_password" {
   sensitive = true
 }
@@ -73,6 +77,10 @@ variable "wildcard_staging_certificate_name_prefix" {
 }
 
 variable "concourse_production_hosts" {
+  type = list(string)
+}
+
+variable "concourse_production_pages_hosts" {
   type = list(string)
 }
 
