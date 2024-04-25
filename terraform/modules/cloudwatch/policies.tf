@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "elasticsearch-log-publishing-policy" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*"]
+    resources = ["arn:${var.aws_partition}:logs:*"]
 
     principals {
       identifiers = ["es.amazonaws.com"]

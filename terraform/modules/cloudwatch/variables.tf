@@ -16,3 +16,7 @@ variable "cg_platform_slack_notifications_arn" {
 variable "load_balancer_dns" {
 
 }
+
+variable "aws_partition" {
+
+}

@@ -426,6 +426,7 @@ module "cloudwatch" {
   cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
   cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
   load_balancer_dns                   = module.cf.lb_arn_suffix
+  aws_partition                       = data.aws_partition.current.partition
 }
 
 module "sns" {
