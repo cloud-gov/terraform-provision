@@ -148,7 +148,7 @@ module "concourse_production_pages" {
   rds_db_engine_version           = "15.5"
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = "db.m6i.large"
+  rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
   rds_db_storage_type             = "gp3"
   rds_db_iops                     = 12000
