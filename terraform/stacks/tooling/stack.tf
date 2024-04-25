@@ -138,7 +138,7 @@ module "concourse_production_pages" {
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 38)
   concourse_az                    = data.aws_availability_zones.available.names[1]
-  suffix                          = "production-pages"
+  suffix                          = "pages"
   route_table_id                  = module.stack.private_route_table_az1
   rds_password                    = var.concourse_prod_pages_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
