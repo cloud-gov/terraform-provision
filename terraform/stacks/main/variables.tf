@@ -193,7 +193,7 @@ variable "api_data_gov_hosts_regex_pattern_arn" {
   description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }
 
-variable "internal_logstash_hosts_regex_pattern_arn" {
+variable "drop_logs_hosts_regex_pattern_arn" {
   type        = string
   description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }

@@ -40,33 +40,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       sampled_requests_enabled   = "true"
     }
     statement {
-      or_statement {
-        dynamic "statement" {
-          for_each = var.waf_drop_logs_hostnames
-          iterator = app_name
-          content {
-            byte_match_statement {
-              field_to_match {
-                single_header {
-                  name = "host"
-                }
-              }
-              positional_constraint = "CONTAINS"
-              search_string         = app_name.value
-              text_transformation {
-                priority = "0"
-                type     = "NONE"
-              }
-            }
+      regex_pattern_set_reference_statement {
+        arn = var.drop_logs_hosts_regex_pattern_arn
+        field_to_match {
+          single_header {
+            name = "host"
           }
         }
+        text_transformation {
+          priority = 0
+          type     = "NONE"
+        }
+      }
+      rule_label {
+        name = var.waf_drop_logs_label
       }
     }
-    rule_label {
-      name = var.waf_drop_logs_label
-    }
   }
-
 
   rule {
     name     = "AWS-AWSManagedRulesAnonymousIpList"
