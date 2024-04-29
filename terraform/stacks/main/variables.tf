@@ -140,6 +140,10 @@ variable "waf_regular_expressions" {
   type = list(string)
 }
 
+variable "waf_drop_logs_hosts_regular_expressions" {
+  type = list(string)
+}
+
 variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []

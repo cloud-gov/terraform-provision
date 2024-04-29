@@ -130,6 +130,10 @@ variable "waf_regular_expressions" {
   type = list(string)
 }
 
+variable "waf_drop_logs_hosts_regular_expressions" {
+  type = list(string)
+}
+
 variable "scope_down_known_bad_inputs_not_match_uri_path_regex_string" {
   type = string
 }
