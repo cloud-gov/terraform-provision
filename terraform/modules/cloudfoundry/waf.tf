@@ -52,9 +52,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
           type     = "NONE"
         }
       }
-      rule_label {
-        name = var.waf_drop_logs_label
-      }
+    }
+    rule_label {
+      name = var.waf_drop_logs_label
     }
   }
 
