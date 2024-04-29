@@ -41,7 +41,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
     statement {
       regex_pattern_set_reference_statement {
-        arn = var.drop_logs_hosts_regex_pattern_arn
+        arn = aws_wafv2_regex_pattern_set.drop_logs_regex.arn
         field_to_match {
           single_header {
             name = "host"

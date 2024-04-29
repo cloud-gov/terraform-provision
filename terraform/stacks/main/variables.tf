@@ -140,6 +140,10 @@ variable "waf_regular_expressions" {
   type = list(string)
 }
 
+variable "waf_drop_logs_hosts_regular_expressions" {
+  type = list(string)
+}
+
 variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
@@ -189,11 +193,6 @@ variable "malicious_ja3_fingerprint_ids" {
 }
 
 variable "api_data_gov_hosts_regex_pattern_arn" {
-  type        = string
-  description = "ARN of regex pattern set used to identify hosts for api.data.gov"
-}
-
-variable "drop_logs_hosts_regex_pattern_arn" {
   type        = string
   description = "ARN of regex pattern set used to identify hosts for api.data.gov"
 }
