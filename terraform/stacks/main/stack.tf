@@ -283,6 +283,7 @@ module "cf" {
   ## TODO: manage these IP sets in Terraform somewhere
   gsa_ip_range_ip_set_arn                     = var.gsa_ip_range_ip_set_arn
   api_data_gov_hosts_regex_pattern_arn        = var.api_data_gov_hosts_regex_pattern_arn
+  internal_logstash_hosts_regex_pattern_arn   = var.internal_logstash_hostss_regex_pattern_arn
   customer_whitelist_ip_ranges_set_arn        = var.customer_whitelist_ip_ranges_set_arn
   customer_whitelist_source_ip_ranges_set_arn = var.customer_whitelist_source_ip_ranges_set_arn
   malicious_ja3_fingerprint_ids               = var.malicious_ja3_fingerprint_ids
