@@ -41,10 +41,12 @@ resource "aws_lb_target_group" "cf_target_https" {
   health_check {
     healthy_threshold   = 2
     interval            = 5
-    port                = 81
+    port                = 8443
     timeout             = 4
     unhealthy_threshold = 3
     matcher             = 200
+    protocol            = "HTTPS"
+    path                = "/health"
   }
 }
 
