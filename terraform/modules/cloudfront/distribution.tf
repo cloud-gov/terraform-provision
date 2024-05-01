@@ -45,8 +45,3 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
   web_acl_id = var.acl_arn
 }
-
-resource "aws_shield_protection" "shield_protection" {
-  name         = aws_cloudfront_distribution.distribution.domain_name
-  resource_arn = aws_cloudfront_distribution.distribution.arn
-}
