@@ -5,15 +5,19 @@
 version: 2
 updates:
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/autoscaler"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/bosh_vpc"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cdn_broker"
+    directory: "/terraform/modules/bosh_vpc_v2"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloudwatch"
+    directory: "/terraform/modules/cdn_broker"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -25,7 +29,15 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/cloudwatch"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/concourse"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/concourse_v2"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -33,7 +45,23 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/credhub_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/csb"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/cvd_mirror"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/cvd_mirror_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/defect_dojo"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -66,6 +94,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/external_domain_broker_govcloud"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/external_domain_broker_loadbalancer_group"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -121,6 +153,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_role_policy/logs_opensearch_ingestor"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
     schedule:
       interval: "weekly"
@@ -165,7 +201,27 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_user/s3_logstash"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_user/terraform_provision"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/jumpbox"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/log_bucket"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/log_bucket_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/logs_opensearch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -177,6 +233,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/monitoring_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/rds"
     schedule:
       interval: "weekly"
@@ -185,11 +245,19 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/rds_network_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/regionalmaster_dns"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/s3_bucket/encrypted_bucket"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/s3_bucket/encrypted_bucket_v2"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -205,6 +273,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/s3_bucket/semver_bucket"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/shibboleth"
     schedule:
       interval: "weekly"
@@ -213,11 +285,23 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/sns"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/stack/base"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/stack/base_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/stack/spoke"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/test_cdn_dns"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -233,11 +317,23 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/stacks/bootstrap-westa-hub"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/stacks/cloudfront"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/stacks/dns"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/stacks/dns-westa-hub"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/stacks/ecr"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -258,5 +354,9 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/stacks/tooling"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/stacks/westa-hub"
     schedule:
       interval: "weekly"
