@@ -70,18 +70,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_log_bucket_lifecycl
   bucket = aws_s3_bucket.cloudfront_log_bucket.id
   rule {
     id = "log-rule"
-    filter {
-      prefix = ""
-    }
     status = "Enabled"
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
     }
+
     transition {
       days          = 365
       storage_class = "DEEP_ARCHIVE"
     }
+    
     # Delete objects after 30 months per M-21-31 guidelines
     # 31 days * 30 months = 930 days
     expiration {
