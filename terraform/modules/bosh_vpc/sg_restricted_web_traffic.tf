@@ -14,16 +14,16 @@ resource "aws_security_group" "restricted_web_traffic" {
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = var.restricted_ingress_web_cidrs
-    ipv6_cidr_blocks = var.restricted_ingress_web_ipv6_cidrs
+    cidr_blocks      = sort(var.restricted_ingress_web_cidrs)
+    ipv6_cidr_blocks = sort(var.restricted_ingress_web_ipv6_cidrs)
   }
 
   ingress {
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
-    cidr_blocks      = var.restricted_ingress_web_cidrs
-    ipv6_cidr_blocks = var.restricted_ingress_web_ipv6_cidrs
+    cidr_blocks      = sort(var.restricted_ingress_web_cidrs)
+    ipv6_cidr_blocks = sort(var.restricted_ingress_web_ipv6_cidrs)
   }
 
   egress {
