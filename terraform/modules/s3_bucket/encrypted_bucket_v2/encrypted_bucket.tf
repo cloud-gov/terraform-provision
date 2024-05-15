@@ -29,13 +29,12 @@ resource "aws_s3_bucket_versioning" "encrypted_bucket_versioning" {
 #}
 
 resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
-  count = var.expiration_days == 0 ? 0 : 1
   bucket = aws_s3_bucket.encrypted_bucket.id
   rule {
     id = "rule0"
 
-    #if expiration_days is 0 then the rule is disabled
-    status = "Enabled"
+    # if expiration_days is 0 then the rule is disabled
+    status = var.expiration_days == 0 ? "Disabled" : "Enabled"
 
     dynamic "expiration" {
       for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
