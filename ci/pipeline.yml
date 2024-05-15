@@ -1,7 +1,6 @@
 groups:
   - name: terraform
     jobs:
-      - apply-cloudfront-staging
       - apply-dns
       - apply-ecr
       - bootstrap-development
@@ -18,7 +17,6 @@ groups:
       - plan-bootstrap-production
       - plan-bootstrap-staging
       - plan-bootstrap-tooling
-      - plan-cloudfront-staging
       - plan-dns
       - plan-ecr
       - pull-status-check
@@ -300,43 +298,6 @@ jobs:
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *dns-params
-          TERRAFORM_ACTION: apply
-
-  - name: plan-cloudfront-staging
-    plan:
-      - in_parallel:
-          - get: pipeline-tasks
-          - get: cg-provision-repo
-            trigger: true
-          - get: plan-timer
-            trigger: true
-      - task: plan-cloudfront
-        file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
-        params: &cloudfront-staging-params
-          TERRAFORM_ACTION: plan
-          STACK_NAME: cloudfront-staging
-          TEMPLATE_SUBDIR: terraform/stacks/cloudfront
-          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
-          TF_VAR_aws_access_key: ((aws_external_access_key_id))
-          TF_VAR_aws_secret_key: ((aws_external_secret_access_key))
-          TF_VAR_aws_region: ((aws_external_region))
-          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-          TF_VAR_remote_state_region: ((aws_default_region))
-          TF_VAR_stack_description: staging
-      - *notify-slack
-
-  - name: apply-cloudfront-staging
-    plan:
-      - in_parallel:
-          - get: pipeline-tasks
-          - get: cg-provision-repo
-            passed: [plan-cloudfront-staging]
-      - task: create-update-cloudfront
-        file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
-        params:
-          <<: *cloudfront-staging-params
           TERRAFORM_ACTION: apply
 
   - name: plan-bootstrap-tooling
