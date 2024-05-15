@@ -1,7 +1,6 @@
 groups:
   - name: terraform
     jobs:
-      - apply-cloudfront-staging
       - apply-dns
       - apply-ecr
       - bootstrap-development
@@ -18,7 +17,6 @@ groups:
       - plan-bootstrap-production
       - plan-bootstrap-staging
       - plan-bootstrap-tooling
-      - plan-cloudfront-staging
       - plan-dns
       - plan-ecr
       - pull-status-check
