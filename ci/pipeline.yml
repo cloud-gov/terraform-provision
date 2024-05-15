@@ -306,13 +306,13 @@ jobs:
     plan:
       - in_parallel:
           - get: pipeline-tasks
-          - get: cg-provision-repo-development
+          - get: cg-provision-repo
             trigger: true
           - get: plan-timer
             trigger: true
       - task: plan-cloudfront
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo-development }
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &cloudfront-staging-params
           TERRAFORM_ACTION: plan
           STACK_NAME: cloudfront-staging
@@ -330,11 +330,11 @@ jobs:
     plan:
       - in_parallel:
           - get: pipeline-tasks
-          - get: cg-provision-repo-development
+          - get: cg-provision-repo
             passed: [plan-cloudfront-staging]
       - task: create-update-cloudfront
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo-development }
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *cloudfront-staging-params
           TERRAFORM_ACTION: apply
