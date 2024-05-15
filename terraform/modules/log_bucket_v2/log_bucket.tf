@@ -38,14 +38,14 @@ resource "aws_s3_bucket" "log_bucket" {
 resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
   rule {
-    id = "all"
+    id     = "all"
     status = "Enabled"
 
     transition {
       days          = 90
       storage_class = "ONEZONE_IA"
     }
-    
+
     expiration {
       days = 180
     }
