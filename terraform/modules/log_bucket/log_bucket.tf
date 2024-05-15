@@ -35,18 +35,19 @@ resource "aws_s3_bucket_acl" "log_bucket_acl" {
   bucket = aws_s3_bucket.log_bucket.id
   acl    = var.log_bucket_acl
 }
+
 resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
   rule {
     id = "all"
-    filter {
-      prefix = ""
-    }
+
     status = "Enabled"
+
     transition {
       days          = 90
       storage_class = "ONEZONE_IA"
     }
+
     expiration {
       days = 180
     }

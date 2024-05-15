@@ -10,9 +10,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
   rule {
     id = "all"
-    filter {
-      prefix = ""
-    }
     status = "Enabled"
     transition {
       days          = 365
