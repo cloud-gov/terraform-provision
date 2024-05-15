@@ -10,10 +10,7 @@ resource "aws_s3_bucket" "cg-s3-cloudtrail-bucket" {
 resource "aws_s3_bucket_lifecycle_configuration" "s3_audit_logs_trail_bucket_lifecycle" {
   bucket = aws_s3_bucket.cg-s3-cloudtrail-bucket.id
   rule {
-    id = "all-logs-rule"
-    filter {
-      prefix = ""
-    }
+    id     = "all-logs-rule"
     status = "Enabled"
     transition {
       days          = 90
@@ -120,19 +117,19 @@ POLICY
 resource "aws_s3_bucket_lifecycle_configuration" "s3_access_logs_trail_bucket_lifecycle" {
   bucket = aws_s3_bucket.cloudtrail-accesslog-bucket.id
   rule {
-    id = "all-logs-rule"
-    filter {
-      prefix = ""
-    }
+    id     = "all-logs-rule"
     status = "Enabled"
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
     }
+
     transition {
       days          = 365
       storage_class = "DEEP_ARCHIVE"
     }
+
     expiration {
       days = 930 # ~30 months for M-21-31 compliance
     }

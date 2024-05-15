@@ -47,23 +47,26 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   rule {
     id = "log-rule"
-    filter {
-      prefix = ""
-    }
+
     #if expiration_days is 0 then the rule is disabled
     status = var.expiration_days == 0 ? "Disabled" : "Enabled"
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
     }
+
     transition {
       days          = 365
       storage_class = "DEEP_ARCHIVE"
     }
-    expiration {
-      # Hack: Set expiration days to 30 if unset; objects won't actually be expired because the rule will be disabled
-      # See https://github.com/terraform-providers/terraform-provider-aws/issues/1402
-      days = var.expiration_days == 0 ? 30 : var.expiration_days
+
+    dynamic "expiration" {
+      for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
+
+      content {
+        days = expiration.value
+      }
     }
   }
 }

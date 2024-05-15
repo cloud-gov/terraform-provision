@@ -32,15 +32,16 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.encrypted_bucket.id
   rule {
     id = "rule0"
-    filter {
-      prefix = ""
-    }
-    #if expiration_days is 0 then the rule is disabled
+
+    # if expiration_days is 0 then the rule is disabled
     status = var.expiration_days == 0 ? "Disabled" : "Enabled"
-    expiration {
-      # Hack: Set expiration days to 30 if unset; objects won't actually be expired because the rule will be disabled
-      # See https://github.com/terraform-providers/terraform-provider-aws/issues/1402
-      days = var.expiration_days == 0 ? 30 : var.expiration_days
+
+    dynamic "expiration" {
+      for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
+
+      content {
+        days = expiration.value
+      }
     }
   }
 }
