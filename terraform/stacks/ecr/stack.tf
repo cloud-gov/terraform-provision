@@ -25,6 +25,7 @@ variable "repositories" {
     "harden-s3-resource-simple-staging",
     "oci-build-task",
     "pages-dind-v25",
+    "pages-nginx-v1",
     "pages-node-v20",
     "pages-postgres-v15",
     "pages-python-v3.11",
