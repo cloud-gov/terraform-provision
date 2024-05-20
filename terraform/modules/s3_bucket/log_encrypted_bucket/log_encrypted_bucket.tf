@@ -47,9 +47,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   rule {
     id = "log-rule"
-
-    #if expiration_days is 0 then the rule is disabled
-    status = var.expiration_days == 0 ? "Disabled" : "Enabled"
+    status = "Enabled"
 
     transition {
       days          = 90
