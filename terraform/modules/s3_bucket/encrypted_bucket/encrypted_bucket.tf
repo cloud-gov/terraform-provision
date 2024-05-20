@@ -36,7 +36,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
 
     content {
       id = "expiration-rule"
-      # if expiration_days is 0 then the rule is disabled
       status = "Enabled"
 
       expiration {
