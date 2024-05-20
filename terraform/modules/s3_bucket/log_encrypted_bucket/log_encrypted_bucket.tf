@@ -46,7 +46,7 @@ resource "aws_s3_bucket_acl" "log_encrypted_bucket_acl" {
 resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_encrypted_bucket.id
   rule {
-    id = "log-rule"
+    id     = "log-rule"
     status = "Enabled"
 
     transition {

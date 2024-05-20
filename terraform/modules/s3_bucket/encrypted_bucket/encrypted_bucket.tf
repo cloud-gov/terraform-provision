@@ -35,7 +35,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
     for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
 
     content {
-      id = "expiration-rule"
+      id     = "expiration-rule"
       status = "Enabled"
 
       expiration {
