@@ -1,4 +1,4 @@
-# Cloud.gov Provisioning System 
+# Cloud.gov Provisioning System
 
 This repository holds the terraform configuration (and BOSH vars and ops-files)
 to bootstrap our infrastructure.
@@ -6,6 +6,15 @@ to bootstrap our infrastructure.
 Be sure to read the internal developer documentation ("cg-provision") for
 non-public information about using this repository.
 
+## Local development
+
+### Git hooks
+
+Some [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that may be useful when updating this code are provided in the `.githooks` directory. To install these Git hooks so that they run automatically, use the provided `make` command:
+
+```shell
+make add-githooks
+```
 
 ## Layout
 
@@ -97,7 +106,7 @@ The IAM role and `TF_VAR_` credentials are used as follows:
 * The terraform provider is configured with the Commercial credentials, ensuring that all resources will be created in the Commercial account.
 * The `terraform_remote_state` data blocks for each GovCloud s3 state object are configured with the GovCloud region. Because they are accessed using Terraform's initialization process, but separately from the initial `terraform init`, they are not passed the Commercial credentials. Without any credentials set explicitly, the AWS SDK uses the GovCloud IAM role.
 
-## Development Workflow
+## Deployment Workflow
 
 Since IaaS is a shared resource (we don't have the money or time to provision
 entire stacks for each developer), we never apply this configuration manually.

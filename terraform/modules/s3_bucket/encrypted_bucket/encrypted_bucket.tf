@@ -27,17 +27,19 @@ resource "aws_s3_bucket_acl" "encrypted_bucket_acl" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.encrypted_bucket.id
+  # since the only rule is an expiration rule, we only create the lifecycle
+  # configuration if expiration days are set
+  count = var.expiration_days == 0 ? 0 : 1
 
-  rule {
-    id = "rule0"
-    # if expiration_days is 0 then the rule is disabled
-    status = var.expiration_days == 0 ? "Disabled" : "Enabled"
+  dynamic "rule" {
+    for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
 
-    dynamic "expiration" {
-      for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
+    content {
+      id     = "expiration-rule"
+      status = "Enabled"
 
-      content {
-        days = expiration.value
+      expiration {
+        days = rule.value
       }
     }
   }
