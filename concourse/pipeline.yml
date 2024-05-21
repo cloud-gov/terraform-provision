@@ -120,7 +120,7 @@ resources:
 - name: pipeline-tasks
   type: git
   source:
-    uri: https://github.com/cloud-gov/pipeline-tasks.git
+    uri: https://github.com/cloud-gov/cg-pipeline-tasks.git
     branch: main
     commit_verification_keys: ((commit_verification_keys))
 
