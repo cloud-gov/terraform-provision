@@ -183,14 +183,14 @@ resources:
 # #     days: [Tuesday,Thursday]
 # #     location: America/New_York
 
-# - name: general-task
-#   type: registry-image
-#   source:
-#     aws_access_key_id: ((aws.access_key_id))
-#     aws_secret_access_key: ((aws.secret_access_key))
-#     repository: general-task
-#     aws_region: ((aws.region))
-#     tag: latest
+- name: general-task
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: general-task
+    aws_region: ((aws.region))
+    tag: latest
 
 resource_types:
 
