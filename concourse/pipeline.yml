@@ -1,0 +1,227 @@
+jobs:
+- name: plan-bootstrap
+  plan:
+  - in_parallel:
+    - get: pipeline-tasks
+    - get: cg-provision-repo
+      trigger: true
+    # - get: plan-timer
+    #   trigger: true
+  - task: plan-update
+    tags: [iaas]
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: &production-params
+      TERRAFORM_ACTION: plan
+      STACK_NAME: ((environment))-main
+      TEMPLATE_SUBDIR: terraform/stacks/main
+      S3_TFSTATE_BUCKET: ((buckets.terraform_state))
+      AWS_DEFAULT_REGION: ((aws.region))
+      TF_VAR_assume_arn: ((assume_arn))
+      TF_VAR_parent_assume_arn: ((parent_assume_arn))
+      TF_VAR_parent_stack_name: ((environment))-hub
+      TF_VAR_bosh_default_ssh_public_key: ((ssh_key))
+      TF_VAR_stack_description: ((environment))
+      TF_VAR_force_restricted_network: "no"
+      TF_VAR_include_tcp_routes: ((include_tcp_routes))
+      TF_VAR_rds_password: ((rds_password))
+      TF_VAR_rds_db_size: ((rds_db_size))
+      TF_VAR_credhub_rds_password: ((credhub_rds_password))
+      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_vpc_cidr: ((vpc_cidr))
+      TF_VAR_cf_rds_password: ((cf_rds_password))
+      TF_VAR_cf_as_rds_instance_type: ((cf_as_rds_instance_type))
+      TF_VAR_restricted_ingress_web_cidrs: ((restricted_ingress_web_cidrs))
+      TF_VAR_restricted_ingress_web_ipv6_cidrs: ((restricted_ingress_web_ipv6_cidrs))
+      TF_VAR_wildcard_certificate_name_prefix: star.((environment)).cloud.gov
+      TF_VAR_wildcard_apps_certificate_name_prefix: star.((environment)).cloud.gov
+      TF_VAR_bucket_prefix: cg
+      TF_VAR_blobstore_bucket_name: bosh-prod-blobstore
+      TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
+      TF_VAR_shibboleth_hosts: '["idp.((environment)).cloud.gov"]'
+      TF_VAR_platform_kibana_hosts: '["logs-platform.((environment)).cloud.gov"]'
+      TF_VAR_domains_broker_alb_count: "11"
+      TF_VAR_domains_broker_rds_username: ((domains_broker_rds_username))
+      TF_VAR_domains_broker_rds_password: ((domains_broker_rds_password))
+      TF_VAR_pages_cert_patterns: '["pages.cloud.gov","pages-staging.cloud.gov","pages-dev.cloud.gov"]'
+      TF_VAR_waf_regular_expressions: ((waf_regular_expressions))
+      TF_VAR_s3_gateway_policy_accounts: ((s3_gateway_policy_accounts))
+      TF_VAR_sns_name: cloud-gov-notifications
+      TF_VAR_scope_down_known_bad_inputs_not_match_origin_search_string: ((scope_down_known_bad_inputs_not_match_origin_search_string))
+      TF_VAR_scope_down_known_bad_inputs_not_match_uri_path_regex_string: ((scope_down_known_bad_inputs_not_match_uri_path_regex_string))
+      TF_VAR_waf_label_host_0: ((waf_label_host_0))
+      TF_VAR_waf_hostname_0: ((waf_hostname_0))
+      TF_VAR_logstash_hosts: ((logstash_hosts))
+      TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
+      TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
+      TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
+      TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
+      TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
+      TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
+      TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
+      TF_VAR_cidr_blocks: ((cidr_blocks))
+
+# - name: bootstrap
+#   plan:
+#   - in_parallel:
+#     - get: general-task
+#     - get: pipeline-tasks
+#     - get: cg-provision-repo
+#       passed: [plan-bootstrap]
+#   - task: create-update
+#     tags: [iaas]
+#     file: pipeline-tasks/terraform-apply.yml
+#     input_mapping: {terraform-templates: cg-provision-repo}
+#     params:
+#       <<: *production-params
+#       TERRAFORM_ACTION: apply
+#   - in_parallel:
+#     - do:
+#       - task: init-bosh-db
+#         image: general-task
+#         config:
+#           platform: linux
+#           inputs:
+#           - name: cg-provision-repo
+#           - name: terraform-state
+#           params:
+#             STATE_FILE_PATH: terraform-state/terraform.tfstate
+#           run:
+#             path: sh
+#             args:
+#             - -e
+#             - -c
+#             - cg-provision-repo/ci/scripts/update-bosh-db.sh
+#       - task: init-cf-db
+#         image: general-task
+#         config:
+#           platform: linux
+#           inputs:
+#           - name: cg-provision-repo
+#           - name: terraform-state
+#           params:
+#             STATE_FILE_PATH: terraform-state/terraform.tfstate
+#           run:
+#             path: sh
+#             args:
+#             - -e
+#             - -c
+#             - cg-provision-repo/ci/scripts/update-cf-db.sh
+#   - do:
+#     - task: terraform-state-to-yaml
+#       file: pipeline-tasks/terraform12-state-to-yaml.yml
+#       params:
+#         STATE_FILE: terraform.tfstate
+#     - put: terraform-yaml
+#       params:
+#         file: terraform-yaml/state.yml
+
+resources:
+- name: pipeline-tasks
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/pipeline-tasks.git
+    branch: main
+    commit_verification_keys: ((commit_verification_keys))
+
+- name: cg-provision-repo
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/cg-provision.git
+    branch: f140
+    commit_verification_keys: ((commit_verification_keys))
+
+# - name: pull-request
+#   type: pull-request
+#   check_every: 1m
+#   source:
+#     repository: ((cg_provision_git_repo))
+#     access_token: ((status_access_token))
+#     disable_forks: true
+
+# - name: terraform-yaml
+#   type: s3-iam
+#   source:
+#     bucket: ((aws_s3_tfstate_bucket))
+#     versioned_file: ((tf_state_file))
+#     region_name: ((aws_default_region))
+
+# - name: waf-tests
+#   type: s3-iam
+#   source:
+#     bucket: ((waf_rules_bucket))
+#     versioned_file: ((waf_test_file))
+#     access_key_id: ((aws_access_key_id))
+#     secret_access_key: ((aws_secret_access_key))
+#     region_name: ((aws_default_region))
+
+# - name: terraform-yaml-external
+#   type: s3-iam
+#   source:
+#     bucket: ((buckets.terraform_state))
+#     versioned_file: ((buckets.terraform_state_file))
+#     access_key_id: ((aws.access_key_id))
+#     secret_access_key: ((aws.secret_access_key))
+#     region_name: ((aws.region))
+
+# # - name: daily-timer
+# #   type: time
+# #   source:
+# #     interval: 24h
+# #     location: America/New_York
+
+# # - name: biweekly-timer
+# #   type: time
+# #   source:
+# #     interval: 24h
+# #     start: 10:00 AM
+# #     stop: 3:00 PM
+# #     days: [Tuesday,Thursday]
+# #     location: America/New_York
+
+# - name: general-task
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((aws.access_key_id))
+#     aws_secret_access_key: ((aws.secret_access_key))
+#     repository: general-task
+#     aws_region: ((aws.region))
+#     tag: latest
+
+# resource_types:
+
+# - name: registry-image
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((aws.access_key_id))
+#     aws_secret_access_key: ((aws.secret_access_key))
+#     repository: registry-image-resource
+#     aws_region: ((aws.region))
+#     tag: latest
+
+# - name: s3-iam
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((aws.access_key_id))
+#     aws_secret_access_key: ((aws.secret_access_key))
+#     repository: s3-resource
+#     aws_region: ((aws.region))
+#     tag: latest
+
+# # - name: time
+# #   type: registry-image
+# #   source:
+# #     aws_access_key_id: ((aws.access_key_id))
+# #     aws_secret_access_key: ((aws.secret_access_key))
+# #     repository: time-resource
+# #     aws_region: ((aws.region))
+# #     tag: latest
+
+# - name: git
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((aws.access_key_id))
+#     aws_secret_access_key: ((aws.secret_access_key))
+#     repository: git-resource
+#     aws_region: ((aws.region))
+#     tag: latest
