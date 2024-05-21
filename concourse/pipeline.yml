@@ -11,7 +11,7 @@ jobs:
     tags: [iaas]
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
-    params: &production-params
+    params: &params
       TERRAFORM_ACTION: plan
       STACK_NAME: ((environment))-main
       TEMPLATE_SUBDIR: terraform/stacks/main
@@ -60,8 +60,8 @@ jobs:
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
-      TF_VAR_ecr_aws_key: ((aws.access_key_id))
-      TF_VAR_ecr_aws_secret: ((aws.secret_access_key))
+      ecr_aws_key: ((aws.access_key_id))
+      ecr_aws_secret: ((aws.secret_access_key))
 
 # - name: bootstrap
 #   plan:
