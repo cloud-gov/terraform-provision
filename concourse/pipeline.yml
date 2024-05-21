@@ -27,7 +27,7 @@ jobs:
       TF_VAR_rds_password: ((rds_password))
       TF_VAR_rds_db_size: ((rds_db_size))
       TF_VAR_credhub_rds_password: ((credhub_rds_password))
-      TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+      TF_VAR_remote_state_bucket: ((buckets.terraform_state))
       TF_VAR_vpc_cidr: ((vpc_cidr))
       TF_VAR_cf_rds_password: ((cf_rds_password))
       TF_VAR_cf_as_rds_instance_type: ((cf_as_rds_instance_type))
@@ -60,6 +60,8 @@ jobs:
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
+      TF_VAR_ecr_aws_key: ((aws.access_key_id))
+      TF_VAR_ecr_aws_secret: ((aws.secret_access_key))
 
 # - name: bootstrap
 #   plan:
