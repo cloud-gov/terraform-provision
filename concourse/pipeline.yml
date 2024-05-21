@@ -192,7 +192,7 @@ resources:
 #     aws_region: ((aws.region))
 #     tag: latest
 
-# resource_types:
+resource_types:
 
 # - name: registry-image
 #   type: registry-image
@@ -221,11 +221,11 @@ resources:
 # #     aws_region: ((aws.region))
 # #     tag: latest
 
-# - name: git
-#   type: registry-image
-#   source:
-#     aws_access_key_id: ((aws.access_key_id))
-#     aws_secret_access_key: ((aws.secret_access_key))
-#     repository: git-resource
-#     aws_region: ((aws.region))
-#     tag: latest
+- name: git
+  type: registry-image
+  source:
+    aws_access_key_id: ((aws.access_key_id))
+    aws_secret_access_key: ((aws.secret_access_key))
+    repository: git-resource
+    aws_region: ((aws.region))
+    tag: latest
