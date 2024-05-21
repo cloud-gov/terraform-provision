@@ -12,8 +12,8 @@ jobs:
     file: pipeline-tasks/terraform-apply.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     vars: 
-      ecr_aws_key: ((aws.access_key_id))
-      ecr_aws_secret: ((aws.secret_access_key))
+      ecr_aws_key: ((hack.access_key_id))
+      ecr_aws_secret: ((hack.secret_access_key))
     params: &params
       TERRAFORM_ACTION: plan
       STACK_NAME: ((environment))-main
@@ -183,14 +183,14 @@ resources:
 # #     days: [Tuesday,Thursday]
 # #     location: America/New_York
 
-- name: general-task
-  type: registry-image
-  source:
-    aws_access_key_id: ((hack.access_key_id))
-    aws_secret_access_key: ((hack.secret_access_key))
-    repository: general-task
-    aws_region: ((aws.region))
-    tag: latest
+# - name: general-task
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((hack.access_key_id))
+#     aws_secret_access_key: ((hack.secret_access_key))
+#     repository: general-task
+#     aws_region: ((aws.region))
+#     tag: latest
 
 resource_types:
 
