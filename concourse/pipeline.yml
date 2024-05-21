@@ -224,8 +224,8 @@ resource_types:
 - name: git
   type: registry-image
   source:
-    aws_access_key_id: ((aws.access_key_id))
-    aws_secret_access_key: ((aws.secret_access_key))
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
     repository: git-resource
     aws_region: ((aws.region))
     tag: latest
