@@ -132,7 +132,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/cg-provision.git
-    branch: f140
+    branch: main
     commit_verification_keys: ((commit_verification_keys))
 
 # - name: pull-request
