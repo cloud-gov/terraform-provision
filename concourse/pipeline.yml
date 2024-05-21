@@ -56,13 +56,18 @@ jobs:
       TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
       TF_VAR_logstash_hosts: ((logstash_hosts))
       TF_VAR_gsa_ip_range_ip_set_arn: ((gsa_ip_range_ip_set_arn))
-      TF_VAR_malicious_ja3_fingerprint_id: ((malicious_ja3_fingerprint_id))
+      TF_VAR_malicious_ja3_fingerprint_ids: ((malicious_ja3_fingerprint_ids))
       TF_VAR_api_data_gov_hosts_regex_pattern_arn: ((api_data_gov_hosts_regex_pattern_arn))
       TF_VAR_customer_whitelist_ip_ranges_set_arn: ((customer_whitelist_ip_ranges_set_arn))
       TF_VAR_customer_whitelist_source_ip_ranges_set_arn: ((customer_whitelist_source_ip_ranges_set_arn))
       TF_VAR_internal_vpc_cidrs_set_arn: ((internal_vpc_cidrs_set_arn))
       TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
       TF_VAR_cidr_blocks: ((cidr_blocks))
+      TF_VAR_domains_lbgroup_count: ((domains_lbgroup_count))
+      TF_VAR_sns_cg_platform_slack_notifications_email: ((sns_cg_platform_slack_notifications_email))
+      TF_VAR_sns_cg_platform_notifications_email: ((sns_cg_platform_notifications_email))
+      TF_VAR_waf_drop_logs_hosts_regular_expressions: ((waf_drop_logs_hosts_regular_expressions))
+
 
 
 # - name: bootstrap
