@@ -186,13 +186,13 @@ resources:
     commit_verification_keys: ((commit_verification_keys))
 
 - name: terraform-yaml-external
-  type: s3
+  type: s3-iam
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: external-((environment))/state.yml
     initial_version: 0.0.0
-    aws_access_key_id: ((aws.access_key_id))
-    aws_secret_access_key: ((aws.secret_access_key))
+    access_key_id: ((aws.access_key_id))
+    secret_access_key: ((aws.secret_access_key))
     region_name: ((aws.region))
 
 - name: terraform-yaml-tooling
@@ -201,8 +201,8 @@ resources:
     bucket: ((buckets.terraform_state))
     versioned_file: ((buckets.terraform_state_file))
     initial_version: 0.0.0
-    aws_access_key_id: ((aws.access_key_id))
-    aws_secret_access_key: ((aws.secret_access_key))
+    access_key_id: ((aws.access_key_id))
+    secret_access_key: ((aws.secret_access_key))
     region_name: ((aws.region))
 
 # - name: pull-request
