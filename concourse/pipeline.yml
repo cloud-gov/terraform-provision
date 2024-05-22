@@ -186,7 +186,7 @@ resources:
     commit_verification_keys: ((commit_verification_keys))
 
 - name: terraform-yaml-external
-  type: s3-resource
+  type: s3
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: external-((environment))/state.yml
@@ -196,7 +196,7 @@ resources:
     aws_region: ((aws.region))
 
 - name: terraform-yaml-tooling
-  type: s3-resource
+  type: s3
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: ((buckets.terraform_state_file))
