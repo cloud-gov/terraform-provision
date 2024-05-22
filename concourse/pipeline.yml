@@ -194,6 +194,13 @@ resources:
     secret_access_key: ((aws.secret_access_key))
     region_name: ((aws.region))
 
+- name: terraform-yaml-tooling
+  type: s3-iam
+  source:
+    bucket: ((buckets.terraform_state))
+    versioned_file: ((buckets.terraform_state_file))
+    region_name: ((aws.region))
+
 # - name: pull-request
 #   type: pull-request
 #   check_every: 1m
