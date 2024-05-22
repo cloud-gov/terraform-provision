@@ -191,10 +191,9 @@ resources:
     bucket: ((buckets.terraform_state))
     versioned_file: external-((environment))/state.yml
     initial_version: 0.0.0
-    access_key_id: ((aws.access_key_id))
-    secret_access_key: ((aws.secret_access_key))
-    region_name: ((aws.region))
-    server_side_encryption:
+    # access_key_id: ((aws.access_key_id))
+    # secret_access_key: ((aws.secret_access_key))
+    # region_name: ((aws.region))
 
 - name: terraform-yaml-tooling
   type: s3-iam
@@ -202,9 +201,9 @@ resources:
     bucket: ((buckets.terraform_state))
     versioned_file: ((buckets.terraform_state_file))
     initial_version: 0.0.0
-    access_key_id: ((aws.access_key_id))
-    secret_access_key: ((aws.secret_access_key))
-    region_name: ((aws.region))
+    # access_key_id: ((aws.access_key_id))
+    # secret_access_key: ((aws.secret_access_key))
+    # region_name: ((aws.region))
 
 # - name: pull-request
 #   type: pull-request
@@ -275,13 +274,18 @@ resource_types:
     tag: latest
 
 - name: s3-iam
-  type: registry-image
+  type: docker-image
   source:
-    aws_access_key_id: ((hack.access_key_id))
-    aws_secret_access_key: ((hack.secret_access_key))
-    repository: s3-resource
-    aws_region: ((aws.region))
-    tag: latest
+    repository: 18fgsa/s3-resource
+
+# - name: s3-iam
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((hack.access_key_id))
+#     aws_secret_access_key: ((hack.secret_access_key))
+#     repository: s3-resource
+#     aws_region: ((aws.region))
+#     tag: latest
 
 # # - name: time
 # #   type: registry-image
