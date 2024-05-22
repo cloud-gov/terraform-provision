@@ -1,4 +1,49 @@
 jobs:
+
+- name: wildcard-certificate
+  plan:
+  - in_parallel:
+    - get: general-task
+    # - get: staging-weekly-timer
+    #   trigger: true
+    - get: cg-provision-repo
+      resource: cg-provision-repo
+    - get: terraform-yaml-tooling
+      resource: terraform-yaml-tooling
+    - get: terraform-yaml-external
+      resource: terraform-yaml-external
+  - task: check-certificates
+    image: general-task
+    file: cg-provision-repo/ci/check-certificates.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws.region))
+      CERT_PATH: /lets-encrypt/((environment))
+  - task: provision-certificate
+    image: general-task
+    file: cg-provision-repo/ci/provision-certificate.yml
+    params:
+      CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
+      ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+      DOMAIN: "*.((environment)).((aws.region)).aws-us-gov.cloud.gov"
+      EMAIL: cloud-gov-operations@gsa.gov
+  - task: upload-certificate
+    image: general-task
+    file: cg-provision-repo/ci/upload-certificate.yml
+    params:
+      AWS_DEFAULT_REGION: ((aws.region))
+      CERT_PATH: /lets-encrypt/((environment))
+      CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
+  # on_failure:
+  #   put: slack
+  #   params:
+  #     text: |
+  #       :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
+  #       <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+  #     channel: ((slack-channel))
+  #     username: ((slack-username))
+  #     icon_url: ((slack-icon-url))
+
+
 - name: plan-bootstrap
   plan:
   - in_parallel:
@@ -140,6 +185,15 @@ resources:
     branch: main
     commit_verification_keys: ((commit_verification_keys))
 
+- name: terraform-yaml-external
+  type: s3-iam
+  source:
+    bucket: ((buckets.terraform_state))
+    versioned_file: external-((environment))/state.yml
+    access_key_id: ((aws.access_key_id))
+    secret_access_key: ((aws.secret_access_key))
+    region_name: ((aws.region))
+
 # - name: pull-request
 #   type: pull-request
 #   check_every: 1m
@@ -208,14 +262,14 @@ resource_types:
     aws_region: ((aws.region))
     tag: latest
 
-# - name: s3-iam
-#   type: registry-image
-#   source:
-#     aws_access_key_id: ((aws.access_key_id))
-#     aws_secret_access_key: ((aws.secret_access_key))
-#     repository: s3-resource
-#     aws_region: ((aws.region))
-#     tag: latest
+- name: s3-iam
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: s3-resource
+    aws_region: ((aws.region))
+    tag: latest
 
 # # - name: time
 # #   type: registry-image
