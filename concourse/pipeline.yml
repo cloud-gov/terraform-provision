@@ -186,18 +186,24 @@ resources:
     commit_verification_keys: ((commit_verification_keys))
 
 - name: terraform-yaml-external
-  type: s3-iam
+  type: s3-resource
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: external-((environment))/state.yml
     initial_version: 0.0.0
+    aws_access_key_id: ((aws.access_key_id))
+    aws_secret_access_key: ((aws.secret_access_key))
+    aws_region: ((aws.region))
 
 - name: terraform-yaml-tooling
-  type: s3-iam
+  type: s3-resource
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: ((buckets.terraform_state_file))
     initial_version: 0.0.0
+    aws_access_key_id: ((aws.access_key_id))
+    aws_secret_access_key: ((aws.secret_access_key))
+    aws_region: ((aws.region))
 
 # - name: pull-request
 #   type: pull-request
@@ -267,14 +273,14 @@ resource_types:
     aws_region: ((aws.region))
     tag: latest
 
-- name: s3-iam
-  type: registry-image
-  source:
-    aws_access_key_id: ((aws.access_key_id))
-    aws_secret_access_key: ((aws.secret_access_key))
-    repository: s3-resource
-    aws_region: ((aws.region))
-    tag: latest
+# - name: s3-iam
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((aws.access_key_id))
+#     aws_secret_access_key: ((aws.secret_access_key))
+#     repository: s3-resource
+#     aws_region: ((aws.region))
+#     tag: latest
 
 # # - name: time
 # #   type: registry-image
