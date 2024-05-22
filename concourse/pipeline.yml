@@ -193,7 +193,7 @@ resources:
     initial_version: 0.0.0
     aws_access_key_id: ((aws.access_key_id))
     aws_secret_access_key: ((aws.secret_access_key))
-    aws_region: ((aws.region))
+    region_name: ((aws.region))
 
 - name: terraform-yaml-tooling
   type: s3
@@ -203,7 +203,7 @@ resources:
     initial_version: 0.0.0
     aws_access_key_id: ((aws.access_key_id))
     aws_secret_access_key: ((aws.secret_access_key))
-    aws_region: ((aws.region))
+    region_name: ((aws.region))
 
 # - name: pull-request
 #   type: pull-request
