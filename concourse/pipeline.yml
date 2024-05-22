@@ -194,9 +194,10 @@ resources:
     access_key_id: ((aws.access_key_id))
     secret_access_key: ((aws.secret_access_key))
     region_name: ((aws.region))
+    server_side_encryption:
 
 - name: terraform-yaml-tooling
-  type: s3
+  type: s3-iam
   source:
     bucket: ((buckets.terraform_state))
     versioned_file: ((buckets.terraform_state_file))
@@ -273,14 +274,14 @@ resource_types:
     aws_region: ((aws.region))
     tag: latest
 
-# - name: s3-iam
-#   type: registry-image
-#   source:
-#     aws_access_key_id: ((aws.access_key_id))
-#     aws_secret_access_key: ((aws.secret_access_key))
-#     repository: s3-resource
-#     aws_region: ((aws.region))
-#     tag: latest
+- name: s3-iam
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: s3-resource
+    aws_region: ((aws.region))
+    tag: latest
 
 # # - name: time
 # #   type: registry-image
