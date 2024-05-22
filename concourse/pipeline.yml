@@ -199,7 +199,7 @@ resources:
     bucket: ((buckets.terraform_state))
     initial_version: 0.0.0
     region_name: ((aws.region))
-    versioned_file: ((buckets.terraform_state_file))
+    versioned_file: ((environment))/state.yml
 
 # - name: pull-request
 #   type: pull-request
