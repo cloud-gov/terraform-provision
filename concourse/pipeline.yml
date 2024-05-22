@@ -189,21 +189,17 @@ resources:
   type: s3-iam
   source:
     bucket: ((buckets.terraform_state))
-    versioned_file: external-((environment))/state.yml
     initial_version: 0.0.0
-    # access_key_id: ((aws.access_key_id))
-    # secret_access_key: ((aws.secret_access_key))
-    # region_name: ((aws.region))
+    region_name: ((aws.region))
+    versioned_file: external-((environment))/state.yml
 
 - name: terraform-yaml-tooling
   type: s3-iam
   source:
     bucket: ((buckets.terraform_state))
-    versioned_file: ((buckets.terraform_state_file))
     initial_version: 0.0.0
-    # access_key_id: ((aws.access_key_id))
-    # secret_access_key: ((aws.secret_access_key))
-    # region_name: ((aws.region))
+    region_name: ((aws.region))
+    versioned_file: ((buckets.terraform_state_file))
 
 # - name: pull-request
 #   type: pull-request
