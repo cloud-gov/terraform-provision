@@ -1,0 +1,119 @@
+# Pipeline to initilize new environments
+
+jobs:
+
+- name: terraform-plan
+  plan:
+  - in_parallel:
+    - get: environment-config
+      trigger: true
+      params:
+        depth: 1
+    - put: terraform
+      params:
+        terraform_source: terraform/cloudfoundry
+        env_name: cloudfoundry
+        plan_only: true
+        vars: 
+          environment: ((environment))
+        vars_files:
+          environment-config/envs/((environment))/cf.yml
+
+  # - task: check-certificates
+  #   image: general-task
+  #   file: cg-provision-repo/ci/check-certificates.yml
+  #   params:
+  #     AWS_DEFAULT_REGION: ((aws.region))
+  #     CERT_PATH: /lets-encrypt/((environment))
+  # - task: provision-certificate
+  #   image: general-task
+  #   file: cg-provision-repo/ci/provision-certificate.yml
+  #   params:
+  #     CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
+  #     ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+  #     DOMAIN: "*.((environment)).((aws.region)).aws-us-gov.cloud.gov"
+  #     EMAIL: cloud-gov-operations@gsa.gov
+  # - task: upload-certificate
+  #   image: general-task
+  #   file: cg-provision-repo/ci/upload-certificate.yml
+  #   params:
+  #     AWS_DEFAULT_REGION: ((aws.region))
+  #     CERT_PATH: /lets-encrypt/((environment))
+  #     CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
+  # on_failure:
+  #   put: slack
+  #   params:
+  #     text: |
+  #       :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
+  #       <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+  #     channel: ((slack-channel))
+  #     username: ((slack-username))
+  #     icon_url: ((slack-icon-url))
+
+
+resources:
+- name: environment-config
+  type: git
+  source:
+    branch: f140
+    commit_verification_keys: ((commit_verification_keys))
+    paths: envs/((environment))/cf.yml
+    # Temporarily using this repo for testing
+    uri: https://github.com/cloud-gov/westa-env.git
+    version_depth: 1
+
+- name: terraform
+  type: terraform
+  source:
+    env_name: ((environment))-dns
+    backend_type: s3
+    backend_config:
+      bucket: ((buckets.terraform_state))
+      key: ((environment))
+      region: ((aws.region))
+
+# - name: general-task
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((hack.access_key_id))
+#     aws_secret_access_key: ((hack.secret_access_key))
+#     repository: general-task
+#     aws_region: ((aws.region))
+#     tag: latest
+
+resource_types:
+
+- name: registry-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: registry-image-resource
+    aws_region: ((aws.region))
+    tag: latest
+
+# - name: s3-iam
+#   type: docker-image
+#   source:
+#     repository: 18fgsa/s3-resource
+
+- name: git
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: git-resource
+    aws_region: ((aws.region))
+    tag: latest
+
+- name: terraform
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: ljfranklin/terraform-resource
+    aws_region: ((aws.region))
+    tag: latest
+
+
+  
