@@ -57,7 +57,7 @@ resources:
   source:
     branch: f140
     commit_verification_keys: ((commit_verification_keys))
-    paths: envs/((environment))/cf.yml
+    paths: envs/((environment))/cloudfoundry.yml
     # Temporarily using this repo for testing
     uri: https://github.com/cloud-gov/westa-env.git
     version_depth: 1
