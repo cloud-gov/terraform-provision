@@ -69,7 +69,7 @@ resources:
     backend_config:
       access_key: ((aws.access_key_id))
       bucket: ((buckets.terraform_state))
-      key: ((environment))
+      # key: ((environment))
       region: ((aws.region))
       secret_key: ((aws.secret_access_key))
 
