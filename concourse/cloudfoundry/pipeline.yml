@@ -8,6 +8,7 @@ jobs:
     - get: environment-config
       trigger: true
     - get: cg-provision-repo
+      trigger: true
   # - put: terraform
   #   tags: [iaas]
   #   params:
@@ -43,7 +44,7 @@ resources:
   source:
     branch: f140
     commit_verification_keys: ((commit_verification_keys))
-    paths: ["terraform/cloudfoundry/*"]
+    paths: ["terraform/cloudfoundry/*", "concourse/tasks/*"]
     uri: https://github.com/cloud-gov/cg-provision.git
 
 - name: environment-config
