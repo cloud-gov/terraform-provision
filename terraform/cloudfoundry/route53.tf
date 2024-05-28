@@ -39,7 +39,7 @@ resource "aws_route53_zone" "zone" {
 }
 
 resource "aws_route53_record" "ns" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.zone.zone_id
   name    = var.domain
   type    = "NS"
   ttl     = "30"
