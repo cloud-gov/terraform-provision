@@ -7,6 +7,7 @@ jobs:
   - in_parallel:
     - get: environment-config
       trigger: true
+      tags: [iaas]
     - put: terraform
       params:
         terraform_source: terraform/cloudfoundry
