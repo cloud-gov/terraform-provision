@@ -16,6 +16,14 @@ variable environment {
   description = "The enviroment name. Example: westa"
 }
 
+variable remote_state_bucket {
+  type = string 
+}
+
+variable remote_state_region {
+  type = string
+}
+
 data "terraform_remote_state" "stack" {
   backend = "s3"
 
