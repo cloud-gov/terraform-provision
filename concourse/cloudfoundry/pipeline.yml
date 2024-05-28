@@ -10,15 +10,16 @@ jobs:
       tags: [iaas]
     - get: cg-provision
       tags: [iaas]
-    - put: terraform
-      params:
-        terraform_source: cg-provision/terraform/cloudfoundry
-        env_name: cloudfoundry
-        plan_only: true
-        vars: 
-          environment: ((environment))
-        vars_files:
-          environment-config/envs/((environment))/cf.yml
+  - put: terraform
+    tags: [iaas]
+    params:
+      terraform_source: cg-provision/terraform/cloudfoundry
+      env_name: cloudfoundry
+      plan_only: true
+      vars: 
+        environment: ((environment))
+      vars_files:
+        environment-config/envs/((environment))/cf.yml
 
   # - task: check-certificates
   #   image: general-task
