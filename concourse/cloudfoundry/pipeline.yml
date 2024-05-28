@@ -32,6 +32,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ((aws.access_key_id))
       AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
       AWS_DEFAULT_REGION: ((aws.region))
+      TF_VAR_domain: ((cloudfoundry.domain))
+      TF_VAR_environment: cloudfoundry
     vars: 
       access_key_id: ((hack.access_key_id))
       region: ((hack.region))
