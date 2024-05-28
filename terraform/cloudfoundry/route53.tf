@@ -7,12 +7,12 @@ variable "nlb_zone_id" {
 }
 
 variable domain {
-  type = "string"
+  type = string
   description = "The root domain of the Cloud Foundry installation. The api and apps subdomains will be created using this domain. Example: westa.cloud.gov"
 }
 
 variable environment {
-  type = "string"
+  type = string
   description = "The enviroment name. Example: westa"
 }
 
