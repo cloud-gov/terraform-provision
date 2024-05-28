@@ -60,7 +60,6 @@ resources:
     paths: ["envs/((environment))/cloudfoundry.yml"]
     # Temporarily using this repo for testing
     uri: https://github.com/cloud-gov/westa-env.git
-    version_depth: 1
 
 - name: terraform
   type: terraform
