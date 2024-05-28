@@ -1,0 +1,21 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    aws_access_key_id: ((access_key_id))
+    aws_secret_access_key: ((secret_access_key))
+    repository: general-task
+    aws_region: ((region))
+    tag: latest
+
+inputs:
+- name: cg-provision-repo
+- name: terraform-templates
+
+outputs:
+- name: terraform-state
+
+run:
+  path: cg-provision-repo/concourse/tasks/terraform.sh

@@ -8,7 +8,6 @@ jobs:
     - get: environment-config
       trigger: true
     - get: cg-provision-repo
-    - get: pipeline-tasks
   # - put: terraform
   #   tags: [iaas]
   #   params:
@@ -22,7 +21,7 @@ jobs:
 
   - task: terraform-plan
     tags: [iaas]
-    file: pipeline-tasks/terraform-apply.yml
+    file: cg-provision-repo/concourse/tasks/terraform.yml
     input_mapping: {terraform-templates: cg-provision-repo}
     params: 
       TERRAFORM_ACTION: plan
@@ -32,14 +31,10 @@ jobs:
       AWS_ACCESS_KEY_ID: ((aws.access_key_id))
       AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
       AWS_DEFAULT_REGION: ((aws.region))
-      TF_VAR_stack_description: cloudfoundry
-      TF_VAR_aws_default_region: ((aws.region))
-      TF_VAR_cdn_broker_hosted_zone: ""
-      TF_VAR_lets_encrypt_hosted_zone: ""
-      TF_VAR_external_domain_broker_hosted_zone: ""
     vars: 
-      ecr_aws_key: ((hack.access_key_id))
-      ecr_aws_secret: ((hack.secret_access_key))
+      access_key_id: ((hack.access_key_id))
+      region: ((hack.region))
+      secret_access_key: ((hack.secret_access_key))
 
 resources:
 
@@ -60,13 +55,6 @@ resources:
     private_key: ((cg_ci_bot_ssh_pk))
     # Temporarily using this repo for testing
     uri: git@github.com:cloud-gov/westa-env.git
-
-- name: pipeline-tasks
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/cg-pipeline-tasks.git
-    branch: main
-    commit_verification_keys: ((commit_verification_keys))
 
 # - name: terraform
 #   type: terraform
