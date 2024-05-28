@@ -37,9 +37,9 @@ jobs:
       TF_VAR_remote_state_region: ((aws.region))
       TF_VAR_remote_stack_name: ((environment))-hub
     vars: 
-      access_key_id: ((hack.access_key_id))
-      region: ((hack.region))
-      secret_access_key: ((hack.secret_access_key))
+      access_key_id: ((aws.access_key_id))
+      region: ((aws.region))
+      secret_access_key: ((aws.secret_access_key))
 
 resources:
 
