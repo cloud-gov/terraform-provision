@@ -7,8 +7,6 @@ jobs:
   - in_parallel:
     - get: environment-config
       trigger: true
-      params:
-        depth: 1
     - put: terraform
       params:
         terraform_source: terraform/cloudfoundry
