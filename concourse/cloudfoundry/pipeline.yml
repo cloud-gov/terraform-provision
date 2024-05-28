@@ -34,6 +34,8 @@ jobs:
       AWS_DEFAULT_REGION: ((aws.region))
       TF_VAR_domain: ((cloudfoundry.domain))
       TF_VAR_environment: cloudfoundry
+      TF_VAR_remote_state_bucket: ((environment))-hub-terraform-state
+      TF_VAR_remote_state_region: ((aws.region))
     vars: 
       access_key_id: ((hack.access_key_id))
       region: ((hack.region))
