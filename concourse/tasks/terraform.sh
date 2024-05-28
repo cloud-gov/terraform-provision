@@ -64,7 +64,7 @@ if [ "${TERRAFORM_ACTION}" = "plan" ]; then
   if ! cat ${BASE}/terraform-state/terraform-plan-output.txt | grep 'No changes.' ; then
     echo "sentinel" > ${BASE}/terraform-state/message.txt
   fi
-else
+# else
   # ${TERRAFORM} -chdir="${DIR}" "${TERRAFORM_ACTION}" \
   #   -refresh=true \
   #   -input=false \
