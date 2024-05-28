@@ -57,8 +57,9 @@ resources:
     branch: f140
     commit_verification_keys: ((commit_verification_keys))
     paths: ["envs/((environment))/cloudfoundry.yml"]
+    private_key: ((cg_ci_bot_ssh_pk))
     # Temporarily using this repo for testing
-    uri: https://github.com/cloud-gov/westa-env.git
+    uri: git@github.com:cloud-gov/westa-env.git
 
 - name: terraform
   type: terraform
