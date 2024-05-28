@@ -29,17 +29,20 @@ jobs:
       COMPONENT: cloudfoundry
       TEMPLATE_SUBDIR: terraform/cloudfoundry
       S3_TFSTATE_BUCKET: ((buckets.terraform_state))
-      AWS_ACCESS_KEY_ID: ((aws.access_key_id))
-      AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
-      AWS_DEFAULT_REGION: ((aws.region))
+      # AWS_ACCESS_KEY_ID: ((aws.access_key_id))
+      # AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
+      # AWS_DEFAULT_REGION: ((aws.region))
+      TF_VAR_aws_access_key_id: ((aws.access_key_id))
+      TF_VAR_aws_secret_access_key: ((aws.secret_access_key))
+      TF_VAR_aws_region: ((aws.region))
       TF_VAR_domain: ((cloudfoundry.domain))
       TF_VAR_remote_state_bucket: ((environment))-hub-terraform-state
       TF_VAR_remote_state_region: ((aws.region))
       TF_VAR_remote_stack_name: ((environment))-hub
     vars: 
-      access_key_id: ((aws.access_key_id))
-      region: ((aws.region))
-      secret_access_key: ((aws.secret_access_key))
+      access_key_id: ((hack.access_key_id))
+      region: ((hack.region))
+      secret_access_key: ((hack.secret_access_key))
 
 resources:
 
