@@ -8,11 +8,11 @@ jobs:
     - get: environment-config
       trigger: true
       tags: [iaas]
-    - get: terraform
+    - get: cg-provision
       tags: [iaas]
     - put: terraform
       params:
-        terraform_source: terraform/cloudfoundry
+        terraform_source: cg-provision/terraform/cloudfoundry
         env_name: cloudfoundry
         plan_only: true
         vars: 
@@ -53,6 +53,15 @@ jobs:
 
 
 resources:
+
+- name: cg-provision
+  type: git
+  source:
+    branch: f140
+    commit_verification_keys: ((commit_verification_keys))
+    paths: ["terraform/cloudfoundry/*"]
+    uri: https://github.com/cloud-gov/cg-provision.git
+
 - name: environment-config
   type: git
   source:
