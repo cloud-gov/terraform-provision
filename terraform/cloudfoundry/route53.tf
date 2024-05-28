@@ -11,16 +11,15 @@ variable domain {
   description = "The root domain of the Cloud Foundry installation. The api and apps subdomains will be created using this domain. Example: westa.cloud.gov"
 }
 
-variable environment {
-  type = string
-  description = "The enviroment name. Example: westa"
-}
-
 variable remote_state_bucket {
   type = string 
 }
 
 variable remote_state_region {
+  type = string
+}
+
+variable remote_stack_name {
   type = string
 }
 
@@ -30,7 +29,7 @@ data "terraform_remote_state" "stack" {
   config = {
     bucket = var.remote_state_bucket
     region = var.remote_state_region
-    key    = "${var.environment}-hub/terraform.tfstate"
+    key    = "${var.remote_stack_name}/terraform.tfstate"
   }
 }
 

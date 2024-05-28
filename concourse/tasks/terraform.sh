@@ -33,7 +33,7 @@ init_args=(
   "-backend=true"
   "-backend-config=encrypt=true"
   "-backend-config=bucket=${S3_TFSTATE_BUCKET}"
-  "-backend-config=key=${STACK_NAME}/terraform.tfstate"
+  "-backend-config=key=${COMPONENT}/terraform.tfstate"
 )
 set +x
 if [ -n "${TF_VAR_aws_region:-}" ]; then
@@ -80,5 +80,5 @@ else
   if [ -n "${TF_VAR_aws_secret_key:-}" ]; then
     export AWS_SECRET_ACCESS_KEY="${TF_VAR_aws_secret_key}"
   fi
-  aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform-state
+  # aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform-state
 fi 

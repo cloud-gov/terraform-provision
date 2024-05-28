@@ -26,16 +26,16 @@ jobs:
     input_mapping: {terraform-templates: cg-provision-repo}
     params: 
       TERRAFORM_ACTION: plan
-      STACK_NAME: cloudfoundry
+      COMPONENT: cloudfoundry
       TEMPLATE_SUBDIR: terraform/cloudfoundry
       S3_TFSTATE_BUCKET: ((buckets.terraform_state))
       AWS_ACCESS_KEY_ID: ((aws.access_key_id))
       AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
       AWS_DEFAULT_REGION: ((aws.region))
       TF_VAR_domain: ((cloudfoundry.domain))
-      TF_VAR_environment: cloudfoundry
       TF_VAR_remote_state_bucket: ((environment))-hub-terraform-state
       TF_VAR_remote_state_region: ((aws.region))
+      TF_VAR_remote_stack_name: ((environment))-hub
     vars: 
       access_key_id: ((hack.access_key_id))
       region: ((hack.region))
