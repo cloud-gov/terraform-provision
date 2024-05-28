@@ -8,6 +8,8 @@ jobs:
     - get: environment-config
       trigger: true
       tags: [iaas]
+    - get: terraform
+      tags: [iaas]
     - put: terraform
       params:
         terraform_source: terraform/cloudfoundry
