@@ -7,55 +7,40 @@ jobs:
   - in_parallel:
     - get: environment-config
       trigger: true
-      tags: [iaas]
-    - get: cg-provision
-      tags: [iaas]
-  - put: terraform
+    - get: cg-provision-repo
+    - get: pipeline-tasks
+  # - put: terraform
+  #   tags: [iaas]
+  #   params:
+  #     terraform_source: cg-provision/terraform/cloudfoundry
+  #     env_name: cloudfoundry
+  #     plan_only: true
+  #     vars: 
+  #       environment: ((environment))
+  #     vars_files:
+  #       environment-config/envs/((environment))/cf.yml
+
+  - task: terraform-plan
     tags: [iaas]
-    params:
-      terraform_source: cg-provision/terraform/cloudfoundry
-      env_name: cloudfoundry
-      plan_only: true
-      vars: 
-        environment: ((environment))
-      vars_files:
-        environment-config/envs/((environment))/cf.yml
-
-  # - task: check-certificates
-  #   image: general-task
-  #   file: cg-provision-repo/ci/check-certificates.yml
-  #   params:
-  #     AWS_DEFAULT_REGION: ((aws.region))
-  #     CERT_PATH: /lets-encrypt/((environment))
-  # - task: provision-certificate
-  #   image: general-task
-  #   file: cg-provision-repo/ci/provision-certificate.yml
-  #   params:
-  #     CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
-  #     ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-  #     DOMAIN: "*.((environment)).((aws.region)).aws-us-gov.cloud.gov"
-  #     EMAIL: cloud-gov-operations@gsa.gov
-  # - task: upload-certificate
-  #   image: general-task
-  #   file: cg-provision-repo/ci/upload-certificate.yml
-  #   params:
-  #     AWS_DEFAULT_REGION: ((aws.region))
-  #     CERT_PATH: /lets-encrypt/((environment))
-  #     CERT_PREFIX: star.((environment)).((aws.region)).aws-us-gov.cloud.gov
-  # on_failure:
-  #   put: slack
-  #   params:
-  #     text: |
-  #       :x: Failed to check ACME certificate for *.dev.us-gov-west-1.aws-us-gov.cloud.gov
-  #       <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-  #     channel: ((slack-channel))
-  #     username: ((slack-username))
-  #     icon_url: ((slack-icon-url))
-
+    file: pipeline-tasks/terraform-apply.yml
+    input_mapping: {terraform-templates: cg-provision-repo}
+    params: 
+      TERRAFORM_ACTION: plan
+      STACK_NAME: cloudfoundry
+      TEMPLATE_SUBDIR: terraform/cloudfoundry
+      S3_TFSTATE_BUCKET: ((buckets.terraform_state))
+      AWS_ACCESS_KEY_ID: ((aws.access_key_id))
+      AWS_SECRET_ACCESS_KEY: ((aws.secret_access_key))
+      AWS_DEFAULT_REGION: ((aws.region))
+      TF_VAR_stack_description: cloudfoundry
+      TF_VAR_aws_default_region: ((aws.region))
+      TF_VAR_cdn_broker_hosted_zone: ""
+      TF_VAR_lets_encrypt_hosted_zone: ""
+      TF_VAR_external_domain_broker_hosted_zone: ""
 
 resources:
 
-- name: cg-provision
+- name: cg-provision-repo
   type: git
   source:
     branch: f140
@@ -73,27 +58,34 @@ resources:
     # Temporarily using this repo for testing
     uri: git@github.com:cloud-gov/westa-env.git
 
-- name: terraform
-  type: terraform
+- name: pipeline-tasks
+  type: git
   source:
-    env_name: ((environment))-dns
-    backend_type: s3
-    backend_config:
-      access_key: ((aws.access_key_id))
-      bucket: ((buckets.terraform_state))
-      # key: ((environment))
-      region: ((aws.region))
-      secret_key: ((aws.secret_access_key))
+    uri: https://github.com/cloud-gov/cg-pipeline-tasks.git
+    branch: main
+    commit_verification_keys: ((commit_verification_keys))
 
-
-# - name: general-task
-#   type: registry-image
+# - name: terraform
+#   type: terraform
 #   source:
-#     aws_access_key_id: ((hack.access_key_id))
-#     aws_secret_access_key: ((hack.secret_access_key))
-#     repository: general-task
-#     aws_region: ((aws.region))
-#     tag: latest
+#     env_name: cloudfoundry
+#     backend_type: s3
+#     backend_config:
+#       access_key: ((aws.access_key_id))
+#       bucket: ((buckets.terraform_state))
+#       # key: ((environment))
+#       region: ((aws.region))
+#       secret_key: ((aws.secret_access_key))
+
+
+- name: general-task
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: general-task
+    aws_region: ((aws.region))
+    tag: latest
 
 resource_types:
 
@@ -120,14 +112,14 @@ resource_types:
     aws_region: ((aws.region))
     tag: latest
 
-- name: terraform
-  type: registry-image
-  source:
-    aws_access_key_id: ((hack.access_key_id))
-    aws_secret_access_key: ((hack.secret_access_key))
-    repository: ljfranklin/terraform-resource
-    aws_region: ((aws.region))
-    tag: latest
+# - name: terraform
+#   type: registry-image
+#   source:
+#     aws_access_key_id: ((hack.access_key_id))
+#     aws_secret_access_key: ((hack.secret_access_key))
+#     repository: ljfranklin/terraform-resource
+#     aws_region: ((aws.region))
+#     tag: latest
 
 
   
