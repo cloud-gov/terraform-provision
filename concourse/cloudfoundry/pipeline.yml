@@ -67,9 +67,12 @@ resources:
     env_name: ((environment))-dns
     backend_type: s3
     backend_config:
+      access_key: secret_key: ((aws.access_key_id))
       bucket: ((buckets.terraform_state))
       key: ((environment))
       region: ((aws.region))
+      secret_key: ((aws.secret_access_key))
+
 
 # - name: general-task
 #   type: registry-image
