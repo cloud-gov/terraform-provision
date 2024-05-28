@@ -37,6 +37,9 @@ jobs:
       TF_VAR_cdn_broker_hosted_zone: ""
       TF_VAR_lets_encrypt_hosted_zone: ""
       TF_VAR_external_domain_broker_hosted_zone: ""
+    vars: 
+      ecr_aws_key: ((hack.access_key_id))
+      ecr_aws_secret: ((hack.secret_access_key))
 
 resources:
 
