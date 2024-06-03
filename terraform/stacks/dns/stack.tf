@@ -123,14 +123,6 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_docs_cloud_gov_cname" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "docs.cloud.gov."
-  type    = "CNAME"
-  ttl     = 60
-  records = ["d2knjq618810db.cloudfront.net."]
-}
-
 /* Platform logs */
 
 resource "aws_route53_record" "cloud_gov_www_cloud_gov_cname" {
