@@ -38,10 +38,10 @@ variable "nat_gateway_instance_type" {
   default = "c3.2xlarge"
 }
 
-variable "monitoring_security_group_cidrs" {
-  type    = list(string)
-  default = []
-}
+# variable "monitoring_security_group_cidrs" {
+#   type    = list(string)
+#   default = []
+# }
 
 variable "concourse_security_group_cidrs" {
   type    = list(string)
