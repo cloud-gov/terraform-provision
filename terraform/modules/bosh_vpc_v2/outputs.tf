@@ -22,7 +22,7 @@ output "private_route_table_ids" {
 
 /* Public network */
 output "public_subnets" {
-  value = aws_subnet.subnet_public[*]
+  value = aws_subnet.subnet_public
 }
 
 output "public_subnet_ids" {
