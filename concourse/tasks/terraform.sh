@@ -71,14 +71,14 @@ else
     -auto-approve \
     | grep -v --line-buffered --extended-regexp "Reading\.\.\.|Read complete after|Refreshing state\.\.\."
 
-  # if [ -n "${TF_VAR_aws_region:-}" ]; then
-  #   export AWS_DEFAULT_REGION="${TF_VAR_aws_region}"
-  # fi
-  # if [ -n "${TF_VAR_aws_access_key:-}" ]; then
-  #   export AWS_ACCESS_KEY_ID="${TF_VAR_aws_access_key}"
-  # fi
-  # if [ -n "${TF_VAR_aws_secret_key:-}" ]; then
-  #   export AWS_SECRET_ACCESS_KEY="${TF_VAR_aws_secret_key}"
-  # fi
-  # aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform-state
+  if [ -n "${TF_VAR_aws_region:-}" ]; then
+    export AWS_DEFAULT_REGION="${TF_VAR_aws_region}"
+  fi
+  if [ -n "${TF_VAR_aws_access_key:-}" ]; then
+    export AWS_ACCESS_KEY_ID="${TF_VAR_aws_access_key}"
+  fi
+  if [ -n "${TF_VAR_aws_secret_key:-}" ]; then
+    export AWS_SECRET_ACCESS_KEY="${TF_VAR_aws_secret_key}"
+  fi
+  aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/terraform.tfstate" terraform-state
 fi 
