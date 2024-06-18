@@ -56,3 +56,8 @@ variable "s3_gateway_policy_accounts" {
   type    = list(string)
   default = []
 }
+
+variable "canonical_stemcell_share_account_id" {
+  type = string
+  description = "The account id owning the Canonical bucket where fips stemcells are published."
+}
