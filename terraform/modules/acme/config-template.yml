@@ -1,0 +1,5 @@
+acme: 
+  common_name: # The certificate's common name, the primary domain that the certificate will be recognized for. 
+  registration_email: # The email to provide to Let's Encrypt during registration. 
+  subject_alternative_names: [] # The certificate's subject alternative names, domains that this certificate will also be recognized for.
+  use_test_endpoint: # If true, use the Let's Encrypt staging endpoint for testing. Example: false
