@@ -8,6 +8,7 @@ variable "repositories" {
   type = set(string)
   default = [
     "bosh-deployment-resource",
+    "bosh-io-release-resource",
     "cf-cli-resource",
     "cf-resource",
     "cloud-service-broker",
