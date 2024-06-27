@@ -7,6 +7,7 @@ variable "tooling_stack_name" {
 variable "repositories" {
   type = set(string)
   default = [
+    "bosh-io-release-resource",
     "bosh-deployment-resource",
     "cf-cli-resource",
     "cf-resource",
