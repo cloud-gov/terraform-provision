@@ -33,6 +33,7 @@ variable "repositories" {
     "pages-python-v3.11",
     "pages-redis-v7.2",
     "playwright-python",
+    "pool-resource",
     "registry-image-resource",
     "s3-resource",
     "s3-resource-simple",
