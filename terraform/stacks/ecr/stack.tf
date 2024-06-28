@@ -9,6 +9,7 @@ variable "repositories" {
   default = [
     "bosh-deployment-resource",
     "bosh-io-release-resource",
+    "bosh-io-stemcell-resource",
     "cf-cli-resource",
     "cf-resource",
     "cloud-service-broker",
