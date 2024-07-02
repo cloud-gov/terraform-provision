@@ -34,6 +34,7 @@ variable "repositories" {
     "pages-redis-v7.2",
     "playwright-python",
     "pool-resource",
+    "pulledpork",
     "registry-image-resource",
     "s3-resource",
     "s3-resource-simple",
