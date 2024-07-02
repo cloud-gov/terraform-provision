@@ -58,7 +58,7 @@ resources:
     branch: ((terraform-templates.branch))
     commit_verification_keys: ((commit_verification_keys))
     paths: ((terraform-templates.paths))
-    private_key: ((cg_ci_bot_ssh_pk))
+    private_key: ((cg_ci_bot_pk))
     uri: ((terraform-templates.uri))
 
 resource_types:
