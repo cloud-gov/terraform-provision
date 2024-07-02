@@ -1,0 +1,87 @@
+jobs:
+
+- name: terraform-plan
+  plan:
+  - in_parallel:
+    - get: general-task
+    - get: terraform-config
+    - get: terraform-tasks
+    - get: terraform-templates
+      trigger: true
+  - task: terraform-plan
+    tags: [iaas]
+    file: terraform-tasks/concourse/tasks/terraform.yml
+    params: 
+      AWS_REGION: ((aws.region))
+      COMPONENT: ((module_name))
+      S3_TFSTATE_BUCKET: common-terraform-state
+      TEMPLATE_SUBDIR: ci/terraform
+      TERRAFORM_ACTION: plan
+      TERRAFORM_CONFIG: terraform-config/((terraform-config.path))
+    vars: 
+      access_key_id: ((hack.access_key_id))
+      region: ((hack.region))
+      secret_access_key: ((hack.secret_access_key))
+
+resources:
+
+- name: general-task
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: general-task
+    aws_region: ((aws.region))
+    tag: latest
+
+- name: terraform-config
+  type: git
+  source:
+    branch: ((terraform-config.branch))
+    commit_verification_keys: ((commit_verification_keys))
+    paths: [((terraform-config.path))]
+    private_key: ((cg_ci_bot_pk))
+    # Temporarily using this repo for testing
+    uri: ((terraform-config.uri))
+
+- name: terraform-tasks
+  type: git
+  source:
+    branch: f140
+    commit_verification_keys: ((commit_verification_keys))
+    paths: ["concourse/tasks/terraform.*"]
+    uri: https://github.com/cloud-gov/cg-provision.git
+
+- name: terraform-templates
+  type: git
+  source:
+    branch: ((terraform-templates.branch))
+    commit_verification_keys: ((commit_verification_keys))
+    paths: ((terraform-templates.paths))
+    private_key: ((cg_ci_bot_ssh_pk))
+    uri: ((terraform-templates.uri))
+
+resource_types:
+
+- name: git
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: git-resource
+    aws_region: ((aws.region))
+    tag: latest
+
+- name: registry-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((hack.access_key_id))
+    aws_secret_access_key: ((hack.secret_access_key))
+    repository: registry-image-resource
+    aws_region: ((aws.region))
+    tag: latest
+
+- name: s3-iam
+  type: docker-image
+  source:
+    repository: 18fgsa/s3-resource
