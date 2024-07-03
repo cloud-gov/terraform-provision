@@ -11,11 +11,11 @@ image_resource:
     tag: latest
 
 inputs:
-- name: cg-provision-repo
+- name: terraform-task
 - name: terraform-templates
 
 outputs:
 - name: terraform-state
 
 run:
-  path: cg-provision-repo/concourse/tasks/terraform.sh
+  path: terraform-task/concourse/tasks/terraform.sh
