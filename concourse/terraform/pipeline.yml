@@ -16,7 +16,7 @@ jobs:
       S3_TFSTATE_BUCKET: common-terraform-state
       TEMPLATE_SUBDIR: ci/terraform
       TERRAFORM_ACTION: plan
-      TERRAFORM_CONFIG: terraform-config/((terraform-config.path))
+      TERRAFORM_CONFIG: ../terraform-config/((terraform-config.path))
     vars: 
       access_key_id: ((hack.access_key_id))
       region: ((hack.region))
