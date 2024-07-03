@@ -5,12 +5,11 @@ jobs:
   - in_parallel:
     - get: general-task
     - get: terraform-config
-    - get: terraform-tasks
+    - get: terraform-task
     - get: terraform-templates
       trigger: true
   - task: terraform-plan
-    tags: [iaas]
-    file: terraform-tasks/concourse/tasks/terraform.yml
+    file: terraform-task/concourse/tasks/terraform.yml
     params: 
       AWS_REGION: ((aws.region))
       COMPONENT: ((module_name))
@@ -44,7 +43,7 @@ resources:
     # Temporarily using this repo for testing
     uri: ((terraform-config.uri))
 
-- name: terraform-tasks
+- name: terraform-task
   type: git
   source:
     branch: f140
