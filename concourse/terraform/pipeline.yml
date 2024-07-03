@@ -8,15 +8,29 @@ jobs:
     - get: terraform-task
     - get: terraform-templates
       trigger: true
+  - task: copy-config
+    image: general-task
+    config:
+      platform: linux
+      inputs:
+      - name: terraform-config
+      - name: terraform-templates
+      outputs:
+      - name: terraform-templates
+      run:
+        path: bash
+        args:
+        - -exc
+        - | 
+          cp terraform-config/((terraform-config.path)) terraform-templates/((terraform-templates.path))
   - task: terraform-plan
     file: terraform-task/concourse/tasks/terraform.yml
     params: 
       AWS_REGION: ((aws.region))
       COMPONENT: ((module_name))
       S3_TFSTATE_BUCKET: common-terraform-state
-      TEMPLATE_SUBDIR: ci/terraform
+      TEMPLATE_SUBDIR: ((terraform-templates.path))
       TERRAFORM_ACTION: plan
-      TERRAFORM_CONFIG: ../terraform-config/((terraform-config.path))
     vars: 
       access_key_id: ((hack.access_key_id))
       region: ((hack.region))
@@ -56,7 +70,7 @@ resources:
   source:
     branch: ((terraform-templates.branch))
     commit_verification_keys: ((commit_verification_keys))
-    paths: ((terraform-templates.paths))
+    path: [((terraform-templates.path))]
     private_key: ((cg_ci_bot_pk))
     uri: ((terraform-templates.uri))
 
