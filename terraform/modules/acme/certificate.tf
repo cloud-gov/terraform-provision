@@ -8,7 +8,7 @@ terraform {
 }
 
 locals {
-  config  = yamldecode(file("${path.module}/${var.config_file}"))
+  config  = yamldecode(file("${path.module}/${var.config_file_name}"))
 }
 
 provider "acme" {
