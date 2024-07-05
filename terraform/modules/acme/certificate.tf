@@ -8,11 +8,11 @@ terraform {
 }
 
 locals {
-  config  = yamldecode(file("${path.module}/${var.config_file_name}"))
+  config = yamldecode(file("${path.module}/${var.config_file_name}"))
 }
 
 provider "acme" {
-  server_url = locals.config.acme.use_test_endpoint ? "https://acme-staging-v02.api.letsencrypt.org/directory" : "https://acme-v02.api.letsencrypt.org/directory"
+  server_url = local.config.acme.use_test_endpoint ? "https://acme-staging-v02.api.letsencrypt.org/directory" : "https://acme-v02.api.letsencrypt.org/directory"
 }
 
 resource "tls_private_key" "private_key" {
@@ -21,13 +21,13 @@ resource "tls_private_key" "private_key" {
 
 resource "acme_registration" "reg" {
   account_key_pem = tls_private_key.private_key.private_key_pem
-  email_address   = locals.config.acme.registration_email
+  email_address   = local.config.acme.registration_email
 }
 
 resource "acme_certificate" "certificate" {
   account_key_pem           = acme_registration.reg.account_key_pem
-  common_name               = locals.config.acme.common_name
-  subject_alternative_names = locals.config.acme.subject_alternative_names
+  common_name               = local.config.acme.common_name
+  subject_alternative_names = local.config.acme.subject_alternative_names
 
   dns_challenge {
     provider = "route53"
