@@ -928,6 +928,28 @@ jobs:
           TF_VAR_tooling_stack_name: tooling
       - *notify-slack
 
+  - name: plan-concourse-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-concourse-staging
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &tf-concourse
+          TERRAFORM_ACTION: plan
+          TEMPLATE_SUBDIR: terraform/stacks/concourse
+          STACK_NAME: concourse
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: us-gov-west-1
+          TF_VAR_concourse_url: https://ci.fr-stage.cloud.gov
+          TF_VAR_concourse_username: ((basic-auth-username-staging))
+          TF_VAR_concourse_password: ((basic-auth-password-staging))
+      - *notify-slack
+
   - name: apply-ecr
     plan:
       - in_parallel:
