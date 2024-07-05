@@ -17,6 +17,7 @@ groups:
       - plan-bootstrap-production
       - plan-bootstrap-staging
       - plan-bootstrap-tooling
+      - plan-concourse-staging
       - plan-dns
       - plan-ecr
       - pull-status-check
@@ -948,6 +949,9 @@ jobs:
           TF_VAR_concourse_url: https://ci.fr-stage.cloud.gov
           TF_VAR_concourse_username: ((basic-auth-username-staging))
           TF_VAR_concourse_password: ((basic-auth-password-staging))
+          TF_VAR_remote_state_bucket: ((ecr-tf-state-bucket))
+          TF_VAR_remote_state_region: ((aws_default_region))
+          TF_VAR_staging_stack_name: concourse
       - *notify-slack
 
   - name: apply-ecr
