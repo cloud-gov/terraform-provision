@@ -22,7 +22,9 @@ jobs:
         args:
         - -exc
         - | 
+          ls -R
           cp terraform-config/((terraform-config.path)) terraform-templates/((terraform-templates.path))
+          ls -R
   - task: terraform-plan
     file: terraform-task/concourse/tasks/terraform.yml
     params: 
