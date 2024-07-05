@@ -22,7 +22,7 @@ jobs:
         args:
         - -exc
         - | 
-          ls -R
+          set -x
           cp terraform-config/((terraform-config.path)) terraform-templates/((terraform-templates.path))
           ls -R
   - task: terraform-plan
