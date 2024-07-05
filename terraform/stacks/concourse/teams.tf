@@ -49,6 +49,11 @@ resource "concourse_team" "pages" {
 
 }
 
+terraform {
+  backend "s3" {
+  }
+}
+
 data "terraform_remote_state" "staging" {
   backend = "s3"
 
