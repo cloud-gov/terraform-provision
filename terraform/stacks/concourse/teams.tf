@@ -55,7 +55,8 @@ terraform {
 }
 
 data "terraform_remote_state" "staging" {
-  backend = "s3"
+  backend   = "s3"
+  workspace = "staging"
 
   config = {
     bucket = var.remote_state_bucket
