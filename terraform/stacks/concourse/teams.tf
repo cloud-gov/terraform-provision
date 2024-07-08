@@ -7,6 +7,9 @@ variable "remote_state_region" {
 variable "staging_stack_name" {
 }
 
+variable "concourse_stack_name" {
+}
+
 terraform {
   required_providers {
     concourse = {
@@ -54,12 +57,12 @@ terraform {
   }
 }
 
-data "terraform_remote_state" "staging" {
+data "terraform_remote_state" "concourse" {
   backend = "s3"
 
   config = {
     bucket = var.remote_state_bucket
     region = var.remote_state_region
-    key    = "${var.staging_stack_name}/terraform.tfstate"
+    key    = "${var.concourse_stack_name}/terraform.tfstate"
   }
 }
