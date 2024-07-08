@@ -1,3 +1,12 @@
+variable "remote_state_bucket" {
+}
+
+variable "remote_state_region" {
+}
+
+variable "staging_stack_name" {
+}
+
 terraform {
   required_providers {
     concourse = {
@@ -38,4 +47,19 @@ resource "concourse_team" "pages" {
     "group:oauth:concourse.viewer"
   ]
 
+}
+
+terraform {
+  backend "s3" {
+  }
+}
+
+data "terraform_remote_state" "staging" {
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_state_bucket
+    region = var.remote_state_region
+    key    = "${var.staging_stack_name}/terraform.tfstate"
+  }
 }
