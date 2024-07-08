@@ -1,5 +1,5 @@
 attrs==21.4.0
-certifi==2023.7.22
+certifi==2024.7.4
 charset-normalizer==2.0.12
 idna==3.7
 iniconfig==1.1.1
