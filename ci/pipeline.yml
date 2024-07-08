@@ -957,7 +957,7 @@ jobs:
         params: &tf-concourse-staging
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
-          STACK_NAME: etc:/staging/concourse
+          STACK_NAME: env:/staging/concourse
           S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
           AWS_DEFAULT_REGION: us-gov-west-1
           TF_VAR_concourse_url: https://ci.fr-stage.cloud.gov
@@ -965,7 +965,7 @@ jobs:
           TF_VAR_concourse_password: ((basic-auth-password-staging))
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_remote_state_region: ((aws_default_region))
-          TF_VAR_concourse_stack_name: concourse
+          TF_VAR_concourse_stack_name: env:/staging/concourse
       - *notify-slack
 
   - name: apply-concourse-staging
@@ -995,7 +995,7 @@ jobs:
         params: &tf-concourse-production
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
-          STACK_NAME: etc:/production/concourse-production
+          STACK_NAME: env:/production/concourse-production
           S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
           AWS_DEFAULT_REGION: us-gov-west-1
           TF_VAR_concourse_url: https://ci.fr.cloud.gov
@@ -1003,7 +1003,7 @@ jobs:
           TF_VAR_concourse_password: ((basic-auth-password-production))
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_remote_state_region: ((aws_default_region))
-          TF_VAR_concourse_stack_name: concourse-production
+          TF_VAR_concourse_stack_name: env:/production/concourse-production
       - *notify-slack
 
   - name: apply-concourse-production
