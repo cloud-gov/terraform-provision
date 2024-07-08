@@ -4,9 +4,6 @@ variable "remote_state_bucket" {
 variable "remote_state_region" {
 }
 
-variable "staging_stack_name" {
-}
-
 variable "concourse_stack_name" {
 }
 
