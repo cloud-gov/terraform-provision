@@ -55,12 +55,11 @@ terraform {
 }
 
 data "terraform_remote_state" "staging" {
-  backend   = "s3"
-  workspace = "staging"
+  backend = "s3"
 
   config = {
     bucket = var.remote_state_bucket
     region = var.remote_state_region
-    key    = "${var.staging_stack_name}/terraform.tfstate"
+    key    = "env:/staging/${var.staging_stack_name}/terraform.tfstate"
   }
 }
