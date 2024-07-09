@@ -19,6 +19,8 @@ groups:
       - plan-bootstrap-tooling
       - plan-concourse-staging
       - plan-concourse-production
+      - apply-concourse-staging
+      - apply-concourse-production
       - plan-dns
       - plan-ecr
       - pull-status-check
