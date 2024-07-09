@@ -17,6 +17,10 @@ groups:
       - plan-bootstrap-production
       - plan-bootstrap-staging
       - plan-bootstrap-tooling
+      - plan-concourse-staging
+      - plan-concourse-production
+      - apply-concourse-staging
+      - apply-concourse-production
       - plan-dns
       - plan-ecr
       - pull-status-check
@@ -939,6 +943,82 @@ jobs:
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *tf-ecr
+          TERRAFORM_ACTION: apply
+
+  - name: plan-concourse-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-concourse-staging
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &tf-concourse-staging
+          TERRAFORM_ACTION: plan
+          TEMPLATE_SUBDIR: terraform/stacks/concourse
+          STACK_NAME: env:/staging/concourse
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: us-gov-west-1
+          TF_VAR_concourse_url: https://ci.fr-stage.cloud.gov
+          TF_VAR_concourse_username: ((basic-auth-username-staging))
+          TF_VAR_concourse_password: ((basic-auth-password-staging))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_remote_state_region: ((aws_default_region))
+          TF_VAR_concourse_stack_name: env:/staging/concourse
+      - *notify-slack
+
+  - name: apply-concourse-staging
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-concourse-staging]
+      - task: create-update-concourse-staging
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *tf-ecr
+          TERRAFORM_ACTION: apply
+
+  - name: plan-concourse-production
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: plan-update-concourse-production
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &tf-concourse-production
+          TERRAFORM_ACTION: plan
+          TEMPLATE_SUBDIR: terraform/stacks/concourse
+          STACK_NAME: env:/production/concourse-production
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: us-gov-west-1
+          TF_VAR_concourse_url: https://ci.fr.cloud.gov
+          TF_VAR_concourse_username: ((basic-auth-username-production))
+          TF_VAR_concourse_password: ((basic-auth-password-production))
+          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
+          TF_VAR_remote_state_region: ((aws_default_region))
+          TF_VAR_concourse_stack_name: env:/production/concourse-production
+      - *notify-slack
+
+  - name: apply-concourse-production
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-concourse-production]
+      - task: create-update-concourse-production
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *tf-concourse-production
           TERRAFORM_ACTION: apply
 
   - name: acme-certificate-development
