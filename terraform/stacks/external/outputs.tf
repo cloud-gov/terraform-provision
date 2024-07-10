@@ -135,3 +135,12 @@ output "lets_encrypt_secret_access_key_curr" {
   value     = module.lets_encrypt_user.secret_access_key_curr
   sensitive = true
 }
+
+output "csb_access_key_id_curr" {
+  value = module.csb.access_key_id_curr
+}
+
+output "csb_secret_access_key_curr" {
+  sensitive = true
+  value     = module.csb.secret_access_key_curr
+}
