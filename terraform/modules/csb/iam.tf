@@ -10,7 +10,6 @@ locals {
 }
 
 data "aws_iam_policy_document" "brokerpak_smtp_govcloud" {
-  count = local.govcloud ? 1 : 0
   statement {
     effect    = "Allow"
     actions   = ["ses:*"]
