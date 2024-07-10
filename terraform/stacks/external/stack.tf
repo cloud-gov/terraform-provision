@@ -81,3 +81,9 @@ module "lets_encrypt_user" {
   hosted_zone   = var.lets_encrypt_hosted_zone
   username      = "lets-encrypt-${var.stack_description}"
 }
+
+module "csb" {
+  source = "../../modules/csb"
+
+  stack_description = var.stack_description
+}
