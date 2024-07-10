@@ -68,18 +68,17 @@ resource "aws_iam_access_key" "iam_access_key" {
   user = aws_iam_user.iam_user.name
 }
 
-locals {
-  govcloud_policies = [
-    aws_iam_policy.brokerpak_smtp[0].arn
-  ]
-  commercial_policies = [
-    // Route53 manager: for aws_route53_record, aws_route53_zone
-    "arn:aws-us-gov:iam::aws:policy/AmazonRoute53FullAccess",
-  ]
-}
-
 resource "aws_iam_user_policy_attachment" "csb_policies" {
-  for_each = toset(local.govcloud ? local.govcloud_policies : local.commercial_policies)
+  for_each = toset(local.govcloud ?
+    // GovCloud policies
+    [
+      aws_iam_policy.brokerpak_smtp[0].arn
+    ] :
+    // Commercial policies
+    [
+      "arn:aws-us-gov:iam::aws:policy/AmazonRoute53FullAccess",
+    ]
+  )
 
   user       = aws_iam_user.iam_user.name
   policy_arn = each.key
