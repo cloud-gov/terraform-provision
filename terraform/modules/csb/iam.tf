@@ -70,7 +70,7 @@ resource "aws_iam_access_key" "iam_access_key" {
 
 locals {
   govcloud_policies = [
-    aws_iam_policy.brokerpak_smtp.arn
+    aws_iam_policy.brokerpak_smtp[0].arn
   ]
   commercial_policies = [
     // Route53 manager: for aws_route53_record, aws_route53_zone
