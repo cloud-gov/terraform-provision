@@ -58,7 +58,7 @@ resource "aws_iam_policy" "brokerpak_smtp" {
   count       = local.govcloud ? 1 : 0
   name        = "${var.stack_description}-brokerpak-smtp"
   description = "SMTP broker policy (covers SES, IAM, and supplementary Route53)"
-  policy      = data.aws_iam_policy_document.brokerpak_smtp.json
+  policy      = data.aws_iam_policy_document.brokerpak_smtp_govcloud.json
 }
 
 resource "aws_iam_user" "iam_user" {
@@ -80,7 +80,7 @@ locals {
 }
 
 resource "aws_iam_user_policy_attachment" "csb_policies" {
-  for_each = toset(local.govcloud ? govcloud_policies : commercial_policies)
+  for_each = toset(local.govcloud ? local.govcloud_policies : local.commercial_policies)
 
   user       = aws_iam_user.iam_user.name
   policy_arn = each.key
