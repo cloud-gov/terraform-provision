@@ -43,6 +43,7 @@ groups:
       - acme-certificate-dev-pages
       - acme-certificate-dev-wildcard-pages
       - acme-certificate-dev-wildcard-pages-sites
+      - delete-old-certificates
 jobs:
   - name: pull-status-check
     plan:
@@ -1438,6 +1439,49 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
+
+  - name: delete-old-certificates
+    plan:
+      - in_parallel:
+          - get: general-task
+          - get: staging-weekly-timer
+            trigger: true
+            passed:
+             - acme-certificate-development
+             - acme-certificate-staging
+             - acme-certificate-staging-pages
+             - acme-certificate-production
+             - acme-certificate-production-apps
+             - acme-certificate-pages
+             - acme-certificate-wildcard-pages
+             - acme-certificate-wildcard-pages-sites
+             - acme-certificate-staging-pages
+             - acme-certificate-staging-wildcard-pages
+             - acme-certificate-staging-wildcard-pages-sites
+             - acme-certificate-dev-pages
+             - acme-certificate-dev-wildcard-pages
+             - acme-certificate-dev-wildcard-pages-sites
+          - get: cg-provision-repo
+            resource: cg-provision-repo-development
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-development
+      - task: delete-certificates
+        image: general-task
+        file: cg-provision-repo/ci/delete-old-certificates.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to delete old certificates
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
 
 resources:
   - name: pipeline-tasks

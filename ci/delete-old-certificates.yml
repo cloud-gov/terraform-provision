@@ -1,0 +1,18 @@
+---
+# upload a certificate to the tooling account
+platform: linux
+
+inputs:
+- name: cg-provision-repo
+- name: terraform-yaml-tooling
+- name: certificates
+- name: acme
+
+run:
+  path: cg-provision-repo/ci/delete-old-certificates.sh
+
+params:
+  AWS_DEFAULT_REGION:
+  CERT_PATH:
+  CERT_PREFIX:
+  ASSUME_ROLE_ARN:
