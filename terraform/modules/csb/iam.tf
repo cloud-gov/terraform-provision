@@ -75,15 +75,22 @@ resource "aws_iam_access_key" "iam_access_key" {
   user = aws_iam_user.iam_user.name
 }
 
+locals {
+  // Attribute aws_iam_policy.brokerpak_smtp.arn is not determined until apply, so it cannot be
+  // referenced in for_each below. Build the ARN here instead.
+  brokerpak_smtp_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_smtp.name}"
+}
+
 resource "aws_iam_user_policy_attachment" "csb_policies" {
   for_each = toset(local.govcloud ?
     // GovCloud policies
     [
+      local.brokerpak_smtp_arn,
       aws_iam_policy.brokerpak_smtp.arn
     ] :
     // Commercial policies
     [
-      aws_iam_policy.brokerpak_smtp.arn,
+      local.brokerpak_smtp_arn,
       "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
     ]
   )
