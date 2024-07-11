@@ -85,12 +85,12 @@ resource "aws_iam_user_policy_attachment" "csb_policies" {
   for_each = toset(local.govcloud ?
     // GovCloud policies
     [
-      brokerpak_smtp_arn,
+      local.brokerpak_smtp_arn,
       aws_iam_policy.brokerpak_smtp.arn
     ] :
     // Commercial policies
     [
-      brokerpak_smtp_arn,
+      local.brokerpak_smtp_arn,
       "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
     ]
   )
