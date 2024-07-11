@@ -76,7 +76,7 @@ resource "aws_iam_user_policy_attachment" "csb_policies" {
     ] :
     // Commercial policies
     [
-      "arn:aws-us-gov:iam::aws:policy/AmazonRoute53FullAccess",
+      "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
     ]
   )
 
