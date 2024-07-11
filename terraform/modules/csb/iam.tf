@@ -78,7 +78,7 @@ resource "aws_iam_access_key" "iam_access_key" {
 locals {
   // Attribute aws_iam_policy.brokerpak_smtp.arn is not determined until apply, so it cannot be
   // referenced in for_each below. Build the ARN here instead.
-  brokerpak_smtp_arn = "arn:aws-us-gov:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_smtp.name}"
+  brokerpak_smtp_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_smtp.name}"
 }
 
 resource "aws_iam_user_policy_attachment" "csb_policies" {
