@@ -1,48 +1,48 @@
 groups:
   - name: terraform
     jobs:
+      - apply-concourse-production
+      - apply-concourse-staging
+      - apply-development
       - apply-dns
       - apply-ecr
-      - bootstrap-development
-      - bootstrap-external-development
-      - bootstrap-external-production
-      - bootstrap-external-staging
-      - bootstrap-production
-      - bootstrap-staging
-      - bootstrap-tooling
-      - plan-bootstrap-development
-      - plan-bootstrap-external-development
-      - plan-bootstrap-external-production
-      - plan-bootstrap-external-staging
-      - plan-bootstrap-production
-      - plan-bootstrap-staging
-      - plan-bootstrap-tooling
-      - plan-concourse-staging
+      - apply-external-development
+      - apply-external-production
+      - apply-external-staging
+      - apply-production
+      - apply-staging
+      - apply-tooling
       - plan-concourse-production
-      - apply-concourse-staging
-      - apply-concourse-production
+      - plan-concourse-staging
+      - plan-development
       - plan-dns
       - plan-ecr
+      - plan-external-development
+      - plan-external-production
+      - plan-external-staging
+      - plan-production
+      - plan-staging
+      - plan-tooling
       - pull-status-check
       - webacl-test-development
       - webacl-test-production
       - webacl-test-staging
   - name: certs
     jobs:
-      - acme-certificate-development
-      - acme-certificate-staging
-      - acme-certificate-staging-pages
-      - acme-certificate-production
-      - acme-certificate-production-apps
-      - acme-certificate-pages
-      - acme-certificate-wildcard-pages
-      - acme-certificate-wildcard-pages-sites
-      - acme-certificate-staging-pages
-      - acme-certificate-staging-wildcard-pages
-      - acme-certificate-staging-wildcard-pages-sites
       - acme-certificate-dev-pages
       - acme-certificate-dev-wildcard-pages
       - acme-certificate-dev-wildcard-pages-sites
+      - acme-certificate-development
+      - acme-certificate-pages
+      - acme-certificate-production
+      - acme-certificate-production-apps
+      - acme-certificate-staging
+      - acme-certificate-staging-pages
+      - acme-certificate-staging-pages
+      - acme-certificate-staging-wildcard-pages
+      - acme-certificate-staging-wildcard-pages-sites
+      - acme-certificate-wildcard-pages
+      - acme-certificate-wildcard-pages-sites
 jobs:
   - name: pull-status-check
     plan:
