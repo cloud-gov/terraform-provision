@@ -108,7 +108,8 @@ jobs:
                   status: failure
                   context: validate-terraform
 
-  - name: plan-bootstrap-external-development
+  - name: plan-external-development
+    old_name: plan-bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -143,12 +144,13 @@ jobs:
           username: ((slack-username))
           icon_url: ((slack-icon-url))
 
-  - name: bootstrap-external-development
+  - name: apply-external-development
+    old_name: bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-development]
+            passed: [plan-external-development]
       - task: create-update-external-development
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -163,7 +165,8 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-external-staging
+  - name: plan-external-staging
+    old_name: plan-bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -198,12 +201,13 @@ jobs:
           username: ((slack-username))
           icon_url: ((slack-icon-url))
 
-  - name: bootstrap-external-staging
+  - name: apply-external-staging
+    old_name: bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-staging]
+            passed: [plan-external-staging]
       - task: create-update-external-staging
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -218,7 +222,8 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-external-production
+  - name: plan-external-production
+    old_name: plan-bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -244,12 +249,13 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
       - *notify-slack
 
-  - name: bootstrap-external-production
+  - name: apply-external-production
+    old_name: bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-production]
+            passed: [plan-external-production]
       - task: create-update-external-production
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -304,7 +310,8 @@ jobs:
           <<: *dns-params
           TERRAFORM_ACTION: apply
 
-  - name: plan-bootstrap-tooling
+  - name: plan-tooling
+    old_name: plan-bootstrap-tooling
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -366,13 +373,14 @@ jobs:
           TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
       - *notify-slack
 
-  - name: bootstrap-tooling
+  - name: apply-tooling
+    old_name: bootstrap-tooling
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-tooling]
+            passed: [plan-tooling]
       - task: create-update-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -420,7 +428,8 @@ jobs:
                 params:
                   file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-development
+  - name: plan-development
+    old_name: plan-bootstrap-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -495,14 +504,15 @@ jobs:
           TF_VAR_domains_lbgroup_count: 2
       - *notify-slack
 
-  - name: bootstrap-development
+  - name: apply-development
+    old_name: bootstrap-development
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
             resource: cg-provision-repo-development
-            passed: [plan-bootstrap-development]
+            passed: [plan-development]
       - task: create-update-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -558,7 +568,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo-development
-            passed: [bootstrap-development]
+            passed: [apply-development]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-development
@@ -587,7 +597,8 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
-  - name: plan-bootstrap-staging
+  - name: plan-staging
+    old_name: plan-bootstrap-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -659,13 +670,14 @@ jobs:
           TF_VAR_domains_lbgroup_count: 3
       - *notify-slack
 
-  - name: bootstrap-staging
+  - name: apply-staging
+    old_name: bootstrap-staging
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-staging]
+            passed: [plan-staging]
       - task: create-update-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -720,7 +732,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo
-            passed: [bootstrap-staging]
+            passed: [apply-staging]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-staging
@@ -749,7 +761,8 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
-  - name: plan-bootstrap-production
+  - name: plan-production
+    old_name: plan-bootstrap-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -821,13 +834,14 @@ jobs:
           TF_VAR_domains_lbgroup_count: 4
       - *notify-slack
 
-  - name: bootstrap-production
+  - name: apply-production
+    old_name: bootstrap-production
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-production]
+            passed: [plan-production]
       - task: create-update-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -882,7 +896,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo
-            passed: [bootstrap-production]
+            passed: [apply-production]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-production
