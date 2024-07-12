@@ -109,7 +109,6 @@ jobs:
                   context: validate-terraform
 
   - name: plan-external-development
-    old_name: plan-bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -145,7 +144,6 @@ jobs:
           icon_url: ((slack-icon-url))
 
   - name: apply-external-development
-    old_name: bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -166,7 +164,6 @@ jobs:
           file: terraform-yaml/state.yml
 
   - name: plan-external-staging
-    old_name: plan-bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -202,7 +199,6 @@ jobs:
           icon_url: ((slack-icon-url))
 
   - name: apply-external-staging
-    old_name: bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -223,7 +219,6 @@ jobs:
           file: terraform-yaml/state.yml
 
   - name: plan-external-production
-    old_name: plan-bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -250,7 +245,6 @@ jobs:
       - *notify-slack
 
   - name: apply-external-production
-    old_name: bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -311,7 +305,6 @@ jobs:
           TERRAFORM_ACTION: apply
 
   - name: plan-tooling
-    old_name: plan-bootstrap-tooling
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -374,7 +367,6 @@ jobs:
       - *notify-slack
 
   - name: apply-tooling
-    old_name: bootstrap-tooling
     plan:
       - in_parallel:
           - get: general-task
@@ -429,7 +421,6 @@ jobs:
                   file: terraform-yaml/state.yml
 
   - name: plan-development
-    old_name: plan-bootstrap-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -505,7 +496,6 @@ jobs:
       - *notify-slack
 
   - name: apply-development
-    old_name: bootstrap-development
     plan:
       - in_parallel:
           - get: general-task
@@ -598,7 +588,6 @@ jobs:
         icon_url: ((slack-icon-url))
 
   - name: plan-staging
-    old_name: plan-bootstrap-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -671,7 +660,6 @@ jobs:
       - *notify-slack
 
   - name: apply-staging
-    old_name: bootstrap-staging
     plan:
       - in_parallel:
           - get: general-task
@@ -762,7 +750,6 @@ jobs:
         icon_url: ((slack-icon-url))
 
   - name: plan-production
-    old_name: plan-bootstrap-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -835,7 +822,6 @@ jobs:
       - *notify-slack
 
   - name: apply-production
-    old_name: bootstrap-production
     plan:
       - in_parallel:
           - get: general-task
