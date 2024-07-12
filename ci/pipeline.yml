@@ -1,48 +1,48 @@
 groups:
   - name: terraform
     jobs:
+      - apply-concourse-production
+      - apply-concourse-staging
+      - apply-development
       - apply-dns
       - apply-ecr
-      - bootstrap-development
-      - bootstrap-external-development
-      - bootstrap-external-production
-      - bootstrap-external-staging
-      - bootstrap-production
-      - bootstrap-staging
-      - bootstrap-tooling
-      - plan-bootstrap-development
-      - plan-bootstrap-external-development
-      - plan-bootstrap-external-production
-      - plan-bootstrap-external-staging
-      - plan-bootstrap-production
-      - plan-bootstrap-staging
-      - plan-bootstrap-tooling
-      - plan-concourse-staging
+      - apply-external-development
+      - apply-external-production
+      - apply-external-staging
+      - apply-production
+      - apply-staging
+      - apply-tooling
       - plan-concourse-production
-      - apply-concourse-staging
-      - apply-concourse-production
+      - plan-concourse-staging
+      - plan-development
       - plan-dns
       - plan-ecr
+      - plan-external-development
+      - plan-external-production
+      - plan-external-staging
+      - plan-production
+      - plan-staging
+      - plan-tooling
       - pull-status-check
       - webacl-test-development
       - webacl-test-production
       - webacl-test-staging
   - name: certs
     jobs:
-      - acme-certificate-development
-      - acme-certificate-staging
-      - acme-certificate-staging-pages
-      - acme-certificate-production
-      - acme-certificate-production-apps
-      - acme-certificate-pages
-      - acme-certificate-wildcard-pages
-      - acme-certificate-wildcard-pages-sites
-      - acme-certificate-staging-pages
-      - acme-certificate-staging-wildcard-pages
-      - acme-certificate-staging-wildcard-pages-sites
       - acme-certificate-dev-pages
       - acme-certificate-dev-wildcard-pages
       - acme-certificate-dev-wildcard-pages-sites
+      - acme-certificate-development
+      - acme-certificate-pages
+      - acme-certificate-production
+      - acme-certificate-production-apps
+      - acme-certificate-staging
+      - acme-certificate-staging-pages
+      - acme-certificate-staging-pages
+      - acme-certificate-staging-wildcard-pages
+      - acme-certificate-staging-wildcard-pages-sites
+      - acme-certificate-wildcard-pages
+      - acme-certificate-wildcard-pages-sites
 jobs:
   - name: pull-status-check
     plan:
@@ -108,7 +108,8 @@ jobs:
                   status: failure
                   context: validate-terraform
 
-  - name: plan-bootstrap-external-development
+  - name: plan-external-development
+    old_name: plan-bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -116,7 +117,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-external-development
+      - task: terraform-plan-external-development
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-development-params
@@ -143,13 +144,14 @@ jobs:
           username: ((slack-username))
           icon_url: ((slack-icon-url))
 
-  - name: bootstrap-external-development
+  - name: apply-external-development
+    old_name: bootstrap-external-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-development]
-      - task: create-update-external-development
+            passed: [plan-external-development]
+      - task: terraform-apply-external-development
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
@@ -163,7 +165,8 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-external-staging
+  - name: plan-external-staging
+    old_name: plan-bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -171,7 +174,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-external-staging
+      - task: terraform-plan-external-staging
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-staging-params
@@ -198,13 +201,14 @@ jobs:
           username: ((slack-username))
           icon_url: ((slack-icon-url))
 
-  - name: bootstrap-external-staging
+  - name: apply-external-staging
+    old_name: bootstrap-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-staging]
-      - task: create-update-external-staging
+            passed: [plan-external-staging]
+      - task: terraform-apply-external-staging
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
@@ -218,7 +222,8 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-external-production
+  - name: plan-external-production
+    old_name: plan-bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -226,7 +231,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-external-production
+      - task: terraform-plan-external-production
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-production-params
@@ -244,13 +249,14 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
       - *notify-slack
 
-  - name: bootstrap-external-production
+  - name: apply-external-production
+    old_name: bootstrap-external-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-external-production]
-      - task: create-update-external-production
+            passed: [plan-external-production]
+      - task: terraform-apply-external-production
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
@@ -297,14 +303,15 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             passed: [plan-dns]
-      - task: create-update-dns
+      - task: terraform-apply-dns
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *dns-params
           TERRAFORM_ACTION: apply
 
-  - name: plan-bootstrap-tooling
+  - name: plan-tooling
+    old_name: plan-bootstrap-tooling
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -312,7 +319,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-tooling
+      - task: terraform-plan-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -366,14 +373,15 @@ jobs:
           TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
       - *notify-slack
 
-  - name: bootstrap-tooling
+  - name: apply-tooling
+    old_name: bootstrap-tooling
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-tooling]
-      - task: create-update-tooling
+            passed: [plan-tooling]
+      - task: terraform-apply-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -420,7 +428,8 @@ jobs:
                 params:
                   file: terraform-yaml/state.yml
 
-  - name: plan-bootstrap-development
+  - name: plan-development
+    old_name: plan-bootstrap-development
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -429,7 +438,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-development
+      - task: terraform-plan-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -495,15 +504,16 @@ jobs:
           TF_VAR_domains_lbgroup_count: 2
       - *notify-slack
 
-  - name: bootstrap-development
+  - name: apply-development
+    old_name: bootstrap-development
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
             resource: cg-provision-repo-development
-            passed: [plan-bootstrap-development]
-      - task: create-update-development
+            passed: [plan-development]
+      - task: terraform-apply-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -558,7 +568,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo-development
-            passed: [bootstrap-development]
+            passed: [apply-development]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-development
@@ -587,7 +597,8 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
-  - name: plan-bootstrap-staging
+  - name: plan-staging
+    old_name: plan-bootstrap-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -595,7 +606,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-staging
+      - task: terraform-plan-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -659,14 +670,15 @@ jobs:
           TF_VAR_domains_lbgroup_count: 3
       - *notify-slack
 
-  - name: bootstrap-staging
+  - name: apply-staging
+    old_name: bootstrap-staging
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-staging]
-      - task: create-update-staging
+            passed: [plan-staging]
+      - task: terraform-apply-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -720,7 +732,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo
-            passed: [bootstrap-staging]
+            passed: [apply-staging]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-staging
@@ -749,7 +761,8 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
-  - name: plan-bootstrap-production
+  - name: plan-production
+    old_name: plan-bootstrap-production
     plan:
       - in_parallel:
           - get: pipeline-tasks
@@ -757,7 +770,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-production
+      - task: terraform-plan-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -821,14 +834,15 @@ jobs:
           TF_VAR_domains_lbgroup_count: 4
       - *notify-slack
 
-  - name: bootstrap-production
+  - name: apply-production
+    old_name: bootstrap-production
     plan:
       - in_parallel:
           - get: general-task
           - get: pipeline-tasks
           - get: cg-provision-repo
-            passed: [plan-bootstrap-production]
-      - task: create-update-production
+            passed: [plan-production]
+      - task: terraform-apply-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
@@ -882,7 +896,7 @@ jobs:
           - get: general-task
           - get: cg-provision-repo
             resource: cg-provision-repo
-            passed: [bootstrap-production]
+            passed: [apply-production]
             trigger: true
           - get: waf-test-files
             resource: waf-tests-production
@@ -919,7 +933,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-ecr
+      - task: terraform-plan-ecr
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-ecr
@@ -938,7 +952,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             passed: [plan-ecr]
-      - task: create-update-ecr
+      - task: terraform-apply-ecr
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
@@ -953,7 +967,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-concourse-staging
+      - task: terraform-plan-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-concourse-staging
@@ -976,7 +990,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             passed: [plan-concourse-staging]
-      - task: create-update-concourse-staging
+      - task: terraform-apply-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
@@ -991,7 +1005,7 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-      - task: plan-update-concourse-production
+      - task: terraform-plan-concourse-production
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-concourse-production
@@ -1014,7 +1028,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             passed: [plan-concourse-production]
-      - task: create-update-concourse-production
+      - task: terraform-apply-concourse-production
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: { terraform-templates: cg-provision-repo }
         params:
