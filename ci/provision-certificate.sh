@@ -5,7 +5,7 @@ set -eu
 curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 chmod +x ./jq
 
-pip install certbot==2.6.0 
+pip install certbot==2.6.0
 pip install certbot-dns-route53==2.6.0
 
 #spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
@@ -25,8 +25,10 @@ fi
 
 config_path=$(pwd)
 
-export AWS_ACCESS_KEY_ID=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_access_key_id_curr")
-export AWS_SECRET_ACCESS_KEY=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_secret_access_key_curr")
+AWS_ACCESS_KEY_ID=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_access_key_id_curr")
+AWS_SECRET_ACCESS_KEY=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_secret_access_key_curr")
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
 
 certbot certonly \
   -n --agree-tos \
@@ -36,14 +38,14 @@ certbot certonly \
   --email "${EMAIL}" \
   --domain "${DOMAIN}" \
   --rsa-key-size 2048 \
-  --key-type rsa 
+  --key-type rsa
 
-out_path=$(ls -d -1 ${config_path}/live/*/)
-cp ${out_path}/*.pem acme
+out_path=$(ls -d -1 "${config_path}"/live/*/)
+cp "${out_path}"/*.pem acme
 
 # Before provision exit - check that certificate and key are RSA based and 2048 bit length - if not error out task
 
-CERT_CHECK=$(cat acme/cert.pem | openssl x509 -text -noout | grep "Public-Key")
+CERT_CHECK=$(openssl x509 -in acme/cert.pem -text -noout | grep "Public-Key")
 KEY_CHECK=$(openssl rsa -in acme/privkey.pem -check -noout | grep "RSA key")
 
 if [[ "$CERT_CHECK" == *"2048 bit"* ]]; then

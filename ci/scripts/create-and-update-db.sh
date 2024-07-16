@@ -5,14 +5,14 @@ set -u
 TERRAFORM="${TERRAFORM_BIN:-terraform}"
 
 # Check environment variables
-db_address=$(${TERRAFORM} output -raw -state=${STATE_FILE_PATH} ${TERRAFORM_DB_HOST_FIELD})
-db_user=$(${TERRAFORM} output -raw -state=${STATE_FILE_PATH} ${TERRAFORM_DB_USERNAME_FIELD})
-db_pass=$(${TERRAFORM} output -raw -state=${STATE_FILE_PATH} ${TERRAFORM_DB_PASSWORD_FIELD})
+db_address=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_DB_HOST_FIELD}")
+db_user=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_DB_USERNAME_FIELD}")
+db_pass=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_DB_PASSWORD_FIELD}")
 
-export PGPASSWORD=${db_pass:?}
+export PGPASSWORD="${db_pass:?}"
 
 # See: https://github.com/koalaman/shellcheck/wiki/SC2086#exceptions
-psql_adm() { psql -h "${db_address}" -U ${db_user} "$@"; }
+psql_adm() { psql -h "${db_address}" -U "${db_user}" "$@"; }
 
 # contains(string, substring)
 # See: http://stackoverflow.com/questions/2829613/how-do-you-tell-if-a-string-contains-another-string-in-unix-shell-scripting
@@ -21,7 +21,7 @@ psql_adm() { psql -h "${db_address}" -U ${db_user} "$@"; }
 contains() {
     string="$1"
     substring="$2"
-    if test "${string#*$substring}" != "$string"
+    if test "${string#*"$substring"}" != "$string"
     then
         return 0    # $substring is in $string
     else
