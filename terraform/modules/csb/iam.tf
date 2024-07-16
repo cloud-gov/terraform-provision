@@ -53,11 +53,18 @@ data "aws_iam_policy_document" "brokerpak_smtp_govcloud" {
   }
 }
 
+data "aws_iam_policy_document" "brokerpak_smtp_commercial" {
+  statement {
+    effect    = "Allow"
+    actions   = ["route53:ListHostedZones"]
+    resources = ["*"]
+  }
+}
+
 resource "aws_iam_policy" "brokerpak_smtp" {
-  count       = local.govcloud ? 1 : 0
   name        = "${var.stack_description}-brokerpak-smtp"
-  description = "SMTP broker policy (covers SES, IAM, and supplementary Route53)"
-  policy      = data.aws_iam_policy_document.brokerpak_smtp_govcloud.json
+  description = "Cloud Service Broker SMTP brokerpak policy"
+  policy      = local.govcloud ? data.aws_iam_policy_document.brokerpak_smtp_govcloud.json : data.aws_iam_policy_document.brokerpak_smtp_commercial.json
 }
 
 resource "aws_iam_user" "iam_user" {
@@ -68,14 +75,21 @@ resource "aws_iam_access_key" "iam_access_key" {
   user = aws_iam_user.iam_user.name
 }
 
+locals {
+  // Attribute aws_iam_policy.brokerpak_smtp.arn is not determined until apply, so it cannot be
+  // referenced in for_each below. Build the ARN here instead.
+  brokerpak_smtp_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_smtp.name}"
+}
+
 resource "aws_iam_user_policy_attachment" "csb_policies" {
   for_each = toset(local.govcloud ?
     // GovCloud policies
     [
-      aws_iam_policy.brokerpak_smtp[0].arn
+      local.brokerpak_smtp_arn,
     ] :
     // Commercial policies
     [
+      local.brokerpak_smtp_arn,
       "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
     ]
   )
