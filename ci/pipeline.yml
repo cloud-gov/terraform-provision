@@ -43,7 +43,9 @@ groups:
       - acme-certificate-dev-pages
       - acme-certificate-dev-wildcard-pages
       - acme-certificate-dev-wildcard-pages-sites
-      - delete-old-certificates
+      - delete-old-certificates-dev
+      - delete-old-certificates-staging
+      - delete-old-certificates-production
 jobs:
   - name: pull-status-check
     plan:
@@ -1440,7 +1442,7 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
-  - name: delete-old-certificates
+  - name: delete-old-certificates-dev
     plan:
       - in_parallel:
           - get: general-task
@@ -1448,40 +1450,111 @@ jobs:
             trigger: true
             passed:
              - acme-certificate-development
-             - acme-certificate-staging
-             - acme-certificate-staging-pages
-             - acme-certificate-production
-             - acme-certificate-production-apps
-             - acme-certificate-pages
-             - acme-certificate-wildcard-pages
-             - acme-certificate-wildcard-pages-sites
-             - acme-certificate-staging-pages
-             - acme-certificate-staging-wildcard-pages
-             - acme-certificate-staging-wildcard-pages-sites
-             - acme-certificate-dev-pages
-             - acme-certificate-dev-wildcard-pages
-             - acme-certificate-dev-wildcard-pages-sites
           - get: cg-provision-repo
             resource: cg-provision-repo-development
           - get: terraform-yaml-tooling
             resource: terraform-yaml-tooling
           - get: terraform-yaml-external
             resource: terraform-yaml-external-development
+      - task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          CERT_PATH: /lets-encrypt/dev/
+          AWS_DEFAULT_REGION: ((aws_default_region))
       - task: delete-certificates
         image: general-task
         file: cg-provision-repo/ci/delete-old-certificates.yml
         params:
+          CERT_PATH: /lets-encrypt/dev/
           AWS_DEFAULT_REGION: ((aws_default_region))
     on_failure:
       put: slack
       params:
         text: |
-          :x: Failed to delete old certificates
+          :x: Failed to delete old certificates in dev
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
+
+  - name: delete-old-certificates-staging
+    plan:
+      - in_parallel:
+        - get: general-task
+        - get: staging-weekly-timer
+          trigger: true
+          passed:
+           - acme-certificate-staging
+        - get: cg-provision-repo
+        - get: terraform-yaml-tooling
+          resource: terraform-yaml-tooling
+        - get: terraform-yaml-external
+          resource: terraform-yaml-external-staging
+      - task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          CERT_PATH: /lets-encrypt/staging/
+          AWS_DEFAULT_REGION: ((aws_default_region))
+      - task: delete-certificates
+        image: general-task
+        file: cg-provision-repo/ci/delete-old-certificates.yml
+        params:
+          CERT_PATH: /lets-encrypt/staging/
+          AWS_DEFAULT_REGION: ((aws_default_region))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to delete old certificates in staging
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: delete-old-certificates-production
+    plan:
+      - in_parallel:
+        - get: general-task
+        - get: prod-biweekly-timer
+          trigger: true
+          passed:
+            - acme-certificate-production
+            - acme-certificate-dev-pages
+            - acme-certificate-dev-wildcard-pages
+            - acme-certificate-dev-wildcard-pages-sites
+            - acme-certificate-pages
+            - acme-certificate-staging-pages
+            - acme-certificate-staging-wildcard-pages
+            - acme-certificate-staging-wildcard-pages-sites
+            - acme-certificate-wildcard-pages
+            - acme-certificate-wildcard-pages-sites
+        - get: cg-provision-repo
+        - get: terraform-yaml-tooling
+          resource: terraform-yaml-tooling
+        - get: terraform-yaml-external
+          resource: terraform-yaml-external-production
+      - task: check-certificates
+        image: general-task
+        file: cg-provision-repo/ci/check-certificates.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+        image: general-task
+        file: cg-provision-repo/ci/delete-old-certificates.yml
+        params:
+          CERT_PATH: /lets-encrypt/production/
+          AWS_DEFAULT_REGION: ((aws_default_region))
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to delete old certificates in production
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
 
 resources:
   - name: pipeline-tasks
