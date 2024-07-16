@@ -1,3 +1,4 @@
+---
 groups:
   - name: terraform
     jobs:
@@ -126,7 +127,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-development
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &external-development-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-development
@@ -159,7 +160,7 @@ jobs:
             passed: [plan-external-development]
       - task: terraform-apply-external-development
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *external-development-params
           TERRAFORM_ACTION: apply
@@ -181,7 +182,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &external-staging-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-staging
@@ -195,16 +196,7 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
-      - &notify-slack
-        put: slack
-        params:
-          text_file: terraform-state/message.txt
-          text: |
-            :terraform: $BUILD_JOB_NAME needs review
-            <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-          channel: ((slack-channel))
-          username: ((slack-username))
-          icon_url: ((slack-icon-url))
+      - *notify-slack
 
   - name: apply-external-staging
     plan:
@@ -214,7 +206,7 @@ jobs:
             passed: [plan-external-staging]
       - task: terraform-apply-external-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *external-staging-params
           TERRAFORM_ACTION: apply
@@ -236,7 +228,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &external-production-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-production
@@ -260,7 +252,7 @@ jobs:
             passed: [plan-external-production]
       - task: terraform-apply-external-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *external-production-params
           TERRAFORM_ACTION: apply
@@ -282,7 +274,7 @@ jobs:
             trigger: true
       - task: plan-dns
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &dns-params
           TERRAFORM_ACTION: plan
           STACK_NAME: dns
@@ -307,7 +299,7 @@ jobs:
             passed: [plan-dns]
       - task: terraform-apply-dns
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *dns-params
           TERRAFORM_ACTION: apply
@@ -323,7 +315,7 @@ jobs:
       - task: terraform-plan-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &tooling-params
           TERRAFORM_ACTION: plan
           STACK_NAME: tooling
@@ -334,8 +326,8 @@ jobs:
           TF_VAR_rds_password: ((tooling_rds_password))
           TF_VAR_bosh_default_ssh_public_key: ((tooling_ssh_key))
           # Enable for database upgrades:
-          #TF_VAR_rds_apply_immediately: "true"
-          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          # TF_VAR_rds_apply_immediately: "true"
+          # TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((tooling_credhub_rds_password))
           TF_VAR_concourse_prod_rds_password: ((concourse_prod_rds_password))
           TF_VAR_concourse_prod_pages_rds_password: ((concourse_prod_pages_rds_password))
@@ -384,7 +376,7 @@ jobs:
       - task: terraform-apply-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *tooling-params
           TERRAFORM_ACTION: apply
@@ -440,7 +432,7 @@ jobs:
       - task: terraform-plan-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &development-params
           TERRAFORM_ACTION: plan
           STACK_NAME: development
@@ -460,8 +452,8 @@ jobs:
           TF_VAR_rds_password: ((development_rds_password))
           TF_VAR_rds_db_size: ((development_rds_db_size))
           # Enable for database upgrades:
-          #TF_VAR_rds_apply_immediately: "true"
-          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          # TF_VAR_rds_apply_immediately: "true"
+          # TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_rds_multi_az: "false"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
@@ -514,7 +506,7 @@ jobs:
       - task: terraform-apply-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *development-params
           TERRAFORM_ACTION: apply
@@ -606,7 +598,7 @@ jobs:
       - task: terraform-plan-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &staging-params
           TERRAFORM_ACTION: plan
           STACK_NAME: staging
@@ -626,8 +618,8 @@ jobs:
           TF_VAR_rds_password: ((staging_rds_password))
           TF_VAR_rds_db_size: ((staging_rds_db_size))
           # Enable for database upgrades:
-          #TF_VAR_rds_apply_immediately: "true"
-          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          # TF_VAR_rds_apply_immediately: "true"
+          # TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
@@ -677,7 +669,7 @@ jobs:
       - task: terraform-apply-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *staging-params
           TERRAFORM_ACTION: apply
@@ -768,7 +760,7 @@ jobs:
       - task: terraform-plan-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &production-params
           TERRAFORM_ACTION: plan
           STACK_NAME: production
@@ -788,8 +780,8 @@ jobs:
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
           # Enable for database upgrades:
-          #TF_VAR_rds_apply_immediately: "true"
-          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          # TF_VAR_rds_apply_immediately: "true"
+          # TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((production_vpc_cidr))
@@ -839,7 +831,7 @@ jobs:
       - task: terraform-apply-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *production-params
           TERRAFORM_ACTION: apply
@@ -929,7 +921,7 @@ jobs:
             trigger: true
       - task: terraform-plan-ecr
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &tf-ecr
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/ecr
@@ -948,7 +940,7 @@ jobs:
             passed: [plan-ecr]
       - task: terraform-apply-ecr
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *tf-ecr
           TERRAFORM_ACTION: apply
@@ -963,7 +955,7 @@ jobs:
             trigger: true
       - task: terraform-plan-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &tf-concourse-staging
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
@@ -986,7 +978,7 @@ jobs:
             passed: [plan-concourse-staging]
       - task: terraform-apply-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *tf-ecr
           TERRAFORM_ACTION: apply
@@ -1001,7 +993,7 @@ jobs:
             trigger: true
       - task: terraform-plan-concourse-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &tf-concourse-production
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
@@ -1024,7 +1016,7 @@ jobs:
             passed: [plan-concourse-production]
       - task: terraform-apply-concourse-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: { terraform-templates: cg-provision-repo }
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *tf-concourse-production
           TERRAFORM_ACTION: apply
