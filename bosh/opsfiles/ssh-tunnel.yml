@@ -1,3 +1,4 @@
+---
 - type: replace
   path: /cloud_provider/ssh_tunnel/host
   value: ((public_ip))

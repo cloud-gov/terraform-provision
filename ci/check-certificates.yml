@@ -1,16 +1,12 @@
 ---
 platform: linux
-
 inputs:
-- name: cg-provision-repo
-- name: terraform-yaml-tooling
-
+  - name: cg-provision-repo
+  - name: terraform-yaml-tooling
 outputs:
-- name: certificates
-
+  - name: certificates
 run:
   path: cg-provision-repo/ci/check-certificates.sh
-
 params:
   AWS_DEFAULT_REGION:
   CERT_PATH:

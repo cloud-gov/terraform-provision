@@ -50,8 +50,6 @@ groups:
       - delete-old-certificates-dev
       - delete-old-certificates-staging
       - delete-old-certificates-production
-
-
 jobs:
   - name: pull-status-check
     plan:
@@ -116,7 +114,6 @@ jobs:
                   path: pull-request
                   status: failure
                   context: validate-terraform
-
   - name: plan-external-development
     plan:
       - in_parallel:
@@ -151,7 +148,6 @@ jobs:
           channel: ((slack-channel))
           username: ((slack-username))
           icon_url: ((slack-icon-url))
-
   - name: apply-external-development
     plan:
       - in_parallel:
@@ -171,7 +167,6 @@ jobs:
       - put: terraform-yaml-external-development
         params:
           file: terraform-yaml/state.yml
-
   - name: plan-external-staging
     plan:
       - in_parallel:
@@ -197,7 +192,6 @@ jobs:
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
       - *notify-slack
-
   - name: apply-external-staging
     plan:
       - in_parallel:
@@ -217,7 +211,6 @@ jobs:
       - put: terraform-yaml-external-staging
         params:
           file: terraform-yaml/state.yml
-
   - name: plan-external-production
     plan:
       - in_parallel:
@@ -243,7 +236,6 @@ jobs:
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
       - *notify-slack
-
   - name: apply-external-production
     plan:
       - in_parallel:
@@ -263,7 +255,6 @@ jobs:
       - put: terraform-yaml-external-production
         params:
           file: terraform-yaml/state.yml
-
   - name: plan-dns
     plan:
       - in_parallel:
@@ -290,7 +281,6 @@ jobs:
           TF_VAR_staging_stack_name: staging
           TF_VAR_development_stack_name: development
       - *notify-slack
-
   - name: apply-dns
     plan:
       - in_parallel:
@@ -303,7 +293,6 @@ jobs:
         params:
           <<: *dns-params
           TERRAFORM_ACTION: apply
-
   - name: plan-tooling
     plan:
       - in_parallel:
@@ -365,7 +354,6 @@ jobs:
           TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
           TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
       - *notify-slack
-
   - name: apply-tooling
     plan:
       - in_parallel:
@@ -419,7 +407,6 @@ jobs:
               - put: terraform-yaml-tooling
                 params:
                   file: terraform-yaml/state.yml
-
   - name: plan-development
     plan:
       - in_parallel:
@@ -494,7 +481,6 @@ jobs:
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 2
       - *notify-slack
-
   - name: apply-development
     plan:
       - in_parallel:
@@ -551,7 +537,6 @@ jobs:
               - put: terraform-yaml-development
                 params:
                   file: terraform-yaml/state.yml
-
   - name: webacl-test-development
     plan:
       - in_parallel:
@@ -586,7 +571,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: plan-staging
     plan:
       - in_parallel:
@@ -658,7 +642,6 @@ jobs:
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 3
       - *notify-slack
-
   - name: apply-staging
     plan:
       - in_parallel:
@@ -713,7 +696,6 @@ jobs:
               - put: terraform-yaml-staging
                 params:
                   file: terraform-yaml/state.yml
-
   - name: webacl-test-staging
     plan:
       - in_parallel:
@@ -748,7 +730,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: plan-production
     plan:
       - in_parallel:
@@ -820,7 +801,6 @@ jobs:
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 4
       - *notify-slack
-
   - name: apply-production
     plan:
       - in_parallel:
@@ -875,7 +855,6 @@ jobs:
           - put: terraform-yaml-production
             params:
               file: terraform-yaml/state.yml
-
   - name: webacl-test-production
     plan:
       - in_parallel:
@@ -910,7 +889,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: plan-ecr
     plan:
       - in_parallel:
@@ -931,7 +909,6 @@ jobs:
           TF_VAR_remote_state_bucket: ((ecr-tf-state-bucket))
           TF_VAR_tooling_stack_name: tooling
       - *notify-slack
-
   - name: apply-ecr
     plan:
       - in_parallel:
@@ -944,7 +921,6 @@ jobs:
         params:
           <<: *tf-ecr
           TERRAFORM_ACTION: apply
-
   - name: plan-concourse-staging
     plan:
       - in_parallel:
@@ -969,7 +945,6 @@ jobs:
           TF_VAR_remote_state_region: ((aws_default_region))
           TF_VAR_concourse_stack_name: env:/staging/concourse
       - *notify-slack
-
   - name: apply-concourse-staging
     plan:
       - in_parallel:
@@ -982,7 +957,6 @@ jobs:
         params:
           <<: *tf-ecr
           TERRAFORM_ACTION: apply
-
   - name: plan-concourse-production
     plan:
       - in_parallel:
@@ -1007,7 +981,6 @@ jobs:
           TF_VAR_remote_state_region: ((aws_default_region))
           TF_VAR_concourse_stack_name: env:/production/concourse-production
       - *notify-slack
-
   - name: apply-concourse-production
     plan:
       - in_parallel:
@@ -1020,7 +993,6 @@ jobs:
         params:
           <<: *tf-concourse-production
           TERRAFORM_ACTION: apply
-
   - name: acme-certificate-development
     plan:
       - in_parallel:
@@ -1063,7 +1035,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-staging
     plan:
       - in_parallel:
@@ -1105,7 +1076,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-production
     plan:
       - in_parallel: &prod-certificate-resources
@@ -1148,7 +1118,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-production-apps
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1177,7 +1146,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1206,7 +1174,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-wildcard-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1235,7 +1202,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-wildcard-pages-sites
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1264,7 +1230,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-staging-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1293,7 +1258,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-staging-wildcard-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1322,7 +1286,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-staging-wildcard-pages-sites
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1351,7 +1314,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-dev-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1380,7 +1342,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-dev-wildcard-pages
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1409,7 +1370,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: acme-certificate-dev-wildcard-pages-sites
     plan:
       - in_parallel: *prod-certificate-resources
@@ -1438,7 +1398,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: delete-old-certificates-dev
     plan:
       - in_parallel:
@@ -1446,7 +1405,7 @@ jobs:
           - get: staging-weekly-timer
             trigger: true
             passed:
-             - acme-certificate-development
+              - acme-certificate-development
           - get: cg-provision-repo
             resource: cg-provision-repo-development
           - get: terraform-yaml-tooling
@@ -1474,21 +1433,19 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
-
   - name: delete-old-certificates-staging
     plan:
       - in_parallel:
-        - get: general-task
-        - get: staging-weekly-timer
-          trigger: true
-          passed:
-           - acme-certificate-staging
-        - get: cg-provision-repo
-        - get: terraform-yaml-tooling
-          resource: terraform-yaml-tooling
-        - get: terraform-yaml-external
-          resource: terraform-yaml-external-staging
+          - get: general-task
+          - get: staging-weekly-timer
+            trigger: true
+            passed:
+              - acme-certificate-staging
+          - get: cg-provision-repo
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-staging
       - task: check-certificates
         image: general-task
         file: cg-provision-repo/ci/check-certificates.yml
@@ -1510,29 +1467,28 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
   - name: delete-old-certificates-production
     plan:
       - in_parallel:
-        - get: general-task
-        - get: prod-biweekly-timer
-          trigger: true
-          passed:
-            - acme-certificate-production
-            - acme-certificate-dev-pages
-            - acme-certificate-dev-wildcard-pages
-            - acme-certificate-dev-wildcard-pages-sites
-            - acme-certificate-pages
-            - acme-certificate-staging-pages
-            - acme-certificate-staging-wildcard-pages
-            - acme-certificate-staging-wildcard-pages-sites
-            - acme-certificate-wildcard-pages
-            - acme-certificate-wildcard-pages-sites
-        - get: cg-provision-repo
-        - get: terraform-yaml-tooling
-          resource: terraform-yaml-tooling
-        - get: terraform-yaml-external
-          resource: terraform-yaml-external-production
+          - get: general-task
+          - get: prod-biweekly-timer
+            trigger: true
+            passed:
+              - acme-certificate-production
+              - acme-certificate-dev-pages
+              - acme-certificate-dev-wildcard-pages
+              - acme-certificate-dev-wildcard-pages-sites
+              - acme-certificate-pages
+              - acme-certificate-staging-pages
+              - acme-certificate-staging-wildcard-pages
+              - acme-certificate-staging-wildcard-pages-sites
+              - acme-certificate-wildcard-pages
+              - acme-certificate-wildcard-pages-sites
+          - get: cg-provision-repo
+          - get: terraform-yaml-tooling
+            resource: terraform-yaml-tooling
+          - get: terraform-yaml-external
+            resource: terraform-yaml-external-production
       - task: check-certificates
         image: general-task
         file: cg-provision-repo/ci/check-certificates.yml
@@ -1552,7 +1508,6 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
-
 resources:
   - name: pipeline-tasks
     type: git
@@ -1560,21 +1515,18 @@ resources:
       uri: ((pipeline_tasks_git_url))
       branch: ((pipeline_tasks_git_branch))
       commit_verification_keys: ((cloud-gov-pgp-keys))
-
   - name: cg-provision-repo
     type: git
     source:
       uri: ((cg_provision_git_url))
       branch: ((cg_provision_git_branch))
       commit_verification_keys: ((cloud-gov-pgp-keys))
-
   - name: cg-provision-repo-development
     type: git
     source:
       uri: ((cg_provision_git_url))
       branch: ((cg_provision_git_branch_development))
       commit_verification_keys: ((cloud-gov-pgp-keys))
-
   - name: pull-request
     type: pull-request
     check_every: 1m
@@ -1582,35 +1534,30 @@ resources:
       repository: ((cg_provision_git_repo))
       access_token: ((status_access_token))
       disable_forks: true
-
   - name: terraform-yaml-tooling
     type: s3-iam
     source:
       bucket: ((aws_s3_tfstate_bucket))
       versioned_file: ((tf_state_file_tooling))
       region_name: ((aws_default_region))
-
   - name: terraform-yaml-development
     type: s3-iam
     source:
       bucket: ((aws_s3_tfstate_bucket))
       versioned_file: ((tf_state_file_development))
       region_name: ((aws_default_region))
-
   - name: terraform-yaml-staging
     type: s3-iam
     source:
       bucket: ((aws_s3_tfstate_bucket))
       versioned_file: ((tf_state_file_staging))
       region_name: ((aws_default_region))
-
   - name: terraform-yaml-production
     type: s3-iam
     source:
       bucket: ((aws_s3_tfstate_bucket))
       versioned_file: ((tf_state_file_production))
       region_name: ((aws_default_region))
-
   - name: waf-tests-development
     type: s3-iam
     source:
@@ -1619,7 +1566,6 @@ resources:
       access_key_id: ((aws_access_key_id))
       secret_access_key: ((aws_secret_access_key))
       region_name: ((aws_default_region))
-
   - name: waf-tests-staging
     type: s3-iam
     source:
@@ -1628,7 +1574,6 @@ resources:
       access_key_id: ((aws_access_key_id))
       secret_access_key: ((aws_secret_access_key))
       region_name: ((aws_default_region))
-
   - name: waf-tests-production
     type: s3-iam
     source:
@@ -1637,7 +1582,6 @@ resources:
       access_key_id: ((aws_access_key_id))
       secret_access_key: ((aws_secret_access_key))
       region_name: ((aws_default_region))
-
   - name: terraform-yaml-external-development
     type: s3-iam
     source:
@@ -1646,7 +1590,6 @@ resources:
       access_key_id: ((aws_external_access_key_id))
       secret_access_key: ((aws_external_secret_access_key))
       region_name: ((aws_external_region))
-
   - name: terraform-yaml-external-staging
     type: s3-iam
     source:
@@ -1655,7 +1598,6 @@ resources:
       access_key_id: ((aws_external_access_key_id))
       secret_access_key: ((aws_external_secret_access_key))
       region_name: ((aws_external_region))
-
   - name: terraform-yaml-external-production
     type: s3-iam
     source:
@@ -1664,13 +1606,11 @@ resources:
       access_key_id: ((aws_external_access_key_id))
       secret_access_key: ((aws_external_secret_access_key))
       region_name: ((aws_external_region))
-
   - name: plan-timer
     type: time
     source:
       interval: 24h
       location: America/New_York
-
   - name: prod-biweekly-timer
     type: time
     source:
@@ -1679,7 +1619,6 @@ resources:
       stop: 3:00 PM
       days: [Tuesday, Thursday]
       location: America/New_York
-
   - name: staging-weekly-timer
     type: time
     source:
@@ -1688,12 +1627,10 @@ resources:
       stop: 3:00 PM
       days: [Wednesday]
       location: America/New_York
-
   - name: slack
     type: slack-notification
     source:
       url: ((slack-webhook-url))
-
   - name: general-task
     type: registry-image
     source:
@@ -1702,7 +1639,6 @@ resources:
       repository: general-task
       aws_region: us-gov-west-1
       tag: latest
-
 resource_types:
   - name: registry-image
     type: registry-image
@@ -1712,7 +1648,6 @@ resource_types:
       repository: registry-image-resource
       aws_region: us-gov-west-1
       tag: latest
-
   - name: pull-request
     type: registry-image
     source:
@@ -1721,7 +1656,6 @@ resource_types:
       repository: github-pr-resource
       aws_region: us-gov-west-1
       tag: latest
-
   - name: s3-iam
     type: registry-image
     source:
@@ -1730,7 +1664,6 @@ resource_types:
       repository: s3-resource
       aws_region: us-gov-west-1
       tag: latest
-
   - name: slack-notification
     type: registry-image
     source:
@@ -1739,7 +1672,6 @@ resource_types:
       repository: slack-notification-resource
       aws_region: us-gov-west-1
       tag: latest
-
   - name: time
     type: registry-image
     source:
@@ -1748,7 +1680,6 @@ resource_types:
       repository: time-resource
       aws_region: us-gov-west-1
       tag: latest
-
   - name: git
     type: registry-image
     source:

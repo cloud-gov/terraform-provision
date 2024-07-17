@@ -1,9 +1,9 @@
+---
 - type: replace
   path: /networks/-
   value:
     name: public
     type: vip
-
 - type: replace
   path: /instance_groups/name=concourse/networks/-
   value:
