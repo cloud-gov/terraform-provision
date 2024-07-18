@@ -96,4 +96,3 @@ resource "aws_security_group_rule" "bosh_registry" {
   cidr_blocks       = [var.source_vpc_cidr]
   security_group_id = var.target_bosh_security_group
 }
-

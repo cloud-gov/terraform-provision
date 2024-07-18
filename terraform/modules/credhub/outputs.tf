@@ -52,4 +52,3 @@ output "credhub_rds_password" {
 output "credhub_lb_target_group" {
   value = aws_lb_target_group.credhub_target.name
 }
-

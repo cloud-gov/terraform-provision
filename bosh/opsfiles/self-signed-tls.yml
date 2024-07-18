@@ -1,11 +1,10 @@
+---
 - type: replace
   path: /instance_groups/name=concourse/jobs/name=atc/properties/tls_cert?
   value: ((bootstrap-concourse-cert.certificate))
-
 - type: replace
   path: /instance_groups/name=concourse/jobs/name=atc/properties/tls_key?
   value: ((bootstrap-concourse-cert.private_key))
-
 - type: replace
   path: /variables/-
   value:
@@ -14,7 +13,6 @@
     options:
       is_ca: true
       common_name: bootstrap-ca
-
 - type: replace
   path: /variables/-
   value:
@@ -24,7 +22,6 @@
       ca: bootstrap-ca
       common_name: bootstrap-concourse-cert
       alternative_names: [((public_ip))]
-
 - type: replace
   path: /instance_groups/name=concourse/jobs/name=atc/properties/external_url
   value: https://((public_ip)):4443

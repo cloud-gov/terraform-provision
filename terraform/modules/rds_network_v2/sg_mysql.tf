@@ -26,4 +26,3 @@ resource "aws_security_group" "rds_mysql" {
     Name = "${var.stack_description} - Incoming MySQL Traffic"
   }
 }
-

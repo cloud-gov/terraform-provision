@@ -46,4 +46,3 @@ variable "github_backups_bucket_name" {
   type        = string
   description = "Github Backups bucket"
 }
-

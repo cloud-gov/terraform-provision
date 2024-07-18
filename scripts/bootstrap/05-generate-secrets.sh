@@ -4,11 +4,11 @@ set -eux
 
 # Generate passphrases for encrypted secrets
 bosh interpolate ./bosh/varsfiles/secret-rotation.yml \
-  --vars-store ${WORKSPACE_DIR}/secret-rotation.yml
+  --vars-store "${WORKSPACE_DIR}"/secret-rotation.yml
 
 # TODO: Fix worker tagging
 # TODO: Separate dev pipeline
-cat ../cg-secret-rotation/ci/pipeline.yml | sed 's/\[iaas\]//g' > ${WORKSPACE_DIR}/secret-rotation-pipeline.yml
+sed 's/\[iaas\]//g' < ../cg-secret-rotation/ci/pipeline.yml > "${WORKSPACE_DIR}"/secret-rotation-pipeline.yml
 
 # TODO: Move BOSH secrets bucket(s) into terraform
 # Ensure BOSH secrets bucket
@@ -19,24 +19,24 @@ aws s3api put-bucket-versioning --bucket "${VARZ_BUCKET}" --versioning-configura
 
 # Create dummy common secrets files so that we can check resources
 for environment in common master tooling; do
-  echo '{}' > ${WORKSPACE_DIR}/${environment}-secrets-dummy.yml
-  INPUT_FILE=${WORKSPACE_DIR}/${environment}-secrets-dummy.yml \
-    OUTPUT_FILE=${WORKSPACE_DIR}/${environment}-secrets-dummy-encrypted.yml \
-    PASSPHRASE=$(bosh interpolate ${WORKSPACE_DIR}/secret-rotation.yml --path /${environment}-secrets-passphrase) \
+  echo '{}' > "${WORKSPACE_DIR}"/"${environment}"-secrets-dummy.yml
+  INPUT_FILE="${WORKSPACE_DIR}"/"${environment}"-secrets-dummy.yml \
+    OUTPUT_FILE="${WORKSPACE_DIR}"/"${environment}"-secrets-dummy-encrypted.yml \
+    PASSPHRASE=$(bosh interpolate "${WORKSPACE_DIR}"/secret-rotation.yml --path /"${environment}"-secrets-passphrase) \
     ../cg-pipeline-tasks/encrypt.sh
-  aws s3 cp ${WORKSPACE_DIR}/${environment}-secrets-dummy-encrypted.yml \
-    s3://${VARZ_BUCKET}/secrets-${environment}.yml \
+  aws s3 cp "${WORKSPACE_DIR}"/"${environment}"-secrets-dummy-encrypted.yml \
+    s3://"${VARZ_BUCKET}"/secrets-"${environment}".yml \
     --sse AES256
 done
 
 # Set secret-rotation pipeline
 fly --target bootstrap set-pipeline \
   --pipeline secret-rotation \
-  --config ${WORKSPACE_DIR}/secret-rotation-pipeline.yml \
-  --load-vars-from ${WORKSPACE_DIR}/secret-rotation.yml \
+  --config "${WORKSPACE_DIR}"/secret-rotation-pipeline.yml \
+  --load-vars-from "${WORKSPACE_DIR}"/secret-rotation.yml \
   --load-vars-from ../cg-secret-rotation/ci/concourse-defaults.yml \
-  --var tf-state-bucket=${TF_STATE_BUCKET} \
-  --var secrets-bucket-name=${VARZ_BUCKET} \
+  --var tf-state-bucket="${TF_STATE_BUCKET}" \
+  --var secrets-bucket-name="${VARZ_BUCKET}" \
   --var generate-passphrase="true" \
   --var generate-postgres-passphrase="true" \
   --var generate-mbus-passphrase="true" \
@@ -51,8 +51,8 @@ fly --target bootstrap trigger-job --job secret-rotation/update-certificates-bos
 
 # Pull down secrets for use in deploy-bosh pipeline
 CG_PIPELINE=../cg-pipeline-tasks \
-  SECRETS_BUCKET=${VARZ_BUCKET} \
+  SECRETS_BUCKET="${VARZ_BUCKET}" \
   CI_ENV=bootstrap \
   ENVIRONMENTS="common master tooling" \
   ../cg-scripts/generate-concourse-environment.sh
-mv concourse-environment.yml ${WORKSPACE_DIR}
+mv concourse-environment.yml "${WORKSPACE_DIR}"

@@ -49,7 +49,7 @@ resource "aws_instance" "jumpbox" {
 ## TODO: Probably worth locking down the jumpbox if it is going to be around for any length of time
 
 #resource "aws_ssm_document" "session_manager_prefs" {
-#  name            = var.ssm_document_name 
+#  name            = var.ssm_document_name
 #  document_type   = "Session"
 #  document_format = "JSON"
 #

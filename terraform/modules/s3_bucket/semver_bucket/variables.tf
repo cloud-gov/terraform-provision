@@ -11,5 +11,3 @@ variable "force_destroy" {
 
 variable "aws_partition" {
 }
-
-

@@ -14,4 +14,3 @@ variable "aws_partition" {
 
 variable "aws_region" {
 }
-

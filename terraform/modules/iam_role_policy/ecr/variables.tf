@@ -9,4 +9,3 @@ variable "aws_partition" {
 
 variable "aws_default_region" {
 }
-

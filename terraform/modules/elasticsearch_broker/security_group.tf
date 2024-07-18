@@ -20,4 +20,3 @@ resource "aws_security_group" "elasticsearch" {
     Name = "${var.stack_description} - Incoming Elasticsearch Traffic"
   }
 }
-

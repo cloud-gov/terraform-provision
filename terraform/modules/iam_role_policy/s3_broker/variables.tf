@@ -13,4 +13,3 @@ variable "bucket_prefix" {
 variable "iam_path" {
   default = "/"
 }
-

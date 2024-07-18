@@ -57,4 +57,3 @@ resource "aws_security_group" "dns_public" {
     Name = "${var.stack_description} - Incoming DNS Traffic"
   }
 }
-

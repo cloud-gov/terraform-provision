@@ -10,4 +10,3 @@ module "tfstate_bucket" {
   force_destroy = "true"
   versioning    = "true"
 }
-

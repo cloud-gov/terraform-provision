@@ -30,4 +30,3 @@ resource "aws_elb" "logsearch_elb" {
     enabled       = true
   }
 }
-

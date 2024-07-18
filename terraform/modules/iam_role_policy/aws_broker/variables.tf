@@ -19,4 +19,3 @@ variable "rds_subgroup" {
 variable "iam_path" {
   default = "/"
 }
-

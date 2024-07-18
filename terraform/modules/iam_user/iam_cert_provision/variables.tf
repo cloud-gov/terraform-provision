@@ -6,4 +6,3 @@ variable "aws_partition" {
 
 variable "username" {
 }
-

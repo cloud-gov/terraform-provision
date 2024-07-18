@@ -20,4 +20,3 @@ resource "aws_security_group" "smtp" {
     Name = "${var.stack_description} - smtp"
   }
 }
-

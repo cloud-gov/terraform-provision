@@ -50,4 +50,3 @@ output "defectdojo_rds_password" {
 output "defectdojo_lb_target_group" {
   value = aws_lb_target_group.defectdojo_target.name
 }
-

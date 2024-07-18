@@ -72,4 +72,3 @@ module "protobosh_rds" {
   rds_subnet_group                = module.rds_network.rds_subnet_group
   rds_username                    = var.protobosh_rds_username
 }
-

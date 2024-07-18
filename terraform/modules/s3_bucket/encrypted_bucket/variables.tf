@@ -19,4 +19,3 @@ variable "aws_partition" {
 variable "expiration_days" {
   default = 0
 }
-

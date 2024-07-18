@@ -69,4 +69,3 @@ resource "aws_route" "source_az2_to_target_cidr" {
   destination_cidr_block    = var.target_vpc_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
-

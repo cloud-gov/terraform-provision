@@ -1,3 +1,4 @@
+---
 - type: replace
   path: /resource_pools/name=vms/cloud_properties/iam_instance_profile?
   value: bootstrap

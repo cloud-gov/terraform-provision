@@ -186,7 +186,7 @@
           "elasticache:DescribeSnapshots",
           "elasticache:CopySnapshot",
           "elasticache:DeleteSnapshot"
-	  
+
       ],
       "Resource": "*"
   }
