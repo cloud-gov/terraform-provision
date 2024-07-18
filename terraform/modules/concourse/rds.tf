@@ -19,4 +19,3 @@ module "rds_96" {
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = var.rds_final_snapshot_identifier
 }
-

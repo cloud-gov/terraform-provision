@@ -58,4 +58,3 @@ resource "aws_elb" "diego_elb_main" {
     enabled       = true
   }
 }
-

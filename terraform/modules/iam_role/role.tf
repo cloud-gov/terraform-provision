@@ -15,4 +15,3 @@ resource "aws_iam_role_policy" "iam_policy" {
   policy = var.iam_policy
   role   = aws_iam_role.iam_role.name
 }
-

@@ -53,4 +53,3 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = "FILE"
   }
 }
-

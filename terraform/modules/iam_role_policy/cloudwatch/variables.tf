@@ -1,3 +1,2 @@
 variable "policy_name" {
 }
-

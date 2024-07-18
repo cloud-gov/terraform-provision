@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Cloud.gov infrastructure initialization properties
 #
@@ -21,7 +22,8 @@ export TF_VAR_remote_state_bucket=""
 #
 # AWS Account ID of the person running this operation
 #
-export TF_VAR_account_id=`aws ec2 describe-security-groups --group-names "Default" | jq -r ".SecurityGroups[].OwnerId"`
+TF_VAR_account_id=$(aws ec2 describe-security-groups --group-names "Default" | jq -r ".SecurityGroups[].OwnerId")
+export TF_VAR_account_id
 
 #
 # AWS credentials and default region
@@ -35,9 +37,12 @@ export TF_VAR_aws_default_region="${AWS_DEFAULT_REGION}"
 
 #
 # Default VPC
-export TF_VAR_default_vpc_id=`aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].VpcId"`
-export TF_VAR_default_vpc_cidr=`aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].CidrBlock"`
-export TF_VAR_default_vpc_route_table=`aws ec2 describe-route-tables --filters Name=vpc-id,Values=${TF_VAR_default_vpc_id} | jq -r ".RouteTables[0].RouteTableId"`
+TF_VAR_default_vpc_id=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].VpcId")
+TF_VAR_default_vpc_cidr=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true  | jq -r ".Vpcs[0].CidrBlock")
+TF_VAR_default_vpc_route_table=$(aws ec2 describe-route-tables --filters Name=vpc-id,Values="${TF_VAR_default_vpc_id}" | jq -r ".RouteTables[0].RouteTableId")
+export TF_VAR_default_vpc_id
+export TF_VAR_default_vpc_cidr
+export TF_VAR_default_vpc_route_table
 
 #
 # Concourse credentials bucket

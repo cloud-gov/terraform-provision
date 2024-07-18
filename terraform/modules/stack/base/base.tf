@@ -76,4 +76,3 @@ module "credhub_rds" {
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_parameter_group_family      = var.credhub_rds_parameter_group_family
 }
-

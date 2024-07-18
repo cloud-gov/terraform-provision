@@ -62,4 +62,3 @@ resource "aws_security_group_rule" "allow_rds_postgres" {
   cidr_blocks       = [aws_default_vpc.bootstrap.cidr_block]
   security_group_id = data.terraform_remote_state.tooling_vpc[0].outputs.rds_postgres_security_group
 }
-

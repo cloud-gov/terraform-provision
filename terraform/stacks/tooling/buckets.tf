@@ -65,5 +65,3 @@ module "container_scanning_bucket" {
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
-
-

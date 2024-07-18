@@ -13,3 +13,8 @@ repos:
     rev: v0.7.2
     hooks:
       - id: shellcheck
+  - repo: https://github.com/AleksaC/terraform-py
+    rev: v1.9.2
+    hooks:
+      - id: tf-fmt
+        types: [terraform]

@@ -38,4 +38,3 @@ resource "aws_security_group" "restricted_web_traffic" {
     Name = "${var.stack_description} - Restricted Incoming Web Traffic"
   }
 }
-

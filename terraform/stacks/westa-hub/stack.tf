@@ -315,7 +315,7 @@ module "jumpbox" {
   stack_description      = var.stack_description
   private_ip             = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 220) # This is from the private subnet, the ip offset is just higher in the range so bosh never tries to use it.  Change if there is a conflict later on
   instance_type          = "m5.large"
-  iam_instance_profile   = "bootstrap" #"westa-hub-protobosh" # "bootstrap" 
+  iam_instance_profile   = "bootstrap" #"westa-hub-protobosh" # "bootstrap"
 }
 
 
@@ -328,5 +328,5 @@ module "jumpbox" {
 #  stack_description      = var.stack_description
 #  private_ip             = cidrhost(cidrsubnet(var.vpc_cidr, 8, 1), 221) # This is from the private subnet, the ip offset is just higher in the range so bosh never tries to use it.  Change if there is a conflict later on
 #  instance_type          = "m5.large"
-#  iam_instance_profile   = "bootstrap" #"westa-hub-protobosh" # "bootstrap" 
+#  iam_instance_profile   = "bootstrap" #"westa-hub-protobosh" # "bootstrap"
 # }

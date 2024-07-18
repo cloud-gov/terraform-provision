@@ -15,5 +15,3 @@ module "cf_as_database" {
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
 }
-
-

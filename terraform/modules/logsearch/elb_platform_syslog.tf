@@ -30,4 +30,3 @@ resource "aws_elb" "platform_syslog_elb" {
     enabled       = true
   }
 }
-

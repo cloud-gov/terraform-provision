@@ -33,4 +33,3 @@ resource "aws_route_table_association" "az2_elasticache_rta" {
   subnet_id      = aws_subnet.az2_elasticache.id
   route_table_id = var.az2_route_table
 }
-

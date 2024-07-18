@@ -23,4 +23,3 @@ output "cf_as_rds_password" {
 output "cf_as_rds_engine" {
   value = module.cf_as_database.rds_engine
 }
-

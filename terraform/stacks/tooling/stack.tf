@@ -327,4 +327,3 @@ module "smtp" {
   vpc_id              = module.stack.vpc_id
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
-

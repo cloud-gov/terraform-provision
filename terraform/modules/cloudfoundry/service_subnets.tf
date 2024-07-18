@@ -40,4 +40,3 @@ resource "aws_route_table_association" "az2_services_rta" {
   subnet_id      = aws_subnet.az2_services.id
   route_table_id = var.private_route_table_az2
 }
-

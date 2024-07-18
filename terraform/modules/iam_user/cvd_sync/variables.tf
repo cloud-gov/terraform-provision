@@ -8,4 +8,3 @@ variable "cvd_metadata_bucket" {
 }
 variable "cvd_database_bucket" {
 }
-

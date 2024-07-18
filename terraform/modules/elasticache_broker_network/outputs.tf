@@ -29,4 +29,3 @@ output "elasticache_elb_dns_name" {
 output "elasticache_elb_name" {
   value = aws_elb.elasticache_elb.name
 }
-

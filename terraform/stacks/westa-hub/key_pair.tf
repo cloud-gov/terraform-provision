@@ -7,6 +7,3 @@ resource "aws_key_pair" "generated_bosh_key" {
   key_name   = var.stack_description
   public_key = tls_private_key.bosh_key.public_key_openssh
 }
-
-
-

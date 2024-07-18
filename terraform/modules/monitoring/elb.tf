@@ -75,4 +75,3 @@ resource "aws_lb_listener_rule" "doomsday_listener_rule" {
     }
   }
 }
-

@@ -26,4 +26,3 @@ resource "aws_security_group" "rds_mssql" {
     Name = "${var.stack_description} - Incoming SQL Server Traffic"
   }
 }
-

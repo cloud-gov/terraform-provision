@@ -10,4 +10,3 @@ variable "listener_arn" {
 variable "hosts" {
   type = list(string)
 }
-

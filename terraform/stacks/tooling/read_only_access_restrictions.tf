@@ -28,4 +28,3 @@ resource "aws_iam_policy" "read_only_access_restrictions" {
 EOF
 
 }
-
