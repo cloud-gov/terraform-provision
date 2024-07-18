@@ -1,6 +1,7 @@
 ---
 # Map values from AWS key pair output
 private_key: ((KeyMaterial))
+
 # Map values from terraform output
 default_security_groups:
   - ((security_group_id.value))
