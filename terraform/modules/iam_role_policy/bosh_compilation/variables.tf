@@ -6,3 +6,4 @@ variable "aws_partition" {
 
 variable "bucket_name" {
 }
+

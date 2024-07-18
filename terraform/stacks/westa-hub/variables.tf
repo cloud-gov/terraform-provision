@@ -216,7 +216,7 @@ variable "github_backups_bucket_name" {
 
 # Uses default naming now "${var.bucket_prefix}-cg-billing-*"
 #variable "billing_bucket" {
-#  default = ""
+#  default = "" 
 #}
 
 # Uses default naming now "${var.bucket_prefix}-cg-binaries"

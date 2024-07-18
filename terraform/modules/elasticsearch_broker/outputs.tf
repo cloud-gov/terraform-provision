@@ -36,3 +36,4 @@ output "elasticsearch_security_group" {
 output "elasticsearch_log_group_audit" {
   value = aws_cloudwatch_log_group.audit_log.arn
 }
+

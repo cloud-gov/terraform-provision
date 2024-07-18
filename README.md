@@ -10,10 +10,11 @@ non-public information about using this repository.
 
 ### Git hooks
 
-This project uses [`pre-commit`](https://pre-commit.com/) to manage git hooks. To make sure your code is formatted and checked automatically, [install pre-commit](https://pre-commit.com/index.html#installation) then run `pre-commit install` on this repo.
+Some [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) that may be useful when updating this code are provided in the `.githooks` directory. To install these Git hooks so that they run automatically, use the provided `make` command:
 
-_n.b., pre-commit recommends `pip install pre-commit`to install, which will install it on your system python.
-You probably don't want this, and should instead `pipx install pre-commit`, which will automagically install it into its own virtual environment._
+```shell
+make add-githooks
+```
 
 ## Layout
 

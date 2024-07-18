@@ -1,13 +1,17 @@
 ---
 platform: linux
+
 inputs:
-  - name: cg-provision-repo
-  - name: terraform-yaml-external
-  - name: certificates
+- name: cg-provision-repo
+- name: terraform-yaml-external
+- name: certificates
+
 outputs:
-  - name: acme
+- name: acme
+
 run:
   path: cg-provision-repo/ci/provision-certificate.sh
+
 params:
   CERT_PREFIX:
   ACME_SERVER:

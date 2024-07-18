@@ -15,3 +15,4 @@ variable "cloudfront_prefix" {
 
 variable "hosted_zone" {
 }
+

@@ -22,3 +22,4 @@ resource "aws_route_table_association" "concourse_rta" {
   subnet_id      = aws_subnet.concourse.id
   route_table_id = var.route_table_id
 }
+

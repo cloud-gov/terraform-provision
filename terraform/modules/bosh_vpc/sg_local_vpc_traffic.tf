@@ -28,3 +28,4 @@ resource "aws_security_group" "local_vpc_traffic" {
     Name = "${var.stack_description} - Local Traffic ${aws_vpc.main_vpc.cidr_block}"
   }
 }
+

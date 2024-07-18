@@ -20,3 +20,4 @@ resource "aws_security_group" "elasticache_redis" {
     Name = "${var.stack_description} - Incoming Redis Traffic"
   }
 }
+

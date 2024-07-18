@@ -6,3 +6,4 @@ variable "hosted_zone" {
 
 variable "username" {
 }
+

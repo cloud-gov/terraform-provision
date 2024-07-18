@@ -6,3 +6,4 @@ variable "username" {
 
 variable "log_bucket" {
 }
+

@@ -38,3 +38,4 @@ resource "aws_security_group" "web_traffic" {
     Name = "${var.stack_description} - Incoming Web Traffic"
   }
 }
+

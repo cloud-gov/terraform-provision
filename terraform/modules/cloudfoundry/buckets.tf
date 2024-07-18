@@ -39,3 +39,4 @@ module "logs-opensearch-archive" {
   acl              = "private"
   object_ownership = "ObjectWriter"
 }
+

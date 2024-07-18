@@ -5,3 +5,4 @@ output "axfr_security_group" {
 output "public_security_group" {
   value = aws_security_group.dns_public.id
 }
+

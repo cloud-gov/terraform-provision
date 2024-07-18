@@ -15,3 +15,4 @@ variable "resources_bucket" {
 
 variable "droplets_bucket" {
 }
+

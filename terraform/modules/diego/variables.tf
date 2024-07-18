@@ -23,3 +23,4 @@ variable "ingress_cidrs" {
 
 variable "log_bucket_name" {
 }
+

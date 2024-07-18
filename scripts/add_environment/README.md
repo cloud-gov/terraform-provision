@@ -12,7 +12,7 @@ basing it on the environment `westa`
 1. Second, fetch the arn of the concourse iaas workers from the tooling account and put it for `TF_VAR_tf_remote_role_arn` in the `env.sh` file
 1. Third, fetch the arn of user for iam cert provisioner and put in for `TF_VAR_cert_remote_role_arn` in the `env.sh` file.
 
-### Create the bosh ssh key
+### Create the bosh ssh key 
 1. Generate key with `ssh-keygen -f <env> -C <env>`
 1. Put both files into varz bucket under `/keys/` folder
 

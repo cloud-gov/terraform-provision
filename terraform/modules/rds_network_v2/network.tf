@@ -30,3 +30,5 @@ resource "aws_route_table_association" "rds_rta" {
   subnet_id      = aws_subnet.subnet_rds[count.index].id
   route_table_id = var.route_table_ids[count.index]
 }
+
+

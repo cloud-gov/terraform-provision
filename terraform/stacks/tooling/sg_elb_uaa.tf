@@ -20,3 +20,4 @@ resource "aws_security_group" "bosh_uaa_traffic" {
     Name = "${var.stack_description} - Incoming BOSH UAA Traffic for operations"
   }
 }
+

@@ -1,4 +1,3 @@
-#!/bin/bash
 export WORKSPACE_DIR=./tmp
 export AWS_ACCESS_KEY_ID=
 export AWS_SECRET_ACCESS_KEY=
@@ -10,7 +9,7 @@ export TERRAFORM_PIPELINE_FILE=ci/pipeline.yml
 
 # Uncomment these after you've generated the TERRAFORM_PROVISION_CREDENTIALS_FILE
 # and before step 03
-#export TERRAFORM_PROVISION_CREDENTIALS_FILE="${WORKSPACE_DIR}"/cg-provision.yml
+#export TERRAFORM_PROVISION_CREDENTIALS_FILE=${WORKSPACE_DIR}/cg-provision.yml
 #export TF_STATE_BUCKET=$(bosh interpolate ${TERRAFORM_PROVISION_CREDENTIALS_FILE} --path /aws_s3_tfstate_bucket)
 
 export VARZ_BUCKET=cloud-gov-varz

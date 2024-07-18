@@ -1,7 +1,7 @@
----
 - type: replace
   path: /resource_pools/name=vms/cloud_properties/instance_type?
   value: c3.4xlarge
+
 # add disk space
 - type: replace
   path: /resource_pools/name=vms/cloud_properties/ephemeral_disk/size?

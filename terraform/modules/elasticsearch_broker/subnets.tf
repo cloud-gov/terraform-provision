@@ -61,3 +61,4 @@ resource "aws_route_table_association" "az4_elasticsearch_rta" {
   subnet_id      = aws_subnet.az4_elasticsearch.id
   route_table_id = var.az2_route_table
 }
+

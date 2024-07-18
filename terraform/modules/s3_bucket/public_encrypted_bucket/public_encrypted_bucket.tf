@@ -52,3 +52,4 @@ resource "aws_s3_bucket_policy" "public_encrypted_bucket_policy" {
 EOF
 
 }
+

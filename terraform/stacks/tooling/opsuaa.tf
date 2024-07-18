@@ -42,3 +42,4 @@ output "opsuaa_rds_password" {
 output "opsuaa_rds_engine" {
   value = module.opsuaa_db.rds_engine
 }
+

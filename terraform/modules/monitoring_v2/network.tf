@@ -26,3 +26,4 @@ resource "aws_route_table_association" "monitoring_rta" {
   subnet_id      = aws_subnet.monitoring_subnet[count.index].id
   route_table_id = var.route_table_ids[count.index]
 }
+

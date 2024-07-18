@@ -26,3 +26,4 @@ variable "iam_assume_role_policy" {
 EOF
 
 }
+

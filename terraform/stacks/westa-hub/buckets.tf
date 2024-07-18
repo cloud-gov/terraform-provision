@@ -118,3 +118,10 @@ module "semver_bucket" {
   bucket        = "${var.bucket_prefix}-cg-semver"
   aws_partition = data.aws_partition.current.partition
 }
+
+
+
+
+
+
+

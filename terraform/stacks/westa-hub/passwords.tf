@@ -70,3 +70,4 @@ resource "random_string" "oidc_client_secret" {
   min_numeric = 5
   min_lower   = 5
 }
+

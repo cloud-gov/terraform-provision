@@ -60,3 +60,5 @@ resource "aws_nat_gateway" "private_nat_service" {
     Name = "Nat Service AZ${count.index + 1} ${var.stack_description}"
   }
 }
+
+

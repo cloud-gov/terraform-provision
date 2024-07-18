@@ -19,7 +19,7 @@ arch -arm64 brew install python3  #If running on M1 mac
 pip3 install certbot certbot-dns-route53 --trusted-host pypi.org --trusted-host files.pythonhosted.org
 
 mkdir -p certs/production
-mkdir -p certs/staging
+mkdir -p certs/staging 
 cd certs
 
 
@@ -40,7 +40,7 @@ certbot certonly \
   --work-dir "${config_path_production}" \
   --logs-dir "${config_path_production}" \
   --email "${EMAIL}" \
-  --domain "${DOMAIN_PRODUCTION}"
+  --domain "${DOMAIN_PRODUCTION}" 
 
 # Staging
 export config_path_staging=$(pwd)/staging
@@ -53,7 +53,7 @@ certbot certonly \
   --work-dir "${config_path_staging}" \
   --logs-dir "${config_path_staging}" \
   --email "${EMAIL}" \
-  --domain "${DOMAIN_STAGING}"
+  --domain "${DOMAIN_STAGING}" 
 ```
 
 If successful, you will see output similar to the following for production (staging will be similar):
@@ -83,7 +83,7 @@ cd certs
 export config_path_production=$(pwd)/production
 export CERT_PATH_PRODUCTION="/lets-encrypt/production/"
 export CERT_PREFIX_PRODUCTION="star.westa.cloud.gov"
-export out_path_production=$(ls -d -1 ${config_path_production}/live/*/)
+export out_path_production=$(ls -d -1 ${config_path_production}/live/*/) 
 
 aws iam upload-server-certificate \
   --path "${CERT_PATH_PRODUCTION}" \
@@ -96,7 +96,7 @@ aws iam upload-server-certificate \
 export config_path_staging=$(pwd)/staging
 export CERT_PATH_STAGING="/lets-encrypt/staging/"
 export CERT_PREFIX_STAGING="star.westa-stage.cloud.gov"
-export out_path_staging=$(ls -d -1 ${config_path_staging}/live/*/)
+export out_path_staging=$(ls -d -1 ${config_path_staging}/live/*/) 
 
 
 aws iam upload-server-certificate \
@@ -257,7 +257,7 @@ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update
 sudo apt-get -y install postgresql-client-15
-sudo apt  install awscli
+sudo apt  install awscli 
 cd ~
 wget -O bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v7.3.1/bosh-cli-7.3.1-linux-amd64
 chmod +x ./bosh
@@ -267,9 +267,9 @@ sudo snap install ruby --classic
 sudo apt-get install -y build-essential zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3
 
 ```
-If prompted for "Daemons using outdated libraries" tab to "Ok" and hit enter/return
+If prompted for "Daemons using outdated libraries" tab to "Ok" and hit enter/return 
 For the unattended upgrade prompt select the only option (spacebar) and tab to Ok and hit enter/return
-For "Which services should be restarted?" tab to "Ok" and hit enter/return
+For "Which services should be restarted?" tab to "Ok" and hit enter/return 
 
 To use the aws cli, Configure the aws cli, make `~\.aws\config` look like:
 
@@ -291,7 +291,7 @@ On the Session-Manager session, run the following to install the psql client:
 sudo apt-get install -y postgresql-client
 ```
 
-For the "Which services should be restarted?" tab to "Ok" and hit enter/return
+For the "Which services should be restarted?" tab to "Ok" and hit enter/return  
 
 Run locally to get the psql statement to connect to the BOSH database:
 
@@ -409,7 +409,7 @@ terraform_outputs_dict = {'terraform_outputs':{}}
 terraform_outputs = terraform_outputs_dict['terraform_outputs']
 outputs_yaml = open('./state.yml','w')
 terraform_outputs_file = open(filename)
-json_file = json.load(terraform_outputs_file)
+json_file = json.load(terraform_outputs_file)    
 outputs = json_file['outputs']
 for key in outputs:
     terraform_outputs[key] = outputs[key]['value']
@@ -422,8 +422,8 @@ terraform_outputs_file.close()
 
 First let's get into a bash shell via aws-vault so it's easier to run the aws commands:
 
-```
-aws-vault exec gov-pipeline-admin -- bash
+``` 
+aws-vault exec gov-pipeline-admin -- bash 
 
 export STACK_NAME=westa-hub
 export S3_TFSTATE_BUCKET=westa-hub-terraform-state
@@ -470,7 +470,7 @@ bosh int cg-deploy-bosh/variables/terraform-westa-hub.yml -l state.yml > terrafo
 
 # The first time we copy westa-hub-protobosh-state.json it will throw errors, this is expected behavior
 # continue on
-aws s3 cp "s3://westa-hub-cloud-gov-varz/westa-hub-protobosh-state.json" westa-hub-protobosh-state.json --sse AES256
+aws s3 cp "s3://westa-hub-cloud-gov-varz/westa-hub-protobosh-state.json" westa-hub-protobosh-state.json --sse AES256 
 
 bosh create-env \
   bosh-deployment/bosh.yml \
@@ -595,8 +595,8 @@ bosh deploy -d toolingbosh bosh-deployment/bosh.yml \
  -l cg-deploy-bosh/variables/westa-hub-tooling.yml \
  -l state.yml \
  -v default_key_name=westa-hub \
- -l terraform.yml
-
+ -l terraform.yml 
+ 
  ```
 
 ### Logging into toolingBOSH
@@ -642,3 +642,4 @@ aws s3 cp "s3://${S3_TFSTATE_BUCKET}/${STACK_NAME}/state.yml" state.yml --sse AE
 bosh -e westa-hub-protobosh update-cloud-config base.yml -o hub-tooling.yml --vars-file state.yml
 
 ```
+

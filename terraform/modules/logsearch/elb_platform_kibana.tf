@@ -30,3 +30,4 @@ resource "aws_lb_listener_rule" "platform_kibana" {
     }
   }
 }
+

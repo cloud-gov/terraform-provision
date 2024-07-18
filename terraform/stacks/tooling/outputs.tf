@@ -899,3 +899,4 @@ output "cvd_sync_secret_access_key_curr" {
   value     = module.cvd_sync_user.secret_access_key_curr
   sensitive = true
 }
+

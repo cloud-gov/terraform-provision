@@ -40,3 +40,4 @@ resource "aws_db_instance" "rds_database" {
     Name = var.stack_description
   }
 }
+

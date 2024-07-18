@@ -33,3 +33,4 @@ resource "aws_iam_user_policy" "iam_policy" {
   user   = aws_iam_user.iam_user.name
   policy = data.template_file.policy.rendered
 }
+

@@ -30,3 +30,4 @@ output "rds_password" {
 output "rds_engine" {
   value = aws_db_instance.rds_database.engine
 }
+

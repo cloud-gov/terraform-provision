@@ -22,3 +22,4 @@ output "lb_target_group" {
 output "doomsday_lb_target_group" {
   value = aws_lb_target_group.doomsday_target.name
 }
+

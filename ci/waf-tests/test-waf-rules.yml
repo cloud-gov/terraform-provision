@@ -1,9 +1,12 @@
 ---
 platform: linux
+
 inputs:
   - name: cg-provision-repo
   - name: waf-test-files
+
 run:
   path: cg-provision-repo/ci/waf-tests/test-waf-rules.sh
+
 params:
   WAF_TEST_APP_URL:

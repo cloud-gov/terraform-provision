@@ -90,3 +90,4 @@ Follow this procedure to setup a bootstrap instance of concourse and deploy mini
 1. Run `destroy-tooling` in the `terraform-provision` pipeline.
 1. Teardown bootstrap concourse and terraform stack: `./scripts/bootstrap/teardown.sh`
 1. Delete the `${TF_STATE_BUCKET}`, `${VARZ_BUCKET}`, `${SEMVER_BUCKET}`, and `${BOSH_RELEASES_BLOBSTORE_BUCKET}` through the AWS console.
+

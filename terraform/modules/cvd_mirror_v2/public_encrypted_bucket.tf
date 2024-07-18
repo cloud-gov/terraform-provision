@@ -61,3 +61,9 @@ resource "aws_s3_bucket_public_access_block" "cvd_public_access_block" {
   ignore_public_acls      = false
   restrict_public_buckets = false
 }
+
+
+
+
+
+
