@@ -1,8 +1,10 @@
 ---
 bosh-config-git-url: https://github.com/18F/cg-deploy-bosh.git
 bosh-config-git-branch: master
+
 pipeline-tasks-git-url: https://github.com/18F/cg-pipeline-tasks.git
 pipeline-tasks-git-branch: master
+
 tf-state-file-tooling: tooling/state.yml
 tf-state-file-development: development/state.yml
 tf-state-file-staging: staging/state.yml

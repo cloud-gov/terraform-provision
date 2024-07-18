@@ -2,21 +2,29 @@
 cg_provision_git_url: https://github.com/18F/cg-provision.git
 cg_provision_git_repo: 18F/cg-provision
 cg_provision_git_branch: master
+
 cg_provision_development_git_url: https://github.com/18F/cg-provision
 cg_provision_development_git_branch: master
+
 pipeline_tasks_git_url: https://github.com/18F/cg-pipeline-tasks.git
 pipeline_tasks_git_branch: master
+
 aws_default_region: us-gov-west-1
+
 aws_s3_tfstate_bucket: terraform-state
 aws_s3_cloudtrail_bucket: cg-s3-cloudtrail
+
 tf_state_file_tooling: tooling/state.yml
 tf_state_file_development: development/state.yml
 tf_state_file_staging: staging/state.yml
 tf_state_file_production: production/state.yml
+
 aws_external_region: us-east-1
 aws_external_s3_tfstate_bucket: cg-terraform-state
+
 tf_state_file_external_staging: external-staging/state.yml
 tf_state_file_external_production: external-production/state.yml
+
 slack-channel: "#cg-platform"
 slack-username: concourse
 slack-icon-url: http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
