@@ -465,6 +465,7 @@ jobs:
           TF_VAR_rds_multi_az: "false"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
+          TF_VAR_rds_db_engine_version: "15.7-R2"
           TF_VAR_cf_rds_password: ((development_cf_rds_password))
           TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
@@ -1579,7 +1580,8 @@ resources:
     type: git
     source:
       uri: ((cg_provision_git_url))
-      branch: ((cg_provision_git_branch_development))
+      # branch: ((cg_provision_git_branch_development))
+      branch: rds-engine-change
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: pull-request
