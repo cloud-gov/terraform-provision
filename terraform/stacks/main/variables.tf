@@ -24,6 +24,10 @@ variable "rds_instance_type" {
   default = "db.m5.large"
 }
 
+variable "rds_db_engine_version" {
+  default = "15.7-R2"
+}
+
 variable "cf_rds_password" {
   sensitive = true
 }
