@@ -25,10 +25,11 @@ variable "rds_instance_type" {
 }
 
 variable "rds_db_engine_version" {
-  default = 15.5
+  default = "12.17"
 }
+
 variable "rds_parameter_group_family" {
-  default = "postgres15"
+  default = "postgres12"
 }
 
 variable "cf_rds_password" {
