@@ -24,6 +24,13 @@ variable "rds_instance_type" {
   default = "db.m5.large"
 }
 
+variable "rds_db_engine_version" {
+  default = 15.5
+}
+variable "rds_parameter_group_family" {
+  default = "postgres15"
+}
+
 variable "cf_rds_password" {
   sensitive = true
 }
