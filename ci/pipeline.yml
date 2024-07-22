@@ -466,6 +466,7 @@ jobs:
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
           TF_VAR_rds_db_engine_version: "15.5"
+          TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_cf_rds_password: ((development_cf_rds_password))
           TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
