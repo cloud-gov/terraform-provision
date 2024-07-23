@@ -37,6 +37,14 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
+variable "rds_db_engine_version_bosh" {
+  default = "15.5"
+}
+
+variable "rds_parameter_group_family_bosh" {
+  default = "postgres15"
+}
+
 variable "remote_state_bucket" {
 }
 
