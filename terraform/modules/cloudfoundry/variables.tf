@@ -49,14 +49,6 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
-variable "rds_db_engine_version_cf" {
-  default = "16.1"
-}
-
-variable "rds_parameter_group_family_cf" {
-  default = "postgres16"
-}
-
 variable "rds_username" {
   default = "cfdb"
 }
