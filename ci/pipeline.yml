@@ -791,6 +791,8 @@ jobs:
           # Do not copy the pattern below.  You should not need separate variables
           # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
           # IDs from `data` resources.
+          TF_VAR_rds_db_engine_version: "15.5"
+          TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
           # Enable for database upgrades:
