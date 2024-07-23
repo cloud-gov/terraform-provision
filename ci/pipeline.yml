@@ -630,6 +630,8 @@ jobs:
           # Enable for database upgrades:
           #TF_VAR_rds_apply_immediately: "true"
           #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_rds_db_engine_version: "15.5"
+          TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
