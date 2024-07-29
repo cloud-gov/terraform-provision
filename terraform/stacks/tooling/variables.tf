@@ -52,6 +52,14 @@ variable "rds_db_engine_version_credhub_staging" {
 variable "rds_parameter_group_family_credhub_staging" {
   default = "postgres15"
 }
+variable "rds_db_engine_version_credhub_production" {
+  default = "15.5"
+}
+
+variable "rds_parameter_group_family_credhub_production" {
+  default = "postgres15"
+}
+
 variable "remote_state_bucket" {
 }
 
