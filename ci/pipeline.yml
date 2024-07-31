@@ -1004,7 +1004,7 @@ jobs:
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: {terraform-templates: cg-provision-repo}
         params:
-          <<: *tf-ecr
+          <<: *tf-concourse-staging
           TERRAFORM_ACTION: apply
 
   - name: plan-concourse-production
