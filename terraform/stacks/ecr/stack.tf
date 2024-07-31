@@ -28,6 +28,7 @@ variable "repositories" {
     "pages-postgres-v15",
     "pages-python-v3.11",
     "pages-redis-v7.2",
+    "pages-zap",
     "playwright-python",
     "pool-resource",
     "pulledpork",
