@@ -346,60 +346,6 @@ output "production_concourse_lb_target_group" {
   value = module.concourse_production.concourse_lb_target_group
 }
 
-/* Production Concourse Pages */
-output "production_concourse_pages_subnet" {
-  value = module.concourse_production_pages.concourse_subnet
-}
-
-output "production_concourse_pages_subnet_reserved" {
-  value = "${cidrhost(module.concourse_production_pages.concourse_subnet_cidr, 0)} - ${cidrhost(module.concourse_production_pages.concourse_subnet_cidr, 3)}"
-}
-
-output "production_concourse_pages_subnet_cidr" {
-  value = module.concourse_production_pages.concourse_subnet_cidr
-}
-
-output "production_concourse_pages_subnet_gateway" {
-  value = cidrhost(module.concourse_production_pages.concourse_subnet_cidr, 1)
-}
-
-output "production_concourse_pages_security_group" {
-  value = module.concourse_production_pages.concourse_security_group
-}
-
-output "production_concourse_pages_rds_identifier" {
-  value = module.concourse_production_pages.concourse_rds_identifier
-}
-
-output "production_concourse_pages_rds_name" {
-  value = module.concourse_production_pages.concourse_rds_name
-}
-
-output "production_concourse_pages_rds_host" {
-  value = module.concourse_production_pages.concourse_rds_host
-}
-
-output "production_concourse_pages_rds_port" {
-  value = module.concourse_production_pages.concourse_rds_port
-}
-
-output "production_concourse_pages_rds_url" {
-  value = module.concourse_production_pages.concourse_rds_url
-}
-
-output "production_concourse_pages_rds_username" {
-  value = module.concourse_production_pages.concourse_rds_username
-}
-
-output "production_concourse_pages_rds_password" {
-  value     = module.concourse_production_pages.concourse_rds_password
-  sensitive = true
-}
-
-output "production_concourse_pages_lb_target_group" {
-  value = module.concourse_production_pages.concourse_lb_target_group
-}
-
 /* Staging Concourse */
 output "staging_concourse_subnet" {
   value = module.concourse_staging.concourse_subnet

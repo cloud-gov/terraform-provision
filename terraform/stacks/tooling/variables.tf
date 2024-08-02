@@ -103,10 +103,6 @@ variable "concourse_production_hosts" {
   type = list(string)
 }
 
-variable "concourse_production_pages_hosts" {
-  type = list(string)
-}
-
 variable "concourse_staging_hosts" {
   type = list(string)
 }
