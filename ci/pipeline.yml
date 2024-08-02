@@ -378,6 +378,8 @@ jobs:
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_db_engine_version_credhub_production: "15.5"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
+          TF_VAR_rds_db_engine_version_concourse_staging: "15.5"
+          TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
       - *notify-slack
 
   - name: apply-tooling
