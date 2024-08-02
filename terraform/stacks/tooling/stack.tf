@@ -118,8 +118,8 @@ module "concourse_production" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-concourse-production"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_db_engine_version           = var.rds_db_engine_version
+  rds_parameter_group_family      = var.rds_parameter_group_family_concourse_production
+  rds_db_engine_version           = var.rds_db_engine_version_concourse_production
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.xlarge"
