@@ -418,13 +418,21 @@ resource "aws_iam_policy" "domains_broker" {
     {
       "Effect": "Allow",
       "Action": [
-        "iam:ListServerCertificates",
         "iam:GetServerCertificate",
         "iam:UploadServerCertificate",
         "iam:DeleteServerCertificate"
       ],
       "Resource": [
         "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/domains/${var.stack_description}/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListServerCertificates",
+      ],
+      "Resource": [
+        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/*"
       ]
     },
     {
