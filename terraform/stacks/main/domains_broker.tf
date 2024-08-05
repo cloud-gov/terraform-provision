@@ -432,7 +432,7 @@ resource "aws_iam_policy" "domains_broker" {
         "iam:ListServerCertificates",
       ],
       "Resource": [
-        "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:server-certificate/*"
+        "*"
       ]
     },
     {
