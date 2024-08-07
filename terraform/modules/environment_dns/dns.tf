@@ -210,11 +210,3 @@ resource "aws_route53_zone" "brokered_mail_zone" {
   name    = local.brokered_mail_subdomain
   comment = "If customers create a brokered SES identity but do not specify a domain, a subdomain will be created for them in this zone. This allows sending mail for testing purposes."
 }
-
-resource "aws_route53_record" "brokered_mail_ns" {
-  zone_id = aws_route53_zone.brokered_mail_zone.zone_id
-  name    = local.brokered_mail_subdomain
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.brokered_mail_zone.name_servers
-}
