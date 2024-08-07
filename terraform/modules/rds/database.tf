@@ -31,6 +31,8 @@ resource "aws_db_instance" "rds_database" {
   db_subnet_group_name   = var.rds_subnet_group
   vpc_security_group_ids = var.rds_security_groups
 
+  performance_insights_enabled = var.performance_insights_enabled
+
   parameter_group_name = var.rds_db_engine == "postgres" ? join("", aws_db_parameter_group.parameter_group_postgres.*.id) : join("", aws_db_parameter_group.parameter_group_mysql.*.id)
 
   allow_major_version_upgrade = var.rds_allow_major_version_upgrade
