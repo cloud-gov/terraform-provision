@@ -18,4 +18,5 @@ module "rds_96" {
   rds_apply_immediately           = var.rds_apply_immediately
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = var.rds_final_snapshot_identifier
+  performance_insights_enabled    = var.performance_insights_enabled
 }

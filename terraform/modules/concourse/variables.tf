@@ -84,3 +84,7 @@ variable "listener_arn" {
 variable "hosts" {
   type = list(string)
 }
+
+variable "performance_insights_enabled" {
+  default = "false"
+}
