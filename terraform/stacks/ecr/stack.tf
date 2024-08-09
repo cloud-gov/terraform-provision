@@ -22,6 +22,7 @@ variable "repositories" {
     "github-pr-resource",
     "github-release-resource",
     "oci-build-task",
+    "pages-dind",
     "pages-dind-v25",
     "pages-nginx-v1",
     "pages-node-v20",
