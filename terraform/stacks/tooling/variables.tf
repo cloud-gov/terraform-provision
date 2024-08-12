@@ -77,6 +77,14 @@ variable "rds_parameter_group_family_concourse_production" {
   default = "postgres15"
 }
 
+variable "rds_db_engine_version_opsuaa" {
+  default = "16.1"
+}
+
+variable "rds_parameter_group_family_opsuaa" {
+  default = "postgres16"
+}
+
 variable "remote_state_bucket" {
 }
 

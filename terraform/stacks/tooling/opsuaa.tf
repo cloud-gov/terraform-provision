@@ -12,8 +12,8 @@ module "opsuaa_db" {
   rds_password                    = var.opsuaa_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_db_engine_version           = var.rds_db_engine_version
-  rds_parameter_group_family      = var.rds_parameter_group_family
+  rds_db_engine_version           = var.rds_db_engine_version_opsuaa
+  rds_parameter_group_family      = var.rds_parameter_group_family_opsuaa
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
 }
