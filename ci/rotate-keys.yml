@@ -1,0 +1,9 @@
+---
+platform: linux
+
+inputs:
+  - name: cg-provision-repo
+  - name: terraform-yaml-external-development
+
+run:
+  path: cg-provision-repo/ci/rotate-keys.sh
