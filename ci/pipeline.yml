@@ -521,6 +521,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 2
+          TF_VAR_waf_regex_rules: '[]'
       - *notify-slack
 
   - name: apply-development
@@ -691,6 +692,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 3
+          TF_VAR_waf_regex_rules: '[]'
       - *notify-slack
 
   - name: apply-staging
@@ -859,6 +861,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 4
+          TF_VAR_waf_regex_rules: '[]'
       - *notify-slack
 
   - name: apply-production

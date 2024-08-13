@@ -522,6 +522,107 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
   }
 
+  dynamic "rule" {
+    for_each = toset([for rule in var.waf_regex_rules : rule if rule.block])
+    iterator = regex_rule
+
+    content {
+      name     = "BlockRegexRule-${rule.value.name}"
+      priority = regex_rule.value.priority
+      action {
+        #dynamic "${rule.action}" {
+        #
+        #}
+        block {}
+      }
+      statement {
+        and_statement {
+          statement {
+            regex_match_statement {
+              regex_string = regex_rule.value.path_regex
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "NORMALIZE_PATH"
+              }
+            }
+          }
+          statement {
+            regex_match_statement {
+              regex_string = regex_rule.value.host_regex
+              field_to_match {
+                single_header {
+                  name = "host"
+                }
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+        }
+      }
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.stack_description}-BlockRegexRule-${rule.value.name}"
+        sampled_requests_enabled   = true
+      }
+    }
+
+  }
+
+  dynamic "rule" {
+    # this is identical to the dynamic rule above, except that the `action` is `count` instead of `block`
+    for_each = toset([for rule in var.waf_regex_rules : rule if !rule.block])
+    iterator = regex_rule
+
+    content {
+      name     = "BlockRegexRule-${rule.value.name}"
+      priority = regex_rule.value.priority
+      action {
+        count {}
+      }
+      statement {
+        and_statement {
+          statement {
+            regex_match_statement {
+              regex_string = regex_rule.value.path_regex
+              field_to_match {
+                uri_path {}
+              }
+              text_transformation {
+                priority = 0
+                type     = "NORMALIZE_PATH"
+              }
+            }
+          }
+          statement {
+            regex_match_statement {
+              regex_string = regex_rule.value.host_regex
+              field_to_match {
+                single_header {
+                  name = "host"
+                }
+              }
+              text_transformation {
+                priority = 0
+                type     = "LOWERCASE"
+              }
+            }
+          }
+        }
+      }
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.stack_description}-BlockRegexRule-${rule.value.name}"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
   rule {
     name     = "RateLimitNonCDNBySourceIP-Challenge"
     priority = 80
