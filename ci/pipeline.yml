@@ -382,6 +382,8 @@ jobs:
           TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
           TF_VAR_rds_db_engine_version_concourse_production: "15.5"
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
+          TF_VAR_rds_db_engine_version_opsuaa: "16.1"
+          TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
       - *notify-slack
 
   - name: apply-tooling
