@@ -257,3 +257,11 @@ variable "github_backups_bucket_name" {
   type    = string
   default = "github-backups"
 }
+
+variable "rds_db_engine_version_bosh_credhub" {
+  default = "15.5"
+}
+
+variable "rds_parameter_group_family_bosh_credhub" {
+  default = "postgres15"
+}

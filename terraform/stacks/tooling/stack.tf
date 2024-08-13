@@ -104,6 +104,8 @@ module "stack" {
   target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
   target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
+  credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
+  credhub_rds_parameter_group_family     = var.rds_parameter_group_family_bosh_credhub
 }
 
 module "concourse_production" {
