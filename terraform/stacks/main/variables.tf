@@ -252,3 +252,12 @@ variable "loadbalancer_forward_new_weight" {
   description = "Weight of traffic to send to original target groups"
   default     = 0
 }
+
+
+variable "rds_db_engine_version_bosh_credhub" {
+  default = "15.5"
+}
+
+variable "rds_parameter_group_family_bosh_credhub" {
+  default = "postgres15"
+}
