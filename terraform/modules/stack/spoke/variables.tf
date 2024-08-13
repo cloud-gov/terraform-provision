@@ -173,3 +173,11 @@ variable "cidr_blocks" {
   type    = list(string)
   default = []
 }
+
+variable "rds_db_engine_version_bosh_credhub" {
+  default = "15.5"
+}
+
+variable "rds_parameter_group_family_bosh_credhub" {
+  default = "postgres15"
+}
