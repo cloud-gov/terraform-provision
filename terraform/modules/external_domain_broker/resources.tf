@@ -54,20 +54,20 @@ resource "aws_iam_user_policy" "iam_policy" {
 }
 
 resource "aws_iam_access_key" "iam_dev_user" {
-	user = aws_iam_user.iam_dev_user.name
-	count = var.external_rotate_keys_dev
+  user  = aws_iam_user.iam_dev_user.name
+  count = var.external_rotate_keys_dev
 
-	lifecycle {
-	    create_before_destroy = true
-	    ignore_changes = [
-	      id,
-	      status,
-	      create_date,
-	      ]
-	    replace_triggered_by = [
-		    data.http.access_key_ttl.body,
-		  ]
-	 }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [
+      id,
+      status,
+      create_date,
+    ]
+    replace_triggered_by = [
+      data.http.access_key_ttl.body,
+    ]
+  }
 }
 
 data "aws_canonical_user_id" "current_user" {
