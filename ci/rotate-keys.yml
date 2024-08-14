@@ -1,5 +1,14 @@
 ---
-platform: general-task
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: general-task
+    aws_region: us-gov-west-1
+    tag: latest
 
 inputs:
   - name: cg-provision-repo
