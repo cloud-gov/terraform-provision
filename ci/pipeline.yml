@@ -140,7 +140,7 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
-          TV_VAR_external_rotate_keys_dev: ((rotate_external_keys_dev))
+          TV_VAR_rotate_external_keys_dev: ((rotate_external_keys_dev))
       - &notify-slack
         put: slack
         params:
