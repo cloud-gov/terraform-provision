@@ -140,6 +140,7 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
+          TV_VAR_external_rotate_keys_dev: ((rotate_external_keys_dev))
       - &notify-slack
         put: slack
         params:
@@ -163,6 +164,7 @@ jobs:
         params:
           <<: *external-development-params
           TERRAFORM_ACTION: apply
+          TV_VAR_external_rotate_keys_dev: ((rotate_external_keys_dev))
       - task: terraform-state-to-yaml
         file: pipeline-tasks/terraform12-state-to-yaml.yml
         params:
@@ -170,6 +172,8 @@ jobs:
       - put: terraform-yaml-external-development
         params:
           file: terraform-yaml/state.yml
+      - task: rotate-keys
+        file: pipeline/rotate-keys.yml
 
   - name: plan-external-staging
     plan:
