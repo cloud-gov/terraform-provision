@@ -35,10 +35,14 @@ data "template_file" "policy" {
   }
 }
 
+
 resource "aws_iam_user" "iam_user" {
   name = "external-domain-broker-${var.stack_description}"
 }
 
+resource "aws_iam_user" "iam_dev_user" {
+  name = "external-domain-broker-robert"
+}
 resource "aws_iam_access_key" "iam_access_key_v3" {
   user = aws_iam_user.iam_user.name
 }
@@ -47,6 +51,23 @@ resource "aws_iam_user_policy" "iam_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
   user   = aws_iam_user.iam_user.name
   policy = data.template_file.policy.rendered
+}
+
+resource "aws_iam_access_key" "iam_dev_user" {
+  user  = aws_iam_user.iam_dev_user.name
+  count = var.rotate_external_keys_dev
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [
+      id,
+      status,
+      create_date,
+    ]
+    replace_triggered_by = [
+      data.http.access_key_ttl.body,
+    ]
+  }
 }
 
 data "aws_canonical_user_id" "current_user" {
