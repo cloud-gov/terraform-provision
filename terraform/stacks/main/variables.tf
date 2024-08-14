@@ -261,3 +261,21 @@ variable "rds_db_engine_version_bosh_credhub" {
 variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
+
+variable "waf_regex_rules" {
+  type = list(object({
+    # path_regex is matched against the uri path of a request
+    # before comparison, the path is normalized (so self/parent path references are collapsed)
+    path_regex = string
+    # host_regex is matched against the host header on requests
+    host_regex = string
+    priority   = number
+    # when block is true, requests matching the rules are blocked.
+    # When false, they are instead counted
+    block = bool
+    # `name` is used for metrics and logging
+    name = string
+  }))
+  description = "list of objects defining regular expression rules for waf"
+  default     = []
+}
