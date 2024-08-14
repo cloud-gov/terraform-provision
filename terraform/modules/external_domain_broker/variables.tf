@@ -8,4 +8,5 @@ variable "aws_partition" {
 }
 
 variable "external_rotate_keys_dev" {
+    default = 0
 }

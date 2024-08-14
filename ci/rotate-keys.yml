@@ -1,5 +1,5 @@
 ---
-platform: linux
+platform: general-task
 
 inputs:
   - name: cg-provision-repo
