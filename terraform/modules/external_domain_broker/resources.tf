@@ -55,7 +55,7 @@ resource "aws_iam_user_policy" "iam_policy" {
 
 resource "aws_iam_access_key" "iam_dev_user" {
   user  = aws_iam_user.iam_dev_user.name
-  count = var.external_rotate_keys_dev
+  count = var.rotate_external_keys_dev
 
   lifecycle {
     create_before_destroy = true
