@@ -40,7 +40,6 @@ module "external_domain_broker" {
   account_id               = data.aws_caller_identity.current.account_id
   stack_description        = var.stack_description
   aws_partition            = data.aws_partition.current.partition
-  rotate_external_keys_dev = var.rotate_external_keys_dev
 
   providers = {
     aws          = aws.fips
