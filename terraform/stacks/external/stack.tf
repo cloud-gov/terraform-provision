@@ -37,9 +37,9 @@ data "aws_caller_identity" "current" {
 module "external_domain_broker" {
   source = "../../modules/external_domain_broker"
 
-  account_id               = data.aws_caller_identity.current.account_id
-  stack_description        = var.stack_description
-  aws_partition            = data.aws_partition.current.partition
+  account_id        = data.aws_caller_identity.current.account_id
+  stack_description = var.stack_description
+  aws_partition     = data.aws_partition.current.partition
 
   providers = {
     aws          = aws.fips
