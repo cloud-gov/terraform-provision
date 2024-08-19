@@ -58,6 +58,16 @@
         "shield:DisassociateHealthCheck"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "waf:CreateWebACL",
+        "waf:DeleteWebACL"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
+      ]
     }
   ]
 }
