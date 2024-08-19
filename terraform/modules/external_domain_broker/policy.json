@@ -68,6 +68,15 @@
       "Resource": [
         "arn:${aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:CreateHealthCheck",
+        "route53:DeleteHealthCheck",
+        "route53:UpdateHealthCheck"
+      ],
+      "Resource": "*"
     }
   ]
 }
