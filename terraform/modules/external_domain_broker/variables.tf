@@ -8,6 +8,6 @@ variable "aws_partition" {
 }
 
 variable "aws_region" {
-  type = string
+  type        = string
   description = "AWS region where the resources are deployed"
 }

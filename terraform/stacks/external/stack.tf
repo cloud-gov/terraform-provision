@@ -42,7 +42,7 @@ module "external_domain_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
-  aws_region = data.aws_region.current.name
+  aws_region        = data.aws_region.current.name
 
   providers = {
     aws          = aws.fips
