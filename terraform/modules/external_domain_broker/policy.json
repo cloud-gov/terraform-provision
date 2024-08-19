@@ -73,11 +73,22 @@
       "Effect": "Allow",
       "Action": [
         "route53:CreateHealthCheck",
+        "route53:GetHealthCheck"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:route53:::healthcheck/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:CreateHealthCheck",
         "route53:DeleteHealthCheck",
-        "route53:GetHealthCheck",
         "route53:UpdateHealthCheck"
       ],
-      "Resource": "*"
+      "Resource": [
+        "arn:${aws_partition}:route53:::healthcheck/*"
+      ]
     }
   ]
 }

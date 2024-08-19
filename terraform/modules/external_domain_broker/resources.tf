@@ -23,32 +23,6 @@ resource "aws_route53_record" "record" {
   ]
 }
 
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
-
-  vars = {
-    account_id     = var.account_id
-    hosted_zone_id = aws_route53_zone.zone.zone_id
-    stack          = var.stack_description
-    bucket         = "external-domain-broker-cloudfront-logs-${var.stack_description}"
-    aws_partition  = var.aws_partition
-  }
-}
-
-resource "aws_iam_user" "iam_user" {
-  name = "external-domain-broker-${var.stack_description}"
-}
-
-resource "aws_iam_access_key" "iam_access_key_v3" {
-  user = aws_iam_user.iam_user.name
-}
-
-resource "aws_iam_user_policy" "iam_policy" {
-  name   = "${aws_iam_user.iam_user.name}-policy"
-  user   = aws_iam_user.iam_user.name
-  policy = data.template_file.policy.rendered
-}
-
 data "aws_canonical_user_id" "current_user" {
   provider = aws.standard
 }
