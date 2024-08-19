@@ -1,3 +1,9 @@
+locals {
+  broker_tag_values = [
+    "External domain broker",
+  ]
+}
+
 data "aws_iam_policy_document" "external_domain_broker_policy" {
   statement {
     actions = [
@@ -69,12 +75,25 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
-      "waf:CreateWebACL",
+      "waf:CreateWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*/*"
+    ]
+  }
+
+  statement {
+    actions = [
       "waf:DeleteWebACL"
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/broker"
+      values   = local.broker_tag_values
+    }
   }
 
   statement {
@@ -107,9 +126,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/broker"
-      values = [
-        "External domain broker",
-      ]
+      values   = local.broker_tag_values
     }
   }
 }
