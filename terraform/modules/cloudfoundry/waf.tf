@@ -527,7 +527,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     iterator = regex_rule
 
     content {
-      name     = "BlockRegexRule-${rule.value.name}"
+      name     = "BlockRegexRule-${regex_rule.value.name}"
       priority = regex_rule.value.priority
       action {
         #dynamic "${rule.action}" {
