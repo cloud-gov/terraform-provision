@@ -79,6 +79,15 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
+      "waf:GetRuleGroup",
+    ]
+    resources = [
+      aws_wafv2_rule_group.rate_limit_group.arn
+    ]
+  }
+
+  statement {
+    actions = [
       "route53:CreateHealthCheck",
       "route53:GetHealthCheck"
     ]
