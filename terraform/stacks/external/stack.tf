@@ -44,6 +44,9 @@ module "external_domain_broker" {
   aws_partition     = data.aws_partition.current.partition
   aws_region        = data.aws_region.current.name
 
+  waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
+  waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold
+
   providers = {
     aws          = aws.fips
     aws.standard = aws.standard

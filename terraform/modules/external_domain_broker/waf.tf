@@ -4,7 +4,7 @@ locals {
 
 resource "aws_wafv2_rule_group" "rate_limit_group" {
   name     = local.name
-  scope    = var.scope
+  scope    = var.waf_rule_group_scope
   capacity = 4
 
   rule {

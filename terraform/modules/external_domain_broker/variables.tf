@@ -40,7 +40,8 @@ variable "waf_rate_limit_count_threshold" {
   description = "Number of requests at which traffic by the aggregate key is counted. This threshold is useful to update if you suspect a lower rate-limit threshold might be effective and want to evaluate it without disrupting traffic."
 }
 
-variable "scope" {
+variable "waf_rule_group_scope" {
   type        = string
   description = "Specifies whether this is for an AWS CloudFront distribution or for a regional application. Valid values are CLOUDFRONT or REGIONAL."
+  default     = "CLOUDFRONT"
 }
