@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "route53:GetChange"
     ]
     resources = [
-      "*"
+      "arn:${var.aws_partition}:route53:::change/*"
     ]
   }
 
