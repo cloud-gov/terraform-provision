@@ -50,6 +50,14 @@
       "Resource": [
         "arn:aws:route53:::hostedzone/${hosted_zone_id}"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "shield:AssociateHealthCheck",
+        "shield:DisassociateHealthCheck"
+      ],
+      "Resource": "*"
     }
   ]
 }
