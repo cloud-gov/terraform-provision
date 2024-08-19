@@ -527,12 +527,9 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     iterator = regex_rule
 
     content {
-      name     = "BlockRegexRule-${rule.value.name}"
+      name     = "BlockRegexRule-${regex_rule.value.name}"
       priority = regex_rule.value.priority
       action {
-        #dynamic "${rule.action}" {
-        #
-        #}
         block {}
       }
       statement {
@@ -580,7 +577,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     iterator = regex_rule
 
     content {
-      name     = "BlockRegexRule-${rule.value.name}"
+      name     = "BlockRegexRule-${regex_rule.value.name}"
       priority = regex_rule.value.priority
       action {
         count {}
@@ -617,7 +614,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       }
       visibility_config {
         cloudwatch_metrics_enabled = true
-        metric_name                = "${var.stack_description}-BlockRegexRule-${rule.value.name}"
+        metric_name                = "${var.stack_description}-BlockRegexRule-${regex_rule.value.name}"
         sampled_requests_enabled   = true
       }
     }
