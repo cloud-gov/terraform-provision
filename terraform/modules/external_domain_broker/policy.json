@@ -57,7 +57,7 @@
         "shield:AssociateHealthCheck",
         "shield:DisassociateHealthCheck"
       ],
-      "Resource": "*"
+      "Resource": ["arn:${aws_partition}:shield::${account_id}:protection/*"]
     },
     {
       "Effect": "Allow",
@@ -66,7 +66,7 @@
         "waf:DeleteWebACL"
       ],
       "Resource": [
-        "arn:${aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
+        "arn:${aws_partition}:wafv2:${aws_region}:${account_id}:global/webacl/cg-external-domains-*"
       ]
     },
     {
@@ -74,6 +74,7 @@
       "Action": [
         "route53:CreateHealthCheck",
         "route53:DeleteHealthCheck",
+        "route53:GetHealthCheck",
         "route53:UpdateHealthCheck"
       ],
       "Resource": "*"
