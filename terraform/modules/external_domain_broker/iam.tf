@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "s3:PutBucketAcl"
     ]
     resources = [
-      "arn:${aws_partition}:s3:::external-domain-broker-*"
+      "arn:${var.aws_partition}:s3:::external-domain-broker-*"
     ]
   }
 
