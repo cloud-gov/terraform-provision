@@ -12,8 +12,8 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:UpdateServerCertificate"
     ]
     resources = [
-      "arn:aws:iam::${account_id}:server-certificate/cloudfront/external-domains-*",
-      "arn:aws:iam::${account_id}:server-certificate/cloudfront/cg-*"
+      "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/external-domains-*",
+      "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/cg-*"
     ]
   }
 
@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:ListServerCertificates",
     ]
     resources = [
-      "arn:aws:iam::${account_id}:server-certificate/*"
+      "arn:aws:iam::${var.account_id}:server-certificate/*"
     ]
   }
 
