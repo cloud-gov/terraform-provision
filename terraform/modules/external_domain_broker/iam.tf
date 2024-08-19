@@ -89,28 +89,21 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
-      "route53:CreateHealthCheck",
       "route53:DeleteHealthCheck",
       "route53:UpdateHealthCheck"
     ]
     resources = [
       "arn:${var.aws_partition}:route53:::healthcheck/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/broker"
+      values = [
+        "External domain broker",
+      ]
+    }
   }
 }
-
-# data "template_file" "policy" {
-#   template = file("${path.module}/policy.json")
-
-#   vars = {
-#     account_id     = var.account_id
-#     hosted_zone_id = aws_route53_zone.zone.zone_id
-#     stack          = var.stack_description
-#     bucket         = "external-domain-broker-cloudfront-logs-${var.stack_description}"
-#     aws_partition  = var.aws_partition
-#     aws_region     = var.aws_region
-#   }
-# }
 
 resource "aws_iam_user" "iam_user" {
   name = "external-domain-broker-${var.stack_description}"
