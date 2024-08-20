@@ -34,12 +34,18 @@ data "aws_partition" "current" {
 data "aws_caller_identity" "current" {
 }
 
+data "aws_region" "current" {}
+
 module "external_domain_broker" {
   source = "../../modules/external_domain_broker"
 
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
+  aws_region        = data.aws_region.current.name
+
+  waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
+  waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold
 
   providers = {
     aws          = aws.fips
