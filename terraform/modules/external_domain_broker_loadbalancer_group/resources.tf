@@ -49,7 +49,7 @@ resource "aws_lb_listener" "domains_lbgroup_https" {
   load_balancer_arn = aws_lb.domains_lbgroup[count.index].arn
   port              = "443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
+  ssl_policy        = var.aws_lb_listener_ssl_policy
   certificate_arn   = var.wildcard_arn
 
   default_action {

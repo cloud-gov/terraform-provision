@@ -265,3 +265,8 @@ variable "rds_db_engine_version_bosh_credhub" {
 variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
+
+variable "aws_lb_listener_ssl_policy" {
+  type = string
+  default = "ELBSecurityPolicy-TLS13-1-2-EXT1-2021-06"
+}
