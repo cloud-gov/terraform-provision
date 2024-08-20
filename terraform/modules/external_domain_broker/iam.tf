@@ -66,7 +66,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws:route53:::hostedzone/${aws_route53_zone.zone.zone_id}"
     ]
   }
+}
 
+data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy" {
   statement {
     actions = [
       "shield:AssociateHealthCheck",
@@ -143,8 +145,22 @@ resource "aws_iam_access_key" "iam_access_key_v3" {
   user = aws_iam_user.iam_user.name
 }
 
-resource "aws_iam_user_policy" "iam_policy" {
+resource "aws_iam_policy" "base_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
-  user   = aws_iam_user.iam_user.name
   policy = data.aws_iam_policy_document.external_domain_broker_policy.json
+}
+
+resource "aws_iam_user_policy_attachment" "attach_base_policy" {
+  user       = aws_iam_user.iam_user.name
+  policy_arn = aws_iam_policy.base_policy.arn
+}
+
+resource "aws_iam_policy" "manage_protections_policy" {
+  name   = "${aws_iam_user.iam_user.name}-manage-protections-policy"
+  policy = data.aws_iam_policy_document.external_domain_broker_manage_protections_policy.json
+}
+
+resource "aws_iam_user_policy_attachment" "attach_manage_protections_policy" {
+  user       = aws_iam_user.iam_user.name
+  policy_arn = aws_iam_policy.manage_protections_policy.arn
 }
