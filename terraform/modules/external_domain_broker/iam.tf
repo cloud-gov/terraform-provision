@@ -38,11 +38,13 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
-      "cloudfront:CreateDistributionWithTags",
       "cloudfront:CreateDistribution",
       "cloudfront:UpdateDistribution",
       "cloudfront:DeleteDistribution",
-      "cloudfront:GetDistributionConfig"
+      "cloudfront:GetDistribution",
+      "cloudfront:GetDistributionConfig",
+      "cloudfront:TagResource",
+      "cloudfront:UntagResource"
     ]
     resources = [
       "arn:${var.aws_partition}:cloudfront::${var.account_id}:distribution/*"
