@@ -85,19 +85,30 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
-      "waf:CreateWebACL"
+      "wafv2:CreateWebACL",
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*/*"
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+      aws_wafv2_rule_group.rate_limit_group.arn
     ]
   }
 
   statement {
     actions = [
-      "waf:DeleteWebACL"
+      "wafv2:TagResource",
+      "wafv2:UntagResource"
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*/*"
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "wafv2:DeleteWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
     ]
     condition {
       test     = "StringEquals"
@@ -108,7 +119,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
-      "waf:GetRuleGroup",
+      "wafv2:GetRuleGroup",
     ]
     resources = [
       aws_wafv2_rule_group.rate_limit_group.arn
