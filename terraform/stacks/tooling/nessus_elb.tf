@@ -23,8 +23,8 @@ resource "aws_lb_listener_rule" "nessus_listener_rule" {
     authenticate_oidc {
       # https://opslogin.fr.cloud.gov/.well-known/openid-configuration
       authorization_endpoint     = "https://${var.opslogin_hostname}/oauth/authorize"
-      client_id                  = var.oidc_client
-      client_secret              = var.oidc_client_secret
+      client_id                  = var.nessus_oidc_client
+      client_secret              = var.nessus_oidc_client_secret
       issuer                     = "https://${var.opslogin_hostname}/oauth/token"
       token_endpoint             = "https://${var.opslogin_hostname}/oauth/token"
       user_info_endpoint         = "https://${var.opslogin_hostname}/userinfo"

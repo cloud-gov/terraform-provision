@@ -100,7 +100,13 @@ variable "smtp_ingress_cidr_blocks" {
   type = list(string)
 }
 
-variable "oidc_client" {
+variable "doomsday_oidc_client" {
+}
+
+variable "nessus_oidc_client" {
+}
+
+variable "nessus_oidc_client_secret" {
 }
 
 variable "opslogin_hostname" {

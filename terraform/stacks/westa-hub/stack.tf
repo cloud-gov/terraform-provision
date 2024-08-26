@@ -251,8 +251,8 @@ module "monitoring_production" {
   route_table_ids               = module.stack.private_route_table_ids
   listener_arn                  = aws_lb_listener.main.arn
   hosts                         = var.monitoring_production_hosts
-  oidc_client                   = var.oidc_client
-  oidc_client_secret            = random_string.oidc_client_secret.result
+  doomsday_oidc_client          = var.doomsday_oidc_client
+  doomsday_oidc_client_secret   = random_string.oidc_client_secret.result
   opslogin_hostname             = var.opslogin_hostname
 }
 
@@ -266,8 +266,8 @@ module "monitoring_staging" {
   route_table_ids               = module.stack.private_route_table_ids
   listener_arn                  = aws_lb_listener.main.arn
   hosts                         = var.monitoring_staging_hosts
-  oidc_client                   = var.oidc_client
-  oidc_client_secret            = random_string.oidc_client_secret.result
+  doomsday_oidc_client          = var.doomsday_oidc_client
+  doomsday_oidc_client_secret   = random_string.oidc_client_secret.result
   opslogin_hostname             = var.opslogin_hostname
 }
 

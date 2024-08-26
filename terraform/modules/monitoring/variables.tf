@@ -26,10 +26,10 @@ variable "hosts" {
   type = list(string)
 }
 
-variable "oidc_client" {
+variable "doomsday_oidc_client" {
 }
 
-variable "oidc_client_secret" {
+variable "doomsday_oidc_client_secret" {
 }
 
 
