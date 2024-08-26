@@ -368,8 +368,10 @@ jobs:
           TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
           TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
           TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
-          TF_VAR_oidc_client: ((tooling_oidc_client))
-          TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
+          TF_VAR_doomsday_oidc_client: ((tooling_doomsday_oidc_client))
+          TF_VAR_doomsday_oidc_client_secret: ((tooling_doomsday_oidc_client_secret))
+          TF_VAR_nessus_oidc_client: ((tooling_nessus_oidc_client))
+          TF_VAR_nessus_oidc_client_secret: ((tooling_nessus_oidc_client_secret))
           TF_VAR_payer_account_id: ((payer_account_id))
           TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))

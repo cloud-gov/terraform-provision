@@ -243,33 +243,33 @@ module "defectdojo_staging" {
 }
 
 module "monitoring_production" {
-  source             = "../../modules/monitoring"
-  stack_description  = "production"
-  vpc_id             = module.stack.vpc_id
-  vpc_cidr           = var.vpc_cidr
-  monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 32)
-  monitoring_az      = data.aws_availability_zones.available.names[0]
-  route_table_id     = module.stack.private_route_table_az1
-  listener_arn       = aws_lb_listener.main.arn
-  hosts              = var.monitoring_production_hosts
-  oidc_client        = var.oidc_client
-  oidc_client_secret = var.oidc_client_secret
-  opslogin_hostname  = var.opslogin_hostname
+  source                      = "../../modules/monitoring"
+  stack_description           = "production"
+  vpc_id                      = module.stack.vpc_id
+  vpc_cidr                    = var.vpc_cidr
+  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 32)
+  monitoring_az               = data.aws_availability_zones.available.names[0]
+  route_table_id              = module.stack.private_route_table_az1
+  listener_arn                = aws_lb_listener.main.arn
+  hosts                       = var.monitoring_production_hosts
+  doomsday_oidc_client        = var.doomsday_oidc_client
+  doomsday_oidc_client_secret = var.doomsday_oidc_client_secret
+  opslogin_hostname           = var.opslogin_hostname
 }
 
 module "monitoring_staging" {
-  source             = "../../modules/monitoring"
-  stack_description  = "staging"
-  vpc_id             = module.stack.vpc_id
-  vpc_cidr           = var.vpc_cidr
-  monitoring_cidr    = cidrsubnet(var.vpc_cidr, 8, 33)
-  monitoring_az      = data.aws_availability_zones.available.names[1]
-  route_table_id     = module.stack.private_route_table_az2
-  listener_arn       = aws_lb_listener.main.arn
-  hosts              = var.monitoring_staging_hosts
-  oidc_client        = var.oidc_client
-  oidc_client_secret = var.oidc_client_secret
-  opslogin_hostname  = var.opslogin_hostname
+  source                      = "../../modules/monitoring"
+  stack_description           = "staging"
+  vpc_id                      = module.stack.vpc_id
+  vpc_cidr                    = var.vpc_cidr
+  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 33)
+  monitoring_az               = data.aws_availability_zones.available.names[1]
+  route_table_id              = module.stack.private_route_table_az2
+  listener_arn                = aws_lb_listener.main.arn
+  hosts                       = var.monitoring_staging_hosts
+  doomsday_oidc_client        = var.doomsday_oidc_client
+  doomsday_oidc_client_secret = var.doomsday_oidc_client_secret
+  opslogin_hostname           = var.opslogin_hostname
 }
 
 resource "aws_eip" "production_dns_eip" {
