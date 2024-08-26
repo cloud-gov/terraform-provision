@@ -132,7 +132,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "route53:GetHealthCheck"
     ]
     resources = [
-      "arn:${var.aws_partition}:route53:::healthcheck/*"
+      "*"
     ]
   }
 
