@@ -138,6 +138,15 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
+      "route53:ChangeTagsForResource",
+    ]
+    resources = [
+      "arn:${var.aws_partition}:route53:::healthcheck/*"
+    ]
+  }
+
+  statement {
+    actions = [
       "route53:DeleteHealthCheck",
       "route53:UpdateHealthCheck"
     ]
