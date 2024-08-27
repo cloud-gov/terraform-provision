@@ -3,6 +3,16 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "main_stack" {
+  backend = "s3"
+
+  config = {
+    bucket = var.main_stack_terraform_state_bucket
+    key    = "${var.main_stack_name}/terraform.tfstate"
+    region = var.main_stack_region
+  }
+}
+
 provider "aws" {
   alias = "fips"
 
@@ -46,6 +56,8 @@ module "external_domain_broker" {
 
   waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
   waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold
+
+  source_ips = data.terraform_remote_state.main_stack.outputs.nat_egress_ips
 
   providers = {
     aws          = aws.fips
