@@ -20,8 +20,18 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
   statement {
     actions = [
       "elasticloadbalancing:AddListenerCertificates",
-      "elasticloadbalancing:Describe*",
       "elasticloadbalancing:RemoveListenerCertificates"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:elasticloadbalancing:${var.aws_region}:${var.account_id}:listener/app/*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeListenerCertificates",
+      "elasticloadbalancing:DescribeLoadBalancers"
     ]
     resources = [
       "*"
