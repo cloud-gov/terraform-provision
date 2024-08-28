@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -97,7 +97,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 }
@@ -114,7 +114,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -129,7 +129,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -144,7 +144,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -177,7 +177,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -193,7 +193,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
@@ -210,7 +210,7 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
-      values   = aws_iam_user.iam_user.arn
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 }
