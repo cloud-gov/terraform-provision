@@ -17,6 +17,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/external-domains-*",
       "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/cg-*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -26,6 +31,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:aws:iam::${var.account_id}:server-certificate/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -36,6 +46,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:s3:::external-domain-broker-*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -51,6 +66,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:cloudfront::${var.account_id}:distribution/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -60,6 +80,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:route53:::change/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -69,6 +94,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:aws:route53:::hostedzone/${aws_route53_zone.zone.zone_id}"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 }
 
@@ -81,6 +111,11 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     resources = [
       "arn:${var.aws_partition}:shield::${var.account_id}:protection/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -91,6 +126,11 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
       aws_wafv2_rule_group.rate_limit_group.arn
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -101,6 +141,11 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     resources = [
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -115,6 +160,11 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       variable = "aws:ResourceTag/broker"
       values   = local.broker_tag_values
     }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -124,21 +174,34 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     resources = [
       aws_wafv2_rule_group.rate_limit_group.arn
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
     actions = [
       "route53:CreateHealthCheck",
-      "route53:GetHealthCheck"
     ]
+    # Wildcard for the resource constraint is required for CreateHealthCheck
+    # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonroute53.html
     resources = [
-      "arn:${var.aws_partition}:route53:::healthcheck/*"
+      "*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
     actions = [
       "route53:DeleteHealthCheck",
+      "route53:GetHealthCheck",
+      "route53:ChangeTagsForResource",
       "route53:UpdateHealthCheck"
     ]
     resources = [
@@ -146,8 +209,8 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
     ]
     condition {
       test     = "StringEquals"
-      variable = "aws:ResourceTag/broker"
-      values   = local.broker_tag_values
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 }

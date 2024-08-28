@@ -1585,10 +1585,6 @@ jobs:
             resource: terraform-yaml-external-production
       - task: check-certificates
         image: general-task
-        file: cg-provision-repo/ci/check-certificates.yml
-        params:
-          AWS_DEFAULT_REGION: ((aws_default_region))
-        image: general-task
         file: cg-provision-repo/ci/delete-old-certificates.yml
         params:
           CERT_PATH: /lets-encrypt/production/
