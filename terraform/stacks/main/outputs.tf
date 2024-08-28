@@ -113,13 +113,6 @@ output "nat_egress_ip_az2" {
   value = module.stack.nat_egress_ip_az2
 }
 
-output "nat_egress_ips" {
-  value = [
-    module.stack.nat_egress_ip_az1.
-    module.stack.nat_egress_ip_az2
-  ]
-}
-
 /* Services network */
 output "services_subnet_az1" {
   value = module.cf.services_subnet_az1

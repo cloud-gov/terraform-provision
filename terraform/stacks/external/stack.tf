@@ -3,16 +3,6 @@ terraform {
   }
 }
 
-data "terraform_remote_state" "main_stack" {
-  backend = "s3"
-
-  config = {
-    bucket = var.main_stack_terraform_state_bucket
-    key    = "${var.main_stack_name}/terraform.tfstate"
-    region = var.main_stack_region
-  }
-}
-
 provider "aws" {
   alias = "fips"
 
