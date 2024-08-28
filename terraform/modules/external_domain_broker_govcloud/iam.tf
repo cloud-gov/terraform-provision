@@ -15,6 +15,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws-us-gov:iam::${var.account_id}:server-certificate/alb/external-domains-*",
       "arn:aws-us-gov:iam::${var.account_id}:server-certificate/domains*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -25,6 +30,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:elasticloadbalancing:${var.aws_region}:${var.account_id}:listener/app/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 
   statement {
@@ -36,6 +46,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     resources = [
       "*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
+    }
   }
 }
 
