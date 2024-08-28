@@ -142,9 +142,6 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
-          TF_VAR_main_stack_terraform_state_bucket: ((aws_s3_tfstate_bucket))
-          TF_VAR_main_stack_region: ((aws_default_region))
-          TF_VAR_main_stack_name: "development"
       - &notify-slack
         put: slack
         params:
@@ -202,9 +199,6 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
-          TF_VAR_main_stack_terraform_state_bucket: ((aws_s3_tfstate_bucket))
-          TF_VAR_main_stack_region: ((aws_default_region))
-          TF_VAR_main_stack_name: "staging"
       - &notify-slack
         put: slack
         params:
@@ -262,9 +256,6 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
-          TF_VAR_main_stack_terraform_state_bucket: ((aws_s3_tfstate_bucket))
-          TF_VAR_main_stack_region: ((aws_default_region))
-          TF_VAR_main_stack_name: "production"
       - *notify-slack
 
   - name: apply-external-production

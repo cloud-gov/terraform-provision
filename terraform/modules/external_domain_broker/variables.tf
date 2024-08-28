@@ -45,8 +45,3 @@ variable "waf_rule_group_scope" {
   description = "Specifies whether this is for an AWS CloudFront distribution or for a regional application. Valid values are CLOUDFRONT or REGIONAL."
   default     = "CLOUDFRONT"
 }
-
-variable "source_ips" {
-  type        = list(string)
-  description = "List of IP addresses that should be allowed to perform specified IAM actions"
-}

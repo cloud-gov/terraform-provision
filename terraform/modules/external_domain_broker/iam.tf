@@ -18,9 +18,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/cg-*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -32,9 +32,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws:iam::${var.account_id}:server-certificate/*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -47,9 +47,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:${var.aws_partition}:s3:::external-domain-broker-*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -67,9 +67,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:${var.aws_partition}:cloudfront::${var.account_id}:distribution/*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -81,9 +81,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:${var.aws_partition}:route53:::change/*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -95,9 +95,9 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "arn:aws:route53:::hostedzone/${aws_route53_zone.zone.zone_id}"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 }
@@ -112,9 +112,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "arn:${var.aws_partition}:shield::${var.account_id}:protection/*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -127,9 +127,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       aws_wafv2_rule_group.rate_limit_group.arn
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -142,9 +142,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -161,9 +161,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       values   = local.broker_tag_values
     }
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -175,9 +175,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       aws_wafv2_rule_group.rate_limit_group.arn
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -191,9 +191,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 
@@ -208,9 +208,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "arn:${var.aws_partition}:route53:::healthcheck/*"
     ]
     condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = var.source_ips
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = aws_iam_user.iam_user.arn
     }
   }
 }
