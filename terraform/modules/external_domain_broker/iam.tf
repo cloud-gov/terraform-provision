@@ -120,6 +120,20 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
+      "shield:ListProtections",
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
       "wafv2:CreateWebACL",
     ]
     resources = [
@@ -150,7 +164,8 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
-      "wafv2:DeleteWebACL"
+      "wafv2:DeleteWebACL",
+      "wafv2:GetWebACL"
     ]
     resources = [
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
