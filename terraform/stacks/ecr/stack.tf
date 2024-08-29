@@ -17,6 +17,7 @@ variable "repositories" {
     "cron-resource",
     "csb",
     "email-resource",
+    "external-domain-broker",
     "general-task",
     "git-resource",
     "github-pr-resource",
