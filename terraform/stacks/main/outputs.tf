@@ -396,24 +396,8 @@ output "elasticsearch_security_group" {
 }
 
 /* S3 Gateway Endpoint CIDRs for CF ASGs*/
-output "s3_gateway_endpoint_cidr_1" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[0]
-}
-
-output "s3_gateway_endpoint_cidr_2" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[1]
-}
-
-output "s3_gateway_endpoint_cidr_3" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[2]
-}
-
-output "s3_gateway_endpoint_cidr_4" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[3]
-}
-
-output "s3_gateway_endpoint_cidr_5" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[4]
+output "s3_gateway_endpoint_cidrs" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[*]
 }
 
 /* s3 private gateway endpoint ips for public egress */
