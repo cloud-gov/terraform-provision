@@ -404,6 +404,18 @@ output "s3_gateway_endpoint_cidr_2" {
   value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[1]
 }
 
+output "s3_gateway_endpoint_cidr_3" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[2]
+}
+
+output "s3_gateway_endpoint_cidr_4" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[3]
+}
+
+output "s3_gateway_endpoint_cidr_5" {
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[4]
+}
+
 /* s3 private gateway endpoint ips for public egress */
 output "vpc_endpoint_customer_s3_if1_ip" {
   value = module.stack.vpc_endpoint_customer_s3_if1_ip
