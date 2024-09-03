@@ -142,6 +142,8 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((development_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((development_sns_cg_platform_slack_notifications_email))
       - &notify-slack
         put: slack
         params:
@@ -199,6 +201,8 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((staging_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((staging_sns_cg_platform_slack_notifications_email))
       - &notify-slack
         put: slack
         params:
@@ -256,6 +260,8 @@ jobs:
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((production_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((production_sns_cg_platform_slack_notifications_email))
       - *notify-slack
 
   - name: apply-external-production
