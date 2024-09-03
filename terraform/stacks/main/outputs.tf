@@ -397,7 +397,7 @@ output "elasticsearch_security_group" {
 
 /* S3 Gateway Endpoint CIDRs for CF ASGs*/
 output "s3_gateway_endpoint_cidrs" {
-  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks[*]
+  value = data.aws_prefix_list.s3_gw_cidrs.cidr_blocks
 }
 
 /* s3 private gateway endpoint ips for public egress */
