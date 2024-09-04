@@ -273,6 +273,6 @@ variable "rds_parameter_group_family_bosh_credhub" {
 }
 
 variable "aws_lb_listener_ssl_policy" {
-  type = string
+  type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-EXT1-2021-06"
 }
