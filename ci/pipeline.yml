@@ -536,6 +536,7 @@ jobs:
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 2
           TF_VAR_waf_regex_rules: '((development_waf_regex_rules))'
+          TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 
   - name: apply-development
