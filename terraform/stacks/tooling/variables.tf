@@ -235,10 +235,16 @@ variable "container_scanning_bucket_name" {
   default = "cg-container-scanning"
 }
 
-variable "oidc_client" {
+variable "nessus_oidc_client" {
 }
 
-variable "oidc_client_secret" {
+variable "nessus_oidc_client_secret" {
+}
+
+variable "doomsday_oidc_client" {
+}
+
+variable "doomsday_oidc_client_secret" {
 }
 
 variable "opslogin_hostname" {

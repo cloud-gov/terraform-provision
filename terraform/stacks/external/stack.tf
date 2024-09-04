@@ -34,12 +34,18 @@ data "aws_partition" "current" {
 data "aws_caller_identity" "current" {
 }
 
+data "aws_region" "current" {}
+
 module "external_domain_broker" {
   source = "../../modules/external_domain_broker"
 
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
+  aws_region        = data.aws_region.current.name
+
+  waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
+  waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold
 
   providers = {
     aws          = aws.fips
@@ -86,4 +92,13 @@ module "csb" {
   source = "../../modules/csb"
 
   stack_description = var.stack_description
+}
+
+module "sns" {
+  source = "../../modules/sns"
+
+  sns_cg_platform_notifications_name        = "${var.stack_description}-platform-notifications"
+  sns_cg_platform_notifications_email       = var.sns_cg_platform_notifications_email
+  sns_cg_platform_slack_notifications_name  = "${var.stack_description}-platform-slack-notifications"
+  sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }

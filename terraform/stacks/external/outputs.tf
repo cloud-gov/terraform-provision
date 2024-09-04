@@ -44,6 +44,10 @@ output "external_domain_broker_secret_access_key_curr" {
   sensitive = true
 }
 
+output "external_domain_broker_rate_limit_group_arn" {
+  value = module.external_domain_broker.waf_rate_limit_group_arn
+}
+
 /* external domain broker test user */
 output "external_domain_broker_tests_username" {
   value = module.external_domain_broker_tests.username

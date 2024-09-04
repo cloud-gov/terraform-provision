@@ -18,6 +18,19 @@ resource "aws_lb_listener_rule" "nessus_listener_rule" {
   listener_arn = aws_lb_listener.main.arn
 
   action {
+    type = "authenticate-oidc"
+    authenticate_oidc {
+      # https://opslogin.fr.cloud.gov/.well-known/openid-configuration
+      authorization_endpoint     = "https://${var.opslogin_hostname}/oauth/authorize"
+      client_id                  = var.nessus_oidc_client
+      client_secret              = var.nessus_oidc_client_secret
+      issuer                     = "https://${var.opslogin_hostname}/oauth/token"
+      token_endpoint             = "https://${var.opslogin_hostname}/oauth/token"
+      user_info_endpoint         = "https://${var.opslogin_hostname}/userinfo"
+      on_unauthenticated_request = "authenticate"
+    }
+  }
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.nessus_target.arn
   }

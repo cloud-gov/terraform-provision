@@ -419,6 +419,8 @@ module "external_domain_broker_govcloud" {
 
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
+  aws_region        = data.aws_region.current.name
+  aws_partition     = data.aws_partition.current.partition
 }
 
 module "dns_logging" {

@@ -140,6 +140,10 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
+          TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
+          TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((development_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((development_sns_cg_platform_slack_notifications_email))
       - &notify-slack
         put: slack
         params:
@@ -195,6 +199,10 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
+          TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
+          TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((staging_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((staging_sns_cg_platform_slack_notifications_email))
       - &notify-slack
         put: slack
         params:
@@ -250,6 +258,10 @@ jobs:
           TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
+          TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
+          TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
+          TF_VAR_sns_cg_platform_notifications_email: ((production_sns_cg_platform_notifications_email))
+          TF_VAR_sns_cg_platform_slack_notifications_email: ((production_sns_cg_platform_slack_notifications_email))
       - *notify-slack
 
   - name: apply-external-production
@@ -362,8 +374,10 @@ jobs:
           TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
           TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
           TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
-          TF_VAR_oidc_client: ((tooling_oidc_client))
-          TF_VAR_oidc_client_secret: ((tooling_oidc_client_secret))
+          TF_VAR_doomsday_oidc_client: ((tooling_doomsday_oidc_client))
+          TF_VAR_doomsday_oidc_client_secret: ((tooling_doomsday_oidc_client_secret))
+          TF_VAR_nessus_oidc_client: ((tooling_nessus_oidc_client))
+          TF_VAR_nessus_oidc_client_secret: ((tooling_nessus_oidc_client_secret))
           TF_VAR_payer_account_id: ((payer_account_id))
           TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
@@ -1576,10 +1590,6 @@ jobs:
           - get: terraform-yaml-external
             resource: terraform-yaml-external-production
       - task: check-certificates
-        image: general-task
-        file: cg-provision-repo/ci/check-certificates.yml
-        params:
-          AWS_DEFAULT_REGION: ((aws_default_region))
         image: general-task
         file: cg-provision-repo/ci/delete-old-certificates.yml
         params:
