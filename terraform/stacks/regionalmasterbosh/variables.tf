@@ -119,5 +119,5 @@ variable "bosh_default_ssh_public_key" {
 
 variable "aws_lb_listener_ssl_policy" {
   type    = string
-  default = "ELBSecurityPolicy-TLS13-1-2-EXT1-2021-06"
+  default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
