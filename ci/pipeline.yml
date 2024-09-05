@@ -144,7 +144,6 @@ jobs:
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
           TF_VAR_sns_cg_platform_notifications_email: ((development_sns_cg_platform_notifications_email))
           TF_VAR_sns_cg_platform_slack_notifications_email: ((development_sns_cg_platform_slack_notifications_email))
-          TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - &notify-slack
         put: slack
         params:
@@ -709,6 +708,7 @@ jobs:
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 3
           TF_VAR_waf_regex_rules: '((staging_waf_regex_rules))'
+          TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 
   - name: apply-staging
