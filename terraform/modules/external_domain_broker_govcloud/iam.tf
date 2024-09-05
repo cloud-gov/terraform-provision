@@ -9,7 +9,8 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:UploadServerCertificate",
       "iam:DeleteServerCertificate",
       "iam:TagServerCertificate",
-      "iam:UntagServerCertificate"
+      "iam:UntagServerCertificate",
+      "iam:GetServerCertificate"
     ]
     resources = [
       "arn:aws-us-gov:iam::${var.account_id}:server-certificate/alb/external-domains-*",
