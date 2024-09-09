@@ -11,7 +11,8 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:UploadServerCertificate",
       "iam:UpdateServerCertificate",
       "iam:TagServerCertificate",
-      "iam:UntagServerCertificate"
+      "iam:UntagServerCertificate",
+      "iam:GetServerCertificate"
     ]
     resources = [
       "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/external-domains-*",
@@ -226,6 +227,40 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
+      "cloudwatch:PutMetricAlarm",
+    ]
+    resources = [
+      "arn:${var.aws_partition}:cloudwatch:${var.aws_region}:${var.account_id}:alarm:cg-external-domains-*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:DescribeAlarms"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:cloudwatch:${var.aws_region}:${var.account_id}:alarm:cg-external-domains-*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/broker"
+      values   = local.broker_tag_values
     }
   }
 }
