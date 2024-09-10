@@ -450,8 +450,8 @@ module "sns" {
   sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }
 
-module "csb" {
-  source = "../../modules/csb"
+module "csb_iam" {
+  source = "../../modules/csb/iam"
 
   stack_description = var.stack_description
 }

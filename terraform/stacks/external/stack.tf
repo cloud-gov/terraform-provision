@@ -88,8 +88,8 @@ module "lets_encrypt_user" {
   username      = "lets-encrypt-${var.stack_description}"
 }
 
-module "csb" {
-  source = "../../modules/csb"
+module "csb_iam" {
+  source = "../../modules/csb/iam"
 
   stack_description = var.stack_description
 }
