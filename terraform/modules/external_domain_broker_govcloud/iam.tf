@@ -5,15 +5,43 @@
 data "aws_iam_policy_document" "external_domain_broker_policy" {
   statement {
     actions = [
-      "iam:ListServerCertificates",
       "iam:UploadServerCertificate",
       "iam:DeleteServerCertificate",
       "iam:TagServerCertificate",
-      "iam:UntagServerCertificate"
+      "iam:UntagServerCertificate",
     ]
     resources = [
       "arn:aws-us-gov:iam::${var.account_id}:server-certificate/alb/external-domains-*",
       "arn:aws-us-gov:iam::${var.account_id}:server-certificate/domains*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
+      "iam:GetServerCertificate"
+    ]
+    resources = [
+      "arn:aws-us-gov:iam::${var.account_id}:server-certificate/*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+
+  statement {
+    actions = [
+      "iam:ListServerCertificates",
+    ]
+    resources = [
+      "*",
     ]
     condition {
       test     = "StringEquals"

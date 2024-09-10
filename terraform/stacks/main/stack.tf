@@ -301,6 +301,7 @@ module "cf" {
 
   loadbalancer_forward_original_weight = var.loadbalancer_forward_original_weight
   loadbalancer_forward_new_weight      = var.loadbalancer_forward_new_weight
+  aws_lb_listener_ssl_policy           = var.aws_lb_listener_ssl_policy
 }
 
 
