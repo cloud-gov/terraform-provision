@@ -17,3 +17,17 @@ module "db" {
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
 }
+
+resource "cloudfoundry_user_provided_service" "db" {
+  name  = "csb-db"
+  space = "cloud-gov/services"
+  credentials = {
+    "db_name"  = module.db.rds_name
+    "host"     = module.db.rds_host
+    "name"     = module.db.rds_name
+    "password" = module.db.rds_password
+    "port"     = module.db.rds_port
+    "uri"      = module.db.rds_url
+    "username" = module.db.rds_username
+  }
+}
