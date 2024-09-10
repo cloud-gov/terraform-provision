@@ -455,3 +455,28 @@ module "csb_iam" {
 
   stack_description = var.stack_description
 }
+
+resource "random_password" "csb_rds_password" {
+  length      = 32
+  special     = false
+  min_special = 0
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
+module "csb_broker" {
+  count = var.stack_description == "development" ? 1 : 0
+
+  source = "../../modules/csb/broker"
+
+  rds_password        = random_password.csb_rds_password
+  rds_subnet_group    = module.stack.rds_subnet_group
+  rds_security_groups = [module.stack.rds_mysql_security_group]
+
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_instance_type               = var.csb_rds_instance_type
+
+  stack_description = var.stack_description
+}
