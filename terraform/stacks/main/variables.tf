@@ -284,3 +284,8 @@ variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
+
+variable "csb_rds_instance_type" {
+  type    = string
+  default = "db.t3.small"
+}

@@ -141,10 +141,10 @@ output "lets_encrypt_secret_access_key_curr" {
 }
 
 output "csb_access_key_id_curr" {
-  value = module.csb.access_key_id_curr
+  value = module.csb_iam.access_key_id_curr
 }
 
 output "csb_secret_access_key_curr" {
   sensitive = true
-  value     = module.csb.secret_access_key_curr
+  value     = module.csb_iam.secret_access_key_curr
 }

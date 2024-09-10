@@ -642,11 +642,11 @@ output "external_domain_broker_gov_secret_access_key_prev" {
 }
 
 output "csb_access_key_id_curr" {
-  value = module.csb.access_key_id_curr
+  value = module.csb_iam.access_key_id_curr
 }
 
 output "csb_secret_access_key_curr" {
-  value     = module.csb.secret_access_key_curr
+  value     = module.csb_iam.secret_access_key_curr
   sensitive = true
 }
 
