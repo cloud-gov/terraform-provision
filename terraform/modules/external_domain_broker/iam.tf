@@ -1,9 +1,3 @@
-locals {
-  broker_tag_values = [
-    "External domain broker",
-  ]
-}
-
 data "aws_iam_policy_document" "external_domain_broker_policy" {
   statement {
     actions = [
@@ -151,31 +145,13 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
   statement {
     actions = [
       "wafv2:TagResource",
-      "wafv2:UntagResource"
-    ]
-    resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalArn"
-      values   = [aws_iam_user.iam_user.arn]
-    }
-  }
-
-  statement {
-    actions = [
+      "wafv2:UntagResource",
       "wafv2:DeleteWebACL",
       "wafv2:GetWebACL"
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*"
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
     ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/broker"
-      values   = local.broker_tag_values
-    }
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
@@ -233,6 +209,8 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
   statement {
     actions = [
       "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:DeleteAlarms"
     ]
     resources = [
       "arn:${var.aws_partition}:cloudwatch:${var.aws_region}:${var.account_id}:alarm:cg-external-domains-*"
@@ -241,26 +219,6 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
-    }
-  }
-
-  statement {
-    actions = [
-      "cloudwatch:DeleteAlarms",
-      "cloudwatch:DescribeAlarms"
-    ]
-    resources = [
-      "arn:${var.aws_partition}:cloudwatch:${var.aws_region}:${var.account_id}:alarm:cg-external-domains-*"
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalArn"
-      values   = [aws_iam_user.iam_user.arn]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/broker"
-      values   = local.broker_tag_values
     }
   }
 }
