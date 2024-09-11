@@ -471,7 +471,7 @@ module "csb_broker" {
 
   source = "../../modules/csb/broker"
 
-  rds_password        = random_password.csb_rds_password
+  rds_password        = random_password.csb_rds_password.result
   rds_subnet_group    = module.stack.rds_subnet_group
   rds_security_groups = [module.stack.rds_mysql_security_group]
 
