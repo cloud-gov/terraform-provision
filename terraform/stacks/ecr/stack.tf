@@ -13,6 +13,7 @@ variable "repositories" {
     "cf-cli-resource",
     "cf-resource",
     "cloud-service-broker",
+    "concourse-http-jq-resource",
     "concourse-task",
     "cron-resource",
     "csb",
