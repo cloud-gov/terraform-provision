@@ -750,19 +750,19 @@ output "csb" {
   description = "Values required to deploy the Cloud Service Broker."
   value = {
     ecr_user = {
-      username               = module.csb_broker.ecr_user_username
-      access_key_id_curr     = module.csb_broker.ecr_user_access_key_id_curr
-      secret_access_key_curr = module.csb_broker.ecr_user_secret_access_key_curr
-      access_key_id_prev     = module.csb_broker.ecr_user_access_key_id_prev
-      secret_access_key_prev = module.csb_broker.ecr_user_secret_access_key_prev
+      username               = module.csb_broker[0].ecr_user_username
+      access_key_id_curr     = module.csb_broker[0].ecr_user_access_key_id_curr
+      secret_access_key_curr = module.csb_broker[0].ecr_user_secret_access_key_curr
+      access_key_id_prev     = module.csb_broker[0].ecr_user_access_key_id_prev
+      secret_access_key_prev = module.csb_broker[0].ecr_user_secret_access_key_prev
     }
     rds = {
-      host     = module.csb_broker.rds_host
-      port     = module.csb_broker.rds_port
-      url      = module.csb_broker.rds_url
-      name     = module.csb_broker.rds_name
-      username = module.csb_broker.rds_username
-      password = module.csb_broker.rds_password
+      host     = module.csb_broker[0].rds_host
+      port     = module.csb_broker[0].rds_port
+      url      = module.csb_broker[0].rds_url
+      name     = module.csb_broker[0].rds_name
+      username = module.csb_broker[0].rds_username
+      password = module.csb_broker[0].rds_password
     }
     broker_user = {
       access_key_id_curr     = module.csb_iam.access_key_id_curr
