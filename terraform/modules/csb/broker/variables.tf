@@ -19,7 +19,7 @@ variable "rds_instance_type" {
 }
 
 variable "rds_db_size" {
-  type    = string
+  type    = number
   default = 20
 }
 
