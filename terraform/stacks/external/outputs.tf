@@ -142,6 +142,7 @@ output "lets_encrypt_secret_access_key_curr" {
 
 output "csb" {
   description = "Values required to deploy the Cloud Service Broker."
+  sensitive   = true
   value = {
     broker_user = {
       access_key_id_curr     = module.csb_iam.access_key_id_curr
