@@ -751,19 +751,19 @@ output "csb" {
   sensitive   = true
   value = {
     ecr_user = {
-      username               = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_username : ""
-      access_key_id_curr     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_access_key_id_curr : ""
-      secret_access_key_curr = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_secret_access_key_curr : ""
-      access_key_id_prev     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_access_key_id_prev : ""
-      secret_access_key_prev = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_secret_access_key_prev : ""
+      username               = one(module.csb_broker[*].ecr_user_username)
+      access_key_id_curr     = one(module.csb_broker[*].ecr_user_access_key_id_curr)
+      secret_access_key_curr = one(module.csb_broker[*].ecr_user_secret_access_key_curr)
+      access_key_id_prev     = one(module.csb_broker[*].ecr_user_access_key_id_prev)
+      secret_access_key_prev = one(module.csb_broker[*].ecr_user_secret_access_key_prev)
     }
     rds = {
-      host     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_host : ""
-      port     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_port : ""
-      url      = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_url : ""
-      name     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_name : ""
-      username = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_username : ""
-      password = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_password : ""
+      host     = one(module.csb_broker[*].rds_host)
+      port     = one(module.csb_broker[*].rds_port)
+      url      = one(module.csb_broker[*].rds_url)
+      name     = one(module.csb_broker[*].rds_name)
+      username = one(module.csb_broker[*].rds_username)
+      password = one(module.csb_broker[*].rds_password)
     }
     broker_user = {
       access_key_id_curr     = module.csb_iam.access_key_id_curr
