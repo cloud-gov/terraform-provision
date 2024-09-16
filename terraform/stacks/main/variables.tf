@@ -289,3 +289,9 @@ variable "csb_rds_instance_type" {
   type    = string
   default = "db.t3.small"
 }
+
+variable "ecr_stack_name" {
+  type        = string
+  description = "The name of the stack that configures ECR."
+  default     = "ecr"
+}

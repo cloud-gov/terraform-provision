@@ -482,4 +482,5 @@ module "csb_broker" {
   rds_instance_type               = var.csb_rds_instance_type
 
   stack_description = var.stack_description
+  ecr_stack_name    = var.ecr_stack_name
 }

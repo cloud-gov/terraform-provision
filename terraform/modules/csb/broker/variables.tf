@@ -11,6 +11,11 @@ variable "remote_state_region" {
   type = string
 }
 
+variable "ecr_stack_name" {
+  type        = string
+  description = "The name of the stack that configures ECR."
+}
+
 # RDS variables
 
 variable "rds_instance_type" {
