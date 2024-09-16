@@ -71,3 +71,29 @@ resource "aws_ecr_repository" "repository" {
   tags                 = {}
   tags_all             = {}
 }
+
+resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
+  for_each = var.repositories
+
+  repository = each.key
+
+  policy = <<EOF
+  {
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Expire images without tags",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 1
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+  }
+  EOF
+}
