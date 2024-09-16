@@ -751,19 +751,19 @@ output "csb" {
   sensitive   = true
   value = {
     ecr_user = {
-      username               = module.csb_broker[0].ecr_user_username
-      access_key_id_curr     = module.csb_broker[0].ecr_user_access_key_id_curr
-      secret_access_key_curr = module.csb_broker[0].ecr_user_secret_access_key_curr
-      access_key_id_prev     = module.csb_broker[0].ecr_user_access_key_id_prev
-      secret_access_key_prev = module.csb_broker[0].ecr_user_secret_access_key_prev
+      username               = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_username : ""
+      access_key_id_curr     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_access_key_id_curr : ""
+      secret_access_key_curr = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_secret_access_key_curr : ""
+      access_key_id_prev     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_access_key_id_prev : ""
+      secret_access_key_prev = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].ecr_user_secret_access_key_prev : ""
     }
     rds = {
-      host     = module.csb_broker[0].rds_host
-      port     = module.csb_broker[0].rds_port
-      url      = module.csb_broker[0].rds_url
-      name     = module.csb_broker[0].rds_name
-      username = module.csb_broker[0].rds_username
-      password = module.csb_broker[0].rds_password
+      host     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_host : ""
+      port     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_port : ""
+      url      = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_url : ""
+      name     = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_name : ""
+      username = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_username : ""
+      password = length(module.csb_broker[0]) > 0 ? module.csb_broker[0].rds_password : ""
     }
     broker_user = {
       access_key_id_curr     = module.csb_iam.access_key_id_curr
