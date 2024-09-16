@@ -126,7 +126,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-development
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-development-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-development
@@ -163,7 +163,7 @@ jobs:
             passed: [plan-external-development]
       - task: terraform-apply-external-development
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *external-development-params
           TERRAFORM_ACTION: apply
@@ -185,7 +185,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-staging-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-staging
@@ -222,7 +222,7 @@ jobs:
             passed: [plan-external-staging]
       - task: terraform-apply-external-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *external-staging-params
           TERRAFORM_ACTION: apply
@@ -244,7 +244,7 @@ jobs:
             trigger: true
       - task: terraform-plan-external-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &external-production-params
           TERRAFORM_ACTION: plan
           STACK_NAME: external-production
@@ -272,7 +272,7 @@ jobs:
             passed: [plan-external-production]
       - task: terraform-apply-external-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *external-production-params
           TERRAFORM_ACTION: apply
@@ -294,7 +294,7 @@ jobs:
             trigger: true
       - task: plan-dns
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &dns-params
           TERRAFORM_ACTION: plan
           STACK_NAME: dns
@@ -319,7 +319,7 @@ jobs:
             passed: [plan-dns]
       - task: terraform-apply-dns
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *dns-params
           TERRAFORM_ACTION: apply
@@ -335,7 +335,7 @@ jobs:
       - task: terraform-plan-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &tooling-params
           TERRAFORM_ACTION: plan
           STACK_NAME: tooling
@@ -412,7 +412,7 @@ jobs:
       - task: terraform-apply-tooling
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *tooling-params
           TERRAFORM_ACTION: apply
@@ -470,7 +470,7 @@ jobs:
       - task: terraform-plan-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &development-params
           TERRAFORM_ACTION: plan
           STACK_NAME: development
@@ -537,7 +537,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 2
-          TF_VAR_waf_regex_rules: '((development_waf_regex_rules))'
+          TF_VAR_waf_regex_rules: "((development_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 
@@ -552,7 +552,7 @@ jobs:
       - task: terraform-apply-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *development-params
           TERRAFORM_ACTION: apply
@@ -646,7 +646,7 @@ jobs:
       - task: terraform-plan-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &staging-params
           TERRAFORM_ACTION: plan
           STACK_NAME: staging
@@ -711,7 +711,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 3
-          TF_VAR_waf_regex_rules: '((staging_waf_regex_rules))'
+          TF_VAR_waf_regex_rules: "((staging_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 
@@ -725,7 +725,7 @@ jobs:
       - task: terraform-apply-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *staging-params
           TERRAFORM_ACTION: apply
@@ -818,7 +818,7 @@ jobs:
       - task: terraform-plan-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &production-params
           TERRAFORM_ACTION: plan
           STACK_NAME: production
@@ -883,7 +883,7 @@ jobs:
           TF_VAR_cg_egress_ip_set_arn: ((cg_egress_ip_set_arn))
           TF_VAR_cidr_blocks: ((cidr_blocks))
           TF_VAR_domains_lbgroup_count: 4
-          TF_VAR_waf_regex_rules: '((production_waf_regex_rules))'
+          TF_VAR_waf_regex_rules: "((production_waf_regex_rules))"
       - *notify-slack
 
   - name: apply-production
@@ -896,7 +896,7 @@ jobs:
       - task: terraform-apply-production
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *production-params
           TERRAFORM_ACTION: apply
@@ -986,7 +986,7 @@ jobs:
             trigger: true
       - task: terraform-plan-ecr
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-ecr
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/ecr
@@ -1005,7 +1005,7 @@ jobs:
             passed: [plan-ecr]
       - task: terraform-apply-ecr
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *tf-ecr
           TERRAFORM_ACTION: apply
@@ -1020,7 +1020,7 @@ jobs:
             trigger: true
       - task: terraform-plan-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-concourse-staging
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
@@ -1043,7 +1043,7 @@ jobs:
             passed: [plan-concourse-staging]
       - task: terraform-apply-concourse-staging
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *tf-concourse-staging
           TERRAFORM_ACTION: apply
@@ -1058,7 +1058,7 @@ jobs:
             trigger: true
       - task: terraform-plan-concourse-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params: &tf-concourse-production
           TERRAFORM_ACTION: plan
           TEMPLATE_SUBDIR: terraform/stacks/concourse
@@ -1081,7 +1081,7 @@ jobs:
             passed: [plan-concourse-production]
       - task: terraform-apply-concourse-production
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo}
+        input_mapping: { terraform-templates: cg-provision-repo }
         params:
           <<: *tf-concourse-production
           TERRAFORM_ACTION: apply

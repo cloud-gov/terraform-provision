@@ -140,11 +140,15 @@ output "lets_encrypt_secret_access_key_curr" {
   sensitive = true
 }
 
-output "csb_access_key_id_curr" {
-  value = module.csb_iam.access_key_id_curr
-}
-
-output "csb_secret_access_key_curr" {
-  sensitive = true
-  value     = module.csb_iam.secret_access_key_curr
+output "csb" {
+  description = "Values required to deploy the Cloud Service Broker."
+  sensitive   = true
+  value = {
+    broker_user = {
+      access_key_id_curr     = module.csb_iam.access_key_id_curr
+      secret_access_key_curr = module.csb_iam.secret_access_key_curr
+      access_key_id_prev     = module.csb_iam.access_key_id_prev
+      secret_access_key_prev = module.csb_iam.secret_access_key_prev
+    }
+  }
 }
