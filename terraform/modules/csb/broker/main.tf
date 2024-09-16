@@ -18,16 +18,23 @@ module "db" {
   rds_apply_immediately           = var.rds_apply_immediately
 }
 
-resource "cloudfoundry_user_provided_service" "db" {
-  name  = "csb-db"
-  space = "cloud-gov/services"
-  credentials = {
-    "db_name"  = module.db.rds_name
-    "host"     = module.db.rds_host
-    "name"     = module.db.rds_name
-    "password" = module.db.rds_password
-    "port"     = module.db.rds_port
-    "uri"      = module.db.rds_url
-    "username" = module.db.rds_username
+data "terraform_remote_state" "ecr" {
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_state_bucket
+    region = var.remote_state_region
+    key    = "${var.ecr_stack_name}/terraform.tfstate"
   }
+}
+
+locals {
+  csb_ecr_repository_arn = data.terraform_remote_state.ecr.outputs.repository_arns["csb"]
+}
+
+// A user with ECR pull permissions so Cloud Foundry can pull the CSB image.
+module "ecr_user" {
+  source         = "../../iam_user/ecr_pull_user"
+  username       = "csb-ecr-${var.stack_description}"
+  repository_arn = local.csb_ecr_repository_arn
 }
