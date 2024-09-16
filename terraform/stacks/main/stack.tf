@@ -469,7 +469,9 @@ resource "random_password" "csb_rds_password" {
 module "csb_broker" {
   count = var.stack_description == "development" ? 1 : 0
 
-  source = "../../modules/csb/broker"
+  source              = "../../modules/csb/broker"
+  remote_state_bucket = var.remote_state_bucket
+  remote_state_region = var.aws_default_region
 
   rds_password        = random_password.csb_rds_password.result
   rds_subnet_group    = module.stack.rds_subnet_group
