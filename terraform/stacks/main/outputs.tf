@@ -748,6 +748,7 @@ output "tcp_lb_security_groups" {
 
 output "csb" {
   description = "Values required to deploy the Cloud Service Broker."
+  sensitive   = true
   value = {
     ecr_user = {
       username               = module.csb_broker[0].ecr_user_username
