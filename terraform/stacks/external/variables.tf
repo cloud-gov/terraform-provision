@@ -1,6 +1,11 @@
 variable "stack_description" {
 }
 
+variable "terraform_state_bucket" {
+  type        = string
+  description = "The name of the bucket in which terraform state for this stack is stored."
+}
+
 
 variable "external_domain_broker_hosted_zone" {
 }

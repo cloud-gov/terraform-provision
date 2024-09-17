@@ -144,6 +144,7 @@ jobs:
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
           TF_VAR_sns_cg_platform_notifications_email: ((development_sns_cg_platform_notifications_email))
           TF_VAR_sns_cg_platform_slack_notifications_email: ((development_sns_cg_platform_slack_notifications_email))
+          TF_VAR_terraform_state_bucket: ((aws_external_s3_tfstate_bucket))
       - &notify-slack
         put: slack
         params:
@@ -203,6 +204,7 @@ jobs:
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
           TF_VAR_sns_cg_platform_notifications_email: ((staging_sns_cg_platform_notifications_email))
           TF_VAR_sns_cg_platform_slack_notifications_email: ((staging_sns_cg_platform_slack_notifications_email))
+          TF_VAR_terraform_state_bucket: ((aws_external_s3_tfstate_bucket))
       - &notify-slack
         put: slack
         params:
@@ -262,6 +264,7 @@ jobs:
           TF_VAR_external_domain_waf_rate_limit_challenge_threshold: ((external_domain_waf_rate_limit_challenge_threshold))
           TF_VAR_sns_cg_platform_notifications_email: ((production_sns_cg_platform_notifications_email))
           TF_VAR_sns_cg_platform_slack_notifications_email: ((production_sns_cg_platform_slack_notifications_email))
+          TF_VAR_terraform_state_bucket: ((aws_external_s3_tfstate_bucket))
       - *notify-slack
 
   - name: apply-external-production
