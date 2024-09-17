@@ -150,5 +150,11 @@ output "csb" {
       access_key_id_prev     = module.csb_iam.access_key_id_prev
       secret_access_key_prev = module.csb_iam.secret_access_key_prev
     }
+    external_terraform_state_reader = {
+      access_key_id_curr     = module.terraform_state_reader.access_key_id_curr
+      secret_access_key_curr = module.terraform_state_reader.secret_access_key_curr
+      access_key_id_prev     = module.terraform_state_reader.access_key_id_prev
+      secret_access_key_prev = module.terraform_state_reader.secret_access_key_prev
+    }
   }
 }

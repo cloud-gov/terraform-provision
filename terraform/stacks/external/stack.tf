@@ -102,3 +102,10 @@ module "sns" {
   sns_cg_platform_slack_notifications_name  = "${var.stack_description}-platform-slack-notifications"
   sns_cg_platform_slack_notifications_email = var.sns_cg_platform_slack_notifications_email
 }
+
+module "terraform_state_reader" {
+  source = "../../modules/iam_user/s3_bucket_readonly"
+
+  bucket_name = var.terraform_state_bucket
+  username    = "${var.stack_description}-terraform-state-reader"
+}
