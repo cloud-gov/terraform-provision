@@ -15,7 +15,9 @@
       "Effect": "Allow",
       "Action": [
         "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
+        "logs:DescribeLogStreams",
+        "logs:FilterLogEvents" ,
+        "logs:ListTagsLogGroup"
       ],
       "Resource": [
         "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:*"
