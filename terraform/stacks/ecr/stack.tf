@@ -97,7 +97,7 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
             "rulePriority": 2,
             "description": "Only keep the two latest images",
             "selection": {
-                "tagStatus": "all",
+                "tagStatus": "any",
                 "countType": "imageCountMoreThan",
                 "countNumber": 2
             },
