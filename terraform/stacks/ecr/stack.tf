@@ -43,6 +43,8 @@ variable "repositories" {
     "s3-simple-resource",
     "semver-resource",
     "slack-notification-resource",
+    "opensearch-testing",
+    "opensearch-dashboards-testing",
     "time-resource",
     "ubuntu-hardened",
   ]
