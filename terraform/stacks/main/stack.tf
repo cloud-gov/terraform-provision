@@ -284,6 +284,7 @@ module "cf" {
   waf_regular_expressions                 = var.waf_regular_expressions
   waf_drop_logs_hosts_regular_expressions = var.waf_drop_logs_hosts_regular_expressions
   waf_regex_rules                         = var.waf_regex_rules
+  bad_input_scope_down_statements         = var.bad_input_scope_down_statements
 
   scope_down_known_bad_inputs_not_match_uri_path_regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
   scope_down_known_bad_inputs_not_match_origin_search_string  = var.scope_down_known_bad_inputs_not_match_origin_search_string

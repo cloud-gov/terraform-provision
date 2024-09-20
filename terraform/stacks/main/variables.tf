@@ -295,3 +295,16 @@ variable "ecr_stack_name" {
   description = "The name of the stack that configures ECR."
   default     = "ecr"
 }
+
+variable "bad_input_scope_down_statements" {
+  type = list(object({
+    # origin_search_string is matched exactly against the origin of a request
+    origin_search_string = string
+    # host_regex is matched against the path on requests
+    path_regex = string
+    # `name` is used for metrics and logging
+    name = string
+  }))
+  description = "list of objects defining scope down statements for the AWSManagedRulesKnownBadInputsRuleSet"
+  default     = []
+}

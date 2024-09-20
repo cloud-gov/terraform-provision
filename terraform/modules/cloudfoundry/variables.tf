@@ -253,6 +253,18 @@ variable "waf_regex_rules" {
   default     = []
 }
 
+variable "bad_input_scope_down_statements" {
+  type = list(object({
+    # origin_search_string is matched exactly against the origin of a request
+    origin_search_string = string
+    # host_regex is matched against the path on requests
+    path_regex = string
+    # `name` is used for metrics and logging
+    name = string
+  }))
+  description = "list of objects defining scope down statements for the AWSManagedRulesKnownBadInputsRuleSet"
+  default     = []
+}
 
 variable "aws_lb_listener_ssl_policy" {
   type    = string

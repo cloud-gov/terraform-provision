@@ -139,42 +139,47 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
 
-        scope_down_statement {
-          and_statement {
-            statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    search_string         = var.scope_down_known_bad_inputs_not_match_origin_search_string
-                    positional_constraint = "EXACTLY"
+        dynamic "scope_down_statement" {
+          for_each = toset([var.bad_input_scope_down_statements])
+          iterator = scope_down_config
 
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
+          content {
+            and_statement {
+              statement {
+                not_statement {
+                  statement {
+                    byte_match_statement {
+                      search_string         = scope_down_config.value.origin_search_string
+                      positional_constraint = "EXACTLY"
 
-                    field_to_match {
-                      single_header {
-                        name = "origin"
+                      text_transformation {
+                        priority = 0
+                        type     = "NONE"
+                      }
+
+                      field_to_match {
+                        single_header {
+                          name = "origin"
+                        }
                       }
                     }
                   }
                 }
               }
-            }
-            statement {
-              not_statement {
-                statement {
-                  regex_match_statement {
-                    regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+              statement {
+                not_statement {
+                  statement {
+                    regex_match_statement {
+                      regex_string = scope_down_config.value.path_regex
 
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
+                      text_transformation {
+                        priority = 0
+                        type     = "NONE"
+                      }
 
-                    field_to_match {
-                      uri_path {}
+                      field_to_match {
+                        uri_path {}
+                      }
                     }
                   }
                 }
