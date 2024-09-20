@@ -221,6 +221,23 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       values   = [aws_iam_user.iam_user.arn]
     }
   }
+
+  statement {
+    actions = [
+      "sns:CreateTopic",
+      "sns:DeleteTopic",
+      "sns:TagResource",
+      "sns:UntagResource"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:sns:${var.aws_region}:${var.account_id}:cg-external-domains-*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
 }
 
 resource "aws_iam_user" "iam_user" {
