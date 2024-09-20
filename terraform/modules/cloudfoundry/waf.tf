@@ -140,7 +140,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         vendor_name = "AWS"
 
         dynamic "scope_down_statement" {
-          for_each = toset([var.bad_input_scope_down_statements])
+          for_each = var.bad_input_scope_down_statements
           iterator = scope_down_config
 
           content {
