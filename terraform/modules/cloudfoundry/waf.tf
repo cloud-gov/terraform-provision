@@ -139,12 +139,12 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
 
-        dynamic "scope_down_statement" {
-          for_each = var.bad_input_scope_down_statements
-          iterator = scope_down_config
+        scope_down_statement {
+          dynamic "and_statement" {
+            for_each = var.bad_input_scope_down_statements
+            iterator = scope_down_config
 
-          content {
-            and_statement {
+            content {
               statement {
                 not_statement {
                   statement {
