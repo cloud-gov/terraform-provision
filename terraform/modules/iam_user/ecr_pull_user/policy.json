@@ -6,10 +6,14 @@
       "Action": [
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:GetAuthorizationToken"
+        "ecr:BatchGetImage"
       ],
       "Resource": "${repository_arn}"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["ecr:GetAuthorizationToken"],
+      "Resource": "*"
     }
   ]
 }
