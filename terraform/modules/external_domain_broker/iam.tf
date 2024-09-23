@@ -227,7 +227,9 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       "sns:CreateTopic",
       "sns:DeleteTopic",
       "sns:TagResource",
-      "sns:UntagResource"
+      "sns:UntagResource",
+      "sns:Subscribe",
+      "sns:Unsubscribe"
     ]
     resources = [
       "arn:${var.aws_partition}:sns:${var.aws_region}:${var.account_id}:cg-external-domains-*"
