@@ -389,7 +389,7 @@ jobs:
           TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
           TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
           TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
-          TF_VAR_rds_db_engine_version_bosh: "15.5"
+          TF_VAR_rds_db_engine_version_bosh: "15.7"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.7"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
