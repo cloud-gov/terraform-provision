@@ -16,36 +16,36 @@ resource "aws_security_group" "restricted_web_traffic" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "http_ipv4_ingress_rules" {
-  for_each          = var.restricted_ingress_web_cidrs
+  for_each          = toset(var.restricted_ingress_web_cidrs)
   security_group_id = aws_security_group.restricted_web_traffic.id
-  cidr_ipv4         = each.value
+  cidr_ipv4         = each.key
   from_port         = 80
   to_port           = 80
   ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "http_ipv6_ingress_rules" {
-  for_each          = var.restricted_ingress_web_ipv6_cidrs
+  for_each          = toset(var.restricted_ingress_web_ipv6_cidrs)
   security_group_id = aws_security_group.restricted_web_traffic.id
-  cidr_ipv6         = each.value
+  cidr_ipv6         = each.key
   from_port         = 80
   to_port           = 80
   ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "https_ipv4_ingress_rules" {
-  for_each          = var.restricted_ingress_web_cidrs
+  for_each          = toset(var.restricted_ingress_web_cidrs)
   security_group_id = aws_security_group.restricted_web_traffic.id
-  cidr_ipv4         = each.value
+  cidr_ipv4         = each.key
   from_port         = 443
   to_port           = 443
   ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "https_ipv6_ingress_rules" {
-  for_each          = var.restricted_ingress_web_ipv6_cidrs
+  for_each          = toset(var.restricted_ingress_web_ipv6_cidrs)
   security_group_id = aws_security_group.restricted_web_traffic.id
-  cidr_ipv6         = each.value
+  cidr_ipv6         = each.key
   from_port         = 443
   to_port           = 443
   ip_protocol       = "tcp"
@@ -56,6 +56,6 @@ resource "aws_vpc_security_group_egress_rule" "all_egress" {
   from_port         = 0
   to_port           = 0
   ip_protocol       = "-1"
-  cidr_ipv4         = ["0.0.0.0/0"]
-  cidr_ipv6         = ["::/0"]
+  cidr_ipv4         = "0.0.0.0/0"
+  cidr_ipv6         = "::/0"
 }
