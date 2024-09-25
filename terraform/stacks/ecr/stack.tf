@@ -70,8 +70,10 @@ resource "aws_ecr_repository" "repository" {
 
   name                 = each.key
   image_tag_mutability = "MUTABLE"
-  tags                 = {}
-  tags_all             = {}
+  tags = {
+    Environment = "Production",
+    Name        = each.key
+  }
 }
 
 resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
