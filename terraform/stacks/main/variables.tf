@@ -25,7 +25,7 @@ variable "rds_instance_type" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.17"
+  default = "12.19"
 }
 
 variable "rds_parameter_group_family" {
@@ -33,7 +33,7 @@ variable "rds_parameter_group_family" {
 }
 
 variable "rds_db_engine_version_cf" {
-  default = "16.1"
+  default = "16.3"
 }
 
 variable "rds_parameter_group_family_cf" {
