@@ -53,16 +53,12 @@ resource "aws_vpc_security_group_ingress_rule" "https_ipv6_ingress_rules" {
 
 resource "aws_vpc_security_group_egress_rule" "all_egress_ipv4" {
   security_group_id = aws_security_group.restricted_web_traffic.id
-  from_port         = 0
-  to_port           = 0
   ip_protocol       = "-1"
   cidr_ipv4         = "0.0.0.0/0"
 }
 
 resource "aws_vpc_security_group_egress_rule" "all_egress_ipv6" {
   security_group_id = aws_security_group.restricted_web_traffic.id
-  from_port         = 0
-  to_port           = 0
   ip_protocol       = "-1"
   cidr_ipv6         = "::/0"
 }
