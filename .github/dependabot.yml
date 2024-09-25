@@ -50,7 +50,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/csb"
+    directory: "/terraform/modules/csb/broker"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/csb/iam"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -178,6 +182,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_user/ecr_pull_user"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/ecr_user"
     schedule:
       interval: "weekly"
@@ -199,6 +207,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/rds_storage_alert"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_user/s3_bucket_readonly"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -322,7 +334,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/stacks/cloudfront"
+    directory: "/terraform/stacks/concourse"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
