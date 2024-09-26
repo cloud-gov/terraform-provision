@@ -30,7 +30,7 @@ variable "rds_apply_immediately" {
 }
 
 variable "rds_db_engine_version" {
-  default = "12.17"
+  default = "12.19"
 }
 
 variable "rds_parameter_group_family" {
