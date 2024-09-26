@@ -13,6 +13,13 @@
     },
     {
       "Effect": "Allow",
+      "Action": "es:ListDomainNames",
+      "Resource": [
+        "arn:${aws_partition}:es:${aws_default_region}:${account_id}:domain/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
       "Action": [
         "logs:DescribeLogGroups",
         "logs:DescribeLogStreams",
