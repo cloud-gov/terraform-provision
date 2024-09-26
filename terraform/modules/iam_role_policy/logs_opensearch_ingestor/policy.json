@@ -14,6 +14,16 @@
     {
       "Effect": "Allow",
       "Action": [
+        "es:ListDomainNames",
+        "es:ListTags"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:es:${aws_default_region}:${account_id}:domain/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "logs:DescribeLogGroups",
         "logs:DescribeLogStreams",
         "logs:FilterLogEvents" ,
