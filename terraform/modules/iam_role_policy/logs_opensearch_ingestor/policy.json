@@ -13,7 +13,10 @@
     },
     {
       "Effect": "Allow",
-      "Action": "es:ListDomainNames",
+      "Action": [
+        "es:ListDomainNames",
+        "es:ListTags"
+      ],
       "Resource": [
         "arn:${aws_partition}:es:${aws_default_region}:${account_id}:domain/*"
       ]
