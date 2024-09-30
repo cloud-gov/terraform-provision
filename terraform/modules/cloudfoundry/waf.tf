@@ -812,7 +812,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
 resource "aws_cloudwatch_log_group" "cf_uaa_waf_core_cloudwatch_log_group" {
   name              = "aws-waf-logs-${var.stack_description}"
-  retention_in_days = 180
+  retention_in_days = 365
   tags = {
     Environment = "${var.stack_description}"
   }
