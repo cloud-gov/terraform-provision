@@ -30,7 +30,7 @@ variable "rds_db_size" {
 
 variable "rds_db_name" {
   type    = string
-  default = "servicebroker"
+  default = "csb"
 }
 
 variable "rds_db_engine" {
