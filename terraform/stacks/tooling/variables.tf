@@ -277,6 +277,10 @@ variable "aws_lb_listener_ssl_policy" {
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
 
-variable "rds_db_engine_version_defectdojo_staging" {
+variable "rds_db_engine_version_defectdojo" {
   default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo" {
+  default = "postgres16"
 }
