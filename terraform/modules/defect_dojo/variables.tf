@@ -25,7 +25,7 @@ variable "rds_parameter_group_name" {
 }
 
 variable "rds_parameter_group_family" {
-  default = "postgres12"
+  default = "postgres16"
 }
 
 variable "rds_db_size" {
@@ -41,11 +41,11 @@ variable "rds_db_storage_type" {
 }
 
 variable "rds_instance_type" {
-  default = "db.t3.medium"
+  default = "db.m5.large"
 }
 
 variable "rds_db_engine_version" {
-  default = "12.17"
+  default = "16.3"
 }
 
 variable "rds_username" {
