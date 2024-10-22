@@ -56,7 +56,7 @@
       "Action": [
            "s3:ListBucket"
       ],
-      "Resource":  "arn:${aws_partition}:s3:::logsearch-*/*"
+      "Resource":  "arn:${aws_partition}:s3:::logsearch-*"
     }
   ]
 }
