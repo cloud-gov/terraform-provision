@@ -43,6 +43,20 @@
       "Resource": [
         "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:log-group:logs-opensearch-*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+           "s3:GetObject"
+      ],
+      "Resource":  "arn:${aws_partition}:s3:::logsearch-*/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+           "s3:ListBucket"
+      ],
+      "Resource":  "arn:${aws_partition}:s3:::logsearch-*"
     }
   ]
 }
