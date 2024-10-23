@@ -10,6 +10,7 @@ module "bosh_release_bucket" {
   bucket        = "${var.bucket_prefix}-cloud-gov-bosh-releases"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
+  sse_algorithm = "aws:kms"
   # force_destroy = "true"
 }
 
