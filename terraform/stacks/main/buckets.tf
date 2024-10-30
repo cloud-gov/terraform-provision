@@ -3,6 +3,7 @@ module "bosh_blobstore_bucket" {
   bucket        = var.blobstore_bucket_name
   aws_partition = data.aws_partition.current.partition
   force_destroy = "true"
+  server_side_encryption = var.bosh_blobstore_sse
 }
 
 module "log_bucket" {
