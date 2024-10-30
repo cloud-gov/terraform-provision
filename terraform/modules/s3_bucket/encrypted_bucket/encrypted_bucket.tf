@@ -8,7 +8,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypted_bucket_
   bucket = aws_s3_bucket.encrypted_bucket.id
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm = var.server_side_encryption
     }
   }
 }
@@ -60,7 +60,7 @@ resource "aws_s3_bucket_policy" "encrypted_bucket_policy" {
         "Resource": "arn:${var.aws_partition}:s3:::${var.bucket}/*",
         "Condition": {
             "StringNotEquals": {
-                "s3:x-amz-server-side-encryption": "AES256"
+                "s3:x-amz-server-side-encryption": "${var.server_side_encryption}"
             }
         }
     }]

@@ -19,3 +19,7 @@ variable "aws_partition" {
 variable "expiration_days" {
   default = 0
 }
+
+variable "server_side_encryption" {
+  default = "AES256"
+}
