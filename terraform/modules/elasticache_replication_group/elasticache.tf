@@ -14,4 +14,7 @@ resource "aws_elasticache_replication_group" "replication_group" {
 
   transit_encryption_enabled = true
   at_rest_encryption_enabled = true
+
+  subnet_group_name  = var.subnet_group_name
+  security_group_ids = var.security_group_ids
 }
