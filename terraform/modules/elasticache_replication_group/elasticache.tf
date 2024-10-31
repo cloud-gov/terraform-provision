@@ -1,9 +1,14 @@
+resource "random_password" "password" {
+  length = 25
+}
+
 resource "aws_elasticache_replication_group" "replication_group" {
   replication_group_id       = "${var.cluster_name}-cluster"
   description                = "${var.cluster_name} cluster"
   node_type                  = var.node_type
   port                       = 6379
   auto_minor_version_upgrade = true
+  auth_token                 = random_password.password.result
 
   engine             = var.engine
   engine_version     = var.engine_version
