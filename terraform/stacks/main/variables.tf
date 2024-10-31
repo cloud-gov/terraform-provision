@@ -295,3 +295,7 @@ variable "ecr_stack_name" {
   description = "The name of the stack that configures ECR."
   default     = "ecr"
 }
+
+variable "bosh_blobstore_sse" {
+  default = "AES256"
+}
