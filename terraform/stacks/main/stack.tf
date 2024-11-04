@@ -484,3 +484,11 @@ module "csb_broker" {
   stack_description = var.stack_description
   ecr_stack_name    = var.ecr_stack_name
 }
+
+module "opensearch_proxy_redis_cluster" {
+  source = "../../modules/elasticache_replication_group"
+
+  cluster_name       = "${var.stack_description}-opensearch-proxy"
+  subnet_group_name  = module.elasticache_broker_network.elasticache_subnet_group
+  security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
+}

@@ -773,3 +773,11 @@ output "csb" {
     }
   }
 }
+
+output "opensearch_proxy_redis_cluster" {
+  value = {
+    host     = module.opensearch_proxy_redis_cluster.primary_endpoint
+    password = module.opensearch_proxy_redis_cluster.password
+  }
+  sensitive = true
+}
