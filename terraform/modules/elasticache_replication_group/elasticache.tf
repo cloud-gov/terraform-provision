@@ -1,5 +1,7 @@
 resource "random_password" "password" {
-  length = 25
+  length = 64
+  # see https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth.html#auth-overview
+  override_special = "!&#$^<>-"
 }
 
 resource "aws_elasticache_replication_group" "replication_group" {
