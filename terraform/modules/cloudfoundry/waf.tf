@@ -126,71 +126,135 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
     }
   }
 
-  rule {
-    name     = "AWS-KnownBadInputsRuleSet"
-    priority = 30
+  # rule {
+  #   name     = "AWS-KnownBadInputsRuleSet"
+  #   priority = 30
 
-    override_action {
-      none {}
-    }
+  #   override_action {
+  #     none {}
+  #   }
 
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesKnownBadInputsRuleSet"
-        vendor_name = "AWS"
+  #   statement {
+  #     managed_rule_group_statement {
+  #       name        = "AWSManagedRulesKnownBadInputsRuleSet"
+  #       vendor_name = "AWS"
 
-        scope_down_statement {
-          and_statement {
-            statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    search_string         = var.scope_down_known_bad_inputs_not_match_origin_search_string
-                    positional_constraint = "EXACTLY"
+  #       scope_down_statement {
+  #         and_statement {
+  #           statement {
+  #             not_statement {
+  #               statement {
+  #                 byte_match_statement {
+  #                   search_string         = var.scope_down_known_bad_inputs_not_match_origin_search_string
+  #                   positional_constraint = "EXACTLY"
 
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
+  #                   text_transformation {
+  #                     priority = 0
+  #                     type     = "NONE"
+  #                   }
+
+  #                   field_to_match {
+  #                     single_header {
+  #                       name = "origin"
+  #                     }
+  #                   }
+  #                 }
+  #               }
+  #             }
+  #           }
+  #           statement {
+  #             not_statement {
+  #               statement {
+  #                 regex_match_statement {
+  #                   regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
+
+  #                   text_transformation {
+  #                     priority = 0
+  #                     type     = "NONE"
+  #                   }
+
+  #                   field_to_match {
+  #                     uri_path {}
+  #                   }
+  #                 }
+  #               }
+  #             }
+  #           }
+  #         }
+  #       }
+  #     }
+  #   }
+
+  #   visibility_config {
+  #     cloudwatch_metrics_enabled = true
+  #     metric_name                = "${var.stack_description}-AWS-KnownBadInputsRuleSet"
+  #     sampled_requests_enabled   = true
+  #   }
+  # }
+
+  rule_json = jsonencode({
+    "Name" : "AWS-KnownBadInputsRuleSet",
+    "Priority" : 30,
+    "Statement" : {
+      "ManagedRuleGroupStatement" : {
+        "VendorName" : "AWS",
+        "Name" : "AWSManagedRulesKnownBadInputsRuleSet",
+        "ScopeDownStatement" : {
+          "AndStatement" : {
+            "Statements" : [
+              {
+                "NotStatement" : {
+                  "Statement" : {
+                    "ByteMatchStatement" : {
+                      "SearchString" : var.scope_down_known_bad_inputs_not_match_origin_search_string,
+                      "FieldToMatch" : {
+                        "SingleHeader" : {
+                          "Name" : "origin"
+                        }
+                      },
+                      "TextTransformations" : [
+                        {
+                          "Priority" : 0,
+                          "Type" : "NONE"
+                        }
+                      ],
+                      "PositionalConstraint" : "EXACTLY"
                     }
-
-                    field_to_match {
-                      single_header {
-                        name = "origin"
-                      }
+                  }
+                }
+              },
+              {
+                "NotStatement" : {
+                  "Statement" : {
+                    "RegexMatchStatement" : {
+                      "RegexString" : var.scope_down_known_bad_inputs_not_match_uri_path_regex_string,
+                      "FieldToMatch" : {
+                        "UriPath" : {}
+                      },
+                      "TextTransformations" : [
+                        {
+                          "Priority" : 0,
+                          "Type" : "NONE"
+                        }
+                      ]
                     }
                   }
                 }
               }
-            }
-            statement {
-              not_statement {
-                statement {
-                  regex_match_statement {
-                    regex_string = var.scope_down_known_bad_inputs_not_match_uri_path_regex_string
-
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-
-                    field_to_match {
-                      uri_path {}
-                    }
-                  }
-                }
-              }
-            }
+            ]
           }
         }
       }
+    },
+    "OverrideAction" : {
+      "None" : {}
+    },
+    "VisibilityConfig" : {
+      "SampledRequestsEnabled" : true,
+      "CloudWatchMetricsEnabled" : true,
+      "MetricName" : "development-AWS-KnownBadInputsRuleSet"
     }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "${var.stack_description}-AWS-KnownBadInputsRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
+  })
 
   rule {
     name     = "AWSManagedRule-CoreRuleSet"
