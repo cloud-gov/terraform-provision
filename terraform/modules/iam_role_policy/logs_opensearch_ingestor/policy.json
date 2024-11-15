@@ -57,6 +57,20 @@
            "s3:ListBucket"
       ],
       "Resource":  "arn:${aws_partition}:s3:::logsearch-*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+           "s3:GetObject"
+      ],
+      "Resource":  "arn:${aws_partition}:s3:::logs-opensearch-*/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+           "s3:ListBucket"
+      ],
+      "Resource":  "arn:${aws_partition}:s3:::logs-opensearch-*"
     }
   ]
 }
