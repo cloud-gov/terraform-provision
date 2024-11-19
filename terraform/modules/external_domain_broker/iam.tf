@@ -161,6 +161,25 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
+      "wafv2:PutLoggingConfiguration"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "wafv2:LogDestinationResource"
+      values   = [aws_cloudwatch_log_group.external_domain_waf_logs.arn]
+    }
+  }
+
+  statement {
+    actions = [
       "wafv2:GetRuleGroup",
     ]
     resources = [
