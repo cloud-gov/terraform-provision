@@ -33,6 +33,22 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     }
   }
 
+  # this permission is required for wafv2:PutLoggingConfiguration
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awswafv2.html#awswafv2-actions-as-permissions
+  statement {
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = [
+      "arn:aws:iam::${var.account_id}:role/aws-service-role/wafv2.amazonaws.com/AWSServiceRoleForWAFV2Logging"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
   statement {
     actions = [
       "s3:GetBucketAcl",
@@ -161,7 +177,8 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
 
   statement {
     actions = [
-      "wafv2:PutLoggingConfiguration"
+      "wafv2:PutLoggingConfiguration",
+      "wafv2:DeleteLoggingConfiguration"
     ]
     resources = [
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
@@ -172,9 +189,32 @@ data "aws_iam_policy_document" "external_domain_broker_manage_protections_policy
       values   = [aws_iam_user.iam_user.arn]
     }
     condition {
-      test     = "StringEquals"
+      test     = "ArnLike"
       variable = "wafv2:LogDestinationResource"
       values   = [aws_cloudwatch_log_group.external_domain_waf_logs.arn]
+    }
+  }
+
+  # necessary permissions for sending WAF logs to CloudWatch
+  # see https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html#logging-cw-logs-permissions
+  #
+  # wildcard permissions are required for these actions
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatchlogs.html#amazoncloudwatchlogs-actions-as-permissions
+  statement {
+    actions = [
+      "logs:CreateLogDelivery",
+      "logs:DeleteLogDelivery",
+      "logs:PutResourcePolicy",
+      "logs:DescribeResourcePolicies",
+      "logs:DescribeLogGroups"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
     }
   }
 
