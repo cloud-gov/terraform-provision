@@ -17,6 +17,8 @@ variable "repositories" {
     "concourse-task",
     "cron-resource",
     "csb",
+    "csb-docproxy",
+    "csb-service-updater",
     "email-resource",
     "external-domain-broker-testing",
     "external-domain-broker-migrator-testing",
