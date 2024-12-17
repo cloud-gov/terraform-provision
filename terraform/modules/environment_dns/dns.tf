@@ -222,3 +222,19 @@ resource "aws_route53_record" "brokered_mail_ns" {
   ttl     = "30"
   records = aws_route53_zone.brokered_mail_zone.name_servers
 }
+
+locals {
+  csb_docproxy_subdomain_name  = "_acme-challenge.services.${var.domain}."
+  csb_docproxy_subdomain_value = "_acme-challenge.services.${var.domain}.external-domains-${var.stack_name}.${var.domain}."
+}
+
+// DNS records corresponding to the External Domain Service Instance
+// provisioned for the Cloud Service Broker documentation proxy.
+// Repo: https://github.com/cloud-gov/csb
+resource "aws_route53_record" "csb_docproxy" {
+  name    = local.csb_docproxy_subdomain_name
+  type    = "CNAME"
+  zone_id = var.zone_id
+
+  records = [local.csb_docproxy_subdomain_value]
+}
