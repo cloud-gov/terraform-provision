@@ -235,6 +235,7 @@ resource "aws_route53_record" "csb_docproxy" {
   name    = local.csb_docproxy_subdomain_name
   type    = "CNAME"
   zone_id = var.zone_id
+  ttl     = 300
 
   records = [local.csb_docproxy_subdomain_value]
 }
