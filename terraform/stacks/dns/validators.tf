@@ -20,7 +20,7 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_txt" {
   ttl     = 300
 
   records = [
-    "v=spf1 include:mail.zendesk.com include:_spf.google.com ip4:${data.terraform_remote_state.tooling.outputs.nat_egress_ip_az1} ip4:${data.terraform_remote_state.tooling.outputs.nat_egress_ip_az2} ~all",
+    "v=spf1 include:mail.zendesk.com include:cloud-gov-new.zendesk.com include:_spf.google.com ip4:${data.terraform_remote_state.tooling.outputs.nat_egress_ip_az1} ip4:${data.terraform_remote_state.tooling.outputs.nat_egress_ip_az2} ~all",
     "google-site-verification=jxczK0Pz1ybEFx79BlXIfeX2Cc5vs2YQuqvLnTYF9Bw",
   ]
 }
