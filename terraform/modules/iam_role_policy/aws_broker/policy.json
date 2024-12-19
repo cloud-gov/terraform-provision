@@ -194,7 +194,7 @@
     {
       "Effect": "Allow",
       "Action": [
-        "logs:DescribeLogs"
+        "logs:DescribeLogGroups"
       ],
       "Resource": [
         "*"
