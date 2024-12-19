@@ -190,6 +190,15 @@
 
       ],
       "Resource": "*"
-  }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeLogs"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
   ]
 }
