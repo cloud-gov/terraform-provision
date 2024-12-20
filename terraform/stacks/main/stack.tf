@@ -363,18 +363,6 @@ module "logsearch" {
   aws_partition       = data.aws_partition.current.partition
 }
 
-module "logs_opensearch" {
-  source = "../../modules/logs_opensearch"
-
-  stack_description   = var.stack_description
-  vpc_id              = module.stack.vpc_id
-  private_elb_subnets = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  bosh_security_group = module.stack.bosh_security_group
-  listener_arn        = aws_lb_listener.main.arn
-  elb_log_bucket_name = module.log_bucket.elb_bucket_name
-  aws_partition       = data.aws_partition.current.partition
-}
-
 module "shibboleth" {
   source = "../../modules/shibboleth"
 
