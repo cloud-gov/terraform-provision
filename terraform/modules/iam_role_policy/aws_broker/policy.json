@@ -199,6 +199,15 @@
       "Resource": [
         "*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:TagResource"
+      ],
+      "Resource": [
+        "arn:${aws_partition}:logs:${aws_default_region}:${account_id}:log-group:/aws/rds/instance/cg-aws-broker*/*"
+      ]
     }
   ]
 }
