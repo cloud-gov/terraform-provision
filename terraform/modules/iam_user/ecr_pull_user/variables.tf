@@ -3,7 +3,7 @@ variable "username" {
   description = "The username of the IAM user."
 }
 
-variable "repository_arn" {
-  type        = string
-  description = "The ARN of the repository in ECR from which the user will pull images."
+variable "repository_arns" {
+  type        = list(string)
+  description = "The ARNs of the repositories in ECR that the user will be permitted to pull from."
 }
