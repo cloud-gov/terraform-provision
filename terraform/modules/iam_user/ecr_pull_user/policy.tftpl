@@ -8,7 +8,7 @@
         "ecr:GetDownloadUrlForLayer",
         "ecr:BatchGetImage"
       ],
-      "Resource": "${repository_arn}"
+      "Resource": ${jsonencode([for arn in repository_arns : "${arn}"])}
     },
     {
       "Effect": "Allow",

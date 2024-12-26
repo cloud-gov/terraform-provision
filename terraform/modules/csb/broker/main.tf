@@ -29,12 +29,13 @@ data "terraform_remote_state" "ecr" {
 }
 
 locals {
-  csb_ecr_repository_arn = data.terraform_remote_state.ecr.outputs.repository_arns["csb"]
+  csb_ecr_repository_arn          = data.terraform_remote_state.ecr.outputs.repository_arns["csb"]
+  csb_docproxy_ecr_repository_arn = data.terraform_remote_state.ecr.outputs.repository_arns["csb-docproxy"]
 }
 
 // A user with ECR pull permissions so Cloud Foundry can pull the CSB image.
 module "ecr_user" {
-  source         = "../../iam_user/ecr_pull_user"
-  username       = "csb-ecr-${var.stack_description}"
-  repository_arn = local.csb_ecr_repository_arn
+  source          = "../../iam_user/ecr_pull_user"
+  username        = "csb-ecr-${var.stack_description}"
+  repository_arns = [local.csb_ecr_repository_arn, local.csb_docproxy_ecr_repository_arn]
 }
