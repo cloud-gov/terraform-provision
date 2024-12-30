@@ -70,14 +70,14 @@ resource "aws_route" "az2_nat_service_route" {
 }
 
 resource "aws_eip" "az1_nat_eip" {
-  vpc = true
+  domain = "vpc"
   lifecycle {
     prevent_destroy = true
   }
 }
 
 resource "aws_eip" "az2_nat_eip" {
-  vpc = true
+  domain = "vpc"
   lifecycle {
     prevent_destroy = true
   }
