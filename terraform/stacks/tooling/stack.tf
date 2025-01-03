@@ -273,7 +273,7 @@ module "monitoring_staging" {
 }
 
 resource "aws_eip" "production_dns_eip" {
-  vpc = true
+  domain = "vpc"
 
   count = var.dns_eip_count_production
 
@@ -283,7 +283,7 @@ resource "aws_eip" "production_dns_eip" {
 }
 
 resource "aws_eip" "staging_dns_eip" {
-  vpc = true
+  domain = "vpc"
 
   count = var.dns_eip_count_staging
 
