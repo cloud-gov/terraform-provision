@@ -15,9 +15,11 @@ variable "repositories" {
     "cloud-service-broker",
     "concourse-http-jq-resource",
     "concourse-task",
+    "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
     "cron-resource",
     "csb",
     "csb-docproxy",
+    "csb-helper",
     "csb-service-updater",
     "email-resource",
     "external-domain-broker-testing",
