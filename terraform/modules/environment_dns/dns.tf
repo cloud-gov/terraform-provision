@@ -224,31 +224,31 @@ resource "aws_route53_record" "brokered_mail_ns" {
 }
 
 locals {
-  csb_docproxy_domain_name        = "services.${var.domain}."
-  csb_docproxy_domain_record      = "services.${var.domain}.external-domains-${var.stack_name}.${var.domain}."
-  csb_docproxy_acme_domain_name   = "_acme-challenge.services.${var.domain}."
-  csb_docproxy_acme_domain_record = "_acme-challenge.services.${var.domain}.external-domains-${var.stack_name}.${var.domain}."
+  csb_helper_domain_name        = "services.${var.domain}."
+  csb_helper_domain_record      = "services.${var.domain}.external-domains-${var.stack_name}.${var.domain}."
+  csb_helper_acme_domain_name   = "_acme-challenge.services.${var.domain}."
+  csb_helper_acme_domain_record = "_acme-challenge.services.${var.domain}.external-domains-${var.stack_name}.${var.domain}."
 }
 
 // DNS records corresponding to the External Domain Service Instance
 // provisioned for the Cloud Service Broker documentation proxy.
 // Repo: https://github.com/cloud-gov/csb
 // External domain reference: https://cloud.gov/docs/services/external-domain-service/
-resource "aws_route53_record" "csb_docproxy_acme_challenge" {
-  name    = local.csb_docproxy_acme_domain_name
+resource "aws_route53_record" "csb_helper_acme_challenge" {
+  name    = local.csb_helper_acme_domain_name
   type    = "CNAME"
   zone_id = var.zone_id
   ttl     = 300
 
-  records = [local.csb_docproxy_acme_domain_record]
+  records = [local.csb_helper_acme_domain_record]
 }
 
-resource "aws_route53_record" "csb_docproxy_domain" {
-  name    = local.csb_docproxy_domain_name
+resource "aws_route53_record" "csb_helper_domain" {
+  name    = local.csb_helper_domain_name
   type    = "CNAME"
   zone_id = var.zone_id
   ttl     = 300
 
-  records = [local.csb_docproxy_domain_record]
+  records = [local.csb_helper_domain_record]
 
 }
