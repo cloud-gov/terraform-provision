@@ -762,6 +762,10 @@ output "csb" {
       access_key_id_prev     = module.csb_iam.access_key_id_prev
       secret_access_key_prev = module.csb_iam.secret_access_key_prev
     }
+    notification_topics = {
+      email_notification_topic_arn = module.sns.cg_platform_notifications_arn
+      slack_notification_topic_arn = module.sns.cg_platform_slack_notifications_arn
+    }
   }
 }
 
