@@ -442,6 +442,12 @@ module "sns" {
 module "csb_iam" {
   source = "../../modules/csb/iam"
 
+  stack_description = var.stack_description
+}
+
+module "csb_concourse_iam" {
+  source = "../../modules/csb/concourse_iam"
+
   stack_description                   = var.stack_description
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
