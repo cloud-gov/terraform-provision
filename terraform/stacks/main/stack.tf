@@ -442,7 +442,8 @@ module "sns" {
 module "csb_iam" {
   source = "../../modules/csb/iam"
 
-  stack_description = var.stack_description
+  stack_description                   = var.stack_description
+  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
 resource "random_password" "csb_rds_password" {
@@ -471,6 +472,8 @@ module "csb_broker" {
 
   stack_description = var.stack_description
   ecr_stack_name    = var.ecr_stack_name
+
+  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
 module "opensearch_proxy_redis_cluster" {

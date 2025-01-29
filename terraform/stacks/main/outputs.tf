@@ -741,6 +741,12 @@ output "csb" {
   description = "Values required to deploy the Cloud Service Broker."
   sensitive   = true
   value = {
+    concourse_user = {
+      access_key_id_curr     = module.csb_iam.concourse_csb_access_key_id_curr
+      secret_access_key_curr = module.csb_iam.concourse_csb_secret_access_key_curr
+      access_key_id_prev     = module.csb_iam.concourse_csb_access_key_id_prev
+      secret_access_key_prev = module.csb_iam.concourse_csb_secret_access_key_prev
+    }
     ecr_user = {
       username               = one(module.csb_broker[*].ecr_user_username)
       access_key_id_curr     = one(module.csb_broker[*].ecr_user_access_key_id_curr)
@@ -757,10 +763,10 @@ output "csb" {
       password = one(module.csb_broker[*].rds_password)
     }
     broker_user = {
-      access_key_id_curr     = module.csb_iam.access_key_id_curr
-      secret_access_key_curr = module.csb_iam.secret_access_key_curr
-      access_key_id_prev     = module.csb_iam.access_key_id_prev
-      secret_access_key_prev = module.csb_iam.secret_access_key_prev
+      access_key_id_curr     = module.csb_iam.csb_access_key_id_curr
+      secret_access_key_curr = module.csb_iam.csb_secret_access_key_curr
+      access_key_id_prev     = module.csb_iam.csb_access_key_id_prev
+      secret_access_key_prev = module.csb_iam.csb_secret_access_key_prev
     }
     notification_topics = {
       email_notification_topic_arn = module.sns.cg_platform_notifications_arn
