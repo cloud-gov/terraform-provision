@@ -445,6 +445,13 @@ module "csb_iam" {
   stack_description = var.stack_description
 }
 
+module "csb_concourse_iam" {
+  source = "../../modules/csb/concourse_iam"
+
+  stack_description                   = var.stack_description
+  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
+}
+
 resource "random_password" "csb_rds_password" {
   length      = 32
   special     = false
@@ -471,6 +478,8 @@ module "csb_broker" {
 
   stack_description = var.stack_description
   ecr_stack_name    = var.ecr_stack_name
+
+  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
 module "opensearch_proxy_redis_cluster" {
