@@ -9,9 +9,10 @@ data "aws_iam_policy_document" "concourse_csb" {
   statement {
     effect = "Allow"
     actions = [
+      "sns:GetSubscriptionAttributes",
+      "sns:SetSubscriptionAttributes",
       "sns:Subscribe",
       "sns:Unsubscribe",
-      "sns:GetSubscriptionAttributes"
     ]
     resources = [var.sns_platform_notification_topic_arn]
   }
