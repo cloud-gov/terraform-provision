@@ -72,3 +72,7 @@ variable "rds_apply_immediately" {
 variable "rds_allow_major_version_upgrade" {
   default = "false"
 }
+
+variable "sns_platform_notification_topic_arn" {
+  type = string
+}
