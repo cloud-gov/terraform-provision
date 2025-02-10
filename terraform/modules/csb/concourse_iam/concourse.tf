@@ -29,7 +29,7 @@ resource "aws_iam_user" "concourse_csb" {
 }
 
 resource "aws_iam_user_policy_attachment" "concourse_csb" {
-  user       = aws_iam_user.concourse_csb
+  user       = aws_iam_user.concourse_csb.name
   policy_arn = aws_iam_policy.concourse_csb.arn
 }
 
