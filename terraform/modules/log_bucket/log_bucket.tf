@@ -52,6 +52,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
       days = 180
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
 resource "aws_s3_bucket_policy" "log_bucket_policy" {
   bucket = aws_s3_bucket.log_bucket.id

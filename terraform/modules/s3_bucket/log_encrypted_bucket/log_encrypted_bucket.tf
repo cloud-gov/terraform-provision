@@ -67,6 +67,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
       }
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
 resource "aws_s3_bucket_logging" "log_encrypted_bucket_access_logging" {
