@@ -47,6 +47,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
       }
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
 resource "aws_s3_bucket_policy" "encrypted_bucket_policy" {
