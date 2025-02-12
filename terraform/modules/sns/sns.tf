@@ -1,6 +1,6 @@
 locals {
   # The alias for the AWS-managed KMS key for SNS.
-  aws_managed_sns_kms_id = "alias/aws/kms"
+  aws_managed_sns_kms_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic" "cg_platform_notifications" {
