@@ -632,15 +632,6 @@ output "external_domain_broker_gov_secret_access_key_prev" {
   sensitive = true
 }
 
-output "csb_access_key_id_curr" {
-  value = module.csb_iam.access_key_id_curr
-}
-
-output "csb_secret_access_key_curr" {
-  value     = module.csb_iam.secret_access_key_curr
-  sensitive = true
-}
-
 output "domains_dedicated_lbgroup_target_group_apps_https_names" {
   value = module.dedicated_loadbalancer_group.domains_lbgroup_target_group_apps_https_names
 }
