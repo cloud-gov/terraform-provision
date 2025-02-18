@@ -17,7 +17,7 @@ resource "aws_iam_user" "csb" {
   name = "${var.stack_description}-csb"
 }
 
-resource "aws_iam_access_key" "iam_access_key" {
+resource "aws_iam_access_key" "csb" {
   user = aws_iam_user.csb.name
 }
 
@@ -32,11 +32,11 @@ locals {
 }
 
 resource "aws_iam_user_policy_attachment" "csb_policies" {
-  for_each = [
+  for_each = toset([
     # Each brokerpak will use a separate policy so it is clear which permissions they individually require.
     local.brokerpak_aws_ses_arn,
     "arn:aws:iam::aws:policy/AmazonRoute53FullAccess", # Also the aws-ses brokerpak
-  ]
+  ])
 
   user       = aws_iam_user.csb.name
   policy_arn = each.key

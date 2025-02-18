@@ -69,10 +69,10 @@ locals {
 }
 
 resource "aws_iam_user_policy_attachment" "csb_policies" {
-  for_each = [
+  for_each = toset([
     # Each brokerpak will use a separate policy so it is clear which permissions they individually require.
     local.brokerpak_aws_ses_arn
-  ]
+  ])
 
   user       = aws_iam_user.csb.name
   policy_arn = each.key
