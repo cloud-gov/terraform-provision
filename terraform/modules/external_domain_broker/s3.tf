@@ -38,6 +38,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_log_bucket_lifecycl
       days = 930
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
 resource "aws_s3_bucket_acl" "cloudfront_log_bucket_acl" {

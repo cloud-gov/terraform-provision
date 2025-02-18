@@ -77,4 +77,5 @@ resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle
       }
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }

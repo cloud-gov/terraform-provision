@@ -24,6 +24,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_audit_logs_trail_bucket_lif
       days = 930 # ~30 months for M-21-31 compliance
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
 resource "aws_s3_bucket_logging" "cg-s3-cloudtrail-bucket-logging" {
@@ -134,4 +135,5 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_access_logs_trail_bucket_li
       days = 930 # ~30 months for M-21-31 compliance
     }
   }
+  transition_default_minimum_object_size = "varies_by_storage_class"
 }
