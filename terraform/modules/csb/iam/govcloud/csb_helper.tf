@@ -33,5 +33,5 @@ resource "aws_iam_access_key" "csb_helper" {
 
 resource "aws_iam_user_policy_attachment" "csb_helper" {
   user       = aws_iam_user.csb_helper.name
-  policy_arn = aws_iam_user.csb_helper.name
+  policy_arn = aws_iam_policy.csb_helper.arn
 }
