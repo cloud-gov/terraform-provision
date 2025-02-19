@@ -17,6 +17,25 @@ output "csb_secret_access_key_curr" {
   sensitive = true
 }
 
+// CSB Helper
+output "csb_helper_access_key_id_prev" {
+  value = ""
+}
+
+output "csb_helper_secret_access_key_prev" {
+  value     = ""
+  sensitive = true
+}
+
+output "csb_helper_access_key_id_curr" {
+  value = aws_iam_access_key.csb_helper.id
+}
+
+output "csb_helper_secret_access_key_curr" {
+  value     = aws_iam_access_key.csb_helper.secret
+  sensitive = true
+}
+
 // Concourse
 output "concourse_access_key_id_prev" {
   value = ""

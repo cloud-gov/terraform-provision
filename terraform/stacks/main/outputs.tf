@@ -739,6 +739,12 @@ output "csb" {
         access_key_id_prev     = module.csb_iam.csb_access_key_id_prev
         secret_access_key_prev = module.csb_iam.csb_secret_access_key_prev
       }
+      csb_helper = {
+        access_key_id_curr     = module.csb_iam.csb_helper_access_key_id_curr
+        secret_access_key_curr = module.csb_iam.csb_helper_secret_access_key_curr
+        access_key_id_prev     = module.csb_iam.csb_helper_access_key_id_prev
+        secret_access_key_prev = module.csb_iam.csb_helper_secret_access_key_prev
+      }
       concourse = {
         access_key_id_curr     = module.csb_iam.concourse_access_key_id_curr
         secret_access_key_curr = module.csb_iam.concourse_secret_access_key_curr
