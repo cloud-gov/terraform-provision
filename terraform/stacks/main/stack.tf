@@ -440,15 +440,14 @@ module "sns" {
 }
 
 module "csb_iam" {
-  source = "../../modules/csb/iam"
+  source = "../../modules/csb/iam/govcloud"
 
   stack_description = var.stack_description
-}
 
-module "csb_concourse_iam" {
-  source = "../../modules/csb/concourse_iam"
+  ecr_remote_state_bucket = var.remote_state_bucket
+  ecr_remote_state_region = var.aws_default_region
+  ecr_stack_name          = var.ecr_stack_name
 
-  stack_description                   = var.stack_description
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
@@ -464,22 +463,15 @@ resource "random_password" "csb_rds_password" {
 module "csb_broker" {
   count = var.stack_description == "development" ? 1 : 0
 
-  source              = "../../modules/csb/broker"
-  remote_state_bucket = var.remote_state_bucket
-  remote_state_region = var.aws_default_region
+  source            = "../../modules/csb/broker"
+  stack_description = var.stack_description
 
-  rds_password        = random_password.csb_rds_password.result
-  rds_subnet_group    = module.stack.rds_subnet_group
-  rds_security_groups = [module.stack.rds_mysql_security_group]
-
+  rds_password                    = random_password.csb_rds_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_mysql_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
   rds_instance_type               = var.csb_rds_instance_type
-
-  stack_description = var.stack_description
-  ecr_stack_name    = var.ecr_stack_name
-
-  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
 module "opensearch_proxy_redis_cluster" {

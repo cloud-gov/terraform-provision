@@ -89,7 +89,7 @@ module "lets_encrypt_user" {
 }
 
 module "csb_iam" {
-  source = "../../modules/csb/iam"
+  source = "../../modules/csb/iam/commercial"
 
   stack_description = var.stack_description
 }
