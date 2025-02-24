@@ -8,10 +8,9 @@ data "aws_iam_policy_document" "csb_helper" {
   statement {
     effect = "Allow"
     actions = [
+      "sns:ConfirmSubscription",
+      "sns:GetSubscriptionAttributes",
       "sns:GetTopicAttributes",
-      "sns:Subscribe",
-      "sns:Unsubscribe",
-      "sns:GetSubscriptionAttributes"
     ]
     resources = [var.sns_platform_notification_topic_arn]
   }
