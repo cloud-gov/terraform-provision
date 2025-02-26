@@ -48,7 +48,13 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
   statement {
     effect = "Allow"
     actions = [
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:DescribeAlarms",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
+      "cloudwatch:ListTagsForResource",
       "cloudwatch:PutMetricAlarm",
+      "cloudwatch:SetAlarmState",
     ]
     resources = ["*"]
   }
