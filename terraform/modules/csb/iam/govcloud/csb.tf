@@ -7,10 +7,10 @@ data "aws_region" "current" {}
 
 locals {
   arn_template   = "arn:${data.aws_partition.current.partition}:%s:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:csb-aws-ses-*"
-  ses_arn        = format(arn_template, "ses")
-  iam_arn        = format(arn_template, "iam")
-  sns_arn        = format(arn_template, "sns")
-  cloudwatch_arn = format(arn_template, "cloudwatch")
+  ses_arn        = format(local.arn_template, "ses")
+  iam_arn        = format(local.arn_template, "iam")
+  sns_arn        = format(local.arn_template, "sns")
+  cloudwatch_arn = format(local.arn_template, "cloudwatch")
 }
 
 data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
