@@ -1,10 +1,23 @@
 // See also the companion user in Commercial (../commercial/csb.tf)
 // Originally from https://github.com/GSA-TTS/datagov-brokerpak-smtp/blob/main/permission-policies.tf
+
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+data "aws_region" "current" {}
+
+locals {
+  arn_template   = "arn:${data.aws_partition.current.partition}:%s:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:csb-aws-ses-*"
+  ses_arn        = format(arn_template, "ses")
+  iam_arn        = format(arn_template, "iam")
+  sns_arn        = format(arn_template, "sns")
+  cloudwatch_arn = format(arn_template, "cloudwatch")
+}
+
 data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
   statement {
     effect    = "Allow"
     actions   = ["ses:*"]
-    resources = ["*"]
+    resources = [local.ses_arn]
   }
 
   statement {
@@ -25,7 +38,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:DetachUserPolicy",
       "iam:List*"
     ]
-    resources = ["*"]
+    resources = [local.iam_arn]
   }
 
   statement {
@@ -40,8 +53,17 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "sns:Unsubscribe",
       "sns:GetSubscriptionAttributes"
     ]
-    resources = ["*"]
+    resources = [local.sns_arn]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricAlarm",
+    ]
+    resources = [local.cloudwatch_arn]
+  }
+
 }
 
 resource "aws_iam_policy" "brokerpak_aws_ses" {
@@ -59,8 +81,6 @@ resource "aws_iam_access_key" "csb" {
 }
 
 // Values required for policy attachment
-data "aws_caller_identity" "current" {}
-data "aws_partition" "current" {}
 locals {
   this_aws_account_id = data.aws_caller_identity.current.account_id
   // Attribute aws_iam_policy.brokerpak_aws_ses.arn is not determined until apply, so it cannot be
