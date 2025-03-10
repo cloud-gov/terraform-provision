@@ -461,7 +461,7 @@ resource "random_password" "csb_rds_password" {
 }
 
 module "csb_broker" {
-  count = var.stack_description == "development" ? 1 : 0
+  count = var.stack_description == "production" ? 0 : 1
 
   source            = "../../modules/csb/broker"
   stack_description = var.stack_description
