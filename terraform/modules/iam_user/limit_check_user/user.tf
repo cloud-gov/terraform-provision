@@ -6,7 +6,7 @@ resource "aws_iam_user" "iam_user" {
   name = var.username
 }
 
-resource "aws_iam_access_key" "iam_access_key_v3" {
+resource "aws_iam_access_key" "iam_access_key_v4" {
   user = aws_iam_user.iam_user.name
 }
 

@@ -72,6 +72,7 @@ module "cdn_broker" {
 }
 
 module "limit_check_user" {
+  count    = var.stack_description == "production" ? 1 : 0
   source   = "../../modules/iam_user/limit_check_user"
   username = "limit-check-${var.stack_description}"
 }
