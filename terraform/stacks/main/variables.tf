@@ -40,6 +40,10 @@ variable "rds_parameter_group_family_autoscaler" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_autoscaler" {
+  default = 1
+}
+
 variable "rds_db_engine_version_cf" {
   default = "16.3"
 }
