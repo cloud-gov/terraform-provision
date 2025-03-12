@@ -510,7 +510,7 @@ jobs:
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
-          TF_VAR_rds_force_ssl_autoscaler: 0
+          TF_VAR_rds_force_ssl_autoscaler: 1
           TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
           TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
