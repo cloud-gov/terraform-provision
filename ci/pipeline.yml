@@ -508,7 +508,7 @@ jobs:
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.7"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
-          TF_VAR_rds_db_engine_version_autoscaler: "15.7"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
@@ -682,7 +682,7 @@ jobs:
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.7"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
-          TF_VAR_rds_db_engine_version_autoscaler: "15.7"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
@@ -854,7 +854,7 @@ jobs:
           TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.7"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
-          TF_VAR_rds_db_engine_version_autoscaler: "15.7"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((production_vpc_cidr))
