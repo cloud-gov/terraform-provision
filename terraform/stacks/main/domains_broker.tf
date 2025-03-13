@@ -468,6 +468,10 @@ resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v1" {
   user = aws_iam_user.legacy_domain_certificate_renewer.name
 }
 
+resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v2" {
+  user = aws_iam_user.legacy_domain_certificate_renewer.name
+}
+
 resource "aws_iam_policy_attachment" "domains_broker" {
   name       = "${var.stack_description}-domains-broker"
   policy_arn = aws_iam_policy.domains_broker.arn
@@ -484,19 +488,19 @@ output "legacy_domain_certificate_renewer_username" {
 }
 
 output "legacy_domain_certificate_renwer_access_key_id_prev" {
-  value = ""
-}
-
-output "legacy_domain_certificate_renewer_secret_access_key_prev" {
-  value = ""
-}
-
-output "legacy_domain_certificate_renewer_access_key_id_curr" {
   value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.id
 }
 
+output "legacy_domain_certificate_renewer_secret_access_key_prev" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+}
+
+output "legacy_domain_certificate_renewer_access_key_id_curr" {
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.id
+}
+
 output "legacy_domain_certificate_renewer_secret_access_key_curr" {
-  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.secret
   sensitive = true
 }
 
