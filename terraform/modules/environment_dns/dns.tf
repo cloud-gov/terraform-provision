@@ -231,9 +231,9 @@ locals {
   }
   # Work around the staging apex domain being inconsistent with the rest.
   csb_helper_domain_name        = "services.${var.domain}."
-  csb_helper_domain_record      = "services.${var.domain}.${external_domains_map[var.stack_name]}"
+  csb_helper_domain_record      = "services.${var.domain}.${local.external_domains_map[var.stack_name]}"
   csb_helper_acme_domain_name   = "_acme-challenge.services.${var.domain}."
-  csb_helper_acme_domain_record = "_acme-challenge.services.${var.domain}.${external_domains_map[var.stack_name]}"
+  csb_helper_acme_domain_record = "_acme-challenge.services.${var.domain}.${local.external_domains_map[var.stack_name]}"
 }
 
 // DNS records corresponding to the External Domain Service Instance
