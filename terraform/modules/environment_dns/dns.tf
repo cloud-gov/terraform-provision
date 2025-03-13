@@ -224,12 +224,11 @@ resource "aws_route53_record" "brokered_mail_ns" {
 }
 
 locals {
-  # Work around the staging apex domain being inconsistent with the rest.
-  external_domain_suffix        = trimprefix(var.domain, "fr-stage.")
+  external_domain               = "external-domains-${var.stack_name}.cloud.gov"
   csb_helper_domain_name        = "services.${var.domain}."
-  csb_helper_domain_record      = "services.${var.domain}.external-domains-${var.stack_name}.${local.external_domain_suffix}."
+  csb_helper_domain_record      = "services.${var.domain}.${local.external_domain}"
   csb_helper_acme_domain_name   = "_acme-challenge.services.${var.domain}."
-  csb_helper_acme_domain_record = "_acme-challenge.services.${var.domain}.external-domains-${var.stack_name}.${local.external_domain_suffix}."
+  csb_helper_acme_domain_record = "_acme-challenge.services.${var.domain}.${local.external_domain}"
 }
 
 // DNS records corresponding to the External Domain Service Instance
