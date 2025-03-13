@@ -492,7 +492,8 @@ output "legacy_domain_certificate_renwer_access_key_id_prev" {
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_prev" {
-  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  sensitive = true
 }
 
 output "legacy_domain_certificate_renewer_access_key_id_curr" {
