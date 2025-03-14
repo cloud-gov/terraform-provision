@@ -389,9 +389,9 @@ jobs:
           TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
           TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
           TF_VAR_defectdojo_staging_oidc_client_secret: ((tooling_defectdojo_staging_oidc_client_secret))
-          TF_VAR_rds_db_engine_version_bosh: "15.7"
+          TF_VAR_rds_db_engine_version_bosh: "15.12"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
-          TF_VAR_rds_force_ssl_bosh: 0
+          TF_VAR_rds_force_ssl_bosh: 1
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.7"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
           TF_VAR_rds_db_engine_version_credhub_staging: "15.7"
@@ -500,7 +500,7 @@ jobs:
           TF_VAR_rds_multi_az: "false"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
-          TF_VAR_rds_db_engine_version: "15.7"
+          TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_db_engine_version_cf: "16.3"
@@ -678,9 +678,9 @@ jobs:
           # Enable for database upgrades:
           #TF_VAR_rds_apply_immediately: "true"
           #TF_VAR_rds_allow_major_version_upgrade: "true"
-          TF_VAR_rds_db_engine_version: "15.7"
+          TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
-          TF_VAR_rds_force_ssl: 0
+          TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_db_engine_version_cf: "16.3"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
@@ -849,9 +849,9 @@ jobs:
           # Do not copy the pattern below.  You should not need separate variables
           # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
           # IDs from `data` resources.
-          TF_VAR_rds_db_engine_version: "15.7"
+          TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
-          TF_VAR_rds_force_ssl: 0
+          TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
           # Enable for database upgrades:
