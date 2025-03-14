@@ -45,6 +45,10 @@ variable "rds_parameter_group_family_bosh" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_bosh" {
+  default = 1
+}
+
 variable "rds_db_engine_version_credhub_staging" {
   default = "15.5"
 }
