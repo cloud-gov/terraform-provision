@@ -195,6 +195,7 @@ module "stack" {
   rds_instance_type                       = var.rds_instance_type
   rds_db_engine_version                   = var.rds_db_engine_version
   rds_parameter_group_family              = var.rds_parameter_group_family
+  rds_force_ssl                           = var.rds_force_ssl
   public_cidr_1                           = cidrsubnet(var.vpc_cidr, 8, 100)
   public_cidr_2                           = cidrsubnet(var.vpc_cidr, 8, 101)
   private_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 1)

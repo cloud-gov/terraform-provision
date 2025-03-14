@@ -98,6 +98,7 @@ module "stack" {
   rds_security_groups_count              = "1"
   rds_db_engine_version                  = var.rds_db_engine_version_bosh
   rds_parameter_group_family             = var.rds_parameter_group_family_bosh
+  rds_force_ssl                          = var.rds_force_ssl_bosh
   rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
   rds_apply_immediately                  = var.rds_apply_immediately
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
