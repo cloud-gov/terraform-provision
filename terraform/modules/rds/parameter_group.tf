@@ -33,7 +33,7 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     content {
       name         = "rds.force_ssl"
       value        = var.rds_force_ssl
-      apply_method = "pending-reboot"      
+      apply_method = "pending-reboot"
     }
   }
 }
