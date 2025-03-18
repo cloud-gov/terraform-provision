@@ -78,6 +78,7 @@ module "limit_check_user" {
 }
 
 module "health_check_user" {
+  count    = var.stack_description == "staging" ? 1 : 0
   source   = "../../modules/iam_user/health_check"
   username = "health-check-${var.health_check_env}"
 }
