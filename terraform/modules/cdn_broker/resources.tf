@@ -8,16 +8,43 @@ data "aws_route53_zone" "zone" {
   name = var.hosted_zone
 }
 
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
+data "aws_iam_policy_document" "cdn_broker_policy" {
+  statement {
+    actions = [
+      "iam:DeleteServerCertificate",
+      "iam:ListServerCertificates",
+      "iam:UploadServerCertificate",
+      "iam:UpdateServerCertificate"
+    ]
 
-  vars = {
-    aws_partition     = var.aws_partition
-    account_id        = var.account_id
-    cloudfront_prefix = var.cloudfront_prefix
-    hosted_zone       = data.aws_route53_zone.zone.zone_id
-    bucket            = var.bucket
+    resources = ["arn:${var.aws_partition}:iam::${var.account_id}:server-certificate/cloudfront/${var.cloudfront_prefix}"]
   }
+
+  statement {
+    actions = [
+      "cloudfront:*"
+    ]
+
+    resources = ["*"]
+  }  
+
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["arn:${var.aws_partition}:s3:::${var.bucket}/*"]
+  }  
+
+  statement {
+    actions = [
+      "route53:ChangeResourceRecordSets"
+    ]
+
+    resources = ["arn:${var.aws_partition}:route53:::hostedzone/${data.aws_route53_zone.zone.zone_id}"]
+  }      
 }
 
 resource "aws_iam_user" "iam_user" {
@@ -31,5 +58,5 @@ resource "aws_iam_access_key" "iam_access_key_v4" {
 resource "aws_iam_user_policy" "iam_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
   user   = aws_iam_user.iam_user.name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.cdn_broker_policy.json
 }
