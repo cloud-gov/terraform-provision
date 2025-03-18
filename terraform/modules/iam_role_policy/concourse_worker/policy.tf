@@ -18,6 +18,7 @@ data "aws_iam_policy_document" "concourse_worker_policy" {
     ]
 
     resources = [
+      "arn:${var.aws_partition}:s3:::${var.varz_bucket}",
       "arn:${var.aws_partition}:s3:::${var.varz_bucket}/*",
       "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}",
       "arn:${var.aws_partition}:s3:::${var.varz_staging_bucket}/*",
