@@ -1,15 +1,43 @@
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
+data "aws_iam_policy_document" "s3_broker_policy" {
+  statement {
+    actions = [
+      "s3:*"
+    ]
 
-  vars = {
-    account_id    = var.account_id
-    aws_partition = var.aws_partition
-    bucket_prefix = var.bucket_prefix
-    iam_path      = var.iam_path
+    resources = [
+      "arn:${var.aws_partition}:s3:::${var.bucket_prefix}-*",
+      "arn:${var.aws_partition}:s3:::${var.bucket_prefix}-*/*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "iam:GetUser",
+      "iam:CreateUser",
+      "iam:DeleteUser",
+      "iam:ListAccessKeys",
+      "iam:CreateAccessKey",
+      "iam:DeleteAccessKey",
+      "iam:CreatePolicy",
+      "iam:DeletePolicy",
+      "iam:ListAttachedUserPolicies",
+      "iam:AttachUserPolicy",
+      "iam:DetachUserPolicy",
+      "iam:TagUser",
+      "iam:UntagUser",
+      "iam:TagPolicy",
+      "iam:UntagPolicy"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:iam::${var.account_id}:user${var.iam_path}*",
+      "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}",
+      "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}*"
+    ]
   }
 }
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.s3_broker_policy.json
 }
