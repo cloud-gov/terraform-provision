@@ -148,21 +148,13 @@ output "services_subnet_reserved_az2" {
 
 /* Per-deployment static IP ranges */
 /* TODO: Make this go away */
-data "template_file" "logsearch_static_ips" {
-  count = 31
-  vars = {
-    address = cidrhost(module.cf.services_cidr_1, count.index + 20)
-  }
-  template = "$${address}"
-}
-
 output "logsearch_static_ips" {
-  value = data.template_file.logsearch_static_ips.*.rendered
+  value = [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)]
 }
 
 output "services_static_ips" {
   value = concat(
-    data.template_file.logsearch_static_ips.*.rendered,
+    [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)],
   )
 }
 

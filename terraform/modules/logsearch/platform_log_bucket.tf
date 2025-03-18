@@ -22,12 +22,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
+data "aws_iam_policy_document" "platform_log_bucket_user_policy" {
+  statement {
+    actions = [
+      "s3:PutObject"
+    ]
 
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
-  vars = {
-    aws_partition = var.aws_partition
-    bucket_name   = aws_s3_bucket.log_bucket.id
+    resources = [
+      "arn:${var.aws_partition}:s3:::${aws_s3_bucket.log_bucket.id}/*"
+    ]
   }
 }
 
@@ -42,5 +45,5 @@ resource "aws_iam_access_key" "iam_access_key_v1" {
 resource "aws_iam_user_policy" "iam_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
   user   = aws_iam_user.iam_user.name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.platform_log_bucket_user_policy.json
 }
