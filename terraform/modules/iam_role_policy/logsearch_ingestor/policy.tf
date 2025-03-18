@@ -1,14 +1,40 @@
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
+data "aws_iam_policy_document" "logsearch_ingestor_policy" {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
 
-  vars = {
-    account_id         = var.account_id
-    aws_partition      = var.aws_partition
-    aws_default_region = var.aws_default_region
+    resources = [
+      "arn:${var.aws_partition}:s3:::logsearch-*/*"
+    ]
   }
+
+  statement {
+    actions = [
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
+    ]
+  }  
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:logsearch-*"
+    ]
+  }    
 }
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.logsearch_ingestor_policy.json
 }
