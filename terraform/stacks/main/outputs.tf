@@ -751,13 +751,12 @@ output "csb" {
       }
     }
     rds = {
-      # Use one() because broker module count is used to only create the module in dev. Once deployed in all environments and count is removed, this can be simplified.
-      host     = one(module.csb_broker[*].rds_host)
-      port     = one(module.csb_broker[*].rds_port)
-      url      = one(module.csb_broker[*].rds_url)
-      name     = one(module.csb_broker[*].rds_name)
-      username = one(module.csb_broker[*].rds_username)
-      password = one(module.csb_broker[*].rds_password)
+      host     = module.csb_broker.rds_host
+      port     = module.csb_broker.rds_port
+      url      = module.csb_broker.rds_url
+      name     = module.csb_broker.rds_name
+      username = module.csb_broker.rds_username
+      password = module.csb_broker.rds_password
     }
     notification_topics = {
       email_notification_topic_arn = module.sns.cg_platform_notifications_arn
