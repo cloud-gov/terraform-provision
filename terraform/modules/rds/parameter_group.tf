@@ -28,10 +28,13 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     value = "ddl"
   }
 
-  parameter {
-    name         = "rds.force_ssl"
-    value        = var.rds_force_ssl
-    apply_method = "pending-reboot"
+  dynamic "parameter" {
+    for_each = contains(["postgres15", "postgres16"], var.rds_parameter_group_family) ? [] : [1]
+    content {
+      name         = "rds.force_ssl"
+      value        = var.rds_force_ssl
+      apply_method = "pending-reboot"
+    }
   }
 }
 
