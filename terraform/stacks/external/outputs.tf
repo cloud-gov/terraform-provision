@@ -1,6 +1,6 @@
 /* health check user */
 output "health_check_user_username" {
-  value = module.health_check_user.username
+  value = module.health_check_user.*.username
 }
 
 output "health_check_user_access_key_id_prev" {
