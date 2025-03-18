@@ -387,6 +387,10 @@ jobs:
           TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
           TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
+          TF_VAR_defectdojo_development_rds_password: ((tooling_defectdojo_development_rds_password))
+          TF_VAR_defectdojo_development_hosts: '["defectdojo.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_defectdojo_development_oidc_client: ((tooling_defectdojo_development_oidc_client))
+          TF_VAR_defectdojo_development_oidc_client_secret: ((tooling_defectdojo_development_oidc_client_secret))
           TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
           TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
           TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
