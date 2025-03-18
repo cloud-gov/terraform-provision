@@ -1,6 +1,11 @@
 variable "stack_description" {
 }
 
+variable "health_check_env" {
+  type    = string
+  default = "staging"
+}
+
 variable "terraform_state_bucket" {
   type        = string
   description = "The name of the bucket in which terraform state for this stack is stored."
