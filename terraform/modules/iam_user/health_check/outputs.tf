@@ -11,7 +11,7 @@ output "secret_access_key_prev" {
 }
 
 output "access_key_id_curr" {
-  value = aws_iam_access_key.iam_access_key_v12.id
+  value = aws_iam_access_key.iam_access_key_v2.id
 }
 
 output "secret_access_key_curr" {
