@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "s3_bucket_readonly_policy" {
   statement {
     actions = [
-      "s3:GetObject", 
+      "s3:GetObject",
       "s3:ListBucket"
     ]
 

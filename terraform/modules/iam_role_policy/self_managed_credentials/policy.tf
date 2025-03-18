@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "self_managed_credentials_policy" {
     resources = [
       "arn:${var.aws_partition}:iam::*:user/$${aws:username}"
     ]
-  }  
+  }
 
   statement {
     sid = "AllowManageOwnKeys"
@@ -47,9 +47,9 @@ data "aws_iam_policy_document" "self_managed_credentials_policy" {
     resources = [
       "arn:${var.aws_partition}:iam::*:user/$${aws:username}"
     ]
-  }    
+  }
 
- statement {
+  statement {
     sid = "AllowManageOwnVirtualMFADevice"
     actions = [
       "iam:CreateVirtualMFADevice",
@@ -59,9 +59,9 @@ data "aws_iam_policy_document" "self_managed_credentials_policy" {
     resources = [
       "arn:${var.aws_partition}:iam::*:mfa/$${aws:username}"
     ]
-  }   
+  }
 
- statement {
+  statement {
     sid = "AllowManageOwnUserMFA"
     actions = [
       "iam:DeactivateMFADevice",
@@ -74,11 +74,11 @@ data "aws_iam_policy_document" "self_managed_credentials_policy" {
     resources = [
       "arn:${var.aws_partition}:iam::*:user/$${aws:username}"
     ]
-  }    
+  }
 
- statement {
+  statement {
     effect = "Deny"
-    sid = "DenyAllExceptListedIfNoMFA"
+    sid    = "DenyAllExceptListedIfNoMFA"
     not_actions = [
       "iam:ChangePassword",
       "iam:CreateVirtualMFADevice",
@@ -96,11 +96,11 @@ data "aws_iam_policy_document" "self_managed_credentials_policy" {
     ]
 
     condition {
-      test = "BoolIfExists"
+      test     = "BoolIfExists"
       variable = "aws:MultiFactorAuthPresent"
-      values = ["false"]
+      values   = ["false"]
     }
-  }          
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

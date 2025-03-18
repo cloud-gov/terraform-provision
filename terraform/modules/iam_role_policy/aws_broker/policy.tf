@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:snapshot:cg-aws-broker-*",
-      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}"      
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}"
     ]
   }
 
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:*"
     ]
-  } 
+  }
 
   statement {
     actions = [
@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "*"
     ]
-  } 
+  }
 
   statement {
     actions = [
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}",
       "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/*"
     ]
-  }  
+  }
 
   statement {
     actions = [
@@ -68,11 +68,11 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*",
       "arn:${var.aws_partition}:s3:::${var.remote_state_bucket}/cg-aws-broker-*/*"
     ]
-  }    
+  }
 
   statement {
     actions = [
-	    "s3:GetBucketLocation",
+      "s3:GetBucketLocation",
       "s3:ListAllMyBuckets",
       "s3:ListBucket",
       "s3:PutObject",
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "arn:aws-us-gov:s3:::*"
     ]
-  }   
+  }
 
   statement {
     actions = [
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "arn:${var.aws_partition}:es:${var.aws_default_region}:${var.account_id}:domain/cg-*"
     ]
-  }        
+  }
 
   statement {
     actions = [
@@ -126,7 +126,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "*"
     ]
-  }    
+  }
 
   statement {
     actions = [
@@ -171,7 +171,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}",
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}*"
     ]
-  }        
+  }
 
   statement {
     actions = [
@@ -198,7 +198,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "*"
     ]
-  }   
+  }
 
   statement {
     actions = [
@@ -208,7 +208,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     resources = [
       "*"
     ]
-  }    
+  }
 
   statement {
     actions = [
@@ -219,7 +219,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker*/*",
       "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/OpenSearchService/domains/cg-broker*/*"
     ]
-  }       
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

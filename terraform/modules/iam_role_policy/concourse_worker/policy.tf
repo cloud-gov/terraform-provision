@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "concourse_worker_policy" {
       "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}",
       "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}/*"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

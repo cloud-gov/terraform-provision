@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "iam_cert_provision_policy" {
     resources = [
       "arn:${var.aws_partition}:iam::*:role/terraform/*-tooling-cert-uploader"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_user" "iam_user" {

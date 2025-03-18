@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "s3_logstash_user_policy" {
     resources = [
       "arn:${var.aws_partition}:s3:::${var.log_bucket}"
     ]
-  } 
+  }
 
   statement {
     actions = [
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "s3_logstash_user_policy" {
     resources = [
       "arn:${var.aws_partition}:s3:::${var.log_bucket}/*"
     ]
-  }    
+  }
 }
 
 resource "aws_iam_user" "iam_user" {

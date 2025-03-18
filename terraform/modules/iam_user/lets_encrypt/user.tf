@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "lets_encrypt_policy" {
     resources = [
       "arn:${var.aws_partition}:route53:::hostedzone/${data.aws_route53_zone.zone.zone_id}"
     ]
-  }  
+  }
 }
 
 data "aws_route53_zone" "zone" {

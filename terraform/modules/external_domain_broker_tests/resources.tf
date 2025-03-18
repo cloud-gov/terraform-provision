@@ -128,13 +128,13 @@ data "aws_iam_policy_document" "external_domain_broker_tests_policy" {
     ]
 
     resources = [
-        "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.zone.zone_id}",
-        "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_0.zone_id}",
-        "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_1.zone_id}",
-        "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_2.zone_id}",
-        "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_3.zone_id}"      
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.zone.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_0.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_1.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_2.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_3.zone_id}"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_user" "iam_user" {

@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "logsearch_ingestor_policy" {
     resources = [
       "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
     ]
-  }  
+  }
 
   statement {
     actions = [
@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "logsearch_ingestor_policy" {
     resources = [
       "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:logsearch-*"
     ]
-  }    
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

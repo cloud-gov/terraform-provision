@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "s3_broker_policy" {
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}",
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}*"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

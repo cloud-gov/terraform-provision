@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "bosh_policy" {
     resources = [
       "*"
     ]
-  }  
+  }
 
   statement {
     actions = [
@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "bosh_policy" {
       "arn:${var.aws_partition}:s3:::${var.bucket_name}",
       "arn:${var.aws_partition}:s3:::${var.bucket_name}/*"
     ]
-  }    
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

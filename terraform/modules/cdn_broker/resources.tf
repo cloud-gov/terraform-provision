@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "cdn_broker_policy" {
     ]
 
     resources = ["*"]
-  }  
+  }
 
   statement {
     actions = [
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "cdn_broker_policy" {
     ]
 
     resources = ["arn:${var.aws_partition}:s3:::${var.bucket}/*"]
-  }  
+  }
 
   statement {
     actions = [
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "cdn_broker_policy" {
     ]
 
     resources = ["arn:${var.aws_partition}:route53:::hostedzone/${data.aws_route53_zone.zone.zone_id}"]
-  }      
+  }
 }
 
 resource "aws_iam_user" "iam_user" {

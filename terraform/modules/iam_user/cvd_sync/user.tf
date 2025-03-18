@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "cvd_sync_user_policy" {
       "arn:${var.aws_partition}:s3:::${var.cvd_database_bucket}",
       "arn:${var.aws_partition}:s3:::${var.cvd_metadata_bucket}"
     ]
-  } 
+  }
 
   statement {
     actions = [
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "cvd_sync_user_policy" {
       "arn:${var.aws_partition}:s3:::${var.cvd_database_bucket}/*",
       "arn:${var.aws_partition}:s3:::${var.cvd_metadata_bucket}/*"
     ]
-  }    
+  }
 }
 
 resource "aws_iam_user" "iam_user" {
