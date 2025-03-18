@@ -79,7 +79,7 @@ module "limit_check_user" {
 
 module "health_check_user" {
   source   = "../../modules/iam_user/health_check"
-  username = "health-check-${var.stack_description}"
+  username = "health-check-${var.health_check_env}"
 }
 
 module "lets_encrypt_user" {
