@@ -245,7 +245,7 @@ module "defectdojo_development" {
 
 module "defectdojo_staging" {
   source                          = "../../modules/defect_dojo"
-  stack_description               = "staging"
+  stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 48)
   defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 49)
