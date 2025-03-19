@@ -57,12 +57,20 @@ variable "rds_parameter_group_family_credhub_staging" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_credhub_staging" {
+  default = 1
+}
+
 variable "rds_db_engine_version_credhub_production" {
   default = "15.5"
 }
 
 variable "rds_parameter_group_family_credhub_production" {
   default = "postgres15"
+}
+
+variable "rds_force_ssl_credhub_production" {
+  default = 1
 }
 
 variable "rds_db_engine_version_concourse_staging" {
@@ -73,12 +81,20 @@ variable "rds_parameter_group_family_concourse_staging" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_concourse_staging" {
+  default = 1
+}
+
 variable "rds_db_engine_version_concourse_production" {
   default = "15.5"
 }
 
 variable "rds_parameter_group_family_concourse_production" {
   default = "postgres15"
+}
+
+variable "rds_force_ssl_concourse_production" {
+  default = 1
 }
 
 variable "rds_db_engine_version_opsuaa" {

@@ -124,6 +124,7 @@ module "concourse_production" {
   rds_parameter_group_family      = var.rds_parameter_group_family_concourse_production
   rds_db_engine_version           = var.rds_db_engine_version_concourse_production
   rds_apply_immediately           = var.rds_apply_immediately
+  rds_force_ssl                   = var.rds_force_ssl_concourse_production
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   performance_insights_enabled    = "true"
   rds_instance_type               = "db.m5.4xlarge"
@@ -151,6 +152,7 @@ module "concourse_staging" {
   rds_parameter_group_family      = var.rds_parameter_group_family_concourse_staging
   rds_db_engine_version           = var.rds_db_engine_version_concourse_staging
   rds_apply_immediately           = var.rds_apply_immediately
+  rds_force_ssl                   = var.rds_force_ssl_concourse_staging
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
@@ -179,6 +181,7 @@ module "credhub_production" {
   rds_parameter_group_family      = var.rds_parameter_group_family_credhub_production
   rds_db_engine_version           = var.rds_db_engine_version_credhub_production
   rds_apply_immediately           = var.rds_apply_immediately
+  rds_force_ssl                   = var.rds_force_ssl_credhub_production
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_multi_az                    = var.rds_multi_az
@@ -204,6 +207,7 @@ module "credhub_staging" {
   rds_parameter_group_family      = var.rds_parameter_group_family_credhub_staging
   rds_db_engine_version           = var.rds_db_engine_version_credhub_staging
   rds_apply_immediately           = var.rds_apply_immediately
+  rds_force_ssl                   = var.rds_force_ssl_credhub_staging
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
