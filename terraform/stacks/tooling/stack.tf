@@ -217,10 +217,10 @@ module "credhub_staging" {
 
 module "defectdojo_development" {
   source                          = "../../modules/defect_dojo"
-  stack_description               = var.stack_description
+  stack_description               = "development"
   vpc_id                          = module.stack.vpc_id
-  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 48)
-  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 49)
+  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 50)
+  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 51)
   defectdojo_az1                  = data.aws_availability_zones.available.names[0]
   defectdojo_az2                  = data.aws_availability_zones.available.names[1]
   route_table_id_az1              = module.stack.private_route_table_az1
@@ -245,7 +245,7 @@ module "defectdojo_development" {
 
 module "defectdojo_staging" {
   source                          = "../../modules/defect_dojo"
-  stack_description               = var.stack_description
+  stack_description               = "staging"
   vpc_id                          = module.stack.vpc_id
   defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 48)
   defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 49)
