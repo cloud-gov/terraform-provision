@@ -552,11 +552,11 @@ output "development_defectdojo_subnet_az2" {
 }
 
 output "development_defectdojo_subnet_az1_reserved" {
-  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 0)} - ${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az1, 3)}"
+  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 0)} - ${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 3)}"
 }
 
 output "development_defectdojo_subnet_az2_reserved" {
-  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 0)} - ${cidrhost(module.defectdojo_staging.defectdojo_subnet_cidr_az2, 3)}"
+  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 0)} - ${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 3)}"
 }
 
 output "development_defectdojo_subnet_cidr_az1" {
