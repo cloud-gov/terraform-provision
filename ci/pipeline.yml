@@ -555,6 +555,7 @@ jobs:
           TF_VAR_waf_regex_rules: "((development_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
           TF_VAR_bosh_blobstore_sse: "aws:kms"
+          TF_VAR_domains_broker_rds_version: 15.12
       - *notify-slack
 
   - name: apply-development
@@ -733,6 +734,8 @@ jobs:
           TF_VAR_domains_lbgroup_count: 3
           TF_VAR_waf_regex_rules: "((staging_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
+          TF_VAR_domains_broker_rds_version: 15.12
+
       - *notify-slack
 
   - name: apply-staging
@@ -909,6 +912,7 @@ jobs:
           TF_VAR_domains_lbgroup_count: 4
           TF_VAR_waf_regex_rules: "((production_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
+          TF_VAR_domains_broker_rds_version: 15.12
       - *notify-slack
 
   - name: apply-production
