@@ -362,7 +362,7 @@ jobs:
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_cloudtrail_bucket: ((aws_s3_cloudtrail_bucket))
           TF_VAR_vpc_cidr: ((tooling_vpc_cidr))
-          TF_VAR_smtp_ingress_cidr_blocks: '["((development_private_cidr_1))", "((development_private_cidr_2))","((staging_private_cidr_1))", "((staging_private_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))"]'
+          TF_VAR_smtp_ingress_cidr_blocks: '["((development_private_cidr_1))", "((development_private_cidr_2))","((development_services_cidr_1))","((development_services_cidr_2))","((staging_private_cidr_1))", "((staging_private_cidr_2))","((staging_services_cidr_1))","((staging_services_cidr_2))", "((production_private_cidr_1))", "((production_private_cidr_2))","((production_services_cidr_1))","((production_services_cidr_2))"]'
           TF_VAR_restricted_ingress_web_cidrs: ((tooling_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((tooling_restricted_ingress_web_ipv6_cidrs))
           TF_VAR_blobstore_bucket_name: bosh-tooling-blobstore
