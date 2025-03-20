@@ -419,9 +419,9 @@ jobs:
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
           TF_VAR_rds_force_ssl_concourse_production: 1
 
-          TF_VAR_rds_db_engine_version_opsuaa: "16.3"
+          TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
-          TF_VAR_rds_force_ssl_opsuaa: 0
+          TF_VAR_rds_force_ssl_opsuaa: 1
           
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
