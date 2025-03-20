@@ -105,6 +105,10 @@ variable "rds_parameter_group_family_opsuaa" {
   default = "postgres16"
 }
 
+variable "rds_force_ssl_opsuaa" {
+  default = 1
+}
+
 variable "remote_state_bucket" {
 }
 
