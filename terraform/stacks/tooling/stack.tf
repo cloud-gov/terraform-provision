@@ -233,8 +233,9 @@ module "defectdojo_development" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-defectdojo-development"
-  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo
-  rds_db_engine_version           = var.rds_db_engine_version_defectdojo
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_development
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_development
+  rds_force_ssl                   = var.rds_force_ssl_defectdojo_development
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.t3.medium"
@@ -261,8 +262,9 @@ module "defectdojo_staging" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-defectdojo-staging"
-  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo
-  rds_db_engine_version           = var.rds_db_engine_version_defectdojo
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_staging
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_staging
+  rds_force_ssl                   = var.rds_force_ssl_defectdojo_staging
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
