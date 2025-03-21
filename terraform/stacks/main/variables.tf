@@ -335,3 +335,7 @@ variable "rds_parameter_group_family_defectdojo_development" {
 variable "rds_force_ssl_defectdojo_development" {
   default = 1
 }
+
+variable "rds_multi_az" {
+  default = "true"
+}
