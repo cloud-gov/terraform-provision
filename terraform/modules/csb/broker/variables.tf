@@ -3,19 +3,6 @@ variable "stack_description" {
   description = "Like development, staging, or production."
 }
 
-variable "remote_state_bucket" {
-  type = string
-}
-
-variable "remote_state_region" {
-  type = string
-}
-
-variable "ecr_stack_name" {
-  type        = string
-  description = "The name of the stack that configures ECR."
-}
-
 # RDS variables
 
 variable "rds_instance_type" {
@@ -71,8 +58,4 @@ variable "rds_apply_immediately" {
 
 variable "rds_allow_major_version_upgrade" {
   default = "false"
-}
-
-variable "sns_platform_notification_topic_arn" {
-  type = string
 }

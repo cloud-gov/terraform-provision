@@ -148,21 +148,13 @@ output "services_subnet_reserved_az2" {
 
 /* Per-deployment static IP ranges */
 /* TODO: Make this go away */
-data "template_file" "logsearch_static_ips" {
-  count = 31
-  vars = {
-    address = cidrhost(module.cf.services_cidr_1, count.index + 20)
-  }
-  template = "$${address}"
-}
-
 output "logsearch_static_ips" {
-  value = data.template_file.logsearch_static_ips.*.rendered
+  value = [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)]
 }
 
 output "services_static_ips" {
   value = concat(
-    data.template_file.logsearch_static_ips.*.rendered,
+    [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)],
   )
 }
 
@@ -632,15 +624,6 @@ output "external_domain_broker_gov_secret_access_key_prev" {
   sensitive = true
 }
 
-output "csb_access_key_id_curr" {
-  value = module.csb_iam.access_key_id_curr
-}
-
-output "csb_secret_access_key_curr" {
-  value     = module.csb_iam.secret_access_key_curr
-  sensitive = true
-}
-
 output "domains_dedicated_lbgroup_target_group_apps_https_names" {
   value = module.dedicated_loadbalancer_group.domains_lbgroup_target_group_apps_https_names
 }
@@ -738,35 +721,42 @@ output "tcp_lb_security_groups" {
 
 
 output "csb" {
-  description = "Values required to deploy the Cloud Service Broker."
+  description = "Values required to deploy the Cloud Service Broker and related services."
   sensitive   = true
   value = {
-    concourse_user = {
-      access_key_id_curr     = module.csb_concourse_iam.access_key_id_curr
-      secret_access_key_curr = module.csb_concourse_iam.secret_access_key_curr
-      access_key_id_prev     = module.csb_concourse_iam.access_key_id_prev
-      secret_access_key_prev = module.csb_concourse_iam.secret_access_key_prev
-    }
-    ecr_user = {
-      username               = one(module.csb_broker[*].ecr_user_username)
-      access_key_id_curr     = one(module.csb_broker[*].ecr_user_access_key_id_curr)
-      secret_access_key_curr = one(module.csb_broker[*].ecr_user_secret_access_key_curr)
-      access_key_id_prev     = one(module.csb_broker[*].ecr_user_access_key_id_prev)
-      secret_access_key_prev = one(module.csb_broker[*].ecr_user_secret_access_key_prev)
+    iam = {
+      csb = {
+        access_key_id_curr     = module.csb_iam.csb_access_key_id_curr
+        secret_access_key_curr = module.csb_iam.csb_secret_access_key_curr
+        access_key_id_prev     = module.csb_iam.csb_access_key_id_prev
+        secret_access_key_prev = module.csb_iam.csb_secret_access_key_prev
+      }
+      csb_helper = {
+        access_key_id_curr     = module.csb_iam.csb_helper_access_key_id_curr
+        secret_access_key_curr = module.csb_iam.csb_helper_secret_access_key_curr
+        access_key_id_prev     = module.csb_iam.csb_helper_access_key_id_prev
+        secret_access_key_prev = module.csb_iam.csb_helper_secret_access_key_prev
+      }
+      concourse = {
+        access_key_id_curr     = module.csb_iam.concourse_access_key_id_curr
+        secret_access_key_curr = module.csb_iam.concourse_secret_access_key_curr
+        access_key_id_prev     = module.csb_iam.concourse_access_key_id_prev
+        secret_access_key_prev = module.csb_iam.concourse_secret_access_key_prev
+      }
+      ecr = {
+        access_key_id_curr     = module.csb_iam.ecr_access_key_id_curr
+        secret_access_key_curr = module.csb_iam.ecr_secret_access_key_curr
+        access_key_id_prev     = module.csb_iam.ecr_access_key_id_prev
+        secret_access_key_prev = module.csb_iam.ecr_secret_access_key_prev
+      }
     }
     rds = {
-      host     = one(module.csb_broker[*].rds_host)
-      port     = one(module.csb_broker[*].rds_port)
-      url      = one(module.csb_broker[*].rds_url)
-      name     = one(module.csb_broker[*].rds_name)
-      username = one(module.csb_broker[*].rds_username)
-      password = one(module.csb_broker[*].rds_password)
-    }
-    broker_user = {
-      access_key_id_curr     = module.csb_iam.access_key_id_curr
-      secret_access_key_curr = module.csb_iam.secret_access_key_curr
-      access_key_id_prev     = module.csb_iam.access_key_id_prev
-      secret_access_key_prev = module.csb_iam.secret_access_key_prev
+      host     = module.csb_broker.rds_host
+      port     = module.csb_broker.rds_port
+      url      = module.csb_broker.rds_url
+      name     = module.csb_broker.rds_name
+      username = module.csb_broker.rds_username
+      password = module.csb_broker.rds_password
     }
     notification_topics = {
       email_notification_topic_arn = module.sns.cg_platform_notifications_arn

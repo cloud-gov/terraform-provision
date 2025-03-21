@@ -72,13 +72,15 @@ module "cdn_broker" {
 }
 
 module "limit_check_user" {
+  count    = var.stack_description == "production" ? 1 : 0
   source   = "../../modules/iam_user/limit_check_user"
   username = "limit-check-${var.stack_description}"
 }
 
 module "health_check_user" {
+  count    = var.stack_description == "staging" ? 1 : 0
   source   = "../../modules/iam_user/health_check"
-  username = "health-check-${var.stack_description}"
+  username = "health-check-${var.health_check_env}"
 }
 
 module "lets_encrypt_user" {
@@ -89,7 +91,7 @@ module "lets_encrypt_user" {
 }
 
 module "csb_iam" {
-  source = "../../modules/csb/iam"
+  source = "../../modules/csb/iam/commercial"
 
   stack_description = var.stack_description
 }

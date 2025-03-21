@@ -32,6 +32,22 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
+variable "rds_force_ssl" {
+  default = 1
+}
+
+variable "rds_db_engine_version_autoscaler" {
+  default = "15.7"
+}
+
+variable "rds_parameter_group_family_autoscaler" {
+  default = "postgres15"
+}
+
+variable "rds_force_ssl_autoscaler" {
+  default = 1
+}
+
 variable "rds_db_engine_version_cf" {
   default = "16.3"
 }
@@ -124,7 +140,7 @@ variable "parent_stack_name" {
 }
 
 variable "domains_broker_rds_version" {
-  default = "12.19"
+  default = "15.7"
 }
 variable "cf_rds_instance_type" {
   default = "db.m5.large"

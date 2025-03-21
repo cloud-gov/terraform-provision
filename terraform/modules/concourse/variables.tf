@@ -88,3 +88,7 @@ variable "hosts" {
 variable "performance_insights_enabled" {
   default = "false"
 }
+
+variable "rds_force_ssl" {
+  default = 1
+}

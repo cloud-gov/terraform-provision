@@ -83,6 +83,10 @@ variable "rds_username" {
   default = "bosh"
 }
 
+variable "rds_force_ssl" {
+  default = 1
+}
+
 variable "restricted_ingress_web_cidrs" {
   type    = list(string)
   default = ["127.0.0.1/32", "192.168.0.1/24"]

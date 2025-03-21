@@ -464,7 +464,7 @@ resource "aws_iam_user" "legacy_domain_certificate_renewer" {
   name = "legacy_domain_certificate_renewer_${var.stack_description}"
 }
 
-resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v1" {
+resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v2" {
   user = aws_iam_user.legacy_domain_certificate_renewer.name
 }
 
@@ -488,15 +488,16 @@ output "legacy_domain_certificate_renwer_access_key_id_prev" {
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_prev" {
-  value = ""
+  value     = ""
+  sensitive = true
 }
 
 output "legacy_domain_certificate_renewer_access_key_id_curr" {
-  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.id
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.id
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_curr" {
-  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.secret
   sensitive = true
 }
 

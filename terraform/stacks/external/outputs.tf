@@ -1,23 +1,23 @@
 /* health check user */
 output "health_check_user_username" {
-  value = module.health_check_user.username
+  value = module.health_check_user.*.username
 }
 
 output "health_check_user_access_key_id_prev" {
-  value = module.health_check_user.access_key_id_prev
+  value = module.health_check_user.*.access_key_id_prev
 }
 
 output "health_check_user_secret_access_key_prev" {
-  value     = module.health_check_user.secret_access_key_prev
+  value     = module.health_check_user.*.secret_access_key_prev
   sensitive = true
 }
 
 output "health_check_user_access_key_id_curr" {
-  value = module.health_check_user.access_key_id_curr
+  value = module.health_check_user.*.access_key_id_curr
 }
 
 output "health_check_user_secret_access_key_curr" {
-  value     = module.health_check_user.secret_access_key_curr
+  value     = module.health_check_user.*.secret_access_key_curr
   sensitive = true
 }
 
@@ -96,24 +96,24 @@ output "cdn_broker_secret_access_key_curr" {
 
 /* limit check user */
 output "limit_check_username" {
-  value = module.limit_check_user.username
+  value = join("", module.limit_check_user.*.username)
 }
 
 output "limit_check_access_key_id_prev" {
-  value = module.limit_check_user.access_key_id_prev
+  value = join("", module.limit_check_user.*.access_key_id_prev)
 }
 
 output "limit_check_secret_access_key_prev" {
-  value     = module.limit_check_user.secret_access_key_prev
+  value     = join("", module.limit_check_user.*.secret_access_key_prev)
   sensitive = true
 }
 
 output "limit_check_access_key_id_curr" {
-  value = module.limit_check_user.access_key_id_curr
+  value = join("", module.limit_check_user.*.access_key_id_curr)
 }
 
 output "limit_check_secret_access_key_curr" {
-  value     = module.limit_check_user.secret_access_key_curr
+  value     = join("", module.limit_check_user.*.secret_access_key_curr)
   sensitive = true
 }
 
@@ -149,12 +149,6 @@ output "csb" {
       secret_access_key_curr = module.csb_iam.secret_access_key_curr
       access_key_id_prev     = module.csb_iam.access_key_id_prev
       secret_access_key_prev = module.csb_iam.secret_access_key_prev
-    }
-    external_terraform_state_reader = {
-      access_key_id_curr     = module.terraform_state_reader.access_key_id_curr
-      secret_access_key_curr = module.terraform_state_reader.secret_access_key_curr
-      access_key_id_prev     = module.terraform_state_reader.access_key_id_prev
-      secret_access_key_prev = module.terraform_state_reader.secret_access_key_prev
     }
   }
 }
