@@ -532,7 +532,7 @@ jobs:
           TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_db_engine_version_cf: "16.3"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_force_ssl: 0
+          TF_VAR_rds_force_ssl_cf: 0
           TF_VAR_cf_rds_password: ((development_cf_rds_password))
           TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
@@ -712,7 +712,7 @@ jobs:
           TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_db_engine_version_cf: "16.3"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_force_ssl: 0
+          TF_VAR_rds_force_ssl_cf: 0
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
@@ -901,7 +901,7 @@ jobs:
           TF_VAR_cf_as_rds_instance_type: ((production_cf_as_rds_instance_type))
           TF_VAR_rds_db_engine_version_cf: "16.3"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_force_ssl: 0
+          TF_VAR_rds_force_ssl_cf: 0
           TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
           TF_VAR_wildcard_certificate_name_prefix: star.fr.cloud.gov
