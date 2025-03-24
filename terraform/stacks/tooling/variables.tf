@@ -135,6 +135,10 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
+variable "defectdojo_development_rds_password" {
+  sensitive = true
+}
+
 variable "defectdojo_staging_rds_password" {
   sensitive = true
 }
@@ -160,6 +164,10 @@ variable "credhub_production_hosts" {
 }
 
 variable "credhub_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_development_hosts" {
   type = list(string)
 }
 
@@ -298,6 +306,18 @@ variable "rds_parameter_group_family_bosh_credhub" {
 variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
+}
+
+variable "rds_db_engine_version_defectdojo_development" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_development" {
+  default = "postgres16"
+}
+
+variable "rds_force_ssl_defectdojo_development" {
+  default = 1
 }
 
 variable "rds_db_engine_version_defectdojo_staging" {
