@@ -78,6 +78,11 @@ resource "aws_lb_listener_certificate" "main-staging" {
   certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
 }
 
+resource "aws_lb_listener_certificate" "main-development" {
+  listener_arn    = aws_lb_listener.main.arn
+  certificate_arn = data.aws_iam_server_certificate.wildcard_development.arn
+}
+
 module "stack" {
   source = "../../modules/stack/base"
 
