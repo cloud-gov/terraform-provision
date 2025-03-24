@@ -1,23 +1,23 @@
 /* health check user */
 output "health_check_user_username" {
-  value = module.health_check_user.username
+  value = module.health_check_user.*.username
 }
 
 output "health_check_user_access_key_id_prev" {
-  value = module.health_check_user.access_key_id_prev
+  value = module.health_check_user.*.access_key_id_prev
 }
 
 output "health_check_user_secret_access_key_prev" {
-  value     = module.health_check_user.secret_access_key_prev
+  value     = module.health_check_user.*.secret_access_key_prev
   sensitive = true
 }
 
 output "health_check_user_access_key_id_curr" {
-  value = module.health_check_user.access_key_id_curr
+  value = module.health_check_user.*.access_key_id_curr
 }
 
 output "health_check_user_secret_access_key_curr" {
-  value     = module.health_check_user.secret_access_key_curr
+  value     = module.health_check_user.*.secret_access_key_curr
   sensitive = true
 }
 

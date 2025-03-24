@@ -92,3 +92,7 @@ variable "listener_arn" {
 variable "hosts" {
   type = list(string)
 }
+
+variable "rds_force_ssl" {
+  default = 1
+}

@@ -265,6 +265,7 @@ module "cf" {
   stack_prefix               = "cf-${var.stack_description}"
   rds_db_engine_version      = var.rds_db_engine_version_cf
   rds_parameter_group_family = var.rds_parameter_group_family_cf
+  rds_force_ssl              = var.rds_force_ssl_cf
 
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
@@ -465,8 +466,6 @@ resource "random_password" "csb_rds_password" {
 }
 
 module "csb_broker" {
-  count = var.stack_description == "production" ? 0 : 1
-
   source            = "../../modules/csb/broker"
   stack_description = var.stack_description
 

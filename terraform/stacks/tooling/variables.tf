@@ -57,12 +57,20 @@ variable "rds_parameter_group_family_credhub_staging" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_credhub_staging" {
+  default = 1
+}
+
 variable "rds_db_engine_version_credhub_production" {
   default = "15.5"
 }
 
 variable "rds_parameter_group_family_credhub_production" {
   default = "postgres15"
+}
+
+variable "rds_force_ssl_credhub_production" {
+  default = 1
 }
 
 variable "rds_db_engine_version_concourse_staging" {
@@ -73,6 +81,10 @@ variable "rds_parameter_group_family_concourse_staging" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_concourse_staging" {
+  default = 1
+}
+
 variable "rds_db_engine_version_concourse_production" {
   default = "15.5"
 }
@@ -81,12 +93,20 @@ variable "rds_parameter_group_family_concourse_production" {
   default = "postgres15"
 }
 
+variable "rds_force_ssl_concourse_production" {
+  default = 1
+}
+
 variable "rds_db_engine_version_opsuaa" {
   default = "16.1"
 }
 
 variable "rds_parameter_group_family_opsuaa" {
   default = "postgres16"
+}
+
+variable "rds_force_ssl_opsuaa" {
+  default = 1
 }
 
 variable "remote_state_bucket" {
@@ -115,6 +135,9 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
+variable "defectdojo_development_rds_password" {
+  sensitive = true
+}
 
 variable "defectdojo_staging_rds_password" {
   sensitive = true
@@ -141,6 +164,10 @@ variable "credhub_production_hosts" {
 }
 
 variable "credhub_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_development_hosts" {
   type = list(string)
 }
 
@@ -281,10 +308,26 @@ variable "aws_lb_listener_ssl_policy" {
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
 
-variable "rds_db_engine_version_defectdojo" {
+variable "rds_db_engine_version_defectdojo_development" {
   default = "16.3"
 }
 
-variable "rds_parameter_group_family_defectdojo" {
+variable "rds_parameter_group_family_defectdojo_development" {
   default = "postgres16"
+}
+
+variable "rds_force_ssl_defectdojo_development" {
+  default = 1
+}
+
+variable "rds_db_engine_version_defectdojo_staging" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_staging" {
+  default = "postgres16"
+}
+
+variable "rds_force_ssl_defectdojo_staging" {
+  default = 1
 }
