@@ -72,6 +72,10 @@ variable "rds_allow_major_version_upgrade" {
   default = "false"
 }
 
+variable "rds_force_ssl" {
+  default = 1
+}
+
 variable "stack_prefix" {
 }
 

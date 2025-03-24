@@ -14,4 +14,5 @@ module "cf_database_96" {
   rds_parameter_group_family      = var.rds_parameter_group_family
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
+  rds_force_ssl                   = var.rds_force_ssl
 }
