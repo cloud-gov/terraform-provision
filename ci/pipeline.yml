@@ -376,6 +376,7 @@ jobs:
           TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
           TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
           TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
+          TF_VAR_wildcard_development_certificate_name_prefix: dev.us-gov-west-1.aws-us-gov.cloud.gov
           TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
           TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
           TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
@@ -414,7 +415,7 @@ jobs:
           TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_force_ssl_credhub_staging: 1
-          
+
           TF_VAR_rds_db_engine_version_credhub_production: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
           TF_VAR_rds_force_ssl_credhub_production: 1
@@ -430,7 +431,7 @@ jobs:
           TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
           TF_VAR_rds_force_ssl_opsuaa: 1
-          
+
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 

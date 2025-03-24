@@ -35,6 +35,11 @@ data "aws_iam_server_certificate" "wildcard_staging" {
   latest      = true
 }
 
+data "aws_iam_server_certificate" "wildcard_development" {
+  name_prefix = var.wildcard_development_certificate_name_prefix
+  latest      = true
+}
+
 resource "aws_lb" "main" {
   name            = "${var.stack_description}-main"
   subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
@@ -71,6 +76,11 @@ resource "aws_lb_target_group" "dummy" {
 resource "aws_lb_listener_certificate" "main-staging" {
   listener_arn    = aws_lb_listener.main.arn
   certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
+}
+
+resource "aws_lb_listener_certificate" "main-development" {
+  listener_arn    = aws_lb_listener.main.arn
+  certificate_arn = data.aws_iam_server_certificate.wildcard_development.arn
 }
 
 module "stack" {

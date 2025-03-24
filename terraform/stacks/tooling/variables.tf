@@ -151,6 +151,10 @@ variable "wildcard_staging_certificate_name_prefix" {
   default = ""
 }
 
+variable "wildcard_development_certificate_name_prefix" {
+  default = ""
+}
+
 variable "concourse_production_hosts" {
   type = list(string)
 }
