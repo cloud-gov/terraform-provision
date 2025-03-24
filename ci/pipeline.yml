@@ -387,10 +387,6 @@ jobs:
           TF_VAR_s3_gateway_policy_accounts: ((tooling_s3_gateway_policy_accounts))
           TF_VAR_waf_drop_logs_label: ((waf_drop_logs_label))
           TF_VAR_waf_drop_logs_hostnames: ((waf_drop_logs_hostnames))
-          TF_VAR_defectdojo_development_rds_password: ((tooling_defectdojo_development_rds_password))
-          TF_VAR_defectdojo_development_hosts: '["defectdojo.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
-          TF_VAR_defectdojo_development_oidc_client: ((tooling_defectdojo_development_oidc_client))
-          TF_VAR_defectdojo_development_oidc_client_secret: ((tooling_defectdojo_development_oidc_client_secret))
           TF_VAR_defectdojo_staging_rds_password: ((tooling_defectdojo_staging_rds_password))
           TF_VAR_defectdojo_staging_hosts: '["defectdojo.fr-stage.cloud.gov"]'
           TF_VAR_defectdojo_staging_oidc_client: ((tooling_defectdojo_staging_oidc_client))
@@ -414,7 +410,7 @@ jobs:
           TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_force_ssl_credhub_staging: 1
-          
+
           TF_VAR_rds_db_engine_version_credhub_production: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
           TF_VAR_rds_force_ssl_credhub_production: 1
@@ -430,7 +426,7 @@ jobs:
           TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
           TF_VAR_rds_force_ssl_opsuaa: 1
-          
+
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
 
@@ -578,6 +574,10 @@ jobs:
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
           TF_VAR_bosh_blobstore_sse: "aws:kms"
           TF_VAR_domains_broker_rds_version: 15.12
+          TF_VAR_defectdojo_development_rds_password: ((tooling_defectdojo_development_rds_password))
+          TF_VAR_defectdojo_development_hosts: '["defectdojo.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_defectdojo_development_oidc_client: ((tooling_defectdojo_development_oidc_client))
+          TF_VAR_defectdojo_development_oidc_client_secret: ((tooling_defectdojo_development_oidc_client_secret))
       - *notify-slack
 
   - name: apply-development

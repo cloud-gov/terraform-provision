@@ -319,3 +319,27 @@ variable "ecr_stack_name" {
 variable "bosh_blobstore_sse" {
   default = "AES256"
 }
+
+variable "defectdojo_development_rds_password" {
+  sensitive = true
+}
+
+variable "defectdojo_development_hosts" {
+  type = list(string)
+}
+
+variable "rds_db_engine_version_defectdojo_development" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_development" {
+  default = "postgres16"
+}
+
+variable "rds_force_ssl_defectdojo_development" {
+  default = 1
+}
+
+variable "rds_multi_az" {
+  default = "true"
+}
