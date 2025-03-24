@@ -35,6 +35,11 @@ data "aws_iam_server_certificate" "wildcard_staging" {
   latest      = true
 }
 
+data "aws_iam_server_certificate" "wildcard_development" {
+  name_prefix = var.wildcard_development_certificate_name_prefix
+  latest      = true
+}
+
 resource "aws_lb" "main" {
   name            = "${var.stack_description}-main"
   subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
