@@ -376,7 +376,7 @@ jobs:
           TF_VAR_monitoring_production_hosts: '["prometheus.fr.cloud.gov", "alertmanager.fr.cloud.gov", "grafana.fr.cloud.gov"]'
           TF_VAR_monitoring_staging_hosts: '["prometheus.fr-stage.cloud.gov", "alertmanager.fr-stage.cloud.gov", "grafana.fr-stage.cloud.gov"]'
           TF_VAR_nessus_hosts: '["nessus.fr.cloud.gov"]'
-          TF_VAR_wildcard_development_certificate_name_prefix: dev.us-gov-west-1.aws-us-gov.cloud.gov
+          TF_VAR_wildcard_development_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
           TF_VAR_wildcard_staging_certificate_name_prefix: star.fr-stage.cloud.gov
           TF_VAR_wildcard_production_certificate_name_prefix: star.fr.cloud.gov
           TF_VAR_concourse_varz_bucket: ((concourse_varz_bucket))
