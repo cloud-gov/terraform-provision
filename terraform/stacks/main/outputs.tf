@@ -544,7 +544,7 @@ output "platform_logs_bucket_access_key_id_prev" {
 }
 
 output "platform_logs_bucket_secret_access_key_prev" {
-  value = module.logsearch.platform_logs_bucket_secret_access_key_prev
+  value     = module.logsearch.platform_logs_bucket_secret_access_key_prev
   sensitive = true
 }
 
