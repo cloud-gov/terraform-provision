@@ -4,7 +4,7 @@ resource "aws_route53_record" "cloud_gov_defectdojo_dev_cloud_gov_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.development.outputs.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }
@@ -16,7 +16,7 @@ resource "aws_route53_record" "cloud_gov_defectdojo_dev_cloud_gov_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${data.terraform_remote_state.development.outputs.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
     zone_id                = var.cloudfront_zone_id
     evaluate_target_health = false
   }
