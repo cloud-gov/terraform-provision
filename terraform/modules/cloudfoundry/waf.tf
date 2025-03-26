@@ -302,6 +302,27 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
 
           name = "SizeRestrictions_URIPATH"
         }
+
+        scope_down_statement {
+          not_statement {
+            statement {
+              regex_pattern_set_reference_statement {
+                arn = var.api_data_gov_hosts_regex_pattern_arn
+
+                field_to_match {
+                  single_header {
+                    name = "host"
+                  }
+                }
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+          }
+        }
       }
     }
 
