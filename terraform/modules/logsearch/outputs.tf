@@ -24,7 +24,7 @@ output "platform_logs_bucket_access_key_id_prev" {
 }
 
 output "platform_logs_bucket_secret_access_key_prev" {
-  value     = ""
+  value = ""
 }
 
 output "platform_logs_bucket_access_key_id_curr" {
