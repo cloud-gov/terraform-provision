@@ -613,6 +613,21 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-bosh-db.sh
+          - task: init-bosh-credhub-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-bosh-credhub-db.sh
               - task: init-cf-db
                 image: general-task
                 config:
