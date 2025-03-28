@@ -510,6 +510,21 @@ jobs:
                   - -e
                   - -c
                   - cg-provision-repo/ci/scripts/update-concourse-credhub-prod-db.sh
+          - task: init-concourse-stage-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-concourse-stage-db.sh
           - task: init-opsuaa-db
             image: general-task
             config:
