@@ -719,6 +719,22 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-cf-db.sh
+              - task: init-cf-autoscaler-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -913,6 +929,22 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-cf-db.sh
+              - task: init-cf-autoscaler-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -1106,6 +1138,22 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-cf-db.sh
+              - task: init-cf-autoscaler-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
       - do:
           - task: terraform-state-to-yaml
             file: pipeline-tasks/terraform12-state-to-yaml.yml
