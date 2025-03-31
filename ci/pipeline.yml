@@ -585,6 +585,45 @@ jobs:
                   - -e
                   - -c
                   - cg-provision-repo/ci/scripts/update-db.sh
+          - task: init-defectdojo-development-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: dojo
+                TERRAFORM_DB_HOST_FIELD: development_defectdojo_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: development_defectdojo_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: development_defectdojo_rds_password
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-db.sh
+          - task: init-defectdojo-staging-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: dojo
+                TERRAFORM_DB_HOST_FIELD: staging_defectdojo_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: staging_defectdojo_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: staging_defectdojo_rds_password
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-db.sh
+
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -775,6 +814,26 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-db.sh
+              - task: init-domains_broker-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: domains_broker
+                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
+                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
                   run:
                     path: sh
                     args:
@@ -1008,6 +1067,26 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-db.sh
+              - task: init-domains_broker-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: domains_broker
+                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
+                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -1228,6 +1307,26 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
+                  run:
+                    path: sh
+                    args:
+                      - -e
+                      - -c
+                      - cg-provision-repo/ci/scripts/update-db.sh
+              - task: init-domains_broker-db
+                image: general-task
+                config:
+                  platform: linux
+                  image_resource:
+                  inputs:
+                    - name: cg-provision-repo
+                    - name: terraform-state
+                  params:
+                    STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: domains_broker
+                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
+                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
                   run:
                     path: sh
                     args:
