@@ -450,6 +450,8 @@ jobs:
           <<: *tooling-params
           TERRAFORM_ACTION: apply
       - in_parallel:
+
+
           - task: init-bosh-db
             image: general-task
             config:
@@ -459,12 +461,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: bosh bosh_uaadb
+                TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
+                TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-bosh-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-bosh-credhub-db
             image: general-task
             config:
@@ -474,12 +480,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: credhub
+                TERRAFORM_DB_HOST_FIELD: credhub_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-bosh-credhub-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-concourse-credhub-stage-db
             image: general-task
             config:
@@ -489,12 +499,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: credhub
+                TERRAFORM_DB_HOST_FIELD: staging_credhub_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: staging_credhub_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: staging_credhub_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-concourse-credhub-stage-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-concourse-credhub-prod-db
             image: general-task
             config:
@@ -504,12 +518,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: credhub
+                TERRAFORM_DB_HOST_FIELD: production_credhub_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: production_credhub_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: production_credhub_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-concourse-credhub-prod-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-concourse-stage-db
             image: general-task
             config:
@@ -519,12 +537,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: atc
+                TERRAFORM_DB_HOST_FIELD: staging_concourse_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: staging_concourse_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: staging_concourse_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-concourse-stage-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-concourse-prod-db
             image: general-task
             config:
@@ -534,12 +556,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: atc
+                TERRAFORM_DB_HOST_FIELD: production_concourse_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: production_concourse_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: production_concourse_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-concourse-prod-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - task: init-opsuaa-db
             image: general-task
             config:
@@ -549,12 +575,16 @@ jobs:
                 - name: terraform-state
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: opsuaa
+                TERRAFORM_DB_HOST_FIELD: opsuaa_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: opsuaa_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: opsuaa_rds_password
               run:
                 path: sh
                 args:
                   - -e
                   - -c
-                  - cg-provision-repo/ci/scripts/update-opsuaa-db.sh
+                  - cg-provision-repo/ci/scripts/update-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -682,12 +712,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: bosh bosh_uaadb
+                    TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
+                    TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-bosh-credhub-db
                 image: general-task
                 config:
@@ -697,12 +731,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: credhub
+                    TERRAFORM_DB_HOST_FIELD: credhub_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-credhub-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-db
                 image: general-task
                 config:
@@ -713,12 +751,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: ccdb uaadb diegodb locketdb policydb silkdb routingdb
+                    TERRAFORM_DB_HOST_FIELD: cf_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-autoscaler-db
                 image: general-task
                 config:
@@ -729,12 +771,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: autoscaler
+                    TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -893,12 +939,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: bosh bosh_uaadb
+                    TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
+                    TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-bosh-credhub-db
                 image: general-task
                 config:
@@ -908,27 +958,36 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: credhub
+                    TERRAFORM_DB_HOST_FIELD: credhub_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-credhub-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-db
                 image: general-task
                 config:
                   platform: linux
+                  image_resource:
                   inputs:
                     - name: cg-provision-repo
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: ccdb uaadb diegodb locketdb policydb silkdb routingdb
+                    TERRAFORM_DB_HOST_FIELD: cf_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-autoscaler-db
                 image: general-task
                 config:
@@ -939,12 +998,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: autoscaler
+                    TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
           - do:
               - task: terraform-state-to-yaml
                 file: pipeline-tasks/terraform12-state-to-yaml.yml
@@ -1102,12 +1165,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: bosh bosh_uaadb
+                    TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
+                    TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-bosh-credhub-db
                 image: general-task
                 config:
@@ -1117,27 +1184,36 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: credhub
+                    TERRAFORM_DB_HOST_FIELD: credhub_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-bosh-credhub-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-db
                 image: general-task
                 config:
                   platform: linux
+                  image_resource:
                   inputs:
                     - name: cg-provision-repo
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: ccdb uaadb diegodb locketdb policydb silkdb routingdb
+                    TERRAFORM_DB_HOST_FIELD: cf_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
               - task: init-cf-autoscaler-db
                 image: general-task
                 config:
@@ -1148,12 +1224,16 @@ jobs:
                     - name: terraform-state
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
+                    DATABASES: autoscaler
+                    TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
                   run:
                     path: sh
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-cf-autoscaler-db.sh
+                      - cg-provision-repo/ci/scripts/update-db.sh
       - do:
           - task: terraform-state-to-yaml
             file: pipeline-tasks/terraform12-state-to-yaml.yml
