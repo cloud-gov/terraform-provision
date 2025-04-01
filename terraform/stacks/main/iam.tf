@@ -5,6 +5,10 @@ resource "aws_iam_access_key" "s3_broker_user_key_v1" {
   user = aws_iam_user.s3_broker_user.name
 }
 
+resource "aws_iam_access_key" "s3_broker_user_key_v2" {
+  user = aws_iam_user.s3_broker_user.name
+}
+
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-blobstore"
