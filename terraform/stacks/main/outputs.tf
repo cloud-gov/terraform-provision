@@ -697,7 +697,6 @@ output "s3_broker_user_secret_access_key_curr" {
   sensitive = true
 }
 
-o
 output "default_key_name" {
   value = module.stack.default_key_name
 }
