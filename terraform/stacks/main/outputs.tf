@@ -684,7 +684,7 @@ output "s3_broker_user_access_key_id_prev" {
 }
 
 output "s3_broker_user_secret_access_key_prev" {
-  value = aws_iam_access_key.s3_broker_user_key_v1.secret
+  value     = aws_iam_access_key.s3_broker_user_key_v1.secret
   sensitive = true
 }
 
