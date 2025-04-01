@@ -6,7 +6,6 @@ resource "aws_iam_access_key" "s3_broker_user_key_v1" {
   user = aws_iam_user.s3_broker_user.name
 }
 
-# foo
 resource "aws_iam_access_key" "s3_broker_user_key_v2" {
   user = aws_iam_user.s3_broker_user.name
 }
