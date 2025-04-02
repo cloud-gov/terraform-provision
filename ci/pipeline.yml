@@ -629,6 +629,25 @@ jobs:
                   - -e
                   - -c
                   - cg-provision-repo/ci/scripts/update-db.sh
+          - task: init-defectdojo-production-db
+            image: general-task
+            config:
+              platform: linux
+              inputs:
+                - name: cg-provision-repo
+                - name: terraform-state
+              params:
+                STATE_FILE_PATH: terraform-state/terraform.tfstate
+                DATABASES: dojo
+                TERRAFORM_DB_HOST_FIELD: production_defectdojo_rds_host
+                TERRAFORM_DB_USERNAME_FIELD: production_defectdojo_rds_username
+                TERRAFORM_DB_PASSWORD_FIELD: production_defectdojo_rds_password
+              run:
+                path: sh
+                args:
+                  - -e
+                  - -c
+                  - cg-provision-repo/ci/scripts/update-db.sh
 
           - do:
               - task: terraform-state-to-yaml
