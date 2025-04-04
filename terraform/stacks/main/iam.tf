@@ -1,11 +1,12 @@
 resource "aws_iam_user" "s3_broker_user" {
   name = "s3-broker-${var.stack_description}"
 }
-resource "aws_iam_access_key" "s3_broker_user_key_v1" {
+
+resource "aws_iam_access_key" "s3_broker_user_key_v2" {
   user = aws_iam_user.s3_broker_user.name
 }
 
-resource "aws_iam_access_key" "s3_broker_user_key_v2" {
+resource "aws_iam_access_key" "s3_broker_user_key_v3" {
   user = aws_iam_user.s3_broker_user.name
 }
 
