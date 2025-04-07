@@ -680,12 +680,11 @@ output "nessus_static_ip" {
 
 
 output "s3_broker_user_access_key_id_prev" {
-  value = aws_iam_access_key.s3_broker_user_key_v2.id
+  value = ""
 }
 
 output "s3_broker_user_secret_access_key_prev" {
-  value     = aws_iam_access_key.s3_broker_user_key_v2.secret
-  sensitive = true
+  value = ""
 }
 
 output "s3_broker_user_access_key_id_curr" {
