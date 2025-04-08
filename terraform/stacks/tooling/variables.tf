@@ -143,6 +143,10 @@ variable "defectdojo_staging_rds_password" {
   sensitive = true
 }
 
+variable "defectdojo_production_rds_password" {
+  sensitive = true
+}
+
 variable "wildcard_production_certificate_name_prefix" {
   default = ""
 }
@@ -176,6 +180,10 @@ variable "defectdojo_development_hosts" {
 }
 
 variable "defectdojo_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_production_hosts" {
   type = list(string)
 }
 
@@ -333,5 +341,17 @@ variable "rds_parameter_group_family_defectdojo_staging" {
 }
 
 variable "rds_force_ssl_defectdojo_staging" {
+  default = 1
+}
+
+variable "rds_db_engine_version_defectdojo_production" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_production" {
+  default = "postgres16"
+}
+
+variable "rds_force_ssl_defectdojo_production" {
   default = 1
 }

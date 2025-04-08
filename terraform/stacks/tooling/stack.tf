@@ -287,6 +287,35 @@ module "defectdojo_staging" {
   hosts                           = var.defectdojo_staging_hosts
 }
 
+module "defectdojo_production" {
+  source                          = "../../modules/defect_dojo"
+  stack_description               = "production"
+  vpc_id                          = module.stack.vpc_id
+  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 52)
+  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 53)
+  defectdojo_az1                  = data.aws_availability_zones.available.names[0]
+  defectdojo_az2                  = data.aws_availability_zones.available.names[1]
+  route_table_id_az1              = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
+  rds_password                    = var.defectdojo_production_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-defectdojo-production"
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_production
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_production
+  rds_force_ssl                   = var.rds_force_ssl_defectdojo_staging
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m5.large"
+  rds_db_size                     = 400
+  rds_db_storage_type             = "gp3"
+  rds_db_iops                     = 12000
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-production"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.defectdojo_production_hosts
+}
+
 module "monitoring_production" {
   source                      = "../../modules/monitoring"
   stack_description           = "production"
