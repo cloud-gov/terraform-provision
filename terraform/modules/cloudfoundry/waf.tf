@@ -469,22 +469,15 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
           }
         }
 
-#        statement {
-#          ip_set_reference_statement {
-#            arn = var.customer_whitelist_ip_ranges_set_arn
-#
-#            ip_set_forwarded_ip_config {
-#              header_name       = var.forwarded_ip_header_name
-#              fallback_behavior = "NO_MATCH"
-#              position          = "FIRST"
-#            }
-#          }
-#        }
-#
-
         statement {
           ip_set_reference_statement {
-            arn = var.gsa_ipv6_range_ip_set_arn
+            arn = var.customer_whitelist_ip_ranges_set_arn
+
+            ip_set_forwarded_ip_config {
+              header_name       = var.forwarded_ip_header_name
+              fallback_behavior = "NO_MATCH"
+              position          = "FIRST"
+            }
           }
         }
       }
@@ -496,6 +489,34 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
       sampled_requests_enabled   = true
     }
   }
+
+  rule {
+    name     = "AllowTrustedv6IPs"
+    priority = 65
+
+    action {
+      allow {}
+    }
+
+    statement {
+      or_statement {
+        statement {
+          ip_set_reference_statement {
+            arn = var.gsa_ipv6_range_ip_set_arn
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.stack_description}-AllowTrustedv6IPs"
+      sampled_requests_enabled   = true
+    }
+  }
+
+
+
 
   dynamic "rule" {
     for_each = toset(local.malicious_ja3_fingerprint_rules)
