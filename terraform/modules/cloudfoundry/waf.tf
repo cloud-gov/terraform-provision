@@ -481,6 +481,8 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
           }
         }
 
+        statement {when I was a young warthog...}
+
         statement {
           ip_set_reference_statement {
             arn = var.gsa_ipv6_range_ip_set_arn
