@@ -194,7 +194,12 @@ variable "non_cdn_traffic_rate_limit_block_by_source_ip" {
 
 variable "gsa_ip_range_ip_set_arn" {
   type        = string
-  description = "ARN of IP set identifying GSA IP CIDR ranges"
+  description = "ARN of IP v4 set identifying GSA IP CIDR ranges"
+}
+
+variable "gsa_ipv6_range_ip_set_arn" {
+  type        = string
+  description = "ARN of IP v6 set identifying GSA IP CIDR ranges"
 }
 
 variable "malicious_ja3_fingerprint_ids" {
