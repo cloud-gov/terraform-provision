@@ -469,19 +469,18 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
           }
         }
 
-        statement {
-          ip_set_reference_statement {
-            arn = var.customer_whitelist_ip_ranges_set_arn
-
-            ip_set_forwarded_ip_config {
-              header_name       = var.forwarded_ip_header_name
-              fallback_behavior = "NO_MATCH"
-              position          = "FIRST"
-            }
-          }
-        }
-
-        statement {when I was a young warthog...}
+#        statement {
+#          ip_set_reference_statement {
+#            arn = var.customer_whitelist_ip_ranges_set_arn
+#
+#            ip_set_forwarded_ip_config {
+#              header_name       = var.forwarded_ip_header_name
+#              fallback_behavior = "NO_MATCH"
+#              position          = "FIRST"
+#            }
+#          }
+#        }
+#
 
         statement {
           ip_set_reference_statement {
