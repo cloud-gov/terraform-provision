@@ -10,6 +10,7 @@ resource "aws_lb_target_group" "defectdojo_target" {
     timeout             = 5
     interval            = 30
     matcher             = 200
+    path                = "/login?force_login_form"
   }
 
   stickiness {
