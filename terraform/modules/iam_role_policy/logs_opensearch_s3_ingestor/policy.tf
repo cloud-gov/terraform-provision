@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "logs_opensearch_policy" {
+data "aws_iam_policy_document" "logs_opensearch_s3_policy" {
   statement {
     actions = [
       "s3:PutObject",
@@ -12,5 +12,5 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.aws_iam_policy_document.logs_opensearch_policy.json
+  policy = data.aws_iam_policy_document.logs_opensearch_s3_policy.json
 }
