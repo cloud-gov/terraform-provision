@@ -35,12 +35,12 @@ data "aws_iam_policy_document" "s3_broker_policy" {
   }
   statement {
     actions = [
-        "iam:ListAccessKeys",
-        "iam:ListAttachedUserPolicies"
+      "iam:ListAccessKeys",
+      "iam:ListAttachedUserPolicies"
     ]
 
-    resources = [ 
-        "arn:${var.aws_partition}:iam::${var.account_id}:user/*"
+    resources = [
+      "arn:${var.aws_partition}:iam::${var.account_id}:user/*"
     ]
   }
 }
