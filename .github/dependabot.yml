@@ -162,10 +162,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/logs_opensearch_s3_ingestor"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
     schedule:
       interval: "weekly"
@@ -219,6 +215,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_user/s3_logstash"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_user/s3_opensearch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
