@@ -15,12 +15,10 @@ data "aws_iam_policy_document" "s3_broker_policy" {
       "iam:GetUser",
       "iam:CreateUser",
       "iam:DeleteUser",
-      "iam:ListAccessKeys",
       "iam:CreateAccessKey",
       "iam:DeleteAccessKey",
       "iam:CreatePolicy",
       "iam:DeletePolicy",
-      "iam:ListAttachedUserPolicies",
       "iam:AttachUserPolicy",
       "iam:DetachUserPolicy",
       "iam:TagUser",
@@ -33,6 +31,16 @@ data "aws_iam_policy_document" "s3_broker_policy" {
       "arn:${var.aws_partition}:iam::${var.account_id}:user${var.iam_path}*",
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}",
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}*"
+    ]
+  }
+  statement {
+    actions = [
+        "iam:ListAccessKeys",
+        "iam:ListAttachedUserPolicies"
+    ]
+
+    resources = [ 
+        "arn:${var.aws_partition}:iam::${var.account_id}:user/*"
     ]
   }
 }
