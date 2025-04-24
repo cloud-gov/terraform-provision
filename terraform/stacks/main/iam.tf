@@ -57,6 +57,14 @@ module "logs_opensearch_ingestor_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
+module "logs_opensearch_s3_ingestor_policy" {
+  source             = "../../modules/iam_role_policy/logs_opensearch_s3_ingestor"
+  policy_name        = "${var.stack_description}-logs_opensearch_s3_ingestor"
+  aws_partition      = data.aws_partition.current.partition
+  aws_default_region = var.aws_default_region
+  account_id         = data.aws_caller_identity.current.account_id
+}
+
 module "cf_blobstore_policy" {
   source            = "../../modules/iam_role_policy/cf_blobstore"
   policy_name       = "${var.stack_description}-cf-blobstore"
@@ -110,10 +118,14 @@ module "logsearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logsearch-ingestor"
 }
-
 module "logs_opensearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logs-opensearch-ingestor"
+}
+
+module "logs_opensearch_s3_ingestor_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logs-opensearch-s3-ingestor"
 }
 
 module "cf_blobstore_role" {
@@ -139,6 +151,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.bosh_role.role_name,
     module.logsearch_ingestor_role.role_name,
     module.logs_opensearch_ingestor_role.role_name,
+    module.logs_opensearch_s3_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -155,6 +168,7 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.bosh_compilation_role.role_name,
     module.logsearch_ingestor_role.role_name,
     module.logs_opensearch_ingestor_role.role_name,
+    module.logs_opensearch_s3_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -200,6 +214,14 @@ resource "aws_iam_policy_attachment" "logs_opensearch_ingestor" {
   policy_arn = module.logs_opensearch_ingestor_policy.arn
   roles = [
     module.logs_opensearch_ingestor_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logs_opensearch_s3_ingestor" {
+  name       = "logs_opensearch_s3_ingestor"
+  policy_arn = module.logs_opensearch_s3_ingestor_policy.arn
+  roles = [
+    module.logs_opensearch_s3_ingestor_role.role_name,
   ]
 }
 

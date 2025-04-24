@@ -1,0 +1,16 @@
+data "aws_iam_policy_document" "logs_opensearch_policy" {
+  statement {
+    actions = [
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:s3:::logs-opensearch-*/*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "iam_policy" {
+  name   = var.policy_name
+  policy = data.aws_iam_policy_document.logs_opensearch_policy.json
+}

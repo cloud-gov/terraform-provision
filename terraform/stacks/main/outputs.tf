@@ -587,6 +587,10 @@ output "logs_opensearch_ingestor_profile" {
   value = module.logs_opensearch_ingestor_role.profile_name
 }
 
+output "logs_opensearch_s3_ingestor_profile" {
+  value = module.logs_opensearch_s3_ingestor_role.profile_name
+}
+
 output "cf_blobstore_profile" {
   value = module.cf_blobstore_role.profile_name
 }
