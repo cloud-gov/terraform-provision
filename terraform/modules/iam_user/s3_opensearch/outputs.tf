@@ -11,9 +11,10 @@ output "secret_access_key_prev" {
 }
 
 output "access_key_id_curr" {
-  value = aws_iam_access_key.iam_access_key_v1.id
+  value = aws_iam_access_key.logs_opensearch_s3_user_access_key_id_curr.id
 }
 
 output "secret_access_key_curr" {
-  value = aws_iam_access_key.iam_access_key_v1.secret
+  value = aws_iam_access_key.logs_opensearch_s3_user_access_key_id_curr.secret
+  sensitive = true
 }
