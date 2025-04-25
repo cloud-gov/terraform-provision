@@ -229,7 +229,7 @@ resource "aws_iam_policy_attachment" "logs_opensearch_s3_ingestor" {
     module.logs_opensearch_ingestor_s3_role.role_name,
   ]
   users = [
-    aws_iam_user.opensearch_s3_ingestor_user.name
+    aws_iam_user.logs_opensearch_s3_user.name
   ]
 }
 
