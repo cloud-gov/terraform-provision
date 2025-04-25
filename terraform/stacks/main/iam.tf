@@ -6,6 +6,14 @@ resource "aws_iam_access_key" "s3_broker_user_key_v3" {
   user = aws_iam_user.s3_broker_user.name
 }
 
+resource "aws_iam_user" "logs_opensearch_s3_user" {
+  name = "logs-opensearch-s3-${var.stack_description}"
+}
+
+resource "aws_iam_access_key" "logs_opensearch_s3_user_key_v3" {
+  user = aws_iam_user.logs_opensearch_s3_user.name
+}
+
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-blobstore"
@@ -55,6 +63,14 @@ module "logs_opensearch_ingestor_policy" {
   aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
   account_id         = data.aws_caller_identity.current.account_id
+}
+
+module "logs_opensearch_s3_ingestor_policy" {
+  source        = "../../modules/iam_role_policy/logs_opensearch_s3_ingestor"
+  policy_name   = "${var.stack_description}-logs_opensearch_s3_ingestor"
+  aws_partition = data.aws_partition.current.partition
+  aws_default_region = var.aws_default_region
+  account_id    = data.aws_caller_identity.current.account_id
 }
 
 module "cf_blobstore_policy" {
@@ -113,6 +129,10 @@ module "logsearch_ingestor_role" {
 module "logs_opensearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logs-opensearch-ingestor"
+}
+module "logs_opensearch_ingestor_s3_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logs-opensearch-ingestor_s3"
 }
 
 module "cf_blobstore_role" {
@@ -199,6 +219,17 @@ resource "aws_iam_policy_attachment" "logs_opensearch_ingestor" {
   policy_arn = module.logs_opensearch_ingestor_policy.arn
   roles = [
     module.logs_opensearch_ingestor_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logs_opensearch_s3_ingestor" {
+  name       = "${var.stack_description}-logs_opensearch_s3_ingestor"
+  policy_arn = module.logs_opensearch_s3_ingestor_policy.arn
+  roles = [
+    module.logs_opensearch_ingestor_s3_role.role_name,
+  ]
+  users = [
+    aws_iam_user.opensearch_s3_ingestor_user.name
   ]
 }
 

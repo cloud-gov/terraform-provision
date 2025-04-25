@@ -696,6 +696,15 @@ output "s3_broker_user_secret_access_key_curr" {
   sensitive = true
 }
 
+output "logs_opensearch_s3_user_access_key_id_curr" {
+  value = aws_iam_access_key.logs_opensearch_s3_user_key_v3.id
+}
+
+output "logs_opensearch_s3_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.logs_opensearch_s3_user_key_v3.secret
+  sensitive = true
+}
+
 output "default_key_name" {
   value = module.stack.default_key_name
 }
