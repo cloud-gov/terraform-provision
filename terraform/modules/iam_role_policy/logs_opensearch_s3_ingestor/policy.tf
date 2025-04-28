@@ -2,7 +2,8 @@ data "aws_iam_policy_document" "logs_opensearch_s3_policy" {
   statement {
     actions = [
       "s3:PutObject",
-      "s3:GetObject"
+      "s3:GetObject",
+      "s3:ListBucket"
     ]
 
     resources = [
