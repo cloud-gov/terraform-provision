@@ -66,11 +66,11 @@ module "logs_opensearch_ingestor_policy" {
 }
 
 module "logs_opensearch_s3_ingestor_policy" {
-  source        = "../../modules/iam_role_policy/logs_opensearch_s3_ingestor"
-  policy_name   = "${var.stack_description}-logs_opensearch_s3_ingestor"
-  aws_partition = data.aws_partition.current.partition
+  source             = "../../modules/iam_role_policy/logs_opensearch_s3_ingestor"
+  policy_name        = "${var.stack_description}-logs_opensearch_s3_ingestor"
+  aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
-  account_id    = data.aws_caller_identity.current.account_id
+  account_id         = data.aws_caller_identity.current.account_id
 }
 
 module "cf_blobstore_policy" {
