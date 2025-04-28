@@ -653,7 +653,7 @@ output "logs_opensearch_archive_bucket_name" {
 }
 
 output "logs_opensearch_cf_audit_events_bucket_name" {
-  value = module.cf.logs_opensearch_cf_audit_events.bucket_name
+  value = module.cf.logs_opensearch_cf_audit_events_bucket_name
 }
 
 output "bosh_blobstore_bucket" {
