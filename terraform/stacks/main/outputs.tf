@@ -652,6 +652,10 @@ output "logs_opensearch_archive_bucket_name" {
   value = module.cf.logs_opensearch_archive_bucket_name
 }
 
+output "logs_opensearch_cf_audit_events_bucket_name" {
+  value = module.cf.logs_opensearch_cf_audit_events_bucket_name
+}
+
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name
 }
@@ -693,6 +697,15 @@ output "s3_broker_user_access_key_id_curr" {
 
 output "s3_broker_user_secret_access_key_curr" {
   value     = aws_iam_access_key.s3_broker_user_key_v3.secret
+  sensitive = true
+}
+
+output "logs_opensearch_s3_user_access_key_id_curr" {
+  value = aws_iam_access_key.logs_opensearch_s3_user_key_v3.id
+}
+
+output "logs_opensearch_s3_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.logs_opensearch_s3_user_key_v3.secret
   sensitive = true
 }
 

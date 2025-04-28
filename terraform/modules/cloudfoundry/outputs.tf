@@ -125,6 +125,10 @@ output "logs_opensearch_archive_bucket_name" {
   value = module.logs-opensearch-archive.bucket_name
 }
 
+output "logs_opensearch_cf_audit_events_bucket_name" {
+  value = module.logs-opensearch-cf-audit-events.bucket_name
+}
+
 output "cf_uaa_waf_core_arn" {
   value = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }
