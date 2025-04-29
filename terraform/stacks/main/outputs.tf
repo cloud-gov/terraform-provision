@@ -146,18 +146,6 @@ output "services_subnet_reserved_az2" {
   value = "${cidrhost(module.cf.services_cidr_2, 0)} - ${cidrhost(module.cf.services_cidr_2, 3)}"
 }
 
-/* Per-deployment static IP ranges */
-/* TODO: Make this go away */
-output "logsearch_static_ips" {
-  value = [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)]
-}
-
-output "services_static_ips" {
-  value = concat(
-    [for i in range(0, 31) : cidrhost(module.cf.services_cidr_1, i + 20)],
-  )
-}
-
 /* Main LB */
 output "main_lb_name" {
   value = aws_lb.main.name
