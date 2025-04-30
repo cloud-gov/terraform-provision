@@ -84,6 +84,23 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     }
   }
 
+  # These actions require "*" as the resource constraint.
+  # See https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudfront.html
+  statement {
+    actions = [
+      "cloudfront:ListCachePolicies",
+      "cloudfront:ListOriginRequestPolicies"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
   statement {
     actions = [
       "route53:GetChange"
