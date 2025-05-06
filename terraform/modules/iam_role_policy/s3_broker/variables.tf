@@ -14,6 +14,6 @@ variable "iam_path" {
   default = "/"
 }
 
-variable "s3-user-prefix" {
+variable "s3_user_prefix" {
   default = "/cg-s3-*"
 }
