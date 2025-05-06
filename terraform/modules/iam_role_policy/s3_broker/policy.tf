@@ -24,7 +24,9 @@ data "aws_iam_policy_document" "s3_broker_policy" {
       "iam:TagUser",
       "iam:UntagUser",
       "iam:TagPolicy",
-      "iam:UntagPolicy"
+      "iam:UntagPolicy",
+      "iam:ListAccessKeys",
+      "iam:ListAttachedUserPolicies"
     ]
 
     resources = [
@@ -36,24 +38,11 @@ data "aws_iam_policy_document" "s3_broker_policy" {
 
   statement {
     actions = [
-      "iam:ListUsers"
-    ]
-
-    # Resource constraint cannot be used with ListUsers
-    # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awsidentityandaccessmanagementiam.html#awsidentityandaccessmanagementiam-user
-    resources = [
-      "*"
-    ]
-  }
-
-  statement {
-    actions = [
-      "iam:ListAccessKeys",
-      "iam:ListAttachedUserPolicies"
+      "iam:GetUser"
     ]
 
     resources = [
-      "arn:${var.aws_partition}:iam::${var.account_id}:user/*"
+      "arn:${var.aws_partition}:iam::${var.account_id}:user/${var.s3-user-prefix}"
     ]
   }
 }
