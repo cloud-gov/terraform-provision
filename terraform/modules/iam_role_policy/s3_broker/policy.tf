@@ -33,6 +33,19 @@ data "aws_iam_policy_document" "s3_broker_policy" {
       "arn:${var.aws_partition}:iam::${var.account_id}:policy${var.iam_path}*"
     ]
   }
+
+  statement {
+    actions = [
+      "iam:ListUsers"
+    ]
+
+    # Resource constraint cannot be used with ListUsers
+    # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awsidentityandaccessmanagementiam.html#awsidentityandaccessmanagementiam-user
+    resources = [
+      "*"
+    ]
+  }
+
   statement {
     actions = [
       "iam:ListAccessKeys",
