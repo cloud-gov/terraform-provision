@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "s3_broker_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:iam::${var.account_id}:user/${var.s3_user_prefix}"
+      "arn:${var.aws_partition}:iam::${var.account_id}:user${var.s3_user_prefix}"
     ]
   }
 }
