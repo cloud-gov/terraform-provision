@@ -5,8 +5,8 @@ set -eu
 curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 chmod +x ./jq
 
-pip install certbot==2.6.0
-pip install certbot-dns-route53==2.6.0
+pip install certbot==3.3.0
+pip install certbot-dns-route53==3.3.0
 
 #spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
 #  | ./jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
