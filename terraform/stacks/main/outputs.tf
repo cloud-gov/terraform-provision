@@ -644,6 +644,10 @@ output "logs_opensearch_cf_audit_events_bucket_name" {
   value = module.cf.logs_opensearch_cf_audit_events_bucket_name
 }
 
+output "logs_opensearch_aws_metrics_bucket_name" {
+  value = module.cf.logs_opensearch_aws_metrics_bucket_name
+}
+
 output "bosh_blobstore_bucket" {
   value = module.bosh_blobstore_bucket.bucket_name
 }
