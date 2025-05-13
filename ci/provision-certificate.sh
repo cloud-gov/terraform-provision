@@ -6,14 +6,14 @@ pip install certbot==3.3.0
 pip install certbot-dns-route53==3.3.0
 
 #spruce_url=$(curl https://api.github.com/repos/geofffranks/spruce/releases/latest \
-#  | ./jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
+#  | jq -r '.assets[] | select(.name == "spruce-linux-amd64") | .browser_download_url')
 #curl -L -o spruce "${spruce_url}"
 curl -L -o spruce https://github.com/geofffranks/spruce/releases/download/v1.29.0/spruce-linux-amd64
 chmod +x ./spruce
 
 # Quit if current certificate isn't close to expiration date
 expiration=$(
-  ./jq -r --arg prefix "${CERT_PREFIX}-" \
+  jq -r --arg prefix "${CERT_PREFIX}-" \
     '.ServerCertificateMetadataList | map(select(.ServerCertificateName | startswith($prefix))) | sort_by(.Expiration) | .[-1].Expiration' \
     < certificates/metadata)
 if [[ $(date --date "+30 days" +%s) -lt $(date --date "${expiration}" +%s) ]]; then
@@ -22,8 +22,8 @@ fi
 
 config_path=$(pwd)
 
-AWS_ACCESS_KEY_ID=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_access_key_id_curr")
-AWS_SECRET_ACCESS_KEY=$(./spruce json terraform-yaml-external/state.yml | ./jq -r ".terraform_outputs.lets_encrypt_secret_access_key_curr")
+AWS_ACCESS_KEY_ID=$(./spruce json terraform-yaml-external/state.yml | jq -r ".terraform_outputs.lets_encrypt_access_key_id_curr")
+AWS_SECRET_ACCESS_KEY=$(./spruce json terraform-yaml-external/state.yml | jq -r ".terraform_outputs.lets_encrypt_secret_access_key_curr")
 export AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY
 
