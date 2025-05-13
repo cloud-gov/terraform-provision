@@ -2,9 +2,6 @@
 
 set -eu
 
-curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-chmod +x ./jq
-
 pip install certbot==3.3.0
 pip install certbot-dns-route53==3.3.0
 
