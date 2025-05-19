@@ -280,3 +280,12 @@ variable "rds_add_pgaudit_log_parameter" {
   default     = false
 }
 
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+}
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+}

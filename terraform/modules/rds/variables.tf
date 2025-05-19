@@ -106,3 +106,9 @@ variable "rds_shared_preload_libraries" {
   type        = string
   default     = "pgaudit,pg_stat_statements,pg_tle"
 }
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "ddl,role"
+}

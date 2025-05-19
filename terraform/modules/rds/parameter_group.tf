@@ -47,7 +47,7 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     for_each = var.rds_add_pgaudit_log_parameter ? [1] : []
     content {
       name         = "pgaudit.log"
-      value        = "ddl,role"
+      value        = var.rds_pgaudit_log_values
       apply_method = "pending-reboot"
     }
   }

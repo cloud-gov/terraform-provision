@@ -268,7 +268,8 @@ module "cf" {
   rds_force_ssl                               = var.rds_force_ssl_cf
   rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_cf
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_cf
-
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_cf
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_cf
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
