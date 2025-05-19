@@ -38,7 +38,7 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     for_each = var.rds_add_pgaudit_to_shared_preload_libraries ? [1] : []
     content {
       name  = "shared_preload_libraries"
-      value = "pgaudit,pg_stat_statements"
+      value = "pgaudit,pg_stat_statements,pg_tle"
     }
   }
 
