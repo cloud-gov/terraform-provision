@@ -89,13 +89,13 @@ variable "performance_insights_enabled" {
   default = "false"
 }
 
-variable "add_pgaudit_to_shared_preload_libraries" {
+variable "rds_add_pgaudit_to_shared_preload_libraries" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
   default     = false
 }
 
-variable "add_pgaudit_log_parameter" {
+variable "rds_add_pgaudit_log_parameter" {
   description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
   type        = bool
   default     = false

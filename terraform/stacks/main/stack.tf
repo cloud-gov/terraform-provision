@@ -258,14 +258,16 @@ module "cf" {
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,
   ]
 
-  rds_password               = var.cf_rds_password
-  rds_subnet_group           = module.stack.rds_subnet_group
-  rds_security_groups        = [module.stack.rds_postgres_security_group]
-  rds_instance_type          = var.cf_rds_instance_type
-  stack_prefix               = "cf-${var.stack_description}"
-  rds_db_engine_version      = var.rds_db_engine_version_cf
-  rds_parameter_group_family = var.rds_parameter_group_family_cf
-  rds_force_ssl              = var.rds_force_ssl_cf
+  rds_password                                   = var.cf_rds_password
+  rds_subnet_group                               = module.stack.rds_subnet_group
+  rds_security_groups                            = [module.stack.rds_postgres_security_group]
+  rds_instance_type                              = var.cf_rds_instance_type
+  stack_prefix                                   = "cf-${var.stack_description}"
+  rds_db_engine_version                          = var.rds_db_engine_version_cf
+  rds_parameter_group_family                     = var.rds_parameter_group_family_cf
+  rds_force_ssl                                  = var.rds_force_ssl_cf
+  rds_add_pgaudit_to_shared_preload_libraries_cf = var.rds_add_pgaudit_to_shared_preload_libraries
+  rds_add_pgaudit_log_parameter_cf               = var.rds_add_pgaudit_log_parameter
 
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade

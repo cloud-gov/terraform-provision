@@ -267,3 +267,15 @@ variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
+
+variable "rds_add_pgaudit_to_shared_preload_libraries" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
