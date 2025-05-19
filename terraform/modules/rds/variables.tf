@@ -100,3 +100,9 @@ variable "rds_add_pgaudit_log_parameter" {
   type        = bool
   default     = false
 }
+
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pgaudit,pg_stat_statements,pg_tle"
+}

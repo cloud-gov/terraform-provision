@@ -279,3 +279,4 @@ variable "rds_add_pgaudit_log_parameter" {
   type        = bool
   default     = false
 }
+
