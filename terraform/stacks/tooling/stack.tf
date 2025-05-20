@@ -117,6 +117,17 @@ module "stack" {
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
   credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
   credhub_rds_parameter_group_family     = var.rds_parameter_group_family_bosh_credhub
+
+  rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub = var.rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub
+  rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+
+  rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
+  rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
+  rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+
 }
 
 module "concourse_production" {
