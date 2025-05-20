@@ -324,3 +324,27 @@ variable "ecr_stack_name" {
 variable "bosh_blobstore_sse" {
   default = "AES256"
 }
+
+variable "rds_add_pgaudit_to_shared_preload_libraries_cf" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_cf" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_cf" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_cf" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
