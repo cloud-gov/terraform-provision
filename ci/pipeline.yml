@@ -700,6 +700,12 @@ jobs:
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_force_ssl: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
+          TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
+          TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
+
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
           TF_VAR_rds_force_ssl_cf: 1
@@ -712,6 +718,12 @@ jobs:
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
+          TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
+          TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
+
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_rds_force_ssl_autoscaler: 1
@@ -782,6 +794,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: bosh bosh_uaadb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                     TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
@@ -801,6 +814,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: credhub
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
