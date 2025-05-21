@@ -19,4 +19,10 @@ module "rds_96" {
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = var.rds_final_snapshot_identifier
   rds_force_ssl                   = var.rds_force_ssl
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values
+
 }
