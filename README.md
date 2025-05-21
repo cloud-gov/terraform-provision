@@ -60,7 +60,7 @@ As mentioned above, we have four categories of environment:
   support the platform components. There should be several of these across multiple
   AWS accounts
 - `tooling` - this is used to support the things in the `main` platform - our CI
-  system, managment tools such as Nessus, etc.
+  system, management tools such as Nessus, etc.
 - `external` - this manages some things that don't (or historically didn't) exist
   in govcloud (really just cloudfront and the users, etc, to support it). There's
   one of these per `main` environment

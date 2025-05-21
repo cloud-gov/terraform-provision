@@ -4,7 +4,7 @@ This stack is run after `bootstrap` and `bootstrap-westa-hub` are created so tha
 
 ## First deployment - Create Certificates
 
-Certificates need to be created for production and staging, the steps below are loosly modeled after `ci/provision_certificate.*` and `ci/udpate_certificate.*`
+Certificates need to be created for production and staging, the steps below are loosely modeled after `ci/provision_certificate.*` and `ci/udpate_certificate.*`
 
 ***Note that this uses the `com-prd-plat-admin` commercial account, not the govcloud account.***
 
@@ -166,7 +166,7 @@ Be sure to have created the certificates in the previous section before attempti
 
 A couple notes:
 
- - `TF_VAR_*` are not used since they would be commited in github history and contain ip addresses.  Instead, use a `<stackname>.tfvars` file that you create and manually upload to the terraform state bucket.
+ - `TF_VAR_*` are not used since they would be committed in github history and contain ip addresses.  Instead, use a `<stackname>.tfvars` file that you create and manually upload to the terraform state bucket.
  - `wildcard_production_certificate_name_prefix` should match the value in `CERT_PREFIX_PRODUCTION` in the previous section.
  - `wildcard_staging_certificate_name_prefix` should match the value in `CERT_PREFIX_STAGING` in the previous section.
  - `aws-vault` needs to use the new govcloud account for this hub and should match where the certificates were uploaded (not created) to.

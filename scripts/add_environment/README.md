@@ -30,7 +30,7 @@ basing it on the environment `westa`
 <env>_parent_stack_name: tooling
 <env>_ssh_key: <value from key.pub>
 ```
-### Add these new vars to your new enivornment concourse
+### Add these new vars to your new environment concourse
 1. `ci/pipeline.yml` duplicate the `plan-bootstrap-westa`, `bootstrap-westa`, `acme-certificate-westa`, and `acme-certificate-westa` jobs
    to `plan-bootstrap-easta`, `bootstrap-easta`, `acme-certificate-easta`, and `acme-certificate-easta`, respectively
 1. in the new jobs, edit the names of any variables, tasks, etc to refer to the new environment
@@ -42,7 +42,7 @@ basing it on the environment `westa`
 ```
 1. get the cg-provision secrets file from the secrets s3 bucket
 1. generate new values for all of these. For secrets, such as passwords, use a cryptographic string
-   generator. For othe values, try to follow estabilished patterns.
+   generator. For other values, try to follow established patterns.
 1. for `ASSUME_ROLE_ARN` in `acme-certificate-easta` and `acme-certificate-east-1-apps` (twice in each job),
    use the value from `cert_role_arn` above
 1. fly the pipeline:

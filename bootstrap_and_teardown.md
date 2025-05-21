@@ -1,6 +1,6 @@
 # Bootstrap procedure
 
-Follow this procedure to setup a bootstrap instance of concourse and deploy minimal components to bring up a permanant instance of concourse deployed by a bosh director.
+Follow this procedure to setup a bootstrap instance of concourse and deploy minimal components to bring up a permanent instance of concourse deployed by a bosh director.
 
 1. Clone this repository: `git clone https://github.com/cloud-gov/cg-provision`
 1. Get the rest of the necessary repositories: `./cg-provision/scripts/bootstrap/setup-bootstrap.sh`

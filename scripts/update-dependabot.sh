@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# delete the exising configuration since it will be overridden
+# delete the existing configuration since it will be overridden
 yq -i 'del(.updates)' ".github/dependabot.yml"
 
 for DIR in $(find . -name '*.tf' -not -path '*.terraform*'  -exec dirname {} \; | sort -u); do
