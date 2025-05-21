@@ -334,6 +334,11 @@ module "autoscaler" {
   rds_parameter_group_family      = var.rds_parameter_group_family_autoscaler
   rds_force_ssl                   = var.rds_force_ssl_autoscaler
 
+  rds_add_pgaudit_to_shared_preload_libraries_autoscaler = var.rds_add_pgaudit_to_shared_preload_libraries_autoscaler
+  rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler
+  rds_shared_preload_libraries_autoscaler                = var.rds_shared_preload_libraries_autoscaler
+  rds_pgaudit_log_values_autoscaler                      = var.rds_pgaudit_log_values_autoscaler
+
 }
 
 resource "random_string" "autoscaler_rds_password" {
