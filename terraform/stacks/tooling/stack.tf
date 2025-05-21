@@ -156,6 +156,11 @@ module "concourse_production" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_production
 }
 
 module "concourse_staging" {
@@ -183,6 +188,11 @@ module "concourse_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_staging
 }
 
 module "credhub_production" {
@@ -209,6 +219,11 @@ module "credhub_production" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_production
 }
 
 module "credhub_staging" {
@@ -238,6 +253,11 @@ module "credhub_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_staging
 }
 
 module "defectdojo_development" {

@@ -432,6 +432,10 @@ jobs:
           TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_force_ssl_credhub_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_staging: true
+          TF_VAR_rds_shared_preload_libraries_credhub_staging: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_credhub_staging: true
+          TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role" 
 
           TF_VAR_rds_db_engine_version_credhub_production: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
@@ -440,6 +444,10 @@ jobs:
           TF_VAR_rds_db_engine_version_concourse_staging: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
           TF_VAR_rds_force_ssl_concourse_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_concourse_staging: true
+          TF_VAR_rds_shared_preload_libraries_concourse_staging: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_concourse_staging: true
+          TF_VAR_rds_pgaudit_log_values_concourse_staging: "ddl,role"
 
           TF_VAR_rds_db_engine_version_concourse_production: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
@@ -517,6 +525,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: credhub
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_credhub_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_credhub_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_credhub_rds_password
@@ -555,6 +564,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: atc
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_concourse_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_concourse_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_concourse_rds_password
