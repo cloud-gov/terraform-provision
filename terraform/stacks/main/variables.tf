@@ -72,6 +72,30 @@ variable "rds_force_ssl_autoscaler" {
   default = 1
 }
 
+variable "rds_add_pgaudit_to_shared_preload_libraries_autoscaler" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_autoscaler" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_autoscaler" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_autoscaler" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_cf" {
   default = "16.3"
 }
