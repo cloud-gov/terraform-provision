@@ -404,14 +404,27 @@ jobs:
           TF_VAR_rds_db_engine_version_defectdojo_development: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_development: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_development: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_development: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_development: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_development: "ddl,role"
+
 
           TF_VAR_rds_db_engine_version_defectdojo_staging: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_staging: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_staging: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_staging: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_staging: "ddl,role"
 
           TF_VAR_rds_db_engine_version_defectdojo_production: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_production: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_production: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_production: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_production: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_production: "ddl,role"
 
           TF_VAR_rds_db_engine_version_bosh: "15.12"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
@@ -463,6 +476,11 @@ jobs:
           TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
           TF_VAR_rds_force_ssl_opsuaa: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_opsuaa: true
+          TF_VAR_rds_shared_preload_libraries_opsuaa: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_opsuaa: true
+          TF_VAR_rds_pgaudit_log_values_opsuaa: "ddl,role"
+
 
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
@@ -612,6 +630,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: opsuaa
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: opsuaa_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: opsuaa_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: opsuaa_rds_password
@@ -631,6 +650,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: development_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: development_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: development_defectdojo_rds_password
@@ -650,6 +670,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_defectdojo_rds_password
@@ -669,6 +690,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: production_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: production_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: production_defectdojo_rds_password
@@ -913,6 +935,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
@@ -1187,6 +1210,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
@@ -1455,6 +1479,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
