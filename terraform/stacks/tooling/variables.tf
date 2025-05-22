@@ -229,6 +229,30 @@ variable "rds_force_ssl_opsuaa" {
   default = 1
 }
 
+variable "rds_add_pgaudit_to_shared_preload_libraries_opsuaa" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_opsuaa" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_opsuaa" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_opsuaa" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "remote_state_bucket" {
 }
 
@@ -476,6 +500,30 @@ variable "rds_force_ssl_defectdojo_development" {
   default = 1
 }
 
+variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_defectdojo_development" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_defectdojo_development" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_development" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_defectdojo_staging" {
   default = "16.3"
 }
@@ -488,6 +536,30 @@ variable "rds_force_ssl_defectdojo_staging" {
   default = 1
 }
 
+variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_defectdojo_staging" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_defectdojo_staging" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_staging" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_defectdojo_production" {
   default = "16.3"
 }
@@ -498,4 +570,28 @@ variable "rds_parameter_group_family_defectdojo_production" {
 
 variable "rds_force_ssl_defectdojo_production" {
   default = 1
+}
+
+variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_defectdojo_production" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_defectdojo_production" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_production" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

@@ -287,6 +287,12 @@ module "defectdojo_development" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-development"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_development_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_development
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_development
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_development
+
 }
 
 module "defectdojo_staging" {
@@ -316,6 +322,11 @@ module "defectdojo_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_staging
 }
 
 module "defectdojo_production" {
@@ -345,6 +356,11 @@ module "defectdojo_production" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_production
 }
 
 module "monitoring_production" {
