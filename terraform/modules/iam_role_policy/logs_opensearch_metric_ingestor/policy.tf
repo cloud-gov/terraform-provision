@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
   statement {
     actions = [
       "s3:ListAllMyBuckets",
-      "s3:ListTags"
+      "s3:GetTagsTagging"
     ]
 
     resources = [
@@ -31,8 +31,7 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
 
   statement {
     actions = [
-      "es:ListTags",
-      "es:ListDomainNames"
+      "es:ListTags"
     ]
 
     resources = [
@@ -42,6 +41,7 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
 
   statement {
     actions = [
+      "es:ListDomainNames",
       "cloudwatch:ListMetrics",
       "cloudwatch:GetMetricStatistics"
     ]
