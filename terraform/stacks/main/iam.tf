@@ -14,6 +14,14 @@ resource "aws_iam_access_key" "s3_broker_task_user_key_v3" {
   user = aws_iam_user.s3_broker_task_user.name
 }
 
+resource "aws_iam_user" "logs_opensearch_metric_user" {
+  name = "logs-opensearch-metric-${var.stack_description}"
+}
+
+resource "aws_iam_access_key" "logs_opensearch_metric_user_key_v3" {
+  user = aws_iam_user.logs_opensearch_metric_user.name
+}
+
 resource "aws_iam_user" "logs_opensearch_s3_user" {
   name = "logs-opensearch-s3-${var.stack_description}"
 }
@@ -272,7 +280,7 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
     module.logs_opensearch_metric_ingestor_role.role_name,
   ]
   users = [
-    aws_iam_user.logs_opensearch_s3_user.name
+    aws_iam_user.logs_opensearch_metric_user.name
   ]
 }
 
