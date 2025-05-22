@@ -404,41 +404,83 @@ jobs:
           TF_VAR_rds_db_engine_version_defectdojo_development: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_development: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_development: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_development: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_development: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_development: "ddl,role"
+
 
           TF_VAR_rds_db_engine_version_defectdojo_staging: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_staging: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_staging: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_staging: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_staging: "ddl,role"
 
           TF_VAR_rds_db_engine_version_defectdojo_production: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_production: "postgres16"
           TF_VAR_rds_force_ssl_defectdojo_production: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production: true
+          TF_VAR_rds_shared_preload_libraries_defectdojo_production: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_production: true
+          TF_VAR_rds_pgaudit_log_values_defectdojo_production: "ddl,role"
 
           TF_VAR_rds_db_engine_version_bosh: "15.12"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
           TF_VAR_rds_force_ssl_bosh: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
+          TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
+          TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
 
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
+          TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
+          TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
 
           TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_force_ssl_credhub_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_staging: true
+          TF_VAR_rds_shared_preload_libraries_credhub_staging: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_credhub_staging: true
+          TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role" 
 
           TF_VAR_rds_db_engine_version_credhub_production: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
           TF_VAR_rds_force_ssl_credhub_production: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_production: true
+          TF_VAR_rds_shared_preload_libraries_credhub_production: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_credhub_production: true
+          TF_VAR_rds_pgaudit_log_values_credhub_production: "ddl,role"
 
           TF_VAR_rds_db_engine_version_concourse_staging: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
           TF_VAR_rds_force_ssl_concourse_staging: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_concourse_staging: true
+          TF_VAR_rds_shared_preload_libraries_concourse_staging: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_concourse_staging: true
+          TF_VAR_rds_pgaudit_log_values_concourse_staging: "ddl,role"
 
           TF_VAR_rds_db_engine_version_concourse_production: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
           TF_VAR_rds_force_ssl_concourse_production: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_concourse_production: true
+          TF_VAR_rds_shared_preload_libraries_concourse_production: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_concourse_production: true
+          TF_VAR_rds_pgaudit_log_values_concourse_production: "ddl,role"
 
           TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
           TF_VAR_rds_force_ssl_opsuaa: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_opsuaa: true
+          TF_VAR_rds_shared_preload_libraries_opsuaa: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_opsuaa: true
+          TF_VAR_rds_pgaudit_log_values_opsuaa: "ddl,role"
+
 
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
       - *notify-slack
@@ -468,6 +510,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: bosh bosh_uaadb
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                 TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
@@ -487,6 +530,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: credhub
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
@@ -506,6 +550,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: credhub
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_credhub_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_credhub_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_credhub_rds_password
@@ -525,6 +570,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: credhub
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: production_credhub_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: production_credhub_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: production_credhub_rds_password
@@ -544,6 +590,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: atc
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_concourse_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_concourse_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_concourse_rds_password
@@ -563,6 +610,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: atc
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: production_concourse_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: production_concourse_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: production_concourse_rds_password
@@ -582,6 +630,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: opsuaa
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: opsuaa_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: opsuaa_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: opsuaa_rds_password
@@ -601,6 +650,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: development_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: development_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: development_defectdojo_rds_password
@@ -620,6 +670,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: staging_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: staging_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: staging_defectdojo_rds_password
@@ -639,6 +690,7 @@ jobs:
               params:
                 STATE_FILE_PATH: terraform-state/terraform.tfstate
                 DATABASES: dojo
+                CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                 TERRAFORM_DB_HOST_FIELD: production_defectdojo_rds_host
                 TERRAFORM_DB_USERNAME_FIELD: production_defectdojo_rds_username
                 TERRAFORM_DB_PASSWORD_FIELD: production_defectdojo_rds_password
@@ -700,6 +752,12 @@ jobs:
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_force_ssl: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
+          TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
+          TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
+
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
           TF_VAR_rds_force_ssl_cf: 1
@@ -712,9 +770,21 @@ jobs:
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
+          TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
+          TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
+
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_rds_force_ssl_autoscaler: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
+          TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
+          TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
+
           TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((development_restricted_ingress_web_ipv6_cidrs))
           TF_VAR_wildcard_certificate_name_prefix: star.dev.us-gov-west-1.aws-us-gov.cloud.gov
@@ -782,6 +852,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: bosh bosh_uaadb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                     TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
@@ -801,6 +872,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: credhub
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
@@ -842,6 +914,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: autoscaler
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
@@ -862,6 +935,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
@@ -953,15 +1027,37 @@ jobs:
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_force_ssl: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
+          TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
+          TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
+
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
           TF_VAR_rds_force_ssl_cf: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_cf: true
+          TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_cf: true
+          TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
+          TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
+          TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
+
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_rds_force_ssl_autoscaler: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
+          TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
+          TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
+
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
           TF_VAR_cf_rds_password: ((staging_cf_rds_password))
@@ -1031,6 +1127,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: bosh bosh_uaadb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                     TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
@@ -1050,6 +1147,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: credhub
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
@@ -1070,6 +1168,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: ccdb uaadb diegodb locketdb policydb silkdb routingdb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: cf_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
@@ -1090,6 +1189,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: autoscaler
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
@@ -1110,6 +1210,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
@@ -1198,15 +1299,33 @@ jobs:
           TF_VAR_rds_force_ssl: 1
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
+          TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
+          TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
+
           # Enable for database upgrades:
           #TF_VAR_rds_apply_immediately: "true"
           #TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
+          TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
+          TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
+
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
           TF_VAR_rds_force_ssl_autoscaler: 1
+
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
+          TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
+          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
+          TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
+
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((production_vpc_cidr))
           TF_VAR_cf_rds_password: ((production_cf_rds_password))
@@ -1278,6 +1397,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: bosh bosh_uaadb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                     TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
@@ -1297,6 +1417,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: credhub
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
@@ -1337,6 +1458,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: autoscaler
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
@@ -1357,6 +1479,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: domains_broker
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
                     TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
