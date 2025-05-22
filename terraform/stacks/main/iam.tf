@@ -6,7 +6,7 @@ resource "aws_iam_access_key" "s3_broker_user_key_v3" {
   user = aws_iam_user.s3_broker_user.name
 }
 
-resource "aws_iam_user" "s3_broker_tas_user" {
+resource "aws_iam_user" "s3_broker_task_user" {
   name = "s3-broker-task-${var.stack_description}"
 }
 
