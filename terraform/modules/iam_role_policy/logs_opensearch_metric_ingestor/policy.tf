@@ -54,5 +54,5 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.aws_iam_policy_document.logs_opensearch_s3_policy.json
+  policy = data.aws_iam_policy_document.logs_opensearch_metric_ingestor_policy.json
 }
