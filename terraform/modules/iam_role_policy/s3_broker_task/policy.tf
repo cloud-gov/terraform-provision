@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "s3_broker_task_policy" {
   statement {
     actions = [
-      "s3:ListAllMyBucket",
+      "s3:ListAllMyBuckets",
       "s3:GetBucketTagging",
       "s3:PutBucketTagging"
     ]
