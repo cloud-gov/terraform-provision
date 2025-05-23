@@ -692,12 +692,38 @@ output "s3_broker_user_secret_access_key_curr" {
   sensitive = true
 }
 
+output "s3_broker_task_user_access_key_id_prev" {
+  value = ""
+}
+
+output "s3_broker_task_user_secret_access_key_prev" {
+  value = ""
+}
+
+output "s3_broker_task_user_access_key_id_curr" {
+  value = aws_iam_access_key.s3_broker_task_user_key_v3.id
+}
+
+output "s3_broker_task_user_secret_access_key_curr" {
+  value     = aws_iam_access_key.s3_broker_task_user_key_v3.secret
+  sensitive = true
+}
+
 output "logs_opensearch_s3_user_access_key_id_curr" {
   value = aws_iam_access_key.logs_opensearch_s3_user_key_v3.id
 }
 
 output "logs_opensearch_s3_secret_access_key_id_curr" {
   value     = aws_iam_access_key.logs_opensearch_s3_user_key_v3.secret
+  sensitive = true
+}
+
+output "logs_opensearch_metric_user_access_key_id_curr" {
+  value = aws_iam_access_key.logs_opensearch_metric_user_key_v3.id
+}
+
+output "logs_opensearch_metric_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.logs_opensearch_metric_user_key_v3.secret
   sensitive = true
 }
 

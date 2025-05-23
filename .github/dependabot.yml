@@ -162,11 +162,19 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_role_policy/logs_opensearch_metric_ingestor"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/s3_broker"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_role_policy/s3_broker_task"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
