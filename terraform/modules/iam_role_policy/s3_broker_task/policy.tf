@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "s3_broker_task_policy" {
     ]
 
     resources = [
-      "arn:aws-us-gov:s3:::*"
+   "arn:${var.aws_partition}:s3:::${var.bucket_prefix}-*",
     ]
   }
 }

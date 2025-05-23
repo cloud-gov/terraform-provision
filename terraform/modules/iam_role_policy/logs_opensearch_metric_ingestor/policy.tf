@@ -25,7 +25,8 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
     ]
 
     resources = [
-      "arn:aws-us-gov:s3:::*"
+      "arn:aws-us-gov:s3:::cg-*",
+      "arn:aws-us-gov:s3:::*-cg-*"
     ]
   }
 
