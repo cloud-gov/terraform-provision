@@ -1,9 +1,19 @@
-## Public domain
+**Contribution Policy**
 
-This project is in the public domain within the United States, and
-copyright and related rights in the work worldwide are waived through
-the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+Cloud.gov is an open source project operated by the U.S. General Services Administration (GSA) to support federal agency missions. While we value transparency and collaboration, we must balance openness with the responsibilities of operating a secure, compliant, and trusted federal platform.
 
-All contributions to this project will be released under the CC0
-dedication. By submitting a pull request, you are agreeing to comply
-with this waiver of copyright interest.
+✅ **Who can contribute**
+We welcome contributions from:
+
+- Employees of U.S. federal agencies
+- Contractors working under a current agreement with a U.S. government entity
+- GSA-approved contributors as part of official interagency collaboration
+
+❌ **Who we cannot accept contributions from**
+To avoid the appearance of government endorsement, manage supply chain risk, and maintain the integrity of our compliance posture, we do **not** accept unsolicited contributions from:
+
+- Individuals unaffiliated with the U.S. government
+- International contributors or organizations
+- Unvetted accounts or first-time contributors submitting minor changes
+
+If you're unsure whether your contribution fits, feel free to open an issue first so we can discuss it.
