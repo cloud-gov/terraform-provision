@@ -46,3 +46,10 @@ module "logs-opensearch-cf-audit-events" {
   aws_partition   = var.aws_partition
   expiration_days = 930 # 31 days * 30 months = 930 days
 }
+
+module "logs-opensearch-aws-metrics" {
+  source          = "../s3_bucket/log_encrypted_bucket"
+  bucket          = "logs-opensearch-aws-metrics-${var.stack_prefix}"
+  aws_partition   = var.aws_partition
+  expiration_days = 930 # 31 days * 30 months = 930 days
+}

@@ -17,6 +17,12 @@ module "opsuaa_db" {
   rds_force_ssl                   = var.rds_force_ssl_opsuaa
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_opsuaa
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_opsuaa
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_opsuaa
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_opsuaa
+
 }
 
 output "opsuaa_rds_url" {

@@ -211,6 +211,15 @@ module "stack" {
   rds_db_engine_version_bosh_credhub      = var.rds_db_engine_version_bosh_credhub
   rds_parameter_group_family_bosh_credhub = var.rds_parameter_group_family_bosh_credhub
 
+  rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub = var.rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub
+  rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+
+  rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
+  rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
+  rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -258,15 +267,18 @@ module "cf" {
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,
   ]
 
-  rds_password               = var.cf_rds_password
-  rds_subnet_group           = module.stack.rds_subnet_group
-  rds_security_groups        = [module.stack.rds_postgres_security_group]
-  rds_instance_type          = var.cf_rds_instance_type
-  stack_prefix               = "cf-${var.stack_description}"
-  rds_db_engine_version      = var.rds_db_engine_version_cf
-  rds_parameter_group_family = var.rds_parameter_group_family_cf
-  rds_force_ssl              = var.rds_force_ssl_cf
-
+  rds_password                                = var.cf_rds_password
+  rds_subnet_group                            = module.stack.rds_subnet_group
+  rds_security_groups                         = [module.stack.rds_postgres_security_group]
+  rds_instance_type                           = var.cf_rds_instance_type
+  stack_prefix                                = "cf-${var.stack_description}"
+  rds_db_engine_version                       = var.rds_db_engine_version_cf
+  rds_parameter_group_family                  = var.rds_parameter_group_family_cf
+  rds_force_ssl                               = var.rds_force_ssl_cf
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_cf
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_cf
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_cf
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_cf
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
@@ -321,6 +333,11 @@ module "autoscaler" {
   rds_db_engine_version           = var.rds_db_engine_version_autoscaler
   rds_parameter_group_family      = var.rds_parameter_group_family_autoscaler
   rds_force_ssl                   = var.rds_force_ssl_autoscaler
+
+  rds_add_pgaudit_to_shared_preload_libraries_autoscaler = var.rds_add_pgaudit_to_shared_preload_libraries_autoscaler
+  rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler
+  rds_shared_preload_libraries_autoscaler                = var.rds_shared_preload_libraries_autoscaler
+  rds_pgaudit_log_values_autoscaler                      = var.rds_pgaudit_log_values_autoscaler
 
 }
 

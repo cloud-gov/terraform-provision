@@ -43,7 +43,7 @@ for db in ${DATABASES}; do
   psql_adm -d postgres -l | awk '{print $1}' | grep -q "${db}" || \
     psql_adm -d postgres -c "CREATE DATABASE ${db} OWNER ${db_user}"
   # Enable extensions
-  for ext in citext uuid-ossp pgcrypto pg_stat_statements; do
+  for ext in ${EXTENSIONS}; do
     psql_adm -d "${db}" -c "CREATE EXTENSION IF NOT EXISTS \"${ext}\""
   done
 

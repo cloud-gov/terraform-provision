@@ -33,6 +33,25 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     value        = var.rds_force_ssl
     apply_method = "pending-reboot"
   }
+
+  dynamic "parameter" {
+    for_each = var.rds_add_pgaudit_to_shared_preload_libraries ? [1] : []
+    content {
+      name         = "shared_preload_libraries"
+      value        = var.rds_shared_preload_libraries
+      apply_method = "pending-reboot"
+    }
+  }
+
+  dynamic "parameter" {
+    for_each = var.rds_add_pgaudit_log_parameter ? [1] : []
+    content {
+      name         = "pgaudit.log"
+      value        = var.rds_pgaudit_log_values
+      apply_method = "pending-reboot"
+    }
+  }
+
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {

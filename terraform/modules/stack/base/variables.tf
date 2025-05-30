@@ -133,6 +133,29 @@ variable "rds_multi_az" {
   default = "true"
 }
 
+variable "rds_add_pgaudit_to_shared_preload_libraries_bosh" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_bosh" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_bosh" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
 /*
  * CredHub database variables
  */
@@ -193,4 +216,28 @@ variable "s3_gateway_policy_accounts" {
 variable "cidr_blocks" {
   type    = list(string)
   default = []
+}
+
+variable "rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub" {
+  description = "Whether to enable pgaudit in shared_preload_libraries"
+  type        = bool
+  default     = false
+}
+
+variable "rds_add_pgaudit_log_parameter_bosh_credhub" {
+  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
+  type        = bool
+  default     = false
+}
+
+variable "rds_shared_preload_libraries_bosh_credhub" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh_credhub" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

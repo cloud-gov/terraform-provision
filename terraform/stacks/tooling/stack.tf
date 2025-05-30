@@ -117,6 +117,17 @@ module "stack" {
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
   credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
   credhub_rds_parameter_group_family     = var.rds_parameter_group_family_bosh_credhub
+
+  rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub = var.rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub
+  rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+
+  rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
+  rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
+  rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+
 }
 
 module "concourse_production" {
@@ -145,6 +156,11 @@ module "concourse_production" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_production
 }
 
 module "concourse_staging" {
@@ -172,6 +188,11 @@ module "concourse_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_staging
 }
 
 module "credhub_production" {
@@ -198,6 +219,11 @@ module "credhub_production" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_production
 }
 
 module "credhub_staging" {
@@ -227,6 +253,11 @@ module "credhub_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_staging
 }
 
 module "defectdojo_development" {
@@ -256,6 +287,12 @@ module "defectdojo_development" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-development"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_development_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_development
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_development
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_development
+
 }
 
 module "defectdojo_staging" {
@@ -285,6 +322,11 @@ module "defectdojo_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_staging_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_staging
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_staging
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_staging
 }
 
 module "defectdojo_production" {
@@ -314,6 +356,11 @@ module "defectdojo_production" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_production_hosts
+
+  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production
+  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_production
+  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_production
+  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_production
 }
 
 module "monitoring_production" {
