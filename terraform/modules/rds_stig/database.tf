@@ -33,7 +33,7 @@ resource "aws_db_instance" "rds_database" {
 
   performance_insights_enabled = var.performance_insights_enabled
 
-  parameter_group_name = var.rds_db_engine == "postgres" ? join("", aws_db_parameter_group.parameter_group_postgres.*.id) : join("", aws_db_parameter_group.parameter_group_mysql.*.id)
+  parameter_group_name = var.rds_db_engine == "postgres" ? aws_db_parameter_group.parameter_group_postgres[0].id : aws_db_parameter_group.parameter_group_mysql[0].id
 
   allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   apply_immediately           = var.rds_apply_immediately
