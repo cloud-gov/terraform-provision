@@ -60,6 +60,12 @@ variable "rds_pgaudit_log_values_bosh" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_bosh" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_autoscaler" {
   default = "15.7"
 }
@@ -94,6 +100,12 @@ variable "rds_pgaudit_log_values_autoscaler" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
+}
+
+variable "rds_add_log_replication_commands_autoscaler" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
 }
 
 variable "rds_db_engine_version_cf" {
@@ -359,6 +371,11 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_credhub" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
 variable "waf_regex_rules" {
   type = list(object({
     # path_regex is matched against the uri path of a request

@@ -20,4 +20,5 @@ module "cf_as_database" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_autoscaler
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_autoscaler
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_autoscaler
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_autoscaler
 }

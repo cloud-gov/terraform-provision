@@ -215,11 +215,13 @@ module "stack" {
   rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+  rds_add_log_replication_commands_credhub                 = var.rds_add_log_replication_commands_credhub
 
   rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
   rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
   rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -339,6 +341,8 @@ module "autoscaler" {
   rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler
   rds_shared_preload_libraries_autoscaler                = var.rds_shared_preload_libraries_autoscaler
   rds_pgaudit_log_values_autoscaler                      = var.rds_pgaudit_log_values_autoscaler
+  rds_add_log_replication_commands_autoscaler            = var.rds_add_log_replication_commands_autoscaler
+
 
 }
 
