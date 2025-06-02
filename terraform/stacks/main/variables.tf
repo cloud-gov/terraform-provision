@@ -420,3 +420,9 @@ variable "rds_pgaudit_log_values_cf" {
   type        = string
   default     = "none"
 }
+
+variable "rds_add_log_replication_commands_cf" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}

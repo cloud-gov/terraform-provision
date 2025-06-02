@@ -765,6 +765,9 @@ jobs:
           TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
           TF_VAR_rds_add_pgaudit_log_parameter_cf: true
           TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
+          TF_VAR_rds_add_log_replication_commands_cf: true
+
+
           TF_VAR_cf_rds_password: ((development_cf_rds_password))
           TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
