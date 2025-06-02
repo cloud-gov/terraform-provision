@@ -156,6 +156,13 @@ variable "rds_pgaudit_log_values_bosh" {
   type        = string
   default     = "none"
 }
+
+variable "rds_add_log_replication_commands_bosh" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 /*
  * CredHub database variables
  */

@@ -211,6 +211,12 @@ variable "rds_pgaudit_log_values_bosh" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_bosh" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool

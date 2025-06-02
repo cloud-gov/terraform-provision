@@ -220,6 +220,7 @@ module "stack" {
   rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
   rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
