@@ -2,7 +2,7 @@
 // Eventually the CSB itself will broker RDS, so this avoids a circular dependency.
 // 2025-05-12 - Using the `rds_stig` while we're hardening, and then we'll merge
 // these changes back into `rds`
-module "db" {
+module "db_stig" {
   source = "../../rds_stig"
 
   stack_description               = var.stack_description
