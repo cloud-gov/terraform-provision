@@ -52,6 +52,14 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     }
   }
 
+  dynamic "parameter" {
+    for_each = var.rds_add_log_replication_commands ? [1] : []
+    content {
+      name         = "log_replication_commands"
+      value        = 1
+      apply_method = "pending-reboot"
+    }
+  }
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {
