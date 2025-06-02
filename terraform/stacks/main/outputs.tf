@@ -783,12 +783,12 @@ output "csb" {
       }
     }
     rds = {
-      host     = module.csb_broker.rds_host
-      port     = module.csb_broker.rds_port
-      url      = module.csb_broker.rds_url
-      name     = module.csb_broker.rds_name
-      username = module.csb_broker.rds_username
-      password = module.csb_broker.rds_password
+      host     = module.csb_broker[0].rds_host
+      port     = module.csb_broker[0].rds_port
+      url      = module.csb_broker[0].rds_url
+      name     = module.csb_broker[0].rds_name
+      username = module.csb_broker[0].rds_username
+      password = module.csb_broker[0].rds_password
     }
     notification_topics = {
       email_notification_topic_arn = module.sns.cg_platform_notifications_arn
