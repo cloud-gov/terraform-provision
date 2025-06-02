@@ -88,7 +88,7 @@ module "credhub_rds" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_bosh_credhub
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_bosh_credhub
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_credhub
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_bosh_credhub
 
 }
 
