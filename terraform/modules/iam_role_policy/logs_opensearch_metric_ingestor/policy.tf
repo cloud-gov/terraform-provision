@@ -20,13 +20,22 @@ data "aws_iam_policy_document" "logs_opensearch_metric_ingestor_policy" {
   }
   statement {
     actions = [
-      "s3:ListAllMyBuckets",
       "s3:GetBucketTagging"
     ]
 
     resources = [
       "arn:aws-us-gov:s3:::cg-*",
       "arn:aws-us-gov:s3:::*-cg-*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:ListAllMyBuckets"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:s3:::*",
     ]
   }
 
