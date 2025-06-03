@@ -804,3 +804,18 @@ output "opensearch_proxy_redis_cluster" {
   }
   sensitive = true
 }
+
+output "mysql_db" {
+  description = "Values required for MySQL DB used for STIG hardening"
+  sensitive   = true
+  value = {
+    rds = {
+      host     = module.mysql_db[0].rds_host
+      port     = module.mysql_db[0].rds_port
+      url      = module.mysql_db[0].rds_url
+      name     = module.mysql_db[0].rds_name
+      username = module.mysql_db[0].rds_username
+      password = module.mysql_db[0].rds_password
+    }
+  }
+}
