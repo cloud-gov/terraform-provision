@@ -283,6 +283,12 @@ variable "rds_pgaudit_log_values_opsuaa" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_opsuaa" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "remote_state_bucket" {
 }
 
