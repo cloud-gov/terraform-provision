@@ -810,12 +810,12 @@ output "mysql_db" {
   sensitive   = true
   value = {
     rds = {
-      host     = module.mysql_db[0].rds_host
-      port     = module.mysql_db[0].rds_port
-      url      = module.mysql_db[0].rds_url
-      name     = module.mysql_db[0].rds_name
-      username = module.mysql_db[0].rds_username
-      password = module.mysql_db[0].rds_password
+      host     = one(module.mysql_db[*].rds_host)
+      port     = one(module.mysql_db[*].rds_port)
+      url      = one(module.mysql_db[*].rds_url)
+      name     = one(module.mysql_db[*].rds_name)
+      username = one(module.mysql_db[*].rds_username)
+      password = one(module.mysql_db[*].rds_password)
     }
   }
 }
