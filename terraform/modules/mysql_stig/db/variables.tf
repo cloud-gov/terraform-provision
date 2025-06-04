@@ -17,7 +17,7 @@ variable "rds_db_size" {
 
 variable "rds_db_name" {
   type    = string
-  default = "mysql_stig"
+  default = "mysql-stig"
 }
 
 variable "rds_db_engine" {
