@@ -491,6 +491,7 @@ jobs:
           TF_VAR_rds_shared_preload_libraries_opsuaa: "pgaudit,pg_stat_statements,pg_tle"
           TF_VAR_rds_add_pgaudit_log_parameter_opsuaa: true
           TF_VAR_rds_pgaudit_log_values_opsuaa: "ddl,role"
+          TF_VAR_rds_add_log_replication_commands_opsuaa: true
 
 
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
@@ -1359,6 +1360,10 @@ jobs:
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
           TF_VAR_rds_force_ssl_cf: 1
+          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_cf: true
+          TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
+          TF_VAR_rds_add_pgaudit_log_parameter_cf: true
+          TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
           TF_VAR_rds_add_log_replication_commands_cf: true
 
           TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
@@ -1466,6 +1471,7 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: ccdb uaadb diegodb locketdb policydb silkdb routingdb
+                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
                     TERRAFORM_DB_HOST_FIELD: cf_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
