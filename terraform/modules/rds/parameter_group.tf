@@ -60,6 +60,12 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
       apply_method = "pending-reboot"
     }
   }
+
+  parameter {
+    name  = "log_error_verbosity"
+    value = "verbose"
+  }
+
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {
