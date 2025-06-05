@@ -12,7 +12,10 @@ variable "repositories" {
     "bosh-io-stemcell-resource",
     "cf-cli-resource",
     "cf-resource",
+    "cflinuxfs4-hardened",
+    "cflinuxfs4-hardened-candiate",
     "cloud-service-broker",
+    "cloudfoundry-cflinuxfs4",
     "concourse-http-jq-resource",
     "concourse-task",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
