@@ -13,7 +13,7 @@ variable "repositories" {
     "cf-cli-resource",
     "cf-resource",
     "cflinuxfs4-hardened",
-    "cflinuxfs4-hardened-candiate",
+    "cflinuxfs4-hardened-candidate",
     "cloud-service-broker",
     "cloudfoundry-cflinuxfs4",
     "concourse-http-jq-resource",
