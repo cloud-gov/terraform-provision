@@ -12,7 +12,10 @@ variable "repositories" {
     "bosh-io-stemcell-resource",
     "cf-cli-resource",
     "cf-resource",
+    "cflinuxfs4-hardened",           # hardened stack passed cf-acceptance tests
+    "cflinuxfs4-hardened-candidate", # hardened stack not yet passed cf-acceptance tests
     "cloud-service-broker",
+    "cloudfoundry-cflinuxfs4", # current stack in CF
     "concourse-http-jq-resource",
     "concourse-task",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
