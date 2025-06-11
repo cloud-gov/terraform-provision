@@ -54,5 +54,6 @@ variable "repositories" {
     "opensearch-dashboards-testing",
     "time-resource",
     "ubuntu-hardened",
+    "ubuntu-hardened-stig",
   ]
 }
