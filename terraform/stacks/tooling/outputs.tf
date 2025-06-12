@@ -297,16 +297,48 @@ output "production_concourse_subnet" {
   value = module.concourse_production.concourse_subnet
 }
 
+output "production_concourse_subnet_az1" {
+  value = module.concourse_production.concourse_subnet_az1
+}
+
+output "production_concourse_subnet_az2" {
+  value = module.concourse_production.concourse_subnet_az2
+}
+
 output "production_concourse_subnet_reserved" {
   value = "${cidrhost(module.concourse_production.concourse_subnet_cidr, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr, 3)}"
+}
+
+output "production_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 3)}"
+}
+
+output "production_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 3)}"
 }
 
 output "production_concourse_subnet_cidr" {
   value = module.concourse_production.concourse_subnet_cidr
 }
 
+output "production_concourse_subnet_cidr_az1" {
+  value = module.concourse_production.concourse_subnet_cidr_az1
+}
+
+output "production_concourse_subnet_cidr_az2" {
+  value = module.concourse_production.concourse_subnet_cidr_az2
+}
+
 output "production_concourse_subnet_gateway" {
   value = cidrhost(module.concourse_production.concourse_subnet_cidr, 1)
+}
+
+output "production_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 1)
+}
+
+output "production_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 1)
 }
 
 output "production_concourse_security_group" {
@@ -351,16 +383,48 @@ output "staging_concourse_subnet" {
   value = module.concourse_staging.concourse_subnet
 }
 
+output "staging_concourse_subnet_az1" {
+  value = module.concourse_staging.concourse_subnet_az1
+}
+
+output "staging_concourse_subnet_az2" {
+  value = module.concourse_staging.concourse_subnet_az2
+}
+
 output "staging_concourse_subnet_reserved" {
   value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr, 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 3)}"
 }
 
 output "staging_concourse_subnet_cidr" {
   value = module.concourse_staging.concourse_subnet_cidr
 }
 
+output "staging_concourse_subnet_cidr_az1" {
+  value = module.concourse_staging.concourse_subnet_cidr_az1
+}
+
+output "staging_concourse_subnet_cidr_az2" {
+  value = module.concourse_staging.concourse_subnet_cidr_az2
+}
+
 output "staging_concourse_subnet_gateway" {
   value = cidrhost(module.concourse_staging.concourse_subnet_cidr, 1)
+}
+
+output "staging_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 1)
+}
+
+output "staging_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 1)
 }
 
 output "staging_concourse_security_group" {
