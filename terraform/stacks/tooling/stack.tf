@@ -138,9 +138,12 @@ module "concourse_production" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 60)
   concourse_az                    = data.aws_availability_zones.available.names[0]
+  concourse_az2                   = data.aws_availability_zones.available.names[1]
   suffix                          = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = var.concourse_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -172,9 +175,12 @@ module "concourse_staging" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
-  concourse_az                    = data.aws_availability_zones.available.names[1]
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 61)
+  concourse_az                    = data.aws_availability_zones.available.names[1] # Yes, these are backwards on purpose, this is the original
+  concourse_az2                   = data.aws_availability_zones.available.names[0] # Yes, these are backwards on purpose, this is the new az
   suffix                          = data.aws_availability_zones.available.names[1]
-  route_table_id                  = module.stack.private_route_table_az2
+  route_table_id                  = module.stack.private_route_table_az2 # Yes, these are backwards on purpose, this is the original
+  route_table_id_az2              = module.stack.private_route_table_az1 # Yes, these are backwards on purpose, this is the new az
   rds_password                    = var.concourse_staging_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]

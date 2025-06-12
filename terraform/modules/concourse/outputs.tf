@@ -6,6 +6,22 @@ output "concourse_subnet_cidr" {
   value = aws_subnet.concourse.cidr_block
 }
 
+output "concourse_subnet_az1" {
+  value = aws_subnet.concourse.id
+}
+
+output "concourse_subnet_cidr_az1" {
+  value = aws_subnet.concourse.cidr_block
+}
+
+output "concourse_subnet_az2" {
+  value = aws_subnet.concourse_az2.id
+}
+
+output "concourse_subnet_cidr_az2" {
+  value = aws_subnet.concourse_az2.cidr_block
+}
+
 output "concourse_security_group" {
   value = aws_security_group.concourse.id
 }

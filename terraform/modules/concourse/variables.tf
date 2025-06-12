@@ -9,6 +9,13 @@ variable "concourse_az" {
   default = "us-gov-west-1a"
 }
 
+variable "concourse_cidr_az2" {
+}
+
+variable "concourse_az2" {
+  default = "us-gov-west-1b"
+}
+
 variable "suffix" {
   default = "pickles"
 }
@@ -73,6 +80,9 @@ variable "rds_apply_immediately" {
 }
 
 variable "route_table_id" {
+}
+
+variable "route_table_id_az2" {
 }
 
 variable "vpc_id" {
