@@ -943,12 +943,12 @@ output "rds_storage_alert_secret_access_key_prev" {
   sensitive = true
 }
 
-output "rds_storage_alert_access_key_id_prev" {
-  value = module.rds_storage_alert.access_key_id_prev
+output "rds_storage_alert_access_key_id_curr" {
+  value = module.rds_storage_alert.access_key_id_curr
 }
 
-output "rds_storage_alert_secret_access_key_prev" {
-  value     = module.rds_storage_alert.secret_access_key_prev
+output "rds_storage_alert_secret_access_key_curr" {
+  value     = module.rds_storage_alert.secret_access_key_curr
   sensitive = true
 }
 
