@@ -172,7 +172,7 @@ module "concourse_production" {
 
 module "concourse_staging" {
   source                          = "../../modules/concourse"
-  stack_description               = "staging"
+  stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
   concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 61)
