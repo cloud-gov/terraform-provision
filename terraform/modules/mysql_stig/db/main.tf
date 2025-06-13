@@ -1,5 +1,5 @@
-module "cf_as_database" {
-  source = "../rds"
+module "db" {
+  source = "../../rds_stig"
 
   stack_description               = var.stack_description
   rds_instance_type               = var.rds_instance_type
@@ -14,11 +14,5 @@ module "cf_as_database" {
   rds_parameter_group_family      = var.rds_parameter_group_family
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_force_ssl                   = var.rds_force_ssl
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_autoscaler
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_autoscaler
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_autoscaler
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_autoscaler
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_autoscaler
+  rds_require_secure_transport    = var.rds_require_secure_transport
 }

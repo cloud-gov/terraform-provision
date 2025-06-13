@@ -215,11 +215,13 @@ module "stack" {
   rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+  rds_add_log_replication_commands_bosh_credhub            = var.rds_add_log_replication_commands_bosh_credhub
 
   rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
   rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
   rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -279,6 +281,7 @@ module "cf" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_cf
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_cf
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_cf
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_cf
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
@@ -338,6 +341,8 @@ module "autoscaler" {
   rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler
   rds_shared_preload_libraries_autoscaler                = var.rds_shared_preload_libraries_autoscaler
   rds_pgaudit_log_values_autoscaler                      = var.rds_pgaudit_log_values_autoscaler
+  rds_add_log_replication_commands_autoscaler            = var.rds_add_log_replication_commands_autoscaler
+
 
 }
 
@@ -501,4 +506,26 @@ module "opensearch_proxy_redis_cluster" {
   cluster_name       = "${var.stack_description}-opensearch-proxy"
   subnet_group_name  = module.elasticache_broker_network.elasticache_subnet_group
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
+}
+// Create temporary mysql_stig_db for testing/hardening
+resource "random_password" "mysql_db_password" {
+  length      = 32
+  special     = false
+  min_special = 2
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
+module "mysql_db" {
+  count             = var.stack_description == "development" ? 1 : 0
+  source            = "../../modules/mysql_stig/db"
+  stack_description = var.stack_description
+
+  rds_password                    = random_password.mysql_db_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_mysql_security_group]
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_instance_type               = var.csb_rds_instance_type
 }

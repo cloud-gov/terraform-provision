@@ -19,4 +19,5 @@ module "cf_database_96" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands
 }

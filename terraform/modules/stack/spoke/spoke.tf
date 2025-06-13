@@ -38,11 +38,14 @@ module "base" {
   rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+  rds_add_log_replication_commands_bosh_credhub            = var.rds_add_log_replication_commands_bosh_credhub
 
   rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
   rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
   rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
+
 
   rds_security_groups = [
     module.base.bosh_security_group,

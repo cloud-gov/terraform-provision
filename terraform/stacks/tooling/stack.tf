@@ -122,11 +122,14 @@ module "stack" {
   rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
+  rds_add_log_replication_commands_bosh_credhub            = var.rds_add_log_replication_commands_bosh_credhub
+
 
   rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
   rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
   rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
+  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
 
 }
 
@@ -135,9 +138,12 @@ module "concourse_production" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 60)
   concourse_az                    = data.aws_availability_zones.available.names[0]
+  concourse_az2                   = data.aws_availability_zones.available.names[1]
   suffix                          = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = var.concourse_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -161,6 +167,7 @@ module "concourse_production" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_production
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_production
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_production
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_concourse_production
 }
 
 module "concourse_staging" {
@@ -168,9 +175,12 @@ module "concourse_staging" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
-  concourse_az                    = data.aws_availability_zones.available.names[1]
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 61)
+  concourse_az                    = data.aws_availability_zones.available.names[1] # Yes, these are backwards on purpose, this is the original
+  concourse_az2                   = data.aws_availability_zones.available.names[0] # Yes, these are backwards on purpose, this is the new az
   suffix                          = data.aws_availability_zones.available.names[1]
-  route_table_id                  = module.stack.private_route_table_az2
+  route_table_id                  = module.stack.private_route_table_az2 # Yes, these are backwards on purpose, this is the original
+  route_table_id_az2              = module.stack.private_route_table_az1 # Yes, these are backwards on purpose, this is the new az
   rds_password                    = var.concourse_staging_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -193,6 +203,7 @@ module "concourse_staging" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_staging
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_staging
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_staging
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_concourse_production
 }
 
 module "credhub_production" {
@@ -224,6 +235,7 @@ module "credhub_production" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_production
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_production
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_production
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_credhub_production
 }
 
 module "credhub_staging" {
@@ -258,6 +270,8 @@ module "credhub_staging" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_staging
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_staging
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_staging
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_credhub_staging
+
 }
 
 module "defectdojo_development" {
@@ -292,6 +306,7 @@ module "defectdojo_development" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_development
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_development
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_development
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_development
 
 }
 
@@ -327,6 +342,7 @@ module "defectdojo_staging" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_staging
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_staging
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_staging
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_staging
 }
 
 module "defectdojo_production" {
@@ -361,6 +377,7 @@ module "defectdojo_production" {
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_production
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_production
   rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_production
+  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_production
 }
 
 module "monitoring_production" {

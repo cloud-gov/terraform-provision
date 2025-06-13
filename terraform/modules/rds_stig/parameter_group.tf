@@ -33,39 +33,6 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     value        = var.rds_force_ssl
     apply_method = "pending-reboot"
   }
-
-  dynamic "parameter" {
-    for_each = var.rds_add_pgaudit_to_shared_preload_libraries ? [1] : []
-    content {
-      name         = "shared_preload_libraries"
-      value        = var.rds_shared_preload_libraries
-      apply_method = "pending-reboot"
-    }
-  }
-
-  dynamic "parameter" {
-    for_each = var.rds_add_pgaudit_log_parameter ? [1] : []
-    content {
-      name         = "pgaudit.log"
-      value        = var.rds_pgaudit_log_values
-      apply_method = "pending-reboot"
-    }
-  }
-
-  dynamic "parameter" {
-    for_each = var.rds_add_log_replication_commands ? [1] : []
-    content {
-      name         = "log_replication_commands"
-      value        = 1
-      apply_method = "pending-reboot"
-    }
-  }
-
-  parameter {
-    name  = "log_error_verbosity"
-    value = "verbose"
-  }
-
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {
@@ -84,5 +51,11 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
   parameter {
     name  = "log_output"
     value = "FILE"
+  }
+
+  # This can apply immediately
+  parameter {
+    name  = "require_secure_transport"
+    value = var.rds_require_secure_transport
   }
 }

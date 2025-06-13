@@ -73,6 +73,12 @@ variable "rds_pgaudit_log_values_bosh" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_bosh" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_credhub_staging" {
   default = "15.5"
 }
@@ -107,6 +113,12 @@ variable "rds_pgaudit_log_values_credhub_staging" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
+}
+
+variable "rds_add_log_replication_commands_credhub_staging" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
 }
 
 variable "rds_db_engine_version_credhub_production" {
@@ -145,6 +157,12 @@ variable "rds_pgaudit_log_values_credhub_production" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_credhub_production" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_concourse_staging" {
   default = "15.5"
 }
@@ -179,6 +197,12 @@ variable "rds_pgaudit_log_values_concourse_staging" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
+}
+
+variable "rds_add_log_replication_commands_concourse_staging" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
 }
 
 variable "rds_db_engine_version_concourse_production" {
@@ -217,6 +241,12 @@ variable "rds_pgaudit_log_values_concourse_production" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_concourse_production" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_opsuaa" {
   default = "16.1"
 }
@@ -251,6 +281,12 @@ variable "rds_pgaudit_log_values_opsuaa" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
+}
+
+variable "rds_add_log_replication_commands_opsuaa" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
 }
 
 variable "remote_state_bucket" {
@@ -483,6 +519,12 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_bosh_credhub" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
@@ -524,6 +566,12 @@ variable "rds_pgaudit_log_values_defectdojo_development" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_defectdojo_development" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_defectdojo_staging" {
   default = "16.3"
 }
@@ -560,6 +608,12 @@ variable "rds_pgaudit_log_values_defectdojo_staging" {
   default     = "none"
 }
 
+variable "rds_add_log_replication_commands_defectdojo_staging" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
+}
+
 variable "rds_db_engine_version_defectdojo_production" {
   default = "16.3"
 }
@@ -594,4 +648,10 @@ variable "rds_pgaudit_log_values_defectdojo_production" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
+}
+
+variable "rds_add_log_replication_commands_defectdojo_production" {
+  description = "Whether to enable the log_replication_commands parameter."
+  type        = bool
+  default     = false
 }
