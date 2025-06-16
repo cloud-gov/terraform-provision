@@ -230,14 +230,17 @@ module "stack" {
   cidr_blocks                 = var.cidr_blocks
 
   target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
-  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
+  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1
   target_az1_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
   target_concourse_security_group_cidrs = [
-    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
-    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az1,
     data.terraform_remote_state.target_vpc.outputs.private_subnet_az1_cidr,
+    data.terraform_remote_state.target_vpc.outputs.private_subnet_az2_cidr,
   ]
 
   parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id
