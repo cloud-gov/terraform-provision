@@ -13,7 +13,8 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "rds:DeleteDBParameterGroup",
       "rds:DescribeDBParameters",
       "rds:DescribeDBSnapshots",
-      "rds:DeleteDBSnapshot"
+      "rds:DeleteDBSnapshot",
+      "rds:CreateDBInstanceReadReplica"
     ]
 
     resources = [
