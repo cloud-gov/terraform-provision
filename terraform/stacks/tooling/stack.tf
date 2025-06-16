@@ -112,7 +112,7 @@ module "stack" {
   rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
   rds_apply_immediately                  = var.rds_apply_immediately
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
-  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
+  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 60), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 61), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
   target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
   s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
   credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
