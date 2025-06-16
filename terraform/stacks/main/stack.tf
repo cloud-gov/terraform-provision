@@ -236,9 +236,9 @@ module "stack" {
 
   target_concourse_security_group_cidrs = [
     data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1,
-    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az2,
     data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az1,
-    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az2,
     data.terraform_remote_state.target_vpc.outputs.private_subnet_az1_cidr,
     data.terraform_remote_state.target_vpc.outputs.private_subnet_az2_cidr,
   ]
