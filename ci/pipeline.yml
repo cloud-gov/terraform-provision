@@ -10,6 +10,7 @@ groups:
       - apply-external-development
       - apply-external-production
       - apply-external-staging
+      - apply-pages
       - apply-production
       - apply-staging
       - apply-tooling
@@ -21,6 +22,7 @@ groups:
       - plan-external-development
       - plan-external-production
       - plan-external-staging
+      - plan-pages
       - plan-production
       - plan-staging
       - plan-tooling
@@ -452,7 +454,7 @@ jobs:
           TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_staging: true
           TF_VAR_rds_shared_preload_libraries_credhub_staging: "pgaudit,pg_stat_statements"
           TF_VAR_rds_add_pgaudit_log_parameter_credhub_staging: true
-          TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role" 
+          TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role"
           TF_VAR_rds_add_log_replication_commands_credhub_staging: true
 
 
@@ -2203,6 +2205,51 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
+
+  - name: plan-pages
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            trigger: true
+          - get: plan-timer
+            trigger: true
+      - task: terraform-plan-pages
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params: &pages-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: pages
+          TEMPLATE_SUBDIR: terraform/stacks/pages
+          S3_TFSTATE_BUCKET: ((aws_external_s3_tfstate_bucket))
+          AWS_ACCESS_KEY_ID: ((aws_external_access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((aws_external_secret_access_key))
+          AWS_DEFAULT_REGION: ((aws_external_region))
+          TF_VAR_stack_description: pages
+          TF_VAR_aws_default_region: ((aws_external_region))
+          TF_VAR_terraform_state_bucket: ((aws_external_s3_tfstate_bucket))
+      - *notify-slack
+
+  - name: apply-pages
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+          - get: cg-provision-repo
+            passed: [plan-pages]
+      - task: terraform-apply-pages
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: { terraform-templates: cg-provision-repo }
+        params:
+          <<: *pages-params
+          TERRAFORM_ACTION: apply
+      - task: terraform-state-to-yaml
+        file: pipeline-tasks/terraform12-state-to-yaml.yml
+        params:
+          STATE_FILE: terraform.tfstate
+      - put: terraform-yaml-external-production
+        params:
+          file: terraform-yaml/state.yml
+
 
 resources:
   - name: pipeline-tasks
