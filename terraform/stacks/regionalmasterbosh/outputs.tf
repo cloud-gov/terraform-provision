@@ -278,11 +278,11 @@ output "rds_storage_alert_username" {
 }
 
 output "rds_storage_alert_access_key_id" {
-  value = module.rds_storage_alert.access_key_id
+  value = module.rds_storage_alert.access_key_id_curr
 }
 
 output "rds_storage_alert_secret_access_key" {
-  value     = module.rds_storage_alert.secret_access_key
+  value     = module.rds_storage_alert.secret_access_key_curr
   sensitive = true
 }
 
