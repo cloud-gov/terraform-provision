@@ -42,6 +42,7 @@ variable "repositories" {
     "pages-python-v3.11",
     "pages-redis-v7.2",
     "pages-zap",
+    "paketo-jammy-full",                    # copy of current public paketo stack
     "paketo-jammy-full-hardened",           # hardened stack passed cf-acceptance tests
     "paketo-jammy-full-hardened-candidate", # hardened stack not yet passed cf-acceptance tests
     "playwright-python",
