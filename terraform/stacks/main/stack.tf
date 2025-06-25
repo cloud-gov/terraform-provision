@@ -195,7 +195,6 @@ module "stack" {
   rds_instance_type                       = var.rds_instance_type
   rds_db_engine_version                   = var.rds_db_engine_version
   rds_parameter_group_family              = var.rds_parameter_group_family
-  rds_force_ssl                           = var.rds_force_ssl
   public_cidr_1                           = cidrsubnet(var.vpc_cidr, 8, 100)
   public_cidr_2                           = cidrsubnet(var.vpc_cidr, 8, 101)
   private_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 1)
@@ -279,7 +278,6 @@ module "cf" {
   stack_prefix                                = "cf-${var.stack_description}"
   rds_db_engine_version                       = var.rds_db_engine_version_cf
   rds_parameter_group_family                  = var.rds_parameter_group_family_cf
-  rds_force_ssl                               = var.rds_force_ssl_cf
   rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_cf
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_cf
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries_cf
@@ -338,7 +336,6 @@ module "autoscaler" {
   rds_instance_type               = var.cf_as_rds_instance_type
   rds_db_engine_version           = var.rds_db_engine_version_autoscaler
   rds_parameter_group_family      = var.rds_parameter_group_family_autoscaler
-  rds_force_ssl                   = var.rds_force_ssl_autoscaler
 
   rds_add_pgaudit_to_shared_preload_libraries_autoscaler = var.rds_add_pgaudit_to_shared_preload_libraries_autoscaler
   rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler

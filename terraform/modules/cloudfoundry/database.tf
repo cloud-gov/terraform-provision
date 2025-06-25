@@ -14,7 +14,6 @@ module "cf_database_96" {
   rds_parameter_group_family                  = var.rds_parameter_group_family
   rds_allow_major_version_upgrade             = var.rds_allow_major_version_upgrade
   rds_apply_immediately                       = var.rds_apply_immediately
-  rds_force_ssl                               = var.rds_force_ssl
   rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter
   rds_shared_preload_libraries                = var.rds_shared_preload_libraries

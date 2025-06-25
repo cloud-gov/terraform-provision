@@ -18,7 +18,6 @@ module "rds_96" {
   rds_apply_immediately           = var.rds_apply_immediately
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = var.rds_final_snapshot_identifier
-  rds_force_ssl                   = var.rds_force_ssl
 
   rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter

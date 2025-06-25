@@ -91,10 +91,6 @@ variable "hosts" {
   type = list(string)
 }
 
-variable "rds_force_ssl" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
