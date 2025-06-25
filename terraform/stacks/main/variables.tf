@@ -32,18 +32,6 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
-variable "rds_add_pgaudit_to_shared_preload_libraries_bosh" {
-  description = "Whether to enable pgaudit in shared_preload_libraries"
-  type        = bool
-  default     = false
-}
-
-variable "rds_add_pgaudit_log_parameter_bosh" {
-  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
-  type        = bool
-  default     = false
-}
-
 variable "rds_shared_preload_libraries_bosh" {
   description = "List of shared_preload_libraries to load"
   type        = string
@@ -56,30 +44,12 @@ variable "rds_pgaudit_log_values_bosh" {
   default     = "none"
 }
 
-variable "rds_add_log_replication_commands_bosh" {
-  description = "Whether to enable the log_replication_commands parameter."
-  type        = bool
-  default     = false
-}
-
 variable "rds_db_engine_version_autoscaler" {
   default = "15.7"
 }
 
 variable "rds_parameter_group_family_autoscaler" {
   default = "postgres15"
-}
-
-variable "rds_add_pgaudit_to_shared_preload_libraries_autoscaler" {
-  description = "Whether to enable pgaudit in shared_preload_libraries"
-  type        = bool
-  default     = false
-}
-
-variable "rds_add_pgaudit_log_parameter_autoscaler" {
-  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
-  type        = bool
-  default     = false
 }
 
 variable "rds_shared_preload_libraries_autoscaler" {
@@ -92,12 +62,6 @@ variable "rds_pgaudit_log_values_autoscaler" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
-}
-
-variable "rds_add_log_replication_commands_autoscaler" {
-  description = "Whether to enable the log_replication_commands parameter."
-  type        = bool
-  default     = false
 }
 
 variable "rds_db_engine_version_cf" {
@@ -335,18 +299,6 @@ variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
 
-variable "rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub" {
-  description = "Whether to enable pgaudit in shared_preload_libraries"
-  type        = bool
-  default     = false
-}
-
-variable "rds_add_pgaudit_log_parameter_bosh_credhub" {
-  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
-  type        = bool
-  default     = false
-}
-
 variable "rds_shared_preload_libraries_bosh_credhub" {
   description = "List of shared_preload_libraries to load"
   type        = string
@@ -359,11 +311,6 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   default     = "none"
 }
 
-variable "rds_add_log_replication_commands_bosh_credhub" {
-  description = "Whether to enable the log_replication_commands parameter."
-  type        = bool
-  default     = false
-}
 variable "waf_regex_rules" {
   type = list(object({
     # path_regex is matched against the uri path of a request
@@ -402,18 +349,6 @@ variable "bosh_blobstore_sse" {
   default = "AES256"
 }
 
-variable "rds_add_pgaudit_to_shared_preload_libraries_cf" {
-  description = "Whether to enable pgaudit in shared_preload_libraries"
-  type        = bool
-  default     = false
-}
-
-variable "rds_add_pgaudit_log_parameter_cf" {
-  description = "Whether to configure the pgaudit.log parameter.  Requires add_pgaudit_to_shared_preload_libraries to apply the setting."
-  type        = bool
-  default     = false
-}
-
 variable "rds_shared_preload_libraries_cf" {
   description = "List of shared_preload_libraries to load"
   type        = string
@@ -424,10 +359,4 @@ variable "rds_pgaudit_log_values_cf" {
   description = "List of statements that should be included in pgaudit logs"
   type        = string
   default     = "none"
-}
-
-variable "rds_add_log_replication_commands_cf" {
-  description = "Whether to enable the log_replication_commands parameter."
-  type        = bool
-  default     = false
 }

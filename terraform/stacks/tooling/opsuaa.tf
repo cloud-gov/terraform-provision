@@ -16,13 +16,8 @@ module "opsuaa_db" {
   rds_parameter_group_family      = var.rds_parameter_group_family_opsuaa
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_opsuaa
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_opsuaa
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_opsuaa
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_opsuaa
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_opsuaa
-
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_opsuaa
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_opsuaa
 }
 
 output "opsuaa_rds_url" {

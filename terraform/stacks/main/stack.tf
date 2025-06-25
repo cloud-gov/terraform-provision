@@ -183,44 +183,36 @@ module "stack" {
     aws.tooling = aws.tooling
     aws.parent  = aws.parentbosh
   }
-  stack_description                       = var.stack_description
-  aws_partition                           = data.aws_partition.current.partition
-  vpc_cidr                                = var.vpc_cidr
-  az1                                     = data.aws_availability_zones.available.names[var.az1_index]
-  az2                                     = data.aws_availability_zones.available.names[var.az2_index]
-  aws_default_region                      = var.aws_default_region
-  rds_db_size                             = var.rds_db_size
-  rds_apply_immediately                   = var.rds_apply_immediately
-  rds_allow_major_version_upgrade         = var.rds_allow_major_version_upgrade
-  rds_instance_type                       = var.rds_instance_type
-  rds_db_engine_version                   = var.rds_db_engine_version
-  rds_parameter_group_family              = var.rds_parameter_group_family
-  public_cidr_1                           = cidrsubnet(var.vpc_cidr, 8, 100)
-  public_cidr_2                           = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 1)
-  private_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 2)
-  rds_private_cidr_1                      = cidrsubnet(var.vpc_cidr, 8, 20)
-  rds_private_cidr_2                      = cidrsubnet(var.vpc_cidr, 8, 21)
-  rds_private_cidr_3                      = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
-  rds_private_cidr_4                      = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  restricted_ingress_web_cidrs            = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs       = var.restricted_ingress_web_ipv6_cidrs
-  rds_password                            = var.rds_password
-  credhub_rds_password                    = var.credhub_rds_password
-  rds_db_engine_version_bosh_credhub      = var.rds_db_engine_version_bosh_credhub
-  rds_parameter_group_family_bosh_credhub = var.rds_parameter_group_family_bosh_credhub
-
-  rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub = var.rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub
-  rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
-  rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
-  rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
-  rds_add_log_replication_commands_bosh_credhub            = var.rds_add_log_replication_commands_bosh_credhub
-
-  rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
-  rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
-  rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
-  rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
-  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
+  stack_description                         = var.stack_description
+  aws_partition                             = data.aws_partition.current.partition
+  vpc_cidr                                  = var.vpc_cidr
+  az1                                       = data.aws_availability_zones.available.names[var.az1_index]
+  az2                                       = data.aws_availability_zones.available.names[var.az2_index]
+  aws_default_region                        = var.aws_default_region
+  rds_db_size                               = var.rds_db_size
+  rds_apply_immediately                     = var.rds_apply_immediately
+  rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade
+  rds_instance_type                         = var.rds_instance_type
+  rds_db_engine_version                     = var.rds_db_engine_version
+  rds_parameter_group_family                = var.rds_parameter_group_family
+  public_cidr_1                             = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                             = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                            = cidrsubnet(var.vpc_cidr, 8, 1)
+  private_cidr_2                            = cidrsubnet(var.vpc_cidr, 8, 2)
+  rds_private_cidr_1                        = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                        = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                        = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                        = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
+  restricted_ingress_web_cidrs              = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs         = var.restricted_ingress_web_ipv6_cidrs
+  rds_password                              = var.rds_password
+  credhub_rds_password                      = var.credhub_rds_password
+  rds_db_engine_version_bosh_credhub        = var.rds_db_engine_version_bosh_credhub
+  rds_parameter_group_family_bosh_credhub   = var.rds_parameter_group_family_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
+  rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -271,18 +263,15 @@ module "cf" {
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,
   ]
 
-  rds_password                                = var.cf_rds_password
-  rds_subnet_group                            = module.stack.rds_subnet_group
-  rds_security_groups                         = [module.stack.rds_postgres_security_group]
-  rds_instance_type                           = var.cf_rds_instance_type
-  stack_prefix                                = "cf-${var.stack_description}"
-  rds_db_engine_version                       = var.rds_db_engine_version_cf
-  rds_parameter_group_family                  = var.rds_parameter_group_family_cf
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_cf
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_cf
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_cf
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_cf
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_cf
+  rds_password                 = var.cf_rds_password
+  rds_subnet_group             = module.stack.rds_subnet_group
+  rds_security_groups          = [module.stack.rds_postgres_security_group]
+  rds_instance_type            = var.cf_rds_instance_type
+  stack_prefix                 = "cf-${var.stack_description}"
+  rds_db_engine_version        = var.rds_db_engine_version_cf
+  rds_parameter_group_family   = var.rds_parameter_group_family_cf
+  rds_shared_preload_libraries = var.rds_shared_preload_libraries_cf
+  rds_pgaudit_log_values       = var.rds_pgaudit_log_values_cf
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
@@ -327,23 +316,17 @@ module "cf" {
 module "autoscaler" {
   source = "../../modules/autoscaler"
 
-  stack_description               = var.stack_description
-  rds_password                    = random_string.autoscaler_rds_password.result
-  rds_subnet_group                = module.stack.rds_subnet_group
-  rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_instance_type               = var.cf_as_rds_instance_type
-  rds_db_engine_version           = var.rds_db_engine_version_autoscaler
-  rds_parameter_group_family      = var.rds_parameter_group_family_autoscaler
-
-  rds_add_pgaudit_to_shared_preload_libraries_autoscaler = var.rds_add_pgaudit_to_shared_preload_libraries_autoscaler
-  rds_add_pgaudit_log_parameter_autoscaler               = var.rds_add_pgaudit_log_parameter_autoscaler
-  rds_shared_preload_libraries_autoscaler                = var.rds_shared_preload_libraries_autoscaler
-  rds_pgaudit_log_values_autoscaler                      = var.rds_pgaudit_log_values_autoscaler
-  rds_add_log_replication_commands_autoscaler            = var.rds_add_log_replication_commands_autoscaler
-
-
+  stack_description                       = var.stack_description
+  rds_password                            = random_string.autoscaler_rds_password.result
+  rds_subnet_group                        = module.stack.rds_subnet_group
+  rds_security_groups                     = [module.stack.rds_postgres_security_group]
+  rds_allow_major_version_upgrade         = var.rds_allow_major_version_upgrade
+  rds_apply_immediately                   = var.rds_apply_immediately
+  rds_instance_type                       = var.cf_as_rds_instance_type
+  rds_db_engine_version                   = var.rds_db_engine_version_autoscaler
+  rds_parameter_group_family              = var.rds_parameter_group_family_autoscaler
+  rds_shared_preload_libraries_autoscaler = var.rds_shared_preload_libraries_autoscaler
+  rds_pgaudit_log_values_autoscaler       = var.rds_pgaudit_log_values_autoscaler
 }
 
 resource "random_string" "autoscaler_rds_password" {
