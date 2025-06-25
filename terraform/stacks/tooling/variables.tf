@@ -45,10 +45,6 @@ variable "rds_parameter_group_family_bosh" {
   default = "postgres15"
 }
 
-variable "rds_force_ssl_bosh" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_bosh" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -85,10 +81,6 @@ variable "rds_db_engine_version_credhub_staging" {
 
 variable "rds_parameter_group_family_credhub_staging" {
   default = "postgres15"
-}
-
-variable "rds_force_ssl_credhub_staging" {
-  default = 1
 }
 
 variable "rds_add_pgaudit_to_shared_preload_libraries_credhub_staging" {
@@ -129,10 +121,6 @@ variable "rds_parameter_group_family_credhub_production" {
   default = "postgres15"
 }
 
-variable "rds_force_ssl_credhub_production" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_credhub_production" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -169,10 +157,6 @@ variable "rds_db_engine_version_concourse_staging" {
 
 variable "rds_parameter_group_family_concourse_staging" {
   default = "postgres15"
-}
-
-variable "rds_force_ssl_concourse_staging" {
-  default = 1
 }
 
 variable "rds_add_pgaudit_to_shared_preload_libraries_concourse_staging" {
@@ -213,10 +197,6 @@ variable "rds_parameter_group_family_concourse_production" {
   default = "postgres15"
 }
 
-variable "rds_force_ssl_concourse_production" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_concourse_production" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -253,10 +233,6 @@ variable "rds_db_engine_version_opsuaa" {
 
 variable "rds_parameter_group_family_opsuaa" {
   default = "postgres16"
-}
-
-variable "rds_force_ssl_opsuaa" {
-  default = 1
 }
 
 variable "rds_add_pgaudit_to_shared_preload_libraries_opsuaa" {
@@ -538,10 +514,6 @@ variable "rds_parameter_group_family_defectdojo_development" {
   default = "postgres16"
 }
 
-variable "rds_force_ssl_defectdojo_development" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -580,10 +552,6 @@ variable "rds_parameter_group_family_defectdojo_staging" {
   default = "postgres16"
 }
 
-variable "rds_force_ssl_defectdojo_staging" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -620,10 +588,6 @@ variable "rds_db_engine_version_defectdojo_production" {
 
 variable "rds_parameter_group_family_defectdojo_production" {
   default = "postgres16"
-}
-
-variable "rds_force_ssl_defectdojo_production" {
-  default = 1
 }
 
 variable "rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production" {

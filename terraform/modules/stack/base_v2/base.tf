@@ -40,7 +40,6 @@ module "rds" {
   rds_db_name                     = var.rds_db_name
   rds_db_size                     = var.rds_db_size
   rds_db_storage_type             = var.rds_db_storage_type
-  rds_force_ssl                   = var.rds_force_ssl
   rds_instance_type               = var.rds_instance_type
   rds_multi_az                    = var.rds_multi_az
   rds_parameter_group_family      = var.rds_parameter_group_family
@@ -62,7 +61,6 @@ module "protobosh_rds" {
   rds_db_name                     = var.protobosh_rds_db_name
   rds_db_size                     = var.protobosh_rds_db_size
   rds_db_storage_type             = var.protobosh_rds_db_storage_type
-  rds_force_ssl                   = var.protobosh_rds_force_ssl
   rds_instance_type               = var.protobosh_rds_instance_type
   rds_multi_az                    = var.protobosh_rds_multi_az
   rds_parameter_group_family      = var.protobosh_rds_parameter_group_family

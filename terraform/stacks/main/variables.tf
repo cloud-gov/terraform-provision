@@ -32,10 +32,6 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
-variable "rds_force_ssl" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_bosh" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -74,10 +70,6 @@ variable "rds_parameter_group_family_autoscaler" {
   default = "postgres15"
 }
 
-variable "rds_force_ssl_autoscaler" {
-  default = 1
-}
-
 variable "rds_add_pgaudit_to_shared_preload_libraries_autoscaler" {
   description = "Whether to enable pgaudit in shared_preload_libraries"
   type        = bool
@@ -114,10 +106,6 @@ variable "rds_db_engine_version_cf" {
 
 variable "rds_parameter_group_family_cf" {
   default = "postgres16"
-}
-
-variable "rds_force_ssl_cf" {
-  default = 1
 }
 
 variable "cf_rds_password" {

@@ -42,10 +42,6 @@ variable "rds_security_groups" {
   type = list(string)
 }
 
-# postgres only
-variable "rds_force_ssl" {
-  default = 0
-}
 
 # mysql only
 variable "rds_require_secure_transport" {

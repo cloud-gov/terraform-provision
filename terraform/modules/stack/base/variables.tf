@@ -202,14 +202,6 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
-variable "rds_force_ssl" {
-  default = 1
-}
-
-variable "credhub_rds_force_ssl" {
-  default = 1
-}
-
 variable "bosh_default_ssh_public_key" {
 
 }
