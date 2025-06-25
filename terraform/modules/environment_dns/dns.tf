@@ -224,7 +224,7 @@ resource "aws_route53_record" "brokered_mail_ns" {
 }
 
 locals {
-  external_domain               = "external-domains-${var.stack_name}.cloud.gov."
+  external_domain               = "external-domains-${var.stack_name}.cloud.gov"
   csb_helper_domain_name        = "services.${var.domain}."
   csb_helper_domain_record      = "services.${var.domain}.${local.external_domain}."
   csb_helper_acme_domain_name   = "_acme-challenge.services.${var.domain}."
