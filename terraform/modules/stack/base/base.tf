@@ -55,7 +55,6 @@ module "rds" {
   rds_subnet_group                = module.rds_network.rds_subnet_group
   rds_security_groups             = [module.rds_network.rds_postgres_security_group]
   rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_force_ssl                   = var.rds_force_ssl
 
   rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
   rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_bosh
@@ -79,7 +78,6 @@ module "credhub_rds" {
   rds_subnet_group                = module.rds_network.rds_subnet_group
   rds_security_groups             = [module.rds_network.rds_postgres_security_group]
   rds_parameter_group_name        = var.rds_parameter_group_name
-  rds_force_ssl                   = var.credhub_rds_force_ssl
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_parameter_group_family      = var.credhub_rds_parameter_group_family

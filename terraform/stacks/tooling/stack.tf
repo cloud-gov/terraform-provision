@@ -108,7 +108,6 @@ module "stack" {
   rds_security_groups_count              = "1"
   rds_db_engine_version                  = var.rds_db_engine_version_bosh
   rds_parameter_group_family             = var.rds_parameter_group_family_bosh
-  rds_force_ssl                          = var.rds_force_ssl_bosh
   rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
   rds_apply_immediately                  = var.rds_apply_immediately
   bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
@@ -151,7 +150,6 @@ module "concourse_production" {
   rds_parameter_group_family      = var.rds_parameter_group_family_concourse_production
   rds_db_engine_version           = var.rds_db_engine_version_concourse_production
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_force_ssl                   = var.rds_force_ssl_concourse_production
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   performance_insights_enabled    = "true"
   rds_instance_type               = "db.m5.4xlarge"
@@ -188,7 +186,6 @@ module "concourse_staging" {
   rds_parameter_group_family      = var.rds_parameter_group_family_concourse_staging
   rds_db_engine_version           = var.rds_db_engine_version_concourse_staging
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_force_ssl                   = var.rds_force_ssl_concourse_staging
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
@@ -223,7 +220,6 @@ module "credhub_production" {
   rds_parameter_group_family      = var.rds_parameter_group_family_credhub_production
   rds_db_engine_version           = var.rds_db_engine_version_credhub_production
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_force_ssl                   = var.rds_force_ssl_credhub_production
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_multi_az                    = var.rds_multi_az
@@ -255,7 +251,6 @@ module "credhub_staging" {
   rds_parameter_group_family      = var.rds_parameter_group_family_credhub_staging
   rds_db_engine_version           = var.rds_db_engine_version_credhub_staging
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_force_ssl                   = var.rds_force_ssl_credhub_staging
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
   rds_db_size                     = 400
@@ -290,7 +285,6 @@ module "defectdojo_development" {
   rds_parameter_group_name        = "tooling-defectdojo-development"
   rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_development
   rds_db_engine_version           = var.rds_db_engine_version_defectdojo_development
-  rds_force_ssl                   = var.rds_force_ssl_defectdojo_development
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.t3.medium"
@@ -326,7 +320,6 @@ module "defectdojo_staging" {
   rds_parameter_group_name        = "tooling-defectdojo-staging"
   rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_staging
   rds_db_engine_version           = var.rds_db_engine_version_defectdojo_staging
-  rds_force_ssl                   = var.rds_force_ssl_defectdojo_staging
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
@@ -361,7 +354,6 @@ module "defectdojo_production" {
   rds_parameter_group_name        = "tooling-defectdojo-production"
   rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_production
   rds_db_engine_version           = var.rds_db_engine_version_defectdojo_production
-  rds_force_ssl                   = var.rds_force_ssl_defectdojo_staging
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
