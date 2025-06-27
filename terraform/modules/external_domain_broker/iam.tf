@@ -322,10 +322,6 @@ resource "aws_iam_user" "iam_user" {
   name = "external-domain-broker-${var.stack_description}"
 }
 
-resource "aws_iam_access_key" "iam_access_key_v3" {
-  user = aws_iam_user.iam_user.name
-}
-
 resource "aws_iam_access_key" "iam_access_key_v1" {
   user = aws_iam_user.iam_user.name
 }
