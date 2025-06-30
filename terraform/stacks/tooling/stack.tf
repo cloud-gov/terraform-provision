@@ -86,49 +86,40 @@ resource "aws_lb_listener_certificate" "main-development" {
 module "stack" {
   source = "../../modules/stack/base"
 
-  stack_description                      = var.stack_description
-  vpc_cidr                               = var.vpc_cidr
-  az1                                    = data.aws_availability_zones.available.names[0]
-  az2                                    = data.aws_availability_zones.available.names[1]
-  aws_default_region                     = var.aws_default_region
-  public_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 100)
-  public_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                         = cidrsubnet(var.vpc_cidr, 8, 1) # This is used by nessus, opsuaa and postfix
-  private_cidr_2                         = cidrsubnet(var.vpc_cidr, 8, 2)
-  restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
-  rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20)
-  rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
-  rds_private_cidr_3                     = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
-  rds_private_cidr_4                     = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  rds_password                           = var.rds_password
-  credhub_rds_password                   = var.credhub_rds_password
-  rds_multi_az                           = var.rds_multi_az
-  rds_security_groups                    = [module.stack.bosh_security_group]
-  rds_security_groups_count              = "1"
-  rds_db_engine_version                  = var.rds_db_engine_version_bosh
-  rds_parameter_group_family             = var.rds_parameter_group_family_bosh
-  rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
-  rds_apply_immediately                  = var.rds_apply_immediately
-  bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
-  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 60), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 61), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
-  target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
-  s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
-  credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
-  credhub_rds_parameter_group_family     = var.rds_parameter_group_family_bosh_credhub
-
-  rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub = var.rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub
-  rds_add_pgaudit_log_parameter_bosh_credhub               = var.rds_add_pgaudit_log_parameter_bosh_credhub
-  rds_shared_preload_libraries_bosh_credhub                = var.rds_shared_preload_libraries_bosh_credhub
-  rds_pgaudit_log_values_bosh_credhub                      = var.rds_pgaudit_log_values_bosh_credhub
-  rds_add_log_replication_commands_bosh_credhub            = var.rds_add_log_replication_commands_bosh_credhub
-
-
-  rds_add_pgaudit_to_shared_preload_libraries_bosh = var.rds_add_pgaudit_to_shared_preload_libraries_bosh
-  rds_add_pgaudit_log_parameter_bosh               = var.rds_add_pgaudit_log_parameter_bosh
-  rds_shared_preload_libraries_bosh                = var.rds_shared_preload_libraries_bosh
-  rds_pgaudit_log_values_bosh                      = var.rds_pgaudit_log_values_bosh
-  rds_add_log_replication_commands_bosh            = var.rds_add_log_replication_commands_bosh
+  stack_description                         = var.stack_description
+  vpc_cidr                                  = var.vpc_cidr
+  az1                                       = data.aws_availability_zones.available.names[0]
+  az2                                       = data.aws_availability_zones.available.names[1]
+  aws_default_region                        = var.aws_default_region
+  public_cidr_1                             = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                             = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                            = cidrsubnet(var.vpc_cidr, 8, 1) # This is used by nessus, opsuaa and postfix
+  private_cidr_2                            = cidrsubnet(var.vpc_cidr, 8, 2)
+  restricted_ingress_web_cidrs              = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs         = var.restricted_ingress_web_ipv6_cidrs
+  rds_private_cidr_1                        = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                        = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                        = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                        = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
+  rds_password                              = var.rds_password
+  credhub_rds_password                      = var.credhub_rds_password
+  rds_multi_az                              = var.rds_multi_az
+  rds_security_groups                       = [module.stack.bosh_security_group]
+  rds_security_groups_count                 = "1"
+  rds_db_engine_version                     = var.rds_db_engine_version_bosh
+  rds_parameter_group_family                = var.rds_parameter_group_family_bosh
+  rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade
+  rds_apply_immediately                     = var.rds_apply_immediately
+  bosh_default_ssh_public_key               = var.bosh_default_ssh_public_key
+  target_concourse_security_group_cidrs     = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 60), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 61), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
+  target_monitoring_security_group_cidrs    = [cidrsubnet(var.vpc_cidr, 8, 32)]
+  s3_gateway_policy_accounts                = var.s3_gateway_policy_accounts
+  credhub_rds_db_engine_version             = var.rds_db_engine_version_bosh_credhub
+  credhub_rds_parameter_group_family        = var.rds_parameter_group_family_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
+  rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
 
 }
 
@@ -160,12 +151,8 @@ module "concourse_production" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_production_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_production
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_production
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_production
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_production
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_concourse_production
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_concourse_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_concourse_production
 }
 
 module "concourse_staging" {
@@ -195,12 +182,8 @@ module "concourse_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_staging_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_concourse_staging
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_concourse_staging
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_concourse_staging
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_concourse_staging
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_concourse_production
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_concourse_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_concourse_staging
 }
 
 module "credhub_production" {
@@ -226,12 +209,8 @@ module "credhub_production" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_production_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_production
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_production
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_production
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_production
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_credhub_production
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_credhub_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_credhub_production
 }
 
 module "credhub_staging" {
@@ -260,12 +239,8 @@ module "credhub_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_staging_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_credhub_staging
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_credhub_staging
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_credhub_staging
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_credhub_staging
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_credhub_staging
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_credhub_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_credhub_staging
 
 }
 
@@ -295,12 +270,8 @@ module "defectdojo_development" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-development"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_development_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_development
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_development
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_development
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_development
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_development
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_development
 
 }
 
@@ -330,12 +301,8 @@ module "defectdojo_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_staging_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_staging
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_staging
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_staging
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_staging
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_staging
 }
 
 module "defectdojo_production" {
@@ -364,12 +331,8 @@ module "defectdojo_production" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_production_hosts
-
-  rds_add_pgaudit_to_shared_preload_libraries = var.rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production
-  rds_add_pgaudit_log_parameter               = var.rds_add_pgaudit_log_parameter_defectdojo_production
-  rds_shared_preload_libraries                = var.rds_shared_preload_libraries_defectdojo_production
-  rds_pgaudit_log_values                      = var.rds_pgaudit_log_values_defectdojo_production
-  rds_add_log_replication_commands            = var.rds_add_log_replication_commands_defectdojo_production
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_production
 }
 
 module "monitoring_production" {

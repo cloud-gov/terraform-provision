@@ -403,86 +403,55 @@ jobs:
 
           TF_VAR_rds_db_engine_version_defectdojo_development: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_development: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_development: true
           TF_VAR_rds_shared_preload_libraries_defectdojo_development: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_development: true
           TF_VAR_rds_pgaudit_log_values_defectdojo_development: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_defectdojo_development: true
-
 
           TF_VAR_rds_db_engine_version_defectdojo_staging: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_staging: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_staging: true
           TF_VAR_rds_shared_preload_libraries_defectdojo_staging: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_staging: true
           TF_VAR_rds_pgaudit_log_values_defectdojo_staging: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_defectdojo_staging: true
 
           TF_VAR_rds_db_engine_version_defectdojo_production: "16.8"
           TF_VAR_rds_parameter_group_family_defectdojo_production: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_defectdojo_production: true
           TF_VAR_rds_shared_preload_libraries_defectdojo_production: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_defectdojo_production: true
           TF_VAR_rds_pgaudit_log_values_defectdojo_production: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_defectdojo_production: true
 
           TF_VAR_rds_db_engine_version_bosh: "15.12"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh: true
 
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh_credhub: true
 
           TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_staging: true
           TF_VAR_rds_shared_preload_libraries_credhub_staging: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_credhub_staging: true
           TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role" 
-          TF_VAR_rds_add_log_replication_commands_credhub_staging: true
 
 
           TF_VAR_rds_db_engine_version_credhub_production: "15.12"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_credhub_production: true
           TF_VAR_rds_shared_preload_libraries_credhub_production: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_credhub_production: true
           TF_VAR_rds_pgaudit_log_values_credhub_production: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_credhub_production: true
 
           TF_VAR_rds_db_engine_version_concourse_staging: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_concourse_staging: true
           TF_VAR_rds_shared_preload_libraries_concourse_staging: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_concourse_staging: true
           TF_VAR_rds_pgaudit_log_values_concourse_staging: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_concourse_staging: true
 
 
           TF_VAR_rds_db_engine_version_concourse_production: "15.12"
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_concourse_production: true
           TF_VAR_rds_shared_preload_libraries_concourse_production: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_concourse_production: true
           TF_VAR_rds_pgaudit_log_values_concourse_production: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_concourse_production: true
 
           TF_VAR_rds_db_engine_version_opsuaa: "16.8"
           TF_VAR_rds_parameter_group_family_opsuaa: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_opsuaa: true
           TF_VAR_rds_shared_preload_libraries_opsuaa: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_opsuaa: true
           TF_VAR_rds_pgaudit_log_values_opsuaa: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_opsuaa: true
 
 
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
@@ -755,19 +724,13 @@ jobs:
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh: true
 
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_cf: true
           TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_cf: true
           TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_cf: true
 
 
           TF_VAR_cf_rds_password: ((development_cf_rds_password))
@@ -776,20 +739,14 @@ jobs:
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh_credhub: true
 
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
-          TF_VAR_rds_add_log_replication_commands_autoscaler: true
 
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
           TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
 
           TF_VAR_restricted_ingress_web_cidrs: ((development_restricted_ingress_web_cidrs))
@@ -1034,38 +991,26 @@ jobs:
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh: true
 
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_cf: true
           TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_cf: true
           TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_cf: true
 
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh_credhub: true
 
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
           TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_autoscaler: true
 
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
@@ -1308,11 +1253,8 @@ jobs:
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh: true
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh: true
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh: true
 
           # Enable for database upgrades:
           #TF_VAR_rds_apply_immediately: "true"
@@ -1321,20 +1263,14 @@ jobs:
           TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_bosh_credhub: true
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_bosh_credhub: true
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_bosh_credhub: true
 
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
 
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_autoscaler: true
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
-          TF_VAR_rds_add_pgaudit_log_parameter_autoscaler: true
           TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_autoscaler: true
 
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((production_vpc_cidr))
@@ -1342,11 +1278,8 @@ jobs:
           TF_VAR_cf_as_rds_instance_type: ((production_cf_as_rds_instance_type))
           TF_VAR_rds_db_engine_version_cf: "16.8"
           TF_VAR_rds_parameter_group_family_cf: "postgres16"
-          TF_VAR_rds_add_pgaudit_to_shared_preload_libraries_cf: true
           TF_VAR_rds_shared_preload_libraries_cf: "pgaudit,pg_stat_statements,pg_tle"
-          TF_VAR_rds_add_pgaudit_log_parameter_cf: true
           TF_VAR_rds_pgaudit_log_values_cf: "ddl,role"
-          TF_VAR_rds_add_log_replication_commands_cf: true
 
           TF_VAR_restricted_ingress_web_cidrs: ((production_restricted_ingress_web_cidrs))
           TF_VAR_restricted_ingress_web_ipv6_cidrs: ((production_restricted_ingress_web_ipv6_cidrs))
