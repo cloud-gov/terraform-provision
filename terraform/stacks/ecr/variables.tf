@@ -58,5 +58,6 @@ variable "repositories" {
     "time-resource",
     "ubuntu-hardened",
     "ubuntu-hardened-stig",
+    "zap-runner", # owasp zap security scanner
   ]
 }
