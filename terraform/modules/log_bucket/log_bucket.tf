@@ -43,6 +43,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
 
     status = "Enabled"
 
+    filter {}
+
     transition {
       days          = 90
       storage_class = "ONEZONE_IA"

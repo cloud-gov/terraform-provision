@@ -21,7 +21,7 @@ data "aws_region" "tooling" {
 resource "aws_vpc_peering_connection" "peering" {
   peer_owner_id = var.target_vpc_account_id
   peer_vpc_id   = var.target_vpc_id
-  peer_region   = data.aws_region.tooling.name
+  peer_region   = data.aws_region.tooling.region
   auto_accept   = false
   vpc_id        = var.source_vpc_id
 

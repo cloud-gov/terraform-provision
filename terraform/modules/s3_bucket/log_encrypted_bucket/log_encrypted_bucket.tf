@@ -49,6 +49,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
     id     = "log-rule"
     status = "Enabled"
 
+    filter {}
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
