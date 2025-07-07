@@ -49,7 +49,7 @@ module "log_bucket" {
   source          = "../../modules/log_bucket"
   aws_partition   = data.aws_partition.current.partition
   log_bucket_name = var.log_bucket_name
-  aws_region      = data.aws_region.current.name
+  aws_region      = data.aws_region.current.region
 }
 
 module "build_artifacts_bucket" {
