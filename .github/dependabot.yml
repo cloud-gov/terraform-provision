@@ -54,7 +54,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/csb/iam"
+    directory: "/terraform/modules/csb/iam/commercial"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/csb/iam/govcloud"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -83,6 +87,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/elasticache_broker_network"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/elasticache_replication_group"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -166,6 +174,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_role_policy/logs_opensearch_s3_ingestor"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
     schedule:
       interval: "weekly"
@@ -175,10 +187,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/s3_broker_task"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/logs_opensearch_s3_ingestor"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -246,10 +254,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/logs_opensearch"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/logsearch"
     schedule:
       interval: "weekly"
@@ -262,6 +266,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/mysql_stig/db"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/rds"
     schedule:
       interval: "weekly"
@@ -271,6 +279,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/rds_network_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/rds_stig"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
