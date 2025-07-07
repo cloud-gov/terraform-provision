@@ -14,6 +14,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   # this is for the tooling bosh
@@ -29,6 +30,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   region            = var.aws_default_region
