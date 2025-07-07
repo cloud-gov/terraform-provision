@@ -5,6 +5,7 @@ resource "random_password" "password" {
 }
 
 resource "aws_elasticache_replication_group" "replication_group" {
+  auth_token_update_strategy = "ROTATE"
   replication_group_id       = "${var.cluster_name}-cluster"
   description                = "${var.cluster_name} cluster"
   node_type                  = var.node_type
