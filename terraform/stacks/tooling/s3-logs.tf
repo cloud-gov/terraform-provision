@@ -122,6 +122,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_access_logs_trail_bucket_li
     id     = "all-logs-rule"
     status = "Enabled"
 
+    filter {}
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
