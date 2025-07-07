@@ -26,10 +26,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloudfront"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/cloudwatch"
     schedule:
       interval: "weekly"
@@ -54,7 +50,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/csb/iam"
+    directory: "/terraform/modules/csb/iam/commercial"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/csb/iam/govcloud"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -83,6 +83,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/elasticache_broker_network"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/elasticache_replication_group"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -138,10 +142,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/compliance_role"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/concourse_iaas_worker"
     schedule:
       interval: "weekly"
@@ -166,6 +166,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/iam_role_policy/logs_opensearch_s3_ingestor"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
     schedule:
       interval: "weekly"
@@ -175,18 +179,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/s3_broker_task"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/logs_opensearch_s3_ingestor"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/self_managed_credentials"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/billing_user"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -246,10 +238,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/logs_opensearch"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/logsearch"
     schedule:
       interval: "weekly"
@@ -259,6 +247,10 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/monitoring_v2"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/mysql_stig/db"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -274,7 +266,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/regionalmaster_dns"
+    directory: "/terraform/modules/rds_stig"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
