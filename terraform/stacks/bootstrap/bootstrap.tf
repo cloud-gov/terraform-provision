@@ -59,7 +59,7 @@ resource "aws_security_group" "bootstrap" {
 }
 
 resource "aws_eip" "bootstrap" {
-  vpc = true
+  domain = "vpc"
 }
 
 resource "aws_iam_role_policy" "iam_policy" {

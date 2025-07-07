@@ -44,8 +44,8 @@ resource "aws_route" "azs_nat_service_route" {
 }
 
 resource "aws_eip" "private_nat_eip" {
-  count = length(var.availability_zones)
-  vpc   = true
+  count  = length(var.availability_zones)
+  domain = "vpc"
   lifecycle {
     prevent_destroy = true
   }
