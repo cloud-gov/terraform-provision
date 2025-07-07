@@ -42,7 +42,7 @@ module "external_domain_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
-  aws_region        = data.aws_region.current.name
+  aws_region        = data.aws_region.current.region
 
   waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
   waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold

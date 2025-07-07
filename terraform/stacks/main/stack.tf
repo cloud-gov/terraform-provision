@@ -14,6 +14,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   # this is for the tooling bosh
@@ -29,6 +30,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   region            = var.aws_default_region
@@ -125,7 +127,7 @@ data "aws_arn" "parent_role_arn" {
 }
 
 data "aws_prefix_list" "s3_gw_cidrs" {
-  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+  name = "com.amazonaws.${data.aws_region.current.region}.s3"
 }
 
 locals {
@@ -419,7 +421,7 @@ module "external_domain_broker_govcloud" {
 
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
-  aws_region        = data.aws_region.current.name
+  aws_region        = data.aws_region.current.region
   aws_partition     = data.aws_partition.current.partition
 }
 

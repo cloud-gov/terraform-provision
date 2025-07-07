@@ -22,6 +22,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_log_bucket_lifecycl
     id     = "log-rule"
     status = "Enabled"
 
+    filter {}
+
     transition {
       days          = 90
       storage_class = "GLACIER_IR"
