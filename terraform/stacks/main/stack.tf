@@ -514,3 +514,30 @@ module "mysql_db" {
   rds_apply_immediately           = var.rds_apply_immediately
   rds_instance_type               = var.csb_rds_instance_type
 }
+
+resource "random_string" "billing_rds_username" {
+  length  = 16
+  special = false
+}
+
+resource "random_password" "billing_rds_password" {
+  length      = 32
+  special     = false
+  min_special = 0
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
+module "billing" {
+  source = "../../modules/billing"
+
+  stack_description = var.stack_description
+
+  rds_password                    = random_password.billing_rds_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_username                    = random_string.billing_rds_username.result
+}

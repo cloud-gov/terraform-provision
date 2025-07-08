@@ -819,3 +819,18 @@ output "mysql_db" {
     }
   }
 }
+
+output "billing" {
+  description = "Values required to deploy the billing service."
+  sensitive   = true
+  value = {
+    rds = {
+      host     = module.billing.rds_host
+      port     = module.billing.rds_port
+      url      = module.billing.rds_url
+      name     = module.billing.rds_database
+      username = module.billing.rds_username
+      password = module.billing.rds_password
+    }
+  }
+}
