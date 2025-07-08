@@ -26,10 +26,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloudfront"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/cloudwatch"
     schedule:
       interval: "weekly"
@@ -146,10 +142,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/compliance_role"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/concourse_iaas_worker"
     schedule:
       interval: "weekly"
@@ -187,14 +179,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/s3_broker_task"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/self_managed_credentials"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_user/billing_user"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
@@ -283,10 +267,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/rds_stig"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/regionalmaster_dns"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
