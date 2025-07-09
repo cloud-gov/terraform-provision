@@ -46,6 +46,10 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
+variable "rds_option_group_name" {
+  default = ""
+}
+
 variable "rds_parameter_group_family" {
   default = "postgres12"
 }
