@@ -9,6 +9,7 @@ db_address=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_D
 db_user=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_DB_USERNAME_FIELD}")
 db_pass=$(${TERRAFORM} output -raw -state="${STATE_FILE_PATH}" "${TERRAFORM_DB_PASSWORD_FIELD}")
 
+# Any thoughts here?
 # There's no way to use an env variable for mysql password, so either
 # we specify on command line or we write an options file and read it 
 # with --defaults-extra-file=file_name
