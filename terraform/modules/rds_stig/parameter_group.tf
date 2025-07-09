@@ -56,6 +56,6 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
   # This can apply immediately
   parameter {
     name  = "require_secure_transport"
-    value = var.rds_require_secure_transport
+    value = 1
   }
 }
