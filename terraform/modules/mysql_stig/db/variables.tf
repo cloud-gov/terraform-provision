@@ -59,7 +59,3 @@ variable "rds_apply_immediately" {
 variable "rds_allow_major_version_upgrade" {
   default = "false"
 }
-
-variable "rds_require_secure_transport" {
-  default = 1 // Why is this 1 instead of "true"?
-}

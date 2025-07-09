@@ -53,9 +53,35 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = "FILE"
   }
 
+  # SV-235137
+  parameter {
+    name  = "validate_password_length"
+    value = 24
+  }
+
+  parameter {
+    name  = "validate_password_policy"
+    value = "STRONG"
+  }
+
+  parameter {
+    name  = "password_history"
+    value = 5
+  }
+
+  parameter {
+    name  = "password_reuse_interval"
+    value = 365
+  }
+
+  parameter {
+    name  = "default_password_lifetime"
+    value = 180
+  }
+
   # This can apply immediately
   parameter {
     name  = "require_secure_transport"
-    value = var.rds_require_secure_transport
+    value = 1
   }
 }
