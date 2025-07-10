@@ -42,13 +42,11 @@ variable "rds_security_groups" {
   type = list(string)
 }
 
-
-# mysql only
-variable "rds_require_secure_transport" {
-  default = 0
+variable "rds_parameter_group_name" {
+  default = ""
 }
 
-variable "rds_parameter_group_name" {
+variable "rds_option_group_name" {
   default = ""
 }
 
