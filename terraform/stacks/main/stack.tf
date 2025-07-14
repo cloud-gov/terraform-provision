@@ -423,6 +423,7 @@ module "external_domain_broker_govcloud" {
   stack_description = var.stack_description
   aws_region        = data.aws_region.current.region
   aws_partition     = data.aws_partition.current.partition
+  waf_log_group_arn = module.cf.waf_log_group_arn
 }
 
 module "dns_logging" {
