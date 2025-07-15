@@ -156,3 +156,7 @@ output "tcp_lb_listener_ports" {
 output "tcp_lb_security_groups" {
   value = aws_security_group.nlb_traffic.*
 }
+
+output "waf_log_group_arn" {
+  value = aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn
+}

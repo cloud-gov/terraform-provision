@@ -80,14 +80,63 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       values   = [aws_iam_user.iam_user.arn]
     }
   }
+
+  # this permission is required for wafv2:PutLoggingConfiguration
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awswafv2.html#awswafv2-actions-as-permissions
+  statement {
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = [
+      "arn:aws:iam::${var.account_id}:role/aws-service-role/wafv2.amazonaws.com/AWSServiceRoleForWAFV2Logging"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:CreateWebACL",
+      "wafv2:TagResource",
+      "wafv2:UntagResource",
+      "wafv2:GetWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:PutLoggingConfiguration",
+      "wafv2:DeleteLoggingConfiguration"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "wafv2:LogDestinationResource"
+      values   = [var.waf_log_group_arn]
+    }
+  }
 }
 
 resource "aws_iam_user" "iam_user" {
   name = "external-domain-broker-gov-${var.stack_description}"
-}
-
-resource "aws_iam_access_key" "iam_access_key_v3" {
-  user = aws_iam_user.iam_user.name
 }
 
 resource "aws_iam_access_key" "iam_access_key_v1" {

@@ -13,3 +13,8 @@ variable "aws_region" {
   type        = string
   description = "AWS region where the resources are deployed"
 }
+
+variable "waf_log_group_arn" {
+  type        = string
+  description = "ARN of CloudWatch log group for WAF logs"
+}
