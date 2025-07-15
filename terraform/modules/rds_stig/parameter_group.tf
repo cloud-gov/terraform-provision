@@ -84,4 +84,12 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     name  = "require_secure_transport"
     value = 1
   }
+
+  # max_connections is DBInstanceClassMemory/12582880
+  # so we use a value 5% higher for the denominator
+  # to leave some % of connections free
+  parameter {
+    name  = "max_user_connections"
+    value = "DBInstanceClassMemory/13245136"
+  }
 }
