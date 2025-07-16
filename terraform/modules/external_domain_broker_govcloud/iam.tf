@@ -88,12 +88,17 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:CreateServiceLinkedRole"
     ]
     resources = [
-      "arn:aws:iam::${var.account_id}:role/aws-service-role/wafv2.amazonaws.com/AWSServiceRoleForWAFV2Logging"
+      "arn:${var.aws_partition}:iam::${var.account_id}:role/aws-service-role/wafv2.amazonaws.com/AWSServiceRoleForWAFV2Logging"
     ]
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "iam:AWSServiceName"
+      values   = ["wafv2.amazonaws.com"]
     }
   }
 
