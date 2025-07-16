@@ -19,6 +19,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 
   statement {
@@ -32,6 +37,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -48,6 +58,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 
   statement {
@@ -62,6 +77,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -78,6 +98,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -100,11 +125,35 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "iam:AWSServiceName"
       values   = ["wafv2.amazonaws.com"]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 
   statement {
     actions = [
-      "wafv2:CreateWebACL",
+      "wafv2:CreateWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/managedruleset/*/*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
       "wafv2:TagResource",
       "wafv2:UntagResource",
       "wafv2:GetWebACL"
@@ -116,6 +165,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -136,6 +190,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "ArnLike"
       variable = "wafv2:LogDestinationResource"
       values   = [var.waf_log_group_arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 }
