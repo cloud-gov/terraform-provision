@@ -159,7 +159,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "wafv2:GetWebACL"
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
     ]
     condition {
       test     = "StringEquals"
@@ -179,7 +179,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "wafv2:DeleteLoggingConfiguration"
     ]
     resources = [
-      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:global/webacl/cg-external-domains-*",
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
     ]
     condition {
       test     = "StringEquals"
