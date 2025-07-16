@@ -424,6 +424,10 @@ module "external_domain_broker_govcloud" {
   aws_region        = data.aws_region.current.region
   aws_partition     = data.aws_partition.current.partition
   waf_log_group_arn = module.cf.waf_log_group_arn
+  environment_nat_egress_ips = [
+    module.stack.nat_egress_ip_az1,
+    module.stack.nat_egress_ip_az2,
+  ]
 }
 
 module "dns_logging" {
