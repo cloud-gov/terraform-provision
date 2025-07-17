@@ -90,6 +90,6 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
   # to leave some % of connections free
   parameter {
     name  = "max_user_connections"
-    value = "DBInstanceClassMemory/13245136"
+    value = "DBInstanceClassMemory/13212024"
   }
 }
