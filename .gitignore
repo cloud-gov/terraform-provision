@@ -21,3 +21,4 @@ terraform.json
 .project
 
 *-state.json
+.vscode
