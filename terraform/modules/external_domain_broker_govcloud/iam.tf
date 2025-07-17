@@ -197,6 +197,34 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       values   = var.environment_nat_egress_ips
     }
   }
+
+  # necessary permissions for sending WAF logs to CloudWatch
+  # see https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html#logging-cw-logs-permissions
+  #
+  # wildcard permissions are required for these actions
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatchlogs.html#amazoncloudwatchlogs-actions-as-permissions
+  statement {
+    actions = [
+      "logs:CreateLogDelivery",
+      "logs:DeleteLogDelivery",
+      "logs:PutResourcePolicy",
+      "logs:DescribeResourcePolicies",
+      "logs:DescribeLogGroups"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
 }
 
 resource "aws_iam_user" "iam_user" {
