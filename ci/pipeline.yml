@@ -757,9 +757,6 @@ jobs:
           TF_VAR_domains_broker_alb_count: "2"
           TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
           TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
-          TF_VAR_mysql_stig_rds_host: ((development_mysql_stig_rds_host))
-          TF_VAR_mysql_stig_rds_username: ((development_mysql_stig_rds_username))
-          TF_VAR_mysql_stig_rds_password: ((development_mysql_stig_rds_password))
           TF_VAR_pages_cert_patterns: "[]"
           TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((development_waf_drop_logs_hosts_regular_expressions))
