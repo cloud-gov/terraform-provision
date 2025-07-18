@@ -512,7 +512,7 @@ module "mysql_stig" {
   source            = "../../modules/mysql_stig/db"
   stack_description = var.stack_description
 
-  rds_password                    = random_password.mysql_db_password.result
+  rds_password                    = random_password.mysql_stig_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_mysql_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
