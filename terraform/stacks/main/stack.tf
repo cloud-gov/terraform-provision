@@ -508,7 +508,6 @@ resource "random_password" "mysql_db_password" {
 }
 
 module "mysql_stig" {
-  count             = var.stack_description == "development" ? 1 : 0
   source            = "../../modules/mysql_stig/db"
   stack_description = var.stack_description
 
@@ -517,5 +516,5 @@ module "mysql_stig" {
   rds_security_groups             = [module.stack.rds_mysql_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_instance_type               = var.csb_rds_instance_type
+  rds_instance_type               = var.rds_instance_type
 }
