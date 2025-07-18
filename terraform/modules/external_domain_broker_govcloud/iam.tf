@@ -156,7 +156,8 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
     actions = [
       "wafv2:TagResource",
       "wafv2:UntagResource",
-      "wafv2:GetWebACL"
+      "wafv2:GetWebACL",
+      "wafv2:AssociateWebACL"
     ]
     resources = [
       "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
