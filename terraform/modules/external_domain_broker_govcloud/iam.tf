@@ -226,6 +226,27 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       values   = var.environment_nat_egress_ips
     }
   }
+
+  # this permission can only use "*" as its resource constraint
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awselasticloadbalancingv2.html
+  statement {
+    actions = [
+      "elasticloadbalancing:SetWebACL"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
 }
 
 resource "aws_iam_user" "iam_user" {
