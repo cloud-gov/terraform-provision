@@ -498,7 +498,7 @@ module "opensearch_proxy_redis_cluster" {
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
 }
 // Create temporary mysql_stig_db for testing/hardening
-resource "random_password" "mysql_db_password" {
+resource "random_password" "mysql_stig_password" {
   length      = 32
   special     = false
   min_special = 2
