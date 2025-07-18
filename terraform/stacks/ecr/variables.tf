@@ -14,7 +14,8 @@ variable "repositories" {
     "cf-resource",
     "cflinuxfs4-hardened",           # hardened stack passed cf-acceptance tests
     "cflinuxfs4-hardened-candidate", # hardened stack not yet passed cf-acceptance tests
-    "clamav-rest",                   # image for malware scanning service
+    "clamav-rest",                   # image for malware scanning service which has passed testing
+    "clamav-rest-candidate",         # image for malware scanning service which has not yet passed testing
     "cloud-service-broker",
     "cloudfoundry-cflinuxfs4", # current stack in CF
     "concourse-http-jq-resource",
