@@ -508,6 +508,7 @@ resource "random_password" "mysql_db_password" {
 }
 
 module "mysql_stig" {
+  count             = var.stack_description == "development" ? 1 : 0
   source            = "../../modules/mysql_stig/db"
   stack_description = var.stack_description
 

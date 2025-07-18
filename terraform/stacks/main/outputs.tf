@@ -812,12 +812,12 @@ output "mysql_stig" {
   sensitive   = true
   value = {
     rds = {
-      host     = module.mysql_stig.rds_host
-      port     = module.mysql_stig.rds_port
-      url      = module.mysql_stig.rds_url
-      name     = module.mysql_stig.rds_name
-      username = module.mysql_stig.rds_username
-      password = module.mysql_stig.rds_password
+      host     = one(module.mysql_stig[*].rds_host)
+      port     = one(module.mysql_stig[*].rds_port)
+      url      = one(module.mysql_stig[*].rds_url)
+      name     = one(module.mysql_stig[*].rds_name)
+      username = one(module.mysql_stig[*].rds_username)
+      password = one(module.mysql_stig[*].rds_password)
     }
   }
 }
