@@ -498,7 +498,7 @@ module "opensearch_proxy_redis_cluster" {
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
 }
 // Create temporary mysql_stig_db for testing/hardening
-resource "random_password" "mysql_db_password" {
+resource "random_password" "mysql_stig_password" {
   length      = 32
   special     = false
   min_special = 2
@@ -507,15 +507,15 @@ resource "random_password" "mysql_db_password" {
   min_lower   = 5
 }
 
-module "mysql_db" {
+module "mysql_stig" {
   count             = var.stack_description == "development" ? 1 : 0
   source            = "../../modules/mysql_stig/db"
   stack_description = var.stack_description
 
-  rds_password                    = random_password.mysql_db_password.result
+  rds_password                    = random_password.mysql_stig_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_mysql_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
-  rds_instance_type               = var.csb_rds_instance_type
+  rds_instance_type               = var.rds_instance_type
 }

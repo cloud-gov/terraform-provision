@@ -805,17 +805,19 @@ output "opensearch_proxy_redis_cluster" {
   sensitive = true
 }
 
-output "mysql_db" {
+
+
+output "mysql_stig" {
   description = "Values required for MySQL DB used for STIG hardening"
   sensitive   = true
   value = {
     rds = {
-      host     = one(module.mysql_db[*].rds_host)
-      port     = one(module.mysql_db[*].rds_port)
-      url      = one(module.mysql_db[*].rds_url)
-      name     = one(module.mysql_db[*].rds_name)
-      username = one(module.mysql_db[*].rds_username)
-      password = one(module.mysql_db[*].rds_password)
+      host     = one(module.mysql_stig[*].rds_host)
+      port     = one(module.mysql_stig[*].rds_port)
+      url      = one(module.mysql_stig[*].rds_url)
+      name     = one(module.mysql_stig[*].rds_name)
+      username = one(module.mysql_stig[*].rds_username)
+      password = one(module.mysql_stig[*].rds_password)
     }
   }
 }
