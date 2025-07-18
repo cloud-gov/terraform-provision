@@ -757,9 +757,9 @@ jobs:
           TF_VAR_domains_broker_alb_count: "2"
           TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
           TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
-          TF_VAR_mysqlstig_rds_host: ((development_mysqlstig_rds_host))
-          TF_VAR_mysqlstig_rds_username: ((development_mysqlstig_rds_username))
-          TF_VAR_mysqlstig_rds_password: ((development_mysqlstig_rds_password))
+          TF_VAR_mysql_stig_rds_host: ((development_mysql_stig_rds_host))
+          TF_VAR_mysql_stig_rds_username: ((development_mysql_stig_rds_username))
+          TF_VAR_mysql_stig_rds_password: ((development_mysql_stig_rds_password))
           TF_VAR_pages_cert_patterns: "[]"
           TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((development_waf_drop_logs_hosts_regular_expressions))
@@ -907,7 +907,7 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-db.sh
-              - task: init-mysqlstig-db
+              - task: init-mysql-stig-db
                 image: general-task
                 config:
                   platform: linux
@@ -918,9 +918,9 @@ jobs:
                   params:
                     STATE_FILE_PATH: terraform-state/terraform.tfstate
                     DATABASES: mysqlstig
-                    TERRAFORM_DB_HOST_FIELD: mysqlstig_rds_host
-                    TERRAFORM_DB_USERNAME_FIELD: mysqlstig_rds_username
-                    TERRAFORM_DB_PASSWORD_FIELD: mysqlstig_rds_password
+                    TERRAFORM_DB_HOST_FIELD: mysql_stig_rds_host
+                    TERRAFORM_DB_USERNAME_FIELD: mysql_stig_rds_username
+                    TERRAFORM_DB_PASSWORD_FIELD: mysql_stig_rds_password
                   run:
                     path: sh
                     args:
