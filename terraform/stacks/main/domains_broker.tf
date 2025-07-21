@@ -97,7 +97,6 @@ module "dedicated_loadbalancer_group" {
   subnets                              = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
   security_groups                      = [module.stack.web_traffic_security_group]
   elb_bucket_name                      = module.log_bucket.elb_bucket_name
-  waf_arn                              = module.cf.cf_uaa_waf_core_arn
   logstash_hosts                       = var.logstash_hosts
   vpc_id                               = module.stack.vpc_id
   domains_lbgroup_count                = var.domains_lbgroup_count
