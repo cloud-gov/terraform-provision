@@ -366,10 +366,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/stacks/regionalmasterbosh"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/stacks/tooling"
     schedule:
       interval: "weekly"
