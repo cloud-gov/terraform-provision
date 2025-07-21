@@ -23,7 +23,7 @@ Our Terraform code is organized by two concepts, with two corresponding director
 
 * **Modules** are reusable units of terraform code. Each module describes a useful concept in our infrastructure. A module can be reused in different contexts by declaring variables that the caller must pass in. Modules are located in `terraform/modules`.
   * Two important modules are `modules/stack/base` and `modules/stack/spoke`.
-  * Read more about Terraform modules: https://developer.hashicorp.com/terraform/language/modules
+  * Read more about Terraform modules: <https://developer.hashicorp.com/terraform/language/modules>
 * **Stacks** combine and configure modules for use in an environment. They are also parameterized by variables, with values such as the environment name. Stacks are located in `terraform/stacks`.
 
 As an example, if we wanted to write terraform code to deploy several CloudFront distributions in front of three load balancers in an environment, we could:
@@ -39,32 +39,30 @@ In the future, we would like to add a third concept: An entire **runtime environ
 The `main` stack is a template that is used to provision the production,
 staging, and development "environments."
 
-The `regionalmasterbosh` stack contains our masterbosh for a given region, which deploys the tooling BOSH for that region.
-The tooling BOSH then deploys the BOSH directors in the main stacks across all accounts in that region.
+The tooling BOSH deploys the BOSH directors in the main stacks across all accounts in that region.
 
-The `tooling` stack is the same as the `regionalmasterbosh` stack, but has some extras from before we started going multi-region
-and multi-account:
-  - concourse and staging concourse
-  - buckets that we need only one of across all accounts and regions
-  - some things that really should be in child environment accounts
-  - nessus
-In the future, we should work towards disentagling these pieces out, so the old tooling is deployed as a regionalmasterbosh and the
-_other_ stuff is its own stack(s)
+The `tooling` stack has:
+
+* concourse and staging concourse
+* buckets that we need only one of across all accounts and regions
+* some things that really should be in child environment accounts
+* nessus
 
 The `external` and `dns` stacks are both outside of GovCloud (commercial AWS).
 
 #### Wiring up users
 
 As mentioned above, we have four categories of environment:
-- `main` - this is the thing we're actually after. It's the pieces that directly
+
+* `main` - this is the thing we're actually after. It's the pieces that directly
   support the platform components. There should be several of these across multiple
   AWS accounts
-- `tooling` - this is used to support the things in the `main` platform - our CI
+* `tooling` - this is used to support the things in the `main` platform - our CI
   system, managment tools such as Nessus, etc.
-- `external` - this manages some things that don't (or historically didn't) exist
+* `external` - this manages some things that don't (or historically didn't) exist
   in govcloud (really just cloudfront and the users, etc, to support it). There's
   one of these per `main` environment
-- `dns` - this manages route53. There's exactly one of these, although we really
+* `dns` - this manages route53. There's exactly one of these, although we really
   should split it out to one per `main` + one for `tooling`
 
 To allow the `tooling` environment to manage the `main` environment, there's a
@@ -87,7 +85,7 @@ You can determine how a failing Concourse container is configured by hijacking i
 
 The Concourse worker VMs are associated with an IAM role with read-write access to GovCloud resources. The AWS SDK in the Concourse containers is automatically configured to fetch credentials from the [Instance metadata service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html). No further configuration is necessary - note that no access keys are passed to GovCloud jobs in [pipeline.yml](./ci/pipeline.yml).
 
-AWS IAM roles documentation: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
+AWS IAM roles documentation: <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html>
 
 ### Commercial Stacks
 
