@@ -88,8 +88,11 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
   # max_connections is DBInstanceClassMemory/12582880
   # so we use a value 5% higher for the denominator
   # to leave some % of connections free
+  # FixMe: Using string results in :
+  #  "api error InvalidParameterValue: invalid parameter value: DBInstanceClassMemory/13212024"
+  # So using value for an XLarge 16GiB Instance
   parameter {
     name  = "max_user_connections"
-    value = "DBInstanceClassMemory/13212024"
+    value = 1210
   }
 }
