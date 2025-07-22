@@ -89,8 +89,8 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
   #  "api error InvalidParameterValue: invalid parameter value: DBInstanceClassMemory/13212024"
   # Using value below lowest possible than max_connections of 85 
   parameter {
-    name  = "max_user_connections"
-    value = 75
+    name         = "max_user_connections"
+    value        = 75
     apply_method = "pending-reboot"
   }
 }
