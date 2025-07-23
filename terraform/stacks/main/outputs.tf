@@ -798,8 +798,6 @@ output "opensearch_proxy_redis_cluster" {
   sensitive = true
 }
 
-
-
 output "mysql_stig" {
   description = "Values required for MySQL DB used for STIG hardening"
   sensitive   = true
@@ -813,4 +811,15 @@ output "mysql_stig" {
       password = one(module.mysql_stig[*].rds_password)
     }
   }
+}
+
+output "mysql_stig_rds_host" {
+  value = one(module.mysql_stig[*].rds_host)
+}
+output "mysql_stig_rds_password" {
+  value     = one(module.mysql_stig[*].rds_password)
+  sensitive = true
+}
+output "mysql_stig_rds_username" {
+  value = one(module.mysql_stig[*].rds_username)
 }
