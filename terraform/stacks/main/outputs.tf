@@ -824,7 +824,8 @@ output "mysql_stig_rds_host" {
   value = one(module.mysql_stig[*].rds_host)
 }
 output "mysql_stig_rds_password" {
-  value = one(module.mysql_stig[*].rds_password)
+  value     = one(module.mysql_stig[*].rds_password)
+  sensitive = true
 }
 output "mysql_stig_rds_username" {
   value = one(module.mysql_stig[*].rds_username)
