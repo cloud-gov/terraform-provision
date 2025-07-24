@@ -25,4 +25,14 @@ resource "aws_security_group" "rds_mysql" {
   tags = {
     Name = "${var.stack_description} - Incoming MySQL Traffic"
   }
+
+}
+resource "aws_security_group_rule" "ingress_tooling" {
+
+  type              = "ingress"
+  from_port         = 3306
+  to_port           = 3306
+  protocol          = "tcp"
+  cidr_blocks       = var.allowed_cidrs
+  security_group_id = aws_security_group.rds_postgres.id
 }
