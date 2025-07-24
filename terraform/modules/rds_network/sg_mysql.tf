@@ -13,7 +13,7 @@ resource "aws_security_group" "rds_mysql" {
   }
 }
 
-resource "aws_security_group_rule" "ingress_default" {
+resource "aws_security_group_rule" "mysql_ingress_default" {
   count = var.security_groups_count
 
   type                     = "ingress"
@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "ingress_default" {
   security_group_id        = aws_security_group.rds_mysql.id
 }
 
-resource "aws_security_group_rule" "egress_default" {
+resource "aws_security_group_rule" "mysql_egress_default" {
   count = var.security_groups_count
 
   type                     = "egress"
@@ -35,7 +35,7 @@ resource "aws_security_group_rule" "egress_default" {
   security_group_id        = aws_security_group.rds_mysql.id
 }
 
-resource "aws_security_group_rule" "ingress_tooling" {
+resource "aws_security_group_rule" "mysql_ingress_tooling" {
 
   type              = "ingress"
   from_port         = 3306
