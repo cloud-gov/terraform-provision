@@ -19,6 +19,6 @@ mysql_adm() { mysql -h "${db_address}" -u "${db_user}" -p"${db_pass}" -e "$@"; }
 # See https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Concepts.PasswordValidationPlugin.html
 # Requires restart to take effect, then uses parameter group for tuning
 set -v
-# mysql_adm "INSTALL PLUGIN validate_password SONAME 'validate_password.so';"
 mysql_adm "SELECT 'hello from create_and_update_mysql.sh';"
+mysql_adm "INSTALL PLUGIN validate_password SONAME 'validate_password.so';"
 set +v
