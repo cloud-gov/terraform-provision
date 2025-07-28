@@ -507,13 +507,6 @@ output "diego_elb_dns_name" {
 }
 
 /* Logsearch network */
-output "logsearch_elb_name" {
-  value = module.logsearch.logsearch_elb_name
-}
-
-output "logsearch_elb_dns_name" {
-  value = module.logsearch.logsearch_elb_dns_name
-}
 
 output "platform_syslog_elb_name" {
   value = module.logsearch.platform_syslog_elb_name
