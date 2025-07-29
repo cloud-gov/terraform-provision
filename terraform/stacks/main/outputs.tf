@@ -797,6 +797,17 @@ output "csb" {
   }
 }
 
+output "csb_rds_host" {
+  value = module.csb_broker.rds_host
+}
+output "csb_rds_password" {
+  value     = module.csb_broker.rds_password
+  sensitive = true
+}
+output "csb_rds_username" {
+  value = module.csb_broker.rds_username
+}
+
 output "opensearch_proxy_redis_cluster" {
   value = {
     host     = module.opensearch_proxy_redis_cluster.primary_endpoint
