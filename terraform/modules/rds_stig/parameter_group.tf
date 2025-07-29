@@ -85,11 +85,12 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = 1
   }
 
-  # The AWS max_connections value is {DBInstanceClassMemory/12582880},
-  # We use a 5% larger value for the denominator so some connections remain free 
+  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880}, 
+  # but can be as low a 80% of that value, so we use a denominator 33% higher,
+  # 16777173, to provide enough headroom for some connections to remain free
   parameter {
     name         = "max_user_connections"
-    value        = "{DBInstanceClassMemory/13212024}"
+    value        = "{DBInstanceClassMemory/16777173}"
     apply_method = "pending-reboot"
   }
 }
