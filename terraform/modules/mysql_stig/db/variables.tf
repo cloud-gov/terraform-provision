@@ -4,10 +4,8 @@ variable "stack_description" {
 }
 
 # RDS variables
-
 variable "rds_instance_type" {
-  type    = string
-  default = "db.t3.small"
+  type = string
 }
 
 variable "rds_db_size" {
