@@ -22,10 +22,3 @@ output "elasticache_redis_security_group" {
   value = aws_security_group.elasticache_redis.id
 }
 
-output "elasticache_elb_dns_name" {
-  value = aws_elb.elasticache_elb.dns_name
-}
-
-output "elasticache_elb_name" {
-  value = aws_elb.elasticache_elb.name
-}

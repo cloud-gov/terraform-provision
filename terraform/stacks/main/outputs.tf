@@ -326,14 +326,6 @@ output "elasticache_redis_security_group" {
   value = module.elasticache_broker_network.elasticache_redis_security_group
 }
 
-output "elasticache_broker_elb_name" {
-  value = module.elasticache_broker_network.elasticache_elb_name
-}
-
-output "elasticache_broker_elb_dns_name" {
-  value = module.elasticache_broker_network.elasticache_elb_dns_name
-}
-
 /* Elasticsearch Network */
 output "elasticsearch_log_group_audit" {
   value = module.elasticsearch_broker.elasticsearch_log_group_audit
@@ -507,13 +499,6 @@ output "diego_elb_dns_name" {
 }
 
 /* Logsearch network */
-output "logsearch_elb_name" {
-  value = module.logsearch.logsearch_elb_name
-}
-
-output "logsearch_elb_dns_name" {
-  value = module.logsearch.logsearch_elb_dns_name
-}
 
 output "platform_syslog_elb_name" {
   value = module.logsearch.platform_syslog_elb_name

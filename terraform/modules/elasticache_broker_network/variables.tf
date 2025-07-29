@@ -28,13 +28,5 @@ variable "security_groups" {
   type = list(string)
 }
 
-variable "elb_subnets" {
-  type = list(string)
-}
-
-variable "elb_security_groups" {
-  type = list(string)
-}
-
 variable "log_bucket_name" {
 }
