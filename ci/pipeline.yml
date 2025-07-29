@@ -904,26 +904,6 @@ jobs:
                       - -e
                       - -c
                       - cg-provision-repo/ci/scripts/update-db.sh
-              - task: init-csb-db
-                image: general-task
-                config:
-                  platform: linux
-                  image_resource:
-                  inputs:
-                    - name: cg-provision-repo
-                    - name: terraform-state
-                  params:
-                    STATE_FILE_PATH: terraform-state/terraform.tfstate
-                    DATABASES: csb
-                    TERRAFORM_DB_HOST_FIELD: csb_rds_host
-                    TERRAFORM_DB_USERNAME_FIELD: csb_rds_username
-                    TERRAFORM_DB_PASSWORD_FIELD: csb_rds_password
-                  run:
-                    path: sh
-                    args:
-                      - -e
-                      - -c
-                      - cg-provision-repo/ci/scripts/update-mysql.sh
               - task: init-mysql-stig-db
                 image: general-task
                 config:
