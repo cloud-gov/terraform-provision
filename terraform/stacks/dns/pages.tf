@@ -57,6 +57,24 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_cloud_gov_aaaa" {
   }
 }
 
+## Documentation ##
+
+resource "aws_route53_record" "cloud_gov_docs_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "docs.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["docs.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_docs_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.docs.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.docs.cloud.gov.external-domains-production.cloud.gov."]
+}
+
 ## Templates ##
 
 resource "aws_route53_record" "cloud_gov_uswds-11ty_pages_cloud_gov" {
