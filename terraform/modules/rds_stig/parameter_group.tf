@@ -85,12 +85,12 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = 1
   }
 
-  # FixMe: Using string results in :
-  #  "api error InvalidParameterValue: invalid parameter value: DBInstanceClassMemory/13212024"
-  # Using value below lowest possible than max_connections of 85 
+  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880}, 
+  # but can be as low a 80% of that value, so we use a denominator 33% higher,
+  # 16777173, to provide enough headroom for some connections to remain free
   parameter {
     name         = "max_user_connections"
-    value        = 75
+    value        = "{DBInstanceClassMemory/16777173}"
     apply_method = "pending-reboot"
   }
 }
