@@ -923,7 +923,7 @@ jobs:
                     args:
                       - -e
                       - -c
-                      - cg-provision-repo/ci/scripts/update-mysql.sh
+                      - cg-provision-repo/ci/scripts/create-and-update-mysql.sh
               - task: init-mysql-stig-db
                 image: general-task
                 config:
