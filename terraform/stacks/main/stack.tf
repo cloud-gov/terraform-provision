@@ -467,6 +467,7 @@ module "csb_iam" {
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
+# This will need to add "min_special = 2" for future passwords
 resource "random_password" "csb_rds_password" {
   length      = 32
   special     = false
@@ -494,26 +495,4 @@ module "opensearch_proxy_redis_cluster" {
   cluster_name       = "${var.stack_description}-opensearch-proxy"
   subnet_group_name  = module.elasticache_broker_network.elasticache_subnet_group
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
-}
-// Create temporary mysql_stig_db for testing/hardening
-resource "random_password" "mysql_stig_password" {
-  length      = 32
-  special     = false
-  min_special = 2
-  min_upper   = 5
-  min_numeric = 5
-  min_lower   = 5
-}
-
-module "mysql_stig" {
-  count             = var.stack_description == "development" ? 1 : 0
-  source            = "../../modules/mysql_stig/db"
-  stack_description = var.stack_description
-
-  rds_password                    = random_password.mysql_stig_password.result
-  rds_subnet_group                = module.stack.rds_subnet_group
-  rds_security_groups             = [module.stack.rds_mysql_security_group]
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_instance_type               = var.rds_instance_type
 }
