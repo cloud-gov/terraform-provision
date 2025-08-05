@@ -654,46 +654,21 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          and_statement {
+          not_statement {
             statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    field_to_match {
-                      single_header {
-                        name = var.user_agent_header_name
-                      }
-                    }
-
-                    search_string         = var.cloudfront_user_agent_header
-                    positional_constraint = "EXACTLY"
-
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = var.user_agent_header_name
                   }
                 }
-              }
-            }
 
-            statement {
-              not_statement {
-                statement {
-                  regex_pattern_set_reference_statement {
-                    arn = var.api_data_gov_hosts_regex_pattern_arn
+                search_string         = var.cloudfront_user_agent_header
+                positional_constraint = "EXACTLY"
 
-                    field_to_match {
-                      single_header {
-                        name = "host"
-                      }
-                    }
-
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-                  }
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
                 }
               }
             }
@@ -768,46 +743,21 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          and_statement {
+          not_statement {
             statement {
-              not_statement {
-                statement {
-                  byte_match_statement {
-                    field_to_match {
-                      single_header {
-                        name = var.user_agent_header_name
-                      }
-                    }
-
-                    search_string         = var.cloudfront_user_agent_header
-                    positional_constraint = "EXACTLY"
-
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
+              byte_match_statement {
+                field_to_match {
+                  single_header {
+                    name = var.user_agent_header_name
                   }
                 }
-              }
-            }
 
-            statement {
-              not_statement {
-                statement {
-                  regex_pattern_set_reference_statement {
-                    arn = var.api_data_gov_hosts_regex_pattern_arn
+                search_string         = var.cloudfront_user_agent_header
+                positional_constraint = "EXACTLY"
 
-                    field_to_match {
-                      single_header {
-                        name = "host"
-                      }
-                    }
-
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-                  }
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
                 }
               }
             }
