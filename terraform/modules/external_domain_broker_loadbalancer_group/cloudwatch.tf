@@ -10,7 +10,7 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
   insufficient_data_actions = []
   actions_enabled           = true
   ok_actions                = []
-  alarm_actions             = [var.cg_platform_notifications_arn]
+  alarm_actions             = [var.notifications_arn]
   treat_missing_data        = "missing"
 
   metric_query {

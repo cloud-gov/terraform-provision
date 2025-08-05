@@ -46,7 +46,7 @@ variable "aws_lb_listener_ssl_policy" {
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
 
-variable "cg_platform_notifications_arn" {
+variable "notifications_arn" {
   type        = string
-  description = "ARN for the platform-slack-notifications SNS Topic"
+  description = "ARN for the SNS Topic to receive notifications"
 }
