@@ -25,7 +25,8 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:GetPolicy",
       "iam:AttachUserPolicy",
       "iam:DetachUserPolicy",
-      "iam:List*"
+      "iam:List*",
+      "iam:TagUser"
     ]
     resources = ["*"]
   }
