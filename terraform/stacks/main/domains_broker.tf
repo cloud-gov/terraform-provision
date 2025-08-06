@@ -206,34 +206,6 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 }
 
-## MAX 10 HOSTS
-resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
-  count = var.domains_broker_alb_count
-
-  listener_arn = aws_lb_listener.domains_broker_https[count.index].arn
-
-  action {
-    type = "forward"
-
-    forward {
-      target_group {
-        arn    = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
-        weight = var.loadbalancer_forward_original_weight
-      }
-      target_group {
-        arn    = aws_lb_target_group.domains_broker_gr_logstash_https[count.index].arn
-        weight = var.loadbalancer_forward_new_weight
-      }
-    }
-  }
-
-  condition {
-    host_header {
-      values = var.logstash_hosts
-    }
-  }
-}
-
 resource "aws_lb_target_group" "domains_broker_apps_https" {
   count = var.domains_broker_alb_count
 
