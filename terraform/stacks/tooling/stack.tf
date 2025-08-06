@@ -35,6 +35,11 @@ data "aws_iam_server_certificate" "wildcard_staging" {
   latest      = true
 }
 
+data "aws_iam_server_certificate" "wildcard_development" {
+  name_prefix = var.wildcard_development_certificate_name_prefix
+  latest      = true
+}
+
 resource "aws_lb" "main" {
   name            = "${var.stack_description}-main"
   subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
@@ -73,39 +78,49 @@ resource "aws_lb_listener_certificate" "main-staging" {
   certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
 }
 
+resource "aws_lb_listener_certificate" "main-development" {
+  listener_arn    = aws_lb_listener.main.arn
+  certificate_arn = data.aws_iam_server_certificate.wildcard_development.arn
+}
+
 module "stack" {
   source = "../../modules/stack/base"
 
-  stack_description                      = var.stack_description
-  vpc_cidr                               = var.vpc_cidr
-  az1                                    = data.aws_availability_zones.available.names[0]
-  az2                                    = data.aws_availability_zones.available.names[1]
-  aws_default_region                     = var.aws_default_region
-  public_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 100)
-  public_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                         = cidrsubnet(var.vpc_cidr, 8, 1) # This is used by nessus, opsuaa and postfix
-  private_cidr_2                         = cidrsubnet(var.vpc_cidr, 8, 2)
-  restricted_ingress_web_cidrs           = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs      = var.restricted_ingress_web_ipv6_cidrs
-  rds_private_cidr_1                     = cidrsubnet(var.vpc_cidr, 8, 20)
-  rds_private_cidr_2                     = cidrsubnet(var.vpc_cidr, 8, 21)
-  rds_private_cidr_3                     = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
-  rds_private_cidr_4                     = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  rds_password                           = var.rds_password
-  credhub_rds_password                   = var.credhub_rds_password
-  rds_multi_az                           = var.rds_multi_az
-  rds_security_groups                    = [module.stack.bosh_security_group]
-  rds_security_groups_count              = "1"
-  rds_db_engine_version                  = var.rds_db_engine_version_bosh
-  rds_parameter_group_family             = var.rds_parameter_group_family_bosh
-  rds_allow_major_version_upgrade        = var.rds_allow_major_version_upgrade
-  rds_apply_immediately                  = var.rds_apply_immediately
-  bosh_default_ssh_public_key            = var.bosh_default_ssh_public_key
-  target_concourse_security_group_cidrs  = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
-  target_monitoring_security_group_cidrs = [cidrsubnet(var.vpc_cidr, 8, 32)]
-  s3_gateway_policy_accounts             = var.s3_gateway_policy_accounts
-  credhub_rds_db_engine_version          = var.rds_db_engine_version_bosh_credhub
-  credhub_rds_parameter_group_family     = var.rds_parameter_group_family_bosh_credhub
+  stack_description                         = var.stack_description
+  vpc_cidr                                  = var.vpc_cidr
+  az1                                       = data.aws_availability_zones.available.names[0]
+  az2                                       = data.aws_availability_zones.available.names[1]
+  aws_default_region                        = var.aws_default_region
+  public_cidr_1                             = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                             = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                            = cidrsubnet(var.vpc_cidr, 8, 1) # This is used by nessus, opsuaa and postfix
+  private_cidr_2                            = cidrsubnet(var.vpc_cidr, 8, 2)
+  restricted_ingress_web_cidrs              = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs         = var.restricted_ingress_web_ipv6_cidrs
+  rds_private_cidr_1                        = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                        = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                        = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                        = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
+  rds_password                              = var.rds_password
+  credhub_rds_password                      = var.credhub_rds_password
+  rds_multi_az                              = var.rds_multi_az
+  rds_security_groups                       = [module.stack.bosh_security_group]
+  rds_security_groups_count                 = "1"
+  rds_db_engine_version                     = var.rds_db_engine_version_bosh
+  rds_parameter_group_family                = var.rds_parameter_group_family_bosh
+  rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade
+  rds_apply_immediately                     = var.rds_apply_immediately
+  bosh_default_ssh_public_key               = var.bosh_default_ssh_public_key
+  target_concourse_security_group_cidrs     = [cidrsubnet(var.vpc_cidr, 8, 30), cidrsubnet(var.vpc_cidr, 8, 60), cidrsubnet(var.vpc_cidr, 8, 31), cidrsubnet(var.vpc_cidr, 8, 61), cidrsubnet(var.vpc_cidr, 8, 38), cidrsubnet(var.vpc_cidr, 8, 1)]
+  target_monitoring_security_group_cidrs    = [cidrsubnet(var.vpc_cidr, 8, 32)]
+  s3_gateway_policy_accounts                = var.s3_gateway_policy_accounts
+  credhub_rds_db_engine_version             = var.rds_db_engine_version_bosh_credhub
+  credhub_rds_parameter_group_family        = var.rds_parameter_group_family_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
+  rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
+
 }
 
 module "concourse_production" {
@@ -113,9 +128,12 @@ module "concourse_production" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 60)
   concourse_az                    = data.aws_availability_zones.available.names[0]
+  concourse_az2                   = data.aws_availability_zones.available.names[1]
   suffix                          = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = var.concourse_prod_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -133,6 +151,8 @@ module "concourse_production" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_production_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_concourse_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_concourse_production
 }
 
 module "concourse_staging" {
@@ -140,9 +160,12 @@ module "concourse_staging" {
   stack_description               = var.stack_description
   vpc_id                          = module.stack.vpc_id
   concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 31)
-  concourse_az                    = data.aws_availability_zones.available.names[1]
+  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 61)
+  concourse_az                    = data.aws_availability_zones.available.names[1] # Yes, these are backwards on purpose, this is the original
+  concourse_az2                   = data.aws_availability_zones.available.names[0] # Yes, these are backwards on purpose, this is the new az
   suffix                          = data.aws_availability_zones.available.names[1]
-  route_table_id                  = module.stack.private_route_table_az2
+  route_table_id                  = module.stack.private_route_table_az2 # Yes, these are backwards on purpose, this is the original
+  route_table_id_az2              = module.stack.private_route_table_az1 # Yes, these are backwards on purpose, this is the new az
   rds_password                    = var.concourse_staging_rds_password
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
@@ -159,6 +182,8 @@ module "concourse_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.concourse_staging_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_concourse_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_concourse_staging
 }
 
 module "credhub_production" {
@@ -184,6 +209,8 @@ module "credhub_production" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_production_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_credhub_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_credhub_production
 }
 
 module "credhub_staging" {
@@ -212,6 +239,40 @@ module "credhub_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.credhub_staging_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_credhub_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_credhub_staging
+
+}
+
+module "defectdojo_development" {
+  source                          = "../../modules/defect_dojo"
+  stack_description               = "development"
+  vpc_id                          = module.stack.vpc_id
+  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 50)
+  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 51)
+  defectdojo_az1                  = data.aws_availability_zones.available.names[0]
+  defectdojo_az2                  = data.aws_availability_zones.available.names[1]
+  route_table_id_az1              = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
+  rds_password                    = var.defectdojo_development_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-defectdojo-development"
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_development
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_development
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.t3.medium"
+  rds_db_size                     = 400
+  rds_db_storage_type             = "gp3"
+  rds_db_iops                     = 12000
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-development"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.defectdojo_development_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_development
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_development
+
 }
 
 module "defectdojo_staging" {
@@ -228,8 +289,8 @@ module "defectdojo_staging" {
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "tooling-defectdojo-staging"
-  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo
-  rds_db_engine_version           = var.rds_db_engine_version_defectdojo
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_staging
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_staging
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_instance_type               = "db.m5.large"
@@ -240,6 +301,38 @@ module "defectdojo_staging" {
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
   listener_arn                    = aws_lb_listener.main.arn
   hosts                           = var.defectdojo_staging_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_staging
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_staging
+}
+
+module "defectdojo_production" {
+  source                          = "../../modules/defect_dojo"
+  stack_description               = "production"
+  vpc_id                          = module.stack.vpc_id
+  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 52)
+  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 53)
+  defectdojo_az1                  = data.aws_availability_zones.available.names[0]
+  defectdojo_az2                  = data.aws_availability_zones.available.names[1]
+  route_table_id_az1              = module.stack.private_route_table_az1
+  route_table_id_az2              = module.stack.private_route_table_az2
+  rds_password                    = var.defectdojo_production_rds_password
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_postgres_security_group]
+  rds_parameter_group_name        = "tooling-defectdojo-production"
+  rds_parameter_group_family      = var.rds_parameter_group_family_defectdojo_production
+  rds_db_engine_version           = var.rds_db_engine_version_defectdojo_production
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_instance_type               = "db.m5.large"
+  rds_db_size                     = 400
+  rds_db_storage_type             = "gp3"
+  rds_db_iops                     = 12000
+  rds_multi_az                    = var.rds_multi_az
+  rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-production"
+  listener_arn                    = aws_lb_listener.main.arn
+  hosts                           = var.defectdojo_production_hosts
+  rds_shared_preload_libraries    = var.rds_shared_preload_libraries_defectdojo_production
+  rds_pgaudit_log_values          = var.rds_pgaudit_log_values_defectdojo_production
 }
 
 module "monitoring_production" {

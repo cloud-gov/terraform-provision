@@ -173,9 +173,12 @@ resource "aws_lb_target_group" "domains_lbgroup_gr_logstash_https" {
   }
 }
 
-resource "aws_wafv2_web_acl_association" "domain_waf" {
-  count = var.domains_lbgroup_count
+# Removed definition of WAF for these load balancers, which is now
+# handled by the broker
+removed {
+  from = aws_wafv2_web_acl_association.domain_waf
 
-  resource_arn = aws_lb.domains_lbgroup[count.index].arn
-  web_acl_arn  = var.waf_arn
+  lifecycle {
+    destroy = false
+  }
 }

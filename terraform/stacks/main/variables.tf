@@ -32,6 +32,38 @@ variable "rds_parameter_group_family" {
   default = "postgres12"
 }
 
+variable "rds_shared_preload_libraries_bosh" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
+variable "rds_db_engine_version_autoscaler" {
+  default = "15.7"
+}
+
+variable "rds_parameter_group_family_autoscaler" {
+  default = "postgres15"
+}
+
+variable "rds_shared_preload_libraries_autoscaler" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_autoscaler" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_cf" {
   default = "16.3"
 }
@@ -124,7 +156,7 @@ variable "parent_stack_name" {
 }
 
 variable "domains_broker_rds_version" {
-  default = "12.19"
+  default = "15.7"
 }
 variable "cf_rds_instance_type" {
   default = "db.m5.large"
@@ -200,7 +232,12 @@ variable "logstash_hosts" {
 
 variable "gsa_ip_range_ip_set_arn" {
   type        = string
-  description = "ARN of IP set identifying GSA IP CIDR ranges"
+  description = "ARN of IP v4 set identifying GSA IP CIDR ranges"
+}
+
+variable "gsa_ipv6_range_ip_set_arn" {
+  type        = string
+  description = "ARN of IP v6 set identifying GSA IP CIDR ranges"
 }
 
 variable "malicious_ja3_fingerprint_ids" {
@@ -262,6 +299,18 @@ variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
 
+variable "rds_shared_preload_libraries_bosh_credhub" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh_credhub" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "waf_regex_rules" {
   type = list(object({
     # path_regex is matched against the uri path of a request
@@ -298,4 +347,16 @@ variable "ecr_stack_name" {
 
 variable "bosh_blobstore_sse" {
   default = "AES256"
+}
+
+variable "rds_shared_preload_libraries_cf" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_cf" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

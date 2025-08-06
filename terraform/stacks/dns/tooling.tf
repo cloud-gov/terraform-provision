@@ -202,3 +202,27 @@ resource "aws_route53_record" "cloud_gov_ops_login_fr_cloud_gov_a" {
     evaluate_target_health = false
   }
 }
+
+resource "aws_route53_record" "cloud_gov_defectdojo_fr_cloud_gov_a" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "defectdojo.fr.cloud.gov."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_defectdojo_fr_cloud_gov_aaaa" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "defectdojo.fr.cloud.gov."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}

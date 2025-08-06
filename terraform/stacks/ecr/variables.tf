@@ -12,7 +12,12 @@ variable "repositories" {
     "bosh-io-stemcell-resource",
     "cf-cli-resource",
     "cf-resource",
+    "cflinuxfs4-hardened",           # hardened stack passed cf-acceptance tests
+    "cflinuxfs4-hardened-candidate", # hardened stack not yet passed cf-acceptance tests
+    "clamav-rest",                   # image for malware scanning service which has passed testing
+    "clamav-rest-candidate",         # image for malware scanning service which has not yet passed testing
     "cloud-service-broker",
+    "cloudfoundry-cflinuxfs4", # current stack in CF
     "concourse-http-jq-resource",
     "concourse-task",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
@@ -39,6 +44,9 @@ variable "repositories" {
     "pages-python-v3.11",
     "pages-redis-v7.2",
     "pages-zap",
+    "paketo-jammy-full",                    # copy of current public paketo stack
+    "paketo-jammy-full-hardened",           # hardened stack passed cf-acceptance tests
+    "paketo-jammy-full-hardened-candidate", # hardened stack not yet passed cf-acceptance tests
     "playwright-python",
     "pool-resource",
     "pulledpork",
@@ -51,5 +59,7 @@ variable "repositories" {
     "opensearch-dashboards-testing",
     "time-resource",
     "ubuntu-hardened",
+    "ubuntu-hardened-stig",
+    "zap-runner", # owasp zap security scanner
   ]
 }

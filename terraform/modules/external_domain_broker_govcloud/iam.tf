@@ -19,6 +19,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 
   statement {
@@ -32,6 +37,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -48,6 +58,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 
   statement {
@@ -62,6 +77,11 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       test     = "StringEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
     }
   }
 
@@ -79,6 +99,153 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       variable = "aws:PrincipalArn"
       values   = [aws_iam_user.iam_user.arn]
     }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  # this permission is required for wafv2:PutLoggingConfiguration
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awswafv2.html#awswafv2-actions-as-permissions
+  statement {
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:iam::${var.account_id}:role/aws-service-role/wafv2.amazonaws.com/AWSServiceRoleForWAFV2Logging"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "iam:AWSServiceName"
+      values   = ["wafv2.amazonaws.com"]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:CreateWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/managedruleset/*/*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:TagResource",
+      "wafv2:UntagResource",
+      "wafv2:GetWebACL",
+      "wafv2:AssociateWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:PutLoggingConfiguration",
+      "wafv2:DeleteLoggingConfiguration"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "wafv2:LogDestinationResource"
+      values   = [var.waf_log_group_arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  # necessary permissions for sending WAF logs to CloudWatch
+  # see https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html#logging-cw-logs-permissions
+  #
+  # wildcard permissions are required for these actions
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatchlogs.html#amazoncloudwatchlogs-actions-as-permissions
+  statement {
+    actions = [
+      "logs:CreateLogDelivery",
+      "logs:DeleteLogDelivery",
+      "logs:PutResourcePolicy",
+      "logs:DescribeResourcePolicies",
+      "logs:DescribeLogGroups"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  # this permission can only use "*" as its resource constraint
+  # see https://docs.aws.amazon.com/service-authorization/latest/reference/list_awselasticloadbalancingv2.html
+  statement {
+    actions = [
+      "elasticloadbalancing:SetWebACL"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
   }
 }
 
@@ -86,7 +253,7 @@ resource "aws_iam_user" "iam_user" {
   name = "external-domain-broker-gov-${var.stack_description}"
 }
 
-resource "aws_iam_access_key" "iam_access_key_v3" {
+resource "aws_iam_access_key" "iam_access_key_v1" {
   user = aws_iam_user.iam_user.name
 }
 

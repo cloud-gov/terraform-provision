@@ -9,6 +9,13 @@ variable "concourse_az" {
   default = "us-gov-west-1a"
 }
 
+variable "concourse_cidr_az2" {
+}
+
+variable "concourse_az2" {
+  default = "us-gov-west-1b"
+}
+
 variable "suffix" {
   default = "pickles"
 }
@@ -75,6 +82,9 @@ variable "rds_apply_immediately" {
 variable "route_table_id" {
 }
 
+variable "route_table_id_az2" {
+}
+
 variable "vpc_id" {
 }
 
@@ -87,4 +97,16 @@ variable "hosts" {
 
 variable "performance_insights_enabled" {
   default = "false"
+}
+
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

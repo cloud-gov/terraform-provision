@@ -156,10 +156,6 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
-variable "protobosh_rds_force_ssl" {
-  default = 1
-}
-
 variable "protobosh_rds_multi_az" {
   default = "true"
 }
@@ -191,10 +187,6 @@ variable "s3_gateway_policy_accounts" {
   default = []
 }
 
-
-variable "rds_force_ssl" {
-  default = 1
-}
 
 variable "rds_db_storage_type" {
   default = "gp3"

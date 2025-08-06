@@ -190,7 +190,12 @@ variable "non_cdn_traffic_rate_limit_block_by_source_ip" {
 
 variable "gsa_ip_range_ip_set_arn" {
   type        = string
-  description = "ARN of IP set identifying GSA IP CIDR ranges"
+  description = "ARN of IP v4 set identifying GSA IP CIDR ranges"
+}
+
+variable "gsa_ipv6_range_ip_set_arn" {
+  type        = string
+  description = "ARN of IP v6 set identifying GSA IP CIDR ranges"
 }
 
 variable "malicious_ja3_fingerprint_ids" {
@@ -257,4 +262,16 @@ variable "waf_regex_rules" {
 variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
+}
+
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

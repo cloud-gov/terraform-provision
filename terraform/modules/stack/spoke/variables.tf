@@ -181,3 +181,28 @@ variable "rds_db_engine_version_bosh_credhub" {
 variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
+
+variable "rds_shared_preload_libraries_bosh" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
+variable "rds_shared_preload_libraries_bosh_credhub" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh_credhub" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+

@@ -297,16 +297,48 @@ output "production_concourse_subnet" {
   value = module.concourse_production.concourse_subnet
 }
 
+output "production_concourse_subnet_az1" {
+  value = module.concourse_production.concourse_subnet_az1
+}
+
+output "production_concourse_subnet_az2" {
+  value = module.concourse_production.concourse_subnet_az2
+}
+
 output "production_concourse_subnet_reserved" {
   value = "${cidrhost(module.concourse_production.concourse_subnet_cidr, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr, 3)}"
+}
+
+output "production_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 3)}"
+}
+
+output "production_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 0)} - ${cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 3)}"
 }
 
 output "production_concourse_subnet_cidr" {
   value = module.concourse_production.concourse_subnet_cidr
 }
 
+output "production_concourse_subnet_cidr_az1" {
+  value = module.concourse_production.concourse_subnet_cidr_az1
+}
+
+output "production_concourse_subnet_cidr_az2" {
+  value = module.concourse_production.concourse_subnet_cidr_az2
+}
+
 output "production_concourse_subnet_gateway" {
   value = cidrhost(module.concourse_production.concourse_subnet_cidr, 1)
+}
+
+output "production_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidr_az1, 1)
+}
+
+output "production_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_production.concourse_subnet_cidr_az2, 1)
 }
 
 output "production_concourse_security_group" {
@@ -351,16 +383,48 @@ output "staging_concourse_subnet" {
   value = module.concourse_staging.concourse_subnet
 }
 
+output "staging_concourse_subnet_az1" {
+  value = module.concourse_staging.concourse_subnet_az1
+}
+
+output "staging_concourse_subnet_az2" {
+  value = module.concourse_staging.concourse_subnet_az2
+}
+
 output "staging_concourse_subnet_reserved" {
   value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr, 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az1" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 3)}"
+}
+
+output "staging_concourse_subnet_reserved_az2" {
+  value = "${cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 0)} - ${cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 3)}"
 }
 
 output "staging_concourse_subnet_cidr" {
   value = module.concourse_staging.concourse_subnet_cidr
 }
 
+output "staging_concourse_subnet_cidr_az1" {
+  value = module.concourse_staging.concourse_subnet_cidr_az1
+}
+
+output "staging_concourse_subnet_cidr_az2" {
+  value = module.concourse_staging.concourse_subnet_cidr_az2
+}
+
 output "staging_concourse_subnet_gateway" {
   value = cidrhost(module.concourse_staging.concourse_subnet_cidr, 1)
+}
+
+output "staging_concourse_subnet_gateway_az1" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidr_az1, 1)
+}
+
+output "staging_concourse_subnet_gateway_az2" {
+  value = cidrhost(module.concourse_staging.concourse_subnet_cidr_az2, 1)
 }
 
 output "staging_concourse_security_group" {
@@ -542,6 +606,76 @@ output "staging_credhub_lb_target_group" {
   value = module.credhub_staging.credhub_lb_target_group
 }
 
+/* Development Defect Dojo */
+output "development_defectdojo_subnet_az1" {
+  value = module.defectdojo_development.defectdojo_subnet_az1
+}
+
+output "development_defectdojo_subnet_az2" {
+  value = module.defectdojo_development.defectdojo_subnet_az2
+}
+
+output "development_defectdojo_subnet_az1_reserved" {
+  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 0)} - ${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 3)}"
+}
+
+output "development_defectdojo_subnet_az2_reserved" {
+  value = "${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 0)} - ${cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 3)}"
+}
+
+output "development_defectdojo_subnet_cidr_az1" {
+  value = module.defectdojo_development.defectdojo_subnet_cidr_az1
+}
+
+output "development_defectdojo_subnet_cidr_az2" {
+  value = module.defectdojo_development.defectdojo_subnet_cidr_az2
+}
+
+output "development_defectdojo_subnet_az1_gateway" {
+  value = cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az1, 1)
+}
+
+output "development_defectdojo_subnet_az2_gateway" {
+  value = cidrhost(module.defectdojo_development.defectdojo_subnet_cidr_az2, 1)
+}
+
+output "development_defectdojo_security_group" {
+  value = module.defectdojo_development.defectdojo_security_group
+}
+
+output "development_defectdojo_rds_identifier" {
+  value = module.defectdojo_development.defectdojo_rds_identifier
+}
+
+output "development_defectdojo_rds_name" {
+  value = module.defectdojo_development.defectdojo_rds_name
+}
+
+output "development_defectdojo_rds_host" {
+  value = module.defectdojo_development.defectdojo_rds_host
+}
+
+output "development_defectdojo_rds_port" {
+  value = module.defectdojo_development.defectdojo_rds_port
+}
+
+output "development_defectdojo_rds_url" {
+  value = module.defectdojo_development.defectdojo_rds_url
+}
+
+output "development_defectdojo_rds_username" {
+  value = module.defectdojo_development.defectdojo_rds_username
+}
+
+output "development_defectdojo_rds_password" {
+  value     = module.defectdojo_development.defectdojo_rds_password
+  sensitive = true
+}
+
+output "development_defectdojo_lb_target_group" {
+  value = module.defectdojo_development.defectdojo_lb_target_group
+}
+
 /* Staging Defect Dojo */
 output "staging_defectdojo_subnet_az1" {
   value = module.defectdojo_staging.defectdojo_subnet_az1
@@ -612,6 +746,76 @@ output "staging_defectdojo_lb_target_group" {
   value = module.defectdojo_staging.defectdojo_lb_target_group
 }
 
+/* Production Defect Dojo */
+output "production_defectdojo_subnet_az1" {
+  value = module.defectdojo_production.defectdojo_subnet_az1
+}
+
+output "production_defectdojo_subnet_az2" {
+  value = module.defectdojo_production.defectdojo_subnet_az2
+}
+
+output "production_defectdojo_subnet_az1_reserved" {
+  value = "${cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az1, 0)} - ${cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az1, 3)}"
+}
+
+output "production_defectdojo_subnet_az2_reserved" {
+  value = "${cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az2, 0)} - ${cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az2, 3)}"
+}
+
+output "production_defectdojo_subnet_cidr_az1" {
+  value = module.defectdojo_production.defectdojo_subnet_cidr_az1
+}
+
+output "production_defectdojo_subnet_cidr_az2" {
+  value = module.defectdojo_production.defectdojo_subnet_cidr_az2
+}
+
+output "production_defectdojo_subnet_az1_gateway" {
+  value = cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az1, 1)
+}
+
+output "production_defectdojo_subnet_az2_gateway" {
+  value = cidrhost(module.defectdojo_production.defectdojo_subnet_cidr_az2, 1)
+}
+
+output "production_defectdojo_security_group" {
+  value = module.defectdojo_production.defectdojo_security_group
+}
+
+output "production_defectdojo_rds_identifier" {
+  value = module.defectdojo_production.defectdojo_rds_identifier
+}
+
+output "production_defectdojo_rds_name" {
+  value = module.defectdojo_production.defectdojo_rds_name
+}
+
+output "production_defectdojo_rds_host" {
+  value = module.defectdojo_production.defectdojo_rds_host
+}
+
+output "production_defectdojo_rds_port" {
+  value = module.defectdojo_production.defectdojo_rds_port
+}
+
+output "production_defectdojo_rds_url" {
+  value = module.defectdojo_production.defectdojo_rds_url
+}
+
+output "production_defectdojo_rds_username" {
+  value = module.defectdojo_production.defectdojo_rds_username
+}
+
+output "production_defectdojo_rds_password" {
+  value     = module.defectdojo_production.defectdojo_rds_password
+  sensitive = true
+}
+
+output "production_defectdojo_lb_target_group" {
+  value = module.defectdojo_production.defectdojo_lb_target_group
+}
+
 /* Production Monitoring */
 output "production_monitoring_az" {
   value = module.monitoring_production.monitoring_az
@@ -667,12 +871,21 @@ output "rds_storage_alert_username" {
   value = module.rds_storage_alert.username
 }
 
-output "rds_storage_alert_access_key_id" {
-  value = module.rds_storage_alert.access_key_id
+output "rds_storage_alert_access_key_id_prev" {
+  value = module.rds_storage_alert.access_key_id_prev
 }
 
-output "rds_storage_alert_secret_access_key" {
-  value     = module.rds_storage_alert.secret_access_key
+output "rds_storage_alert_secret_access_key_prev" {
+  value     = module.rds_storage_alert.secret_access_key_prev
+  sensitive = true
+}
+
+output "rds_storage_alert_access_key_id_curr" {
+  value = module.rds_storage_alert.access_key_id_curr
+}
+
+output "rds_storage_alert_secret_access_key_curr" {
+  value     = module.rds_storage_alert.secret_access_key_curr
   sensitive = true
 }
 

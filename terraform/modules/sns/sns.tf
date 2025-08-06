@@ -5,14 +5,10 @@ locals {
 
 resource "aws_sns_topic" "cg_platform_notifications" {
   name = var.sns_cg_platform_notifications_name
-
-  kms_master_key_id = local.aws_managed_sns_kms_id
 }
 
 resource "aws_sns_topic" "cg_platform_slack_notifications" {
   name = var.sns_cg_platform_slack_notifications_name
-
-  kms_master_key_id = local.aws_managed_sns_kms_id
 }
 
 resource "aws_sns_topic_subscription" "cg_platform_notifications" {

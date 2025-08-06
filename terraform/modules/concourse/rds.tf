@@ -19,4 +19,8 @@ module "rds_96" {
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = var.rds_final_snapshot_identifier
   performance_insights_enabled    = var.performance_insights_enabled
+
+  rds_shared_preload_libraries = var.rds_shared_preload_libraries
+  rds_pgaudit_log_values       = var.rds_pgaudit_log_values
+
 }

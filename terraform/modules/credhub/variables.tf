@@ -92,3 +92,16 @@ variable "listener_arn" {
 variable "hosts" {
   type = list(string)
 }
+
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+

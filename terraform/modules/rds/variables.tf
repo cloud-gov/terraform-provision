@@ -42,10 +42,6 @@ variable "rds_security_groups" {
   type = list(string)
 }
 
-variable "rds_force_ssl" {
-  default = 0
-}
-
 variable "rds_parameter_group_name" {
   default = ""
 }
@@ -87,4 +83,16 @@ variable "rds_allow_major_version_upgrade" {
 
 variable "performance_insights_enabled" {
   default = "false"
+}
+
+variable "rds_shared_preload_libraries" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

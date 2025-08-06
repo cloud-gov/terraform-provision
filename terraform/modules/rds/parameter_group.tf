@@ -30,9 +30,33 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
 
   parameter {
     name         = "rds.force_ssl"
-    value        = var.rds_force_ssl
+    value        = 1
     apply_method = "pending-reboot"
   }
+
+  parameter {
+    name         = "shared_preload_libraries"
+    value        = var.rds_shared_preload_libraries
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "pgaudit.log"
+    value        = var.rds_pgaudit_log_values
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "log_replication_commands"
+    value        = 1
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name  = "log_error_verbosity"
+    value = "verbose"
+  }
+
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {

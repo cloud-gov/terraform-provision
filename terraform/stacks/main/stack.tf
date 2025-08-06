@@ -14,6 +14,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   # this is for the tooling bosh
@@ -29,6 +30,7 @@ provider "aws" {
     }
   }
 }
+
 provider "aws" {
   use_fips_endpoint = true
   region            = var.aws_default_region
@@ -125,7 +127,7 @@ data "aws_arn" "parent_role_arn" {
 }
 
 data "aws_prefix_list" "s3_gw_cidrs" {
-  name = "com.amazonaws.${data.aws_region.current.name}.s3"
+  name = "com.amazonaws.${data.aws_region.current.region}.s3"
 }
 
 locals {
@@ -183,33 +185,36 @@ module "stack" {
     aws.tooling = aws.tooling
     aws.parent  = aws.parentbosh
   }
-  stack_description                       = var.stack_description
-  aws_partition                           = data.aws_partition.current.partition
-  vpc_cidr                                = var.vpc_cidr
-  az1                                     = data.aws_availability_zones.available.names[var.az1_index]
-  az2                                     = data.aws_availability_zones.available.names[var.az2_index]
-  aws_default_region                      = var.aws_default_region
-  rds_db_size                             = var.rds_db_size
-  rds_apply_immediately                   = var.rds_apply_immediately
-  rds_allow_major_version_upgrade         = var.rds_allow_major_version_upgrade
-  rds_instance_type                       = var.rds_instance_type
-  rds_db_engine_version                   = var.rds_db_engine_version
-  rds_parameter_group_family              = var.rds_parameter_group_family
-  public_cidr_1                           = cidrsubnet(var.vpc_cidr, 8, 100)
-  public_cidr_2                           = cidrsubnet(var.vpc_cidr, 8, 101)
-  private_cidr_1                          = cidrsubnet(var.vpc_cidr, 8, 1)
-  private_cidr_2                          = cidrsubnet(var.vpc_cidr, 8, 2)
-  rds_private_cidr_1                      = cidrsubnet(var.vpc_cidr, 8, 20)
-  rds_private_cidr_2                      = cidrsubnet(var.vpc_cidr, 8, 21)
-  rds_private_cidr_3                      = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
-  rds_private_cidr_4                      = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  restricted_ingress_web_cidrs            = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs       = var.restricted_ingress_web_ipv6_cidrs
-  rds_password                            = var.rds_password
-  credhub_rds_password                    = var.credhub_rds_password
-  rds_db_engine_version_bosh_credhub      = var.rds_db_engine_version_bosh_credhub
-  rds_parameter_group_family_bosh_credhub = var.rds_parameter_group_family_bosh_credhub
-
+  stack_description                         = var.stack_description
+  aws_partition                             = data.aws_partition.current.partition
+  vpc_cidr                                  = var.vpc_cidr
+  az1                                       = data.aws_availability_zones.available.names[var.az1_index]
+  az2                                       = data.aws_availability_zones.available.names[var.az2_index]
+  aws_default_region                        = var.aws_default_region
+  rds_db_size                               = var.rds_db_size
+  rds_apply_immediately                     = var.rds_apply_immediately
+  rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade
+  rds_instance_type                         = var.rds_instance_type
+  rds_db_engine_version                     = var.rds_db_engine_version
+  rds_parameter_group_family                = var.rds_parameter_group_family
+  public_cidr_1                             = cidrsubnet(var.vpc_cidr, 8, 100)
+  public_cidr_2                             = cidrsubnet(var.vpc_cidr, 8, 101)
+  private_cidr_1                            = cidrsubnet(var.vpc_cidr, 8, 1)
+  private_cidr_2                            = cidrsubnet(var.vpc_cidr, 8, 2)
+  rds_private_cidr_1                        = cidrsubnet(var.vpc_cidr, 8, 20)
+  rds_private_cidr_2                        = cidrsubnet(var.vpc_cidr, 8, 21)
+  rds_private_cidr_3                        = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
+  rds_private_cidr_4                        = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
+  restricted_ingress_web_cidrs              = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs         = var.restricted_ingress_web_ipv6_cidrs
+  rds_password                              = var.rds_password
+  credhub_rds_password                      = var.credhub_rds_password
+  rds_db_engine_version_bosh_credhub        = var.rds_db_engine_version_bosh_credhub
+  rds_parameter_group_family_bosh_credhub   = var.rds_parameter_group_family_bosh_credhub
+  rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub
+  rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
+  rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
+  rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -218,14 +223,17 @@ module "stack" {
   cidr_blocks                 = var.cidr_blocks
 
   target_vpc_id          = data.terraform_remote_state.target_vpc.outputs.vpc_id
-  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr
+  target_vpc_cidr        = data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1
   target_az1_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az1
   target_az2_route_table = data.terraform_remote_state.target_vpc.outputs.private_route_table_az2
 
   target_concourse_security_group_cidrs = [
-    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr,
-    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr,
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.production_concourse_subnet_cidr_az2,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az1,
+    data.terraform_remote_state.target_vpc.outputs.staging_concourse_subnet_cidr_az2,
     data.terraform_remote_state.target_vpc.outputs.private_subnet_az1_cidr,
+    data.terraform_remote_state.target_vpc.outputs.private_subnet_az2_cidr,
   ]
 
   parent_vpc_id              = data.terraform_remote_state.parent_vpc.outputs.vpc_id
@@ -257,14 +265,15 @@ module "cf" {
     var.force_restricted_network == "no" ? module.stack.web_traffic_security_group : module.stack.restricted_web_traffic_security_group,
   ]
 
-  rds_password               = var.cf_rds_password
-  rds_subnet_group           = module.stack.rds_subnet_group
-  rds_security_groups        = [module.stack.rds_postgres_security_group]
-  rds_instance_type          = var.cf_rds_instance_type
-  stack_prefix               = "cf-${var.stack_description}"
-  rds_db_engine_version      = var.rds_db_engine_version_cf
-  rds_parameter_group_family = var.rds_parameter_group_family_cf
-
+  rds_password                 = var.cf_rds_password
+  rds_subnet_group             = module.stack.rds_subnet_group
+  rds_security_groups          = [module.stack.rds_postgres_security_group]
+  rds_instance_type            = var.cf_rds_instance_type
+  stack_prefix                 = "cf-${var.stack_description}"
+  rds_db_engine_version        = var.rds_db_engine_version_cf
+  rds_parameter_group_family   = var.rds_parameter_group_family_cf
+  rds_shared_preload_libraries = var.rds_shared_preload_libraries_cf
+  rds_pgaudit_log_values       = var.rds_pgaudit_log_values_cf
 
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
@@ -292,6 +301,7 @@ module "cf" {
 
   ## TODO: manage these IP sets in Terraform somewhere
   gsa_ip_range_ip_set_arn                     = var.gsa_ip_range_ip_set_arn
+  gsa_ipv6_range_ip_set_arn                   = var.gsa_ipv6_range_ip_set_arn
   api_data_gov_hosts_regex_pattern_arn        = var.api_data_gov_hosts_regex_pattern_arn
   customer_whitelist_ip_ranges_set_arn        = var.customer_whitelist_ip_ranges_set_arn
   customer_whitelist_source_ip_ranges_set_arn = var.customer_whitelist_source_ip_ranges_set_arn
@@ -308,14 +318,17 @@ module "cf" {
 module "autoscaler" {
   source = "../../modules/autoscaler"
 
-  stack_description               = var.stack_description
-  rds_password                    = random_string.autoscaler_rds_password.result
-  rds_subnet_group                = module.stack.rds_subnet_group
-  rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_instance_type               = var.cf_as_rds_instance_type
-
+  stack_description                       = var.stack_description
+  rds_password                            = random_string.autoscaler_rds_password.result
+  rds_subnet_group                        = module.stack.rds_subnet_group
+  rds_security_groups                     = [module.stack.rds_postgres_security_group]
+  rds_allow_major_version_upgrade         = var.rds_allow_major_version_upgrade
+  rds_apply_immediately                   = var.rds_apply_immediately
+  rds_instance_type                       = var.cf_as_rds_instance_type
+  rds_db_engine_version                   = var.rds_db_engine_version_autoscaler
+  rds_parameter_group_family              = var.rds_parameter_group_family_autoscaler
+  rds_shared_preload_libraries_autoscaler = var.rds_shared_preload_libraries_autoscaler
+  rds_pgaudit_log_values_autoscaler       = var.rds_pgaudit_log_values_autoscaler
 }
 
 resource "random_string" "autoscaler_rds_password" {
@@ -383,8 +396,6 @@ module "elasticache_broker_network" {
   az2_route_table            = module.stack.private_route_table_az2
   vpc_id                     = module.stack.vpc_id
   security_groups            = [module.stack.bosh_security_group]
-  elb_subnets                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  elb_security_groups        = [module.stack.bosh_security_group]
   log_bucket_name            = module.log_bucket.elb_bucket_name
 }
 
@@ -408,8 +419,13 @@ module "external_domain_broker_govcloud" {
 
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
-  aws_region        = data.aws_region.current.name
+  aws_region        = data.aws_region.current.region
   aws_partition     = data.aws_partition.current.partition
+  waf_log_group_arn = module.cf.waf_log_group_arn
+  environment_nat_egress_ips = [
+    module.stack.nat_egress_ip_az1,
+    module.stack.nat_egress_ip_az2,
+  ]
 }
 
 module "dns_logging" {
@@ -440,15 +456,14 @@ module "sns" {
 }
 
 module "csb_iam" {
-  source = "../../modules/csb/iam"
+  source = "../../modules/csb/iam/govcloud"
 
   stack_description = var.stack_description
-}
 
-module "csb_concourse_iam" {
-  source = "../../modules/csb/concourse_iam"
+  ecr_remote_state_bucket = var.remote_state_bucket
+  ecr_remote_state_region = var.aws_default_region
+  ecr_stack_name          = var.ecr_stack_name
 
-  stack_description                   = var.stack_description
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
@@ -462,24 +477,15 @@ resource "random_password" "csb_rds_password" {
 }
 
 module "csb_broker" {
-  count = var.stack_description == "development" ? 1 : 0
+  source            = "../../modules/csb/broker"
+  stack_description = var.stack_description
 
-  source              = "../../modules/csb/broker"
-  remote_state_bucket = var.remote_state_bucket
-  remote_state_region = var.aws_default_region
-
-  rds_password        = random_password.csb_rds_password.result
-  rds_subnet_group    = module.stack.rds_subnet_group
-  rds_security_groups = [module.stack.rds_mysql_security_group]
-
+  rds_password                    = random_password.csb_rds_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_mysql_security_group]
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   rds_apply_immediately           = var.rds_apply_immediately
   rds_instance_type               = var.csb_rds_instance_type
-
-  stack_description = var.stack_description
-  ecr_stack_name    = var.ecr_stack_name
-
-  sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
 module "opensearch_proxy_redis_cluster" {
@@ -488,4 +494,26 @@ module "opensearch_proxy_redis_cluster" {
   cluster_name       = "${var.stack_description}-opensearch-proxy"
   subnet_group_name  = module.elasticache_broker_network.elasticache_subnet_group
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
+}
+// Create temporary mysql_stig_db for testing/hardening
+resource "random_password" "mysql_stig_password" {
+  length      = 32
+  special     = false
+  min_special = 2
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
+module "mysql_stig" {
+  count             = var.stack_description == "development" ? 1 : 0
+  source            = "../../modules/mysql_stig/db"
+  stack_description = var.stack_description
+
+  rds_password                    = random_password.mysql_stig_password.result
+  rds_subnet_group                = module.stack.rds_subnet_group
+  rds_security_groups             = [module.stack.rds_mysql_security_group]
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  rds_apply_immediately           = var.rds_apply_immediately
+  rds_instance_type               = var.rds_instance_type
 }

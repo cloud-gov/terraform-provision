@@ -1,8 +1,22 @@
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
+data "aws_iam_policy_document" "cloudwatch_policy" {
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogStreams",
+      "cloudwatch:ListMetrics",
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.cloudwatch_policy.json
 }

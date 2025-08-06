@@ -45,12 +45,35 @@ variable "rds_parameter_group_family_bosh" {
   default = "postgres15"
 }
 
+variable "rds_shared_preload_libraries_bosh" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_credhub_staging" {
   default = "15.5"
 }
 
 variable "rds_parameter_group_family_credhub_staging" {
   default = "postgres15"
+}
+variable "rds_shared_preload_libraries_credhub_staging" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_credhub_staging" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }
 
 variable "rds_db_engine_version_credhub_production" {
@@ -61,12 +84,36 @@ variable "rds_parameter_group_family_credhub_production" {
   default = "postgres15"
 }
 
+variable "rds_shared_preload_libraries_credhub_production" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_credhub_production" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_concourse_staging" {
   default = "15.5"
 }
 
 variable "rds_parameter_group_family_concourse_staging" {
   default = "postgres15"
+}
+
+variable "rds_shared_preload_libraries_concourse_staging" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_concourse_staging" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }
 
 variable "rds_db_engine_version_concourse_production" {
@@ -77,12 +124,36 @@ variable "rds_parameter_group_family_concourse_production" {
   default = "postgres15"
 }
 
+variable "rds_shared_preload_libraries_concourse_production" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_concourse_production" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "rds_db_engine_version_opsuaa" {
   default = "16.1"
 }
 
 variable "rds_parameter_group_family_opsuaa" {
   default = "postgres16"
+}
+
+variable "rds_shared_preload_libraries_opsuaa" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_opsuaa" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }
 
 variable "remote_state_bucket" {
@@ -111,8 +182,15 @@ variable "credhub_staging_rds_password" {
   sensitive = true
 }
 
+variable "defectdojo_development_rds_password" {
+  sensitive = true
+}
 
 variable "defectdojo_staging_rds_password" {
+  sensitive = true
+}
+
+variable "defectdojo_production_rds_password" {
   sensitive = true
 }
 
@@ -121,6 +199,10 @@ variable "wildcard_production_certificate_name_prefix" {
 }
 
 variable "wildcard_staging_certificate_name_prefix" {
+  default = ""
+}
+
+variable "wildcard_development_certificate_name_prefix" {
   default = ""
 }
 
@@ -140,7 +222,15 @@ variable "credhub_staging_hosts" {
   type = list(string)
 }
 
+variable "defectdojo_development_hosts" {
+  type = list(string)
+}
+
 variable "defectdojo_staging_hosts" {
+  type = list(string)
+}
+
+variable "defectdojo_production_hosts" {
   type = list(string)
 }
 
@@ -272,15 +362,79 @@ variable "rds_parameter_group_family_bosh_credhub" {
   default = "postgres15"
 }
 
+variable "rds_shared_preload_libraries_bosh_credhub" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh_credhub" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 variable "aws_lb_listener_ssl_policy" {
   type    = string
   default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }
 
-variable "rds_db_engine_version_defectdojo" {
+variable "rds_db_engine_version_defectdojo_development" {
   default = "16.3"
 }
 
-variable "rds_parameter_group_family_defectdojo" {
+variable "rds_parameter_group_family_defectdojo_development" {
   default = "postgres16"
+}
+
+variable "rds_shared_preload_libraries_defectdojo_development" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_development" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
+variable "rds_db_engine_version_defectdojo_staging" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_staging" {
+  default = "postgres16"
+}
+
+variable "rds_shared_preload_libraries_defectdojo_staging" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_staging" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
+variable "rds_db_engine_version_defectdojo_production" {
+  default = "16.3"
+}
+
+variable "rds_parameter_group_family_defectdojo_production" {
+  default = "postgres16"
+}
+
+variable "rds_shared_preload_libraries_defectdojo_production" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_defectdojo_production" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

@@ -77,18 +77,6 @@ module "ecr_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
-module "self_managed_credentials" {
-  source        = "../../modules/iam_role_policy/self_managed_credentials"
-  policy_name   = "self-managed-credentials"
-  aws_partition = data.aws_partition.current.partition
-}
-
-module "compliance_role" {
-  source        = "../../modules/iam_role_policy/compliance_role"
-  policy_name   = "compliance-role"
-  aws_partition = data.aws_partition.current.partition
-}
-
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"

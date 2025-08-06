@@ -113,16 +113,27 @@ resource "aws_route53_record" "test_record_3" {
   ]
 }
 
-data "template_file" "policy" {
-  template = file("${path.module}/policy.json")
+data "aws_iam_policy_document" "external_domain_broker_tests_policy" {
+  statement {
+    actions = [
+      "route53:GetChange"
+    ]
 
-  vars = {
-    aws_partition = var.aws_partition
-    hosted_zone_0 = aws_route53_zone.zone.zone_id
-    hosted_zone_1 = aws_route53_zone.stack_test_0.zone_id
-    hosted_zone_2 = aws_route53_zone.stack_test_1.zone_id
-    hosted_zone_3 = aws_route53_zone.stack_test_2.zone_id
-    hosted_zone_4 = aws_route53_zone.stack_test_3.zone_id
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "route53:ChangeResourceRecordSets"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.zone.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_0.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_1.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_2.zone_id}",
+      "arn:${var.aws_partition}:route53:::hostedzone/${aws_route53_zone.stack_test_3.zone_id}"
+    ]
   }
 }
 
@@ -137,5 +148,5 @@ resource "aws_iam_access_key" "iam_access_key_v1" {
 resource "aws_iam_user_policy" "iam_policy" {
   name   = "${aws_iam_user.iam_user.name}-policy"
   user   = aws_iam_user.iam_user.name
-  policy = data.template_file.policy.rendered
+  policy = data.aws_iam_policy_document.external_domain_broker_tests_policy.json
 }

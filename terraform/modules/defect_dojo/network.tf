@@ -14,7 +14,7 @@ resource "aws_subnet" "defectdojo_az2" {
   availability_zone = var.defectdojo_az2
 
   tags = {
-    Name = "${var.stack_description} (Credhub - ${var.defectdojo_cidr_az2})"
+    Name = "${var.stack_description} (Defect Dojo - ${var.defectdojo_cidr_az2})"
   }
 }
 

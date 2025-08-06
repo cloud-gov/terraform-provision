@@ -42,7 +42,7 @@ module "external_domain_broker" {
   account_id        = data.aws_caller_identity.current.account_id
   stack_description = var.stack_description
   aws_partition     = data.aws_partition.current.partition
-  aws_region        = data.aws_region.current.name
+  aws_region        = data.aws_region.current.region
 
   waf_rate_limit_challenge_threshold = var.external_domain_waf_rate_limit_challenge_threshold
   waf_rate_limit_count_threshold     = var.external_domain_waf_rate_limit_count_threshold
@@ -72,13 +72,15 @@ module "cdn_broker" {
 }
 
 module "limit_check_user" {
+  count    = var.stack_description == "production" ? 1 : 0
   source   = "../../modules/iam_user/limit_check_user"
   username = "limit-check-${var.stack_description}"
 }
 
 module "health_check_user" {
+  count    = var.stack_description == "staging" ? 1 : 0
   source   = "../../modules/iam_user/health_check"
-  username = "health-check-${var.stack_description}"
+  username = "health-check-${var.health_check_env}"
 }
 
 module "lets_encrypt_user" {
@@ -89,7 +91,7 @@ module "lets_encrypt_user" {
 }
 
 module "csb_iam" {
-  source = "../../modules/csb/iam"
+  source = "../../modules/csb/iam/commercial"
 
   stack_description = var.stack_description
 }

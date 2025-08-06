@@ -47,3 +47,16 @@ variable "rds_apply_immediately" {
 variable "rds_allow_major_version_upgrade" {
   default = "false"
 }
+
+variable "rds_shared_preload_libraries_autoscaler" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_autoscaler" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+

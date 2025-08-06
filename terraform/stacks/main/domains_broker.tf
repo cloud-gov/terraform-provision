@@ -97,7 +97,6 @@ module "dedicated_loadbalancer_group" {
   subnets                              = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
   security_groups                      = [module.stack.web_traffic_security_group]
   elb_bucket_name                      = module.log_bucket.elb_bucket_name
-  waf_arn                              = module.cf.cf_uaa_waf_core_arn
   logstash_hosts                       = var.logstash_hosts
   vpc_id                               = module.stack.vpc_id
   domains_lbgroup_count                = var.domains_lbgroup_count
@@ -464,7 +463,7 @@ resource "aws_iam_user" "legacy_domain_certificate_renewer" {
   name = "legacy_domain_certificate_renewer_${var.stack_description}"
 }
 
-resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v1" {
+resource "aws_iam_access_key" "legacy_domain_certificate_renewer_key_v2" {
   user = aws_iam_user.legacy_domain_certificate_renewer.name
 }
 
@@ -488,15 +487,16 @@ output "legacy_domain_certificate_renwer_access_key_id_prev" {
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_prev" {
-  value = ""
+  value     = ""
+  sensitive = true
 }
 
 output "legacy_domain_certificate_renewer_access_key_id_curr" {
-  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.id
+  value = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.id
 }
 
 output "legacy_domain_certificate_renewer_secret_access_key_curr" {
-  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v1.secret
+  value     = aws_iam_access_key.legacy_domain_certificate_renewer_key_v2.secret
   sensitive = true
 }
 

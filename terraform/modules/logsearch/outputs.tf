@@ -1,11 +1,4 @@
 /* Logsearch ELB */
-output "logsearch_elb_name" {
-  value = aws_elb.logsearch_elb.name
-}
-
-output "logsearch_elb_dns_name" {
-  value = aws_elb.logsearch_elb.dns_name
-}
 
 output "platform_syslog_elb_name" {
   value = aws_elb.platform_syslog_elb.name
@@ -28,11 +21,12 @@ output "platform_logs_bucket_secret_access_key_prev" {
 }
 
 output "platform_logs_bucket_access_key_id_curr" {
-  value = aws_iam_access_key.iam_access_key_v1.id
+  value = aws_iam_access_key.iam_access_key_v2.id
 }
 
 output "platform_logs_bucket_secret_access_key_curr" {
-  value = aws_iam_access_key.iam_access_key_v1.secret
+  value     = aws_iam_access_key.iam_access_key_v2.secret
+  sensitive = true
 }
 
 output "platform_logs_bucket_name" {

@@ -133,6 +133,18 @@ variable "rds_multi_az" {
   default = "true"
 }
 
+variable "rds_shared_preload_libraries_bosh" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
+}
+
 /*
  * CredHub database variables
  */
@@ -172,10 +184,6 @@ variable "rds_parameter_group_name" {
   default = ""
 }
 
-variable "credhub_rds_force_ssl" {
-  default = 1
-}
-
 variable "bosh_default_ssh_public_key" {
 
 }
@@ -189,4 +197,16 @@ variable "s3_gateway_policy_accounts" {
 variable "cidr_blocks" {
   type    = list(string)
   default = []
+}
+
+variable "rds_shared_preload_libraries_bosh_credhub" {
+  description = "List of shared_preload_libraries to load"
+  type        = string
+  default     = "pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values_bosh_credhub" {
+  description = "List of statements that should be included in pgaudit logs"
+  type        = string
+  default     = "none"
 }

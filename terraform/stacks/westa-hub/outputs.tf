@@ -929,18 +929,17 @@ output "staging_doomsday_lb_target_group" {
   value = module.monitoring_staging.doomsday_lb_target_group
 }
 
-
 /* rds storage user */
 output "rds_storage_alert_username" {
   value = module.rds_storage_alert.username
 }
 
 output "rds_storage_alert_access_key_id" {
-  value = module.rds_storage_alert.access_key_id
+  value = module.rds_storage_alert.access_key_id_curr
 }
 
 output "rds_storage_alert_secret_access_key" {
-  value     = module.rds_storage_alert.secret_access_key
+  value     = module.rds_storage_alert.secret_access_key_curr
   sensitive = true
 }
 
