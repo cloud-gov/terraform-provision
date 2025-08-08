@@ -5,7 +5,6 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
   comparison_operator       = "GreaterThanThreshold"
   evaluation_periods        = 5
   datapoints_to_alarm       = 3
-  threshold                 = 1 # true if both conditions are met
   threshold_metric_id       = "check"
   alarm_description         = "Alerts when the targets return high 4XX responses, above normal levels and over 100"
   insufficient_data_actions = []
