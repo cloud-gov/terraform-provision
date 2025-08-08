@@ -2,7 +2,7 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
   count = var.domains_lbgroup_count
 
   alarm_name                = "${aws_lb.domains_lbgroup[count.index].arn_suffix} - Load Balancer High 4XX Response Rate"
-  comparison_operator       = "GreaterThanThreshold"
+  comparison_operator       = "GreaterThanUpperThreshold"
   evaluation_periods        = 5
   datapoints_to_alarm       = 3
   threshold_metric_id       = "check"
