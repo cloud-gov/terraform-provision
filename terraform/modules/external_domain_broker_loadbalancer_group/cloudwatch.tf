@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
-  count = var.stack_description == "production" ? var.domains_lbgroup_count : 0
+  count = var.domains_lbgroup_count
 
   alarm_name                = "${aws_lb.domains_lbgroup[count.index].arn_suffix} - Load Balancer High 4XX Response Rate"
   comparison_operator       = "GreaterThanUpperThreshold"
