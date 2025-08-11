@@ -1,7 +1,7 @@
 // Use the RDS module instead of brokering a database inside Cloud Foundry.
 // Eventually the CSB itself will broker RDS, so this avoids a circular dependency.
 module "db" {
-  source = "../../rds"
+  source = "../../rds_stig"
 
   stack_description               = var.stack_description
   rds_instance_type               = var.rds_instance_type

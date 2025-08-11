@@ -4,10 +4,8 @@ variable "stack_description" {
 }
 
 # RDS variables
-
 variable "rds_instance_type" {
-  type    = string
-  default = "db.t3.small"
+  type = string
 }
 
 variable "rds_db_size" {
@@ -52,8 +50,9 @@ variable "rds_security_groups" {
   type = list(string)
 }
 
+# FIXME: Reset to false once we're done iterating
 variable "rds_apply_immediately" {
-  default = "false"
+  default = "true"
 }
 
 variable "rds_allow_major_version_upgrade" {

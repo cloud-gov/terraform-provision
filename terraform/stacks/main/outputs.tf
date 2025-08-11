@@ -217,9 +217,7 @@ output "cf_logstash_target_group" {
     [module.cf.logstash_lb_target_https_group],
     [module.cf.logstash_gr_lb_target_https_group],
     module.dedicated_loadbalancer_group.domains_lbgroup_target_group_logstash_https_names,
-    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names,
-    aws_lb_target_group.domains_broker_logstash_https.*.name,
-    aws_lb_target_group.domains_broker_gr_logstash_https.*.name,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names
   ))
 }
 
@@ -324,14 +322,6 @@ output "elasticache_subnet_group" {
 
 output "elasticache_redis_security_group" {
   value = module.elasticache_broker_network.elasticache_redis_security_group
-}
-
-output "elasticache_broker_elb_name" {
-  value = module.elasticache_broker_network.elasticache_elb_name
-}
-
-output "elasticache_broker_elb_dns_name" {
-  value = module.elasticache_broker_network.elasticache_elb_dns_name
 }
 
 /* Elasticsearch Network */
@@ -507,13 +497,6 @@ output "diego_elb_dns_name" {
 }
 
 /* Logsearch network */
-output "logsearch_elb_name" {
-  value = module.logsearch.logsearch_elb_name
-}
-
-output "logsearch_elb_dns_name" {
-  value = module.logsearch.logsearch_elb_dns_name
-}
 
 output "platform_syslog_elb_name" {
   value = module.logsearch.platform_syslog_elb_name
@@ -797,6 +780,17 @@ output "csb" {
   }
 }
 
+output "csb_rds_host" {
+  value = module.csb_broker.rds_host
+}
+output "csb_rds_password" {
+  value     = module.csb_broker.rds_password
+  sensitive = true
+}
+output "csb_rds_username" {
+  value = module.csb_broker.rds_username
+}
+
 output "opensearch_proxy_redis_cluster" {
   value = {
     host     = module.opensearch_proxy_redis_cluster.primary_endpoint
@@ -804,8 +798,6 @@ output "opensearch_proxy_redis_cluster" {
   }
   sensitive = true
 }
-
-
 
 output "mysql_stig" {
   description = "Values required for MySQL DB used for STIG hardening"
@@ -820,4 +812,15 @@ output "mysql_stig" {
       password = one(module.mysql_stig[*].rds_password)
     }
   }
+}
+
+output "mysql_stig_rds_host" {
+  value = one(module.mysql_stig[*].rds_host)
+}
+output "mysql_stig_rds_password" {
+  value     = one(module.mysql_stig[*].rds_password)
+  sensitive = true
+}
+output "mysql_stig_rds_username" {
+  value = one(module.mysql_stig[*].rds_username)
 }

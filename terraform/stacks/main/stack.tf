@@ -396,8 +396,6 @@ module "elasticache_broker_network" {
   az2_route_table            = module.stack.private_route_table_az2
   vpc_id                     = module.stack.vpc_id
   security_groups            = [module.stack.bosh_security_group]
-  elb_subnets                = [module.cf.services_subnet_az1, module.cf.services_subnet_az2]
-  elb_security_groups        = [module.stack.bosh_security_group]
   log_bucket_name            = module.log_bucket.elb_bucket_name
 }
 
