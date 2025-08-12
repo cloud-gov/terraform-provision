@@ -217,9 +217,7 @@ output "cf_logstash_target_group" {
     [module.cf.logstash_lb_target_https_group],
     [module.cf.logstash_gr_lb_target_https_group],
     module.dedicated_loadbalancer_group.domains_lbgroup_target_group_logstash_https_names,
-    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names,
-    aws_lb_target_group.domains_broker_logstash_https.*.name,
-    aws_lb_target_group.domains_broker_gr_logstash_https.*.name,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names
   ))
 }
 

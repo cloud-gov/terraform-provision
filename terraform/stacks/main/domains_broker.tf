@@ -104,6 +104,7 @@ module "dedicated_loadbalancer_group" {
   loadbalancer_forward_original_weight = var.loadbalancer_forward_original_weight
   loadbalancer_forward_new_weight      = var.loadbalancer_forward_new_weight
   aws_lb_listener_ssl_policy           = var.aws_lb_listener_ssl_policy
+  notifications_arn                    = module.sns.cg_platform_slack_notifications_arn
 }
 
 /* old domains broker alb */
@@ -205,34 +206,6 @@ resource "aws_lb_listener_rule" "static_https" {
   }
 }
 
-## MAX 10 HOSTS
-resource "aws_lb_listener_rule" "domains_broker_logstash_listener_rule" {
-  count = var.domains_broker_alb_count
-
-  listener_arn = aws_lb_listener.domains_broker_https[count.index].arn
-
-  action {
-    type = "forward"
-
-    forward {
-      target_group {
-        arn    = aws_lb_target_group.domains_broker_logstash_https[count.index].arn
-        weight = var.loadbalancer_forward_original_weight
-      }
-      target_group {
-        arn    = aws_lb_target_group.domains_broker_gr_logstash_https[count.index].arn
-        weight = var.loadbalancer_forward_new_weight
-      }
-    }
-  }
-
-  condition {
-    host_header {
-      values = var.logstash_hosts
-    }
-  }
-}
-
 resource "aws_lb_target_group" "domains_broker_apps_https" {
   count = var.domains_broker_alb_count
 
@@ -251,48 +224,10 @@ resource "aws_lb_target_group" "domains_broker_apps_https" {
   }
 }
 
-resource "aws_lb_target_group" "domains_broker_logstash_https" {
-  count = var.domains_broker_alb_count
-
-  name     = "${var.stack_description}-domains-logstash-${count.index}"
-  port     = 443
-  protocol = "HTTPS"
-  vpc_id   = module.stack.vpc_id
-
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-    timeout             = 4
-    interval            = 5
-    port                = 81
-    matcher             = 200
-  }
-}
-
 resource "aws_lb_target_group" "domains_broker_gr_apps_https" {
   count = var.domains_broker_alb_count
 
   name     = "${var.stack_description}-domains-gapps-https${count.index}"
-  port     = 10443
-  protocol = "HTTPS"
-  vpc_id   = module.stack.vpc_id
-
-  health_check {
-    healthy_threshold   = 2
-    interval            = 5
-    port                = 8443
-    timeout             = 4
-    unhealthy_threshold = 3
-    matcher             = 200
-    protocol            = "HTTPS"
-    path                = "/health"
-  }
-}
-
-resource "aws_lb_target_group" "domains_broker_gr_logstash_https" {
-  count = var.domains_broker_alb_count
-
-  name     = "${var.stack_description}-domains-glogstash-${count.index}"
   port     = 10443
   protocol = "HTTPS"
   vpc_id   = module.stack.vpc_id
