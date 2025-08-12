@@ -47,6 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_minimum_threshold" {
   period              = 60
   metric_name         = "HTTPCode_Target_4XX_Count"
   namespace           = "AWS/ApplicationELB"
+  statistic           = "Maximum"
 
   dimensions = {
     LoadBalancer = aws_lb.domains_lbgroup[count.index].arn_suffix
