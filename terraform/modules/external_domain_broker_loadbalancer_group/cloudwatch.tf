@@ -62,8 +62,5 @@ resource "aws_cloudwatch_composite_alarm" "lb_4xx_composite_alarm" {
 
   alarm_actions = [var.notifications_arn]
 
-  alarm_rule = <<EOF
-ALARM(${aws_cloudwatch_metric_alarm.lb_4XX_anomaly_detection[count.index].alarm_name}) OR
-ALARM(${aws_cloudwatch_metric_alarm.lb_4XX_minimum_threshold[count.index].alarm_name})
-EOF
+  alarm_rule = "ALARM(${aws_cloudwatch_metric_alarm.lb_4XX_anomaly_detection[count.index].alarm_name}) AND ALARM(${aws_cloudwatch_metric_alarm.lb_4XX_minimum_threshold[count.index].alarm_name})"
 }
