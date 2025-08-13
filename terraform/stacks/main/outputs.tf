@@ -217,9 +217,7 @@ output "cf_logstash_target_group" {
     [module.cf.logstash_lb_target_https_group],
     [module.cf.logstash_gr_lb_target_https_group],
     module.dedicated_loadbalancer_group.domains_lbgroup_target_group_logstash_https_names,
-    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names,
-    aws_lb_target_group.domains_broker_logstash_https.*.name,
-    aws_lb_target_group.domains_broker_gr_logstash_https.*.name,
+    module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_logstash_https_names
   ))
 }
 
@@ -799,30 +797,4 @@ output "opensearch_proxy_redis_cluster" {
     password = module.opensearch_proxy_redis_cluster.password
   }
   sensitive = true
-}
-
-output "mysql_stig" {
-  description = "Values required for MySQL DB used for STIG hardening"
-  sensitive   = true
-  value = {
-    rds = {
-      host     = one(module.mysql_stig[*].rds_host)
-      port     = one(module.mysql_stig[*].rds_port)
-      url      = one(module.mysql_stig[*].rds_url)
-      name     = one(module.mysql_stig[*].rds_name)
-      username = one(module.mysql_stig[*].rds_username)
-      password = one(module.mysql_stig[*].rds_password)
-    }
-  }
-}
-
-output "mysql_stig_rds_host" {
-  value = one(module.mysql_stig[*].rds_host)
-}
-output "mysql_stig_rds_password" {
-  value     = one(module.mysql_stig[*].rds_password)
-  sensitive = true
-}
-output "mysql_stig_rds_username" {
-  value = one(module.mysql_stig[*].rds_username)
 }
