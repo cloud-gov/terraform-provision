@@ -12,6 +12,6 @@ resource "aws_iam_access_key" "iam_access_key_v1" {
   user = aws_iam_user.terraform_provision.name
 }
 
-resource "aws_iam_access_key" "iam_access_key_v2" {
+resource "aws_iam_access_key" "iam_access_key_curr" {
   user = aws_iam_user.terraform_provision.name
 }
