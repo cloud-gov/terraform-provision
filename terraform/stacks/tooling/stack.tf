@@ -397,3 +397,11 @@ module "smtp" {
   vpc_id              = module.stack.vpc_id
   ingress_cidr_blocks = var.smtp_ingress_cidr_blocks
 }
+
+module "dns_logging" {
+  source = "../../modules/dns_logging"
+
+  stack_description = var.stack_description
+  vpc_id            = module.stack.vpc_id
+  aws_partition     = data.aws_partition.current.partition
+}
