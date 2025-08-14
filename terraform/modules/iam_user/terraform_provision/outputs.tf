@@ -7,9 +7,9 @@ output "terraform_provision_access_id_prev" {
 }
 
 output "terraform_provision_access_secret_curr" {
-  value = aws_iam_access_key.iam_access_key_curr.secret
+  value = aws_iam_access_key.iam_access_key_v2.secret
 }
 
 output "terraform_provision_access_id_curr" {
-  value = aws_iam_access_key.iam_access_key_curr.id
+  value = aws_iam_access_key.iam_access_key_v2.id
 }
