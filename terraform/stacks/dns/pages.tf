@@ -283,4 +283,20 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev_clo
   records = ["_acme-challenge.test-site.pages-dev.cloud.gov.external-domains-production.cloud.gov."]
 }
 
+resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "test-wiab.pages-dev.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["test-wiab.pages-dev.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.test-wiab.pages-dev.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.test-wiab.pages-dev.cloud.gov.external-domains-production.cloud.gov."]
+}
+
 ## End Development ##
