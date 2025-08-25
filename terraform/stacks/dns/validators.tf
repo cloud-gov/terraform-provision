@@ -29,15 +29,23 @@ resource "aws_route53_record" "cloud_gov_zendesk_support_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "support.cloud.gov."
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 300
   records = ["cloud-gov-new.zendesk.com."]
+}
+
+resource "aws_route53_record" "cloud_gov_inquiries_zendesk_support_cname" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "inquiries.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["cloud-gov-inquiries.zendesk.com."]
 }
 
 resource "aws_route53_record" "cloud_gov_pages_zendesk_support_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "pages-support.cloud.gov."
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 300
   records = ["cloud-gov-pages.zendesk.com."]
 }
 
@@ -45,7 +53,7 @@ resource "aws_route53_record" "cloud_gov_workshop_zendesk_support_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "workshop-support.cloud.gov."
   type    = "CNAME"
-  ttl     = 60
+  ttl     = 300
   records = ["cloud-gov-workshop.zendesk.com."]
 }
 
