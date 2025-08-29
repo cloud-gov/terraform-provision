@@ -1,0 +1,22 @@
+locals {
+  common_tags = merge(
+    var.tags,
+    {
+      Module = "metric_processing_lambda"
+    }
+  )
+}
+
+resource "aws_cloudwatch_metric_stream" "main" {
+  for_each = toset(var.environments)
+
+  name          = "${var.name_prefix}-${each.key}-stream"
+  role_arn      = aws_iam_role.metric_stream_role[each.key].arn
+  firehose_arn  = aws_kinesis_firehose_delivery_stream.metric_stream[each.key].arn
+  output_format = "json"
+
+
+  tags = merge(local.common_tags, {
+    Environment = each.key
+  })
+}
