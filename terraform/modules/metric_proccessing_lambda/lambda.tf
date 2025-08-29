@@ -7,6 +7,7 @@ resource "aws_lambda_function" "transform" {
   handler          = "lambda_function.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip[each.key].output_base64sha256
   runtime          = "python3.13"
+  architectures    = ["arm64"]
 
   timeout = 10
 
