@@ -15,7 +15,10 @@ resource "aws_cloudwatch_metric_stream" "main" {
   firehose_arn  = aws_kinesis_firehose_delivery_stream.metric_stream[each.key].arn
   output_format = "json"
 
-
+  include_filter {
+    namespace    = "AWS/S3"
+    metric_names = ["BucketSizeBytes"]
+  }
   tags = merge(local.common_tags, {
     Environment = each.key
   })
