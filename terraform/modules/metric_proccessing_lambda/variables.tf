@@ -7,7 +7,7 @@ variable "name_prefix" {
 variable "environments" {
   description = "list of environments to create"
   type        = list(string)
-  default     = ["development", "staging", "production"]
+  default     = []
 }
 
 variable "tags" {

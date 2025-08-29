@@ -249,7 +249,8 @@ module "stack" {
 }
 
 module "opensearch_firehose" {
-  source = "../../modules/metric_processing_lambda"
+  source       = "../../modules/metric_processing_lambda"
+  environments = var.stack_description
 }
 
 module "cf" {
