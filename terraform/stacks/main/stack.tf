@@ -248,6 +248,10 @@ module "stack" {
 
 }
 
+module "opensearch_firehose" {
+  source = "../../modules/metric_processing_lambda"
+}
+
 module "cf" {
   source = "../../modules/cloudfoundry"
 
