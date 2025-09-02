@@ -120,14 +120,14 @@ resource "aws_iam_role_policy" "metric_stream_policy" {
   role = aws_iam_role.metric_stream_role[each.key].id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "firehose:PutRecord",
           "firehose:PutRecordBatch"
-        ]
+        ],
         resource = [
           aws_kinesis_firehose_delivery_stream.metric_stream[each.key].arn
         ]
