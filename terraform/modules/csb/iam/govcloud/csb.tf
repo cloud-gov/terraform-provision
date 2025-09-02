@@ -1,11 +1,32 @@
 // See also the companion user in Commercial (../commercial/csb.tf)
 // Originally from https://github.com/GSA-TTS/datagov-brokerpak-smtp/blob/main/permission-policies.tf
 
+// Values required for policy attachment
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
+locals {
+  this_aws_account_id = data.aws_caller_identity.current.account_id
+  // Attribute aws_iam_policy.brokerpak_aws_ses.arn is not determined until apply, so it cannot be
+  // referenced in for_each below. Build the ARN here instead.
+  brokerpak_aws_ses_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_aws_ses.name}"
+}
 
 data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
   statement {
     effect    = "Allow"
     actions   = ["ses:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "iam:CreatePolicy",
+      "iam:DeletePolicy",
+      "iam:GetPolicy",
+      "iam:List*",
+    ]
     resources = ["*"]
   }
 
@@ -20,20 +41,11 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:GetUserPolicy",
       "iam:PutUserPolicy",
       "iam:DeleteUserPolicy",
-      "iam:CreatePolicy",
-      "iam:DeletePolicy",
-      "iam:GetPolicy",
       "iam:AttachUserPolicy",
       "iam:DetachUserPolicy",
-      "iam:List*",
       "iam:TagUser"
     ]
-    resources = ["*"]
-    condition {
-      test     = "StringLike"
-      variable = "aws:username"
-      values   = ["csb-aws-ses-*"]
-    }
+    resources = ["arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:user/cf/csb-aws-ses-*"]
   }
 
   statement {
@@ -79,16 +91,6 @@ resource "aws_iam_user" "csb" {
 
 resource "aws_iam_access_key" "csb" {
   user = aws_iam_user.csb.name
-}
-
-// Values required for policy attachment
-data "aws_caller_identity" "current" {}
-data "aws_partition" "current" {}
-locals {
-  this_aws_account_id = data.aws_caller_identity.current.account_id
-  // Attribute aws_iam_policy.brokerpak_aws_ses.arn is not determined until apply, so it cannot be
-  // referenced in for_each below. Build the ARN here instead.
-  brokerpak_aws_ses_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_aws_ses.name}"
 }
 
 resource "aws_iam_user_policy_attachment" "csb_policies" {
