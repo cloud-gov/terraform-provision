@@ -84,7 +84,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
         Action = [
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:*:*:*"
+        Resource = "arn:aws-us-gov:logs:*:*:*"
       }
     ]
   })
@@ -102,7 +102,7 @@ resource "aws_iam_role" "metric_stream_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "stream.metrics.cloudwatch.amazonaws.com"
+          Service = "streams.metrics.cloudwatch.amazonaws.com"
         }
       }
     ]

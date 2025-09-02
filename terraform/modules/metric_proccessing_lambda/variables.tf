@@ -1,7 +1,7 @@
 variable "name_prefix" {
   description = "prefix for naming of resources"
   type        = string
-  default     = "opensearch-metric_stream"
+  default     = "opensearch-metric-stream"
 }
 
 variable "environments" {
