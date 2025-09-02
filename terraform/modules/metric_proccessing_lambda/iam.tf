@@ -67,7 +67,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
         ]
         resource = [
           aws_s3_bucket.opensearch_metric_buckets[each.key].arn,
-          "${aws_s3_bucket.opensearch_metric_buckets[each.key]}/*"
+          "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}/*"
         ]
       },
       {
