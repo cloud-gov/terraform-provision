@@ -25,7 +25,7 @@ resource "aws_lambda_function" "transform" {
 resource "local_file" "lambda_source" {
   for_each = toset(var.environments)
   content  = <<EOF
-    import json
+import json
 import base64
 import boto3
 import logging
@@ -52,12 +52,37 @@ def lambda_handler(event, context):
                 for key in keys_to_remove:
                     metric.pop(key,None)
                 processed_metrics.append(process_metric(metric))
+            # Convert processed metrics back to the format expected by metric stream
             if processed_metrics:
-                print(processed_metrics)
-                return processed_metrics
+                # Join all processed metrics as newline-delimited JSON
+                output_data = '\n'.join([json.dumps(metric) for metric in processed_metrics])
+
+                # Compress the output data
+                compressed_output = gzip.compress(output_data.encode('utf-8'))
+
+                # Base64 encode for return
+                encoded_output = base64.b64encode(compressed_output).decode('utf-8')
+
+                # Create the output record in the format expected by Kinesis Data Firehose
+                output_record = {
+                    'recordId': record['recordId'],
+                    'result': 'Ok',
+                    'data': encoded_output
+                }
+            else:
+                # If no metrics to process, return empty but valid record
+                empty_data = base64.b64encode(b'').decode('utf-8')
+                output_record = {
+                    'recordId': record['recordId'],
+                    'result': 'Ok',
+                    'data': empty_data
+                }
+            output_records.append(output_record)
+            logger.info(f"Processed record {record['recordId']} with {len(processed_metrics
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
         raise
+    return {'records': output_records}
 
 def process_metric(metric):
     try:
