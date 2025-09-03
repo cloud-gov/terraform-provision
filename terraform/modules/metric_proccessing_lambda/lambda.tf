@@ -63,7 +63,9 @@ def lambda_handler(event, context):
                 metric = json.loads(line)
                 for key in keys_to_remove:
                     metric.pop(key,None)
-                processed_metrics.append(process_metric(metric))
+                metric_results = process_metric(metric)
+                if metric_results is not None:
+                    processed_metrics.append(metric_results)
             # Convert processed metrics back to the format expected by metric stream
             if processed_metrics:
                 # Join all processed metrics as newline-delimited JSON
