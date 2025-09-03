@@ -42,6 +42,16 @@ keys_to_remove = ["metric_stream_name","account_id","region"]
 EXPECTED_NAMESPACES = ["AWS/S3", "AWS/ES"]
 environment = os.environ.get('ENVIRONMENT', 'unknown')
 
+# Prefix setup zone
+s3_prefix = f"{environment}-cg-" if environment in ["development", "staging"] else "cg-"
+domain_prefix = "cg-broker-"
+if environment == "production":
+    domain_prefix = domain_prefix + "prd-"
+if environment == "staging":
+    domain_prefix = domain_prefix + "stg-"
+if environment == "development":
+    domain_prefix = domain_prefix + "dev-"
+
 def lambda_handler(event, context):
     output_records = []
     try:
@@ -115,12 +125,12 @@ def get_resource_arn_from_metric(metric):
         dimensions = metric.get("dimensions", {})
         if namespace == "AWS/S3":
             bucket_name = dimensions.get("BucketName")
-            if bucket_name:
+            if bucket_name.startswith(s3_prefix):
                 return f"arn:aws-us-gov:s3:::{bucket_name}"
         elif namespace == "AWS/ES":
             domain_name = dimensions.get("DomainName")
             client_id = dimensions.get("ClientId")
-            if domain_name and client_id:
+            if domain_name.startswith(domain_prefix) and client_id:
                 region = boto3.Session().region_name
                 return f"arn:aws-us-gov:es:{region}:{client_id}:domain/{domain_name}"
         return None
