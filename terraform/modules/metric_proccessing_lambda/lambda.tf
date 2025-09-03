@@ -81,14 +81,6 @@ def lambda_handler(event, context):
                     'result': 'Ok',
                     'data': encoded_output
                 }
-            else:
-                # If no metrics to process, return empty but valid record
-                empty_data = base64.b64encode(b'').decode('utf-8')
-                output_record = {
-                    'recordId': record['recordId'],
-                    'result': 'Ok',
-                    'data': empty_data
-                }
             output_records.append(output_record)
             logger.info(f"Processed record with {len(processed_metrics)} metrics")
     except Exception as e:
