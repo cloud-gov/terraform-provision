@@ -25,6 +25,6 @@ variable "firehose_buffer_size" {
 variable "firehose_buffer_interval" {
   description = "Firehouse buffer interval in seconds"
   type        = number
-  default     = 300
+  default     = 60
 }
 
