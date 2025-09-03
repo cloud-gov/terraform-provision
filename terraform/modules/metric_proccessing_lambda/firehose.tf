@@ -26,7 +26,7 @@ resource "aws_kinesis_firehose_delivery_stream" "metric_stream" {
     buffering_size      = var.firehose_buffer_size
     buffering_interval  = var.firehose_buffer_interval
     compression_format  = "GZIP"
-    prefix              = "year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
+    prefix              = "!{timestamp:yyyy}/!{timestamp:MM}/!{timestamp:dd}/!{timestamp:HH}/!{timestamp:mm}/"
     error_output_prefix = "errors/"
 
     processing_configuration {
