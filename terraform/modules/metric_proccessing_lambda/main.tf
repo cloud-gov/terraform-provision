@@ -20,10 +20,6 @@ resource "aws_cloudwatch_metric_stream" "main" {
     metric_names = ["BucketSizeBytes"]
   }
 
-  include_filter {
-    namespace    = "AWS/ES"
-    metric_names = ["CPUUtilization"]
-  }
   tags = merge(local.common_tags, {
     Environment = each.key
   })
