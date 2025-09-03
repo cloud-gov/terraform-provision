@@ -12,15 +12,6 @@ resource "aws_iam_role" "lambda_role" {
         Principal = {
           Service = "lambda.amazonaws.com"
         }
-      },
-      {
-        "Effect" : "Allow",
-        "Resource" : [
-          "*"
-        ],
-        "Action" : [
-          "tag:GetResources"
-        ]
       }
     ]
   })
@@ -36,6 +27,28 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 
   policy_arn = "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.lambda_role[each.key].name
+}
+
+resource "aws_iam_role_policy" "lambda_tag_policy" {
+  for_each = toset(var.environments)
+
+  name = "${var.name_prefix}-${each.key}-lambda-tag-policy"
+  role = aws_iam_role.lambda_role[each.key].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Resource" : [
+          "*"
+        ],
+        "Action" : [
+          "tag:GetResources"
+        ]
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role" "firehose_role" {
