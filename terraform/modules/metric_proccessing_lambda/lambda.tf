@@ -39,7 +39,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 keys_to_remove = ["metric_stream_name","account_id","region"]
 EXPECTED_NAMESPACES = ["AWS/S3", "AWS/ES"]
-environment = os.environ.get('ENVIRONMENT'. 'unknown')
+environment = os.environ.get('ENVIRONMENT', 'unknown')
 
 def lambda_handler(event, context):
     processed_metrics = []
