@@ -31,6 +31,7 @@ import boto3
 import logging
 import gzip
 import io
+import os
 
 s3 = boto3.client("s3")
 tagging_client = boto3.client("resourcegroupstaggingapi")
@@ -42,11 +43,12 @@ EXPECTED_NAMESPACES = ["AWS/S3", "AWS/ES"]
 environment = os.environ.get('ENVIRONMENT', 'unknown')
 
 def lambda_handler(event, context):
-    processed_metrics = []
+    output_records = []
     try:
         for record in event["records"]:
             pre_json_value = base64.b64decode(record['data'])
             logger.info(f"Processing")
+            processed_metrics = []
             for line in pre_json_value.strip().splitlines():
                 metric = json.loads(line)
                 for key in keys_to_remove:
@@ -78,7 +80,7 @@ def lambda_handler(event, context):
                     'data': empty_data
                 }
             output_records.append(output_record)
-            logger.info(f"Processed record {record['recordId']} with {len(processed_metrics
+            logger.info(f"Processed record with {len(processed_metrics)} metrics")
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
         raise
