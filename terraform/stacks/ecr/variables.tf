@@ -20,6 +20,7 @@ variable "repositories" {
     "cloudfoundry-cflinuxfs4", # current stack in CF
     "concourse-http-jq-resource",
     "concourse-task",
+    "concourse-rwlock-resource",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
     "cron-resource",
     "csb",
