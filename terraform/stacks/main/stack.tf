@@ -248,7 +248,7 @@ module "stack" {
 
 }
 
-module "opensearch_firehose" {
+module "opensearch_metrics_preprocessing" {
   source        = "../../modules/metrics_s3_ingestor"
   environments  = [var.stack_description]
   account_id    = data.aws_caller_identity.current.account_id

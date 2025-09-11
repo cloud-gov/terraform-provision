@@ -4,7 +4,7 @@ resource "aws_lambda_function" "transform" {
   filename         = data.archive_file.lambda_zip.output_path
   function_name    = "${var.name_prefix}-${each.key}-transform"
   role             = aws_iam_role.lambda_role[each.key].arn
-  handler          = "lambda_function.lambda_handler"
+  handler          = "transform_lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.13"
   architectures    = ["arm64"]
@@ -24,6 +24,6 @@ resource "aws_lambda_function" "transform" {
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "${path.module}/lambda.py"
-  output_path = "${path.module}/lambda_function.zip"
+  source_file = "${path.module}/transform_lambda.py"
+  output_path = "${path.module}/transform_lambda.zip"
 }
