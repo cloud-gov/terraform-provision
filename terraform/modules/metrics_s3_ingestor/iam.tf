@@ -25,7 +25,7 @@ resource "aws_iam_role" "lambda_role" {
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   for_each = toset(var.environments)
 
-  policy_arn = "arn:aws-us-gov:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = "arn:${var.aws_partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.lambda_role[each.key].name
 }
 
@@ -41,7 +41,10 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       {
         "Effect" : "Allow",
         "Resource" : [
-          "*"
+          "arn:${var.aws_partition}:s3:::cg-*",
+          "arn:${var.aws_partition}:s3:::development-cg-*",
+          "arn:${var.aws_partition}:s3:::staging-cg-*",
+          "arn:${var.aws_partition}:es:${var.aws_region}:${var.account_id}:domain/cg-broker-*"
         ],
         "Action" : [
           "tag:GetResources"
@@ -106,7 +109,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
         Action = [
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws-us-gov:logs:*:*:*"
+        Resource = ["arn:${var.aws_partition}logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${name_prefix}-*"]
       }
     ]
   })

@@ -249,8 +249,11 @@ module "stack" {
 }
 
 module "opensearch_firehose" {
-  source       = "../../modules/metric_proccessing_lambda"
-  environments = [var.stack_description]
+  source        = "../../modules/metrics_s3_ingestor"
+  environments  = [var.stack_description]
+  account_id    = data.aws_caller_identity.current.account_id
+  aws_region    = data.aws_region.current.region
+  aws_partition = data.aws_partition.current.partition
 }
 
 module "cf" {

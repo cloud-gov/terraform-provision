@@ -4,6 +4,19 @@ variable "name_prefix" {
   default     = "opensearch-metric-stream"
 }
 
+variable "account_id" {
+}
+
+variable "aws_partition" {
+  type        = string
+  description = "AWS partition where the resources are deployed"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "AWS region where the resources are deployed"
+}
+
 variable "environments" {
   description = "list of environments to create"
   type        = list(string)
