@@ -121,7 +121,7 @@ def get_tags_from_name(name, type):
 
 
 def get_tags_from_arn(arn):
-    if arn.startswith("arn:aws-us-gov:es:{region}:{client_id}:domain/"):
+    if ":domain/" in arn:
         try:
             response = es.list_tags(ARN=arn)
             return {tag["Key"]: tag["Value"] for tag in response.get("TagList", [])}
