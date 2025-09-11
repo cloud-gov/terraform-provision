@@ -38,7 +38,8 @@ tagging_client = boto3.client("resourcegroupstaggingapi")
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-keys_to_remove = ["metric_stream_name","account_id","region"]
+default_keys_to_remove = ["metric_stream_name","account_id","region"]
+nested_keys_to_remove = []
 EXPECTED_NAMESPACES = ["AWS/S3", "AWS/ES"]
 environment = os.environ.get('ENVIRONMENT', 'unknown')
 
@@ -61,29 +62,27 @@ def lambda_handler(event, context):
             processed_metrics = []
             for line in pre_json_value.strip().splitlines():
                 metric = json.loads(line)
-                for key in keys_to_remove:
+                for key in default_keys_to_remove:
                     metric.pop(key,None)
                 metric_results = process_metric(metric)
                 if metric_results is not None:
+                    metric_results["dimensions"].pop("ClientId", None)
                     processed_metrics.append(metric_results)
-            # Convert processed metrics back to the format expected by metric stream
+
             if processed_metrics:
-                # Join all processed metrics as newline-delimited JSON
-                output_data = '\n'.join([json.dumps(metric) for metric in processed_metrics])
+                # Create newline-delimited JSON (no compression)
+                output_data = '\n'.join([json.dumps(metric) for metric in processed_metrics]) + '\n'
 
-                # Compress the output data
-                compressed_output = gzip.compress(output_data.encode('utf-8'))
+                # Just base64 encode for Firehose transport (no gzip)
+                encoded_output = base64.b64encode(output_data.encode('utf-8')).decode('utf-8')
 
-                # Base64 encode for return
-                encoded_output = base64.b64encode(compressed_output).decode('utf-8')
-
-                # Create the output record in the format expected by Kinesis Data Firehose
                 output_record = {
                     'recordId': record['recordId'],
                     'result': 'Ok',
                     'data': encoded_output
                 }
-            output_records.append(output_record)
+                output_records.append(output_record)
+
             logger.info(f"Processed record with {len(processed_metrics)} metrics")
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
@@ -104,7 +103,7 @@ def process_metric(metric):
             tags = get_resource_tags(metrics_arn)
 
         if tags:
-            metric["tags"] = tags
+            metric["Tags"] = tags
             return metric
         else:
             return None

@@ -21,9 +21,21 @@ resource "aws_cloudwatch_metric_stream" "main" {
   }
 
   include_filter {
-    namespace    = "AWS/ES"
-    metric_names = ["CPUUtilization"]
+    namespace = "AWS/ES"
+    metric_names = ["CPUUtilization",
+      "CPUUtilization",
+      "JVMMemoryPressure",
+      "FreeStorageSpace",
+      "OldGenJVMMemoryPressure",
+      "MasterCPUUtilization",
+      "MasterJVMMemoryPressure",
+      "MasterOldGenJVMMemoryPressure",
+      "ThreadpoolWriteQueue",
+      "ThreadpoolSearchQueue",
+      "ThreadpoolSearchRejected",
+    "ThreadpoolWriteRejected"]
   }
+
   tags = merge(local.common_tags, {
     Environment = each.key
   })
