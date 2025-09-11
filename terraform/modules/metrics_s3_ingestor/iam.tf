@@ -43,11 +43,19 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         "Resource" : [
           "arn:${var.aws_partition}:s3:::cg-*",
           "arn:${var.aws_partition}:s3:::development-cg-*",
-          "arn:${var.aws_partition}:s3:::staging-cg-*",
+          "arn:${var.aws_partition}:s3:::staging-cg-*"
+        ],
+        "Action" : [
+          "s3:GetBucketTagging"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Resource" : [
           "arn:${var.aws_partition}:es:${var.aws_region}:${var.account_id}:domain/cg-broker-*"
         ],
         "Action" : [
-          "tag:GetResources"
+          "es:ListTags"
         ]
       }
     ]

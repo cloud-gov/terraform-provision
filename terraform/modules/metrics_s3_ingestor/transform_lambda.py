@@ -7,14 +7,14 @@ import io
 import os
 
 s3 = boto3.client("s3")
-tagging_client = boto3.client("resourcegroupstaggingapi")
+es = boto3.client("opensearch")
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-default_keys_to_remove = ["metric_stream_name","account_id","region"]
+default_keys_to_remove = ["metric_stream_name", "account_id", "region"]
 nested_keys_to_remove = []
 EXPECTED_NAMESPACES = ["AWS/S3", "AWS/ES"]
-environment = os.environ.get('ENVIRONMENT', 'unknown')
+environment = os.environ.get("ENVIRONMENT", "unknown")
 
 # Prefix setup zone
 s3_prefix = f"{environment}-cg-" if environment in ["development", "staging"] else "cg-"
@@ -26,17 +26,18 @@ if environment == "staging":
 if environment == "development":
     domain_prefix = domain_prefix + "dev-"
 
+
 def lambda_handler(event, context):
     output_records = []
     try:
         for record in event["records"]:
-            pre_json_value = base64.b64decode(record['data'])
+            pre_json_value = base64.b64decode(record["data"])
             logger.info(f"Processing")
             processed_metrics = []
             for line in pre_json_value.strip().splitlines():
                 metric = json.loads(line)
                 for key in default_keys_to_remove:
-                    metric.pop(key,None)
+                    metric.pop(key, None)
                 metric_results = process_metric(metric)
                 if metric_results is not None:
                     metric_results["dimensions"].pop("ClientId", None)
@@ -44,15 +45,20 @@ def lambda_handler(event, context):
 
             if processed_metrics:
                 # Create newline-delimited JSON (no compression)
-                output_data = '\n'.join([json.dumps(metric) for metric in processed_metrics]) + '\n'
+                output_data = (
+                    "\n".join([json.dumps(metric) for metric in processed_metrics])
+                    + "\n"
+                )
 
                 # Just base64 encode for Firehose transport (no gzip)
-                encoded_output = base64.b64encode(output_data.encode('utf-8')).decode('utf-8')
+                encoded_output = base64.b64encode(output_data.encode("utf-8")).decode(
+                    "utf-8"
+                )
 
                 output_record = {
-                    'recordId': record['recordId'],
-                    'result': 'Ok',
-                    'data': encoded_output
+                    "recordId": record["recordId"],
+                    "result": "Ok",
+                    "data": encoded_output,
                 }
                 output_records.append(output_record)
 
@@ -60,7 +66,8 @@ def lambda_handler(event, context):
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
         raise
-    return {'records': output_records}
+    return {"records": output_records}
+
 
 def process_metric(metric):
     try:
@@ -70,10 +77,7 @@ def process_metric(metric):
                 f"Hello developer, you need to add the following metric to the lambda function: {str(namespace)}"
             )
 
-        metrics_arn = get_resource_arn_from_metric(metric)
-        tags = {}
-        if metrics_arn:
-            tags = get_resource_tags(metrics_arn)
+        tags = get_resource_tags_from_metric(metric)
 
         if tags:
             metric["Tags"] = tags
@@ -85,35 +89,42 @@ def process_metric(metric):
         print(e)
         return None
 
-def get_resource_arn_from_metric(metric):
+
+def get_resource_tags_from_metric(metric):
     try:
         namespace = metric.get("namespace")
         dimensions = metric.get("dimensions", {})
         if namespace == "AWS/S3":
             bucket_name = dimensions.get("BucketName")
             if bucket_name.startswith(s3_prefix):
-                return f"arn:aws-us-gov:s3:::{bucket_name}"
+                return get_tags_from_name(bucket_name, "S3")
         elif namespace == "AWS/ES":
             domain_name = dimensions.get("DomainName")
             client_id = dimensions.get("ClientId")
             if domain_name.startswith(domain_prefix) and client_id:
                 region = boto3.Session().region_name
-                return f"arn:aws-us-gov:es:{region}:{client_id}:domain/{domain_name}"
+                arn = f"arn:aws-us-gov:es:{region}:{client_id}:domain/{domain_name}"
+                return get_tags_from_arn(arn)
         return None
     except Exception:
         logger.error("Error with Arn")
         return None
 
-def get_resource_tags(resource_arn):
-    try:
-        response = tagging_client.get_resources(ResourceARNList=[resource_arn])
-        if response["ResourceTagMappingList"]:
-            resource = response["ResourceTagMappingList"][0]
-            tags = {}
-            for tag in resource.get("Tags", []):
-                tags[tag["Key"]] = tag["Value"]
-            return tags
-        return {}
-    except Exception as e:
-        logger.error(f"Error getting tags: {str(e)}")
-        return None
+
+def get_tags_from_name(name, type):
+    if type == "S3":
+        try:
+            response = s3.get_bucket_tagging(Bucket=name)
+            return {tag["Key"]: tag["Value"] for tag in response.get("TagSet", [])}
+        except s3.exceptions.NoSuchTagSet:
+            return {}
+
+
+def get_tags_from_arn(arn):
+    if arn.startswith("arn:aws-us-gov:es:{region}:{client_id}:domain/"):
+        try:
+            response = es.list_tags(ARN=arn)
+            return {tag["Key"]: tag["Value"] for tag in response.get("TagList", [])}
+        except Exception as e:
+            logger.error("Failed to tag domain" + e)
+            return {}
