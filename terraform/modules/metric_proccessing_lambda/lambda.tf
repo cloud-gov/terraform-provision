@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "transform" {
   for_each = toset(var.environments)
 
-  filename         = data.archive_file.lambda_zip[each.key].output_path
+  filename         = data.archive_file.lambda_zip.output_path
   function_name    = "${var.name_prefix}-${each.key}-transform"
   role             = aws_iam_role.lambda_role[each.key].arn
   handler          = "lambda_function_${each.key}.lambda_handler"
