@@ -32,6 +32,8 @@ resource "null_resource" "run_pytest" {
 
   provisioner "local-exec" {
     command = <<-EOT
+      echo "Current directory: $(pwd)"
+      echo "Files in directory: $(ls -la)"
       echo "Installing test dependencies..."
       python -m pip install -r requirements-dev.txt
 
