@@ -7,6 +7,32 @@ locals {
   )
 }
 
+# Run pytest tests as a validation step
+resource "null_resource" "run_pytest" {
+  triggers = {
+    # Re-run tests when source code or tests change
+    source_code_hash = filemd5("${path.module}/src/transform_lambda.py")
+    test_code_hash   = filemd5("${path.module}/tests/test_transform_lambda.py")
+    timestamp        = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo "Installing test dependencies..."
+      python -m pip install -r requirements-dev.txt
+
+      echo "Running pytest..."
+      python -m pytest tests/ -v --tb=short
+
+      if [ $? -eq 0 ]; then
+        echo "All tests passed!"
+      else
+        echo "Tests failed!"
+        exit 1
+      fi
+    EOT
+  }
+}
 
 resource "aws_cloudwatch_metric_stream" "main" {
   for_each = toset(var.environments)
