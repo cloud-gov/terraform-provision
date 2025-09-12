@@ -8,6 +8,13 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
+# Add the src directory to Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, "..", "src")
+sys.path.insert(0, os.path.abspath(src_dir))
+print(f"Looking for transform_lambda.py in: {os.path.abspath(src_dir)}")
+print(f"Files in src directory: {os.listdir(os.path.abspath(src_dir))}")
+
 from transform_lambda import lambda_handler, process_metric, default_keys_to_remove
 
 
