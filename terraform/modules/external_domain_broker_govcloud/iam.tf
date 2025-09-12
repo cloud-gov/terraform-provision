@@ -176,6 +176,25 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
+      "wafv2:ListWebACLs"
+    ]
+    resources = [
+      "*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
       "wafv2:PutLoggingConfiguration",
       "wafv2:DeleteLoggingConfiguration"
     ]
