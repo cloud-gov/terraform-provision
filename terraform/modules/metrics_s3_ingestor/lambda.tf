@@ -51,7 +51,7 @@ resource "null_resource" "run_pytest" {
 }
 
 data "archive_file" "lambda_zip" {
-  depends_on  = [data.null_resource.run_tests]
+  depends_on  = [data.null_resource.run_pytest]
   type        = "zip"
   source_file = "${path.module}/src/transform_lambda.py"
   output_path = "${path.module}/src/transform_lambda.zip"
