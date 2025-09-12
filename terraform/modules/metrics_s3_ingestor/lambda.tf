@@ -32,6 +32,7 @@ resource "null_resource" "run_pytest" {
 
   provisioner "local-exec" {
     command = <<-EOT
+    ` cd ${path.module}
       echo "Current directory: $(pwd)"
       echo "Files in directory: $(ls -la)"
       echo "Installing test dependencies..."
