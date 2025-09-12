@@ -27,8 +27,8 @@ resource "aws_lambda_function" "transform" {
 resource "null_resource" "run_pytest" {
   triggers = {
     # Re-run tests when source code or tests change
-    source_code_hash = filemd5("src/lambda_function.py")
-    test_code_hash   = filemd5("tests/test_lambda_function.py")
+    source_code_hash = filemd5("${path.module}/src/lambda_function.py")
+    test_code_hash   = filemd5("${path.module}/tests/test_lambda_function.py")
     timestamp        = timestamp()
   }
 
