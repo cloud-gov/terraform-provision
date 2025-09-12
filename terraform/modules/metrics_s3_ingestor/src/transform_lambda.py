@@ -65,7 +65,6 @@ def lambda_handler(event, context):
             logger.info(f"Processed record with {len(processed_metrics)} metrics")
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
-        raise
     return {"records": output_records}
 
 
@@ -76,6 +75,7 @@ def process_metric(metric):
             logger.error(
                 f"Hello developer, you need to add the following metric to the lambda function: {str(namespace)}"
             )
+            return None
 
         tags = get_resource_tags_from_metric(metric)
 
@@ -85,8 +85,7 @@ def process_metric(metric):
         else:
             return None
     except Exception as e:
-        logger.error("Could not process metric")
-        print(e)
+        logger.error(f"Could not process metric: {e}")
         return None
 
 

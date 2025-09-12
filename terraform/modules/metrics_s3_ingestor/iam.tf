@@ -41,9 +41,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       {
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:s3:::cg-*",
-          "arn:${var.aws_partition}:s3:::development-cg-*",
-          "arn:${var.aws_partition}:s3:::staging-cg-*"
+          each.key == "production" ? "arn:${var.aws_partition}:s3:::cg-*" : "arn:${var.aws_partition}:s3:::${each.key}-cg-*"
         ],
         "Action" : [
           "s3:GetBucketTagging"
