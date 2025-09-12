@@ -33,6 +33,9 @@ resource "null_resource" "run_pytest" {
   provisioner "local-exec" {
     command = <<-EOT
       cd ${path.module}
+      echo "Installing production dependencies..."
+      python -m pip install -r requirements.txt
+
       echo "Installing test dependencies..."
       python -m pip install -r requirements-dev.txt
 
