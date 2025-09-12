@@ -8,7 +8,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from lambda_function import lambda_handler, process_metric, default_keys_to_remove
+from transform_lambda import lambda_handler, process_metric, default_keys_to_remove
 
 
 class TestLambdaHandler:
