@@ -43,7 +43,7 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("lambda_handler.logger"):
+        with patch("transform_lambda.logger"):
             result = lambda_handler(event, context)
 
         # Assertions
@@ -104,7 +104,7 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("lambda_handlerlogger"):
+        with patch("transform_lambda.logger"):
             result = lambda_handler(event, context)
 
         assert len(result["records"]) == 1
@@ -138,7 +138,7 @@ class TestLambdaHandler:
         event = {"records": records}
         context = MagicMock()
 
-        with patch("lambda_handler.logger"):
+        with patch("transform_lambda.logger"):
             result = lambda_handler(event, context)
 
         assert len(result["records"]) == 3
@@ -162,7 +162,7 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("lambda_handler.logger"):
+        with patch("transform_lambda.logger"):
             result = lambda_handler(event, context)
 
         # Should return empty records list since no valid metrics
@@ -177,7 +177,7 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("lambda_handler.logger") as mock_logger:
+        with patch("transform_lambda.logger") as mock_logger:
             result = lambda_handler(event, context)
 
         # Should handle gracefully and return empty records
@@ -251,7 +251,7 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("lambda_handler.logger"):
+        with patch("transform_lambda.logger"):
             result = lambda_handler(event, context)
 
         output_data = base64.b64decode(result["records"][0]["data"]).decode("utf-8")
