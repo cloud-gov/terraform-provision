@@ -176,6 +176,45 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
 
   statement {
     actions = [
+      "wafv2:GetWebACLForResource"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/*/*",
+      "arn:${var.aws_partition}:elasticloadbalancing:${var.aws_region}:${var.account_id}:loadbalancer/app/${var.stack_description}-domains-lbgroup-*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
+      "wafv2:DeleteWebACL"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:wafv2:${var.aws_region}:${var.account_id}:regional/webacl/cg-external-domains-${var.stack_description}*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_user.iam_user.arn]
+    }
+    condition {
+      test     = "IpAddress"
+      variable = "aws:SourceIp"
+      values   = var.environment_nat_egress_ips
+    }
+  }
+
+  statement {
+    actions = [
       "wafv2:ListWebACLs"
     ]
     resources = [
