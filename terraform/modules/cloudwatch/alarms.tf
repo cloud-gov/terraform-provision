@@ -80,7 +80,7 @@ https://docs.aws.amazon.com/ses/latest/dg/reputationdashboardmessages.html#reput
 
 # 5% * 40% = 2%. 5% * 80% = 4%.
 resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_warning" {
-  alarm_name        = "SES-BounceRate-Warning-AccountWide"
+  alarm_name        = "${var.stack_description}-SES-BounceRate-Warning-AccountWide"
   alarm_description = "Warning: The bounce rate for this AWS account has exceeded 2%. The Platform team should take action so AWS does not pause our ability to send email. Runbook link: https://github.com/cloud-gov/internal-docs/blob/main/docs/runbooks/Brokered-Services/AWS-SES.md"
 
   metric_query {
@@ -110,7 +110,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_critical" {
-  alarm_name        = "SES-BounceRate-Critical-AccountWide"
+  alarm_name        = "${var.stack_description}-SES-BounceRate-Critical-AccountWide"
   alarm_description = "Critical: The bounce rate for this AWS account has exceeded 4%. The Platform team must take immediate action so AWS does not pause our ability to send email. Runbook link: https://github.com/cloud-gov/internal-docs/blob/main/docs/runbooks/Brokered-Services/AWS-SES.md"
 
   metric_query {
@@ -147,7 +147,7 @@ https://docs.aws.amazon.com/ses/latest/dg/reputationdashboardmessages.html#reput
 
 # 0.1% * 40% = 0.04%. 0.01% * 80% = 0.08%.
 resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_warning" {
-  alarm_name        = "SES-ComplaintRate-Warning-AccountWide"
+  alarm_name        = "${var.stack_description}-SES-ComplaintRate-Warning-AccountWide"
   alarm_description = "Warning: The complaint rate for this AWS account has exceeded 0.04%. The Platform team should take action so AWS does not pause our ability to send email. Runbook link: https://github.com/cloud-gov/internal-docs/blob/main/docs/runbooks/Brokered-Services/AWS-SES.md"
 
   metric_query {
@@ -177,7 +177,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_critical" {
-  alarm_name        = "SES-ComplaintRate-Critical-AccountWide"
+  alarm_name        = "${var.stack_description}-SES-ComplaintRate-Critical-AccountWide"
   alarm_description = "Critical: The complaint rate for this AWS account has exceeded 0.08%. The Platform team must take immediate action so AWS does not pause our ability to send email. Runbook link: https://github.com/cloud-gov/internal-docs/blob/main/docs/runbooks/Brokered-Services/AWS-SES.md"
 
   metric_query {
