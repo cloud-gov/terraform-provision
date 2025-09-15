@@ -33,7 +33,6 @@ def lambda_handler(event, context):
     try:
         for record in event["records"]:
             pre_json_value = base64.b64decode(record["data"])
-            logger.info(f"Processing")
             processed_metrics = []
             for line in pre_json_value.strip().splitlines():
                 metric = json.loads(line)
@@ -62,7 +61,6 @@ def lambda_handler(event, context):
                     "data": encoded_output,
                 }
                 output_records.append(output_record)
-
             logger.info(f"Processed record with {len(processed_metrics)} metrics")
     except Exception as e:
         logger.error(f"Error processing metrics: {str(e)}")
@@ -79,7 +77,7 @@ def process_metric(metric):
             return None
 
         tags = get_resource_tags_from_metric(metric)
-        if tags and tags != []:
+        if tags:
             metric["Tags"] = tags
             return metric
         else:

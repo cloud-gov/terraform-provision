@@ -120,6 +120,7 @@ class TestLambdaHandler:
         ):
             result = lambda_handler(event, context)
 
+        # Assertions
         assert len(result["records"]) == 1
         assert result["records"][0]["result"] == "Ok"
 
@@ -127,6 +128,7 @@ class TestLambdaHandler:
         output_data = base64.b64decode(result["records"][0]["data"]).decode("utf-8")
         output_metrics = [json.loads(line) for line in output_data.strip().split("\n")]
 
+        # Assertions
         assert len(output_metrics) == 2
         assert output_metrics[0]["namespace"] == "AWS/ES"
         assert output_metrics[1]["namespace"] == "AWS/S3"
@@ -156,6 +158,7 @@ class TestLambdaHandler:
         ):
             result = lambda_handler(event, context)
 
+        # Assertions
         assert len(result["records"]) == 3
         for i, record in enumerate(result["records"]):
             assert record["recordId"] == f"record-{i}"
@@ -216,6 +219,7 @@ class TestLambdaHandler:
         ):
             result = process_metric(input_metric)
 
+        # Assertions
         assert result is not None
         assert result["namespace"] == "AWS/S3"
         assert result["metric_name"] == "Duration"
