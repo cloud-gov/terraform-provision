@@ -471,8 +471,8 @@ module "csb_iam" {
 resource "random_password" "csb_rds_password" {
   length      = 32
   special     = false
-  min_special = 2
-  min_upper   = 5
+  min_special = 0 # InvalidParameterValue: The parameter MasterUserPassword is not a valid password. Only printable ASCII characters besides '/', '@', '"', ' ' may be used.
+  min_upper   = 6
   min_numeric = 5
   min_lower   = 5
 }
