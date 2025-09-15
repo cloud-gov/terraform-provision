@@ -1,8 +1,0 @@
-{
-    "records": [
-        {
-            "recordId": "sample-record-1",
-            "data": "eyJ0aW1lc3RhbXAiOjE2NDA5OTUyMDAwMDAsIm1ldHJpY19zdHJlYW1fbmFtZSI6InRlc3Qtc3RyZWFtIiwiYWNjb3VudF9pZCI6IjEyMzQ1Njc4OTAxMiIsInJlZ2lvbiI6InVzLWVhc3QtMSIsIm5hbWVzcGFjZSI6IkFXUy9FQzIiLCJtZXRyaWNfbmFtZSI6IkNQVVV0aWxpemF0aW9uIiwiZGltZW5zaW9ucyI6eyJJbnN0YW5jZUlkIjoiaS0xMjM0NTY3ODkwYWJjZGVmMCJ9LCJ2YWx1ZSI6ODUuNSwidW5pdCI6IlBlcmNlbnQifQ=="
-        }
-    ]
-}
