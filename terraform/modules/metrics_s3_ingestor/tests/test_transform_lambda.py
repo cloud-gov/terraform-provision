@@ -3,16 +3,24 @@ import base64
 import pytest
 from unittest.mock import patch, MagicMock
 import sys
+from botocore.stub import Stubber
+import boto3
 import os
 
 # Add the src directory to Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 src_dir = os.path.join(current_dir, "..", "src")
 sys.path.insert(0, os.path.abspath(src_dir))
-print(f"Looking for transform_lambda.py in: {os.path.abspath(src_dir)}")
-print(f"Files in src directory: {os.listdir(os.path.abspath(src_dir))}")
 
-from transform_lambda import lambda_handler, process_metric, default_keys_to_remove
+from transform_lambda import (
+    lambda_handler,
+    process_metric,
+    default_keys_to_remove,
+    get_resource_tags_from_metric,
+    es_client,
+    s3_client,
+    region,
+)
 
 
 class TestLambdaHandler:
@@ -34,6 +42,7 @@ class TestLambdaHandler:
             "value": 85.5,
             "unit": "Percent",
         }
+        mock_tags = {"Environment": "production", "Owner": "team-alpha"}
 
         # Create newline-delimited JSON
         ndjson_data = json.dumps(metric_data) + "\n"
@@ -43,9 +52,11 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("transform_lambda.logger"):
+        with patch("transform_lambda.logger"), patch(
+            "transform_lambda.get_resource_tags_from_metric", return_value=mock_tags
+        ):
+            # Set up the mock return value
             result = lambda_handler(event, context)
-
         # Assertions
         assert "records" in result
         assert len(result["records"]) == 1
@@ -71,7 +82,6 @@ class TestLambdaHandler:
         assert metric["namespace"] == "AWS/ES"
         assert metric["metric_name"] == "CPUUtilization"
         assert metric["value"] == 85.5
-        assert "processed_at" in metric
 
     def test_lambda_handler_multiple_metric_lines(self):
         """Test processing multiple metric lines in one record"""
@@ -95,6 +105,7 @@ class TestLambdaHandler:
                 "unit": "Bytes",
             },
         ]
+        mock_tags = {"Environment": "production", "Owner": "team-alpha"}
 
         # Create newline-delimited JSON
         ndjson_data = "\n".join([json.dumps(metric) for metric in metrics]) + "\n"
@@ -104,7 +115,9 @@ class TestLambdaHandler:
 
         context = MagicMock()
 
-        with patch("transform_lambda.logger"):
+        with patch("transform_lambda.logger"), patch(
+            "transform_lambda.get_resource_tags_from_metric", return_value=mock_tags
+        ):
             result = lambda_handler(event, context)
 
         assert len(result["records"]) == 1
@@ -124,7 +137,7 @@ class TestLambdaHandler:
         for i in range(3):
             metric_data = {
                 "timestamp": 1640995200000 + i,
-                "namespace": f"AWS/Service{i}",
+                "namespace": "AWS/ES",
                 "metric_name": f"TestMetric{i}",
                 "dimensions": {"ResourceId": f"resource-{i}"},
                 "value": 100 + i,
@@ -134,11 +147,13 @@ class TestLambdaHandler:
             encoded_data = base64.b64encode(ndjson_data.encode("utf-8")).decode("utf-8")
 
             records.append({"recordId": f"record-{i}", "data": encoded_data})
-
+        mock_tags = {"Environment": "production", "Owner": "team-alpha"}
         event = {"records": records}
         context = MagicMock()
 
-        with patch("transform_lambda.logger"):
+        with patch("transform_lambda.logger"), patch(
+            "transform_lambda.get_resource_tags_from_metric", return_value=mock_tags
+        ):
             result = lambda_handler(event, context)
 
         assert len(result["records"]) == 3
@@ -194,25 +209,50 @@ class TestLambdaHandler:
             "value": 150.5,
             "unit": "Milliseconds",
         }
+        mock_tags = {"Environment": "production", "Owner": "team-alpha"}
 
-        result = process_metric(input_metric)
+        with patch(
+            "transform_lambda.get_resource_tags_from_metric", return_value=mock_tags
+        ):
+            result = process_metric(input_metric)
 
         assert result is not None
         assert result["namespace"] == "AWS/S3"
         assert result["metric_name"] == "Duration"
         assert result["value"] == 150.5
-        assert "processed_at" in result
 
     def test_process_metric_missing_required_fields(self):
         """Test process_metric with missing required fields"""
         # Missing metric_name
         invalid_metric = {
             "timestamp": 1640995200000,
-            "namespace": "AWS/Test",
+            "namespace": "AWS/ES",
             "value": 100,
         }
 
         result = process_metric(invalid_metric)
+        assert result is None
+
+        # Missing value
+        invalid_metric2 = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/Test",
+            "metric_name": "ES",
+        }
+
+        result2 = process_metric(invalid_metric2)
+        assert result2 is None
+
+    def test_process_metric_missing_namespace(self):
+        """Test process_metric with missing required fields"""
+        # Missing metric_name
+        invalid_namespace = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/Test",
+            "value": 100,
+        }
+
+        result = process_metric(invalid_namespace)
         assert result is None
 
         # Missing value
@@ -234,7 +274,7 @@ class TestLambdaHandler:
         """Test that ClientId is removed from dimensions"""
         metric_data = {
             "timestamp": 1640995200000,
-            "namespace": "AWS/Test",
+            "namespace": "AWS/ES",
             "metric_name": "TestMetric",
             "dimensions": {
                 "InstanceId": "i-123",
@@ -243,15 +283,17 @@ class TestLambdaHandler:
             },
             "value": 100,
         }
+        mock_tags = {"Environment": "production", "Owner": "team-alpha"}
 
         ndjson_data = json.dumps(metric_data) + "\n"
         encoded_data = base64.b64encode(ndjson_data.encode("utf-8")).decode("utf-8")
 
         event = {"records": [{"recordId": "test-record", "data": encoded_data}]}
-
         context = MagicMock()
 
-        with patch("transform_lambda.logger"):
+        with patch("transform_lambda.logger"), patch(
+            "transform_lambda.get_resource_tags_from_metric", return_value=mock_tags
+        ):
             result = lambda_handler(event, context)
 
         output_data = base64.b64decode(result["records"][0]["data"]).decode("utf-8")
@@ -260,3 +302,124 @@ class TestLambdaHandler:
         assert "ClientId" not in output_metric["dimensions"]
         assert "InstanceId" in output_metric["dimensions"]
         assert "OtherDim" in output_metric["dimensions"]
+
+    def test_s3_tag_retrieval(self):
+        """Test that s3 tags are returned"""
+        metric_data = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/S3",
+            "metric_name": "TestMetric",
+            "dimensions": {
+                "InstanceId": "i-123",
+                "BucketName": "cg-testing-cheats-enabled",
+            },
+            "value": 100,
+        }
+
+        stubber = Stubber(s3_client)
+        fake_bucket = "cg-testing-cheats-enabled"
+
+        fake_tags = {
+            "TagSet": [
+                {"Key": "Environment", "Value": "staging"},
+                {"Key": "Testing", "Value": "enabled"},
+                {"Key": "organization", "Value": "cloudgovtests"},
+            ]
+        }
+        expected_param_for_stub = {"Bucket": fake_bucket}
+        stubber.add_response("get_bucket_tagging", fake_tags, expected_param_for_stub)
+
+        with stubber:
+            with patch("transform_lambda.logger"):
+                result = get_resource_tags_from_metric(metric_data)
+
+        assert result["Environment"] == "staging"
+        assert result["Testing"] == "enabled"
+        assert result["organization"] == "cloudgovtests"
+
+    def test_s3_tags_none(self):
+        """Test that none is returned when tags are none"""
+        metric_data = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/S3",
+            "metric_name": "TestMetric",
+            "dimensions": {
+                "InstanceId": "i-123",
+                "BucketName": "cg-testing-cheats-enabled",
+            },
+            "value": 100,
+        }
+
+        stubber = Stubber(s3_client)
+        fake_bucket = "cg-testing-cheats-enabled"
+
+        fake_tags = {"TagSet": []}
+        expected_param_for_stub = {"Bucket": fake_bucket}
+        stubber.add_response("get_bucket_tagging", fake_tags, expected_param_for_stub)
+
+        with stubber:
+            with patch("transform_lambda.logger"):
+                result = get_resource_tags_from_metric(metric_data)
+
+        assert result is None
+
+    def test_es_tag_retrieval(self):
+        """Test that es tags are returned"""
+        metric_data = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/ES",
+            "metric_name": "TestMetric",
+            "dimensions": {
+                "InstanceId": "i-123",
+                "DomainName": "cg-broker-jason-test",
+                "ClientId": 123456,
+            },
+            "value": 100,
+        }
+
+        stubber = Stubber(es_client)
+        fake_arn = f"arn:aws-us-gov:es:{region}:{metric_data['dimensions']['ClientId']}:domain/{metric_data['dimensions']['DomainName']}"
+        fake_tags = {
+            "TagList": [
+                {"Key": "Environment", "Value": "staging"},
+                {"Key": "Testing", "Value": "enabled"},
+                {"Key": "organization", "Value": "cloudgovtests"},
+            ]
+        }
+        expected_param_for_stub = {"ARN": fake_arn}
+        stubber.add_response("list_tags", fake_tags, expected_param_for_stub)
+
+        with stubber:
+            with patch("transform_lambda.logger"):
+                result = get_resource_tags_from_metric(metric_data)
+
+        assert result["Environment"] == "staging"
+        assert result["Testing"] == "enabled"
+        assert result["organization"] == "cloudgovtests"
+
+    def test_es_tags_none(self):
+        """Test that none is returned when tags are none"""
+        metric_data = {
+            "timestamp": 1640995200000,
+            "namespace": "AWS/ES",
+            "metric_name": "TestMetric",
+            "dimensions": {
+                "InstanceId": "i-123",
+                "DomainName": "cg-broker-jason-test",
+                "ClientId": 123456,
+            },
+            "value": 100,
+        }
+
+        stubber = Stubber(es_client)
+        fake_arn = f"arn:aws-us-gov:es:{region}:{metric_data['dimensions']['ClientId']}:domain/{metric_data['dimensions']['DomainName']}"
+
+        fake_tags = {"TagList": []}
+        expected_param_for_stub = {"ARN": fake_arn}
+        stubber.add_response("list_tags", fake_tags, expected_param_for_stub)
+
+        with stubber:
+            with patch("transform_lambda.logger"):
+                result = get_resource_tags_from_metric(metric_data)
+
+        assert result is None

@@ -6,8 +6,9 @@ import gzip
 import io
 import os
 
-s3 = boto3.client("s3")
-es = boto3.client("opensearch")
+s3_client = boto3.client("s3")
+es_client = boto3.client("opensearch")
+region = boto3.Session().region_name
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -78,8 +79,7 @@ def process_metric(metric):
             return None
 
         tags = get_resource_tags_from_metric(metric)
-
-        if tags:
+        if tags and tags != []:
             metric["Tags"] = tags
             return metric
         else:
@@ -96,14 +96,15 @@ def get_resource_tags_from_metric(metric):
         if namespace == "AWS/S3":
             bucket_name = dimensions.get("BucketName")
             if bucket_name.startswith(s3_prefix):
-                return get_tags_from_name(bucket_name, "S3")
+                result = get_tags_from_name(bucket_name, "S3")
+                return None if result == {} else result
         elif namespace == "AWS/ES":
             domain_name = dimensions.get("DomainName")
             client_id = dimensions.get("ClientId")
             if domain_name.startswith(domain_prefix) and client_id:
-                region = boto3.Session().region_name
                 arn = f"arn:aws-us-gov:es:{region}:{client_id}:domain/{domain_name}"
-                return get_tags_from_arn(arn)
+                result = get_tags_from_arn(arn)
+                return None if result == {} else result
         return None
     except Exception:
         logger.error("Error with Arn")
@@ -113,17 +114,17 @@ def get_resource_tags_from_metric(metric):
 def get_tags_from_name(name, type):
     if type == "S3":
         try:
-            response = s3.get_bucket_tagging(Bucket=name)
+            response = s3_client.get_bucket_tagging(Bucket=name)
             return {tag["Key"]: tag["Value"] for tag in response.get("TagSet", [])}
-        except s3.exceptions.NoSuchTagSet:
-            return {}
+        except s3_client.exceptions.NoSuchTagSet:
+            return []
 
 
 def get_tags_from_arn(arn):
     if ":domain/" in arn:
         try:
-            response = es.list_tags(ARN=arn)
+            response = es_client.list_tags(ARN=arn)
             return {tag["Key"]: tag["Value"] for tag in response.get("TagList", [])}
         except Exception as e:
             logger.error("Failed to tag domain" + e)
-            return {}
+            return []
