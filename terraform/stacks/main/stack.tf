@@ -469,13 +469,20 @@ module "csb_iam" {
 
 # This will need to add "min_special = 2" for future passwords
 resource "random_password" "csb_rds_password" {
-  length      = 32
-  special     = false
-  min_special = 0 # InvalidParameterValue: The parameter MasterUserPassword is not a valid password. Only printable ASCII characters besides '/', '@', '"', ' ' may be used.
-  min_upper   = 6
-  min_numeric = 5
-  min_lower   = 5
+  length = 32
+
+  upper   = true
+  lower   = true
+  numeric = true
+  special = true
+
+  min_special      = 2
+  override_special = "[]{}%&*+-=?^_~" # InvalidParameterValue: The parameter MasterUserPassword is not a valid password. Only printable ASCII characters besides '/', '@', '"', ' ' may be used.
+  min_upper        = 5
+  min_numeric      = 5
+  min_lower        = 5
 }
+
 
 module "csb_broker" {
   source            = "../../modules/csb/broker"
