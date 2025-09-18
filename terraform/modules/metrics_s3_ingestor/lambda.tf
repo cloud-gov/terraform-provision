@@ -22,8 +22,17 @@ resource "aws_lambda_function" "transform" {
   })
 }
 
+data "http" "lambda_python" {
+  url = "https://github.com/cloud-gov/aws_metrics_opensearch_preprocessor/blob/v0.0.1/lambda_functions/transform_lambda.py"
+}
+
+data "local_file" "lambda_python_file" {
+  content  = data.http.lambda_python.request_body
+  filename = "${path.module}/transform_lambda.py"
+}
+
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "${path.module}/src/transform_lambda.py"
-  output_path = "${path.module}/src/transform_lambda.zip"
+  source_file = local_file.lambda_python_file.filename
+  output_path = "${path.module}/transform_lambda.zip"
 }
