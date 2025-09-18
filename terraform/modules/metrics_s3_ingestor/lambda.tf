@@ -30,7 +30,7 @@ data "archive_file" "lambda_zip" {
   type = "zip"
   source {
     content  = data.http.lambda_python.response_body
-    filename = "${path.module}/transform_lambda.py"
+    filename = "transform_lambda.py"
   }
   output_path = "transform_lambda.zip"
 }
