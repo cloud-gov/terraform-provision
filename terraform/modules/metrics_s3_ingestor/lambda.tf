@@ -26,8 +26,8 @@ data "http" "lambda_python" {
   url = "https://github.com/cloud-gov/aws_metrics_opensearch_preprocessor/blob/v0.0.1/lambda_functions/transform_lambda.py"
 }
 
-data "local_file" "lambda_python_file" {
-  content  = data.http.lambda_python.request_body
+resource "local_file" "lambda_python_file" {
+  content  = data.http.lambda_python.response_body
   filename = "${path.module}/transform_lambda.py"
 }
 
