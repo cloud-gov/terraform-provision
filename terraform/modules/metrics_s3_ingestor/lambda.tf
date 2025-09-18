@@ -9,7 +9,7 @@ resource "aws_lambda_function" "transform" {
   runtime          = "python3.13"
   architectures    = ["arm64"]
 
-  timeout = 10
+  timeout = 60
 
   environment {
     variables = {
