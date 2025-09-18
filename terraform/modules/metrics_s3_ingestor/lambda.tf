@@ -26,17 +26,11 @@ data "http" "lambda_python" {
   url = "https://raw.githubusercontent.com/cloud-gov/aws_metrics_opensearch_preprocessor/refs/tags/v0.0.1/lambda_functions/transform_lambda.py"
 }
 
-resource "local_file" "lambda_python_file" {
-  content  = data.http.lambda_python.response_body
-  filename = "${path.module}/transform_lambda.py"
-
-  lifecycle {
-    replace_triggered_by = [data.http.lambda_python]
-  }
-}
-
 data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_file = local_file.lambda_python_file.filename
+  type = "zip"
+  source {
+    content  = data.http.lambda_python.response_body
+    filename = "${path.module}/transform_lambda.py"
+  }
   output_path = "${path.module}/transform_lambda.zip"
 }
