@@ -17,7 +17,7 @@ resource "aws_cloudwatch_log_stream" "firehose_log_stream" {
 resource "aws_kinesis_firehose_delivery_stream" "metric_stream" {
   for_each = toset(var.environments)
 
-  name        = "${var.name_prefix}-delivery-stream"
+  name        = "${var.name_prefix}-${each.key}-delivery-stream"
   destination = "extended_s3"
 
   extended_s3_configuration {
