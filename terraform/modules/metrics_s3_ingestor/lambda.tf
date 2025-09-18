@@ -29,6 +29,10 @@ data "http" "lambda_python" {
 resource "local_file" "lambda_python_file" {
   content  = data.http.lambda_python.response_body
   filename = "${path.module}/transform_lambda.py"
+
+  lifecycle {
+    replace_triggered_by = [data.http.lambda_python]
+  }
 }
 
 data "archive_file" "lambda_zip" {
