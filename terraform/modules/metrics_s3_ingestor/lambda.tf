@@ -33,6 +33,6 @@ data "local_file" "lambda_python_file" {
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = local_file.lambda_python_file.filename
+  source_file = data.local_file.lambda_python_file.filename
   output_path = "${path.module}/transform_lambda.zip"
 }
