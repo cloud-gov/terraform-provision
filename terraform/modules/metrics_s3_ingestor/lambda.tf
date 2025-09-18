@@ -23,7 +23,7 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://github.com/cloud-gov/aws_metrics_opensearch_preprocessor/blob/v0.0.1/lambda_functions/transform_lambda.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_metrics_opensearch_preprocessor/refs/tags/v0.0.1/lambda_functions/transform_lambda.py"
 }
 
 resource "local_file" "lambda_python_file" {
