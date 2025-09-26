@@ -42,8 +42,6 @@ resource "aws_cloudwatch_metric_stream" "main" {
       "CPUUtilization",
       "DatabaseConnections",
       "FreeStorageSpace",
-      "NetworkReceiveThroughput",
-      "NetworkTransmitThroughput",
       "ReadLatency",
       "WriteLatency",
       "AllocatedStorage"
