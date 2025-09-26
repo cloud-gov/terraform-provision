@@ -1,7 +1,6 @@
 data "aws_iam_policy_document" "aws_broker_policy" {
   statement {
     actions = [
-      "rds:DescribeDBInstances",
       "rds:CreateDBInstance",
       "rds:DeleteDBInstance",
       "rds:ModifyDBInstance",
@@ -22,6 +21,16 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:snapshot:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}"
+    ]
+  }
+
+  statement {
+    actions = [
+      "rds:DescribeDBInstances",
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:*"
     ]
   }
 
