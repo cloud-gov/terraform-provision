@@ -37,8 +37,17 @@ resource "aws_cloudwatch_metric_stream" "main" {
   }
 
   include_filter {
-    namespace    = "AWS/RDS"
-    metric_names = ["CPUUtilization"]
+    namespace = "AWS/RDS"
+    metric_names = [
+      "CPUUtilization",
+      "DatabaseConnections",
+      "FreeStorageSpace",
+      "NetworkReceiveThroughput",
+      "NetworkTransmitThroughput",
+      "ReadLatency",
+      "WriteLatency",
+      "AllocatedStorage"
+    ]
   }
 
   tags = merge(local.common_tags, {
