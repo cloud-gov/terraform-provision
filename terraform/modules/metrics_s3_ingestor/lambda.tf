@@ -14,6 +14,7 @@ resource "aws_lambda_function" "transform" {
   environment {
     variables = {
       ENVIRONMENT = each.key
+      ACCOUNT_ID  = var.account_id
     }
   }
 
