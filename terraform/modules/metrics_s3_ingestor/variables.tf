@@ -5,6 +5,7 @@ variable "name_prefix" {
 }
 
 variable "account_id" {
+  sensitive = true
 }
 
 variable "aws_partition" {
