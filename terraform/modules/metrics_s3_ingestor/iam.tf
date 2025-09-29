@@ -58,7 +58,8 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       },
       {
         "Action" : [
-          "rds:ListTagsForResource"
+          "rds:ListTagsForResource",
+          "rds:DescribeDBInstances"
         ],
         "Effect" : "Allow",
         "Resource" : [
