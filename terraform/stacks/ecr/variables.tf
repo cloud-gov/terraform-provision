@@ -18,7 +18,6 @@ variable "repositories" {
     "clamav-rest-candidate",         # image for malware scanning service which has not yet passed testing
     "cloud-service-broker",
     "cloudfoundry-cflinuxfs4", # current stack in CF
-    "concourse-http-jq-resource",
     "concourse-task",
     "concourse-rwlock-resource",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
