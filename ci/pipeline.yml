@@ -688,8 +688,6 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-          - get: check-s3-cidr-ranges
-            trigger: true
       - task: terraform-plan-development
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -967,8 +965,6 @@ jobs:
             trigger: true
           - get: plan-timer
             trigger: true
-          - get: check-s3-cidr-ranges
-            trigger: true
       - task: terraform-plan-staging
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
@@ -1242,8 +1238,6 @@ jobs:
           - get: cg-provision-repo
             trigger: true
           - get: plan-timer
-            trigger: true
-          - get: check-s3-cidr-ranges
             trigger: true
       - task: terraform-plan-production
         tags: [iaas]
@@ -2297,12 +2291,6 @@ resources:
       aws_region: us-gov-west-1
       tag: latest
 
-  - name: check-s3-cidr-ranges
-    type: http-jq-resource
-    source:
-      base_url: https://ip-ranges.amazonaws.com/ip-ranges.json
-      jq_filter: '[.prefixes[] | select(.service=="S3") | select(.region=="us-gov-west-1")] | [.[].ip_prefix] | sort | {"range" : join("__")}'
-
 resource_types:
   - name: registry-image
     type: registry-image
@@ -2358,11 +2346,3 @@ resource_types:
       aws_region: us-gov-west-1
       tag: latest
 
-  - name: http-jq-resource
-    type: registry-image
-    source:
-      aws_access_key_id: ((ecr_aws_key))
-      aws_secret_access_key: ((ecr_aws_secret))
-      repository: concourse-http-jq-resource
-      aws_region: us-gov-west-1
-      tag: latest
