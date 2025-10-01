@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_stream" "main" {
 
   include_filter {
     namespace = "AWS/ES"
-    metric_names = ["CPUUtilization",
+    metric_names = [
       "CPUUtilization",
       "JVMMemoryPressure",
       "FreeStorageSpace",
@@ -34,6 +34,17 @@ resource "aws_cloudwatch_metric_stream" "main" {
       "ThreadpoolSearchQueue",
       "ThreadpoolSearchRejected",
     "ThreadpoolWriteRejected"]
+  }
+
+  include_filter {
+    namespace = "AWS/RDS"
+    metric_names = [
+      "CPUUtilization",
+      "DatabaseConnections",
+      "FreeStorageSpace",
+      "ReadLatency",
+      "WriteLatency"
+    ]
   }
 
   tags = merge(local.common_tags, {
