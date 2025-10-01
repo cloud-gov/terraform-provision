@@ -63,7 +63,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:*"
+          "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:/cg-aws-broker-*"
         ]
       }
     ]
