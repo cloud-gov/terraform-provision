@@ -43,8 +43,7 @@ resource "aws_cloudwatch_metric_stream" "main" {
       "DatabaseConnections",
       "FreeStorageSpace",
       "ReadLatency",
-      "WriteLatency",
-      "AllocatedStorage"
+      "WriteLatency"
     ]
   }
 
