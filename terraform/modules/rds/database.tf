@@ -17,16 +17,18 @@ resource "aws_db_instance" "rds_database" {
 
   auto_minor_version_upgrade = true
 
-  db_name           = var.rds_db_name
-  allocated_storage = var.rds_db_size
-  storage_type      = var.rds_db_storage_type
-  iops              = var.rds_db_iops
-  instance_class    = var.rds_instance_type
+  db_name        = var.rds_db_name
+  instance_class = var.rds_instance_type
+
+  # Configure Storage
+  allocated_storage     = var.rds_db_size
+  max_allocated_storage = var.rds_db_max_size
+  storage_type          = var.rds_db_storage_type
+  storage_encrypted     = true
+  iops                  = var.rds_db_iops
 
   username = var.rds_username
   password = var.rds_password
-
-  storage_encrypted = true
 
   db_subnet_group_name   = var.rds_subnet_group
   vpc_security_group_ids = var.rds_security_groups

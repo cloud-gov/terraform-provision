@@ -16,6 +16,12 @@ variable "rds_db_size" {
   default = 20
 }
 
+variable "rds_db_max_size" {
+  description = "Set to a value larger than rds_db_size to enable storage autoscaling. Setting to null disables storage autoscaling, similar to iops."
+  default     = null
+}
+
+
 variable "rds_password" {
   sensitive = true
 }
@@ -290,6 +296,15 @@ variable "loadbalancer_forward_new_weight" {
   default     = 0
 }
 
+
+variable "rds_db_size_bosh_credhub" {
+  default = 100
+}
+
+variable "rds_db_max_size_bosh_credhub" {
+  description = "Set to a value larger than rds_db_size to enable storage autoscaling. Setting to null disables storage autoscaling, similar to iops."
+  default     = null
+}
 
 variable "rds_db_engine_version_bosh_credhub" {
   default = "15.5"
