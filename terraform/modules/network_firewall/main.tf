@@ -84,79 +84,10 @@ resource "aws_networkfirewall_vpc_endpoint_association" "association" {
   }
 }
 
-# Create CloudWatch log group
 resource "aws_cloudwatch_log_group" "network_firewall_cloudwatch_log_group" {
-  name = "${var.environment}-${var.firewall_name}-firewall-log-group"
-  # Lowest allowed value that fulfills M-21-31 reqs of storing for 30 months
+  name              = "${var.environment}-${var.firewall_name}-firewall-log-group"
   retention_in_days = 1096
 }
-
-# # Create IAM role for sending flow logs
-# resource "aws_iam_role" "flow_log_role" {
-#   name               = "${var.environment}-${var.firewall_name}-firewall-log-role"
-#   assume_role_policy = <<EOF
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Sid": "",
-#       "Effect": "Allow",
-#       "Principal": {
-#         "Service": "vpc-flow-logs.amazonaws.com"
-#       },
-#       "Action": "sts:AssumeRole"
-#     }
-#   ]
-# }
-# EOF
-
-# }
-
-# resource "aws_iam_role_policy" "flow_log_policy" {
-#   name   = "${var.stack_description}-flow-log-policy"
-#   role   = aws_iam_role.flow_log_role.id
-#   policy = <<EOF
-# {
-#     "Version":"2012-10-17",		 	 	 
-#     "Statement": [
-#         {
-#             "Action": [
-#                 "logs:CreateLogDelivery",
-#                 "logs:GetLogDelivery",
-#                 "logs:UpdateLogDelivery",
-#                 "logs:DeleteLogDelivery",
-#                 "logs:ListLogDeliveries"
-#             ],
-#             "Resource": [
-#                 "*"
-#             ],
-#             "Effect": "Allow",
-#             "Sid": "FirewallLogging"
-#         },
-#         {
-#             "Sid": "FirewallLoggingCWL",
-#             "Action": [
-#                 "logs:PutResourcePolicy",
-#                 "logs:DescribeResourcePolicies",
-#                 "logs:DescribeLogGroups"
-#             ],
-#             "Resource": [
-#             "arn:aws:logs:us-east-1:123456789012:log-group:log-group-name"
-#             ],
-#             "Effect": "Allow"
-#         }
-#     ]
-# }
-# EOF
-
-# }
-
-# resource "aws_flow_log" "main_vpc_flow_log" {
-#   log_destination = aws_cloudwatch_log_group.main_vpc_flow_log_cloudwatch_log_group.arn
-#   iam_role_arn    = aws_iam_role.flow_log_role.arn
-#   vpc_id          = aws_vpc.main_vpc.id
-#   traffic_type    = "ALL"
-# }
 
 resource "aws_networkfirewall_logging_configuration" "logging" {
   firewall_arn = aws_networkfirewall_firewall.network-firewall.arn
