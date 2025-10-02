@@ -718,6 +718,7 @@ jobs:
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
           TF_VAR_rds_db_engine_version: "15.12"
           TF_VAR_rds_parameter_group_family: "postgres15"
+          TF_VAR_rds_db_max_size: 40
 
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
