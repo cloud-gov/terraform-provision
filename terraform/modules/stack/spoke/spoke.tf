@@ -16,6 +16,7 @@ module "base" {
   rds_private_cidr_4                        = var.rds_private_cidr_4
   rds_instance_type                         = var.rds_instance_type
   rds_db_size                               = var.rds_db_size
+  rds_db_max_size                           = var.rds_db_max_size
   rds_db_name                               = var.rds_db_name
   rds_db_engine                             = var.rds_db_engine
   rds_db_engine_version                     = var.rds_db_engine_version
@@ -30,6 +31,8 @@ module "base" {
   bosh_default_ssh_public_key               = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts                = var.s3_gateway_policy_accounts
   cidr_blocks                               = var.cidr_blocks
+  credhub_rds_db_size                       = var.rds_db_size_bosh_credhub
+  credhub_rds_db_max_size                   = var.rds_db_max_size_bosh_credhub
   credhub_rds_db_engine_version             = var.rds_db_engine_version_bosh_credhub
   credhub_rds_parameter_group_family        = var.rds_parameter_group_family_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub

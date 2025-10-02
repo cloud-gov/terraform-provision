@@ -44,6 +44,7 @@ module "rds" {
   stack_description               = var.stack_description
   rds_instance_type               = var.rds_instance_type
   rds_db_size                     = var.rds_db_size
+  rds_db_max_size                 = var.rds_db_max_size
   rds_db_engine                   = var.rds_db_engine
   rds_db_engine_version           = var.rds_db_engine_version
   rds_db_name                     = var.rds_db_name
@@ -66,6 +67,7 @@ module "credhub_rds" {
   rds_db_name                     = var.credhub_rds_db_name
   rds_instance_type               = var.credhub_rds_instance_type
   rds_db_size                     = var.credhub_rds_db_size
+  rds_db_max_size                 = var.credhub_rds_db_max_size
   rds_db_storage_type             = var.credhub_rds_db_storage_type
   rds_db_engine_version           = var.credhub_rds_db_engine_version
   rds_username                    = var.credhub_rds_username

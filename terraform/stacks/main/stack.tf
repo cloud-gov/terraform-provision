@@ -192,6 +192,7 @@ module "stack" {
   az2                                       = data.aws_availability_zones.available.names[var.az2_index]
   aws_default_region                        = var.aws_default_region
   rds_db_size                               = var.rds_db_size
+  rds_db_max_size                           = var.rds_db_max_size
   rds_apply_immediately                     = var.rds_apply_immediately
   rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade
   rds_instance_type                         = var.rds_instance_type
@@ -209,6 +210,8 @@ module "stack" {
   restricted_ingress_web_ipv6_cidrs         = var.restricted_ingress_web_ipv6_cidrs
   rds_password                              = var.rds_password
   credhub_rds_password                      = var.credhub_rds_password
+  rds_db_size_bosh_credhub                  = var.rds_db_size_bosh_credhub
+  rds_db_max_size_bosh_credhub              = var.rds_db_max_size_bosh_credhub
   rds_db_engine_version_bosh_credhub        = var.rds_db_engine_version_bosh_credhub
   rds_parameter_group_family_bosh_credhub   = var.rds_parameter_group_family_bosh_credhub
   rds_shared_preload_libraries_bosh_credhub = var.rds_shared_preload_libraries_bosh_credhub

@@ -9,6 +9,11 @@ variable "rds_db_size" {
   default = 20
 }
 
+variable "rds_db_max_size" {
+  description = "Set to a value larger than rds_db_size to enable storage autoscaling. Setting to null disables storage autoscaling, similar to iops."
+  default     = null
+}
+
 variable "rds_db_storage_type" {
   default = "gp3"
 }
