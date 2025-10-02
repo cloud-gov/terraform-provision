@@ -7,7 +7,9 @@ output "region" {
 }
 
 output "availability_zones" {
-  value = data.aws_availability_zone.azs.name
+  value = [
+    for inst in data.aws_availability_zone.azs : inst.name
+  ]
 }
 
 output "environment" {
@@ -19,11 +21,15 @@ output "firewall_name" {
 }
 
 output "firewall_subnets" {
-  value = aws_subnet.firewall-subnets.cidr_block
+  value = [
+    for inst in aws_subnet.firewall-subnets : inst.cidr_block
+  ]
 }
 
 output "protected_subnets" {
-  value = data.aws_subnet.protected-subnets.cidr_block
+  value = [
+    for inst in data.aws_subnet.protected-subnets : inst.cidr_block
+  ]
 }
 
 output "home_nets" {
