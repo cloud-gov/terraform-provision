@@ -68,11 +68,7 @@ variable "bucket_prefix" {
   default = ""
 }
 
-variable "dns_eip_count_production" {
-  default = 4
-}
-
-variable "dns_eip_count_staging" {
+variable "dns_eip_count" {
   default = 2
 }
 

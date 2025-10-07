@@ -7,9 +7,9 @@ provider "aws" {
   use_fips_endpoint = true
   default_tags {
     tags = {
-      deployment  = "tooling"
-      stack       = "westa-hub"
-      region      = "westa"
+      deployment  = "ops-stage"
+      stack       = "ops"
+      region      = "stg-tool"
       environment = "hub"
       provisioner = "terraform"
     }
@@ -65,11 +65,6 @@ resource "aws_lb_target_group" "dummy" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = module.stack.vpc_id
-}
-
-resource "aws_lb_listener_certificate" "main-staging" {
-  listener_arn    = aws_lb_listener.main.arn
-  certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
 }
 
 module "stack" {
@@ -128,116 +123,37 @@ module "concourse" {
   rds_db_storage_type             = "gp3"
   rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
-  rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-production"
+  rds_final_snapshot_identifier   = "final-snapshot-atc-{var.stack_description}"
   listener_arn                    = aws_lb_listener.main.arn
-  hosts                           = var.concourse_production_hosts
+  hosts                           = var.concourse_hosts
 }
 
-module "concourse_staging" {
-  source                          = "../../modules/concourse_v2"
-  stack_description               = "${var.stack_description}-stage" # var.stack_description is too long, max 32 length total
-  vpc_id                          = module.stack.vpc_id
-  concourse_cidrs                 = [cidrsubnet(var.vpc_cidr, 8, 33), cidrsubnet(var.vpc_cidr, 8, 34), cidrsubnet(var.vpc_cidr, 8, 35)]
-  concourse_availability_zones    = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
-  route_table_ids                 = module.stack.private_route_table_ids
-  rds_password                    = random_string.concourse_staging_rds_password.result
-  rds_subnet_group                = module.stack.rds_subnet_group
-  rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name        = "tooling-concourse-staging"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_db_engine_version           = var.rds_db_engine_version
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = var.concourse_staging_rds_instance_type
-  rds_db_size                     = 400
-  rds_db_storage_type             = "gp3"
-  rds_db_iops                     = 12000
-  rds_multi_az                    = var.rds_multi_az
-  rds_final_snapshot_identifier   = "final-snapshot-atc-tooling-staging"
-  listener_arn                    = aws_lb_listener.main.arn
-  hosts                           = var.concourse_staging_hosts
-}
-
-module "credhub_production" {
+module "credhub" {
   source                          = "../../modules/credhub_v2"
-  stack_description               = "${var.stack_description}-prod"
+  stack_description               = "${var.stack_description}"
   vpc_id                          = module.stack.vpc_id
   credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 36), cidrsubnet(var.vpc_cidr, 8, 37), cidrsubnet(var.vpc_cidr, 8, 38)]
   credhub_availability_zones      = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids                 = module.stack.private_route_table_ids
-  rds_password                    = random_string.credhub_prod_rds_password.result
+  rds_password                    = random_string.credhub_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name        = "tooling-credhub-production"
+  rds_parameter_group_name        = "${var.stack_description}-credhub"
   rds_parameter_group_family      = var.rds_parameter_group_family
   rds_db_engine_version           = var.rds_db_engine_version
   rds_apply_immediately           = var.rds_apply_immediately
   rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = var.credhub_production_rds_instance_type
+  rds_instance_type               = var.credhub_rds_instance_type
   rds_db_size                     = 400
   rds_db_storage_type             = "gp3"
   rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
-  rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-production"
+  rds_final_snapshot_identifier   = "final-snapshot-${var.stack_description}-credhub"
   listener_arn                    = aws_lb_listener.main.arn
-  hosts                           = var.credhub_production_hosts
+  hosts                           = var.credhub_hosts
 }
 
-module "credhub_staging" {
-  source                          = "../../modules/credhub_v2"
-  stack_description               = "${var.stack_description}-stage"
-  vpc_id                          = module.stack.vpc_id
-  credhub_cidrs                   = [cidrsubnet(var.vpc_cidr, 8, 39), cidrsubnet(var.vpc_cidr, 8, 40), cidrsubnet(var.vpc_cidr, 8, 41)]
-  credhub_availability_zones      = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
-  route_table_ids                 = module.stack.private_route_table_ids
-  rds_password                    = random_string.credhub_staging_rds_password.result
-  rds_subnet_group                = module.stack.rds_subnet_group
-  rds_security_groups             = [module.stack.rds_postgres_security_group]
-  rds_parameter_group_name        = "tooling-credhub-staging"
-  rds_parameter_group_family      = var.rds_parameter_group_family
-  rds_db_engine_version           = var.rds_db_engine_version
-  rds_apply_immediately           = var.rds_apply_immediately
-  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-  rds_instance_type               = var.credhub_staging_rds_instance_type
-  rds_db_size                     = 400
-  rds_db_storage_type             = "gp3"
-  rds_db_iops                     = 12000
-  rds_multi_az                    = var.rds_multi_az
-  rds_final_snapshot_identifier   = "final-snapshot-credhub-tooling-staging"
-  listener_arn                    = aws_lb_listener.main.arn
-  hosts                           = var.credhub_staging_hosts
-}
-
-# TODO: need to rework route_table_id_az* to work with modified module.stack
-#module "defectdojo_staging" {
-#  source                          = "../../modules/defect_dojo"
-#  stack_description               = var.stack_description
-#  vpc_id                          = module.stack.vpc_id
-#  defectdojo_cidr_az1             = cidrsubnet(var.vpc_cidr, 8, 48)
-#  defectdojo_cidr_az2             = cidrsubnet(var.vpc_cidr, 8, 49)
-#  defectdojo_az1                  = data.aws_availability_zones.available.names[0]
-#  defectdojo_az2                  = data.aws_availability_zones.available.names[1]
-#  route_table_id_az1              = module.stack.private_route_table_az1
-#  route_table_id_az2              = module.stack.private_route_table_az2
-#  rds_password                    = var.defectdojo_staging_rds_password
-#  rds_subnet_group                = module.stack.rds_subnet_group
-#  rds_security_groups             = [module.stack.rds_postgres_security_group]
-#  rds_parameter_group_name        = "tooling-defectdojo-staging"
-#  rds_parameter_group_family      = var.rds_parameter_group_family
-#  rds_db_engine_version           = var.rds_db_engine_version
-#  rds_apply_immediately           = var.rds_apply_immediately
-#  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
-#  rds_instance_type               = "db.m5.large"
-#  rds_db_size                     = 400
-#  rds_db_storage_type             = "gp3"
-#  rds_db_iops                     = 12000
-#  rds_multi_az                    = var.rds_multi_az
-#  rds_final_snapshot_identifier   = "final-snapshot-defectdojo-tooling-staging"
-#  listener_arn                    = aws_lb_listener.main.arn
-#  hosts                           = var.defectdojo_staging_hosts
-#}
-
-module "monitoring_production" {
+module "monitoring" {
   source                        = "../../modules/monitoring_v2"
   stack_description             = "${var.stack_description}-prod"
   vpc_id                        = module.stack.vpc_id
@@ -246,41 +162,16 @@ module "monitoring_production" {
   monitoring_availability_zones = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   route_table_ids               = module.stack.private_route_table_ids
   listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.monitoring_production_hosts
+  hosts                         = var.monitoring_hosts
   doomsday_oidc_client          = var.doomsday_oidc_client
   doomsday_oidc_client_secret   = random_string.oidc_client_secret.result
   opslogin_hostname             = var.opslogin_hostname
 }
 
-module "monitoring_staging" {
-  source                        = "../../modules/monitoring_v2"
-  stack_description             = "${var.stack_description}-stage"
-  vpc_id                        = module.stack.vpc_id
-  vpc_cidr                      = var.vpc_cidr
-  monitoring_cidrs              = [cidrsubnet(var.vpc_cidr, 8, 45), cidrsubnet(var.vpc_cidr, 8, 46), cidrsubnet(var.vpc_cidr, 8, 47)]
-  monitoring_availability_zones = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
-  route_table_ids               = module.stack.private_route_table_ids
-  listener_arn                  = aws_lb_listener.main.arn
-  hosts                         = var.monitoring_staging_hosts
-  doomsday_oidc_client          = var.doomsday_oidc_client
-  doomsday_oidc_client_secret   = random_string.oidc_client_secret.result
-  opslogin_hostname             = var.opslogin_hostname
-}
-
-resource "aws_eip" "production_dns_eip" {
+resource "aws_eip" "dns_eip" {
   domain = "vpc"
 
-  count = var.dns_eip_count_production
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_eip" "staging_dns_eip" {
-  domain = "vpc"
-
-  count = var.dns_eip_count_staging
+  count = var.dns_eip_count
 
   lifecycle {
     prevent_destroy = true
