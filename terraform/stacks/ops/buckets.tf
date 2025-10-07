@@ -21,28 +21,15 @@ module "protobosh_blobstore_bucket" {
 }
 
 
-module "billing_bucket_staging" {
+module "billing_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-cg-billing-staging"
+  bucket        = "${var.bucket_prefix}-cg-billing"
   aws_partition = data.aws_partition.current.partition
 }
 
-module "billing_bucket_production" {
+module "buildpack_notify_state" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-cg-billing-production"
-  aws_partition = data.aws_partition.current.partition
-}
-
-module "buildpack_notify_state_staging" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-buildpack-notify-state-staging"
-  aws_partition = data.aws_partition.current.partition
-  versioning    = "true"
-}
-
-module "buildpack_notify_state_production" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "${var.bucket_prefix}-buildpack-notify-state-production"
+  bucket        = "${var.bucket_prefix}-buildpack-notify-state"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
@@ -67,14 +54,6 @@ module "build_artifacts_bucket" {
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
-
-# Removed from tooling on branch main
-# module "pgp_keys_bucket" {
-#   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-#   bucket        = "${var.bucket_prefix}-cg-pgp-keys"
-#   aws_partition = data.aws_partition.current.partition
-#   versioning    = "true"
-# }
 
 module "container_scanning_bucket" {
   source        = "../../modules/s3_bucket/encrypted_bucket_v2"

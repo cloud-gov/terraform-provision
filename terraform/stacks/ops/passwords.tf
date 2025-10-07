@@ -1,4 +1,4 @@
-resource "random_string" "concourse_prod_rds_password" {
+resource "random_string" "concourse_rds_password" {
   length      = 32
   special     = false
   min_special = 0
@@ -16,25 +16,7 @@ resource "random_string" "protobosh_rds_password" {
   min_lower   = 5
 }
 
-resource "random_string" "credhub_prod_rds_password" {
-  length      = 32
-  special     = false
-  min_special = 0
-  min_upper   = 5
-  min_numeric = 5
-  min_lower   = 5
-}
-
-resource "random_string" "concourse_staging_rds_password" {
-  length      = 32
-  special     = false
-  min_special = 0
-  min_upper   = 5
-  min_numeric = 5
-  min_lower   = 5
-}
-
-resource "random_string" "credhub_staging_rds_password" {
+resource "random_string" "credhub_rds_password" {
   length      = 32
   special     = false
   min_special = 0

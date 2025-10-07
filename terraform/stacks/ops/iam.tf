@@ -10,7 +10,6 @@ module "iam_cert_provision_user" {
   account_id    = data.aws_caller_identity.current.account_id
 }
 
-
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "blobstore"
@@ -53,7 +52,7 @@ module "concourse_worker_policy" {
   policy_name                    = "concourse-worker"
   aws_partition                  = data.aws_partition.current.partition
   varz_bucket                    = module.varz_bucket.bucket_name
-  varz_staging_bucket            = module.varz_bucket_stage.bucket_name
+  varz_staging_bucket            = module.varz_bucket.bucket_name
   bosh_release_bucket            = module.bosh_release_bucket.bucket_name
   terraform_state_bucket         = var.terraform_state_bucket
   build_artifacts_bucket         = module.build_artifacts_bucket.bucket_name
@@ -124,25 +123,25 @@ module "protobosh_role" {
 }
 
 
-#TODO: I think this one can come out. westa-hub-default gets used on the tooling director for its deployments and the protobosh uses westa-hub-protobosh when its deploying the tooling bosh.
-module "bosh_role" {
-  source    = "../../modules/iam_role"
-  role_name = "${var.stack_description}-bosh"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-  iam_assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Principal" : {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-bosh",
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Effect" : "Allow"
-      }
-    ]
-  })
-}
+# #TODO: I think this one can come out. westa-hub-default gets used on the tooling director for its deployments and the protobosh uses westa-hub-protobosh when its deploying the tooling bosh.
+# module "bosh_role" {
+#   source    = "../../modules/iam_role"
+#   role_name = "${var.stack_description}-bosh"
+#   #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
+#   iam_assume_role_policy = jsonencode({
+#     "Version" : "2012-10-17",
+#     "Statement" : [
+#       {
+#         "Action" : "sts:AssumeRole",
+#         "Principal" : {
+#           "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-bosh",
+#           "Service" : "ec2.amazonaws.com"
+#         },
+#         "Effect" : "Allow"
+#       }
+#     ]
+#   })
+# }
 
 module "bosh_compilation_role" {
   source    = "../../modules/iam_role"
@@ -186,8 +185,6 @@ module "protobosh_compilation_role" {
 
 }
 
-
-
 module "concourse_worker_role" {
   source    = "../../modules/iam_role"
   role_name = "tooling-concourse-worker"
@@ -210,7 +207,6 @@ module "concourse_iaas_worker_role" {
     ]
   })
 }
-
 
 resource "aws_iam_policy_attachment" "blobstore" {
   name       = "${var.stack_description}-blobstore"
