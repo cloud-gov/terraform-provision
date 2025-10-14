@@ -52,3 +52,21 @@ resource "random_string" "oidc_client_secret" {
   min_numeric = 5
   min_lower   = 5
 }
+
+resource "random_string" "defectdojo_rds_password" {
+  length      = 32
+  special     = false
+  min_special = 0
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}
+
+resource "random_string" "doomsday_oidc_client_secret" {
+  length      = 32
+  special     = false
+  min_special = 0
+  min_upper   = 5
+  min_numeric = 5
+  min_lower   = 5
+}

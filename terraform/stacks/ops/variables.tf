@@ -1,9 +1,15 @@
-variable "stack_description" {
-  default = "westa-hub"
-}
+
 
 variable "aws_default_region" {
   default = "us-gov-west-1"
+}
+
+variable "doomsday_oidc_client" {
+  default = "doomsday"
+}
+
+variable "stack_description" {
+  default = "westa-hub"
 }
 
 variable "vpc_cidr" {
@@ -27,6 +33,19 @@ variable "rds_db_engine_version" {
 
 variable "rds_parameter_group_family" {
   default = "postgres15"
+}
+
+variable "rds_shared_preload_libraries" {
+  default = "pgaudit,pg_stat_statements"
+}
+
+variable "rds_pgaudit_log_values" {
+  default = "ddl,role"
+}
+
+
+variable "rds_pgaudit_log_values_bosh" {
+  default = "ddl,role"
 }
 
 variable "remote_state_bucket" {
@@ -64,10 +83,6 @@ variable "restricted_ingress_web_ipv6_cidrs" {
   type = list(string)
 }
 
-variable "bucket_prefix" {
-  default = ""
-}
-
 variable "dns_eip_count" {
   default = 2
 }
@@ -79,8 +94,8 @@ variable "smtp_ingress_cidr_blocks" {
   type = list(string)
 }
 
-variable "doomsday_oidc_client" {
-}
+# variable "doomsday_oidc_client" {
+# }
 
 variable "nessus_oidc_client" {
 }
@@ -105,14 +120,17 @@ variable "concourse_rds_instance_type" {
   default = "db.m5.large"
 }
 
-variable "defectdojo_rds_password" {
-  sensitive = true
-}
+# variable "defectdojo_rds_password" {
+#   sensitive = true
+# }
 
 variable "cloudtrail_accesslog_bucket" {
   default = "cg-accesslogs"
 }
 
+variable "log_bucket_name" {
+  default = "cg-elb-logs"
+}
 
 variable "github_backups_bucket_name" {
   type    = string
@@ -128,4 +146,5 @@ variable "create_jumpbox" {
 
 variable "aws_lb_listener_ssl_policy" {
   type    = string
+  default = "ELBSecurityPolicy-TLS13-1-2-Ext1-2021-06"
 }

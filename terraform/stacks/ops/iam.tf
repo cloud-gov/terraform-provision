@@ -10,11 +10,20 @@ module "iam_cert_provision_user" {
   account_id    = data.aws_caller_identity.current.account_id
 }
 
+# This user has access to all cloudtrail events in the account, as there
+# doesn't seem to be a way of constraining to just cloudfront events relevant
+# to a set of S3 buckets (or all S3 buckets, for that matter).
+#
+# If you need cloudtrail auditor access for another reason, PLEASE CREATE A NEW
+# USER AND MODULE (yes, even with the same permissions).  Having separate users
+# with the same permissions simplifies our work when we have to rotate
+# credentials.
+
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "blobstore"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = module.bosh_release_bucket.bucket_name
+  bucket_name   = module.bosh_blobstore_bucket.bucket_name
 }
 
 module "bosh_policy" {
@@ -25,26 +34,11 @@ module "bosh_policy" {
   bucket_name   = module.bosh_blobstore_bucket.bucket_name
 }
 
-module "protobosh_policy" {
-  source        = "../../modules/iam_role_policy/bosh"
-  policy_name   = "${var.stack_description}-protobosh"
-  aws_partition = data.aws_partition.current.partition
-  account_id    = data.aws_caller_identity.current.account_id
-  bucket_name   = module.protobosh_blobstore_bucket.bucket_name
-}
-
 module "bosh_compilation_policy" {
   source        = "../../modules/iam_role_policy/bosh_compilation"
   policy_name   = "${var.stack_description}-bosh-compilation"
   aws_partition = data.aws_partition.current.partition
-  bucket_name   = module.bosh_release_bucket.bucket_name
-}
-
-module "protobosh_compilation_policy" {
-  source        = "../../modules/iam_role_policy/bosh_compilation"
-  policy_name   = "${var.stack_description}-protobosh-compilation"
-  aws_partition = data.aws_partition.current.partition
-  bucket_name   = module.protobosh_blobstore_bucket.bucket_name
+  bucket_name   = module.bosh_blobstore_bucket.bucket_name
 }
 
 module "concourse_worker_policy" {
@@ -52,19 +46,20 @@ module "concourse_worker_policy" {
   policy_name                    = "concourse-worker"
   aws_partition                  = data.aws_partition.current.partition
   varz_bucket                    = module.varz_bucket.bucket_name
-  varz_staging_bucket            = module.varz_bucket.bucket_name
+  varz_staging_bucket            = module.varz_bucket_stage.bucket_name
   bosh_release_bucket            = module.bosh_release_bucket.bucket_name
   terraform_state_bucket         = var.terraform_state_bucket
   build_artifacts_bucket         = module.build_artifacts_bucket.bucket_name
   semver_bucket                  = module.semver_bucket.bucket_name
-  buildpack_notify_bucket        = "${var.bucket_prefix}-buildpack-notify-state-*"
-  billing_bucket                 = "${var.bucket_prefix}-cg-billing-*"
+  buildpack_notify_bucket        = "${var.stack_description}-buildpack-notify-state-*"
+  billing_bucket                 = "${var.stack_description}-cg-billing-*"
   cg_binaries_bucket             = module.cg_binaries_bucket.bucket_name
   log_bucket                     = module.log_bucket.elb_bucket_name
   concourse_varz_bucket          = module.concourse_varz_bucket.bucket_name
   container_scanning_bucket_name = module.container_scanning_bucket.bucket_name
   github_backups_bucket_name     = var.github_backups_bucket_name
 }
+
 
 module "concourse_iaas_worker_policy" {
   source      = "../../modules/iam_role_policy/concourse_iaas_worker"
@@ -86,103 +81,21 @@ module "ecr_policy" {
 module "default_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-default"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-  iam_assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Principal" : {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-default",
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Effect" : "Allow"
-      }
-    ]
-  })
 }
 
-
-module "protobosh_role" {
+module "master_bosh_role" {
   source    = "../../modules/iam_role"
-  role_name = "${var.stack_description}-protobosh"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-  iam_assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Principal" : {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh",
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Effect" : "Allow"
-      }
-    ]
-  })
+  role_name = "master-bosh"
 }
 
-
-# #TODO: I think this one can come out. westa-hub-default gets used on the tooling director for its deployments and the protobosh uses westa-hub-protobosh when its deploying the tooling bosh.
-# module "bosh_role" {
-#   source    = "../../modules/iam_role"
-#   role_name = "${var.stack_description}-bosh"
-#   #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-#   iam_assume_role_policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       {
-#         "Action" : "sts:AssumeRole",
-#         "Principal" : {
-#           "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-bosh",
-#           "Service" : "ec2.amazonaws.com"
-#         },
-#         "Effect" : "Allow"
-#       }
-#     ]
-#   })
-# }
+module "bosh_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-bosh"
+}
 
 module "bosh_compilation_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-bosh-compilation"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-
-  iam_assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Principal" : {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh-compilation",
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Effect" : "Allow"
-      }
-    ]
-  })
-}
-
-
-module "protobosh_compilation_role" {
-  source    = "../../modules/iam_role"
-  role_name = "${var.stack_description}-protobosh-compilation"
-  #TODO: Running the below before the role is created errors out.  If you comment it out the first time and run, then add this back in, it works fine.  Probably need to split this out.
-
-  iam_assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Principal" : {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/bosh-passed/${var.stack_description}-protobosh-compilation",
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Effect" : "Allow"
-      }
-    ]
-  })
-
 }
 
 module "concourse_worker_role" {
@@ -238,19 +151,7 @@ resource "aws_iam_policy_attachment" "bosh" {
   policy_arn = module.bosh_policy.arn
 
   roles = [
-    module.bosh_role.role_name,
-    module.protobosh_role.role_name,
-    module.default_role.role_name,
-    module.bosh_compilation_role.role_name,
-  ]
-}
-
-resource "aws_iam_policy_attachment" "protobosh" {
-  name       = "${var.stack_description}-protobosh"
-  policy_arn = module.protobosh_policy.arn
-
-  roles = [
-    module.protobosh_role.role_name,
+    module.master_bosh_role.role_name,
     module.bosh_role.role_name,
   ]
 }
@@ -264,21 +165,11 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "protobosh_compilation" {
-  name       = "${var.stack_description}-protobosh-compilation"
-  policy_arn = module.protobosh_compilation_policy.arn
-
-  roles = [
-    module.protobosh_compilation_role.role_name,
-  ]
-}
-
 resource "aws_iam_policy_attachment" "concourse_worker" {
   name       = "concourse_worker"
   policy_arn = module.concourse_worker_policy.arn
 
   roles = [
-    module.bosh_role.role_name,
     module.concourse_worker_role.role_name,
   ]
 }

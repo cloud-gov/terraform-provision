@@ -1,3 +1,127 @@
+
+- bootstrap-westa-hub
+
+  - comment out backend
+
+```
+aws-vault exec gov-stg-tool-admin -- bash
+
+export STACK_NAME=bootstrap-ops-stage
+export S3_TFSTATE_BUCKET=ops-stage-terraform-state
+export TF_VAR_tfstate_bucket_name=ops-stage-terraform-state
+
+init_args=(
+  "-backend=true"
+  "-backend-config=path=terraform.tfstate"
+)
+
+terraform init "${init_args[@]}" -upgrade
+
+terraform apply
+```
+
+- add s3 backend (migrate state)
+
+```
+init_args=(
+  "-backend=true"
+  "-backend-config=encrypt=true"
+  "-backend-config=bucket=${S3_TFSTATE_BUCKET}"
+  "-backend-config=key=${STACK_NAME}/terraform.tfstate"
+)
+
+terraform init "${init_args[@]}" -upgrade
+
+terraform apply
+```
+
+- ../bootstrap
+
+
+```
+aws-vault exec gov-stg-tool-admin -- bash
+
+export STACK_NAME=bootstrap
+export S3_TFSTATE_BUCKET=ops-stage-terraform-state
+export TF_VAR_use_vpc_peering="0"
+export TF_VAR_tooling_state_bucket="ops-stage-terraform-state"
+export TF_VAR_tooling_stack_name="ops-stage"
+
+
+
+init_args=(
+  "-backend=true"
+  "-backend-config=encrypt=true"
+  "-backend-config=bucket=${S3_TFSTATE_BUCKET}"
+  "-backend-config=key=${STACK_NAME}/terraform.tfstate"
+)
+
+terraform init "${init_args[@]}" -upgrade
+
+terraform apply
+```
+
+- ops
+
+```
+brew install certbot
+$(brew --prefix certbot)/libexec/bin/python3 -m pip install certbot-dns-route53
+
+aws-vault exec com-prd-plat-admin -- bash
+export AWS_CA_BUNDLE=$(brew --prefix)/etc/ca-certificates/cert.pem
+
+mkdir -p certs
+cd certs
+
+export EMAIL='cloud-gov-operations@gsa.gov'
+export ACME_SERVER="https://acme-v02.api.letsencrypt.org/directory"
+
+export config_path=$(pwd)
+export DOMAIN="*.ops-stage.cloud.gov"
+
+  <!-- --server "${ACME_SERVER:-https://acme-staging-v02.api.letsencrypt.org/directory}" \ -->
+
+# DISABLE ZSCALER
+
+certbot certonly \
+  -n --agree-tos \
+  --dns-route53 \
+  --config-dir "${config_path}" \
+  --work-dir "${config_path}" \
+  --logs-dir "${config_path}" \
+  --email "${EMAIL}" \
+  --domain "${DOMAIN}"
+```
+
+```
+aws-vault exec gov-stg-tool-admin -- bash
+export AWS_CA_BUNDLE=$(brew --prefix)/etc/ca-certificates/cert.pem
+
+cd certs
+
+export config_path=$(pwd)
+export CERT_PATH="/lets-encrypt/ops-stage/"
+export CERT_PREFIX="star.ops-stage.cloud.gov"
+export out_path=$(ls -d -1 ${config_path}/live/*/)
+
+aws iam upload-server-certificate \
+  --path "${CERT_PATH}" \
+  --server-certificate-name "${CERT_PREFIX}-$(date +%Y-%m-%d-%H-%M)" \
+  --certificate-body file://${out_path}/cert.pem \
+  --certificate-chain file://${out_path}/chain.pem \
+  --private-key file://${out_path}/privkey.pem
+
+
+aws iam list-server-certificates --path-prefix "${CERT_PATH}" --no-paginate
+
+```
+
+
+- bootstrap: redeploy withg vpc peering
+
+
+
+
 # Create new tooling environment
 
 This stack is run after `bootstrap` and `bootstrap-westa-hub` are created so that there is an s3 bucket to store the state file for this terraform run.
