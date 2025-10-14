@@ -370,7 +370,7 @@ module "monitoring_workshop" {
   stack_description           = "production-workshop"
   vpc_id                      = module.stack.vpc_id
   vpc_cidr                    = var.vpc_cidr
-  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 34)
+  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 42)
   monitoring_az               = data.aws_availability_zones.available.names[0]
   route_table_id              = module.stack.private_route_table_az1
   listener_arn                = aws_lb_listener.main.arn
@@ -385,7 +385,7 @@ module "monitoring_pages" {
   stack_description           = "production-pages"
   vpc_id                      = module.stack.vpc_id
   vpc_cidr                    = var.vpc_cidr
-  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 35)
+  monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 43)
   monitoring_az               = data.aws_availability_zones.available.names[1]
   route_table_id              = module.stack.private_route_table_az2
   listener_arn                = aws_lb_listener.main.arn
