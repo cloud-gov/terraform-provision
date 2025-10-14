@@ -911,7 +911,7 @@ output "workshop_monitoring_lb_target_group" {
 
 /* Pages Monitoring */
 output "pages_monitoring_az" {
-  value = module.monitor_pages.monitoring_az
+  value = module.monitoring_pages.monitoring_az
 }
 
 output "pages_monitoring_subnet" {
