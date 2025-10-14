@@ -382,7 +382,7 @@ module "monitoring_workshop" {
 
 module "monitoring_pages" {
   source                      = "../../modules/monitoring"
-  stack_description           = "production_pages"
+  stack_description           = "production-pages"
   vpc_id                      = module.stack.vpc_id
   vpc_cidr                    = var.vpc_cidr
   monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 35)
