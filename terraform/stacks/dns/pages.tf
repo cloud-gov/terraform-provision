@@ -75,6 +75,56 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_docs_cloud_gov" {
   records = ["_acme-challenge.docs.cloud.gov.external-domains-production.cloud.gov."]
 }
 
+## Publisher ##
+
+resource "aws_route53_record" "cloud_gov_publisher-dev_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "publisher-dev.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["publisher-dev.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_publisher-dev_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.publisher-dev.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.publisher-dev.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov_publisher-staging_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "publisher-staging.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["publisher-staging.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_publisher-staging_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.publisher-staging.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.publisher-staging.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov_publisher_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "publisher.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["publisher.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_publisher_cloud_gov" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.publisher.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.publisher.cloud.gov.external-domains-production.cloud.gov."]
+}
+
 ## Templates ##
 
 resource "aws_route53_record" "cloud_gov_uswds-11ty_pages_cloud_gov" {
