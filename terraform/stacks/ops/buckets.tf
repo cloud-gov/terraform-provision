@@ -98,14 +98,14 @@ module "container_scanning_bucket" {
 
 # #Buckets which need to be created for bootstrapping, not originally part of this stack
 
-# # Existing is a private bucket requiring AES256 encryption
-# module "varz_bucket" {
-#   source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-#   bucket        = "${var.stack_description}-cloud-gov-varz"
-#   aws_partition = data.aws_partition.current.partition
-#   # force_destroy = "true"
-#   versioning = "true"
-# }
+# Existing is a private bucket requiring AES256 encryption
+module "varz_bucket" {
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
+  bucket        = "${var.stack_description}-cloud-gov-varz"
+  aws_partition = data.aws_partition.current.partition
+  # force_destroy = "true"
+  versioning = "true"
+}
 
 # # Existing is a private bucket requiring AES256 encryption
 # module "varz_bucket_stage" {

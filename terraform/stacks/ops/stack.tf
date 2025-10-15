@@ -80,7 +80,6 @@ resource "aws_lb_target_group" "dummy" {
 
 # resource "aws_lb_listener_certificate" "main-staging" {
 #   listener_arn    = aws_lb_listener.main.arn
-#   certificate_arn = data.aws_iam_server_certificate.wildcard_staging.arn
 # }
 
 # resource "aws_lb_listener_certificate" "main-development" {
@@ -106,8 +105,8 @@ module "stack" {
   rds_private_cidr_2                = cidrsubnet(var.vpc_cidr, 8, 21)
   rds_private_cidr_3                = cidrsubnet(var.vpc_cidr, 7, 11) # This will give 22-23
   rds_private_cidr_4                = cidrsubnet(var.vpc_cidr, 7, 12) # This will give 24-25
-  rds_password                      = random_string.rds_password
-  credhub_rds_password              = random_string.credhub_rds_password
+  rds_password                      = random_string.rds_password.result
+  credhub_rds_password              = random_string.credhub_rds_password.result
   rds_multi_az                      = var.rds_multi_az
   rds_security_groups               = [module.stack.bosh_security_group]
   rds_security_groups_count         = "1"
@@ -202,7 +201,7 @@ module "credhub" {
   credhub_az2                     = data.aws_availability_zones.available.names[1]
   route_table_id_az1              = module.stack.private_route_table_az1
   route_table_id_az2              = module.stack.private_route_table_az2
-  rds_password                    = random_string.credhub_rds_password
+  rds_password                    = random_string.credhub_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "credhub-${var.stack_description}"
@@ -321,7 +320,7 @@ module "defectdojo" {
   defectdojo_az2                  = data.aws_availability_zones.available.names[1]
   route_table_id_az1              = module.stack.private_route_table_az1
   route_table_id_az2              = module.stack.private_route_table_az2
-  rds_password                    = random_string.defectdojo_rds_password
+  rds_password                    = random_string.defectdojo_rds_password.result
   rds_subnet_group                = module.stack.rds_subnet_group
   rds_security_groups             = [module.stack.rds_postgres_security_group]
   rds_parameter_group_name        = "defectdojo-${var.stack_description}"
@@ -352,7 +351,7 @@ module "monitoring" {
   listener_arn                = aws_lb_listener.main.arn
   hosts                       = var.monitoring_hosts
   doomsday_oidc_client        = var.doomsday_oidc_client
-  doomsday_oidc_client_secret = random_string.doomsday_oidc_client_secret
+  doomsday_oidc_client_secret = random_string.doomsday_oidc_client_secret.result
   opslogin_hostname           = var.opslogin_hostname
 }
 

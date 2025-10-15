@@ -38,7 +38,7 @@ resource "aws_lb_listener" "opsuaa_listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = var.aws_lb_listener_ssl_policy
-  certificate_arn   = data.aws_iam_server_certificate.wildcard_production.arn
+  certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.opsuaa_target.arn

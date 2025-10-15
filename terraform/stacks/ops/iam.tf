@@ -46,7 +46,7 @@ module "concourse_worker_policy" {
   policy_name                    = "concourse-worker"
   aws_partition                  = data.aws_partition.current.partition
   varz_bucket                    = module.varz_bucket.bucket_name
-  varz_staging_bucket            = module.varz_bucket_stage.bucket_name
+  varz_staging_bucket            = module.varz_bucket.bucket_name
   bosh_release_bucket            = module.bosh_release_bucket.bucket_name
   terraform_state_bucket         = var.terraform_state_bucket
   build_artifacts_bucket         = module.build_artifacts_bucket.bucket_name
