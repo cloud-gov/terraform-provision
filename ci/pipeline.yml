@@ -2162,7 +2162,7 @@ resources:
   - name: cg-provision-repo-development
     type: git
     source:
-      uri: ((cg_provision_git_url))2
+      uri: ((cg_provision_git_url))
       branch: cloudwatch_lambda
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
