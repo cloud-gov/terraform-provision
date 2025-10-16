@@ -1,12 +1,14 @@
+# V2 is required b/c ACLs are disabled by default
 module "cvd_meta_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cg-clamav-meta"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
 
+# V2 is required b/c ACLs are disabled by default
 module "cvd_database_bucket" {
-  source        = "../../modules/cvd_mirror"
+  source        = "../../modules/cvd_mirror_v2"
   bucket        = "${var.stack_description}-cg-clamav-mirror"
   aws_partition = data.aws_partition.current.partition
   versioning    = "false"

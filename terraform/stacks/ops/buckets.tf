@@ -1,12 +1,14 @@
+# V2 is required b/c ACLs are disabled by default
+
 module "bosh_blobstore_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-bosh-blobstore"
   aws_partition = data.aws_partition.current.partition
   # force_destroy = "true"
 }
 
 module "bosh_release_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cloud-gov-bosh-releases"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
@@ -14,7 +16,7 @@ module "bosh_release_bucket" {
 }
 
 module "billing_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cg-billing"
   aws_partition = data.aws_partition.current.partition
 }
@@ -32,7 +34,7 @@ module "billing_bucket" {
 # }
 
 module "buildpack_notify_state" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-buildpack-notify-state"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
@@ -53,13 +55,13 @@ module "buildpack_notify_state" {
 # }
 
 module "cg_binaries_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cg-binaries"
   aws_partition = data.aws_partition.current.partition
 }
 
 module "log_bucket" {
-  source                   = "../../modules/log_bucket"
+  source                   = "../../modules/log_bucket_v2"
   aws_partition            = data.aws_partition.current.partition
   log_bucket_name          = "${var.stack_description}-cg-elb-logs"
   aws_region               = data.aws_region.current.region
@@ -67,14 +69,14 @@ module "log_bucket" {
 }
 
 module "build_artifacts_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cg-build-artifacts"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
 
 module "container_scanning_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket"
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
   bucket        = "${var.stack_description}-cg-container-scanning"
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"

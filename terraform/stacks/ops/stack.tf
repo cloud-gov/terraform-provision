@@ -20,13 +20,18 @@ data "aws_caller_identity" "current" {
 }
 
 data "aws_availability_zones" "available" {
+  # state = "available"
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }
 
 data "aws_region" "current" {
 }
 
 data "aws_iam_server_certificate" "wildcard" {
-  name_prefix = var.wildcard_certificate_name_prefix
+  path_prefix = var.wildcard_certificate_name_prefix
   latest      = true
 }
 
@@ -129,14 +134,15 @@ module "stack" {
 }
 
 module "concourse" {
-  source                          = "../../modules/concourse"
-  stack_description               = var.stack_description
-  vpc_id                          = module.stack.vpc_id
-  concourse_cidr                  = cidrsubnet(var.vpc_cidr, 8, 30)
-  concourse_cidr_az2              = cidrsubnet(var.vpc_cidr, 8, 60)
-  concourse_az                    = data.aws_availability_zones.available.names[0]
-  concourse_az2                   = data.aws_availability_zones.available.names[1]
-  suffix                          = data.aws_availability_zones.available.names[0]
+  source             = "../../modules/concourse"
+  stack_description  = var.stack_description
+  vpc_id             = module.stack.vpc_id
+  concourse_cidr     = cidrsubnet(var.vpc_cidr, 8, 30)
+  concourse_cidr_az2 = cidrsubnet(var.vpc_cidr, 8, 60)
+  concourse_az       = data.aws_availability_zones.available.names[0]
+  concourse_az2      = data.aws_availability_zones.available.names[1]
+  suffix             = "tg"
+  # suffix                          = data.aws_availability_zones.available.names[0]
   route_table_id                  = module.stack.private_route_table_az1
   route_table_id_az2              = module.stack.private_route_table_az2
   rds_password                    = random_string.concourse_rds_password.result

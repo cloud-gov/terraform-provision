@@ -60,7 +60,6 @@ module "concourse_worker_policy" {
   github_backups_bucket_name     = var.github_backups_bucket_name
 }
 
-
 module "concourse_iaas_worker_policy" {
   source      = "../../modules/iam_role_policy/concourse_iaas_worker"
   policy_name = "concourse-iaas-worker"
