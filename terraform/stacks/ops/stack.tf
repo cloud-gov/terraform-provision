@@ -102,6 +102,31 @@ module "stack" {
 
 }
 
+module "network_firewall" {
+  source = "../../modules/network_firewall"
+
+  environment   = var.stack_description
+  firewall_name = var.stack_description
+  firewall_subnets = {
+    (data.aws_availability_zones.available.names[0]) = cidrsubnet(var.vpc_cidr, 8, 200),
+    (data.aws_availability_zones.available.names[1]) = cidrsubnet(var.vpc_cidr, 8, 201)
+  }
+  home_nets                    = [var.vpc_cidr]
+  protected_subnet_cidr_blocks = [cidrsubnet(var.vpc_cidr, 8, 100), cidrsubnet(var.vpc_cidr, 8, 101)]
+  region                       = var.aws_default_region
+  rule_groups = [
+    "AttackInfrastructureStrictOrder",
+    "ThreatSignaturesDoSStrictOrder",
+    "ThreatSignaturesExploitsStrictOrder",
+    "ThreatSignaturesEmergingEventsStrictOrder",
+    "ThreatSignaturesMalwareStrictOrder",
+    "ThreatSignaturesMalwareWebStrictOrder",
+    "ThreatSignaturesWebAttacksStrictOrder",
+    "ThreatSignaturesPhishingStrictOrder",
+  ]
+  vpc_id = module.stack.vpc_id
+}
+
 module "concourse" {
   source             = "../../modules/concourse"
   stack_description  = var.stack_description

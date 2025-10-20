@@ -97,7 +97,6 @@ resource "aws_lb_target_group" "opsuaa_target" {
   }
 }
 
-
 # resource "aws_lb_listener_rule" "nessus_listener_rule" {
 #   listener_arn = aws_lb_listener.ops.arn
 
