@@ -50,38 +50,7 @@ data "aws_iam_server_certificate" "wildcard" {
 #   latest      = true
 # }
 
-resource "aws_lb" "main" {
-  name            = "${var.stack_description}-main"
-  subnets         = [module.stack.public_subnet_az1, module.stack.public_subnet_az2]
-  security_groups = [module.stack.restricted_web_traffic_security_group]
-  ip_address_type = "dualstack"
-  idle_timeout    = 3600
-  access_logs {
-    bucket  = var.log_bucket_name
-    prefix  = var.stack_description
-    enabled = true
-  }
-  enable_deletion_protection = true
-}
 
-resource "aws_lb_listener" "main" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = var.aws_lb_listener_ssl_policy
-  certificate_arn   = data.aws_iam_server_certificate.wildcard.arn
-
-  default_action {
-    target_group_arn = aws_lb_target_group.dummy.arn
-    type             = "forward"
-  }
-}
-
-resource "aws_lb_target_group" "dummy" {
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = module.stack.vpc_id
-}
 
 # resource "aws_lb_listener_certificate" "main-staging" {
 #   listener_arn    = aws_lb_listener.main.arn
@@ -160,7 +129,7 @@ module "concourse" {
   rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-atc-${var.stack_description}"
-  listener_arn                    = aws_lb_listener.main.arn
+  listener_arn                    = aws_lb_listener.ops.arn
   hosts                           = var.concourse_hosts
   rds_shared_preload_libraries    = var.rds_shared_preload_libraries
   rds_pgaudit_log_values          = var.rds_pgaudit_log_values
@@ -218,7 +187,7 @@ module "credhub" {
   rds_instance_type               = "db.m5.large"
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-credhub-${var.stack_description}"
-  listener_arn                    = aws_lb_listener.main.arn
+  listener_arn                    = aws_lb_listener.ops.arn
   hosts                           = var.credhub_hosts
   rds_shared_preload_libraries    = var.rds_shared_preload_libraries
   rds_pgaudit_log_values          = var.rds_pgaudit_log_values
@@ -340,7 +309,7 @@ module "defectdojo" {
   rds_db_iops                     = 12000
   rds_multi_az                    = var.rds_multi_az
   rds_final_snapshot_identifier   = "final-snapshot-defectdojo-${var.stack_description}"
-  listener_arn                    = aws_lb_listener.main.arn
+  listener_arn                    = aws_lb_listener.ops.arn
   hosts                           = var.defectdojo_hosts
   rds_shared_preload_libraries    = var.rds_shared_preload_libraries
   rds_pgaudit_log_values          = var.rds_pgaudit_log_values
@@ -354,7 +323,7 @@ module "monitoring" {
   monitoring_cidr             = cidrsubnet(var.vpc_cidr, 8, 32)
   monitoring_az               = data.aws_availability_zones.available.names[0]
   route_table_id              = module.stack.private_route_table_az1
-  listener_arn                = aws_lb_listener.main.arn
+  listener_arn                = aws_lb_listener.ops.arn
   hosts                       = var.monitoring_hosts
   doomsday_oidc_client        = var.doomsday_oidc_client
   doomsday_oidc_client_secret = random_string.doomsday_oidc_client_secret.result
