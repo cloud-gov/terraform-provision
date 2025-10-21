@@ -146,7 +146,7 @@ resource "aws_iam_role_policy" "cloudwatch_policy" {
     Statement = [
       {
         Effect = "Allow"
-        Action = "Action": [
+        Action = [
 				"firehose:PutRecord",
 				"firehose:PutRecordBatch"
 		]
