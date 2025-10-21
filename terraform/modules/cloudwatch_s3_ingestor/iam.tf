@@ -151,7 +151,7 @@ resource "aws_iam_role_policy" "cloudwatch_policy" {
 				"firehose:PutRecordBatch"
 		    ]
         Resource = [
-          ["arn:${var.aws_partition}:firhose:${var.aws_region}:${var.account_id}:deliverystream/${aws_kinesis_firehose_delivery_stream.cloudwatch_stream.name}"]
+          ["arn:${var.aws_partition}:firhose:${var.aws_region}:${var.account_id}:deliverystream/${aws_kinesis_firehose_delivery_stream.cloudwatch_stream[each.key]}"]
         ]
       }
     ]
