@@ -115,7 +115,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
 resource "aws_iam_role" "cloudwatch_role" {
   for_each = toset(var.environments)
 
-  name = "${var.name_prefix}-${each.key}-cloudwatch-to-firehose-role"
+  name = "${var.name_prefix}-${each.key}-cloud-to-fire-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
