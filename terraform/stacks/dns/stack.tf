@@ -16,6 +16,10 @@ provider "aws" {
   }
 }
 
+provider "aws_remote" {
+  region = var.remote_state_region
+}
+
 data "terraform_remote_state" "tooling" {
   backend = "s3"
 
