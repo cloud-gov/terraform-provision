@@ -8,6 +8,10 @@ data "terraform_remote_state" "stack" {
   }
 }
 
+data "aws_route53_zone" "apex_domain" {
+  name = var.domain
+}
+
 resource "aws_route53_record" "star_admin_a" {
   zone_id = var.zone_id
   name    = "*.${var.admin_subdomain}."
@@ -203,16 +207,13 @@ resource "aws_route53_record" "tcp_aaaa" {
 }
 
 locals {
-  brokered_mail_subdomain = "appmail.${var.domain}"
+  brokered_mail_subdomain   = "appmail.${var.domain}"
+  log_alerts_mail_subdomain = "alerts.${var.domain}"
 }
 
 resource "aws_route53_zone" "brokered_mail_zone" {
   name    = local.brokered_mail_subdomain
   comment = "If customers create a brokered SES identity but do not specify a domain, a subdomain will be created for them in this zone. This allows sending mail for testing purposes."
-}
-
-data "aws_route53_zone" "apex_domain" {
-  name = var.domain
 }
 
 resource "aws_route53_record" "brokered_mail_ns" {
@@ -221,6 +222,19 @@ resource "aws_route53_record" "brokered_mail_ns" {
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.brokered_mail_zone.name_servers
+}
+
+resource "aws_route53_zone" "log_alerts_mail_zone" {
+  name    = local.log_alerts_mail_subdomain
+  comment = "Domain used for sending alerts from logs system"
+}
+
+resource "aws_route53_record" "brokered_log_alerts_zone_ns" {
+  zone_id = data.aws_route53_zone.apex_domain.zone_id
+  name    = local.log_alerts_mail_subdomain
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.log_alerts_mail_zone.name_servers
 }
 
 locals {
