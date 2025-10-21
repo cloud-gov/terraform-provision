@@ -16,7 +16,8 @@ provider "aws" {
   }
 }
 
-provider "aws_remote" {
+provider "aws" {
+  alias  = "remote"
   region = var.remote_state_region
 }
 

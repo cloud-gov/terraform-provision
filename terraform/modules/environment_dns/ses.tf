@@ -13,7 +13,7 @@ locals {
 }
 
 data "aws_sesv2_email_identity" "logs_alerts_ses_domain" {
-  provider = aws_remote
+  provider = aws.remote
 
   email_identity = local.log_alerts_domain
 }
