@@ -124,7 +124,7 @@ resource "aws_iam_role" "cloudwatch_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "logs.${var.aws_region}.amazonaws.com"
+          Service = "logs.amazonaws.com"
         }
       }
     ]
