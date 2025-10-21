@@ -259,6 +259,13 @@ module "opensearch_metrics_preprocessing" {
   aws_partition = data.aws_partition.current.partition
 }
 
+module "opensearch_cloudwatch_preprocessing" {
+  source        = "../../modules/cloudwatch_s3_ingestor"
+  environments  = [var.stack_description]
+  account_id    = data.aws_caller_identity.current.account_id
+  aws_region    = data.aws_region.current.region
+  aws_partition = data.aws_partition.current.partition
+}
 module "cf" {
   source = "../../modules/cloudfoundry"
 
