@@ -799,7 +799,7 @@ output "opensearch_proxy_redis_cluster" {
   sensitive = true
 }
 
-output "log_alerts_ses_dkim_attributes" {
-  value     = module.log_alerts_ses_domain.dkim_attributes
+output "log_alerts_ses_dkim_attribute_tokens" {
+  value     = module.log_alerts_ses_domain.dkim_attribute_tokens
   sensitive = true
 }

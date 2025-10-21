@@ -11,7 +11,7 @@ module "production_dns" {
   main_lb_dns_name               = data.terraform_remote_state.production.outputs.main_lb_dns_name
   diego_elb_dns_name             = data.terraform_remote_state.production.outputs.diego_elb_dns_name
   tcp_lb_dns_names               = data.terraform_remote_state.production.outputs.tcp_lb_dns_names
-  log_alerts_ses_dkim_attributes = lookup(data.terraform_remote_state.production.outputs, "log_alerts_ses_dkim_attributes", [])
+  log_alerts_ses_dkim_attributes = lookup(data.terraform_remote_state.production.outputs, "log_alerts_ses_dkim_attribute_tokens", [])
   log_alerts_dmarc_email         = var.log_alerts_dmarc_email
   log_alerts_ses_aws_region      = var.log_alerts_ses_aws_region
 }

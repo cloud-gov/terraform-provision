@@ -55,18 +55,9 @@ variable "tcp_lb_dns_names" {
   description = "DNS names for load balancers handling TCP traffic"
 }
 
-variable "log_alerts_ses_dkim_attributes" {
-  type = list(object({
-    current_signing_key_length    = string
-    domain_signing_selector       = string
-    domain_signing_private_key    = string
-    last_key_generation_timestamp = string
-    next_signing_key_length       = string
-    signing_attributes_origin     = string
-    status                        = string
-    tokens                        = list(string)
-  }))
-  description = "DKIM attributes for SES identity handling log alerts"
+variable "log_alerts_ses_dkim_attribute_tokens" {
+  type        = list(string)
+  description = "Tokens to use for DKIM verification of SES identity handling log alerts"
 }
 
 variable "log_alerts_dmarc_email" {
