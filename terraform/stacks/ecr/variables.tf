@@ -40,6 +40,7 @@ variable "repositories" {
     "pages-dind-v25",
     "pages-nginx-v1",
     "pages-node-v20",
+    "pages-node-v22",
     "pages-postgres-v15",
     "pages-python-v3.11",
     "pages-redis-v7.2",

@@ -242,6 +242,14 @@ variable "monitoring_staging_hosts" {
   type = list(string)
 }
 
+variable "monitoring_workshop_hosts" {
+  type = list(string)
+}
+
+variable "monitoring_pages_hosts" {
+  type = list(string)
+}
+
 variable "nessus_hosts" {
   type = list(string)
 }

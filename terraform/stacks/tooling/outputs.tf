@@ -124,6 +124,30 @@ output "staging_monitoring_subnet_gateway" {
   value = cidrhost(module.monitoring_staging.monitoring_cidr, 1)
 }
 
+output "workshop_monitoring_subnet_reserved" {
+  value = "${cidrhost(module.monitoring_workshop.monitoring_cidr, 0)} - ${cidrhost(module.monitoring_workshop.monitoring_cidr, 3)}"
+}
+
+output "pages_monitoring_subnet_reserved" {
+  value = "${cidrhost(module.monitoring_pages.monitoring_cidr, 0)} - ${cidrhost(module.monitoring_pages.monitoring_cidr, 3)}"
+}
+
+output "workshop_monitoring_subnet_cidr" {
+  value = module.monitoring_workshop.monitoring_cidr
+}
+
+output "pages_monitoring_subnet_cidr" {
+  value = module.monitoring_pages.monitoring_cidr
+}
+
+output "workshop_monitoring_subnet_gateway" {
+  value = cidrhost(module.monitoring_workshop.monitoring_cidr, 1)
+}
+
+output "pages_monitoring_subnet_gateway" {
+  value = cidrhost(module.monitoring_pages.monitoring_cidr, 1)
+}
+
 output "master_bosh_static_ip" {
   value = local.master_bosh_static_ip
 }
@@ -841,6 +865,8 @@ output "monitoring_security_groups" {
   value = {
     staging     = module.monitoring_staging.monitoring_security_group
     development = module.monitoring_staging.monitoring_security_group
+    workshop    = module.monitoring_workshop.monitoring_security_group
+    pages       = module.monitoring_pages.monitoring_security_group
     production  = module.monitoring_production.monitoring_security_group
   }
 }
@@ -865,6 +891,41 @@ output "staging_monitoring_lb_target_group" {
 output "staging_doomsday_lb_target_group" {
   value = module.monitoring_staging.doomsday_lb_target_group
 }
+
+/* Workshop Monitoring */
+output "workshop_monitoring_az" {
+  value = module.monitoring_workshop.monitoring_az
+}
+
+output "workshop_monitoring_subnet" {
+  value = module.monitoring_workshop.monitoring_subnet
+}
+
+output "workshop_monitoring_security_group" {
+  value = module.monitoring_workshop.monitoring_security_group
+}
+
+output "workshop_monitoring_lb_target_group" {
+  value = module.monitoring_workshop.lb_target_group
+}
+
+/* Pages Monitoring */
+output "pages_monitoring_az" {
+  value = module.monitoring_pages.monitoring_az
+}
+
+output "pages_monitoring_subnet" {
+  value = module.monitoring_pages.monitoring_subnet
+}
+
+output "pages_monitoring_security_group" {
+  value = module.monitoring_pages.monitoring_security_group
+}
+
+output "pages_monitoring_lb_target_group" {
+  value = module.monitoring_pages.lb_target_group
+}
+
 
 /* rds storage user */
 output "rds_storage_alert_username" {
