@@ -46,7 +46,7 @@ resource "aws_route53_record" "log_alerts_dmarc" {
 
 resource "aws_route53_record" "log_alerts_mx" {
   zone_id = aws_route53_zone.log_alerts_mail_zone.zone_id
-  name    = local.log_alerts_domain
+  name    = "${var.log_alerts_ses_mail_from_subdomain}.${local.log_alerts_domain}"
   type    = "MX"
   ttl     = "600"
   records = ["10 feedback-smtp.${var.log_alerts_ses_aws_region}.amazonses.com"]
@@ -54,7 +54,7 @@ resource "aws_route53_record" "log_alerts_mx" {
 
 resource "aws_route53_record" "log_alerts_spf" {
   zone_id = aws_route53_zone.log_alerts_mail_zone.zone_id
-  name    = local.log_alerts_domain
+  name    = "${var.log_alerts_ses_mail_from_subdomain}.${local.log_alerts_domain}"
   type    = "TXT"
   ttl     = "600"
   records = ["v=spf1 include:amazonses.com -all"]

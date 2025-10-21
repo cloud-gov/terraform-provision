@@ -69,3 +69,9 @@ variable "log_alerts_ses_aws_region" {
   type        = string
   description = "Name of AWS region where log alert SES resources are deployed"
 }
+
+variable "log_alerts_ses_mail_from_subdomain" {
+  type        = string
+  description = "Subdomain to use as MAIL FROM subdomain for log alerts SES identity"
+  default     = "mail"
+}
