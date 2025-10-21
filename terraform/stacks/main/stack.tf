@@ -528,5 +528,4 @@ module "log_alerts_ses_domain" {
   stack_description        = var.stack_description
   email_identity_subdomain = "log-alerts"
   environment_domain       = var.environment_domain
-  dmarc_email              = var.log_alerts_dmarc_email
 }

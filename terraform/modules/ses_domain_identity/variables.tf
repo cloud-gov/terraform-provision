@@ -8,11 +8,6 @@ variable "environment_domain" {
   description = "Domain for the environment (e.g. dev, stage, prod)"
 }
 
-variable "dmarc_email" {
-  type        = string
-  description = "Email address to which DMARC aggregate reports should be sent."
-}
-
 variable "mail_from_subdomain" {
   type        = string
   description = "Subdomain to set as the mail-from value."

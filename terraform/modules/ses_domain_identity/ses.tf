@@ -1,14 +1,5 @@
 locals {
   email_domain = "${var.email_identity_subdomain}.${var.environment_domain}"
-
-  dmarc_rua = join(
-    ",",
-    [
-      "mailto:reports@dmarc.cyber.dhs.gov",
-      "mailto:${var.dmarc_email}"
-    ]
-  )
-  dmarc_ruf = "mailto:${var.dmarc_email}"
 }
 
 resource "aws_sesv2_email_identity" "email_domain_identity" {
