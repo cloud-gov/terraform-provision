@@ -56,7 +56,14 @@ variable "tcp_lb_dns_names" {
 }
 
 variable "log_alerts_ses_dkim_attributes" {
-  type        = list(object)
+  type = list(object({
+    current_signing_key_length    = number
+    last_key_generation_timestamp = number
+    next_signing_key_length       = number
+    signing_attributes_origin     = string
+    status                        = string
+    tokens                        = list(string)
+  }))
   description = "DKIM attributes for SES identity handling log alerts"
 }
 
