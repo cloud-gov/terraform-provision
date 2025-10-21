@@ -57,9 +57,11 @@ variable "tcp_lb_dns_names" {
 
 variable "log_alerts_ses_dkim_attributes" {
   type = list(object({
-    current_signing_key_length    = number
-    last_key_generation_timestamp = number
-    next_signing_key_length       = number
+    current_signing_key_length    = string
+    domain_signing_selector       = string
+    domain_signing_private_key    = string
+    last_key_generation_timestamp = string
+    next_signing_key_length       = string
     signing_attributes_origin     = string
     status                        = string
     tokens                        = list(string)
