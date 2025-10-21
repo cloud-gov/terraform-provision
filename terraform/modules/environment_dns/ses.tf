@@ -25,15 +25,15 @@ resource "aws_route53_record" "brokered_log_alerts_zone_ns" {
   records = aws_route53_zone.log_alerts_mail_zone.name_servers
 }
 
-# resource "aws_route53_record" "log_alerts_dkim_records" {
-#   for_each = toset(data.aws_sesv2_email_identity.logs_alerts_ses_domain2.dkim_signing_attributes[0].tokens)
+resource "aws_route53_record" "log_alerts_dkim_records" {
+  for_each = toset(data.terraform_remote_state.stack.outputs.log_alerts_ses_dkim_attributes[0].tokens)
 
-#   zone_id = aws_route53_zone.log_alerts_mail_zone.zone_id
-#   name    = "${each.value}._domainkey.${local.log_alerts_domain}"
-#   type    = "CNAME"
-#   ttl     = "600"
-#   records = ["${each.value}.dkim.amazonses.com"]
-# }
+  zone_id = aws_route53_zone.log_alerts_mail_zone.zone_id
+  name    = "${each.value}._domainkey.${local.log_alerts_domain}"
+  type    = "CNAME"
+  ttl     = "600"
+  records = ["${each.value}.dkim.amazonses.com"]
+}
 
 resource "aws_route53_record" "log_alerts_dmarc" {
   zone_id = aws_route53_zone.log_alerts_mail_zone.zone_id
