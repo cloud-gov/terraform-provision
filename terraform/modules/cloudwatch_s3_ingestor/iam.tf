@@ -147,14 +147,13 @@ resource "aws_iam_role_policy" "cloudwatch_policy" {
       {
         Effect = "Allow"
         Action = [
-				"firehose:PutRecord",
-				"firehose:PutRecordBatch"
-		    ]
+          "firehose:PutRecord",
+          "firehose:PutRecordBatch"
+        ]
         Resource = [
-          ["arn:${var.aws_partition}:firehose:${var.aws_region}:${var.account_id}:deliverystream/${aws_kinesis_firehose_delivery_stream.cloudwatch_stream[each.key].name}"]
+          "arn:${var.aws_partition}:firehose:${var.aws_region}:${var.account_id}:deliverystream/${aws_kinesis_firehose_delivery_stream.cloudwatch_stream[each.key].name}"
         ]
       }
     ]
   })
 }
-
