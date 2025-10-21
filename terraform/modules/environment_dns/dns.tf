@@ -208,7 +208,7 @@ resource "aws_route53_record" "tcp_aaaa" {
 
 locals {
   brokered_mail_subdomain   = "appmail.${var.domain}"
-  log_alerts_mail_subdomain = "alerts.${var.domain}"
+  log_alerts_mail_subdomain = "log-alerts.${var.domain}"
 }
 
 resource "aws_route53_zone" "brokered_mail_zone" {
