@@ -375,3 +375,13 @@ variable "rds_pgaudit_log_values_cf" {
   type        = string
   default     = "none"
 }
+
+variable "environment_domain" {
+  type        = string
+  description = "Domain for the environment (e.g. dev, stage, prod)"
+}
+
+variable "log_alerts_dmarc_email" {
+  type        = string
+  description = "Email address to which DMARC aggregate reports should be sent."
+}
