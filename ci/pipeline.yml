@@ -294,6 +294,7 @@ jobs:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
+            resource: cg-provision-repo-development
             trigger: true
           - get: plan-timer
             trigger: true
@@ -323,6 +324,7 @@ jobs:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
+            resource: cg-provision-repo-development
             passed: [plan-dns]
       - task: terraform-apply-dns
         file: pipeline-tasks/terraform-apply.yml
