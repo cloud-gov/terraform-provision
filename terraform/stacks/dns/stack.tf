@@ -16,11 +16,6 @@ provider "aws" {
   }
 }
 
-provider "aws" {
-  alias  = "remote"
-  region = var.remote_state_region
-}
-
 data "terraform_remote_state" "tooling" {
   backend = "s3"
 
