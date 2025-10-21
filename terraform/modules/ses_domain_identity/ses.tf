@@ -8,7 +8,7 @@ resource "aws_sesv2_email_identity" "email_domain_identity" {
 }
 
 resource "aws_sesv2_email_identity_mail_from_attributes" "email_mail_from" {
-  email_identity = aws_sesv2_email_identity.email_domain_identity.email_identity
+  email_identity = "${var.mail_from_domain}.${aws_sesv2_email_identity.email_domain_identity.email_identity}"
 
   behavior_on_mx_failure = "REJECT_MESSAGE"
   mail_from_domain       = aws_sesv2_email_identity.email_domain_identity.email_identity
