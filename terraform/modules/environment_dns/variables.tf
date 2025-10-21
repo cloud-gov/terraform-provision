@@ -24,11 +24,40 @@ variable "alb_zone_id" {
 variable "nlb_zone_id" {
   default = "ZMG1MZ2THAWF1" # this is for us-gov-west-1. See others here: https://docs.aws.amazon.com/general/latest/gr/elb.html
 }
-variable "remote_state_bucket" {
 
+variable "cf_lb_dns_name" {
+  type        = string
+  description = "DNS name of load balancer for CF"
 }
-variable "remote_state_region" {
 
+variable "cf_apps_lb_dns_name" {
+  type        = string
+  description = "DNS name of load balancer for CF apps"
+}
+
+variable "cf_uaa_lb_dns_name" {
+  type        = string
+  description = "DNS name of load balancer for UAA connected to CF"
+}
+
+variable "main_lb_dns_name" {
+  type        = string
+  description = "DNS for load balancer handling non-CF traffic"
+}
+
+variable "diego_elb_dns_name" {
+  type        = string
+  description = "DNS name for load balancer handling Diego traffic"
+}
+
+variable "tcp_lb_dns_names" {
+  type        = list(string)
+  description = "DNS names for load balancers handling TCP traffic"
+}
+
+variable "log_alerts_ses_dkim_attributes" {
+  type        = list(object)
+  description = "DKIM attributes for SES identity handling log alerts"
 }
 
 variable "log_alerts_dmarc_email" {
