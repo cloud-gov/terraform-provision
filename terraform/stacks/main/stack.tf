@@ -259,7 +259,7 @@ module "opensearch_metrics_preprocessing" {
   aws_partition = data.aws_partition.current.partition
 }
 
-module "opensearch_cloudwatch_preprocessing" {
+module "opensearch_cloudwatch_logs_preprocessing" {
   source        = "../../modules/cloudwatch_s3_ingestor"
   environments  = [var.stack_description]
   account_id    = data.aws_caller_identity.current.account_id
