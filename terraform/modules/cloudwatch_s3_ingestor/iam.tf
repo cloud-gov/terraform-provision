@@ -12,12 +12,43 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  for_each = toset(var.environments)
-  name     = "${var.name_prefix}-${each.key}-lambda-role"
+  for_each           = toset(var.environments)
+  name               = "${var.name_prefix}-${each.key}-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy[each.key].json
-  tags     = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Environment = each.key
   })
+}
+
+resource "aws_iam_role" "cloudwatch_lambda_role" {
+  for_each           = toset(var.environments)
+  name               = "cloudwatch-${var.name_prefix}-${each.key}-lambda-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy[each.key].json
+  tags = merge(local.common_tags, {
+    Environment = each.key
+  })
+}
+
+data "aws_iam_policy_document" "lambda_logs_policy" {
+  for_each = toset(var.environments)
+  statement {
+    actions = [
+      "logs:PutSubscriptionFilter",
+      "logs:DescribeLogGroups",
+      "logs:DescribeSubscriptionFilters"
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "lambda_logs_policy" {
+  for_each = toset(var.environments)
+  name     = "${var.name_prefix}-${each.key}-lambda-logs-policy"
+  role     = aws_iam_role.cloudwatch_lambda_role[each.key].id
+  policy   = data.aws_iam_policy_document.lambda_logs_policy[each.key].json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
@@ -61,10 +92,10 @@ data "aws_iam_policy_document" "firehose_assume_role_policy" {
 }
 
 resource "aws_iam_role" "firehose_role" {
-  for_each = toset(var.environments)
-  name     = "${var.name_prefix}-${each.key}-firehose-role"
+  for_each           = toset(var.environments)
+  name               = "${var.name_prefix}-${each.key}-firehose-role"
   assume_role_policy = data.aws_iam_policy_document.firehose_assume_role_policy[each.key].json
-  tags     = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Environment = each.key
   })
 }
@@ -120,10 +151,10 @@ data "aws_iam_policy_document" "cloudwatch_assume_role_policy" {
 }
 
 resource "aws_iam_role" "cloudwatch_role" {
-  for_each = toset(var.environments)
-  name     = "${var.name_prefix}-${each.key}-cloud-to-fire-role"
+  for_each           = toset(var.environments)
+  name               = "${var.name_prefix}-${each.key}-cloud-to-fire-role"
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume_role_policy[each.key].json
-  tags     = merge(local.common_tags, {
+  tags = merge(local.common_tags, {
     Environment = each.key
   })
 }
