@@ -43,7 +43,9 @@ data "aws_iam_policy_document" "concourse_worker_policy" {
       "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}",
       "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}/*",
       "arn:${var.aws_partition}:s3:::${var.github_backups_bucket_name}",
-      "arn:${var.aws_partition}:s3:::${var.github_backups_bucket_name}/*"
+      "arn:${var.aws_partition}:s3:::${var.github_backups_bucket_name}/*",
+      "arn:${var.aws_partition}:s3:::${var.fips_stemcell_bucket}",
+      "arn:${var.aws_partition}:s3:::${var.fips_stemcell_bucket}/*"
     ]
   }
 
@@ -69,7 +71,9 @@ data "aws_iam_policy_document" "concourse_worker_policy" {
       "arn:${var.aws_partition}:s3:::${var.terraform_state_bucket}/*",
       "arn:${var.aws_partition}:s3:::${var.github_backups_bucket_name}/*",
       "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}",
-      "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}/*"
+      "arn:${var.aws_partition}:s3:::${var.container_scanning_bucket_name}/*",
+      "arn:${var.aws_partition}:s3:::${var.fips_stemcell_bucket}",
+      "arn:${var.aws_partition}:s3:::${var.fips_stemcell_bucket}/*"
     ]
   }
 }

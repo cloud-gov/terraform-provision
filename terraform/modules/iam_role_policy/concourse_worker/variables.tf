@@ -46,3 +46,7 @@ variable "github_backups_bucket_name" {
   type        = string
   description = "Github Backups bucket"
 }
+
+variable "fips_stemcell_bucket" {
+  type = string
+}
