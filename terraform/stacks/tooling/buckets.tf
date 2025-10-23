@@ -67,8 +67,7 @@ module "container_scanning_bucket" {
 }
 
 module "fips_stemcell_bucket" {
-  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
-  bucket        = "fips-stemcell"
+  source        = "../../modules/s3_bucket/encrypted_bucket"
+  bucket        = var.fips_stemcell_bucket
   aws_partition = data.aws_partition.current.partition
 }
-
