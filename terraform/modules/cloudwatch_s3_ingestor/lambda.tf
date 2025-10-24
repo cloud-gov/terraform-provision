@@ -63,7 +63,7 @@ resource "aws_lambda_function" "cloudwatch_filter" {
 }
 
 data "http" "cloudwatch_lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_metrics_opensearch_preprocessor/refs/tags/v0.0.4/lambda_functions/transform_cloudwatch_lambda.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/heads/main/lambda_functions/add_cloudwatch_subscrition.py"
 }
 
 data "archive_file" "cloudwatch_lambda_zip" {
