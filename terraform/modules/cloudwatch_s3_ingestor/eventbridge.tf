@@ -20,7 +20,8 @@ resource "aws_cloudwatch_event_rule" "rds_log_group_creation_broker" {
 }
 
 resource "aws_cloudwatch_event_target" "rds_log_group_target" {
-  rule      = aws_cloudwatch_event_rule.rds_log_group_creation_broker.name
+  for_each       = toset(var.environments)
+  rule      = aws_cloudwatch_event_rule.rds_log_group_creation_broker[each.key].name
   arn       = resource.aws_lambda_function.transform.arn
   target_id = resource.aws_lambda_function.transform.id
 }
