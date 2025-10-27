@@ -214,7 +214,7 @@ resource "aws_iam_policy" "eventbridge_lambda_policy" {
       {
         Action = "lambda:InvokeFunction"
         Effect   = "Allow"
-        Resource = aws_lambda_function.cloudwatch_filter.arn
+        Resource =[aws_lambda_function.cloudwatch_filter[each.key].arn]
       }
     ]
   })
