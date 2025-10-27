@@ -65,3 +65,9 @@ module "container_scanning_bucket" {
   aws_partition = data.aws_partition.current.partition
   versioning    = "true"
 }
+
+module "fips_stemcell_bucket" {
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
+  bucket        = var.fips_stemcell_bucket
+  aws_partition = data.aws_partition.current.partition
+}

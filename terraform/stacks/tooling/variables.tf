@@ -446,3 +446,8 @@ variable "rds_pgaudit_log_values_defectdojo_production" {
   type        = string
   default     = "none"
 }
+
+variable "fips_stemcell_bucket" {
+  type    = string
+  default = "fips-stemcell"
+}
