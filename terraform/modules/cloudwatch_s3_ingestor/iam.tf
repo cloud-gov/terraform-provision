@@ -223,5 +223,5 @@ resource "aws_iam_policy" "eventbridge_lambda_policy" {
 resource "aws_iam_role_policy_attachment" "eventbridge_lambda_attachment" {
   for_each = toset(var.environments)
   role       = aws_iam_role.eventbridge_lambda_role[each.key].name
-  policy_arn = aws_iam_policy.eventbridge_lambda_policy.arn
+  policy_arn = aws_iam_policy.eventbridge_lambda_policy[each.key]arn
 }
