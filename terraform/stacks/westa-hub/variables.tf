@@ -150,6 +150,11 @@ variable "github_backups_bucket_name" {
   default = "github-backups"
 }
 
+variable "fips_stemcell_bucket" {
+  type    = string
+  default = "fips-stemcell"
+}
+
 ## Retired
 
 # Replaced by random_string.rds_password.result

@@ -65,6 +65,7 @@ module "concourse_worker_policy" {
   concourse_varz_bucket          = module.concourse_varz_bucket.bucket_name
   container_scanning_bucket_name = module.container_scanning_bucket.bucket_name
   github_backups_bucket_name     = var.github_backups_bucket_name
+  fips_stemcell_bucket           = var.fips_stemcell_bucket
 }
 
 module "concourse_iaas_worker_policy" {

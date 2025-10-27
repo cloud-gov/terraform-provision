@@ -118,3 +118,9 @@ module "semver_bucket" {
   bucket        = "${var.bucket_prefix}-cg-semver"
   aws_partition = data.aws_partition.current.partition
 }
+
+module "fips_stemcell_bucket" {
+  source        = "../../modules/s3_bucket/encrypted_bucket_v2"
+  bucket        = var.fips_stemcell_bucket
+  aws_partition = data.aws_partition.current.partition
+}
