@@ -8,15 +8,10 @@ variable "environment_domain" {
   description = "Domain for the environment (e.g. dev, stage, prod)"
 }
 
-variable "dmarc_email" {
+variable "mail_from_domain" {
   type        = string
-  description = "Email address to which DMARC aggregate reports should be sent."
-}
-
-variable "mail_from_subdomain" {
-  type        = string
-  description = "Subdomain to set as the mail-from value."
-  default     = "no-reply"
+  description = "Domain to use for MAIL FROM for the SES email identity"
+  default     = "mail"
 }
 
 variable "stack_description" {
