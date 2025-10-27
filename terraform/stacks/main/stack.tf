@@ -259,6 +259,13 @@ module "opensearch_metrics_preprocessing" {
   aws_partition = data.aws_partition.current.partition
 }
 
+module "opensearch_cloudwatch_logs_preprocessing" {
+  source        = "../../modules/cloudwatch_s3_ingestor"
+  environments  = [var.stack_description]
+  account_id    = data.aws_caller_identity.current.account_id
+  aws_region    = data.aws_region.current.region
+  aws_partition = data.aws_partition.current.partition
+}
 module "cf" {
   source = "../../modules/cloudfoundry"
 
@@ -521,5 +528,4 @@ module "log_alerts_ses_domain" {
   stack_description        = var.stack_description
   email_identity_subdomain = "log-alerts"
   environment_domain       = var.environment_domain
-  dmarc_email              = var.log_alerts_dmarc_email
 }
