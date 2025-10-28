@@ -205,6 +205,10 @@ resource "aws_route53_zone" "brokered_mail_zone" {
   comment = "If customers create a brokered SES identity but do not specify a domain, a subdomain will be created for them in this zone. This allows sending mail for testing purposes."
 }
 
+data "aws_route53_zone" "apex_domain" {
+  name = var.domain
+}
+
 resource "aws_route53_record" "brokered_mail_ns" {
   zone_id = data.aws_route53_zone.apex_domain.zone_id
   name    = local.brokered_mail_subdomain
