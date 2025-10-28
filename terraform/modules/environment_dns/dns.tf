@@ -1,7 +1,3 @@
-data "aws_route53_zone" "apex_domain" {
-  name = var.domain
-}
-
 resource "aws_route53_record" "star_admin_a" {
   zone_id = var.zone_id
   name    = "*.${var.admin_subdomain}."
