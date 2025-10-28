@@ -53,8 +53,8 @@ resource "aws_lambda_function" "cloudwatch_filter" {
   environment {
     variables = {
       FIREHOSE_ARN = resource.aws_kinesis_firehose_delivery_stream.cloudwatch_stream[each.key].arn
-      ROLE_ARN  = resource.aws_iam_role.cloudwatch_role[each.key].arn
-      ENVIRONMENT = each.key
+      ROLE_ARN     = resource.aws_iam_role.cloudwatch_role[each.key].arn
+      ENVIRONMENT  = each.key
     }
   }
 
