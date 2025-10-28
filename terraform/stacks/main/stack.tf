@@ -521,3 +521,13 @@ module "opensearch_proxy_redis_cluster" {
   subnet_group_name  = module.elasticache_broker_network.elasticache_subnet_group
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
 }
+
+module "log_alerts_ses_domain" {
+  source = "../../modules/ses_domain_identity"
+
+  stack_description                   = var.stack_description
+  email_identity_subdomain            = "log-alerts"
+  environment_domain                  = var.environment_domain
+  cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
+  cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
+}

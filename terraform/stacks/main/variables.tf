@@ -375,3 +375,8 @@ variable "rds_pgaudit_log_values_cf" {
   type        = string
   default     = "none"
 }
+
+variable "environment_domain" {
+  type        = string
+  description = "Domain for the environment (e.g. dev, stage, prod)"
+}
