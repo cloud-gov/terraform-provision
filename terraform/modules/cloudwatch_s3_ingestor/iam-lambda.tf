@@ -97,8 +97,8 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
 
 locals {
   prefixes = {
-    "production": "prd",
-     "staging": "stg",
-     "development": "dev"
+    "production" : "prd",
+    "staging" : "stg",
+    "development" : "dev"
   }
 }
