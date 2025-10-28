@@ -12,16 +12,6 @@ locals {
   EOT
 }
 
-# Create SNS topic for reputation alarms.
-# Trivy: It is best practice to encrypt with customer-managed keys so permissions can be managed more granularly, but we have not implemented a system for doing so yet at CG.
-#trivy:ignore:AVD-AWS-0136
-resource "aws_sns_topic" "ses_reputation_notifications" {
-  name = "${local.email_domain}-reputation-notifications"
-
-  # Use an AWS-managed key for topic encryption.
-  kms_master_key_id = "alias/aws/sns"
-}
-
 locals {
   # Notify the Cloud.gov Platform team and the customer.
   reputation_notification_topics = [
