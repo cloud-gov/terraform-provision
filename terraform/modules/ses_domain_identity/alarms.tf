@@ -82,7 +82,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_critical" {
       period      = 300
       stat        = "Average"
       dimensions = {
-        "ConfigurationSetName" = aws_sesv2_configuration_set.config.configuration_set_name
+        "ConfigurationSetName" = aws_sesv2_configuration_set.email_domain_identity_config.configuration_set_name
       }
     }
     return_data = false
@@ -165,7 +165,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_critical" {
       period      = 300
       stat        = "Average"
       dimensions = {
-        "ConfigurationSetName" = aws_sesv2_configuration_set.config.configuration_set_name
+        "ConfigurationSetName" = aws_sesv2_configuration_set.email_domain_identity_config.configuration_set_name
       }
     }
     return_data = false
