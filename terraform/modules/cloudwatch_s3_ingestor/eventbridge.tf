@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "rds_log_group_creation_broker" {
   for_each    = toset(var.environments)
   name        = "rds-log-group-creation-broker"
-  description = "Triggers when a CloudWatch Log Group is created with an /aws/rds/instance/cg-aws-broker-dev prefix in the name."
+  description = "Triggers when a CloudWatch Log Group is created with an /aws/rds/instance/cg-aws-broker-<environment> prefix in the name."
   event_pattern = jsonencode({
     "source"      = ["aws.logs"],
     "detail-type" = ["AWS API Call via CloudTrail"],
