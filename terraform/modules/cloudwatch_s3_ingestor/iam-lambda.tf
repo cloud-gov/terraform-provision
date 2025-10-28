@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:rds:${local.prefixes[each.key]}-*"
+      "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-${local.prefixes[each.key]}-*"
     ]
   }
 }
