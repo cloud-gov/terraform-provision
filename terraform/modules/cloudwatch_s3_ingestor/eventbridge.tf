@@ -11,7 +11,7 @@ resource "aws_cloudwatch_event_rule" "rds_log_group_creation_broker" {
       "requestParameters" = {
         "logGroupName" = [
           {
-            prefix = "/aws/rds/instance/cg-aws-broker-${locals.prefixes[each.key]}"
+            prefix = "/aws/rds/instance/cg-aws-broker-${local.prefixes[each.key]}"
           }
         ]
       }
