@@ -94,11 +94,3 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
   role     = aws_iam_role.lambda_role[each.key].id
   policy   = data.aws_iam_policy_document.lambda_tag_policy[each.key].json
 }
-
-locals {
-  prefixes = {
-    "production" : "prd",
-    "staging" : "stg",
-    "development" : "dev"
-  }
-}
