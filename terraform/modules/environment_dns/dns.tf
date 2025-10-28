@@ -1,5 +1,11 @@
-data "aws_route53_zone" "apex_domain" {
-  name = var.domain
+data "terraform_remote_state" "stack" {
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_state_bucket
+    region = var.remote_state_region
+    key    = "${var.stack_name}/terraform.tfstate"
+  }
 }
 
 resource "aws_route53_record" "star_admin_a" {
@@ -8,7 +14,7 @@ resource "aws_route53_record" "star_admin_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -21,7 +27,7 @@ resource "aws_route53_record" "star_admin_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.cf_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -33,7 +39,7 @@ resource "aws_route53_record" "star_app_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.cf_apps_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -45,7 +51,7 @@ resource "aws_route53_record" "star_app_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.cf_apps_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_apps_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -57,7 +63,7 @@ resource "aws_route53_record" "uaa_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.cf_uaa_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -69,7 +75,7 @@ resource "aws_route53_record" "uaa_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.cf_uaa_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -81,7 +87,7 @@ resource "aws_route53_record" "login_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.cf_uaa_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -92,7 +98,7 @@ resource "aws_route53_record" "login_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.cf_uaa_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.cf_uaa_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -104,7 +110,7 @@ resource "aws_route53_record" "logs_platform_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -116,7 +122,7 @@ resource "aws_route53_record" "logs_platform_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -128,7 +134,7 @@ resource "aws_route53_record" "idp_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -140,7 +146,7 @@ resource "aws_route53_record" "idp_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.main_lb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.main_lb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -153,7 +159,7 @@ resource "aws_route53_record" "ssh_a" {
   type    = "A"
 
   alias {
-    name                   = "dualstack.${var.diego_elb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.diego_elb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -165,7 +171,7 @@ resource "aws_route53_record" "ssh_aaaa" {
   type    = "AAAA"
 
   alias {
-    name                   = "dualstack.${var.diego_elb_dns_name}"
+    name                   = "dualstack.${data.terraform_remote_state.stack.outputs.diego_elb_dns_name}"
     zone_id                = var.alb_zone_id
     evaluate_target_health = false
   }
@@ -173,9 +179,9 @@ resource "aws_route53_record" "ssh_aaaa" {
 
 
 resource "aws_route53_record" "tcp_a" {
-  for_each = toset(var.tcp_lb_dns_names)
+  for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
   zone_id  = var.zone_id
-  name     = "tcp-${index(var.tcp_lb_dns_names, each.key)}.${var.domain}"
+  name     = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
   type     = "A"
   alias {
     name                   = each.key
@@ -185,9 +191,9 @@ resource "aws_route53_record" "tcp_a" {
 }
 
 resource "aws_route53_record" "tcp_aaaa" {
-  for_each = toset(var.tcp_lb_dns_names)
+  for_each = toset(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names)
   zone_id  = var.zone_id
-  name     = "tcp-${index(var.tcp_lb_dns_names, each.key)}.${var.domain}"
+  name     = "tcp-${index(data.terraform_remote_state.stack.outputs.tcp_lb_dns_names, each.key)}.${var.domain}"
   type     = "AAAA"
   alias {
     name                   = each.key
@@ -203,6 +209,10 @@ locals {
 resource "aws_route53_zone" "brokered_mail_zone" {
   name    = local.brokered_mail_subdomain
   comment = "If customers create a brokered SES identity but do not specify a domain, a subdomain will be created for them in this zone. This allows sending mail for testing purposes."
+}
+
+data "aws_route53_zone" "apex_domain" {
+  name = var.domain
 }
 
 resource "aws_route53_record" "brokered_mail_ns" {
