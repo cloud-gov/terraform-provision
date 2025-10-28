@@ -31,7 +31,8 @@ resource "aws_iam_role" "cloudwatch_lambda_role" {
 
 data "aws_iam_policy_document" "lambda_logs_policy" {
   for_each = toset(var.environments)
-  statement = [{
+
+  statement {
     actions = [
       "logs:PutSubscriptionFilter",
       "logs:DescribeLogGroups",
@@ -41,17 +42,17 @@ data "aws_iam_policy_document" "lambda_logs_policy" {
     resources = [
       "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}-*"
     ]
-    },
-    {
-      actions = [
-        "iam:PassRole"
-      ]
-      effect = "Allow"
-      resources = [
-        "arn:${var.aws_partition}:iam::${var.account_id}:role/${aws_iam_role.cloudwatch_role}"
-      ]
-    }
-  ]
+  }
+
+  statement {
+    actions = [
+      "iam:PassRole"
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:${var.aws_partition}:iam::${var.account_id}:role/${aws_iam_role.cloudwatch_role[each.key].name}"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_logs_policy" {
