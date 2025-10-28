@@ -18,3 +18,13 @@ variable "stack_description" {
   type        = string
   description = "Name of the stack (e.g. development, staging, production)"
 }
+
+variable "cg_platform_notifications_arn" {
+  type        = string
+  description = "ARN of SNS topic for notifiying platform team by email"
+}
+
+variable "cg_platform_slack_notifications_arn" {
+  type        = string
+  description = "ARN of SNS topic for notifiying platform team via Slack"
+}
