@@ -11,7 +11,7 @@ resource "aws_cloudwatch_event_rule" "rds_log_group_creation_broker" {
       "requestParameters" = {
         "logGroupName" = [
           {
-            prefix = "/aws/rds/instance/cg-aws-broker-${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}"
+            prefix = "/aws/rds/instance/cg-aws-broker-${locals.prefixes[each.key]}"
           }
         ]
       }
@@ -25,4 +25,12 @@ resource "aws_cloudwatch_event_target" "rds_log_group_target" {
   role_arn  = aws_iam_role.eventbridge_lambda_role[each.key].arn
   arn       = resource.aws_lambda_function.cloudwatch_filter[each.key].arn
   target_id = resource.aws_lambda_function.cloudwatch_filter[each.key].id
+}
+
+locals {
+  prefixes = {
+    "production": "prd",
+     "staging": "stg",
+     "development": "dev"
+  }
 }

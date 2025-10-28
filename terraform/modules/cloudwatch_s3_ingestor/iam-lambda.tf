@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "lambda_logs_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}-*"
+      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-${locals.prefixes[each.key]}-*"
     ]
   }
 
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}-*"
+      "arn:${var.aws_partition}:rds:${locals.prefixes[each.key]}-*"
     ]
   }
 }
@@ -93,4 +93,12 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
   name     = "${var.name_prefix}-${each.key}-lambda-tag-policy"
   role     = aws_iam_role.lambda_role[each.key].id
   policy   = data.aws_iam_policy_document.lambda_tag_policy[each.key].json
+}
+
+locals {
+  prefixes = {
+    "production": "prd",
+     "staging": "stg",
+     "development": "dev"
+  }
 }
