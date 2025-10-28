@@ -28,7 +28,7 @@ https://docs.aws.amazon.com/ses/latest/dg/reputationdashboardmessages.html#reput
 
 # 5% * 40% = 2%. 5% * 80% = 4%.
 resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_warning" {
-  alarm_name = "${local.email_domain}-BounceRate-Warning"
+  alarm_name = "${local.identity_name}-BounceRate-Warning"
   # Note that alarm_description must be <=1024 chars
   alarm_description = <<EOT
   Warning: The bounce rate for this SES identity has exceeded 2%.
@@ -66,7 +66,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ses_bounce_rate_critical" {
-  alarm_name = "${local.email_domain}-BounceRate-Critical"
+  alarm_name = "${local.identity_name}-BounceRate-Critical"
   # Note that alarm_description must be <=1024 chars
   alarm_description = <<EOT
   Critical: The bounce rate for this SES identity has exceeded 4%.
@@ -111,7 +111,7 @@ https://docs.aws.amazon.com/ses/latest/dg/reputationdashboardmessages.html#reput
 
 # 0.1% * 40% = 0.04%. 0.01% * 80% = 0.08%.
 resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_warning" {
-  alarm_name = "${local.email_domain}-ComplaintRate-Warning"
+  alarm_name = "${local.identity_name}-ComplaintRate-Warning"
   # Note that alarm_description must be <=1024 chars
   alarm_description = <<EOT
   Warning: The complaint rate for this SES identity has exceeded 0.04%.
@@ -149,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_warning" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ses_complaint_rate_critical" {
-  alarm_name = "${local.email_domain}-ComplaintRate-Critical"
+  alarm_name = "${local.identity_name}-ComplaintRate-Critical"
   # Note that alarm_description must be <=1024 chars
   alarm_description = <<EOT
   Critical: The complaint rate for this SES identity has exceeded 0.08%.
