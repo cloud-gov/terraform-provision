@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "lambda_logs_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker--${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}-*"
+      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker${each.key == "production" ? "prd" : (each.key == "staging" ? "stg" : "dev")}-*"
     ]
   }
 }
