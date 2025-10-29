@@ -97,9 +97,9 @@ module "logs_opensearch_s3_ingestor_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
-module "logs_opensearch_secrets_reader_policy" {
-  source          = "../../modules/iam_role_policy/logs_opensearch_secrets_reader"
-  policy_name     = "${var.stack_description}-logs_opensearch_secrets_reader"
+module "logs_opensearch_policy" {
+  source          = "../../modules/iam_role_policy/logs_opensearch"
+  policy_name     = "${var.stack_description}-logs_opensearch"
   aws_partition   = data.aws_partition.current.partition
   region          = var.aws_default_region
   account_id      = data.aws_caller_identity.current.account_id
@@ -184,7 +184,7 @@ module "logs_opensearch_ingestor_s3_role" {
   role_name = "${var.stack_description}-logs-opensearch-ingestor_s3"
 }
 
-module "logs_opensearch_secrets_reader_role" {
+module "logs_opensearch_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logs-opensearch-secrets-reader"
 }
@@ -298,11 +298,11 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "logs_opensearch_secrets_reader" {
-  name       = "${var.stack_description}-logs_opensearch_secrets_reader"
-  policy_arn = module.logs_opensearch_secrets_reader_policy.arn
+resource "aws_iam_policy_attachment" "logs_opensearch" {
+  name       = "${var.stack_description}-logs_opensearch"
+  policy_arn = module.logs_opensearch_policy.arn
   users = [
-    aws_iam_user.logs_opensearch_secrets_reader_user.name
+    aws_iam_user.logs_opensearch_user.name
   ]
 }
 
