@@ -29,8 +29,8 @@ resource "aws_cloudwatch_event_target" "rds_log_group_target" {
 
 locals {
   prefixes = {
-    "production" : "prd",
-    "staging" : "stg",
+    "production" : "prod",
+    "staging" : "stage",
     "development" : "dev"
   }
 }
