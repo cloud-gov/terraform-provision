@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "log_alerts_secrets_reader_policy" {
+data "aws_iam_policy_document" "logs_opensearch_secrets_reader_policy" {
   statement {
     actions = [
       "secretsmanager:ListSecrets",
@@ -22,5 +22,5 @@ data "aws_iam_policy_document" "log_alerts_secrets_reader_policy" {
 
 resource "aws_iam_policy" "iam_policy" {
   name   = var.policy_name
-  policy = data.aws_iam_policy_document.log_alerts_secrets_reader_policy.json
+  policy = data.aws_iam_policy_document.logs_opensearch_secrets_reader_policy.json
 }
