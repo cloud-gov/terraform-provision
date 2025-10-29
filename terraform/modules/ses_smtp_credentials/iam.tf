@@ -1,7 +1,7 @@
 resource "aws_iam_user" "ses_smtp_user" {
   for_each = toset(var.usernames)
   name     = "${var.resource_prefix}-${each.value}"
-  path     = "/${var.resource_prefix}"
+  path     = "/${var.resource_prefix}/"
 }
 
 data "aws_iam_policy_document" "ses_smtp_send_mail_policy_doc" {
