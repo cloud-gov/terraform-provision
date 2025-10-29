@@ -1,6 +1,6 @@
 resource "aws_secretsmanager_secret" "ses_smtp_creds_secret" {
   for_each = toset(var.usernames)
-  name     = "${var.resource_prefix}-ses-smtp-creds"
+  name     = "${var.resource_prefix}-${each.value}-ses-smtp-creds"
 }
 
 resource "aws_secretsmanager_secret_version" "ses_smtp_creds_secret_version" {
