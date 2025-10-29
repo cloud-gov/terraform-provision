@@ -804,6 +804,6 @@ output "log_alerts_ses_dkim_attribute_tokens" {
   sensitive = true
 }
 
-output "logs_opensearch_secrets_reader_profile" {
-  value = module.logs_opensearch_secrets_reader_role.profile_name
+output "logs_opensearch_profile" {
+  value = module.logs_opensearch_role.profile_name
 }
