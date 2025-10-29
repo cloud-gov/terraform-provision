@@ -7,7 +7,7 @@ resource "aws_iam_user" "ses_smtp_user" {
 data "aws_iam_policy_document" "ses_smtp_send_mail_policy_doc" {
   statement {
     effect  = "Allow"
-    actions = ["ses:sendRawEmail"]
+    actions = ["ses:SendRawEmail"]
     resources = [
       var.ses_email_identity_arn,
       var.ses_configuration_set_arn
