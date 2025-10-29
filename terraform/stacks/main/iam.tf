@@ -30,14 +30,6 @@ resource "aws_iam_access_key" "logs_opensearch_s3_user_key_v3" {
   user = aws_iam_user.logs_opensearch_s3_user.name
 }
 
-resource "aws_iam_user" "logs_opensearch_secrets_reader_user" {
-  name = "logs-opensearch-secrets-reader-${var.stack_description}"
-}
-
-resource "aws_iam_access_key" "logs_alerts_secrets_reader_user_key" {
-  user = aws_iam_user.logs_opensearch_secrets_reader_user.name
-}
-
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-blobstore"
@@ -190,6 +182,11 @@ module "logs_opensearch_metric_ingestor_role" {
 module "logs_opensearch_ingestor_s3_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logs-opensearch-ingestor_s3"
+}
+
+module "logs_opensearch_secrets_reader_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logs-opensearch-secrets-reader"
 }
 
 module "cf_blobstore_role" {
