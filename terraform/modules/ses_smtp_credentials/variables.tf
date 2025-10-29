@@ -3,9 +3,9 @@ variable "resource_prefix" {
   description = "Prefix to use for resource names"
 }
 
-variable "smtp_users" {
+variable "usernames" {
   type        = list(string)
-  description = "List of user identifiers needing SES SMTP credentials"
+  description = "List of users needing SES SMTP credentials"
   default     = []
 }
 

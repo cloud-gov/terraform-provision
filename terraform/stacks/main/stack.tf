@@ -538,4 +538,5 @@ module "log_alerts_ses_smtp_credentials" {
   resource_prefix           = "${var.stack_description}-log-alerts"
   ses_email_identity_arn    = module.log_alerts_ses_domain.ses_email_identity_arn
   ses_configuration_set_arn = module.log_alerts_ses_domain.ses_configuration_set_arn
+  usernames                 = var.log_alerts_smtp_usernames
 }
