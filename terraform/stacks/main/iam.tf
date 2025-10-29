@@ -301,8 +301,8 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
 resource "aws_iam_policy_attachment" "logs_opensearch" {
   name       = "${var.stack_description}-logs_opensearch"
   policy_arn = module.logs_opensearch_policy.arn
-  users = [
-    aws_iam_user.logs_opensearch_user.name
+  roles = [
+    module.logs_opensearch_role.role_name,
   ]
 }
 
