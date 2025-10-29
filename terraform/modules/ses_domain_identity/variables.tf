@@ -28,3 +28,8 @@ variable "cg_platform_slack_notifications_arn" {
   type        = string
   description = "ARN of SNS topic for notifiying platform team via Slack"
 }
+
+variable "resource_prefix" {
+  type        = string
+  description = "Prefix to use for resource names"
+}
