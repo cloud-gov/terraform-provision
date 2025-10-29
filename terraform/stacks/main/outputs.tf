@@ -803,3 +803,12 @@ output "log_alerts_ses_dkim_attribute_tokens" {
   value     = module.log_alerts_ses_domain.dkim_attribute_tokens
   sensitive = true
 }
+
+output "log_alerts_secrets_reader_user_access_key_id_curr" {
+  value = aws_iam_access_key.logs_alerts_secrets_reader_user_key.id
+}
+
+output "log_alerts_secrets_reader_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.logs_alerts_secrets_reader_user_key.secret
+  sensitive = true
+}

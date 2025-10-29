@@ -30,6 +30,14 @@ resource "aws_iam_access_key" "logs_opensearch_s3_user_key_v3" {
   user = aws_iam_user.logs_opensearch_s3_user.name
 }
 
+resource "aws_iam_user" "logs_opensearch_alerts_secrets_user" {
+  name = "logs-opensearch-alerts-secrets-${var.stack_description}"
+}
+
+resource "aws_iam_access_key" "logs_alerts_secrets_reader_user_key" {
+  user = aws_iam_user.logs_opensearch_alerts_secrets_user.name
+}
+
 module "blobstore_policy" {
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-blobstore"
@@ -95,6 +103,15 @@ module "logs_opensearch_s3_ingestor_policy" {
   aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
   account_id         = data.aws_caller_identity.current.account_id
+}
+
+module "logs_alerts_secrets_reader_policy" {
+  source          = "../../modules/iam_role_policy/logs_opensearch_alerts_secrets"
+  policy_name     = "${var.stack_description}-logs_opensearch_alerts_secrets"
+  aws_partition   = data.aws_partition.current.partition
+  region          = var.aws_default_region
+  account_id      = data.aws_caller_identity.current.account_id
+  resource_prefix = local.logs_alerts_resource_prefix
 }
 
 module "cf_blobstore_policy" {
@@ -281,6 +298,14 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
   ]
   users = [
     aws_iam_user.logs_opensearch_metric_user.name
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logs_opensearch_alerts_secrets" {
+  name       = "${var.stack_description}-logs_opensearch_alerts_secrets"
+  policy_arn = module.logs_opensearch_alerts_secrets.arn
+  users = [
+    aws_iam_user.logs_opensearch_alerts_secrets.name
   ]
 }
 
