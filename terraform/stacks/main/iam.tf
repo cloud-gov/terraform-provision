@@ -303,9 +303,9 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
 
 resource "aws_iam_policy_attachment" "logs_opensearch_secrets_reader" {
   name       = "${var.stack_description}-logs_opensearch_secrets_reader"
-  policy_arn = module.logs_opensearch_secrets_reader.arn
+  policy_arn = module.logs_opensearch_secrets_reader_policy.arn
   users = [
-    aws_iam_user.logs_opensearch_secrets_reader.name
+    aws_iam_user.logs_opensearch_secrets_reader_user.name
   ]
 }
 
