@@ -227,8 +227,6 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.default_role.role_name,
     module.bosh_role.role_name,
     module.bosh_compilation_role.role_name,
-    module.logsearch_ingestor_role.role_name,
-    module.logs_opensearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
