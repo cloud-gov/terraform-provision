@@ -1,5 +1,5 @@
 locals {
-  log_alerts_domain = "log-alerts.${var.domain}"
+  log_alerts_domain = "log-alerts.${var.admin_subdomain}"
 
   # rua=mailto:reports@dmarc.cyber.dhs.gov is required by BOD-18-01: https://cyber.dhs.gov/assets/report/bod-18-01.pdf
   dmarc_rua = join(
