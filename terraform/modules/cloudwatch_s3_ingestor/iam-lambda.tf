@@ -74,6 +74,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_lambda_basic_execution" {
   role       = aws_iam_role.cloudwatch_lambda_role[each.key].name
 }
 
+# Change me jason
 data "aws_iam_policy_document" "lambda_tag_policy" {
   for_each = toset(var.environments)
   statement {
@@ -83,7 +84,7 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-${local.prefixes[each.key]}*"
+      "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-*"
     ]
   }
 }
