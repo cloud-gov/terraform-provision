@@ -11,6 +11,8 @@ resource "aws_lambda_function" "transform" {
 
   timeout = 60
 
+  publish = true
+
   environment {
     variables = {
       ENVIRONMENT = each.key
