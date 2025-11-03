@@ -522,12 +522,26 @@ module "opensearch_proxy_redis_cluster" {
   security_group_ids = [module.elasticache_broker_network.elasticache_redis_security_group]
 }
 
+locals {
+  logs_alerts_resource_prefix = "log-alerts-${var.stack_description}"
+}
+
 module "log_alerts_ses_domain" {
   source = "../../modules/ses_domain_identity"
 
   stack_description                   = var.stack_description
   email_identity_subdomain            = "log-alerts"
+  resource_prefix                     = local.logs_alerts_resource_prefix
   environment_domain                  = var.environment_domain
   cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
   cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
+}
+
+module "log_alerts_ses_smtp_credentials" {
+  source = "../../modules/ses_smtp_credentials"
+
+  resource_prefix           = local.logs_alerts_resource_prefix
+  ses_email_identity_arn    = module.log_alerts_ses_domain.ses_email_identity_arn
+  ses_configuration_set_arn = module.log_alerts_ses_domain.ses_configuration_set_arn
+  usernames                 = var.log_alerts_smtp_usernames
 }

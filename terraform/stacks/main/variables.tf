@@ -380,3 +380,9 @@ variable "environment_domain" {
   type        = string
   description = "Domain for the environment (e.g. dev, stage, prod)"
 }
+
+variable "log_alerts_smtp_usernames" {
+  type        = list(string)
+  description = "List of users needing SES SMTP credentials for alerts"
+  default     = []
+}

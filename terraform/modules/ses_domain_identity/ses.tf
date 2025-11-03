@@ -16,7 +16,7 @@ resource "aws_sesv2_email_identity_mail_from_attributes" "email_mail_from" {
 }
 
 resource "aws_sesv2_configuration_set" "email_domain_identity_config" {
-  configuration_set_name = local.identity_name
+  configuration_set_name = "${var.resource_prefix}-config"
 
   delivery_options {
     tls_policy = "REQUIRE"

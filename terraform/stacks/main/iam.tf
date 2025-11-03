@@ -97,6 +97,15 @@ module "logs_opensearch_s3_ingestor_policy" {
   account_id         = data.aws_caller_identity.current.account_id
 }
 
+module "logs_opensearch_secrets_policy" {
+  source          = "../../modules/iam_role_policy/logs_opensearch_secrets"
+  policy_name     = "${var.stack_description}-logs_opensearch_secrets"
+  aws_partition   = data.aws_partition.current.partition
+  region          = var.aws_default_region
+  account_id      = data.aws_caller_identity.current.account_id
+  resource_prefix = local.logs_alerts_resource_prefix
+}
+
 module "cf_blobstore_policy" {
   source            = "../../modules/iam_role_policy/cf_blobstore"
   policy_name       = "${var.stack_description}-cf-blobstore"
@@ -175,6 +184,11 @@ module "logs_opensearch_ingestor_s3_role" {
   role_name = "${var.stack_description}-logs-opensearch-ingestor_s3"
 }
 
+module "logs_opensearch_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-logs-opensearch"
+}
+
 module "cf_blobstore_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-cf-blobstore"
@@ -198,6 +212,7 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.bosh_role.role_name,
     module.logsearch_ingestor_role.role_name,
     module.logs_opensearch_ingestor_role.role_name,
+    module.logs_opensearch_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -213,7 +228,6 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.bosh_role.role_name,
     module.bosh_compilation_role.role_name,
     module.logsearch_ingestor_role.role_name,
-    module.logs_opensearch_ingestor_role.role_name,
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
@@ -281,6 +295,17 @@ resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
   ]
   users = [
     aws_iam_user.logs_opensearch_metric_user.name
+  ]
+}
+
+resource "aws_iam_policy_attachment" "logs_opensearch_secrets" {
+  name       = "${var.stack_description}-logs_opensearch"
+  policy_arn = module.logs_opensearch_secrets_policy.arn
+  roles = [
+    module.logs_opensearch_ingestor_role.role_name,
+    module.logs_opensearch_metric_ingestor_role.role_name,
+    module.logs_opensearch_role.role_name,
+    module.logs_opensearch_ingestor_s3_role.role_name
   ]
 }
 
