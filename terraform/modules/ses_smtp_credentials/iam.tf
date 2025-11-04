@@ -12,6 +12,11 @@ data "aws_iam_policy_document" "ses_smtp_send_mail_policy_doc" {
       var.ses_email_identity_arn,
       var.ses_configuration_set_arn
     ]
+    condition {
+      test     = "ForAllValues:StringLike"
+      variable = "ses:Recipients"
+      values   = var.ses_allowed_recipient_email_patterns
+    }
   }
 }
 

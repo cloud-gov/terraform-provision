@@ -788,7 +788,8 @@ jobs:
           TF_VAR_domains_broker_rds_version: 15.12
 
           TF_VAR_environment_domain: "((environment_domain_development))"
-          TF_VAR_log_alerts_smtp_usernames: ((log_alers_ses_smtp_usernames_development))
+          TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_development))
+          TF_VAR_log_alerts_ses_allowed_recipient_email_patterns: ((log_alerts_ses_allowed_recipient_email_patterns))
       - *notify-slack
 
   - name: apply-development
@@ -1065,7 +1066,8 @@ jobs:
           TF_VAR_domains_broker_rds_version: 15.12
 
           TF_VAR_environment_domain: "((environment_domain_staging))"
-          TF_VAR_log_alerts_smtp_usernames: ((log_alers_ses_smtp_usernames_staging))
+          TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_staging))
+          TF_VAR_log_alerts_ses_allowed_recipient_email_patterns: ((log_alerts_ses_allowed_recipient_email_patterns))
       - *notify-slack
 
   - name: apply-staging
@@ -1341,7 +1343,8 @@ jobs:
           TF_VAR_domains_broker_rds_version: 15.12
 
           TF_VAR_environment_domain: "((environment_domain_production))"
-          TF_VAR_log_alerts_smtp_usernames: ((log_alers_ses_smtp_usernames_production))
+          TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_production))
+          TF_VAR_log_alerts_ses_allowed_recipient_email_patterns: ((log_alerts_ses_allowed_recipient_email_patterns))
       - *notify-slack
 
   - name: apply-production
