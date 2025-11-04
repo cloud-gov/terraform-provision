@@ -43,7 +43,7 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
 
         parameters {
           parameter_name  = "BufferSizeInMBs" # Controls Lambda batch size
-          parameter_value = "2"               
+          parameter_value = "2"
         }
         parameters {
           parameter_name  = "BufferIntervalInSeconds"

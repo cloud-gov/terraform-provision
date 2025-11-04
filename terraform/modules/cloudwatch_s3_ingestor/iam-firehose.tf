@@ -37,8 +37,8 @@ data "aws_iam_policy_document" "firehose_policy" {
       "lambda:InvokeFunction",
       "lambda:GetFunctionConfiguration"
     ]
-    resources = [aws_lambda_function.transform[each.key].arn, 
-    "${aws_lambda_function.transform[each.key].arn}:*" 
+    resources = [aws_lambda_function.transform[each.key].arn,
+      "${aws_lambda_function.transform[each.key].arn}:*"
     ]
   }
   statement {

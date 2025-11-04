@@ -15,8 +15,8 @@ resource "aws_lambda_function" "transform" {
 
   environment {
     variables = {
-      ENVIRONMENT = each.key
-      ACCOUNT_ID  = var.account_id
+      ENVIRONMENT    = each.key
+      ACCOUNT_ID     = var.account_id
       S3_BUCKET_NAME = resource.aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].bucket
     }
   }
@@ -27,7 +27,7 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/heads/lambda-pipeline/lambda_functions/transform_cloudwatch_lambda.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.0.5/lambda_functions/transform_cloudwatch_lambda.py"
 }
 
 data "archive_file" "lambda_zip" {
@@ -50,7 +50,7 @@ resource "aws_lambda_function" "cloudwatch_filter" {
   source_code_hash = data.archive_file.cloudwatch_lambda_zip.output_base64sha256
   runtime          = "python3.13"
   architectures    = ["arm64"]
-  memory_size = 175
+  memory_size      = 175
 
   timeout = 60
 
