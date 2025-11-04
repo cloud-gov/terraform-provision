@@ -386,3 +386,8 @@ variable "log_alerts_smtp_usernames" {
   description = "List of users needing SES SMTP credentials for alerts"
   default     = []
 }
+
+variable "log_alerts_ses_allowed_recipient_email_patterns" {
+  type        = list(string)
+  description = "List of allowed recipient email patterns for sending email from SES for log alerts"
+}

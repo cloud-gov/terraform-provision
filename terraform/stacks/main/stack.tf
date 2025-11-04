@@ -540,8 +540,9 @@ module "log_alerts_ses_domain" {
 module "log_alerts_ses_smtp_credentials" {
   source = "../../modules/ses_smtp_credentials"
 
-  resource_prefix           = local.logs_alerts_resource_prefix
-  ses_email_identity_arn    = module.log_alerts_ses_domain.ses_email_identity_arn
-  ses_configuration_set_arn = module.log_alerts_ses_domain.ses_configuration_set_arn
-  usernames                 = var.log_alerts_smtp_usernames
+  resource_prefix                      = local.logs_alerts_resource_prefix
+  ses_email_identity_arn               = module.log_alerts_ses_domain.ses_email_identity_arn
+  ses_configuration_set_arn            = module.log_alerts_ses_domain.ses_configuration_set_arn
+  usernames                            = var.log_alerts_smtp_usernames
+  ses_allowed_recipient_email_patterns = var.log_alerts_ses_allowed_recipient_email_patterns
 }
