@@ -86,6 +86,15 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
       "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-${local.prefixes[each.key]}*"
     ]
   }
+  statement {
+    actions = [
+      "s3:PutObject"
+    ]
+    effect = "Allow"
+    resources = [
+      "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_tag_policy" {

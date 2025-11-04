@@ -20,6 +20,8 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
   name        = "${var.name_prefix}-${each.key}-delivery-stream"
   destination = "extended_s3"
 
+
+
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role[each.key].arn
     bucket_arn          = aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn
@@ -36,8 +38,14 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
 
         parameters {
           parameter_name  = "LambdaArn"
-          parameter_value = aws_lambda_function.transform[each.key].arn
+          parameter_value = "${aws_lambda_function.transform[each.key].arn}:$LATEST"
         }
+
+        parameters {
+          parameter_name  = "BufferSizeInMBs" # Controls Lambda batch size
+          parameter_value = "2"
+        }
+
       }
     }
     cloudwatch_logging_options {
