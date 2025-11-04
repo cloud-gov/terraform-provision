@@ -50,6 +50,7 @@ resource "aws_lambda_function" "cloudwatch_filter" {
   source_code_hash = data.archive_file.cloudwatch_lambda_zip.output_base64sha256
   runtime          = "python3.13"
   architectures    = ["arm64"]
+  memory_size = 175
 
   timeout = 60
 
