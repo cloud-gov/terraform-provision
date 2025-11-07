@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:s3:::logs-opensearch-cloudwatch-stream-${local.prefixes[each.key]}-cloudwatch/*"
+      "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
   }
 }
