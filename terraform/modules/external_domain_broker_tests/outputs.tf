@@ -3,11 +3,11 @@ output "username" {
 }
 
 output "access_key_id_prev" {
-  value = ""
+  value = aws_iam_access_key.iam_access_key_v2.id
 }
 
 output "secret_access_key_prev" {
-  value = ""
+  value = aws_iam_access_key.iam_access_key_v2.secret
 }
 
 output "access_key_id_curr" {
