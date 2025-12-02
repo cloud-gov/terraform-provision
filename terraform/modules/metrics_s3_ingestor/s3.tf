@@ -21,7 +21,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
 }
 
 data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
-  for_each = var.include_require_encrypted_put_bucket_policy ? aws_s3_bucket.opensearch_metric_buckets : {}
+  for_each = aws_s3_bucket.opensearch_metric_buckets
   
   statement {
     sid    = "DenyUnencryptedPut"
