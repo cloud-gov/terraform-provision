@@ -20,6 +20,7 @@ resource "aws_iam_role" "firehose_role" {
   })
 }
 
+
 data "aws_iam_policy_document" "firehose_policy" {
   for_each = toset(var.environments)
   statement {
@@ -30,11 +31,6 @@ data "aws_iam_policy_document" "firehose_policy" {
     resources = [
       "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
-    Condition = {
-          "StringEquals" = {
-            "s3:x-amz-server-side-encryption" = "AES256"
-          }
-        }
   }
   statement {
     effect = "Allow"
