@@ -110,6 +110,11 @@ resource "aws_iam_role_policy" "firehose_policy" {
         Resource = [
           "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}/*"
         ]
+        Condition = {
+          "StringEquals" = {
+            "s3:x-amz-server-side-encryption" = "AES256"
+          }
+        }
       },
       {
         Effect = "Allow"
