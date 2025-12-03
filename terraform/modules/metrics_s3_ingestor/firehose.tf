@@ -51,7 +51,7 @@ resource "aws_kinesis_firehose_delivery_stream" "metric_stream" {
     cloudwatch_logging_options {
       enabled         = true
       log_group_name  = aws_cloudwatch_log_group.firehose_log_group[each.key].name
-      log_stream_name = aws_cloudwatch_log_stream.firehose_log_stream[each.key].name
+      log_stream_name = "DestinationDelivery"
     }
 
   }
