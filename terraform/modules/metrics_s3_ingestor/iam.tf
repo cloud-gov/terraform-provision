@@ -130,7 +130,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
           "logs:PutLogEvents"
         ]
         Resource = ["arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-*",
-        "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/kinesisfirehose/${var.name_prefix}-${each.key}-delivery-stream"
+        "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/kinesisfirehose/${var.name_prefix}-${each.key}-delivery-stream:*"
         ]
       }
     ]
