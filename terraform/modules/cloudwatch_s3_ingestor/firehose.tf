@@ -20,7 +20,9 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
   name        = "${var.name_prefix}-${each.key}-delivery-stream"
   destination = "extended_s3"
 
-
+  server_side_encryption {
+      enabled = true
+  }
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role[each.key].arn

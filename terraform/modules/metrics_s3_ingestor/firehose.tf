@@ -20,6 +20,10 @@ resource "aws_kinesis_firehose_delivery_stream" "metric_stream" {
   name        = "${var.name_prefix}-${each.key}-delivery-stream"
   destination = "extended_s3"
 
+  server_side_encryption {
+    enabled = true
+  }
+
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role[each.key].arn
     bucket_arn          = aws_s3_bucket.opensearch_metric_buckets[each.key].arn
