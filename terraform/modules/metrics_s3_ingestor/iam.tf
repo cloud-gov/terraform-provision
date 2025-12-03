@@ -108,7 +108,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
           "s3:PutObject"
         ]
         Resource = [
-          "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn},
+          "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}",
           "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}/*"
         ]
       },
