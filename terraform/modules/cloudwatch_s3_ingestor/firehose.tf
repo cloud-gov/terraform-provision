@@ -25,7 +25,7 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
   ]
 
   server_side_encryption {
-      enabled = true
+    enabled = true
   }
 
   extended_s3_configuration {
