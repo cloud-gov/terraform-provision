@@ -52,7 +52,8 @@ data "aws_iam_policy_document" "firehose_policy" {
     actions = [
       "logs:PutLogEvents"
     ]
-    resources = ["arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-*"]
+    resources = ["arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-*",
+    "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/kinesisfirehose/${var.name_prefix}-${each.key}-delivery-stream:*"]
   }
 }
 
