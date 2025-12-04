@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "firehose_log_group" {
 
 resource "aws_cloudwatch_log_stream" "firehose_log_stream" {
   for_each       = toset(var.environments)
-  name           = "DestinationForDelivery"
+  name           = "DestinationDelivery"
   log_group_name = aws_cloudwatch_log_group.firehose_log_group[each.key].name
 }
 
@@ -20,7 +20,13 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
   name        = "${var.name_prefix}-${each.key}-delivery-stream"
   destination = "extended_s3"
 
+  depends_on = [
+    aws_cloudwatch_log_group.firehose_log_group
+  ]
 
+  server_side_encryption {
+    enabled = true
+  }
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose_role[each.key].arn
@@ -51,7 +57,7 @@ resource "aws_kinesis_firehose_delivery_stream" "cloudwatch_stream" {
     cloudwatch_logging_options {
       enabled         = true
       log_group_name  = aws_cloudwatch_log_group.firehose_log_group[each.key].name
-      log_stream_name = aws_cloudwatch_log_stream.firehose_log_stream[each.key].name
+      log_stream_name = "DestinationDelivery"
     }
 
   }

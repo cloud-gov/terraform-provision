@@ -20,6 +20,7 @@ resource "aws_iam_role" "firehose_role" {
   })
 }
 
+
 data "aws_iam_policy_document" "firehose_policy" {
   for_each = toset(var.environments)
   statement {
@@ -30,6 +31,11 @@ data "aws_iam_policy_document" "firehose_policy" {
     resources = [
       "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["AES256"]
+    }
   }
   statement {
     effect = "Allow"
@@ -46,7 +52,8 @@ data "aws_iam_policy_document" "firehose_policy" {
     actions = [
       "logs:PutLogEvents"
     ]
-    resources = ["arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-*"]
+    resources = ["arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-*",
+    "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/kinesisfirehose/${var.name_prefix}-${each.key}-delivery-stream:*"]
   }
 }
 
