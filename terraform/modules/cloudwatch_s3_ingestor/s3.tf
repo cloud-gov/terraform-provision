@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.lambda_role.arn}]
+      identifiers = [aws_iam_role.lambda_role.arn]
     }
     actions = [
       "s3:PutObject",
