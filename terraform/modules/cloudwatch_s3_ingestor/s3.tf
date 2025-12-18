@@ -22,21 +22,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
 
 data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
   for_each = aws_s3_bucket.opensearch_cloudwatch_buckets
-
-  statement {
-    sid    = "AllowLambdaAssumedRole"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = [aws_iam_role.lambda_role[each.key].arn]
-    }
-    actions = [
-      "s3:PutObject",
-    ]
-    resources = [
-      "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
-    ]
-  }
+  
   statement {
     sid    = "DenyUnencryptedPut"
     effect = "Deny"
@@ -52,8 +38,8 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
     ]
     condition {
       test     = "StringNotEquals"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["AES256"]
+      variable = "aws:PrincipalArn"
+      values   = [var.ingestor_arn]
     }
     condition {
       test     = "StringNotLike"
