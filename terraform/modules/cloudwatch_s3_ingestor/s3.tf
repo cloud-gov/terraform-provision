@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
       "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
     condition {
-      test     = "StringNotEquals"
+      test     = "StringNotLike"
       variable = "aws:PrincipalArn"
       values   = ["arn:${var.aws_partition}:iam::${var.account_id}:role/${var.ingestor_arn}"]
     }
