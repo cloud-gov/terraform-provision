@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "opensearch_cloudwatch_buckets" {
   for_each = toset(var.environments)
-  bucket   = "logs-${var.name_prefix}-${each.key}"
+  bucket   = "logs-${var.name_prefix}-${each.key}-cloudwatch"
   tags = merge(local.common_tags, {
     Environment = each.key
   })
