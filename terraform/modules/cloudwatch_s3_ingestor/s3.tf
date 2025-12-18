@@ -39,7 +39,12 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
     condition {
       test     = "StringNotLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:${var.aws_partition}:iam::${var.account_id}:role/${var.ingestor_arn}"]
+      values   = ["arn:${var.aws_partition}:iam::${var.account_id}:role/${var.ingestor_arn}/*"]
+    }
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:${var.aws_partition}:sts::${var.account_id}:assumed-role/${var.ingestor_arn}/*"]
     }
     condition {
       test     = "StringNotLike"
