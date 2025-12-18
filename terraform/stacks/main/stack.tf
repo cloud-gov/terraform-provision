@@ -251,6 +251,10 @@ module "stack" {
 
 }
 
+module "iam_role_policy" {
+  source = "./modules/iam_role_policy"
+}
+
 module "opensearch_metrics_preprocessing" {
   source        = "../../modules/metrics_s3_ingestor"
   environments  = [var.stack_description]
