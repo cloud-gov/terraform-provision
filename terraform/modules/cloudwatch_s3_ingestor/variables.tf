@@ -42,3 +42,7 @@ variable "firehose_buffer_interval" {
   default     = 60
 }
 
+variable "ingestor_arn" {
+  description = "arn of ingestor role"
+  type = string
+}
