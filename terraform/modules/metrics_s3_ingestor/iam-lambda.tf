@@ -1,6 +1,6 @@
 resource "aws_iam_role" "lambda_role" {
   for_each = toset(var.environments)
-  name = "${var.name_prefix}-${each.key}-lambda-role"
+  name     = "${var.name_prefix}-${each.key}-lambda-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -20,8 +20,8 @@ resource "aws_iam_role" "lambda_role" {
 
 resource "aws_iam_role_policy" "lambda_tag_policy" {
   for_each = toset(var.environments)
-  name = "${var.name_prefix}-${each.key}-lambda-tag-policy"
-  role = aws_iam_role.lambda_role[each.key].id
+  name     = "${var.name_prefix}-${each.key}-lambda-tag-policy"
+  role     = aws_iam_role.lambda_role[each.key].id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-  for_each = toset(var.environments)
+  for_each   = toset(var.environments)
   policy_arn = "arn:${var.aws_partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.lambda_role[each.key].name
 }

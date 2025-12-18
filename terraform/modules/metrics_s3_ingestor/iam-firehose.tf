@@ -1,6 +1,6 @@
 resource "aws_iam_role" "firehose_role" {
   for_each = toset(var.environments)
-  name = "${var.name_prefix}-${each.key}-firehose-role"
+  name     = "${var.name_prefix}-${each.key}-firehose-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -20,8 +20,8 @@ resource "aws_iam_role" "firehose_role" {
 
 resource "aws_iam_role_policy" "firehose_policy" {
   for_each = toset(var.environments)
-  name = "${var.name_prefix}-${each.key}-firehose-policy"
-  role = aws_iam_role.firehose_role[each.key].id
+  name     = "${var.name_prefix}-${each.key}-firehose-policy"
+  role     = aws_iam_role.firehose_role[each.key].id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

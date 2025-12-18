@@ -22,7 +22,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
 
 data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
   for_each = aws_s3_bucket.opensearch_cloudwatch_buckets
-  
+
   statement {
     sid    = "AllowLambdaAssumedRole"
     effect = "Allow"
