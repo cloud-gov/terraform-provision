@@ -55,6 +55,11 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
       variable = "s3:x-amz-server-side-encryption"
       values   = ["AES256"]
     }
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalArn"
+      values   = [aws_iam_role.lambda_role[each.key].arn]
+    }
   }
 }
 
