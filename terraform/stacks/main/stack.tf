@@ -255,7 +255,7 @@ module "stack" {
 module "opensearch_metrics_preprocessing" {
   source        = "../../modules/metrics_s3_ingestor"
   environments  = [var.stack_description]
-  ingestor_arn = module.logs_opensearch_ingestor_role.arn
+  ingestor_arn = module.logs_opensearch_ingestor_role.role_name
   account_id    = data.aws_caller_identity.current.account_id
   aws_region    = data.aws_region.current.region
   aws_partition = data.aws_partition.current.partition
@@ -264,7 +264,7 @@ module "opensearch_metrics_preprocessing" {
 module "opensearch_cloudwatch_logs_preprocessing" {
   source        = "../../modules/cloudwatch_s3_ingestor"
   environments  = [var.stack_description]
-  ingestor_arn = module.logs_opensearch_ingestor_role.arn
+  ingestor_arn = module.logs_opensearch_ingestor_role.role_name
   account_id    = data.aws_caller_identity.current.account_id
   aws_region    = data.aws_region.current.region
   aws_partition = data.aws_partition.current.partition

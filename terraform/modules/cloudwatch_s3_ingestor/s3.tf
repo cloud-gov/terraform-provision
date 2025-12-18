@@ -22,7 +22,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
 
 data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
   for_each = aws_s3_bucket.opensearch_cloudwatch_buckets
-  
+
   statement {
     sid    = "DenyUnencryptedPut"
     effect = "Deny"
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
     condition {
       test     = "StringNotEquals"
       variable = "aws:PrincipalArn"
-      values   = [var.ingestor_arn]
+      values   = ["arn:${var.aws_partition}:iam::${var.account_id}:role/${var.ingestor_arn}]
     }
     condition {
       test     = "StringNotLike"
