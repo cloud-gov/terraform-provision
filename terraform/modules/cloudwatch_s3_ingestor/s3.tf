@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
     type        = "AWS"
     identifiers = [
       aws_iam_role.lambda_role[each.key].arn,
-      "arn:${var.aws_partition}:sts::${var.account_id}:assumed-role/${replace(var.ingestor_arn, "arn:${var.aws_partition}:iam::${var.account_id}:role/", "")}/*"
+      "arn:${var.aws_partition}:iam::${var.account_id}:role/${var.ingestor_arn}"
     ]
   }
   actions = [
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
   resources = [
     "arn:${var.aws_partition}:s3:::${each.value.id}/*"
   ]
-}
+  }
 
   statement {
     sid    = "DenyUnencryptedPut"
