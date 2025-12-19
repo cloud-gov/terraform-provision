@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
       values   = ["true"]
     }
 
-    }
+  }
 }
 
 

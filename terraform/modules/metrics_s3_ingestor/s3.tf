@@ -22,22 +22,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
 
 data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
   for_each = aws_s3_bucket.opensearch_metric_buckets
-
-  statement {
-    sid    = "AllowFirehoseRole"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = [aws_iam_role.firehose_role[each.key].arn]
-    }
-    actions = [
-      "s3:PutObject",
-    ]
-    resources = [
-      "arn:${var.aws_partition}:s3:::${each.value.id}/*"
-    ]
-  }
-
+  
   statement {
     sid    = "DenyUnencryptedPut"
     effect = "Deny"
