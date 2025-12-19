@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
       values   = ["AES256"]
     }
     condition {
-      test     = "StringNotLike"
+      test     = "StringNotEquals"
       variable = "aws:PrincipalArn"
       values   = [aws_iam_role.firehose_role[each.key].arn]
     }
