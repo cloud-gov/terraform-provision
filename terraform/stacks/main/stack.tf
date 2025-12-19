@@ -251,6 +251,7 @@ module "stack" {
 
 }
 
+
 module "opensearch_metrics_preprocessing" {
   source        = "../../modules/metrics_s3_ingestor"
   environments  = [var.stack_description]
@@ -266,6 +267,7 @@ module "opensearch_cloudwatch_logs_preprocessing" {
   aws_region    = data.aws_region.current.region
   aws_partition = data.aws_partition.current.partition
 }
+
 module "cf" {
   source = "../../modules/cloudfoundry"
 

@@ -41,4 +41,3 @@ variable "firehose_buffer_interval" {
   type        = number
   default     = 60
 }
-
