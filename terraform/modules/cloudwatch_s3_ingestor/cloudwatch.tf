@@ -10,7 +10,7 @@ for_each = toset(var.environments)
 
 resource "aws_cloudwatch_log_subscription_filter" "test_subscription" {
   name            = "${local.prefixes[each.key]}-test-subscription"
-  log_group_name  = aws_cloudwatch_log_group.test_log.name
+  log_group_name  = aws_cloudwatch_log_group.test_log[each.key].name
   filter_pattern  = "" 
   destination_arn = resource.aws_kinesis_firehose_delivery_stream.cloudwatch_stream[each.key].arn
 }
