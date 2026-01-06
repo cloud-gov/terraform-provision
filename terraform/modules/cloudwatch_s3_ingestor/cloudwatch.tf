@@ -8,14 +8,6 @@ for_each = toset(var.environments)
   })
 }
 
-locals {
-  prefixes = {
-    "production" : "prod",
-    "staging" : "stage",
-    "development" : "dev"
-  }
-}
-
 resource "aws_cloudwatch_log_subscription_filter" "test_subscription" {
   name            = "${local.prefixes[each.key]}-test-subscription"
   log_group_name  = aws_cloudwatch_log_group.test_log.name
