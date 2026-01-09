@@ -550,6 +550,11 @@ output "bosh_compilation_profile" {
   value = module.bosh_compilation_role.profile_name
 }
 
+output "falco_profile" {
+  value = module.falco_role.profile_name
+}
+
+
 output "logsearch_ingestor_profile" {
   value = module.logsearch_ingestor_role.profile_name
 }

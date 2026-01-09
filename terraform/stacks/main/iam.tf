@@ -65,6 +65,13 @@ module "bosh_compilation_policy" {
   bucket_name   = var.blobstore_bucket_name
 }
 
+module "falco_policy" {
+  source        = "../../modules/iam_role_policy/blobstore"
+  policy_name   = "${var.stack_description}-falco"
+  aws_partition = data.aws_partition.current.partition
+  bucket_name   = "logs-opensearch-falco-${var.stack_description}"
+}
+
 module "logsearch_ingestor_policy" {
   source             = "../../modules/iam_role_policy/logsearch_ingestor"
   policy_name        = "${var.stack_description}-logsearch_ingestor"
@@ -164,6 +171,11 @@ module "bosh_compilation_role" {
   role_name = "${var.stack_description}-bosh-compilation"
 }
 
+module "falco_role" {
+  source    = "../../modules/iam_role"
+  role_name = "${var.stack_description}-falco"
+}
+
 module "logsearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logsearch-ingestor"
@@ -249,6 +261,14 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
   policy_arn = module.bosh_compilation_policy.arn
   roles = [
     module.bosh_compilation_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "falco" {
+  name       = "${var.stack_description}-falco"
+  policy_arn = module.falco_policy.arn
+  roles = [
+    module.falco_role.role_name,
   ]
 }
 
