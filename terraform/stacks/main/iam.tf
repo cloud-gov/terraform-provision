@@ -66,6 +66,7 @@ module "bosh_compilation_policy" {
 }
 
 module "falco_policy" {
+  count         = var.falco_bucket ? 1 : 0
   source        = "../../modules/iam_role_policy/blobstore"
   policy_name   = "${var.stack_description}-falco"
   aws_partition = data.aws_partition.current.partition
@@ -172,6 +173,7 @@ module "bosh_compilation_role" {
 }
 
 module "falco_role" {
+  count     = var.falco_bucket ? 1 : 0
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-falco"
 }
@@ -265,6 +267,7 @@ resource "aws_iam_policy_attachment" "bosh_compilation" {
 }
 
 resource "aws_iam_policy_attachment" "falco" {
+  count      = var.falco_bucket ? 1 : 0
   name       = "${var.stack_description}-falco"
   policy_arn = module.falco_policy.arn
   roles = [
