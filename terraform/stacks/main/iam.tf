@@ -171,11 +171,6 @@ module "bosh_compilation_role" {
   role_name = "${var.stack_description}-bosh-compilation"
 }
 
-module "falco_role" {
-  source    = "../../modules/iam_role"
-  role_name = "${var.stack_description}-falco"
-}
-
 module "logsearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logsearch-ingestor"
@@ -268,7 +263,8 @@ resource "aws_iam_policy_attachment" "falco" {
   name       = "${var.stack_description}-falco"
   policy_arn = module.falco_policy.arn
   roles = [
-    module.falco_role.role_name,
+    module.default_role.role_name,
+    module.platform_role.role_name,
   ]
 }
 
