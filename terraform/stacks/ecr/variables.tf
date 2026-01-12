@@ -38,6 +38,7 @@ variable "repositories" {
     "pages-nginx-v1",
     "pages-node-v20",
     "pages-node-v22",
+    "pages-node-v24",
     "pages-postgres-v15",
     "pages-python-v3.11",
     "pages-redis-v7.2",
