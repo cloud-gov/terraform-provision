@@ -105,3 +105,13 @@ resource "aws_security_group_rule" "tooling_syslog_access" {
   cidr_blocks       = [var.source_vpc_cidr]
   security_group_id = var.target_bosh_security_group
 }
+
+
+resource "aws_security_group_rule" "tooling_bbs_cf_exporter_in_prometheus_access" {
+  type              = "ingress"
+  from_port         = 8889
+  to_port           = 8889
+  protocol          = "tcp"
+  cidr_blocks       = [var.source_vpc_cidr]
+  security_group_id = var.target_bosh_security_group
+}
