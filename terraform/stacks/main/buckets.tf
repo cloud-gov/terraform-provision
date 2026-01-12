@@ -12,3 +12,11 @@ module "log_bucket" {
   log_bucket_name = "${var.stack_description}-elb-logs"
   aws_region      = data.aws_region.current.region
 }
+
+module "falco_blobstore_bucket" {
+  count         = var.falco_bucket ? 1 : 0
+  source        = "../../modules/s3_bucket/log_encrypted_bucket"
+  bucket        = "logs-opensearch-falco-${var.stack_description}"
+  aws_partition = data.aws_partition.current.partition
+  force_destroy = "true"
+}

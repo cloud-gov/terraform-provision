@@ -391,3 +391,8 @@ variable "log_alerts_ses_allowed_recipient_email_patterns" {
   type        = list(string)
   description = "List of allowed recipient email patterns for sending email from SES for log alerts"
 }
+
+variable "falco_bucket" {
+  type    = bool
+  default = false
+}
