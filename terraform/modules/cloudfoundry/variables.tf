@@ -275,3 +275,21 @@ variable "rds_pgaudit_log_values" {
   type        = string
   default     = "none"
 }
+
+variable "diego_api_bbs_nlb_security_groups" {
+  type        = list(string)
+  description = "List of security groups to attach to the diego api bbs nlb"
+  default     = []
+}
+
+variable "private_subnet_az1" {
+  type        = string
+  description = "ID of private subnet in AZ1"
+  default     = ""
+}
+
+variable "private_subnet_az2" {
+  type        = string
+  description = "ID of private subnet in AZ2"
+  default     = ""
+}
