@@ -293,3 +293,15 @@ variable "private_subnet_az2" {
   description = "ID of private subnet in AZ2"
   default     = ""
 }
+
+variable "diego_api_bbs_private_ipv4_address_az1" {
+  type        = string
+  description = "CIDR host address in private subnet AZ1 for diego api bbs nlb"
+  default     = ""
+}
+
+variable "diego_api_bbs_private_ipv4_address_az2" {
+  type        = string
+  description = "CIDR host address in private subnet AZ2 for diego api bbs nlb"
+  default     = ""
+}

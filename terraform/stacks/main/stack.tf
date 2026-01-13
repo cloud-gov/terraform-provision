@@ -340,6 +340,8 @@ module "cf" {
   private_subnet_az1 = module.stack.private_subnet_az1
   private_subnet_az2 = module.stack.private_subnet_az2
 
+  diego_api_bbs_private_ipv4_address_az1 = cidrhost(module.stack.private_cidr_az1, 250)
+  diego_api_bbs_private_ipv4_address_az2 = cidrhost(module.stack.private_cidr_az2, 250)
 }
 
 

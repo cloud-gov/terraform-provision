@@ -107,13 +107,13 @@ resource "aws_lb" "diego_api_bbs" {
   security_groups                  = var.diego_api_bbs_nlb_security_groups
 
   subnet_mapping {
-    #private_ipv4_address = "x.x.1.250"
-    subnet_id = var.private_subnet_az1
+    private_ipv4_address = var.diego_api_bbs_private_ipv4_address_az1
+    subnet_id            = var.private_subnet_az1
   }
 
   subnet_mapping {
-    #private_ipv4_address = "x.x.2.250"
-    subnet_id = var.private_subnet_az2
+    private_ipv4_address = var.diego_api_bbs_private_ipv4_address_az2
+    subnet_id            = var.private_subnet_az2
   }
 
   subnets = [var.private_subnet_az1, var.private_subnet_az2]
