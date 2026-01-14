@@ -103,7 +103,7 @@ resource "aws_lb" "diego_api_bbs" {
   internal                         = true
   ip_address_type                  = "ipv4"
   load_balancer_type               = "network"
-  name                             = "${var.stack_description}-diego-api-bbs"
+  name                             = "${var.stack_description}-diego-api-bbs-lb"
   security_groups                  = var.diego_api_bbs_nlb_security_groups
 
   subnet_mapping {
@@ -119,13 +119,13 @@ resource "aws_lb" "diego_api_bbs" {
   #subnets = [var.private_subnet_az1, var.private_subnet_az2]
 
   tags = {
-    Name = "${var.stack_description}-diego-api-bbs"
+    Name = "${var.stack_description}-diego-api-bbs-lb"
   }
 }
 
 
 resource "aws_lb_target_group" "diego_api_bbs_tg" {
-  name                              = "${var.stack_description}-diego-api-bbs-tg"
+  name                              = "${var.stack_description}-diego-api-bbs"
   port                              = 8889 # Target port
   protocol                          = "TCP"
   target_type                       = "instance" # Can be instance, ip, or alb
