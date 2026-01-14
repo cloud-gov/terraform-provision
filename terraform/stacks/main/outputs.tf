@@ -807,3 +807,12 @@ output "log_alerts_ses_dkim_attribute_tokens" {
 output "logs_opensearch_profile" {
   value = module.logs_opensearch_role.profile_name
 }
+
+
+output "diego_api_bbs_private_ipv4_address_az1" {
+  value = cidrhost(module.stack.private_cidr_az1, 250)
+}
+
+output "diego_api_bbs_private_ipv4_address_az2" {
+  value = cidrhost(module.stack.private_cidr_az2, 250)
+}
