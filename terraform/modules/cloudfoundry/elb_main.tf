@@ -116,7 +116,7 @@ resource "aws_lb" "diego_api_bbs" {
     subnet_id            = var.private_subnet_az2
   }
 
-  subnets = [var.private_subnet_az1, var.private_subnet_az2]
+  #subnets = [var.private_subnet_az1, var.private_subnet_az2]
 
   tags = {
     Name = "${var.stack_description}-diego-api-bbs"
