@@ -160,3 +160,8 @@ output "tcp_lb_security_groups" {
 output "waf_log_group_arn" {
   value = aws_cloudwatch_log_group.cf_uaa_waf_core_cloudwatch_log_group.arn
 }
+
+output "diego_api_bbs_lb_target_group" {
+  value = aws_lb_target_group.diego_api_bbs_tg.name
+}
+
