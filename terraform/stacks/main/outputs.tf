@@ -203,6 +203,19 @@ output "cf_apps_target_group" {
   value = module.cf.apps_lb_target_https_group
 }
 
+output "diego_api_bbs_private_ipv4_address_az1" {
+  value = cidrhost(module.stack.private_cidr_az1, 250)
+}
+
+output "diego_api_bbs_private_ipv4_address_az2" {
+  value = cidrhost(module.stack.private_cidr_az2, 250)
+}
+
+output "diego_api_bbs_lb_target_group" {
+  value = module.cf.diego_api_bbs_lb_target_group
+}
+
+
 /* Temp target groups */
 output "cf_gr_target_group" {
   value = module.cf.lb_gr_target_https_group
@@ -809,10 +822,6 @@ output "logs_opensearch_profile" {
 }
 
 
-output "diego_api_bbs_private_ipv4_address_az1" {
-  value = cidrhost(module.stack.private_cidr_az1, 250)
-}
 
-output "diego_api_bbs_private_ipv4_address_az2" {
-  value = cidrhost(module.stack.private_cidr_az2, 250)
-}
+
+
