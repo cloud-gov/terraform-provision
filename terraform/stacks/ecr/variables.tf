@@ -15,14 +15,10 @@ variable "repositories" {
     "clamav-rest",           # image for malware scanning service which has passed testing
     "clamav-rest-candidate", # image for malware scanning service which has not yet passed testing
     "cloud-service-broker",
-    "concourse-task",
     "concourse-rwlock-resource",
     "cg-csb", # prefixed to avoid collision with the 'csb' pipeline in Concourse.
     "cron-resource",
-    "csb",
-    "csb-docproxy",
     "csb-helper",
-    "csb-service-updater",
     "email-resource",
     "external-domain-broker-testing",
     "external-domain-broker-migrator-testing",
@@ -33,6 +29,8 @@ variable "repositories" {
     "legacy-domain-certificate-renewer-testing",
     "oci-build-task",
     "openresty",
+    "opensearch-dashboards-testing",
+    "opensearch-testing",
     "pages-dind",
     "pages-dind-v25",
     "pages-nginx-v1",
@@ -51,8 +49,6 @@ variable "repositories" {
     "s3-simple-resource",
     "semver-resource",
     "slack-notification-resource",
-    "opensearch-testing",
-    "opensearch-dashboards-testing",
     "time-resource",
     "ubuntu-hardened",
     "ubuntu-hardened-stig",
