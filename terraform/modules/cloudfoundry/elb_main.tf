@@ -98,7 +98,7 @@ resource "aws_wafv2_web_acl_association" "cf_waf_core" {
 }
 
 resource "aws_lb" "diego_api_bbs" {
-  enable_cross_zone_load_balancing = false # example shows as true
+  enable_cross_zone_load_balancing = false # we already load balance these target vms across azs at the BOSH level
   enable_deletion_protection       = false
   internal                         = true
   ip_address_type                  = "ipv4"
@@ -116,15 +116,15 @@ resource "aws_lb" "diego_api_bbs" {
     subnet_id            = var.private_subnet_az2
   }
 
-  #  tags = {
-  #    Name = "${var.stack_description}-diego-api-bbs-lb"
-  #  }
+  tags = {
+    Name = "${var.stack_description}-diego-api-bbs-lb"
+  }
 }
 
 
 resource "aws_lb_target_group" "diego_api_bbs_tg" {
   name                              = "${var.stack_description}-diego-api-bbs"
-  port                              = 8889 # Target port
+  port                              = 8889
   protocol                          = "TCP"
   target_type                       = "instance" # Can be instance, ip, or alb
   vpc_id                            = var.vpc_id
