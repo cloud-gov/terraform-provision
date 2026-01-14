@@ -147,7 +147,7 @@ resource "aws_lb_target_group" "diego_api_bbs_tg" {
   }
 }
 
-resource "aws_lb_listener" "testing-bbs-staging" {
+resource "aws_lb_listener" "diego_api_bbs_listener" {
   load_balancer_arn = aws_lb.diego_api_bbs.arn
   port              = 8889
   protocol          = "TCP"
