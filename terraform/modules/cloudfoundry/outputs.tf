@@ -165,3 +165,6 @@ output "diego_api_bbs_lb_target_group" {
   value = aws_lb_target_group.diego_api_bbs_tg.name
 }
 
+output "diego_api_bbs_lb_dns_name" {
+  value = aws_lb.diego_api_bbs.dns_name
+}

@@ -215,6 +215,9 @@ output "diego_api_bbs_lb_target_group" {
   value = module.cf.diego_api_bbs_lb_target_group
 }
 
+output "diego_api_bbs_lb_dns_name" {
+  value = module.cf.diego_api_bbs_lb_dns_name
+}
 
 /* Temp target groups */
 output "cf_gr_target_group" {
