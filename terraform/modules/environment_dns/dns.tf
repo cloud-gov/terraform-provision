@@ -251,7 +251,7 @@ resource "aws_route53_record" "diego_api_bbs_lb_dns_name_a" {
 
   alias {
     name                   = "dualstack.${var.diego_api_bbs_lb_dns_name}"
-    zone_id                = var.alb_zone_id
+    zone_id                = var.nlb_zone_id
     evaluate_target_health = false
   }
 }
@@ -263,7 +263,7 @@ resource "aws_route53_record" "diego_api_bbs_lb_dns_name_aaaa" {
 
   alias {
     name                   = "dualstack.${var.diego_api_bbs_lb_dns_name}"
-    zone_id                = var.alb_zone_id
+    zone_id                = var.nlb_zone_id
     evaluate_target_health = false
   }
 }
