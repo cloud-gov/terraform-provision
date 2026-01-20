@@ -15,7 +15,7 @@ module "log_bucket" {
 
 module "falco_blobstore_bucket" {
   count         = var.falco_bucket ? 1 : 0
-  source        = "../../modules/s3_bucket/log_encrypted_bucket"
+  source        = "../../modules/s3_bucket/log_encrypted_bucket_v3"
   bucket        = "logs-opensearch-falco-${var.stack_description}"
   aws_partition = data.aws_partition.current.partition
   force_destroy = "true"
