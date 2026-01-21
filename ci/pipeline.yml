@@ -2,6 +2,7 @@
 groups:
   - name: terraform
     jobs:
+      - set-self
       - apply-concourse-production
       - apply-concourse-staging
       - apply-development
