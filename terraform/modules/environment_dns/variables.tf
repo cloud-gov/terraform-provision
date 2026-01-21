@@ -75,3 +75,8 @@ variable "log_alerts_ses_mail_from_subdomain" {
   description = "Subdomain to use as MAIL FROM subdomain for log alerts SES identity"
   default     = "mail"
 }
+
+variable "diego_api_bbs_lb_dns_name" {
+  type        = string
+  description = "DNS name for load balancer handling Diego API and BBS traffic"
+}
