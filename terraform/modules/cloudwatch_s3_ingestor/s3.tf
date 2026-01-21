@@ -34,20 +34,39 @@ data "aws_iam_policy_document" "opensearch_buckets_deny_unencrypted_policy" {
       "s3:PutObject",
     ]
     resources = [
-      "arn:${var.aws_partition}:s3:::${each.value.id}/*"
+      "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
     condition {
       test     = "StringNotEquals"
       variable = "s3:x-amz-server-side-encryption"
       values   = ["AES256"]
     }
-    condition {
-      test     = "StringNotEquals"
-      variable = "aws:PrincipalArn"
-      values   = [aws_iam_role.firehose_role[each.key].arn]
+
+  }
+
+  statement {
+    sid    = "DenyUnencryptedObjectUploads"
+    effect = "Deny"
+    principals {
+      type        = "*"
+      identifiers = ["*"]
     }
+    actions = [
+      "s3:PutObject",
+    ]
+    resources = [
+      "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
+    ]
+    condition {
+      test     = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["true"]
+    }
+
   }
 }
+
+
 
 resource "aws_s3_bucket_policy" "opensearch_buckets_policy" {
   for_each = aws_s3_bucket.opensearch_cloudwatch_buckets

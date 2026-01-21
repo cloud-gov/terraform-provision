@@ -251,6 +251,7 @@ module "stack" {
 
 }
 
+
 module "opensearch_metrics_preprocessing" {
   source        = "../../modules/metrics_s3_ingestor"
   environments  = [var.stack_description]
@@ -266,6 +267,7 @@ module "opensearch_cloudwatch_logs_preprocessing" {
   aws_region    = data.aws_region.current.region
   aws_partition = data.aws_partition.current.partition
 }
+
 module "cf" {
   source = "../../modules/cloudfoundry"
 
@@ -330,6 +332,16 @@ module "cf" {
   loadbalancer_forward_original_weight = var.loadbalancer_forward_original_weight
   loadbalancer_forward_new_weight      = var.loadbalancer_forward_new_weight
   aws_lb_listener_ssl_policy           = var.aws_lb_listener_ssl_policy
+
+  diego_api_bbs_nlb_security_groups = [
+    module.stack.bosh_security_group,
+  ]
+
+  private_subnet_az1 = module.stack.private_subnet_az1
+  private_subnet_az2 = module.stack.private_subnet_az2
+
+  diego_api_bbs_private_ipv4_address_az1 = cidrhost(module.stack.private_cidr_az1, 250)
+  diego_api_bbs_private_ipv4_address_az2 = cidrhost(module.stack.private_cidr_az2, 250)
 }
 
 

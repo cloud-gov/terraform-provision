@@ -88,14 +88,28 @@ resource "aws_route53_record" "cloud_gov_cloud_gov_aaaa" {
   }
 }
 
-/* Platform logs */
+resource "aws_route53_record" "cloud_gov_cloud_gov_acme_challenge" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.cloud.gov.external-domains-production.cloud.gov."]
+}
 
 resource "aws_route53_record" "cloud_gov_www_cloud_gov_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "www.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["d2vy872d33xc5d.cloudfront.net."]
+  records = ["www.cloud.gov.external-domains-production.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov_www_cloud_gov_acme_challenge" {
+  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  name    = "_acme-challenge.www.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.www.cloud.gov.external-domains-production.cloud.gov."]
 }
 
 // The external_domain_broker is doing this differently, and creating the zone
