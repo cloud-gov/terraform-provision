@@ -2,6 +2,7 @@
 groups:
   - name: terraform
     jobs:
+      - set-self
       - apply-concourse-production
       - apply-concourse-staging
       - apply-development
@@ -178,12 +179,20 @@ jobs:
         params:
           file: terraform-yaml/state.yml
 
+  - name: set-self
+    plan:
+      - get: cg-provision-repo
+        trigger: true
+      - set_pipeline: deploy-aws-broker
+        file: cg-provision-repo/ci/pipeline.yml
+
   - name: plan-external-staging
     plan:
       - in_parallel:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-external-staging
@@ -244,6 +253,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-external-production
@@ -295,6 +305,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: plan-dns
@@ -337,6 +348,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-tooling
@@ -973,6 +985,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-staging
@@ -1250,6 +1263,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-production
@@ -1527,6 +1541,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-ecr
@@ -1561,6 +1576,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-concourse-staging
@@ -1599,6 +1615,7 @@ jobs:
           - get: pipeline-tasks
           - get: cg-provision-repo
             trigger: true
+            passed: [set-self]
           - get: plan-timer
             trigger: true
       - task: terraform-plan-concourse-production
