@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*9"
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
     ]
   }
 
