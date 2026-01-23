@@ -35,6 +35,32 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
   }
 
   statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricData"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "cloudwatch:namespace"
+      values   = ["AWS/RDS"]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      "arn:aws-us-gov:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-*"
+    ]
+  }
+
+
+  statement {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
