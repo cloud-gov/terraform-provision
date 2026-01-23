@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws-us-gov:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-dev*"
+      "arn:aws-us-gov:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-*"
     ]
   }
 
