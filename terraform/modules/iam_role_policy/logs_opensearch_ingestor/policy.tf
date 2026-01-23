@@ -30,9 +30,40 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*"
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:*9"
     ]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricData"
+    ]
+    resources = [
+      "*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "cloudwatch:namespace"
+      values   = ["AWS/RDS"]
+    }
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws-us-gov:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*"]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      "arn:aws-us-gov:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-dev*"
+    ]
+  }
+
 
   statement {
     actions = [
