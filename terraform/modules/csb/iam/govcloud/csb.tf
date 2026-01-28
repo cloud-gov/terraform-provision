@@ -93,6 +93,10 @@ resource "aws_iam_access_key" "csb" {
   user = aws_iam_user.csb.name
 }
 
+resource "aws_iam_access_key" "csb_v2" {
+  user = aws_iam_user.csb.name
+}
+
 resource "aws_iam_user_policy_attachment" "csb_policies" {
   for_each = toset([
     # Each brokerpak will use a separate policy so it is clear which permissions they individually require.
