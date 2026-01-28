@@ -89,7 +89,7 @@ resource "aws_iam_user" "csb" {
   name = "${var.stack_description}-csb"
 }
 
-resource "aws_iam_access_key" "csb_v1" {
+resource "aws_iam_access_key" "csb" {
   user = aws_iam_user.csb.name
 }
 
