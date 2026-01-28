@@ -1,19 +1,19 @@
 // CSB
 output "csb_access_key_id_prev" {
-  value = ""
+  value = aws_iam_access_key.csb_v1.id
 }
 
 output "csb_secret_access_key_prev" {
-  value     = ""
+  value     = aws_iam_access_key.csb_v1.secret
   sensitive = true
 }
 
 output "csb_access_key_id_curr" {
-  value = aws_iam_access_key.csb.id
+  value = aws_iam_access_key.csb_v2.id
 }
 
 output "csb_secret_access_key_curr" {
-  value     = aws_iam_access_key.csb.secret
+  value     = aws_iam_access_key.csb_v2.secret
   sensitive = true
 }
 
