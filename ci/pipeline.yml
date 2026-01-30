@@ -51,6 +51,34 @@ groups:
       - delete-old-certificates-dev
       - delete-old-certificates-staging
       - delete-old-certificates-production
+  - name: plan
+    jobs:
+      - set-self
+      - plan-concourse-production
+      - plan-concourse-staging
+      - plan-development
+      - plan-dns
+      - plan-ecr
+      - plan-external-development
+      - plan-external-production
+      - plan-external-staging
+      - plan-production
+      - plan-staging
+      - plan-tooling
+  - name: apply
+    jobs:
+      - set-self
+      - apply-concourse-production
+      - apply-concourse-staging
+      - apply-development
+      - apply-dns
+      - apply-ecr
+      - apply-external-development
+      - apply-external-production
+      - apply-external-staging
+      - apply-production
+      - apply-staging
+      - apply-tooling
 
 jobs:
   - name: pull-status-check
