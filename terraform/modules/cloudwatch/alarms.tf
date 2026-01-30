@@ -50,7 +50,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_lambda_failure_alarm" {
     FunctionName = var.cloudwatch_lambda_function_name[var.stack_description]
   }
 
-  alarm_actions = [var.cg_platform_notifications_arn]
+  alarm_actions = [var.cg_platform_slack_notifications_arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "metric_lambda_failure_alarm" {
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "metric_lambda_failure_alarm" {
     FunctionName = var.metric_lambda_function_name[var.stack_description]
   }
 
-  alarm_actions = [var.cg_platform_notifications_arn]
+  alarm_actions = [var.cg_platform_slack_notifications_arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "load_balancer_request_spike" {
