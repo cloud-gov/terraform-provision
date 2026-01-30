@@ -37,7 +37,7 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
 
 resource "aws_cloudwatch_metric_alarm" "cloudwatch_lambda_failure_alarm" {
   alarm_name          = "Lambda-${var.cloudwatch_lambda_function_name}-FailureAlarm"
-  alarm_description   = "Triggers when Lambda function ${var.lambda_function_name} has 1 or more errors in a period"
+  alarm_description   = "Triggers when Lambda function ${var.cloudwatch_lambda_function_name} has 1 or more errors in a period"
   namespace           = "AWS/Lambda"
   metric_name         = "Errors"
   statistic           = "Sum"
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_lambda_failure_alarm" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
 
   dimensions = {
-    FunctionName = var.lambda_function_name
+    FunctionName = var.cloudwatch_lambda_function_name
   }
 
   alarm_actions = [var.cg_platform_notifications_arn]
@@ -55,7 +55,7 @@ resource "aws_cloudwatch_metric_alarm" "cloudwatch_lambda_failure_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "metric_lambda_failure_alarm" {
   alarm_name          = "Lambda-${var.metric_lambda_function_name}-FailureAlarm"
-  alarm_description   = "Triggers when Lambda function ${var.lambda_function_name} has 1 or more errors in a period"
+  alarm_description   = "Triggers when Lambda function ${var.metric_lambda_function_name} has 1 or more errors in a period"
   namespace           = "AWS/Lambda"
   metric_name         = "Errors"
   statistic           = "Sum"
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_metric_alarm" "metric_lambda_failure_alarm" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
 
   dimensions = {
-    FunctionName = var.lambda_function_name
+    FunctionName = var.metric_lambda_function_name
   }
 
   alarm_actions = [var.cg_platform_notifications_arn]
