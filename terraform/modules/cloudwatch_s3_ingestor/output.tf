@@ -1,4 +1,5 @@
 output "cloudwatch_lambda_function_name" {
-  for_each = toset(var.environments)
-  value = aws_lambda_function.transform[each.key]
+   value = {
+    for i, env in var.environments : env => element(aws_lambda_function.transform[*].function_name, i)
+  }
 }
