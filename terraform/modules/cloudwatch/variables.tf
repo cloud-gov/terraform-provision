@@ -17,6 +17,12 @@ variable "load_balancer_dns" {
 
 }
 
+variable "cloudwatch_lambda_function_name" {
+
+}
+variable "metric_lambda_function_name" {
+
+}
 variable "aws_partition" {
 
 }
