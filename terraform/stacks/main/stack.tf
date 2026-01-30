@@ -475,7 +475,7 @@ module "cloudwatch" {
   load_balancer_dns                   = module.cf.lb_arn_suffix
   aws_partition                       = data.aws_partition.current.partition
   cloudwatch_lambda_function_name = module.cloudwatch_s3_ingestor.cloudwatch_lambda_function_name
-  metric_lambda_function_name = 
+  metric_lambda_function_name = module.metric_s3_ingestor.metric_lambda_function_name
 }
 
 module "sns" {
