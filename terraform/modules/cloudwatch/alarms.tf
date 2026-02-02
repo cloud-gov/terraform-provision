@@ -35,6 +35,42 @@ resource "aws_cloudwatch_metric_alarm" "lb_4XX_anomaly_detection" {
 
 }
 
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_lambda_failure_alarm" {
+  alarm_name          = "Lambda-${var.cloudwatch_lambda_function_name[var.stack_description]}-FailureAlarm"
+  alarm_description   = "Triggers when Lambda function ${var.cloudwatch_lambda_function_name[var.stack_description]} has 1 or more errors in a period"
+  namespace           = "AWS/Lambda"
+  metric_name         = "Errors"
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 1
+  threshold           = 1 # Trigger if Errors >= 1
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+
+  dimensions = {
+    FunctionName = var.cloudwatch_lambda_function_name[var.stack_description]
+  }
+
+  alarm_actions = [var.cg_platform_slack_notifications_arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "metric_lambda_failure_alarm" {
+  alarm_name          = "Lambda-${var.metric_lambda_function_name[var.stack_description]}-FailureAlarm"
+  alarm_description   = "Triggers when Lambda function ${var.metric_lambda_function_name[var.stack_description]} has 1 or more errors in a period"
+  namespace           = "AWS/Lambda"
+  metric_name         = "Errors"
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 1
+  threshold           = 1 # Trigger if Errors >= 1
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+
+  dimensions = {
+    FunctionName = var.metric_lambda_function_name[var.stack_description]
+  }
+
+  alarm_actions = [var.cg_platform_slack_notifications_arn]
+}
+
 resource "aws_cloudwatch_metric_alarm" "load_balancer_request_spike" {
   alarm_name                = "${var.stack_description} Load Balancer Spike in Requests"
   comparison_operator       = "GreaterThanUpperThreshold"
