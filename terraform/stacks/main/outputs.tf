@@ -190,7 +190,6 @@ output "cf_router_target_groups" {
     module.dedicated_loadbalancer_group.domains_lbgroup_target_group_gr_apps_https_names,
     aws_lb_target_group.domains_broker_apps_https.*.name,
     aws_lb_target_group.domains_broker_gr_apps_https.*.name,
-    aws_lb_target_group.domains_broker_challenge.*.name,
   ))
 }
 
