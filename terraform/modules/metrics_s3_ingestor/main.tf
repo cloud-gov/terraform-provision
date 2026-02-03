@@ -48,7 +48,7 @@ resource "aws_cloudwatch_metric_stream" "main" {
   }
 
   include_filter {
-    namespace = "AWS/ElastiCache
+    namespace = "AWS/ElastiCache"
     metric_names = [
       "CPUUtilization"
     ]
