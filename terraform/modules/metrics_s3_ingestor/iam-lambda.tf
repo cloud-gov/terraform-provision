@@ -54,7 +54,8 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       },
       {
         "Action" : [
-          "elasticache:DescribeCacheClusters"
+          "elasticache:DescribeCacheClusters",
+          "elasticache:ListTagsForResource"
         ],
         "Effect" : "Allow",
         "Resource" : [
