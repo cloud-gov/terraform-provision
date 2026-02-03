@@ -167,7 +167,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: development
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
@@ -236,7 +235,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: staging
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
@@ -297,7 +295,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: production
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
@@ -799,8 +796,6 @@ jobs:
           TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
           TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
-          TF_VAR_domains_broker_rds_username: ((development_domains_broker_rds_username))
-          TF_VAR_domains_broker_rds_password: ((development_domains_broker_rds_password))
           TF_VAR_pages_cert_patterns: "[]"
           TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((development_waf_drop_logs_hosts_regular_expressions))
@@ -925,27 +920,6 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
-                  run:
-                    path: sh
-                    args:
-                      - -e
-                      - -c
-                      - cg-provision-repo/ci/scripts/update-db.sh
-              - task: init-domains_broker-db
-                image: general-task
-                config:
-                  platform: linux
-                  image_resource:
-                  inputs:
-                    - name: cg-provision-repo
-                    - name: terraform-state
-                  params:
-                    STATE_FILE_PATH: terraform-state/terraform.tfstate
-                    DATABASES: domains_broker
-                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
-                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
-                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
-                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
                   run:
                     path: sh
                     args:
@@ -1079,8 +1053,6 @@ jobs:
           TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
           TF_VAR_platform_kibana_hosts: '["logs-platform.fr-stage.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
-          TF_VAR_domains_broker_rds_username: ((staging_domains_broker_rds_username))
-          TF_VAR_domains_broker_rds_password: ((staging_domains_broker_rds_password))
           TF_VAR_pages_cert_patterns: "[]"
           TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((staging_waf_drop_logs_hosts_regular_expressions))
@@ -1203,27 +1175,6 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
-                  run:
-                    path: sh
-                    args:
-                      - -e
-                      - -c
-                      - cg-provision-repo/ci/scripts/update-db.sh
-              - task: init-domains_broker-db
-                image: general-task
-                config:
-                  platform: linux
-                  image_resource:
-                  inputs:
-                    - name: cg-provision-repo
-                    - name: terraform-state
-                  params:
-                    STATE_FILE_PATH: terraform-state/terraform.tfstate
-                    DATABASES: domains_broker
-                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
-                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
-                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
-                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
                   run:
                     path: sh
                     args:
@@ -1357,8 +1308,6 @@ jobs:
           TF_VAR_shibboleth_hosts: '["idp.fr.cloud.gov"]'
           TF_VAR_platform_kibana_hosts: '["logs-platform.fr.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "11"
-          TF_VAR_domains_broker_rds_username: ((production_domains_broker_rds_username))
-          TF_VAR_domains_broker_rds_password: ((production_domains_broker_rds_password))
           TF_VAR_pages_cert_patterns: '["pages.cloud.gov","pages-staging.cloud.gov","pages-dev.cloud.gov"]'
           TF_VAR_waf_regular_expressions: ((production_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((production_waf_drop_logs_hosts_regular_expressions))
@@ -1481,27 +1430,6 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
-                  run:
-                    path: sh
-                    args:
-                      - -e
-                      - -c
-                      - cg-provision-repo/ci/scripts/update-db.sh
-              - task: init-domains_broker-db
-                image: general-task
-                config:
-                  platform: linux
-                  image_resource:
-                  inputs:
-                    - name: cg-provision-repo
-                    - name: terraform-state
-                  params:
-                    STATE_FILE_PATH: terraform-state/terraform.tfstate
-                    DATABASES: domains_broker
-                    CUSTOM_EXTENSIONS: citext uuid-ossp pgcrypto pg_stat_statements pgaudit
-                    TERRAFORM_DB_HOST_FIELD: domains_broker_rds_address
-                    TERRAFORM_DB_USERNAME_FIELD: domains_broker_rds_username
-                    TERRAFORM_DB_PASSWORD_FIELD: domains_broker_rds_password
                   run:
                     path: sh
                     args:

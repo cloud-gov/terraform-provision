@@ -60,17 +60,6 @@ module "external_domain_broker_tests" {
   stack_description = var.stack_description
 }
 
-module "cdn_broker" {
-  source = "../../modules/cdn_broker"
-
-  account_id        = data.aws_caller_identity.current.account_id
-  aws_partition     = data.aws_partition.current.partition
-  username          = "cdn-broker-${var.stack_description}"
-  bucket            = "cdn-broker-le-verify-${var.stack_description}"
-  cloudfront_prefix = "cg-${var.stack_description}/*"
-  hosted_zone       = var.cdn_broker_hosted_zone
-}
-
 module "limit_check_user" {
   count    = var.stack_description == "production" ? 1 : 0
   source   = "../../modules/iam_user/limit_check_user"

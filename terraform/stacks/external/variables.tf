@@ -15,10 +15,6 @@ variable "terraform_state_bucket" {
 variable "external_domain_broker_hosted_zone" {
 }
 
-variable "cdn_broker_hosted_zone" {
-}
-
-
 variable "lets_encrypt_hosted_zone" {
 }
 
