@@ -223,7 +223,6 @@ resource "aws_iam_policy_attachment" "blobstore" {
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
-    aws_iam_role.domains_broker.name,
   ]
 }
 
@@ -238,7 +237,6 @@ resource "aws_iam_policy_attachment" "cloudwatch" {
     module.cf_blobstore_role.role_name,
     module.elasticache_broker_role.role_name,
     module.platform_role.role_name,
-    aws_iam_role.domains_broker.name,
   ]
 }
 
