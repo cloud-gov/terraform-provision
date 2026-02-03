@@ -45,11 +45,20 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       },
       {
         "Action" : [
-          "elasticache:ListTagsForResource"
+          "elasticache:ListTagsForResource",
         ],
         "Effect" : "Allow",
         "Resource" : [
           "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:*"
+        ]
+      },
+      {
+        "Action" : [
+          "elasticache:DescribeCacheClusters"
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:*"
         ]
       },
       {
