@@ -111,20 +111,3 @@ resource "aws_route53_record" "cloud_gov_www_cloud_gov_acme_challenge" {
   ttl     = 60
   records = ["_acme-challenge.www.cloud.gov.external-domains-production.cloud.gov."]
 }
-
-// The external_domain_broker is doing this differently, and creating the zone
-// in terraform (gasp), and connecting it with an NS record inside the module .
-
-resource "aws_route53_record" "cdn_broker_delegate" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "cdn-broker-test.cloud.gov."
-  type    = "NS"
-  ttl     = 300
-
-  records = [
-    "ns-1999.awsdns-57.co.uk.",
-    "ns-1182.awsdns-19.org.",
-    "ns-243.awsdns-30.com.",
-    "ns-651.awsdns-17.net.",
-  ]
-}
