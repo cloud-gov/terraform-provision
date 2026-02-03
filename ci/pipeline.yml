@@ -210,7 +210,7 @@ jobs:
     plan:
       - get: cg-provision-repo
         trigger: true
-      - set_pipeline: deploy-aws-broker
+      - set_pipeline: self
         file: cg-provision-repo/ci/pipeline.yml
 
   - name: plan-external-staging
