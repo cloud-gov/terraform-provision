@@ -167,7 +167,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: development
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_development))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_development))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_development))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
@@ -236,7 +235,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: staging
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_staging))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_staging))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_staging))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))
@@ -297,7 +295,6 @@ jobs:
           AWS_DEFAULT_REGION: ((aws_external_region))
           TF_VAR_stack_description: production
           TF_VAR_aws_default_region: ((aws_external_region))
-          TF_VAR_cdn_broker_hosted_zone: ((cdn_broker_hosted_zone_production))
           TF_VAR_lets_encrypt_hosted_zone: ((lets_encrypt_hosted_zone_production))
           TF_VAR_external_domain_broker_hosted_zone: ((external_domain_broker_hosted_zone_production))
           TF_VAR_external_domain_waf_rate_limit_count_threshold: ((external_domain_waf_rate_limit_count_threshold))

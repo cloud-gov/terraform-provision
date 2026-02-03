@@ -71,29 +71,6 @@ output "external_domain_broker_tests_secret_access_key_curr" {
   sensitive = true
 }
 
-/* cdn broker user */
-output "cdn_broker_username" {
-  value = module.cdn_broker.username
-}
-
-output "cdn_broker_access_key_id_prev" {
-  value = module.cdn_broker.access_key_id_prev
-}
-
-output "cdn_broker_secret_access_key_prev" {
-  value     = module.cdn_broker.secret_access_key_prev
-  sensitive = true
-}
-
-output "cdn_broker_access_key_id_curr" {
-  value = module.cdn_broker.access_key_id_curr
-}
-
-output "cdn_broker_secret_access_key_curr" {
-  value     = module.cdn_broker.secret_access_key_curr
-  sensitive = true
-}
-
 /* limit check user */
 output "limit_check_username" {
   value = join("", module.limit_check_user.*.username)
