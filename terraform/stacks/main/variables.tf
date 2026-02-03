@@ -396,3 +396,9 @@ variable "falco_bucket" {
   type    = bool
   default = false
 }
+
+variable "domains_broker_alb_count" {
+  type        = number
+  description = "Number of LBs to create for handling custom domains"
+  default     = 0
+}

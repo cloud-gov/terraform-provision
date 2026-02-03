@@ -1,7 +1,3 @@
-variable "domains_broker_alb_count" {
-  default = 0
-}
-
 /* new dedicated load balancer group */
 module "dedicated_loadbalancer_group" {
   source            = "../../modules/external_domain_broker_loadbalancer_group"
@@ -127,16 +123,4 @@ resource "aws_wafv2_web_acl_association" "domain_waf" {
 
   resource_arn = aws_lb.domains_broker[count.index].arn
   web_acl_arn  = module.cf.cf_uaa_waf_core_arn
-}
-
-output "domains_broker_alb_names" {
-  value = aws_lb.domains_broker.*.name
-}
-
-output "domains_broker_target_group_apps_https_names" {
-  value = aws_lb_target_group.domains_broker_apps_https.*.name
-}
-
-output "domains_broker_listener_arns" {
-  value = aws_lb_listener.domains_broker_http.*.arn
 }

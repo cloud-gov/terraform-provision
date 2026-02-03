@@ -824,7 +824,14 @@ output "logs_opensearch_profile" {
   value = module.logs_opensearch_role.profile_name
 }
 
+output "domains_broker_alb_names" {
+  value = aws_lb.domains_broker.*.name
+}
 
+output "domains_broker_target_group_apps_https_names" {
+  value = aws_lb_target_group.domains_broker_apps_https.*.name
+}
 
-
-
+output "domains_broker_listener_arns" {
+  value = aws_lb_listener.domains_broker_http.*.arn
+}
