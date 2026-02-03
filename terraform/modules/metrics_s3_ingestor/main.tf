@@ -47,6 +47,13 @@ resource "aws_cloudwatch_metric_stream" "main" {
     ]
   }
 
+  include_filter {
+    namespace = "AWS/ElastiCache
+    metric_names = [
+      "CPUUtilization"
+    ]
+  }
+
   tags = merge(local.common_tags, {
     Environment = each.key
   })
