@@ -50,12 +50,15 @@ resource "aws_cloudwatch_metric_stream" "main" {
   include_filter {
     namespace = "AWS/ElastiCache"
     metric_names = [
+      "BytesUsedForCache",
+      "CacheHitRate",
       "CPUUtilization",
       "EngineCPUUtilization",
       "DatabaseMemoryUsagePercentage",
       "DatabaseCapacityUsagePercentage",
-      "CacheHitRate",
+      "FreeableMemory",
       "MemoryFragmentationRatio"
+
     ]
   }
 
