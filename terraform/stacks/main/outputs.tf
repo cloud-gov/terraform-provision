@@ -725,6 +725,19 @@ output "logs_opensearch_metric_secret_access_key_id_curr" {
   sensitive = true
 }
 
+output "logs_concourse_s3_user_access_key_id_curr" {
+  value = aws_iam_access_key.logs_concourse_s3_user_key.id
+}
+
+output "logs_concourse_s3_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.logs_concourse_s3_user_key.secret
+  sensitive = true
+}
+
+output "logs_concourse_audit_events_bucket_name" {
+  value = module.cf.logs_concourse_audit_events_bucket_name
+}
+
 output "default_key_name" {
   value = module.stack.default_key_name
 }
