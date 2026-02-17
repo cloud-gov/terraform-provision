@@ -49,7 +49,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:*"
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:${local.elastic-prefix[each.key]}-*",
         ]
       },
       {
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:*"
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:${local.elastic-prefix[each.key]}-*"
         ]
       },
       {
@@ -82,3 +82,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_role[each.key].name
 }
 
+locals {
+  elastic-prefix = {
+    "production" : "prd",
+    "staging" : "stg",
+    "development" : "dev"
+  }
+}
