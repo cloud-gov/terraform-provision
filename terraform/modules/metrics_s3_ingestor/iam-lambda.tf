@@ -49,7 +49,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:${local.elastic-prefix[each.key]}-*",
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:${local.elasticache-prefix[each.key]}-*",
         ]
       },
       {
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:${local.elastic-prefix[each.key]}-*"
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:${local.elasticache-prefix[each.key]}-*"
         ]
       },
       {
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 }
 
 locals {
-  elastic-prefix = {
+  elasticache-prefix = {
     "production" : "prd",
     "staging" : "stg",
     "development" : "dev"
