@@ -3,6 +3,7 @@ data "aws_iam_policy_document" "rds_storage_alert_user_policy" {
     sid = "VisualEditor0"
     actions = [
       "rds:DescribeDBInstances",
+      "rds:ListTagsForResource",
       "cloudwatch:GetMetricStatistics"
     ]
 
