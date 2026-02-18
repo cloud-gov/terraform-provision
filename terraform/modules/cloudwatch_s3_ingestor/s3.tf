@@ -17,7 +17,18 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "buckets_encryptio
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
-     expiration {
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "opensearch_cloudwatch_buckets_lifecycle" {
+  for_each = aws_s3_bucket.opensearch_cloudwatch_buckets
+  bucket = each.value.id
+
+  rule {
+    id     = "delete_objects_after_30_months"
+    status = "Enabled"
+
+    expiration {
       days = 930 # 31 days * 30 months = 930 days
     }
   }
