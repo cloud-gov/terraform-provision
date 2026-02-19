@@ -45,6 +45,25 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
       },
       {
         "Action" : [
+          "elasticache:ListTagsForResource",
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:replicationgroup:${local.elasticache-prefix[each.key]}-*",
+        ]
+      },
+      {
+        "Action" : [
+          "elasticache:DescribeCacheClusters",
+          "elasticache:ListTagsForResource"
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+          "arn:${var.aws_partition}:elasticache:${var.aws_region}:${var.account_id}:cluster:${local.elasticache-prefix[each.key]}-*"
+        ]
+      },
+      {
+        "Action" : [
           "rds:ListTagsForResource",
           "rds:DescribeDBInstances"
         ],
@@ -63,3 +82,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_role[each.key].name
 }
 
+locals {
+  elasticache-prefix = {
+    "production" : "prd",
+    "staging" : "stg",
+    "development" : "dev"
+  }
+}
