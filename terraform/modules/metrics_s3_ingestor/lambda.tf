@@ -25,7 +25,7 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.0.8/lambda_functions/transform_lambda.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.0.9/lambda_functions/transform_lambda.py"
 }
 
 data "archive_file" "lambda_zip" {
