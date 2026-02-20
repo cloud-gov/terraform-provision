@@ -41,9 +41,7 @@ resource "aws_iam_role_policy" "firehose_policy" {
           "lambda:InvokeFunction",
           "lambda:GetFunctionConfiguration"
         ]
-        Resource = [aws_lambda_function.transform[each.key].arn,
-          "${aws_lambda_function.transform[each.key].arn}:*"
-        ]
+        Resource = aws_lambda_function.transform[each.key].arn
       },
       {
         Effect = "Allow"
