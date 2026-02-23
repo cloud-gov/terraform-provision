@@ -1,20 +1,56 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
+
   - repo: https://github.com/google/yamlfmt
     rev: v0.13.0
     hooks:
       - id: yamlfmt
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.7.2
+
+  # ShellCheck via system binary (macOS/Homebrew)
+  - repo: local
     hooks:
       - id: shellcheck
-  - repo: https://github.com/AleksaC/terraform-py
-    rev: v1.9.2
+        name: shellcheck (system, macOS)
+        entry: >
+          bash -lc ' command -v shellcheck >/dev/null 2>&1 || {
+            echo "ERROR: shellcheck is not installed.";
+            echo "Install with: brew install shellcheck";
+            exit 1;
+          }; shellcheck "$@" ' --
+        language: system
+        types: [shell]
+
+  # shfmt via system binary (macOS/Homebrew)
+  - repo: local
     hooks:
-      - id: tf-fmt
+      - id: shfmt
+        name: shfmt (system, macOS)
+        entry: >
+          bash -lc ' command -v shfmt >/dev/null 2>&1 || {
+            echo "ERROR: shfmt is not installed.";
+            echo "Install with: brew install shfmt";
+            exit 1;
+          }; shfmt -w "$@" ' --
+        language: system
+        types: [shell]
+
+  # Terraform / OpenTofu formatting without Python, TLS downloads, or build steps
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt (requires terraform or tofu installed)
+        entry: >
+          bash -lc ' command -v tofu >/dev/null 2>&1 || command -v terraform >/dev/null 2>&1 || {
+            echo "ERROR: terraform or tofu is not installed.";
+            echo "Install with one of:";
+            echo "  brew install terraform";
+            echo "  brew install opentofu";
+            exit 1;
+          }; command -v tofu >/dev/null 2>&1 && tofu fmt -recursive || terraform fmt -recursive '
+        language: system
         types: [terraform]
