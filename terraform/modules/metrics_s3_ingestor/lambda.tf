@@ -10,7 +10,7 @@ resource "aws_lambda_function" "transform" {
   architectures    = ["arm64"]
   memory_size      = 256
 
-  timeout = 60
+  timeout = 120
 
   environment {
     variables = {
