@@ -21,7 +21,7 @@ resource "aws_iam_access_key" "csb" {
   user = aws_iam_user.csb.name
 }
 
-resource "aws_iam_access_key_v2" "csb" {
+resource "aws_iam_access_key" "csb_v2" {
   user = aws_iam_user.csb.name
 }
 
