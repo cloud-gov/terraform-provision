@@ -3,11 +3,11 @@ output "username" {
 }
 
 output "access_key_id_prev" {
-  value = aws_iam_access_key.csb.id
+  value = ""
 }
 
 output "secret_access_key_prev" {
-  value     = aws_iam_access_key.csb.secret
+  value     = ""
   sensitive = true
 }
 
