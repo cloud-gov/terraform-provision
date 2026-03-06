@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "kms:ScheduleKeyDeletion",
       "kms:TagResource"
     ]
-    resources = ["*"]
+    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:key/*"]
   }
 
   statement {
