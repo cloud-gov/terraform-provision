@@ -77,6 +77,26 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
     resources = ["*"]
   }
 
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateKey",
+      "kms:DisableKey",
+      "kms:ScheduleKeyDeletion",
+      "kms:TagResource"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateAlias",
+      "kms:DeleteAlias"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:alias/csb-aws-ses-*"]
+  }
+
 }
 
 resource "aws_iam_policy" "brokerpak_aws_ses" {
