@@ -515,6 +515,7 @@ resource "random_password" "csb_rds_password" {
   min_lower        = 5
 }
 
+
 module "csb_broker" {
   source            = "../../modules/csb/broker"
   stack_description = var.stack_description
