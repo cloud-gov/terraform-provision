@@ -86,6 +86,10 @@ variable "credhub_rds_password" {
   sensitive = true
 }
 
+variable "csb_rds_password" {
+  sensitive = true
+}
+
 variable "remote_state_bucket" {
 }
 
