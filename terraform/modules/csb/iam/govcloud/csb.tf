@@ -24,7 +24,9 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "ses:GetConfigurationSet",
       "ses:CreateEmailIdentity",
       "ses:CreateConfigurationSetEventDestination",
-      "ses:CreateConfigurationSet"
+      "ses:CreateConfigurationSet",
+      "ses:GetConfigurationSetEventDestinations",
+      "ses:DeleteConfigurationSetEventDestination"
     ]
     resources = ["*"]
   }
@@ -98,11 +100,20 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
     effect = "Allow"
     actions = [
       "kms:CreateKey",
+      "kms:ListAliases"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateKey",
       "kms:DisableKey",
       "kms:ScheduleKeyDeletion",
       "kms:TagResource"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:key/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:kms:${data.aws_region.current.region}:${local.this_aws_account_id}:key/*"]
   }
 
   statement {
@@ -111,7 +122,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "kms:CreateAlias",
       "kms:DeleteAlias"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:alias/csb-aws-ses-*"]
+    resources = ["arn:${data.aws_partition.current.partition}:kms:${data.aws_region.current.region}:${local.this_aws_account_id}:alias/csb-aws-ses-*"]
   }
 
 }
