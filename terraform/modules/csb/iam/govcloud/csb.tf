@@ -4,6 +4,7 @@
 // Values required for policy attachment
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
+data "aws_region" "current" {}
 
 locals {
   this_aws_account_id = data.aws_caller_identity.current.account_id
@@ -14,8 +15,17 @@ locals {
 
 data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
   statement {
-    effect    = "Allow"
-    actions   = ["ses:*"]
+    effect = "Allow"
+    actions = [
+      "ses:CreateEmailIdentity",
+      "ses:DeleteConfigurationSet",
+      "ses:PutEmailIdentityMailFromAttributes",
+      "ses:GetEmailIdentity",
+      "ses:GetConfigurationSet",
+      "ses:CreateEmailIdentity",
+      "ses:CreateConfigurationSetEventDestination",
+      "ses:CreateConfigurationSet"
+    ]
     resources = ["*"]
   }
 
@@ -56,7 +66,14 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "sns:SetTopicAttributes",
       "sns:GetTopicAttributes",
       "sns:ListTagsForResource",
-      "sns:Subscribe",
+      "sns:Subscribe"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:sns:${data.aws_region.current.region}:${local.this_aws_account_id}:*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "sns:Unsubscribe",
       "sns:GetSubscriptionAttributes"
     ]
@@ -74,7 +91,27 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "cloudwatch:PutMetricAlarm",
       "cloudwatch:SetAlarmState",
     ]
-    resources = ["*"]
+    resources = ["arn:${data.aws_partition.current.partition}:cloudwatch:${data.aws_region.current.region}:${local.this_aws_account_id}:alarm:*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateKey",
+      "kms:DisableKey",
+      "kms:ScheduleKeyDeletion",
+      "kms:TagResource"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:key/*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateAlias",
+      "kms:DeleteAlias"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:kms::${local.this_aws_account_id}:alias/csb-aws-ses-*"]
   }
 
 }
