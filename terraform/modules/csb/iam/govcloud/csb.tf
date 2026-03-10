@@ -27,7 +27,9 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "ses:CreateConfigurationSet",
       "ses:GetConfigurationSetEventDestinations",
       "ses:DeleteConfigurationSetEventDestination",
-      "ses:DeleteEmailIdentity"
+      "ses:DeleteEmailIdentity",
+      "ses:TagResource",
+      "ses:UpdateConfigurationSetEventDestination"
     ]
     resources = ["*"]
   }
