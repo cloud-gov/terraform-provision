@@ -18,19 +18,27 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
     effect = "Allow"
     actions = [
       "ses:CreateEmailIdentity",
-      "ses:DeleteConfigurationSet",
       "ses:PutEmailIdentityMailFromAttributes",
       "ses:GetEmailIdentity",
+      "ses:DeleteEmailIdentity",
+      "ses:TagResource"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:ses:${data.aws_region.current.region}:${local.this_aws_account_id}:identity/*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ses:DeleteConfigurationSet",
       "ses:GetConfigurationSet",
-      "ses:CreateConfigurationSetEventDestination",
       "ses:CreateConfigurationSet",
+      "ses:CreateConfigurationSetEventDestination",
       "ses:GetConfigurationSetEventDestinations",
       "ses:DeleteConfigurationSetEventDestination",
-      "ses:DeleteEmailIdentity",
-      "ses:TagResource",
-      "ses:UpdateConfigurationSetEventDestination"
+      "ses:UpdateConfigurationSetEventDestination",
+      "ses:TagResource"
     ]
-    resources = ["*"]
+    resources = ["arn:${data.aws_partition.current.partition}:ses:${data.aws_region.current.region}:${local.this_aws_account_id}:configuration-set/csb-aws-ses-*"]
   }
 
   statement {
