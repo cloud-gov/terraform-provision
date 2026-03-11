@@ -84,7 +84,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "sns:ListTagsForResource",
       "sns:Subscribe"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:sns:${data.aws_region.current.region}:${local.this_aws_account_id}:*"]
+    resources = ["arn:${data.aws_partition.current.partition}:sns:${data.aws_region.current.region}:${local.this_aws_account_id}:${local.resource_prefix}"]
   }
 
   statement {
