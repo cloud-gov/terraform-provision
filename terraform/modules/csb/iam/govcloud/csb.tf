@@ -68,6 +68,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:AttachUserPolicy",
       "iam:DetachUserPolicy",
       "iam:ListAttachedUserPolicies",
+      "iam:ListGroupsForUser",
       "iam:ListUserTags",
       "iam:TagUser"
     ]
