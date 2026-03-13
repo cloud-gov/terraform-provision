@@ -26,18 +26,22 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_commercial" {
       "route53:ListResourceRecordSets",
       "route53:GetDNSSEC",
       "route53:DeleteHostedZone",
-      "route53:ChangeResourceRecordSets"
+      "route53:ChangeResourceRecordSets",
+      "route53:ListTagsForResource"
     ]
-    resources = ["*"]
+    resources = [
+      "arn:${data.aws_partition.current.partition}:route53:::hostedzone/*"
+    ]
   }
 
   statement {
     effect = "Allow"
     actions = [
-      "route53:GetChange",
-      "route53:ListResourceRecordSets",
+      "route53:GetChange"
     ]
-    resources = ["*"]
+    resources = [
+      "arn:${data.aws_partition.current.partition}:route53:::change/*"
+    ]
   }
 }
 
