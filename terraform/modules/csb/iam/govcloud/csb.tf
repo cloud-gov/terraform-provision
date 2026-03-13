@@ -11,6 +11,7 @@ locals {
   // Attribute aws_iam_policy.brokerpak_aws_ses.arn is not determined until apply, so it cannot be
   // referenced in for_each below. Build the ARN here instead.
   brokerpak_aws_ses_arn = "arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${aws_iam_policy.brokerpak_aws_ses.name}"
+  resource_prefix       = "csb-aws-ses*"
 }
 
 data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
@@ -18,19 +19,27 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
     effect = "Allow"
     actions = [
       "ses:CreateEmailIdentity",
-      "ses:DeleteConfigurationSet",
       "ses:PutEmailIdentityMailFromAttributes",
       "ses:GetEmailIdentity",
+      "ses:DeleteEmailIdentity",
+      "ses:TagResource"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:ses:${data.aws_region.current.region}:${local.this_aws_account_id}:identity/*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ses:DeleteConfigurationSet",
       "ses:GetConfigurationSet",
-      "ses:CreateConfigurationSetEventDestination",
       "ses:CreateConfigurationSet",
+      "ses:CreateConfigurationSetEventDestination",
       "ses:GetConfigurationSetEventDestinations",
       "ses:DeleteConfigurationSetEventDestination",
-      "ses:DeleteEmailIdentity",
-      "ses:TagResource",
-      "ses:UpdateConfigurationSetEventDestination"
+      "ses:UpdateConfigurationSetEventDestination",
+      "ses:TagResource"
     ]
-    resources = ["*"]
+    resources = ["arn:${data.aws_partition.current.partition}:ses:${data.aws_region.current.region}:${local.this_aws_account_id}:configuration-set/${local.resource_prefix}"]
   }
 
   statement {
@@ -39,9 +48,8 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:CreatePolicy",
       "iam:DeletePolicy",
       "iam:GetPolicy",
-      "iam:List*",
     ]
-    resources = ["*"]
+    resources = ["arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:policy/${local.resource_prefix}"]
   }
 
   statement {
@@ -52,14 +60,18 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "iam:GetUser",
       "iam:CreateAccessKey",
       "iam:DeleteAccessKey",
+      "iam:ListAccessKeys",
       "iam:GetUserPolicy",
       "iam:PutUserPolicy",
       "iam:DeleteUserPolicy",
       "iam:AttachUserPolicy",
       "iam:DetachUserPolicy",
+      "iam:ListAttachedUserPolicies",
+      "iam:ListGroupsForUser",
+      "iam:ListUserTags",
       "iam:TagUser"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:user/cf/csb-aws-ses-*"]
+    resources = ["arn:${data.aws_partition.current.partition}:iam::${local.this_aws_account_id}:user/cf/${local.resource_prefix}"]
   }
 
   statement {
@@ -72,7 +84,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "sns:ListTagsForResource",
       "sns:Subscribe"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:sns:${data.aws_region.current.region}:${local.this_aws_account_id}:*"]
+    resources = ["arn:${data.aws_partition.current.partition}:sns:${data.aws_region.current.region}:${local.this_aws_account_id}:${local.resource_prefix}"]
   }
 
   statement {
@@ -95,7 +107,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "cloudwatch:PutMetricAlarm",
       "cloudwatch:SetAlarmState",
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:cloudwatch:${data.aws_region.current.region}:${local.this_aws_account_id}:alarm:*"]
+    resources = ["arn:${data.aws_partition.current.partition}:cloudwatch:${data.aws_region.current.region}:${local.this_aws_account_id}:alarm:${local.resource_prefix}"]
   }
 
   statement {
@@ -110,7 +122,6 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
   statement {
     effect = "Allow"
     actions = [
-      "kms:CreateKey",
       "kms:DisableKey",
       "kms:ScheduleKeyDeletion",
       "kms:TagResource"
@@ -124,7 +135,7 @@ data "aws_iam_policy_document" "brokerpak_aws_ses_govcloud" {
       "kms:CreateAlias",
       "kms:DeleteAlias"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:kms:${data.aws_region.current.region}:${local.this_aws_account_id}:alias/csb-aws-ses-*"]
+    resources = ["arn:${data.aws_partition.current.partition}:kms:${data.aws_region.current.region}:${local.this_aws_account_id}:alias/${local.resource_prefix}"]
   }
 
 }
