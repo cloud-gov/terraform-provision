@@ -118,6 +118,10 @@ variable "platform_kibana_hosts" {
   type = list(string)
 }
 
+variable "platform_opensearch_hosts" {
+  type = list(string)
+}
+
 variable "restricted_ingress_web_cidrs" {
   type = list(string)
 }
