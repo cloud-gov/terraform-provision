@@ -28,7 +28,3 @@ output "platform_opensearch_logs_bucket_secret_access_key_curr" {
   value     = aws_iam_access_key.iam_access_key_v2.secret
   sensitive = true
 }
-
-output "platform_opensearch_logs_bucket_name" {
-  value = aws_s3_bucket.log_bucket.id
-}
