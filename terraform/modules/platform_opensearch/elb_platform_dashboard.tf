@@ -1,5 +1,5 @@
 resource "aws_lb_target_group" "platform_dashboard" {
-  name     = "${var.stack_description}-platform-os-dashboard"
+  name     = "${var.stack_description}-platform-dashboard"
   port     = 5600
   protocol = "HTTP"
   vpc_id   = var.vpc_id
