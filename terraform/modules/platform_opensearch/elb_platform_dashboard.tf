@@ -1,6 +1,6 @@
 resource "aws_lb_target_group" "platform_dashboard" {
   name     = "${var.stack_description}-platform-dashboard"
-  port     = 5600
+  port     = 5605
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -17,7 +17,7 @@ resource "aws_lb_listener_rule" "platform_dashboard" {
   count = length(var.hosts)
 
   listener_arn = var.listener_arn
-  priority     = 200 + count.index
+  priority     = 203 + count.index
 
   action {
     target_group_arn = aws_lb_target_group.platform_dashboard.arn

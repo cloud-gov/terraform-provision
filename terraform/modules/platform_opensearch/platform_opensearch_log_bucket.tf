@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "${var.stack_description}-platform_opensearch-logs"
+  bucket = "${var.stack_description}-platform-opensearch-logs"
 }
 resource "aws_s3_bucket_acl" "log_bucket_acl" {
   bucket = aws_s3_bucket.log_bucket.id
