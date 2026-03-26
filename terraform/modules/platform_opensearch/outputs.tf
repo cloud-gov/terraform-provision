@@ -9,7 +9,7 @@ output "platform_opensearch_syslog_elb_dns_name" {
 }
 
 output "platform_opensearch_lb_target_group" {
-  value = aws_lb_target_group.platform_opensearch.name
+  value = aws_lb_target_group.platform_opensearch_dashboard.name
 }
 
 output "platform_opensearch_logs_bucket_access_key_id_prev" {
