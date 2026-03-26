@@ -1,4 +1,4 @@
-resource "aws_lb_target_group" "platform_opensearch_dashboard" {
+resource "aws_lb_target_group" "platform_dashboard" {
   name     = "${var.stack_description}-platform_opensearch-dashboard"
   port     = 5600
   protocol = "HTTP"
@@ -13,14 +13,14 @@ resource "aws_lb_target_group" "platform_opensearch_dashboard" {
   }
 }
 
-resource "aws_lb_listener_rule" "platform_opensearch_dashboard" {
+resource "aws_lb_listener_rule" "platform_dashboard" {
   count = length(var.hosts)
 
   listener_arn = var.listener_arn
   priority     = 200 + count.index
 
   action {
-    target_group_arn = aws_lb_target_group.platform_opensearch_dashboard.arn
+    target_group_arn = aws_lb_target_group.platform_dashboard.arn
     type             = "forward"
   }
 
