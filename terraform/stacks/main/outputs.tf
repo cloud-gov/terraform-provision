@@ -525,6 +525,10 @@ output "platform_kibana_lb_target_group" {
   value = module.logsearch.platform_kibana_lb_target_group
 }
 
+output "platform_opensearch_lb_target_group" {
+  value = module.platform_opensearch.platform_opensearch_lb_target_group
+}
+
 output "platform_logs_bucket_access_key_id_prev" {
   value = module.logsearch.platform_logs_bucket_access_key_id_prev
 }
