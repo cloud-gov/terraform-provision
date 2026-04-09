@@ -7,8 +7,9 @@ resource "aws_lb_target_group" "platform_dashboard" {
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 10
-    protocol            = "HTTPS"
+    protocol            = "TLS"
     timeout             = 5
+    path               = "/health" 
     interval            = 30
     matcher            = "200,403"
   }
