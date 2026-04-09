@@ -9,7 +9,8 @@ resource "aws_lb_target_group" "platform_dashboard" {
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 30
-    matcher             = 403
+    protocol            = "HTTPS"
+    matcher             = "302"  
   }
 }
 
