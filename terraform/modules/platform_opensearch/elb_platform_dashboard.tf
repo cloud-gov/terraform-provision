@@ -1,15 +1,14 @@
 resource "aws_lb_target_group" "platform_dashboard" {
   name     = "${var.stack_description}-platform-dashboard"
   port     = 5605
-  protocol = "HTTPS"
+  protocol = "TLC"
   vpc_id   = var.vpc_id
 
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 10
-    protocol            = "TLS"
+    protocol            = "TCP"
     timeout             = 5
-    path               = "/health" 
     interval            = 30
     matcher            = "200,403"
   }
