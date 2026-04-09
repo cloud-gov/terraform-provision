@@ -13,3 +13,20 @@ resource "aws_lb_target_group" "platform_dashboard" {
   }
 }
 
+resource "aws_lb_listener_rule" "platform_dashboard" {
+  count = length(var.hosts)
+
+  listener_arn = var.listener_arn
+  priority     = 203 + count.index
+
+  action {
+    target_group_arn = aws_lb_target_group.platform_dashboard.arn
+    type             = "forward"
+  }
+
+  condition {
+    host_header {
+      values = [element(var.hosts, count.index)]
+    }
+  }
+}
