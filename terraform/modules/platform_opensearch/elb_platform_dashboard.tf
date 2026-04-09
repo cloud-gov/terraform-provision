@@ -15,6 +15,7 @@ resource "aws_lb_target_group" "platform_dashboard" {
 
 resource "aws_lb_listener_rule" "platform_dashboard" {
   count        = length(var.hosts)
+  
   listener_arn = var.listener_arn
   priority     = 203 + count.index
   
