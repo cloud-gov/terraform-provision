@@ -22,5 +22,10 @@ resource "aws_lb_listener_rule" "platform_dashboard" {
     target_group_arn = aws_lb_target_group.platform_dashboard.arn
     type             = "forward"
   }
+  condition {
+    path_pattern {
+      values = ["/*"]  # Example path pattern
+    }
+  }
   
 }
