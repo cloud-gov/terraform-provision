@@ -23,8 +23,4 @@ resource "aws_lb_listener_rule" "platform_dashboard" {
     type             = "forward"
   }
   
-  condition {
-    field  = "host-header" 
-    values = [element(var.hosts, count.index)]
-  }
 }
