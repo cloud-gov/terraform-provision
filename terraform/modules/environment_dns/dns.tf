@@ -118,6 +118,30 @@ resource "aws_route53_record" "logs_platform_aaaa" {
   }
 }
 
+resource "aws_route53_record" "logs_platform_test_a" {
+  zone_id = var.zone_id
+  name    = "logs-platform-test.${var.admin_subdomain}."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${var.main_lb_dns_name}"
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "logs_platform_test_aaaa" {
+  zone_id = var.zone_id
+  name    = "logs-platform-test.${var.admin_subdomain}."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${var.main_lb_dns_name}"
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "idp_a" {
   zone_id = var.zone_id
   name    = "idp.${var.admin_subdomain}."
