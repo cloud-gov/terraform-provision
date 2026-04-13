@@ -6,9 +6,9 @@ resource "aws_elb" "platform_opensearch_syslog_elb" {
   internal        = true
 
   listener {
-    lb_port           = 5514
+    lb_port           = 5431
     lb_protocol       = "tcp"
-    instance_port     = 5514
+    instance_port     = 5431
     instance_protocol = "tcp"
   }
 
@@ -16,7 +16,7 @@ resource "aws_elb" "platform_opensearch_syslog_elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 10
     timeout             = 5
-    target              = "TCP:5514"
+    target              = "TCP:5431"
     interval            = 30
   }
 
