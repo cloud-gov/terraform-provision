@@ -2,10 +2,6 @@
 resource "aws_s3_bucket" "log_bucket" {
   bucket = "${var.stack_description}-platform-opensearch"
 }
-resource "aws_s3_bucket_acl" "log_bucket_acl" {
-  bucket = aws_s3_bucket.log_bucket.id
-  acl    = "private"
-}
 resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
   rule {
