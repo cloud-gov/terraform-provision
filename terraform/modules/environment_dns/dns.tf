@@ -118,7 +118,8 @@ resource "aws_route53_record" "logs_platform_aaaa" {
   }
 }
 
-resource "aws_route53_record" "logs_platform__test_a" {
+resource "aws_route53_record" "logs_platform_test_a" {
+
   zone_id = var.zone_id
   name    = "logs-platform-test.${var.admin_subdomain}."
   type    = "A"

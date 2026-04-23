@@ -10,16 +10,16 @@ resource "aws_lb_target_group" "platform_dashboard" {
     timeout             = 5
     interval            = 30
     protocol            = "HTTPS"
-    matcher             = "302"  
+    matcher             = "302"
   }
 }
 
 resource "aws_lb_listener_rule" "platform_dashboard" {
-  count        = length(var.hosts)
-  
+  count = length(var.hosts)
+
   listener_arn = var.listener_arn
   priority     = 203 + count.index
-  
+
   action {
     target_group_arn = aws_lb_target_group.platform_dashboard.arn
     type             = "forward"
@@ -29,5 +29,5 @@ resource "aws_lb_listener_rule" "platform_dashboard" {
       values = [element(var.hosts, count.index)]
     }
   }
-  
+
 }
