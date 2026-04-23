@@ -725,6 +725,7 @@ output "platform_opensearch_s3_user_access_key_id_curr" {
 }
 
 output "platform_opensearch_s3_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.platform_opensearch_s3_user_key_v3.secret
   sensitive = true
 }
 
