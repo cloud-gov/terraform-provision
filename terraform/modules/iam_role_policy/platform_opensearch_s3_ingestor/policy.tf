@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "platform_opensearch_s3_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:s3:::platform-opensearch-*/*"
+      "arn:${var.aws_partition}:s3:::logs-platform-opensearch-*/*"
     ]
   }
 }

@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "platform-opensearch-${var.stack_description}"
+  bucket = "logs-platform-opensearch-${var.stack_description}"
 }
 resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
   bucket = aws_s3_bucket.log_bucket.id
