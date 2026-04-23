@@ -796,6 +796,7 @@ jobs:
           TF_VAR_admin_hosts: '["admin.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
           TF_VAR_shibboleth_hosts: '["idp.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
           TF_VAR_platform_kibana_hosts: '["logs-platform.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
+          TF_VAR_platform_opensearch_hosts: '["logs-platform-test.dev.us-gov-west-1.aws-us-gov.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
           TF_VAR_pages_cert_patterns: "[]"
           TF_VAR_waf_regular_expressions: ((development_waf_regular_expressions))
@@ -1040,7 +1041,7 @@ jobs:
 
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_autoscaler: "ddl,role"
-
+          TF_VAR_platform_opensearch_hosts: '["logs-platform-test.fr-stage.cloud.gov"]'
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((staging_vpc_cidr))
           TF_VAR_cf_rds_password: ((staging_cf_rds_password))

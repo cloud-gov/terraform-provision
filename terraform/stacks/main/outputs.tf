@@ -525,6 +525,10 @@ output "platform_kibana_lb_target_group" {
   value = module.logsearch.platform_kibana_lb_target_group
 }
 
+output "platform_opensearch_lb_target_group" {
+  value = module.platform_opensearch.platform_opensearch_lb_target_group
+}
+
 output "platform_logs_bucket_access_key_id_prev" {
   value = module.logsearch.platform_logs_bucket_access_key_id_prev
 }
@@ -571,6 +575,10 @@ output "logsearch_ingestor_profile" {
 
 output "logs_opensearch_ingestor_profile" {
   value = module.logs_opensearch_ingestor_role.profile_name
+}
+
+output "platform_opensearch_ingestor_profile" {
+  value = module.platform_opensearch_ingestor_s3_role.profile_name
 }
 
 output "cf_blobstore_profile" {
@@ -713,6 +721,15 @@ output "logs_opensearch_s3_user_access_key_id_curr" {
 
 output "logs_opensearch_s3_secret_access_key_id_curr" {
   value     = aws_iam_access_key.logs_opensearch_s3_user_key_v3.secret
+  sensitive = true
+}
+
+output "platform_opensearch_s3_user_access_key_id_curr" {
+  value = aws_iam_access_key.platform_opensearch_s3_user_key_v3.id
+}
+
+output "platform_opensearch_s3_secret_access_key_id_curr" {
+  value     = aws_iam_access_key.platform_opensearch_s3_user_key_v3.secret
   sensitive = true
 }
 

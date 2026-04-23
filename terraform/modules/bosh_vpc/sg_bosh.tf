@@ -163,6 +163,15 @@ resource "aws_security_group_rule" "platform_kibana" {
   security_group_id = aws_security_group.bosh.id
 }
 
+resource "aws_security_group_rule" "platform_opensearch" {
+  type              = "ingress"
+  from_port         = 5605
+  to_port           = 5605
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  security_group_id = aws_security_group.bosh.id
+}
+
 resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
   type              = "ingress"
   from_port         = 9114
