@@ -306,14 +306,6 @@ output "rds_postgres_security_group" {
   value = module.stack.rds_postgres_security_group
 }
 
-output "rds_mssql_security_group" {
-  value = module.stack.rds_mssql_security_group
-}
-
-output "rds_oracle_security_group" {
-  value = module.stack.rds_oracle_security_group
-}
-
 /* Elasticache Network */
 output "elasticache_subnet_az1" {
   value = module.elasticache_broker_network.elasticache_subnet_az1
