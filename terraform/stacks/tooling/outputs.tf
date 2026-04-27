@@ -247,14 +247,6 @@ output "rds_postgres_security_group" {
   value = module.stack.rds_postgres_security_group
 }
 
-output "rds_mssql_security_group" {
-  value = module.stack.rds_mssql_security_group
-}
-
-output "rds_oracle_security_group" {
-  value = module.stack.rds_oracle_security_group
-}
-
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = module.stack.bosh_rds_url_curr
