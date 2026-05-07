@@ -22,3 +22,5 @@ terraform.json
 
 *-state.json
 .vscode
+
+venv
