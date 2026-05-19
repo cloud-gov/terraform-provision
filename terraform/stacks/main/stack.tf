@@ -573,3 +573,30 @@ module "log_alerts_ses_smtp_credentials" {
   usernames                            = var.log_alerts_smtp_usernames
   ses_allowed_recipient_email_patterns = var.log_alerts_ses_allowed_recipient_email_patterns
 }
+
+
+locals {
+  platform_alerts_resource_prefix = "platform-alerts-${var.stack_description}"
+}
+
+module "platform_alerts_ses_domain" {
+  source = "../../modules/ses_domain_identity"
+
+  stack_description                   = var.stack_description
+  email_identity_subdomain            = "platform-alerts"
+  resource_prefix                     = local.platform_alerts_resource_prefix
+  environment_domain                  = var.environment_domain
+  cg_platform_notifications_arn       = module.sns.cg_platform_notifications_arn
+  cg_platform_slack_notifications_arn = module.sns.cg_platform_slack_notifications_arn
+}
+
+
+module "platform_alerts_ses_smtp_credentials" {
+  source = "../../modules/ses_smtp_credentials"
+
+  resource_prefix                      = local.platform_alerts_resource_prefix
+  ses_email_identity_arn               = module.platform_alerts_ses_domain.ses_email_identity_arn
+  ses_configuration_set_arn            = module.platform_alerts_ses_domain.ses_configuration_set_arn
+  usernames                            = var.platform_alerts_smtp_usernames
+  ses_allowed_recipient_email_patterns = var.platform_alerts_ses_allowed_recipient_email_patterns
+}
