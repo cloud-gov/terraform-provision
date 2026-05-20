@@ -779,6 +779,8 @@ jobs:
 
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
+          TF_VAR_platform_alerts_ses_allowed_recipient_email_patterns: ((platform_alerts_ses_allowed_recipient_email_patterns))
+          TF_VAR_platform_alerts_smtp_usernames: ((platform_alerts_ses_smtp_usernames_development))
 
           TF_VAR_rds_db_engine_version_autoscaler: "15.12"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
@@ -2161,7 +2163,7 @@ resources:
     type: git
     source:
       uri: ((cg_provision_git_url))
-      branch: ((cg_provision_git_branch_development))
+      branch: platform-opensearch
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: pull-request
