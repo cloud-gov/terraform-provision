@@ -42,3 +42,13 @@ variable "log_alerts_ses_aws_region" {
   type        = string
   description = "Name of AWS region where log alert SES resources are deployed"
 }
+
+variable "platform_alerts_dmarc_email" {
+  type        = string
+  description = "Email address to which DMARC aggregate reports should be sent for log alert emails sent via SES."
+}
+
+variable "platform_alerts_ses_aws_region" {
+  type        = string
+  description = "Name of AWS region where log alert SES resources are deployed"
+}
