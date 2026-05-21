@@ -1088,6 +1088,8 @@ jobs:
           TF_VAR_environment_domain: "((environment_domain_staging))"
           TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_staging))
           TF_VAR_log_alerts_ses_allowed_recipient_email_patterns: ((log_alerts_ses_allowed_recipient_email_patterns))
+          TF_VAR_platform_alerts_smtp_usernames: ((platform_alerts_ses_smtp_usernames_staging))
+          TF_VAR_platform_alerts_ses_allowed_recipient_email_patterns: ((platform_alerts_ses_allowed_recipient_email_patterns))
       - *notify-slack
 
   - name: apply-staging
@@ -1345,6 +1347,8 @@ jobs:
           TF_VAR_environment_domain: "((environment_domain_production))"
           TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_production))
           TF_VAR_log_alerts_ses_allowed_recipient_email_patterns: ((log_alerts_ses_allowed_recipient_email_patterns))
+          TF_VAR_platform_alerts_smtp_usernames: ((platform_alerts_ses_smtp_usernames_production))
+          TF_VAR_platform_alerts_ses_allowed_recipient_email_patterns: ((platform_alerts_ses_allowed_recipient_email_patterns))
       - *notify-slack
 
   - name: apply-production
