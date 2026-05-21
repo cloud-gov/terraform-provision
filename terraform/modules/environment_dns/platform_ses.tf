@@ -1,16 +1,6 @@
 
 locals {
   platform_alerts_domain = "platform-alerts.${var.admin_subdomain}"
-
-  # rua=mailto:reports@dmarc.cyber.dhs.gov is required by BOD-18-01: https://cyber.dhs.gov/assets/report/bod-18-01.pdf
-  dmarc_rua = join(
-    ",",
-    [
-      "mailto:reports@dmarc.cyber.dhs.gov",
-      "mailto:${var.platform_alerts_dmarc_email}"
-    ]
-  )
-  dmarc_ruf = "mailto:${var.platform_alerts_dmarc_email}"
 }
 
 resource "aws_route53_zone" "platform_alerts_mail_zone" {
