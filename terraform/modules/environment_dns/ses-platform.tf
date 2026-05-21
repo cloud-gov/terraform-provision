@@ -30,7 +30,7 @@ resource "aws_route53_record" "platform_alerts_dkim_records" {
 
   zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
   name    = "${each.value}._domainkey.${local.platform_alerts_domain}"
-  type    = "CNAME"
+  type    = "CNAMES"
   ttl     = "600"
   records = ["${each.value}.dkim.amazonses.com"]
 }
