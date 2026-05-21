@@ -352,6 +352,8 @@ jobs:
           TF_VAR_development_stack_name: development
           TF_VAR_log_alerts_dmarc_email: ((log_alerts_dmarc_email))
           TF_VAR_log_alerts_ses_aws_region: ((log_alerts_ses_aws_region))
+          TF_VAR_log_alerts_dmarc_email: ((platform_alerts_dmarc_email))
+          TF_VAR_log_alerts_ses_aws_region: ((platform_alerts_ses_aws_region))
       - *notify-slack
 
   - name: apply-dns
@@ -2156,7 +2158,7 @@ resources:
     type: git
     source:
       uri: ((cg_provision_git_url))
-      branch: main
+      branch: platform-opensearch
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: cg-provision-repo-development
