@@ -76,6 +76,27 @@ variable "log_alerts_ses_mail_from_subdomain" {
   default     = "mail"
 }
 
+variable "platform_alerts_ses_dkim_attribute_tokens" {
+  type        = list(string)
+  description = "Tokens to use for DKIM verification of SES identity handling platform alerts"
+}
+
+variable "platform_alerts_dmarc_email" {
+  type        = string
+  description = "Email address to which DMARC aggregate reports should be sent for platform log alert emails sent via SES."
+}
+
+variable "platform_alerts_ses_aws_region" {
+  type        = string
+  description = "Name of AWS region where platform log alert SES resources are deployed"
+}
+
+variable "platform_alerts_ses_mail_from_subdomain" {
+  type        = string
+  description = "Subdomain to use as MAIL FROM subdomain for platform log alerts SES identity"
+  default     = "mail"
+}
+
 variable "diego_api_bbs_lb_dns_name" {
   type        = string
   description = "DNS name for load balancer handling Diego API and BBS traffic"

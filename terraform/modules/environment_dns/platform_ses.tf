@@ -1,0 +1,52 @@
+
+locals {
+  platform_alerts_domain = "platform-alerts.${var.admin_subdomain}"
+}
+
+resource "aws_route53_zone" "platform_alerts_mail_zone" {
+  name    = local.platform_alerts_domain
+  comment = "Domain used for sending alerts from logs system"
+}
+
+resource "aws_route53_record" "brokered_platform_alerts_zone_ns" {
+  zone_id = data.aws_route53_zone.apex_domain.zone_id
+  name    = local.platform_alerts_domain
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.platform_alerts_mail_zone.name_servers
+}
+
+resource "aws_route53_record" "platform_alerts_dkim_records" {
+  for_each = toset(var.platform_alerts_ses_dkim_attribute_tokens)
+
+  zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
+  name    = "${each.value}._domainkey.${local.platform_alerts_domain}"
+  type    = "CNAME"
+  ttl     = "600"
+  records = ["${each.value}.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "platform_alerts_dmarc" {
+  zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
+  name    = "_dmarc.${local.platform_alerts_domain}"
+  type    = "TXT"
+  ttl     = "600"
+  # p=reject is required by BOD-18-01: https://cyber.dhs.gov/assets/report/bod-18-01.pdf
+  records = ["v=DMARC1; p=reject; rua=${local.dmarc_rua}; ruf=${local.dmarc_ruf}"]
+}
+
+resource "aws_route53_record" "platform_alerts_mx" {
+  zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
+  name    = "${var.platform_alerts_ses_mail_from_subdomain}.${local.platform_alerts_domain}"
+  type    = "MX"
+  ttl     = "600"
+  records = ["10 feedback-smtp.${var.platform_alerts_ses_aws_region}.amazonses.com"]
+}
+
+resource "aws_route53_record" "platform_alerts_spf" {
+  zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
+  name    = "${var.platform_alerts_ses_mail_from_subdomain}.${local.platform_alerts_domain}"
+  type    = "TXT"
+  ttl     = "600"
+  records = ["v=spf1 include:amazonses.com -all"]
+}

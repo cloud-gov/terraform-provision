@@ -29,4 +29,9 @@ module "dev_dns" {
   log_alerts_ses_dkim_attribute_tokens = lookup(data.terraform_remote_state.development.outputs, "log_alerts_ses_dkim_attribute_tokens", [])
   log_alerts_dmarc_email               = var.log_alerts_dmarc_email
   log_alerts_ses_aws_region            = var.log_alerts_ses_aws_region
+
+  platform_alerts_ses_dkim_attribute_tokens = lookup(data.terraform_remote_state.development.outputs, "platform_ses_dkim_attribute_tokens", [])
+  platform_alerts_dmarc_email               = var.platform_alerts_dmarc_email
+  platform_alerts_ses_aws_region            = var.platform_alerts_ses_aws_region
+
 }

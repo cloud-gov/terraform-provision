@@ -400,6 +400,17 @@ variable "log_alerts_ses_allowed_recipient_email_patterns" {
   description = "List of allowed recipient email patterns for sending email from SES for log alerts"
 }
 
+variable "platform_alerts_smtp_usernames" {
+  type        = list(string)
+  description = "List of platform users needing SES SMTP credentials for alerts"
+  default     = []
+}
+
+variable "platform_alerts_ses_allowed_recipient_email_patterns" {
+  type        = list(string)
+  description = "List of allowed recipient email patterns for sending email from SES for log alerts platform"
+}
+
 variable "falco_bucket" {
   type    = bool
   default = false

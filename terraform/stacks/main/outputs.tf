@@ -841,6 +841,11 @@ output "log_alerts_ses_dkim_attribute_tokens" {
   sensitive = true
 }
 
+output "platform_alerts_ses_dkim_attribute_tokens" {
+  value     = module.platform_alerts_ses_domain.dkim_attribute_tokens
+  sensitive = true
+}
+
 output "logs_opensearch_profile" {
   value = module.logs_opensearch_role.profile_name
 }
