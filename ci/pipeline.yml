@@ -2156,7 +2156,7 @@ resources:
     type: git
     source:
       uri: ((cg_provision_git_url))
-      branch: platform-opensearch
+      branch: main
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: cg-provision-repo-development
