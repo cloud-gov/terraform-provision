@@ -16,7 +16,7 @@ module "production_dns" {
   log_alerts_dmarc_email               = var.log_alerts_dmarc_email
   log_alerts_ses_aws_region            = var.log_alerts_ses_aws_region
 
-  platform_alerts_ses_dkim_attribute_tokens = lookup(data.terraform_remote_state.production.outputs, "platform_ses_dkim_attribute_tokens", [])
+  platform_alerts_ses_dkim_attribute_tokens = lookup(data.terraform_remote_state.production.outputs, "platform_alerts_ses_dkim_attribute_tokens", [])
   platform_alerts_dmarc_email               = var.platform_alerts_dmarc_email
   platform_alerts_ses_aws_region            = var.platform_alerts_ses_aws_region
 
