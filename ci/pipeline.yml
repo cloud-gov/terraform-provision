@@ -352,8 +352,8 @@ jobs:
           TF_VAR_development_stack_name: development
           TF_VAR_log_alerts_dmarc_email: ((log_alerts_dmarc_email))
           TF_VAR_log_alerts_ses_aws_region: ((log_alerts_ses_aws_region))
-          TF_VAR_log_alerts_dmarc_email: ((platform_alerts_dmarc_email))
-          TF_VAR_log_alerts_ses_aws_region: ((platform_alerts_ses_aws_region))
+          TF_VAR_platform_alerts_dmarc_email: ((platform_alerts_dmarc_email))
+          TF_VAR_platform_alerts_ses_aws_region: ((platform_alerts_ses_aws_region))
       - *notify-slack
 
   - name: apply-dns
