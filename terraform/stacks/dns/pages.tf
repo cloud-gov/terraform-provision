@@ -143,22 +143,6 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_uswds-11ty_pages_cloud_
   records = ["_acme-challenge.uswds-11ty.pages.cloud.gov.external-domains-production.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov_uswds-gatsby_pages_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "uswds-gatsby.pages.cloud.gov."
-  type    = "CNAME"
-  ttl     = 60
-  records = ["uswds-gatsby.pages.cloud.gov.external-domains-production.cloud.gov."]
-}
-
-resource "aws_route53_record" "cloud_gov__acme-challenge_uswds-gatsby_pages_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "_acme-challenge.uswds-gatsby.pages.cloud.gov."
-  type    = "CNAME"
-  ttl     = 60
-  records = ["_acme-challenge.uswds-gatsby.pages.cloud.gov.external-domains-production.cloud.gov."]
-}
-
 resource "aws_route53_record" "cloud_gov_uswds-jekyll_pages_cloud_gov" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "uswds-jekyll.pages.cloud.gov."
