@@ -83,17 +83,17 @@ variable "platform_alerts_ses_dkim_attribute_tokens" {
 
 variable "platform_alerts_dmarc_email" {
   type        = string
-  description = "Email address to which DMARC aggregate reports should be sent for log alert emails sent via SES."
+  description = "Email address to which DMARC aggregate reports should be sent for platform log alert emails sent via SES."
 }
 
 variable "platform_alerts_ses_aws_region" {
   type        = string
-  description = "Name of AWS region where log alert SES resources are deployed"
+  description = "Name of AWS region where platform log alert SES resources are deployed"
 }
 
 variable "platform_alerts_ses_mail_from_subdomain" {
   type        = string
-  description = "Subdomain to use as MAIL FROM subdomain for log alerts SES identity"
+  description = "Subdomain to use as MAIL FROM subdomain for platform log alerts SES identity"
   default     = "mail"
 }
 
