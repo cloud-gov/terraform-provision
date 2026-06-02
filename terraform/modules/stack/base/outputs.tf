@@ -135,10 +135,6 @@ output "rds_postgres_security_group" {
   value = module.rds_network.rds_postgres_security_group
 }
 
-output "rds_mssql_security_group" {
-  value = module.rds_network.rds_mssql_security_group
-}
-
 output "rds_oracle_security_group" {
   value = module.rds_network.rds_oracle_security_group
 }

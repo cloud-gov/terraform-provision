@@ -247,10 +247,6 @@ output "rds_postgres_security_group" {
   value = module.stack.rds_postgres_security_group
 }
 
-output "rds_mssql_security_group" {
-  value = module.stack.rds_mssql_security_group
-}
-
 output "rds_oracle_security_group" {
   value = module.stack.rds_oracle_security_group
 }
