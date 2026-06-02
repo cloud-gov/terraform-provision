@@ -135,6 +135,10 @@ output "rds_postgres_security_group" {
   value = module.rds_network.rds_postgres_security_group
 }
 
+output "rds_oracle_security_group" {
+  value = module.rds_network.rds_oracle_security_group
+}
+
 /* RDS Bosh Instance */
 output "bosh_rds_url_curr" {
   value = module.rds.rds_url
