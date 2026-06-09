@@ -22,7 +22,7 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   lifecycle {
     # Regarding rule: If you make updates to the WAF rules in this file, you must remove `rule` so they apply.
     # This is a workaround to an issue: https://github.com/hashicorp/terraform-provider-aws/issues/33124
-    ignore_changes = [rule, tags_all]
+    ignore_changes = [tags_all]
   }
 
   default_action {
@@ -654,19 +654,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          size_constraint_statement {
-            field_to_match {
-              single_header {
-                name = var.cloudfront_custom_header_name
+          not_statement {
+            statement {
+              size_constraint_statement {
+                field_to_match {
+                  single_header {
+                    name = var.cloudfront_custom_header_name
+                  }
+                }
+
+                comparison_operator = "GT"
+                size                = 0
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
               }
-            }
-
-            comparison_operator = "EQ"
-            size                = 0
-
-            text_transformation {
-              priority = 0
-              type     = "NONE"
             }
           }
         }
@@ -739,19 +743,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          size_constraint_statement {
-            field_to_match {
-              single_header {
-                name = var.cloudfront_custom_header_name
+          not_statement {
+            statement {
+              size_constraint_statement {
+                field_to_match {
+                  single_header {
+                    name = var.cloudfront_custom_header_name
+                  }
+                }
+
+                comparison_operator = "GT"
+                size                = 0
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
               }
-            }
-
-            comparison_operator = "EQ"
-            size                = 0
-
-            text_transformation {
-              priority = 0
-              type     = "NONE"
             }
           }
         }
