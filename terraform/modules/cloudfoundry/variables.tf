@@ -152,16 +152,9 @@ variable "waf_drop_logs_hostnames" {
   description = "List of hostnames that should WAF logs dropped"
 }
 
-variable "user_agent_header_name" {
+variable "cloudfront_custom_header_name" {
   type        = string
-  description = "Header name to identify user agent"
-  default     = "user-agent"
-}
-
-variable "cloudfront_user_agent_header" {
-  type        = string
-  description = "User-Agent header value used to identify Cloudfront traffic"
-  default     = "Amazon CloudFront"
+  description = "Custom header for CloudFront traffic"
 }
 
 variable "forwarded_ip_header_name" {

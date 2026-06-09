@@ -654,23 +654,19 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          not_statement {
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = var.user_agent_header_name
-                  }
-                }
-
-                search_string         = var.cloudfront_user_agent_header
-                positional_constraint = "EXACTLY"
-
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
+          size_constraint_statement {
+            field_to_match {
+              single_header {
+                name = var.cloudfront_custom_header_name
               }
+            }
+
+            comparison_operator = "EQ"
+            size                = 0
+
+            text_transformation {
+              priority = 0
+              type     = "NONE"
             }
           }
         }
@@ -698,15 +694,15 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "FORWARDED_IP"
 
         scope_down_statement {
-          byte_match_statement {
+          size_constraint_statement {
             field_to_match {
               single_header {
-                name = var.user_agent_header_name
+                name = var.cloudfront_custom_header_name
               }
             }
 
-            search_string         = var.cloudfront_user_agent_header
-            positional_constraint = "EXACTLY"
+            comparison_operator = "GT"
+            size                = 0
 
             text_transformation {
               priority = 0
@@ -743,23 +739,19 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          not_statement {
-            statement {
-              byte_match_statement {
-                field_to_match {
-                  single_header {
-                    name = var.user_agent_header_name
-                  }
-                }
-
-                search_string         = var.cloudfront_user_agent_header
-                positional_constraint = "EXACTLY"
-
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
+          size_constraint_statement {
+            field_to_match {
+              single_header {
+                name = var.cloudfront_custom_header_name
               }
+            }
+
+            comparison_operator = "EQ"
+            size                = 0
+
+            text_transformation {
+              priority = 0
+              type     = "NONE"
             }
           }
         }

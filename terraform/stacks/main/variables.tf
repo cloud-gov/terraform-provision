@@ -421,3 +421,8 @@ variable "domains_broker_alb_count" {
   description = "Number of LBs to create for handling custom domains"
   default     = 0
 }
+
+variable "cloudfront_custom_header_name" {
+  type        = string
+  description = "Custom header for CloudFront traffic"
+}
