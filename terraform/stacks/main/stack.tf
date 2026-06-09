@@ -342,6 +342,8 @@ module "cf" {
 
   diego_api_bbs_private_ipv4_address_az1 = cidrhost(module.stack.private_cidr_az1, 250)
   diego_api_bbs_private_ipv4_address_az2 = cidrhost(module.stack.private_cidr_az2, 250)
+
+  cloudfront_custom_header_name = var.cloudfront_custom_header_name
 }
 
 
