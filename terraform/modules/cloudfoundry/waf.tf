@@ -654,19 +654,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          size_constraint_statement {
-            field_to_match {
-              single_header {
-                name = var.cloudfront_custom_header_name
+          not_statement {
+            statement {
+              size_constraint_statement {
+                field_to_match {
+                  single_header {
+                    name = var.cloudfront_custom_header_name
+                  }
+                }
+
+                comparison_operator = "GT"
+                size                = 0
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
               }
-            }
-
-            comparison_operator = "EQ"
-            size                = 0
-
-            text_transformation {
-              priority = 0
-              type     = "NONE"
             }
           }
         }
@@ -739,19 +743,23 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
         aggregate_key_type = "IP"
 
         scope_down_statement {
-          size_constraint_statement {
-            field_to_match {
-              single_header {
-                name = var.cloudfront_custom_header_name
+          not_statement {
+            statement {
+              size_constraint_statement {
+                field_to_match {
+                  single_header {
+                    name = var.cloudfront_custom_header_name
+                  }
+                }
+
+                comparison_operator = "GT"
+                size                = 0
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
               }
-            }
-
-            comparison_operator = "EQ"
-            size                = 0
-
-            text_transformation {
-              priority = 0
-              type     = "NONE"
             }
           }
         }
