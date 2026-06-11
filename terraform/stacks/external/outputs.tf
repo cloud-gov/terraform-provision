@@ -85,6 +85,7 @@ output "limit_check_secret_access_key_prev" {
   sensitive = true
 }
 
+/* used by prometheus check for CDN certs */
 output "limit_check_access_key_id_curr" {
   value = join("", module.limit_check_user.*.access_key_id_curr)
 }
