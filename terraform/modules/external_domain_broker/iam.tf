@@ -5,8 +5,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
       "iam:UploadServerCertificate",
       "iam:UpdateServerCertificate",
       "iam:TagServerCertificate",
-      "iam:UntagServerCertificate",
-      "iam:GetServerCertificate"
+      "iam:UntagServerCertificate"
     ]
     resources = [
       "arn:aws:iam::${var.account_id}:server-certificate/cloudfront/external-domains-*",
@@ -22,6 +21,7 @@ data "aws_iam_policy_document" "external_domain_broker_policy" {
   statement {
     actions = [
       "iam:ListServerCertificates",
+      "iam:GetServerCertificate"
     ]
     resources = [
       "arn:aws:iam::${var.account_id}:server-certificate/*"
