@@ -1,10 +1,18 @@
 data "aws_iam_policy_document" "platform_opensearch_s3_policy" {
   statement {
     actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      "arn:${var.aws_partition}:s3:::logs-platform-opensearch-*"
+    ]
+  }
+
+  statement {
+    actions = [
       "s3:PutObject",
       "s3:GetObject"
     ]
-
     resources = [
       "arn:${var.aws_partition}:s3:::logs-platform-opensearch-*/*"
     ]
