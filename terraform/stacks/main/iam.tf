@@ -14,13 +14,6 @@ resource "aws_iam_access_key" "s3_broker_task_user_key_v3" {
   user = aws_iam_user.s3_broker_task_user.name
 }
 
-resource "aws_iam_user" "logs_opensearch_metric_user" {
-  name = "logs-opensearch-metric-${var.stack_description}"
-}
-
-resource "aws_iam_access_key" "logs_opensearch_metric_user_key_v3" {
-  user = aws_iam_user.logs_opensearch_metric_user.name
-}
 
 resource "aws_iam_user" "logs_opensearch_s3_user" {
   name = "logs-opensearch-s3-${var.stack_description}"
@@ -100,14 +93,6 @@ module "logsearch_ingestor_policy" {
 module "logs_opensearch_ingestor_policy" {
   source             = "../../modules/iam_role_policy/logs_opensearch_ingestor"
   policy_name        = "${var.stack_description}-logs_opensearch_ingestor"
-  aws_partition      = data.aws_partition.current.partition
-  aws_default_region = var.aws_default_region
-  account_id         = data.aws_caller_identity.current.account_id
-}
-
-module "logs_opensearch_metric_ingestor_policy" {
-  source             = "../../modules/iam_role_policy/logs_opensearch_metric_ingestor"
-  policy_name        = "${var.stack_description}-logs_opensearch_metric_ingestor"
   aws_partition      = data.aws_partition.current.partition
   aws_default_region = var.aws_default_region
   account_id         = data.aws_caller_identity.current.account_id
@@ -213,11 +198,6 @@ module "logsearch_ingestor_role" {
 module "logs_opensearch_ingestor_role" {
   source    = "../../modules/iam_role"
   role_name = "${var.stack_description}-logs-opensearch-ingestor"
-}
-
-module "logs_opensearch_metric_ingestor_role" {
-  source    = "../../modules/iam_role"
-  role_name = "${var.stack_description}-logs-opensearch-metric-ingestor"
 }
 
 module "logs_opensearch_ingestor_s3_role" {
@@ -368,23 +348,11 @@ resource "aws_iam_policy_attachment" "logs_concourse_s3_ingestor" {
   ]
 }
 
-resource "aws_iam_policy_attachment" "logs_opensearch_metric_ingestor" {
-  name       = "${var.stack_description}-logs_opensearch_metric_ingestor"
-  policy_arn = module.logs_opensearch_metric_ingestor_policy.arn
-  roles = [
-    module.logs_opensearch_metric_ingestor_role.role_name,
-  ]
-  users = [
-    aws_iam_user.logs_opensearch_metric_user.name
-  ]
-}
-
 resource "aws_iam_policy_attachment" "logs_opensearch_secrets" {
   name       = "${var.stack_description}-logs_opensearch"
   policy_arn = module.logs_opensearch_secrets_policy.arn
   roles = [
     module.logs_opensearch_ingestor_role.role_name,
-    module.logs_opensearch_metric_ingestor_role.role_name,
     module.logs_opensearch_role.role_name,
     module.logs_opensearch_ingestor_s3_role.role_name
   ]
