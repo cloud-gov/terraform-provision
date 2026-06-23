@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:*"
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:cg-aws-broker-*"
     ]
   }
 
