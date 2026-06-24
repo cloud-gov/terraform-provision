@@ -602,3 +602,17 @@ module "platform_alerts_ses_smtp_credentials" {
   usernames                            = var.platform_alerts_smtp_usernames
   ses_allowed_recipient_email_patterns = var.platform_alerts_ses_allowed_recipient_email_patterns
 }
+
+module "logs_opensearch_snapshot" {
+  source = "../../modules/snapshot_credentials"
+
+  resource_prefix = "log-opensearch-snapshot-${var.stack_description}"
+  bucket          = buckets.logs_opensearch_snapshot_bucket
+}
+
+module "platform_snapshot" {
+  source = "../../modules/snapshot_credentials"
+
+  resource_prefix = "platform-snapshot-${var.stack_description}"
+  bucket          = module.platform_opensearch.aws_s3_bucket.snapshot_bucket
+}

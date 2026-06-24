@@ -21,3 +21,11 @@ module "falco_blobstore_bucket" {
   force_destroy                               = "true"
   include_require_encrypted_put_bucket_policy = "false"
 }
+
+module "logs_opensearch_snapshot_bucket" {
+  source                                      = "../../modules/s3_bucket/log_encrypted_bucket"
+  bucket                                      = "logs-opensearch-snapshot-${var.stack_description}"
+  aws_partition                               = data.aws_partition.current.partition
+  force_destroy                               = "true"
+  include_require_encrypted_put_bucket_policy = "false"
+}
