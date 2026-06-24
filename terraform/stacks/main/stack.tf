@@ -607,12 +607,12 @@ module "logs_opensearch_snapshot" {
   source = "../../modules/snapshot_credentials"
 
   resource_prefix = "log-opensearch-snapshot-${var.stack_description}"
-  bucket          = module.logs_opensearch_snapshot_bucket.arn
+  bucket          = module.logs_opensearch_snapshot_bucket
 }
 
 module "platform_snapshot" {
   source = "../../modules/snapshot_credentials"
 
   resource_prefix = "platform-snapshot-${var.stack_description}"
-  bucket          = module.platform_opensearch.snapshot_bucket.arn
+  bucket          = module.platform_opensearch.snapshot_bucket
 }
