@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "snapshot_bucket" {
   bucket = "logs-platform-snapshot-${var.stack_description}"
 }
 resource "aws_s3_bucket_lifecycle_configuration" "platform_bucket_lifecycle" {
-  bucket = aws_s3_bucket.snapshot.id
+  bucket = aws_s3_bucket.snapshot_bucket.id
   rule {
     id     = "all"
     status = "Enabled"

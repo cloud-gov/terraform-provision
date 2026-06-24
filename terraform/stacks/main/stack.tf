@@ -607,7 +607,7 @@ module "logs_opensearch_snapshot" {
   source = "../../modules/snapshot_credentials"
 
   resource_prefix = "log-opensearch-snapshot-${var.stack_description}"
-  bucket          = buckets.logs_opensearch_snapshot_bucket
+  bucket          = module.buckets.logs_opensearch_snapshot_bucket
 }
 
 module "platform_snapshot" {

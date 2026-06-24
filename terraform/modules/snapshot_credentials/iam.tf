@@ -2,7 +2,6 @@ resource "aws_iam_user" "snapshot" {
   name = var.resource_prefix
   path = "/snapshot/"
 
-  tags = local.merged_tags
 }
 
 data "aws_iam_policy_document" "snapshot_s3" {
@@ -40,7 +39,6 @@ resource "aws_iam_policy" "snapshot_s3" {
   description = "Grants snapshot S3 access (get/put/delete/list) for ${var.resource_prefix}"
   policy      = data.aws_iam_policy_document.snapshot_s3.json
 
-  tags = local.merged_tags
 }
 
 resource "aws_iam_user_policy_attachment" "snapshot" {
