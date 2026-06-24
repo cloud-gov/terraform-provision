@@ -48,17 +48,29 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     actions = [
       "rds:CreateOptionGroup",
       "rds:DeleteOptionGroup",
-      "rds:DescribeOptionGroups",
       "rds:ModifyOptionGroup",
+      "rds:ModifyDBInstance",
       "rds:AddTagsToResource",
       "rds:ListTagsForResource",
-      "rds:RemoveTagsFromResource",
+      "rds:RemoveTagsFromResource"
     ]
 
     resources = [
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:cg-aws-broker-*"
     ]
   }
+
+  statement {
+    actions = [
+      "rds:DescribeOptionGroups"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:*"
+    ]
+  }
+
+
 
   statement {
     actions = [
