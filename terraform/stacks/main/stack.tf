@@ -614,5 +614,5 @@ module "platform_snapshot" {
   source = "../../modules/snapshot_credentials"
 
   resource_prefix = "platform-snapshot-${var.stack_description}"
-  bucket          = module.platform_opensearch.snapshot_bucket
+  bucket          = module.platform_opensearch.platform-snapshot_bucket_name
 }
