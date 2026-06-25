@@ -12,3 +12,7 @@ output "platform-opensearch_bucket_name" {
 output "platform-snapshot_bucket_name" {
   value = aws_s3_bucket.snapshot_bucket.id
 }
+
+output "platform-snapshot_bucket_arn" {
+  value = aws_s3_bucket.snapshot_bucket.arn
+}
