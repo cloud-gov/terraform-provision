@@ -115,13 +115,15 @@ module "platform_opensearch_s3_ingestor_policy" {
 }
 
 module "logs_opensearch_secrets_policy" {
-  source                       = "../../modules/iam_role_policy/logs_opensearch_secrets"
-  policy_name                  = "${var.stack_description}-logs_opensearch_secrets"
-  aws_partition                = data.aws_partition.current.partition
-  region                       = var.aws_default_region
-  account_id                   = data.aws_caller_identity.current.account_id
-  resource_prefix              = local.logs_alerts_resource_prefix
-  platform_logs_secrets_prefix = local.platform_alerts_resource_prefix
+  source                           = "../../modules/iam_role_policy/logs_opensearch_secrets"
+  policy_name                      = "${var.stack_description}-logs_opensearch_secrets"
+  aws_partition                    = data.aws_partition.current.partition
+  region                           = var.aws_default_region
+  account_id                       = data.aws_caller_identity.current.account_id
+  resource_prefix                  = local.logs_alerts_resource_prefix
+  platform_logs_secrets_prefix     = local.platform_alerts_resource_prefix
+  logs_snapshot_secrets_prefix     = local.logs_snapshot_resource_prefix
+  platform_snapshot_secrets_prefix = local.platform_snapshot_resource_prefix
 }
 
 module "logs_concourse_s3_ingestor_policy" {
