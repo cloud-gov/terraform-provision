@@ -7,3 +7,12 @@ output "platform_opensearch_lb_target_group" {
 output "platform-opensearch_bucket_name" {
   value = aws_s3_bucket.log_bucket.id
 }
+
+
+output "platform-snapshot_bucket_name" {
+  value = aws_s3_bucket.snapshot_bucket.id
+}
+
+output "platform-snapshot_bucket_arn" {
+  value = aws_s3_bucket.snapshot_bucket.arn
+}
