@@ -115,14 +115,22 @@ module "platform_opensearch_s3_ingestor_policy" {
 }
 
 module "logs_opensearch_secrets_policy" {
-  source                           = "../../modules/iam_role_policy/logs_opensearch_secrets"
-  policy_name                      = "${var.stack_description}-logs_opensearch_secrets"
+  source                       = "../../modules/iam_role_policy/logs_opensearch_secrets"
+  policy_name                  = "${var.stack_description}-logs_opensearch_secrets"
+  aws_partition                = data.aws_partition.current.partition
+  region                       = var.aws_default_region
+  account_id                   = data.aws_caller_identity.current.account_id
+  resource_prefix              = local.logs_alerts_resource_prefix
+  logs_snapshot_secrets_prefix = local.logs_snapshot_resource_prefix
+}
+
+module "platform_opensearch_secrets_policy" {
+  source                           = "../../modules/iam_role_policy/platform_opensearch_secrets"
+  policy_name                      = "${var.stack_description}-platform_opensearch_secrets"
   aws_partition                    = data.aws_partition.current.partition
   region                           = var.aws_default_region
   account_id                       = data.aws_caller_identity.current.account_id
-  resource_prefix                  = local.logs_alerts_resource_prefix
   platform_logs_secrets_prefix     = local.platform_alerts_resource_prefix
-  logs_snapshot_secrets_prefix     = local.logs_snapshot_resource_prefix
   platform_snapshot_secrets_prefix = local.platform_snapshot_resource_prefix
 }
 
@@ -353,6 +361,16 @@ resource "aws_iam_policy_attachment" "logs_concourse_s3_ingestor" {
 resource "aws_iam_policy_attachment" "logs_opensearch_secrets" {
   name       = "${var.stack_description}-logs_opensearch"
   policy_arn = module.logs_opensearch_secrets_policy.arn
+  roles = [
+    module.logs_opensearch_ingestor_role.role_name,
+    module.logs_opensearch_role.role_name,
+    module.logs_opensearch_ingestor_s3_role.role_name
+  ]
+}
+
+resource "aws_iam_policy_attachment" "platform_opensearch_secrets" {
+  name       = "${var.stack_description}-platform_opensearch"
+  policy_arn = module.platform_opensearch_secrets_policy.arn
   roles = [
     module.logs_opensearch_ingestor_role.role_name,
     module.logs_opensearch_role.role_name,
