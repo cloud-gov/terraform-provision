@@ -372,9 +372,7 @@ resource "aws_iam_policy_attachment" "platform_opensearch_secrets" {
   name       = "${var.stack_description}-platform_opensearch"
   policy_arn = module.platform_opensearch_secrets_policy.arn
   roles = [
-    module.logs_opensearch_ingestor_role.role_name,
-    module.logs_opensearch_role.role_name,
-    module.logs_opensearch_ingestor_s3_role.role_name
+    module.platform_opensearch_ingestor_s3_role.role_name
   ]
 }
 
