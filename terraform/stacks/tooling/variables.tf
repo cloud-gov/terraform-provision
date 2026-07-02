@@ -451,3 +451,49 @@ variable "fips_stemcell_bucket" {
   type    = string
   default = "fips-stemcell"
 }
+
+variable "create_network_firewall" {
+  description = "Create and configure an AWS Network Firewall for ingress/egress inspection."
+  type        = bool
+  default     = false
+}
+
+variable "firewall_cidr_1" {
+  description = "CIDR for the AZ1 firewall subnet (min /28). Used only when create_network_firewall is true."
+  type        = string
+  default     = "10.0.200.0/28"
+}
+
+variable "firewall_cidr_2" {
+  description = "CIDR for the AZ2 firewall subnet (min /28)."
+  type        = string
+  default     = "10.0.201.0/28"
+}
+
+variable "nat_cidr_1" {
+  description = "CIDR for the AZ1 dedicated NAT subnet (min /28). Used only when create_network_firewall is true."
+  type        = string
+  default     = "10.0.202.0/28"
+}
+
+variable "nat_cidr_2" {
+  description = "CIDR for the AZ2 dedicated NAT subnet (min /28)."
+  type        = string
+  default     = "10.0.203.0/28"
+}
+
+variable "firewall_managed_rule_groups" {
+  description = "List of managed (or custom) stateful rule groups to attach to the firewall policy."
+  type = list(object({
+    resource_arn             = string
+    priority                 = number
+    override_action_to_count = optional(bool, false)
+  }))
+  default = []
+}
+
+variable "firewall_rule_groups_count_only" {
+  description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops)."
+  type        = bool
+  default     = true
+}
