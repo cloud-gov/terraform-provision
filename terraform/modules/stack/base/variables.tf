@@ -228,12 +228,6 @@ variable "create_network_firewall" {
   default     = false
 }
 
-variable "create_network_firewall" {
-  description = "Create and configure an AWS Network Firewall for ingress/egress inspection."
-  type        = bool
-  default     = false
-}
-
 variable "firewall_cidr_1" {
   description = "CIDR for the AZ1 firewall subnet (min /28). Used only when create_network_firewall is true."
   type        = string
