@@ -115,5 +115,5 @@ variable "firewall_managed_rule_groups" {
 variable "firewall_rule_groups_count_only" {
   description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops)."
   type        = bool
-  default     = false
+  default     = true
 }
