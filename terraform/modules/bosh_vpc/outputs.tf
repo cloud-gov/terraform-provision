@@ -95,3 +95,74 @@ output "vpc_endpoint_customer_s3_if2_ip" {
 output "vpc_endpoint_customer_s3_dns" {
   value = aws_vpc_endpoint.customer_s3.dns_entry
 }
+
+/* Network Firewall */
+output "network_firewall_id" {
+  value       = try(aws_networkfirewall_firewall.main[0].id, null)
+  description = "ID of the AWS Network Firewall (null when not created)."
+}
+
+output "network_firewall_arn" {
+  value       = try(aws_networkfirewall_firewall.main[0].arn, null)
+  description = "ARN of the AWS Network Firewall."
+}
+
+output "network_firewall_policy_arn" {
+  value       = try(aws_networkfirewall_firewall_policy.main[0].arn, null)
+  description = "ARN of the firewall policy."
+}
+
+output "firewall_subnet_az1" {
+  value       = try(aws_subnet.az1_firewall[0].id, null)
+  description = "AZ1 firewall subnet ID."
+}
+
+output "firewall_subnet_az2" {
+  value       = try(aws_subnet.az2_firewall[0].id, null)
+  description = "AZ2 firewall subnet ID."
+}
+
+output "nat_subnet_az1" {
+  value       = try(aws_subnet.az1_nat[0].id, null)
+  description = "AZ1 dedicated NAT subnet ID (null when firewall disabled)."
+}
+
+output "nat_subnet_az2" {
+  value       = try(aws_subnet.az2_nat[0].id, null)
+  description = "AZ2 dedicated NAT subnet ID (null when firewall disabled)."
+}
+
+output "firewall_route_table_az1" {
+  value       = try(aws_route_table.az1_firewall_route_table[0].id, null)
+  description = "AZ1 firewall subnet route table ID."
+}
+
+output "firewall_route_table_az2" {
+  value       = try(aws_route_table.az2_firewall_route_table[0].id, null)
+  description = "AZ2 firewall subnet route table ID."
+}
+
+output "nat_route_table_az1" {
+  value       = try(aws_route_table.az1_nat_route_table[0].id, null)
+  description = "AZ1 NAT subnet route table ID."
+}
+
+output "nat_route_table_az2" {
+  value       = try(aws_route_table.az2_nat_route_table[0].id, null)
+  description = "AZ2 NAT subnet route table ID."
+}
+
+output "firewall_igw_ingress_route_table" {
+  value       = try(aws_route_table.firewall_igw_ingress[0].id, null)
+  description = "IGW edge route table ID used for ingress inspection."
+}
+
+output "public_route_table_az1" {
+  value       = try(aws_route_table.az1_public_firewall_rt[0].id, aws_route_table.public_network.id)
+  description = "Effective AZ1 public route table ID (per-AZ when firewall enabled)."
+}
+
+output "public_route_table_az2" {
+  value       = try(aws_route_table.az2_public_firewall_rt[0].id, aws_route_table.public_network.id)
+  description = "Effective AZ2 public route table ID (per-AZ when firewall enabled)."
+}
