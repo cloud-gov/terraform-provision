@@ -496,6 +496,9 @@ jobs:
 
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
           TF_VAR_fips_stemcell_bucket: "cg-fips-stemcells"
+
+          TF_VAR_create_network_firewall: true
+          TF_VAR_firewall_rule_groups_count_only: true
       - *notify-slack
 
   - name: apply-tooling
