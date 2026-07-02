@@ -15,7 +15,7 @@ variable "resource_prefix" {
   description = "Prefix for AWS Secrets Manager secrets that should be readable"
 }
 
-variable "platform_logs_secrets_prefix" {
+variable "logs_snapshot_secrets_prefix" {
   type        = string
-  description = "Prefix for AWS Secrets Manager platform logs secrets that should be readable"
+  description = "Prefix for AWS Secrets Manager logs snapshot secrets that should be readable"
 }

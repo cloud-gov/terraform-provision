@@ -117,6 +117,25 @@ output "lets_encrypt_secret_access_key_curr" {
   sensitive = true
 }
 
+/* state file reader */
+output "terraform_state_reader_access_key_id_prev" {
+  value = module.terraform_state_reader.access_key_id_prev
+}
+
+output "terraform_state_reader_secret_access_key_prev" {
+  value     = module.terraform_state_reader.secret_access_key_prev
+  sensitive = true
+}
+
+output "terraform_state_reader_access_key_id_curr" {
+  value = module.terraform_state_reader.access_key_id_curr
+}
+
+output "terraform_state_reader_secret_access_key_curr" {
+  value     = module.terraform_state_reader.secret_access_key_curr
+  sensitive = true
+}
+
 output "csb" {
   description = "Values required to deploy the Cloud Service Broker."
   sensitive   = true

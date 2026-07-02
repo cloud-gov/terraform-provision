@@ -342,6 +342,8 @@ module "cf" {
 
   diego_api_bbs_private_ipv4_address_az1 = cidrhost(module.stack.private_cidr_az1, 250)
   diego_api_bbs_private_ipv4_address_az2 = cidrhost(module.stack.private_cidr_az2, 250)
+
+  cloudfront_custom_header_name = var.cloudfront_custom_header_name
 }
 
 
@@ -579,6 +581,7 @@ locals {
   platform_alerts_resource_prefix = "platform-alerts-${var.stack_description}"
 }
 
+
 module "platform_alerts_ses_domain" {
   source = "../../modules/ses_domain_identity"
 
@@ -599,4 +602,25 @@ module "platform_alerts_ses_smtp_credentials" {
   ses_configuration_set_arn            = module.platform_alerts_ses_domain.ses_configuration_set_arn
   usernames                            = var.platform_alerts_smtp_usernames
   ses_allowed_recipient_email_patterns = var.platform_alerts_ses_allowed_recipient_email_patterns
+}
+
+
+locals {
+  logs_snapshot_resource_prefix = "log-opensearch-snapshot-${var.stack_description}"
+}
+module "logs_opensearch_snapshot" {
+  source = "../../modules/snapshot_credentials"
+
+  resource_prefix = local.logs_snapshot_resource_prefix
+  bucket          = module.logs_opensearch_snapshot_bucket.bucket_arn
+}
+
+locals {
+  platform_snapshot_resource_prefix = "platform-snapshot-${var.stack_description}"
+}
+module "platform_snapshot" {
+  source = "../../modules/snapshot_credentials"
+
+  resource_prefix = local.platform_snapshot_resource_prefix
+  bucket          = module.platform_opensearch.platform-snapshot_bucket_arn
 }
