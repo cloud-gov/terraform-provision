@@ -52,7 +52,9 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
+# no firewall
 resource "aws_route_table" "public_network" {
+  count  = var.create_network_firewall ? 0 : 1
   vpc_id = aws_vpc.main_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -65,6 +67,26 @@ resource "aws_route_table" "public_network" {
 
   tags = {
     Name = "${var.stack_description} (Public Route Table)"
+  }
+}
+
+# with firewall
+resource "aws_route_table" "public_network" {
+  count  = var.create_network_firewall ? 1 : 0
+  vpc_id = aws_vpc.main_vpc.id
+
+  route {
+    cidr_block      = "0.0.0.0/0"
+    vpc_endpoint_id = local.firewall_endpoints[var.az1]
+  }
+
+  route {
+    ipv6_cidr_block = "::/0"
+    vpc_endpoint_id = local.firewall_endpoints[var.az1]
+  }
+
+  tags = {
+    Name = "${var.stack_description} (Public Route Table with Firewall)"
   }
 }
 
