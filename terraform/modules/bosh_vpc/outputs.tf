@@ -50,7 +50,7 @@ output "public_cidr_az2" {
 }
 
 output "public_route_table" {
-  value = var.create_network_firewall ? aws_route_table.public_network_with_firewall[count.index].id : aws_route_table.public_network[count.index].id
+  value = var.create_network_firewall ? aws_route_table.public_network_with_firewall[0].id : aws_route_table.public_network[0].id
 }
 
 output "nat_egress_ip_az1" {
