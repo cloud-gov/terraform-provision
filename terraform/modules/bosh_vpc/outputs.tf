@@ -50,7 +50,7 @@ output "public_cidr_az2" {
 }
 
 output "public_route_table" {
-  value = aws_route_table.public_network.id
+  value = var.create_network_firewall ? aws_route_table.public_network_with_firewall[count.index].id : aws_route_table.public_network[count.index].id
 }
 
 output "nat_egress_ip_az1" {
@@ -155,14 +155,4 @@ output "nat_route_table_az2" {
 output "firewall_igw_ingress_route_table" {
   value       = try(aws_route_table.firewall_igw_ingress[0].id, null)
   description = "IGW edge route table ID used for ingress inspection."
-}
-
-output "public_route_table_az1" {
-  value       = try(aws_route_table.az1_public_firewall_rt[0].id, aws_route_table.public_network.id)
-  description = "Effective AZ1 public route table ID (per-AZ when firewall enabled)."
-}
-
-output "public_route_table_az2" {
-  value       = try(aws_route_table.az2_public_firewall_rt[0].id, aws_route_table.public_network.id)
-  description = "Effective AZ2 public route table ID (per-AZ when firewall enabled)."
 }
