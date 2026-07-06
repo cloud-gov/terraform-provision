@@ -70,8 +70,20 @@ resource "aws_route_table" "public_network" {
   }
 }
 
+resource "aws_route_table_association" "az1_public_rta" {
+  count          = var.create_network_firewall ? 0 : 1
+  subnet_id      = aws_subnet.az1_public.id
+  route_table_id = aws_route_table.public_network.id
+}
+
+resource "aws_route_table_association" "az2_public_rta" {
+  count          = var.create_network_firewall ? 0 : 1
+  subnet_id      = aws_subnet.az2_public.id
+  route_table_id = aws_route_table.public_network.id
+}
+
 # with firewall
-resource "aws_route_table" "public_network" {
+resource "aws_route_table" "public_network_with_firewall" {
   count  = var.create_network_firewall ? 1 : 0
   vpc_id = aws_vpc.main_vpc.id
 
@@ -91,11 +103,13 @@ resource "aws_route_table" "public_network" {
 }
 
 resource "aws_route_table_association" "az1_public_rta" {
+  count          = var.create_network_firewall ? 1 : 0
   subnet_id      = aws_subnet.az1_public.id
-  route_table_id = aws_route_table.public_network.id
+  route_table_id = aws_route_table.public_network_with_firewall.id
 }
 
 resource "aws_route_table_association" "az2_public_rta" {
+  count          = var.create_network_firewall ? 1 : 0
   subnet_id      = aws_subnet.az2_public.id
-  route_table_id = aws_route_table.public_network.id
+  route_table_id = aws_route_table.public_network_with_firewall.id
 }
