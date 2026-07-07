@@ -100,7 +100,7 @@ resource "aws_eip" "az2_nat_eip" {
 
 resource "aws_nat_gateway" "az1_private_nat_service" {
   allocation_id = aws_eip.az1_nat_eip.id
-  subnet_id     = var.create_network_firewall ? aws_subnet.az1_nat[0].id : aws_subnet.az1_public[0].id
+  subnet_id     = var.create_network_firewall ? aws_subnet.az1_nat[0].id : aws_subnet.az1_private.id
 
   tags = {
     Name = "Nat Service AZ1 ${var.stack_description}"
@@ -109,7 +109,7 @@ resource "aws_nat_gateway" "az1_private_nat_service" {
 
 resource "aws_nat_gateway" "az2_private_nat_service" {
   allocation_id = aws_eip.az2_nat_eip.id
-  subnet_id     = var.create_network_firewall ? aws_subnet.az2_nat[0].id : aws_subnet.az2_public[0].id
+  subnet_id     = var.create_network_firewall ? aws_subnet.az2_nat[0].id : aws_subnet.az2_private.id
 
   tags = {
     Name = "Nat Service AZ2 ${var.stack_description}"
