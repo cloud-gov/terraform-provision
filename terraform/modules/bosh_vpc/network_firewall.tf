@@ -46,6 +46,7 @@ locals {
 
 
 # Firewall needs to live in its own subnets
+
 resource "aws_subnet" "az1_firewall" {
   count             = local.fw_count
   vpc_id            = aws_vpc.main_vpc.id
@@ -69,74 +70,6 @@ resource "aws_subnet" "az2_firewall" {
 }
 
 
-# NAT gateways need to move to prevent circular routing through the firewall.
-# They need their own route table, hence a separate subnet.
-resource "aws_subnet" "az1_nat" {
-  count             = local.fw_count
-  vpc_id            = aws_vpc.main_vpc.id
-  cidr_block        = var.nat_cidr_1
-  availability_zone = var.az1
-
-  tags = {
-    Name = "${var.stack_description} (NAT AZ1)"
-  }
-}
-
-resource "aws_subnet" "az2_nat" {
-  count             = local.fw_count
-  vpc_id            = aws_vpc.main_vpc.id
-  cidr_block        = var.nat_cidr_2
-  availability_zone = var.az2
-
-  tags = {
-    Name = "${var.stack_description} (NAT AZ2)"
-  }
-}
-
-resource "aws_route_table" "az1_nat_route_table" {
-  count  = local.fw_count
-  vpc_id = aws_vpc.main_vpc.id
-
-  tags = {
-    Name = "${var.stack_description} (NAT Route Table AZ1)"
-  }
-}
-
-resource "aws_route_table" "az2_nat_route_table" {
-  count  = local.fw_count
-  vpc_id = aws_vpc.main_vpc.id
-
-  tags = {
-    Name = "${var.stack_description} (NAT Route Table AZ2)"
-  }
-}
-
-# Egress NAT > IGW
-resource "aws_route" "az1_nat_default_igw" {
-  count                  = local.fw_count
-  route_table_id         = aws_route_table.az1_nat_route_table[0].id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.gw.id
-}
-
-resource "aws_route" "az2_nat_default_igw" {
-  count                  = local.fw_count
-  route_table_id         = aws_route_table.az2_nat_route_table[0].id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.gw.id
-}
-
-resource "aws_route_table_association" "az1_nat_rta" {
-  count          = local.fw_count
-  subnet_id      = aws_subnet.az1_nat[0].id
-  route_table_id = aws_route_table.az1_nat_route_table[0].id
-}
-
-resource "aws_route_table_association" "az2_nat_rta" {
-  count          = local.fw_count
-  subnet_id      = aws_subnet.az2_nat[0].id
-  route_table_id = aws_route_table.az2_nat_route_table[0].id
-}
 
 resource "aws_networkfirewall_firewall_policy" "main" {
   count = local.fw_count
@@ -253,13 +186,6 @@ resource "aws_route_table_association" "az2_firewall_rta" {
   route_table_id = aws_route_table.az2_firewall_route_table[0].id
 }
 
-#######################################
-# IGW edge route table (ingress inspection, IPv4 + IPv6)
-#   Inbound traffic destined for the public subnets is routed to the per-AZ
-#   firewall endpoint before reaching the workload subnets. Associated with
-#   the IGW via gateway_id on the route table association (edge association).
-#######################################
-
 resource "aws_route_table" "firewall_igw_ingress" {
   count  = local.fw_count
   vpc_id = aws_vpc.main_vpc.id
@@ -296,12 +222,6 @@ resource "aws_route_table_association" "firewall_igw_edge" {
   gateway_id     = aws_internet_gateway.gw.id
   route_table_id = aws_route_table.firewall_igw_ingress[0].id
 }
-
-#######################################
-# Per-AZ public route tables (firewall enabled only)
-#   Public workload egress (IPv4 + IPv6) goes through the AZ firewall endpoint,
-#   preserving AZ-symmetric inspection. IPv6 is now inspected (Caveat C fix).
-#######################################
 
 resource "aws_route_table" "az1_public_firewall_rt" {
   count  = local.fw_count
