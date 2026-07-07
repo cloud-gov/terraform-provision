@@ -100,7 +100,7 @@ resource "aws_eip" "az2_nat_eip" {
 
 resource "aws_nat_gateway" "az1_private_nat_service" {
   allocation_id = aws_eip.az1_nat_eip.id
-  subnet_id     = var.create_network_firewall ? aws_subnet.az1_nat.id : aws_subnet.az1_public.id
+  subnet_id     = var.create_network_firewall ? aws_subnet.az1_nat[0].id : aws_subnet.az1_public[0].id
 
   tags = {
     Name = "Nat Service AZ1 ${var.stack_description}"
@@ -109,7 +109,7 @@ resource "aws_nat_gateway" "az1_private_nat_service" {
 
 resource "aws_nat_gateway" "az2_private_nat_service" {
   allocation_id = aws_eip.az2_nat_eip.id
-  subnet_id     = var.create_network_firewall ? aws_subnet.az2_nat.id : aws_subnet.az2_public.id
+  subnet_id     = var.create_network_firewall ? aws_subnet.az2_nat[0].id : aws_subnet.az2_public[0].id
 
   tags = {
     Name = "Nat Service AZ2 ${var.stack_description}"
@@ -178,14 +178,14 @@ resource "aws_route_table_association" "az2_nat_rta" {
 # NAT return -> Primary firewall endpoint -> Private subnet
 resource "aws_route" "az1_nat_to_private" {
   count                  = var.create_network_firewall ? 1 : 0
-  route_table_id         = aws_route_table.az1_nat_route_table.id
+  route_table_id         = aws_route_table.az1_nat_route_table[0].id
   destination_cidr_block = var.private_cidr_1
   vpc_endpoint_id        = local.firewall_endpoints[var.az1]
 }
 
 resource "aws_route" "az2_nat_to_private" {
   count                  = var.create_network_firewall ? 1 : 0
-  route_table_id         = aws_route_table.az2_nat_route_table.id
+  route_table_id         = aws_route_table.az2_nat_route_table[0].id
   destination_cidr_block = var.private_cidr_2
   vpc_endpoint_id        = local.firewall_endpoints[var.az2]
 }
