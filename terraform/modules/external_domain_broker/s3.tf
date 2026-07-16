@@ -29,11 +29,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_log_bucket_lifecycl
       storage_class = "GLACIER_IR"
     }
 
-    transition {
-      days          = 365
-      storage_class = "DEEP_ARCHIVE"
-    }
-
     # Delete objects after 1 year per M-26-14 guidelines
     # 1 year
     expiration {
