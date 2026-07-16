@@ -49,18 +49,6 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
             "action": {
                 "type": "expire"
             }
-        },
-        {
-            "rulePriority": 2,
-            "description": "Only keep the two latest images",
-            "selection": {
-                "tagStatus": "any",
-                "countType": "imageCountMoreThan",
-                "countNumber": 2
-            },
-            "action": {
-                "type": "expire"
-            }
         }
     ]
   }
