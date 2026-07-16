@@ -27,7 +27,7 @@ module "logs-opensearch-archive" {
   include_require_encrypted_put_bucket_policy = "false"
   bucket                                      = "logs-opensearch-${var.stack_prefix}"
   aws_partition                               = var.aws_partition
-  expiration_days                             = 372 # 31 days * 12 months = 372 days
+  expiration_days                             = 365 # 1 year
   acl                                         = "private"
   object_ownership                            = "ObjectWriter"
 }
@@ -36,7 +36,7 @@ module "logs-opensearch-cf-audit-events" {
   source          = "../s3_bucket/log_encrypted_bucket"
   bucket          = "logs-opensearch-cf-audit-events-${var.stack_prefix}"
   aws_partition   = var.aws_partition
-  expiration_days = 372 # 31 days * 12 months = 372 days
+  expiration_days = 365 # 1 year
 }
 
 module "logs-opensearch-aws-metrics" {
@@ -50,5 +50,5 @@ module "logs-concourse-audit-events" {
   source          = "../s3_bucket/log_encrypted_bucket"
   bucket          = "logs-concourse-audit-events-${var.stack_prefix}"
   aws_partition   = var.aws_partition
-  expiration_days = 930 # 31 days * 30 months = 930 days
+  expiration_days = 365 # 1 year
 }
