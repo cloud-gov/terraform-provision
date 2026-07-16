@@ -56,11 +56,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
       storage_class = "GLACIER_IR"
     }
 
-    transition {
-      days          = 365
-      storage_class = "DEEP_ARCHIVE"
-    }
-
     dynamic "expiration" {
       for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
 

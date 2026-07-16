@@ -43,7 +43,7 @@ module "logs-opensearch-aws-metrics" {
   source          = "../s3_bucket/log_encrypted_bucket"
   bucket          = "logs-opensearch-aws-metrics-${var.stack_prefix}"
   aws_partition   = var.aws_partition
-  expiration_days = 372 # 31 days * 12 months = 372 days
+  expiration_days = 365 # 1 year
 }
 
 module "logs-concourse-audit-events" {

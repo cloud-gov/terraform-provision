@@ -26,11 +26,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "opensearch_metric_buckets_life
   bucket   = each.value.id
 
   rule {
-    id     = "delete_objects_after_30_months"
+    id     = "delete_objects_after_1_year"
     status = "Enabled"
 
     expiration {
-      days = 930 # 31 days * 30 months = 930 days
+      days = 365 # 1 year
     }
   }
 }
