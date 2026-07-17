@@ -29,15 +29,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_log_bucket_lifecycl
       storage_class = "GLACIER_IR"
     }
 
-    transition {
-      days          = 365
-      storage_class = "DEEP_ARCHIVE"
-    }
-
-    # Delete objects after 30 months per M-21-31 guidelines
-    # 31 days * 30 months = 930 days
+    # Delete objects after 1 year per M-26-14 guidelines
+    # 1 year
     expiration {
-      days = 930
+      days = 365
     }
   }
   transition_default_minimum_object_size = "varies_by_storage_class"

@@ -634,9 +634,6 @@ output "bosh_network_static_ips" {
 }
 
 /* Buckets */
-output "logsearch_archive_bucket_name" {
-  value = module.cf.logsearch_archive_bucket_name
-}
 
 output "logs_opensearch_archive_bucket_name" {
   value = module.cf.logs_opensearch_archive_bucket_name

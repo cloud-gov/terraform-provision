@@ -117,10 +117,6 @@ output "droplets_bucket_name" {
   value = module.droplets.bucket_name
 }
 
-output "logsearch_archive_bucket_name" {
-  value = module.logsearch-archive.bucket_name
-}
-
 output "logs_opensearch_archive_bucket_name" {
   value = module.logs-opensearch-archive.bucket_name
 }

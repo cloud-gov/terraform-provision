@@ -12,12 +12,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket_lifecycle" {
     id     = "all"
     status = "Enabled"
     filter {}
-    transition {
-      days          = 365
-      storage_class = "ONEZONE_IA"
-    }
     expiration {
-      days = 930 # 31 days * 30 months = 930 days
+      days = 365 # 1 year
     }
   }
   transition_default_minimum_object_size = "varies_by_storage_class"
