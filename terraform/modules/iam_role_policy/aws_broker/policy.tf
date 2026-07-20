@@ -258,6 +258,19 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/OpenSearchService/domains/cg-broker*/*"
     ]
   }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:PutRetentionPolicy",
+      "logs:DeleteLogGroup"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/OpenSearchService/domains/cg-broker*",
+      "arn:${var.aws_partition}:logs:${var.aws_default_region}:${var.account_id}:log-group:/aws/OpenSearchService/domains/cg-broker*:*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {
