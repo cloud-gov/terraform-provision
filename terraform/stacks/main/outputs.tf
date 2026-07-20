@@ -517,18 +517,6 @@ output "platform_syslog_elb_dns_name" {
   value = module.logsearch.platform_syslog_elb_dns_name
 }
 
-output "platform_syslog_udp_nlb_name" {
-  value = module.platform_opensearch.platform_syslog_udp_nlb_name
-}
-
-output "platform_syslog_udp_nlb_dns_name" {
-  value = module.platform_opensearch.platform_syslog_udp_nlb_dns_name
-}
-
-output "platform_syslog_udp_lb_target_group" {
-  value = module.platform_opensearch.platform_syslog_udp_lb_target_group
-}
-
 output "platform_kibana_lb_target_group" {
   value = module.logsearch.platform_kibana_lb_target_group
 }
