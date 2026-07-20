@@ -52,8 +52,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
     filter {}
 
     transition {
-      days          = 90
-      storage_class = "GLACIER_IR"
+      days          = var.transition_days
+      storage_class = var.transition_storage_class
     }
 
     dynamic "expiration" {

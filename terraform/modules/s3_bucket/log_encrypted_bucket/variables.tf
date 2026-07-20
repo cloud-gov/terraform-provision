@@ -20,6 +20,18 @@ variable "expiration_days" {
   default = 0
 }
 
+variable "transition_storage_class" {
+  description = "Storage class to transition objects to via the lifecycle rule"
+  type        = string
+  default     = "GLACIER_IR"
+}
+
+variable "transition_days" {
+  description = "Number of days after which objects transition to transition_storage_class"
+  type        = number
+  default     = 90
+}
+
 variable "include_require_encrypted_put_bucket_policy" {
   description = "True to include bucket policy to required encrypted PUTs"
   type        = bool
