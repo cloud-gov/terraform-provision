@@ -28,4 +28,6 @@ module "logs_opensearch_snapshot_bucket" {
   aws_partition                               = data.aws_partition.current.partition
   force_destroy                               = "true"
   include_require_encrypted_put_bucket_policy = "false"
+  transition_storage_class                    = "STANDARD_IA"
+  transition_days                             = 1
 }
