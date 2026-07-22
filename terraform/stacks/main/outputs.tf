@@ -546,6 +546,17 @@ output "platform_logs_bucket_name" {
   value = module.logsearch.platform_logs_bucket_name
 }
 
+output "platform_syslog_udp_nlb_name" {
+  value = module.platform_opensearch.platform_syslog_udp_nlb_name
+}
+
+output "platform_syslog_udp_nlb_dns_name" {
+  value = module.platform_opensearch.platform_syslog_udp_nlb_dns_name
+}
+
+output "platform_syslog_udp_lb_target_group" {
+  value = module.platform_opensearch.platform_syslog_udp_lb_target_group
+}
 
 /* Shibboleth Proxy ELB */
 output "shibboleth_lb_target_group" {
