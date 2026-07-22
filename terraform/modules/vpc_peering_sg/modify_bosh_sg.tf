@@ -97,6 +97,15 @@ resource "aws_security_group_rule" "bosh_registry" {
   security_group_id = var.target_bosh_security_group
 }
 
+resource "aws_security_group_rule" "tooling_syslog_udp_access" {
+  type              = "ingress"
+  from_port         = 5431
+  to_port           = 5431
+  protocol          = "udp"
+  cidr_blocks       = [var.source_vpc_cidr]
+  security_group_id = var.target_bosh_security_group
+}
+
 resource "aws_security_group_rule" "tooling_syslog_access" {
   type              = "ingress"
   from_port         = 5514
