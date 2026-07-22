@@ -8,6 +8,10 @@ output "platform-opensearch_bucket_name" {
   value = aws_s3_bucket.log_bucket.id
 }
 
+output "platform_syslog_udp_nlb_name" {
+  value = aws_lb.platform_syslog_udp_nlb.name
+}
+
 output "platform_syslog_udp_nlb_dns_name" {
   value = aws_lb.platform_syslog_udp_nlb.dns_name
 }
