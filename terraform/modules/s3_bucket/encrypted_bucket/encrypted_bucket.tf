@@ -27,22 +27,51 @@ resource "aws_s3_bucket_acl" "encrypted_bucket_acl" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.encrypted_bucket.id
-  # since the only rule is an expiration rule, we only create the lifecycle
-  # configuration if expiration days are set
-  count = var.expiration_days == 0 ? 0 : 1
+  # create the lifecycle configuration if expiration days are set or the
+  # bucket is versioned (so we can clean up noncurrent versions)
+  count = var.expiration_days == 0 && !tobool(var.versioning) ? 0 : 1
 
   dynamic "rule" {
+    # if expiration_days is 0 then the expiration rule is not created
     for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
 
     content {
       id     = "expiration-rule"
       status = "Enabled"
 
+      filter {}
+
       expiration {
         days = rule.value
       }
     }
   }
+
+  # on versioned buckets, the expiration rule above only makes the current object
+  # version noncurrent. This rule removes noncurrent versions, expired delete markers, and aborts incomplete multipart uploads.
+  dynamic "rule" {
+    for_each = tobool(var.versioning) ? [1] : []
+
+    content {
+      id     = "cleanup-noncurrent-versions"
+      status = "Enabled"
+
+      filter {}
+
+      noncurrent_version_expiration {
+        noncurrent_days = 1
+      }
+
+      expiration {
+        expired_object_delete_marker = true
+      }
+
+      abort_incomplete_multipart_upload {
+        days_after_initiation = 1
+      }
+    }
+  }
+
   transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
