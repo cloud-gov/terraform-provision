@@ -46,7 +46,6 @@ resource "aws_s3_bucket_ownership_controls" "kms_encrypted_bucket_acl_ownership"
 
 resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.kms_encrypted_bucket.id
-  count  = length(var.lifecycle_rules) > 0 ? 1 : 0
 
   dynamic "rule" {
     for_each = var.lifecycle_rules
@@ -77,5 +76,40 @@ resource "aws_s3_bucket_lifecycle_configuration" "kms_encrypted_bucket_lifecycle
       }
     }
   }
+
+  # Abort incomplete multipart uploads on all buckets
+  rule {
+    id     = "abort-incomplete-multipart-uploads"
+    status = "Enabled"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 1
+    }
+  }
+
+  # On versioned buckets, expiration rules only make the current object version
+  # noncurrent. This rule removes those noncurrent versions and expired delete
+  # markers.
+  dynamic "rule" {
+    for_each = var.enable_bucket_versioning ? [1] : []
+
+    content {
+      id     = "cleanup-noncurrent-versions"
+      status = "Enabled"
+
+      filter {}
+
+      noncurrent_version_expiration {
+        noncurrent_days = var.noncurrent_version_expiration_days
+      }
+
+      expiration {
+        expired_object_delete_marker = true
+      }
+    }
+  }
+
   transition_default_minimum_object_size = "varies_by_storage_class"
 }

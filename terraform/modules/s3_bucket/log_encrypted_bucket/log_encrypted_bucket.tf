@@ -64,6 +64,41 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_encrypted_bucket_lifecycle
       }
     }
   }
+
+  # Abort incomplete multipart uploads on all buckets
+  rule {
+    id     = "abort-incomplete-multipart-uploads"
+    status = "Enabled"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 1
+    }
+  }
+
+  # On versioned buckets, the expiration rule above only makes the current
+  # object version noncurrent. This rule removes those noncurrent versions and
+  # expired delete markers.
+  dynamic "rule" {
+    for_each = tobool(var.versioning) ? [1] : []
+
+    content {
+      id     = "cleanup-noncurrent-versions"
+      status = "Enabled"
+
+      filter {}
+
+      noncurrent_version_expiration {
+        noncurrent_days = var.noncurrent_version_expiration_days
+      }
+
+      expiration {
+        expired_object_delete_marker = true
+      }
+    }
+  }
+
   transition_default_minimum_object_size = "varies_by_storage_class"
 }
 

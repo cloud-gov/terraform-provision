@@ -30,23 +30,57 @@ resource "aws_s3_bucket_versioning" "encrypted_bucket_versioning" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "encrypted_bucket_lifecycle" {
   bucket = aws_s3_bucket.encrypted_bucket.id
-  # since the only rule is an expiration rule, we only create the lifecycle
-  # configuration if expiration days are set
-  count = var.expiration_days == 0 ? 0 : 1
 
   dynamic "rule" {
-    # if expiration_days is 0 then the rule is not created
+    # if expiration_days is 0 then the expiration rule is not created
     for_each = var.expiration_days == 0 ? [] : [var.expiration_days]
 
     content {
       id     = "expiration-rule"
       status = "Enabled"
 
+      filter {}
+
       expiration {
         days = rule.value
       }
     }
   }
+
+  # Abort incomplete multipart uploads on all buckets
+  rule {
+    id     = "abort-incomplete-multipart-uploads"
+    status = "Enabled"
+
+    filter {}
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 1
+    }
+  }
+
+  # On versioned buckets, the expiration rule above only makes the current
+  # object version noncurrent. This rule removes those noncurrent versions and
+  # expired delete markers.
+  dynamic "rule" {
+    for_each = tobool(var.versioning) ? [1] : []
+
+    content {
+      id     = "cleanup-noncurrent-versions"
+      status = "Enabled"
+
+      filter {}
+
+      noncurrent_version_expiration {
+        noncurrent_days = var.noncurrent_version_expiration_days
+      }
+
+      expiration {
+        expired_object_delete_marker = true
+      }
+    }
+  }
+
   transition_default_minimum_object_size = "varies_by_storage_class"
 }
 
