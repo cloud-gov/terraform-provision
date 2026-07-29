@@ -111,3 +111,9 @@ variable "object_ownership" {
   default     = ""
   description = "Object ownership strategy to use for S3 bucket"
 }
+
+variable "noncurrent_version_expiration_days" {
+  type        = number
+  default     = 1
+  description = "How many days to wait after S3 bucket versions become noncurrent before deleting them"
+}

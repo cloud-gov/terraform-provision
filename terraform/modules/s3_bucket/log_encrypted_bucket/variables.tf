@@ -85,3 +85,9 @@ variable "access_logging_target_bucket_prefix" {
   default     = ""
   description = "Prefix to use when writing access logs of bucket created by this module. Requires access_logging_target_bucket to be set."
 }
+
+variable "noncurrent_version_expiration_days" {
+  type        = number
+  default     = 1
+  description = "How many days to wait after S3 bucket versions become noncurrent before deleting them"
+}
