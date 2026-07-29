@@ -106,12 +106,13 @@ resource "aws_security_group_rule" "tooling_syslog_udp_access" {
   security_group_id = var.target_bosh_security_group
 }
 
-# NLB UDP target groups must use a TCP health check. Allow TCP on 5431 so the
-# health check can connect to the target instance.
+# NLB UDP target groups must use a TCP health check. The ingestor's plain
+# syslog input on 5431 is UDP-only, so the health check targets the ingestor's
+# syslog_tls TCP listener on 6972. Allow TCP 6972 so the check can connect.
 resource "aws_security_group_rule" "tooling_syslog_udp_healthcheck_access" {
   type              = "ingress"
-  from_port         = 5431
-  to_port           = 5431
+  from_port         = 6972
+  to_port           = 6972
   protocol          = "tcp"
   cidr_blocks       = [var.source_vpc_cidr]
   security_group_id = var.target_bosh_security_group
