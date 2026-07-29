@@ -106,6 +106,17 @@ resource "aws_security_group_rule" "tooling_syslog_udp_access" {
   security_group_id = var.target_bosh_security_group
 }
 
+# NLB UDP target groups must use a TCP health check. Allow TCP on 5431 so the
+# health check can connect to the target instance.
+resource "aws_security_group_rule" "tooling_syslog_udp_healthcheck_access" {
+  type              = "ingress"
+  from_port         = 5431
+  to_port           = 5431
+  protocol          = "tcp"
+  cidr_blocks       = [var.source_vpc_cidr]
+  security_group_id = var.target_bosh_security_group
+}
+
 resource "aws_security_group_rule" "tooling_syslog_access" {
   type              = "ingress"
   from_port         = 5514
