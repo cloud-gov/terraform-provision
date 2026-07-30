@@ -459,32 +459,32 @@ jobs:
           TF_VAR_rds_shared_preload_libraries_defectdojo_production: "pgaudit,pg_stat_statements,pg_tle"
           TF_VAR_rds_pgaudit_log_values_defectdojo_production: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_bosh: "15.12"
+          TF_VAR_rds_db_engine_version_bosh: "15.17"
           TF_VAR_rds_parameter_group_family_bosh: "postgres15"
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
+          TF_VAR_rds_db_engine_version_bosh_credhub: "15.17"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_credhub_staging: "15.12"
+          TF_VAR_rds_db_engine_version_credhub_staging: "15.17"
           TF_VAR_rds_parameter_group_family_credhub_staging: "postgres15"
           TF_VAR_rds_shared_preload_libraries_credhub_staging: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_credhub_staging: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_credhub_production: "15.12"
+          TF_VAR_rds_db_engine_version_credhub_production: "15.17"
           TF_VAR_rds_parameter_group_family_credhub_production: "postgres15"
           TF_VAR_rds_shared_preload_libraries_credhub_production: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_credhub_production: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_concourse_staging: "15.12"
+          TF_VAR_rds_db_engine_version_concourse_staging: "15.17"
           TF_VAR_rds_parameter_group_family_concourse_staging: "postgres15"
           TF_VAR_rds_shared_preload_libraries_concourse_staging: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_concourse_staging: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_concourse_production: "15.12"
+          TF_VAR_rds_db_engine_version_concourse_production: "15.17"
           TF_VAR_rds_parameter_group_family_concourse_production: "postgres15"
           TF_VAR_rds_shared_preload_libraries_concourse_production: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_concourse_production: "ddl,role"
@@ -760,7 +760,7 @@ jobs:
           TF_VAR_rds_multi_az: "false"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
-          TF_VAR_rds_db_engine_version: "15.12"
+          TF_VAR_rds_db_engine_version: "15.17"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_db_max_size: 40
 
@@ -776,7 +776,7 @@ jobs:
           TF_VAR_cf_as_rds_instance_type: ((development_cf_as_rds_instance_type))
           TF_VAR_credhub_rds_password: ((development_credhub_rds_password))
           TF_VAR_csb_rds_password: ((development_csb_rds_password))
-          TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
+          TF_VAR_rds_db_engine_version_bosh_credhub: "15.17"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
@@ -784,7 +784,7 @@ jobs:
           TF_VAR_platform_alerts_ses_allowed_recipient_email_patterns: ((platform_alerts_ses_allowed_recipient_email_patterns))
           TF_VAR_platform_alerts_smtp_usernames: ((platform_alerts_ses_smtp_usernames_development))
 
-          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.17"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
@@ -826,7 +826,7 @@ jobs:
           TF_VAR_waf_regex_rules: "((development_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
           TF_VAR_bosh_blobstore_sse: "aws:kms"
-          TF_VAR_domains_broker_rds_version: 15.12
+          TF_VAR_domains_broker_rds_version: 15.17
           TF_VAR_falco_bucket: true
           TF_VAR_environment_domain: "((environment_domain_development))"
           TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_development))
@@ -1022,7 +1022,7 @@ jobs:
           # Enable for database upgrades:
           #TF_VAR_rds_apply_immediately: "true"
           #TF_VAR_rds_allow_major_version_upgrade: "true"
-          TF_VAR_rds_db_engine_version: "15.12"
+          TF_VAR_rds_db_engine_version: "15.17"
           TF_VAR_rds_parameter_group_family: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_bosh: "pgaudit,pg_stat_statements"
@@ -1035,13 +1035,13 @@ jobs:
 
           TF_VAR_credhub_rds_password: ((staging_credhub_rds_password))
           TF_VAR_csb_rds_password: ((staging_csb_rds_password))
-          TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
+          TF_VAR_rds_db_engine_version_bosh_credhub: "15.17"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.17"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
@@ -1084,7 +1084,7 @@ jobs:
           TF_VAR_domains_lbgroup_count: 3
           TF_VAR_waf_regex_rules: "((staging_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
-          TF_VAR_domains_broker_rds_version: 15.12
+          TF_VAR_domains_broker_rds_version: 15.17
           TF_VAR_falco_bucket: true
           TF_VAR_environment_domain: "((environment_domain_staging))"
           TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_staging))
@@ -1276,7 +1276,7 @@ jobs:
           # Do not copy the pattern below.  You should not need separate variables
           # for staging/prod.  Instead, use ${var.stack_name} in your .tf and get
           # IDs from `data` resources.
-          TF_VAR_rds_db_engine_version: "15.12"
+          TF_VAR_rds_db_engine_version: "15.17"
           TF_VAR_rds_parameter_group_family: "postgres15"
           TF_VAR_rds_password: ((production_rds_password))
           TF_VAR_rds_db_size: ((production_rds_db_size))
@@ -1289,13 +1289,13 @@ jobs:
           #TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_credhub_rds_password: ((production_credhub_rds_password))
           TF_VAR_csb_rds_password: ((production_csb_rds_password))
-          TF_VAR_rds_db_engine_version_bosh_credhub: "15.12"
+          TF_VAR_rds_db_engine_version_bosh_credhub: "15.17"
           TF_VAR_rds_parameter_group_family_bosh_credhub: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_bosh_credhub: "pgaudit,pg_stat_statements"
           TF_VAR_rds_pgaudit_log_values_bosh_credhub: "ddl,role"
 
-          TF_VAR_rds_db_engine_version_autoscaler: "15.12"
+          TF_VAR_rds_db_engine_version_autoscaler: "15.17"
           TF_VAR_rds_parameter_group_family_autoscaler: "postgres15"
 
           TF_VAR_rds_shared_preload_libraries_autoscaler: "pgaudit,pg_stat_statements"
@@ -1344,7 +1344,7 @@ jobs:
           TF_VAR_domains_lbgroup_count: 4
           TF_VAR_waf_regex_rules: "((production_waf_regex_rules))"
           TF_VAR_aws_lb_listener_ssl_policy: "ELBSecurityPolicy-TLS13-1-2-FIPS-2023-04"
-          TF_VAR_domains_broker_rds_version: 15.12
+          TF_VAR_domains_broker_rds_version: 15.17
           TF_VAR_falco_bucket: true
           TF_VAR_environment_domain: "((environment_domain_production))"
           TF_VAR_log_alerts_smtp_usernames: ((log_alerts_ses_smtp_usernames_production))
