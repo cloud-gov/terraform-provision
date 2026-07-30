@@ -15,12 +15,11 @@ resource "aws_lb_target_group" "platform_syslog_udp" {
   protocol = "UDP"
   vpc_id   = var.vpc_id
 
-  # UDP target groups can't health check on UDP; use a TCP health check.
   health_check {
     protocol            = "TCP"
-    port                = 5431
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    port                = 6972
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
     interval            = 10
   }
 }
