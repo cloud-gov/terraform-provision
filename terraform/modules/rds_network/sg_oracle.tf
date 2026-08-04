@@ -15,6 +15,13 @@ resource "aws_security_group" "rds_oracle" {
     security_groups = var.security_groups
   }
 
+  ingress {
+    from_port       = 2484
+    to_port         = 2484
+    protocol        = "tcp"
+    security_groups = var.security_groups
+  }
+
   egress {
     from_port       = 0
     to_port         = 0
