@@ -61,10 +61,9 @@ resource "aws_route" "fw_to_nat" {
 #   depends_on = [aws_ec2_transit_gateway_vpc_attachment.inspection]
 # }
 
-############################################
+
 # Public/NAT subnet route tables
 # Egress out to IGW; ingress return traffic to spokes must go back through the firewall.
-############################################
 resource "aws_route_table" "public" {
   count  = 2
   vpc_id = aws_vpc.inspection.id
@@ -87,25 +86,24 @@ resource "aws_route" "public_to_igw" {
 
 # Ingress: reply/return traffic destined to spoke CIDRs from the NAT subnet
 # must be forced back through the firewall endpoint (in same AZ) before reaching TGW.
-resource "aws_route" "public_to_fw" {
-  for_each = {
-    for pair in setproduct(range(2), local.all_spoke_cidrs) :
-    "${pair[0]}-${pair[1]}" => {
-      idx  = pair[0]
-      cidr = pair[1]
-    }
-  }
+# resource "aws_route" "public_to_fw" {
+#   for_each = {
+#     for pair in setproduct(range(2), local.all_spoke_cidrs) :
+#     "${pair[0]}-${pair[1]}" => {
+#       idx  = pair[0]
+#       cidr = pair[1]
+#     }
+#   }
 
-  route_table_id         = aws_route_table.public[each.value.idx].id
-  destination_cidr_block = each.value.cidr
-  vpc_endpoint_id        = local.fw_endpoints[var.availability_zones[each.value.idx]]
-}
+#   route_table_id         = aws_route_table.public[each.value.idx].id
+#   destination_cidr_block = each.value.cidr
+#   vpc_endpoint_id        = local.fw_endpoints[var.availability_zones[each.value.idx]]
+# }
 
-############################################
+
 # IGW edge route table (INGRESS INSPECTION)
 # Traffic arriving from the internet destined for spoke CIDRs is forced
 # through the firewall endpoint before proceeding.
-############################################
 resource "aws_route_table" "igw_edge" {
   vpc_id = aws_vpc.inspection.id
   tags   = merge(var.tags, { Name = "${var.name_prefix}-rt-igw-edge" })

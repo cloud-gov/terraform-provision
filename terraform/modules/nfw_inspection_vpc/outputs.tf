@@ -1,6 +1,6 @@
 output "transit_gateway_id" {
-  description = "ID of the Transit Gateway (created or existing)."
-  value       = local.tgw_id
+  description = "ID of the Transit Gateway."
+  value       = aws_ec2_transit_gateway.this.id
 }
 
 output "inspection_vpc_id" {
@@ -18,20 +18,20 @@ output "firewall_endpoints" {
   value       = local.fw_endpoints
 }
 
-output "tgw_route_table_spoke_id" {
-  description = "TGW route table ID for spokes."
-  value       = aws_ec2_transit_gateway_route_table.spoke.id
-}
+# output "tgw_route_table_spoke_id" {
+#   description = "TGW route table ID for spokes."
+#   value       = aws_ec2_transit_gateway_route_table.spoke.id
+# }
 
 output "tgw_route_table_inspection_id" {
   description = "TGW route table ID for the inspection VPC."
   value       = aws_ec2_transit_gateway_route_table.inspection.id
 }
 
-output "spoke_attachment_ids" {
-  description = "Map of spoke logical name -> TGW attachment ID."
-  value       = { for k, v in aws_ec2_transit_gateway_vpc_attachment.spoke : k => v.id }
-}
+# output "spoke_attachment_ids" {
+#   description = "Map of spoke logical name -> TGW attachment ID."
+#   value       = { for k, v in aws_ec2_transit_gateway_vpc_attachment.spoke : k => v.id }
+# }
 
 output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."

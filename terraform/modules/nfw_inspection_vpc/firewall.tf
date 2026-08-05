@@ -7,7 +7,7 @@ locals {
   }
 
   # All spoke CIDRs flattened (used for return routes in the inspection VPC).
-  all_spoke_cidrs = distinct(flatten([for k, v in var.spoke_vpcs : v.spoke_cidrs]))
+  # all_spoke_cidrs = distinct(flatten([for k, v in var.spoke_vpcs : v.spoke_cidrs]))
 
   firewall_managed_rule_groups = [
     for rg in var.firewall_managed_rule_groups : {
@@ -40,9 +40,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       }
     }
   }
-  tags = {
-    Name = merge(var.tags, { Name = "${var.name_prefix}-fw-policy" })
-  }
+  tags = merge(var.tags, { Name = "${var.name_prefix}-fw-policy" })
 }
 
 ############################################

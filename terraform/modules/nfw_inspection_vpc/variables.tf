@@ -10,25 +10,11 @@ variable "tags" {
   default     = {}
 }
 
-
-# Transit Gateway
-variable "create_transit_gateway" {
-  description = "Whether to create a new TGW. If false, provide existing_transit_gateway_id."
-  type        = bool
-  default     = true
-}
-
-variable "existing_transit_gateway_id" {
-  description = "Existing TGW ID to use when create_transit_gateway = false."
-  type        = string
-  default     = null
-}
-
-variable "amazon_side_asn" {
-  description = "ASN for a newly created TGW."
-  type        = number
-  default     = 64512
-}
+# variable "amazon_side_asn" {
+#   description = "ASN for a newly created TGW."
+#   type        = number
+#   default     = 64512
+# }
 
 
 # Inspection VPC
@@ -68,24 +54,24 @@ variable "public_subnet_cidrs" {
 
 
 # Existing (spoke) VPCs
-variable "spoke_vpcs" {
-  description = <<-EOT
-    Map of existing spoke VPCs to attach and inspect.
-    Key is a logical name. Each entry references existing resources.
-  EOT
-  type = map(object({
-    vpc_id = string
-    # Subnets (one per AZ) that TGW attachment ENIs will be placed in.
-    tgw_attachment_subnet_ids = list(string)
-    # Route table IDs in the spoke that must be updated to send traffic to the TGW.
-    # Typically the private/workload route tables.
-    route_table_ids = list(string)
-    # CIDR(s) representing this spoke, used for return routes in the inspection VPC.
-    spoke_cidrs = list(string)
-    # If true, this spoke's default route (0.0.0.0/0) is pointed at the TGW for egress inspection.
-    inspect_egress = optional(bool, true)
-  }))
-}
+# variable "spoke_vpcs" {
+#   description = <<-EOT
+#     Map of existing spoke VPCs to attach and inspect.
+#     Key is a logical name. Each entry references existing resources.
+#   EOT
+#   type = map(object({
+#     vpc_id = string
+#     # Subnets (one per AZ) that TGW attachment ENIs will be placed in.
+#     tgw_attachment_subnet_ids = list(string)
+#     # Route table IDs in the spoke that must be updated to send traffic to the TGW.
+#     # Typically the private/workload route tables.
+#     route_table_ids = list(string)
+#     # CIDR(s) representing this spoke, used for return routes in the inspection VPC.
+#     spoke_cidrs = list(string)
+#     # If true, this spoke's default route (0.0.0.0/0) is pointed at the TGW for egress inspection.
+#     inspect_egress = optional(bool, true)
+#   }))
+# }
 
 
 # Network Firewall
@@ -95,7 +81,7 @@ variable "firewall_managed_rule_groups" {
   type = list(object({
     resource_arn             = string
     priority                 = number
-    override_action_to_count = optional(bool, false)
+    override_action_to_count = optional(bool, true)
   }))
   default = []
 }
@@ -122,10 +108,4 @@ variable "log_retention_days" {
   description = "CloudWatch log retention in days."
   type        = number
   default     = 90
-}
-
-variable "allowed_domains" {
-  description = "Optional list of domains to allow for egress (used only when creating the default policy)."
-  type        = list(string)
-  default     = []
 }
