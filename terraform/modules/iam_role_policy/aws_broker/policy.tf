@@ -52,7 +52,8 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "rds:ModifyDBInstance",
       "rds:AddTagsToResource",
       "rds:ListTagsForResource",
-      "rds:RemoveTagsFromResource"
+      "rds:RemoveTagsFromResource",
+      "rds:CreateDBInstance" # Enables attaching an option group at creation time
     ]
 
     resources = [
