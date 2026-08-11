@@ -74,8 +74,7 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
                 "countNumber": 90
             },
             "action": {
-                "type": "transition",
-                "targetStorageClass": "archive"
+                "type": "expire"
             }
         }
     ]
