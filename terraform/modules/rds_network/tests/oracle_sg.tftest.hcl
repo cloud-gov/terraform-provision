@@ -2,8 +2,8 @@
 #
 # Run from the module dir:  terraform test
 # Uses the mock AWS provider so no credentials / no real API calls are made.
-# Asserts the Oracle SG exposes exactly the intended rule set (2484 TCPS + 1521
-# ingress, all-egress), one rule per source SG.
+# Asserts the Oracle SG exposes exactly the intended rule set: TCPS 2484 ingress
+# (TLS-only — no plaintext 1521) plus all-egress, one rule per source SG.
 
 mock_provider "aws" {}
 
@@ -31,7 +31,7 @@ run "oracle_sg_has_expected_rules" {
     error_message = "rds_oracle SG must exist with the expected description"
   }
 
-  # --- 2484 TCPS ingress rule ---
+  # --- 2484 TCPS ingress rule (the only ingress — TLS-only) ---
   assert {
     condition     = aws_security_group_rule.oracle_ingress_tcps[0].from_port == 2484 && aws_security_group_rule.oracle_ingress_tcps[0].to_port == 2484
     error_message = "TCPS rule must open 2484"
@@ -45,12 +45,6 @@ run "oracle_sg_has_expected_rules" {
     error_message = "TCPS rule source must be the provided source SG"
   }
 
-  # --- 1521 plaintext ingress rule ---
-  assert {
-    condition     = aws_security_group_rule.oracle_ingress_plaintext[0].from_port == 1521 && aws_security_group_rule.oracle_ingress_plaintext[0].to_port == 1521
-    error_message = "plaintext rule must open 1521"
-  }
-
   # --- egress rule: all protocols/ports to the source SG ---
   assert {
     condition     = aws_security_group_rule.oracle_egress_default[0].type == "egress" && aws_security_group_rule.oracle_egress_default[0].protocol == "-1"
@@ -59,7 +53,7 @@ run "oracle_sg_has_expected_rules" {
 
   # --- one rule per source SG (count wiring) ---
   assert {
-    condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 1 && length(aws_security_group_rule.oracle_ingress_plaintext) == 1 && length(aws_security_group_rule.oracle_egress_default) == 1
-    error_message = "expected exactly one rule per source SG for count=1"
+    condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 1 && length(aws_security_group_rule.oracle_egress_default) == 1
+    error_message = "expected exactly one ingress + one egress rule per source SG for count=1"
   }
 }

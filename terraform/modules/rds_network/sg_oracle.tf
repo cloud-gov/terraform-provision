@@ -27,18 +27,6 @@ resource "aws_security_group_rule" "oracle_ingress_tcps" {
   security_group_id        = aws_security_group.rds_oracle.id
 }
 
-resource "aws_security_group_rule" "oracle_ingress_plaintext" {
-  count = var.security_groups_count
-
-  description              = "Oracle plaintext listener (1521) from allowed source SGs"
-  type                     = "ingress"
-  from_port                = 1521
-  to_port                  = 1521
-  protocol                 = "tcp"
-  source_security_group_id = element(var.security_groups, count.index)
-  security_group_id        = aws_security_group.rds_oracle.id
-}
-
 resource "aws_security_group_rule" "oracle_egress_default" {
   count = var.security_groups_count
 
