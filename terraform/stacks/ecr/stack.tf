@@ -49,6 +49,19 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
             "action": {
                 "type": "expire"
             }
+        },
+        {
+            "rulePriority": 2,
+            "description": "Expire images not pulled in 2 weeks",
+            "selection": {
+                "tagStatus": "any",
+                "countType": "sinceImagePulled",
+                "countUnit": "days",
+                "countNumber": 14
+            },
+            "action": {
+                "type": "expire"
+            }
         }
     ]
   }
