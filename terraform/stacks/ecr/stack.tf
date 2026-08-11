@@ -69,6 +69,7 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
             "description": "Expire images archived for 90 days",
             "selection": {
                 "tagStatus": "any",
+                "storageClass": "archive",
                 "countType": "sinceImageTransitioned",
                 "countUnit": "days",
                 "countNumber": 90
