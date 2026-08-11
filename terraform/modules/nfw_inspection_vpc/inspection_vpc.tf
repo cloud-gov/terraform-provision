@@ -2,7 +2,7 @@ resource "aws_vpc" "inspection" {
   cidr_block           = var.inspection_vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags                 = merge(var.tags, { Name = "${var.name_prefix}-inspection-vpc" })
+  tags                 = merge(var.tags, { Name = "${var.name_prefix}-vpc" })
 }
 
 # Subnets
