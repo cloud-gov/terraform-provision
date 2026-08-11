@@ -2,7 +2,7 @@ locals {
   # Map AZ -> firewall endpoint ID for route targeting.
   # The firewall creates one endpoint (VPCE) per firewall subnet/AZ.
   fw_endpoints = {
-    for s in tolist(aws_networkfirewall_firewall.this.firewall_status[0].sync_states) :
+    for s in tolist(aws_networkfirewall_firewall.firewall.firewall_status[0].sync_states) :
     s.availability_zone => s.attachment[0].endpoint_id
   }
 
@@ -18,7 +18,7 @@ locals {
   ]
 }
 
-resource "aws_networkfirewall_firewall_policy" "main" {
+resource "aws_networkfirewall_firewall_policy" "policy" {
   name = "${var.name_prefix}-firewall-policy"
 
   firewall_policy {
@@ -43,12 +43,9 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   tags = merge(var.tags, { Name = "${var.name_prefix}-fw-policy" })
 }
 
-############################################
-# The firewall itself (endpoints land in firewall subnets)
-############################################
-resource "aws_networkfirewall_firewall" "this" {
+resource "aws_networkfirewall_firewall" "firewall" {
   name                = "${var.name_prefix}-fw"
-  firewall_policy_arn = aws_networkfirewall_firewall_policy.main.arn
+  firewall_policy_arn = aws_networkfirewall_firewall_policy.policy.arn
   vpc_id              = aws_vpc.inspection.id
   delete_protection   = var.delete_protection
 
@@ -62,9 +59,6 @@ resource "aws_networkfirewall_firewall" "this" {
   tags = merge(var.tags, { Name = "${var.name_prefix}-fw" })
 }
 
-############################################
-# Logging
-############################################
 resource "aws_cloudwatch_log_group" "flow" {
   count             = var.logging_enabled ? 1 : 0
   name              = "/aws/network-firewall/${var.name_prefix}/flow"
@@ -79,9 +73,9 @@ resource "aws_cloudwatch_log_group" "alert" {
   tags              = var.tags
 }
 
-resource "aws_networkfirewall_logging_configuration" "this" {
+resource "aws_networkfirewall_logging_configuration" "config" {
   count        = var.logging_enabled ? 1 : 0
-  firewall_arn = aws_networkfirewall_firewall.this.arn
+  firewall_arn = aws_networkfirewall_firewall.firewall.arn
 
   logging_configuration {
     log_destination_config {

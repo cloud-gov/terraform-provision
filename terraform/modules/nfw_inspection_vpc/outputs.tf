@@ -1,6 +1,6 @@
 output "transit_gateway_id" {
   description = "ID of the Transit Gateway."
-  value       = aws_ec2_transit_gateway.this.id
+  value       = aws_ec2_transit_gateway.tgw.id
 }
 
 output "inspection_vpc_id" {
@@ -10,7 +10,7 @@ output "inspection_vpc_id" {
 
 output "firewall_arn" {
   description = "ARN of the AWS Network Firewall."
-  value       = aws_networkfirewall_firewall.this.arn
+  value       = aws_networkfirewall_firewall.firewall.arn
 }
 
 output "firewall_endpoints" {
@@ -25,7 +25,7 @@ output "firewall_endpoints" {
 
 output "tgw_route_table_inspection_id" {
   description = "TGW route table ID for the inspection VPC."
-  value       = aws_ec2_transit_gateway_route_table.inspection.id
+  value       = aws_ec2_transit_gateway_route_table.tgw.id
 }
 
 # output "spoke_attachment_ids" {
@@ -35,5 +35,5 @@ output "tgw_route_table_inspection_id" {
 
 output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."
-  value       = aws_nat_gateway.this[*].id
+  value       = aws_nat_gateway.ngw[*].id
 }

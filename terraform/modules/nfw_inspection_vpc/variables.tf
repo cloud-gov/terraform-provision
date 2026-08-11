@@ -10,13 +10,6 @@ variable "tags" {
   default     = {}
 }
 
-# variable "amazon_side_asn" {
-#   description = "ASN for a newly created TGW."
-#   type        = number
-#   default     = 64512
-# }
-
-
 # Inspection VPC
 variable "inspection_vpc_cidr" {
   description = "CIDR block for the new inspection VPC."
@@ -51,28 +44,6 @@ variable "public_subnet_cidrs" {
   type        = list(string)
   default     = ["10.100.2.0/28", "10.100.2.16/28"]
 }
-
-
-# Existing (spoke) VPCs
-# variable "spoke_vpcs" {
-#   description = <<-EOT
-#     Map of existing spoke VPCs to attach and inspect.
-#     Key is a logical name. Each entry references existing resources.
-#   EOT
-#   type = map(object({
-#     vpc_id = string
-#     # Subnets (one per AZ) that TGW attachment ENIs will be placed in.
-#     tgw_attachment_subnet_ids = list(string)
-#     # Route table IDs in the spoke that must be updated to send traffic to the TGW.
-#     # Typically the private/workload route tables.
-#     route_table_ids = list(string)
-#     # CIDR(s) representing this spoke, used for return routes in the inspection VPC.
-#     spoke_cidrs = list(string)
-#     # If true, this spoke's default route (0.0.0.0/0) is pointed at the TGW for egress inspection.
-#     inspect_egress = optional(bool, true)
-#   }))
-# }
-
 
 # Network Firewall
 
