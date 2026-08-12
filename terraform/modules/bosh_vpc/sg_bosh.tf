@@ -154,15 +154,6 @@ resource "aws_security_group_rule" "node_exporter" {
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "platform_kibana" {
-  type              = "ingress"
-  from_port         = 5600
-  to_port           = 5600
-  protocol          = "tcp"
-  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
-  security_group_id = aws_security_group.bosh.id
-}
-
 resource "aws_security_group_rule" "platform_opensearch" {
   type              = "ingress"
   from_port         = 5605
@@ -204,7 +195,7 @@ resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "concourse_logsearch" {
+resource "aws_security_group_rule" "concourse_opensearch" {
   type              = "ingress"
   from_port         = 9200
   to_port           = 9200
