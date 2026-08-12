@@ -31,6 +31,16 @@ run "oracle_sg_has_expected_rules" {
     error_message = "rds_oracle SG must exist with the expected description"
   }
 
+  # --- SG owns empty inline rule sets so legacy inline rules (e.g. 1521) are removed ---
+  assert {
+    condition     = length(aws_security_group.rds_oracle.ingress) == 0
+    error_message = "rds_oracle must declare an empty inline ingress set (rules are standalone; forces removal of legacy inline rules)"
+  }
+  assert {
+    condition     = length(aws_security_group.rds_oracle.egress) == 0
+    error_message = "rds_oracle must declare an empty inline egress set (rules are standalone)"
+  }
+
   # --- 2484 TCPS ingress rule (the only ingress — TLS-only) ---
   assert {
     condition     = aws_security_group_rule.oracle_ingress_tcps[0].from_port == 2484 && aws_security_group_rule.oracle_ingress_tcps[0].to_port == 2484

@@ -10,6 +10,15 @@ resource "aws_security_group" "rds_oracle" {
   description = "Allow access to incoming Oracle traffic"
   vpc_id      = var.vpc_id
 
+  # Declare empty inline rule sets so Terraform actively removes any rules that
+  # were previously managed inline on this SG (notably the legacy plaintext 1521
+  # ingress). Without this, migrating from inline blocks to the standalone
+  # aws_security_group_rule resources below only ADDS the new rules and leaves the
+  # old inline ones orphaned on the live SG. All actual rules are managed as the
+  # standalone resources below (TCPS 2484 + egress only).
+  ingress = []
+  egress  = []
+
   tags = {
     Name = "${var.stack_description} - Incoming Oracle Traffic"
   }
