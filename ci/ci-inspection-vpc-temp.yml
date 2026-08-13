@@ -13,15 +13,12 @@ jobs:
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
         input_mapping: {terraform-templates: terraform-provision-repo}
-        params:
+        params: &firewall-inspection-vpc-params
           TERRAFORM_ACTION: plan
-          STACK_NAME: inspection-vpc
-          TEMPLATE_SUBDIR: terraform/stacks/inspection-vpc
+          STACK_NAME: firewall-inspection-vpc
+          TEMPLATE_SUBDIR: terraform/stacks/firewall-inspection-vpc
           S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
           AWS_DEFAULT_REGION: ((aws_default_region))
-          TF_VAR_aws_default_region: ((aws_default_region))
-          TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
-
           TF_VAR_name_prefix: "nfw-inspection"
           TF_VAR_tags: |
             {
@@ -42,8 +39,29 @@ jobs:
           TF_VAR_delete_protection: false
           TF_VAR_logging_enabled: true
           TF_VAR_log_retention_days: 1
-
+  - name: apply-inspection-vpc
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+            params: {depth: 1}
+          - get: terraform-provision-repo
+            # trigger: true
+            params: {depth: 1}
+            passed: [plan-inspection-vpc]
+      - task: terraform-apply-inspection-vpc
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: {terraform-templates: terraform-provision-repo}
+        params:
+          <<: *firewall-inspection-vpc-params
+          TERRAFORM_ACTION: apply
 resources:
+  - name: pipeline-tasks
+    type: git
+    source:
+      uri: https://github.com/cloud-gov/pipeline-tasks
+      branch: main
+      commit_verification_keys: ((cloud-gov-pgp-keys))
   - name: terraform-provision-repo
     type: git
     source:
