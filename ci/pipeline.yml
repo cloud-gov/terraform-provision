@@ -864,6 +864,8 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: bosh_rds_host_curr
                     TERRAFORM_DB_USERNAME_FIELD: bosh_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: bosh_rds_password
+                    DB_SCANNER_USERNAME_FIELD: ((development_bosh_scanner_user))
+                    DB_SCANNER_PASSWORD_FIELD: ((development_bosh_scanner_pass))
                   run:
                     path: sh
                     args:
@@ -884,6 +886,8 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: credhub_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: credhub_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: credhub_rds_password
+                    DB_SCANNER_USERNAME_FIELD: ((development_credhub_scanner_user))
+                    DB_SCANNER_PASSWORD_FIELD: ((development_credhub_scanner_pass))
                   run:
                     path: sh
                     args:
@@ -905,6 +909,8 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_rds_password
+                    DB_SCANNER_USERNAME_FIELD: ((development_cf_scanner_user))
+                    DB_SCANNER_PASSWORD_FIELD: ((development_cf_scanner_pass))
                   run:
                     path: sh
                     args:
@@ -926,6 +932,8 @@ jobs:
                     TERRAFORM_DB_HOST_FIELD: cf_as_rds_host
                     TERRAFORM_DB_USERNAME_FIELD: cf_as_rds_username
                     TERRAFORM_DB_PASSWORD_FIELD: cf_as_rds_password
+                    DB_SCANNER_USERNAME_FIELD: ((development_cf_as_scanner_user))
+                    DB_SCANNER_PASSWORD_FIELD: ((development_cf_as_scanner_pass))
                   run:
                     path: sh
                     args:
