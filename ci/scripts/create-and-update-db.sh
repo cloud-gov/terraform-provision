@@ -59,9 +59,9 @@ for db in ${DATABASES}; do
 			        ALTER ROLE ${db_scanner_user} WITH PASSWORD '${db_scanner_pass}';
 			      END IF;
 
-			      GRANT USAGE ON SCHEMA public TO ${db_scanner_user}";
-			      GRANT SELECT ON ALL TABLE IN SCHEMA public TO ${db_scanner_user}";
-			      GRANT pg_read_all_settings TO ${db_scanner_user}";
+			      GRANT USAGE ON SCHEMA public TO ${db_scanner_user};
+			      GRANT SELECT ON ALL TABLE IN SCHEMA public TO ${db_scanner_user};
+			      GRANT pg_read_all_settings TO ${db_scanner_user};
 			    COMMIT;
 		EOT
 	fi
