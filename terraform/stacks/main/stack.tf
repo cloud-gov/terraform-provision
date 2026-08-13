@@ -395,13 +395,6 @@ module "diego" {
   log_bucket_name = module.log_bucket.elb_bucket_name
 }
 
-module "logsearch" {
-  source = "../../modules/logsearch"
-
-  stack_description = var.stack_description
-  aws_partition     = data.aws_partition.current.partition
-}
-
 module "platform_opensearch" {
   source = "../../modules/platform_opensearch"
 
