@@ -11,9 +11,9 @@ locals {
 
   firewall_managed_rule_groups = [
     for rg in var.firewall_managed_rule_groups : {
-      resource_arn = rg.resource_arn
-      priority     = rg.priority
-      count_only   = var.firewall_rule_groups_count_only || rg.override_action_to_count
+      resource_name = rg.resource_name
+      priority      = rg.priority
+      count_only    = var.firewall_rule_groups_count_only || rg.override_action_to_count
     }
   ]
 }
@@ -25,11 +25,16 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:forward_to_sfe"]
 
+    stateful_engine_options {
+      rule_order = "STRICT_ORDER"
+    }
+
     dynamic "stateful_rule_group_reference" {
       for_each = local.firewall_managed_rule_groups
       content {
-        resource_arn = stateful_rule_group_reference.value.resource_arn
-        priority     = stateful_rule_group_reference.value.priority
+        priority = stateful_rule_group_reference.value.priority
+        #deep_threat_inspection = true
+        resource_arn = "arn:${data.aws_partition.current.partition}:network-firewall:${data.aws_region.current.region}:aws-managed:stateful-rulegroup/${stateful_rule_group_reference.value.resource_name}"
 
         dynamic "override" {
           for_each = stateful_rule_group_reference.value.count_only ? [1] : []

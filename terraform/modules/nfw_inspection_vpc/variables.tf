@@ -50,7 +50,7 @@ variable "public_subnet_cidrs" {
 variable "firewall_managed_rule_groups" {
   description = "List of managed (or custom) stateful rule groups to attach to the firewall policy."
   type = list(object({
-    resource_arn             = string
+    resource_name            = string
     priority                 = number
     override_action_to_count = optional(bool, true)
   }))
