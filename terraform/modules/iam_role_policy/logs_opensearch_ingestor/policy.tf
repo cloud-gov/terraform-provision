@@ -78,26 +78,6 @@ data "aws_iam_policy_document" "logs_opensearch_policy" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:s3:::logsearch-*/*"
-    ]
-  }
-
-  statement {
-    actions = [
-      "s3:ListBucket"
-    ]
-
-    resources = [
-      "arn:${var.aws_partition}:s3:::logsearch-*"
-    ]
-  }
-
-  statement {
-    actions = [
-      "s3:GetObject"
-    ]
-
-    resources = [
       "arn:${var.aws_partition}:s3:::logs-opensearch-*/*"
     ]
   }

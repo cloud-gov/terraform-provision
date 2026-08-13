@@ -170,10 +170,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/iam_role_policy/logsearch_ingestor"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_role_policy/s3_broker"
     schedule:
       interval: "weekly"
@@ -235,10 +231,6 @@ updates:
       interval: "weekly"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/log_bucket_v2"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/logsearch"
     schedule:
       interval: "weekly"
   - package-ecosystem: "terraform"
