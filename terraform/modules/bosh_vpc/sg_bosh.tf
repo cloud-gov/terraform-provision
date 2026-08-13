@@ -195,14 +195,6 @@ resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "concourse_opensearch" {
-  type              = "ingress"
-  from_port         = 9200
-  to_port           = 9200
-  protocol          = "tcp"
-  cidr_blocks       = var.concourse_security_group_cidrs
-  security_group_id = aws_security_group.bosh.id
-}
 
 resource "aws_security_group_rule" "concourse_secureproxy" {
   type              = "ingress"
