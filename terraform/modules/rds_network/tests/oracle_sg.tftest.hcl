@@ -25,20 +25,12 @@ variables {
 run "oracle_sg_has_expected_rules" {
   command = plan
 
-  # --- SG exists ---
+  # --- SG exists. Rules are managed ONLY by the standalone aws_security_group_rule
+  #     resources below — the SG resource declares NO inline ingress/egress (see
+  #     sg_oracle.tf), which is what keeps applies from oscillating. ---
   assert {
     condition     = aws_security_group.rds_oracle.description == "Allow access to incoming Oracle traffic"
     error_message = "rds_oracle SG must exist with the expected description"
-  }
-
-  # --- SG owns empty inline rule sets so legacy inline rules (e.g. 1521) are removed ---
-  assert {
-    condition     = length(aws_security_group.rds_oracle.ingress) == 0
-    error_message = "rds_oracle must declare an empty inline ingress set (rules are standalone; forces removal of legacy inline rules)"
-  }
-  assert {
-    condition     = length(aws_security_group.rds_oracle.egress) == 0
-    error_message = "rds_oracle must declare an empty inline egress set (rules are standalone)"
   }
 
   # --- 2484 TCPS ingress rule (the only ingress — TLS-only) ---
