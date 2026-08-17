@@ -53,18 +53,18 @@ for db in ${DATABASES}; do
 	if [ -n "${db_scanner_user}" ] && [ -n "${db_scanner_pass}" ]; then
 		psql_adm -d "${db}" <<-EOT
 			    BEGIN;
-			          DO \$\$
-			            BEGIN
+			      DO \$\$
+			        BEGIN
 			      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${db_scanner_user}') THEN
 			        CREATE ROLE ${db_scanner_user} WITH LOGIN PASSWORD '${db_scanner_pass}';
 			      ELSE
 			        ALTER ROLE ${db_scanner_user} WITH PASSWORD '${db_scanner_pass}';
 			      END IF;
+			      END \$\$ LANGUAGE plpgsql;
 
 			      GRANT USAGE ON SCHEMA public TO ${db_scanner_user};
 			      GRANT SELECT ON ALL TABLES IN SCHEMA public TO ${db_scanner_user};
 			      GRANT pg_read_all_settings TO ${db_scanner_user};
-			          END \$\$ LANGUAGE plpgsql;
 			            END;
 			    COMMIT;
 		EOT
