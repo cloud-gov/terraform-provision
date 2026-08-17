@@ -65,7 +65,8 @@ for db in ${DATABASES}; do
 			      GRANT USAGE ON SCHEMA public TO ${db_scanner_user};
 			      GRANT SELECT ON ALL TABLES IN SCHEMA public TO ${db_scanner_user};
 			      GRANT pg_read_all_settings TO ${db_scanner_user};
-			            END;
+			      ALTER DEFAULT PRIVILEGES FOR USER ${db_user} IN SCHEMA public GRANT SELECT ON TABLES TO ${db_scanner_user};
+			      END;
 			    COMMIT;
 		EOT
 	fi
