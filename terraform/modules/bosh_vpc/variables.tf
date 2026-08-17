@@ -70,3 +70,20 @@ variable "cidr_blocks" {
   type    = list(string)
   default = []
 }
+
+variable "egress_traffic_through_inspection_vpc" {
+  type        = bool
+  default     = false
+  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC"
+}
+
+variable "transit_gateway_id" {
+  type        = string
+  default     = ""
+  description = "The id of the transit gateway in the inspection VPC"
+}
+
+variable "tgw_cidr_blocks" {
+  type    = list(string)
+  default = ["10.100.1.0/28", "10.100.1.16/28"]
+}
