@@ -64,7 +64,8 @@ for db in ${DATABASES}; do
 			      GRANT USAGE ON SCHEMA public TO ${db_scanner_user};
 			      GRANT SELECT ON ALL TABLES IN SCHEMA public TO ${db_scanner_user};
 			      GRANT pg_read_all_settings TO ${db_scanner_user};
-			          \$\$ LANGUAGE plpgsql;
+			          END \$\$ LANGUAGE plpgsql;
+			            END;
 			    COMMIT;
 		EOT
 	fi
