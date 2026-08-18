@@ -32,7 +32,7 @@ jobs:
           TF_VAR_public_subnet_cidrs: ["10.100.2.0/28", "10.100.2.16/28"]
           TF_VAR_firewall_managed_rule_groups: |
             [{
-              resource_arn             = "arn:aws:network-firewall:us-gov-west-1:aws-managed:stateful-rulegroup/AttackInfrastructureStrictOrder"
+              resource_name            = "AttackInfrastructureStrictOrder"
               priority                 = 1
               override_action_to_count = true
             }]

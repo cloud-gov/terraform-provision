@@ -57,19 +57,24 @@ resource "aws_route_table_association" "az2_private_rta" {
   route_table_id = aws_route_table.az2_private_route_table.id
 }
 
+# No network firewall
 resource "aws_route" "az1_nat_service_route" {
+  count                  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   route_table_id         = aws_route_table.az1_private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.az1_private_nat_service.id
 }
 
 resource "aws_route" "az2_nat_service_route" {
+  count                  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   route_table_id         = aws_route_table.az2_private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.az2_private_nat_service.id
 }
 
+
 resource "aws_eip" "az1_nat_eip" {
+  count  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   domain = "vpc"
   lifecycle {
     prevent_destroy = true
@@ -77,6 +82,7 @@ resource "aws_eip" "az1_nat_eip" {
 }
 
 resource "aws_eip" "az2_nat_eip" {
+  count  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   domain = "vpc"
   lifecycle {
     prevent_destroy = true
@@ -84,6 +90,7 @@ resource "aws_eip" "az2_nat_eip" {
 }
 
 resource "aws_nat_gateway" "az1_private_nat_service" {
+  count         = var.egress_traffic_through_inspection_vpc ? 0 : 1
   allocation_id = aws_eip.az1_nat_eip.id
   subnet_id     = aws_subnet.az1_public.id
 
@@ -93,10 +100,30 @@ resource "aws_nat_gateway" "az1_private_nat_service" {
 }
 
 resource "aws_nat_gateway" "az2_private_nat_service" {
+  count         = var.egress_traffic_through_inspection_vpc ? 0 : 1
   allocation_id = aws_eip.az2_nat_eip.id
   subnet_id     = aws_subnet.az2_public.id
 
   tags = {
     Name = "Nat Service AZ2 ${var.stack_description}"
   }
+}
+
+# Egress through NFW inspection VPC
+resource "aws_route" "private_network_egress_through_nfw_inspection_vpc_za1" {
+  count                  = var.egress_traffic_through_inspection_vpc ? 1 : 0
+  route_table_id         = aws_route_table.az1_private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_id
+
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.main_vpc]
+}
+
+resource "aws_route" "private_network_egress_through_nfw_inspection_vpc_za2" {
+  count                  = var.egress_traffic_through_inspection_vpc ? 1 : 0
+  route_table_id         = aws_route_table.az2_private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_id
+
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.main_vpc]
 }
