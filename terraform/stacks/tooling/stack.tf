@@ -120,7 +120,7 @@ module "stack" {
   rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
-
+  remote_state_bucket                       = var.remote_state_bucket
 }
 
 module "concourse_production" {

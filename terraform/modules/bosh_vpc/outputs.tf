@@ -50,7 +50,7 @@ output "public_cidr_az2" {
 }
 
 output "public_route_table" {
-  value = aws_route_table.public_network.id
+  value = var.egress_traffic_through_inspection_vpc ? aws_route_table.public_network_with_nfw_inspection_vpc[0].id : aws_route_table.public_network[0].id
 }
 
 output "nat_egress_ip_az1" {

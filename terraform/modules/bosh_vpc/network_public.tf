@@ -73,13 +73,13 @@ resource "aws_route_table" "public_network" {
 resource "aws_route_table_association" "az1_public_rta" {
   count          = var.egress_traffic_through_inspection_vpc ? 0 : 1
   subnet_id      = aws_subnet.az1_public.id
-  route_table_id = aws_route_table.public_network.id
+  route_table_id = aws_route_table.public_network[0].id
 }
 
 resource "aws_route_table_association" "az2_public_rta" {
   count          = var.egress_traffic_through_inspection_vpc ? 0 : 1
   subnet_id      = aws_subnet.az2_public.id
-  route_table_id = aws_route_table.public_network.id
+  route_table_id = aws_route_table.public_network[0].id
 }
 
 # Create when nfw inspection vpc is in use
@@ -94,7 +94,7 @@ resource "aws_route_table" "public_network_with_nfw_inspection_vpc" {
 
 resource "aws_route" "public_network_egress_through_nfw_inspection_vpc" {
   count                  = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  route_table_id         = aws_route_table.public_network_with_nfw_inspection_vpc.id
+  route_table_id         = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
   destination_cidr_block = "0.0.0.0/0"
   transit_gateway_id     = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_id
 
@@ -104,11 +104,11 @@ resource "aws_route" "public_network_egress_through_nfw_inspection_vpc" {
 resource "aws_route_table_association" "public_network_with_nfw_inspection_vpc_az1" {
   count          = var.egress_traffic_through_inspection_vpc ? 1 : 0
   subnet_id      = aws_subnet.az1_public.id
-  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc.id
+  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
 }
 
 resource "aws_route_table_association" "public_network_with_nfw_inspection_vpc_az2" {
   count          = var.egress_traffic_through_inspection_vpc ? 1 : 0
   subnet_id      = aws_subnet.az2_public.id
-  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc.id
+  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
 }

@@ -62,14 +62,14 @@ resource "aws_route" "az1_nat_service_route" {
   count                  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   route_table_id         = aws_route_table.az1_private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.az1_private_nat_service.id
+  nat_gateway_id         = aws_nat_gateway.az1_private_nat_service[0].id
 }
 
 resource "aws_route" "az2_nat_service_route" {
   count                  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   route_table_id         = aws_route_table.az2_private_route_table.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.az2_private_nat_service.id
+  nat_gateway_id         = aws_nat_gateway.az2_private_nat_service[0].id
 }
 
 
@@ -91,7 +91,7 @@ resource "aws_eip" "az2_nat_eip" {
 
 resource "aws_nat_gateway" "az1_private_nat_service" {
   count         = var.egress_traffic_through_inspection_vpc ? 0 : 1
-  allocation_id = aws_eip.az1_nat_eip.id
+  allocation_id = aws_eip.az1_nat_eip[count.index].id
   subnet_id     = aws_subnet.az1_public.id
 
   tags = {
@@ -101,7 +101,7 @@ resource "aws_nat_gateway" "az1_private_nat_service" {
 
 resource "aws_nat_gateway" "az2_private_nat_service" {
   count         = var.egress_traffic_through_inspection_vpc ? 0 : 1
-  allocation_id = aws_eip.az2_nat_eip.id
+  allocation_id = aws_eip.az2_nat_eip[count.index].id
   subnet_id     = aws_subnet.az2_public.id
 
   tags = {

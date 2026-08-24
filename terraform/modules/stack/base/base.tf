@@ -18,6 +18,7 @@ module "vpc" {
   bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
   s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
   cidr_blocks                       = var.cidr_blocks
+  remote_state_bucket               = var.remote_state_bucket
 }
 
 module "rds_network" {
@@ -81,8 +82,3 @@ module "credhub_rds" {
   rds_shared_preload_libraries    = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values          = var.rds_pgaudit_log_values_bosh_credhub
 }
-
-
-
-
-

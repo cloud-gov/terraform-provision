@@ -27,7 +27,7 @@ resource "aws_subnet" "tgw" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "main_vpc" {
   count                                           = var.egress_traffic_through_inspection_vpc ? 1 : 0
   subnet_ids                                      = aws_subnet.tgw[*].id
-  transit_gateway_id                              = data.aws_ec2_transit_gateway.tgw.id
+  transit_gateway_id                              = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_id
   vpc_id                                          = aws_vpc.main_vpc.id
   transit_gateway_default_route_table_association = false
   transit_gateway_default_route_table_propagation = false
@@ -49,15 +49,15 @@ resource "aws_ec2_transit_gateway_route_table" "main_vpc" {
 # Associate the main_vpc attachment with the main_vpc tgw route table.
 resource "aws_ec2_transit_gateway_route_table_association" "main_vpc" {
   count                          = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main_vpc.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main_vpc.id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main_vpc[0].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main_vpc[0].id
 }
 
 # Propagate main_vpc CIDRs into the inspection route table so the inspection VPC
 # (post-firewall) knows how to route back to the main_vpc.
 resource "aws_ec2_transit_gateway_route_table_propagation" "main_vpc_to_inspection" {
   count                          = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main_vpc.id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main_vpc[0].id
   transit_gateway_route_table_id = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_route_table_id
 }
 
@@ -72,5 +72,5 @@ resource "aws_ec2_transit_gateway_route" "main_vpc_egress_to_inspection" {
   count                          = var.egress_traffic_through_inspection_vpc ? 1 : 0
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main_vpc.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main_vpc[0].id
 }

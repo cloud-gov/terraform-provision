@@ -87,3 +87,9 @@ variable "tgw_cidr_blocks" {
   type    = list(string)
   default = ["10.100.1.0/28", "10.100.1.16/28"]
 }
+
+variable "remote_state_bucket" {
+  type        = string
+  description = "The remote terraform state bucket name used to fetch the state of the nfw_inspection_vpc module."
+  default     = ""
+}

@@ -220,3 +220,7 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   type        = string
   default     = "none"
 }
+
+variable "remote_state_bucket" {
+  type = string
+}
