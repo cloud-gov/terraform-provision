@@ -38,7 +38,7 @@ output "nat_gateway_ids" {
   value       = aws_nat_gateway.ngw[*].id
 }
 
-output "transit_gateway_route_table_id" {
-  description = "The id of the TGW route table"
-  value       = aws_route_table.tgw.id
+output "ec2_transit_gateway_route_table_id" {
+  description = "The id of the ec2 TGW route table"
+  value       = aws_ec2_transit_gateway_route_table.tgw.id
 }

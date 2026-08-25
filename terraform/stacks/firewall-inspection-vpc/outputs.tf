@@ -13,7 +13,7 @@ output "tgw_route_table_inspection_id" {
   value       = module.nfw_inspection_vpc.tgw_route_table_inspection_id
 }
 
-output "transit_gateway_route_table_id" {
-  description = "The id of the TGW route table"
-  value       = module.nfw_inspection_vpc.transit_gateway_route_table_id
+output "ec2_transit_gateway_route_table_id" {
+  description = "The id of the ec2 TGW route table"
+  value       = module.nfw_inspection_vpc.ec2_transit_gateway_route_table_id
 }
