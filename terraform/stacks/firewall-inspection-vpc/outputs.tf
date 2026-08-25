@@ -12,3 +12,8 @@ output "tgw_route_table_inspection_id" {
   description = "TGW route table ID for the inspection VPC."
   value       = module.nfw_inspection_vpc.tgw_route_table_inspection_id
 }
+
+output "transit_gateway_route_table_id" {
+  description = "The id of the TGW route table"
+  value       = module.nfw_inspection_vpc.transit_gateway_route_table_id
+}

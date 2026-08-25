@@ -37,3 +37,8 @@ output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."
   value       = aws_nat_gateway.ngw[*].id
 }
+
+output "transit_gateway_route_table_id" {
+  description = "The id of the TGW route table"
+  value       = aws_route_table.tgw.id
+}
