@@ -114,10 +114,6 @@ variable "shibboleth_hosts" {
   type = list(string)
 }
 
-variable "platform_kibana_hosts" {
-  type = list(string)
-}
-
 variable "platform_opensearch_hosts" {
   type = list(string)
 }

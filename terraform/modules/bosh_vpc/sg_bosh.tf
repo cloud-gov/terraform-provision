@@ -154,19 +154,33 @@ resource "aws_security_group_rule" "node_exporter" {
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "platform_kibana" {
+resource "aws_security_group_rule" "platform_opensearch" {
   type              = "ingress"
-  from_port         = 5600
-  to_port           = 5600
+  from_port         = 5605
+  to_port           = 5605
   protocol          = "tcp"
   cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "platform_opensearch" {
+# OpenSearch logstash ingestor: UDP syslog intake (behind the platform syslog UDP NLB).
+resource "aws_security_group_rule" "platform_syslog_udp" {
   type              = "ingress"
-  from_port         = 5605
-  to_port           = 5605
+  from_port         = 5431
+  to_port           = 5431
+  protocol          = "udp"
+  cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
+  security_group_id = aws_security_group.bosh.id
+}
+
+# NLB UDP target groups must use a TCP health check. The ingestor's plain syslog
+# input on 5431 is UDP-only, so the health check targets the ingestor's
+# syslog_tls TCP listener on 6972. Allow TCP 6972 from the VPC so the NLB health
+# check can connect.
+resource "aws_security_group_rule" "platform_syslog_udp_healthcheck" {
+  type              = "ingress"
+  from_port         = 6972
+  to_port           = 6972
   protocol          = "tcp"
   cidr_blocks       = [aws_vpc.main_vpc.cidr_block]
   security_group_id = aws_security_group.bosh.id
@@ -181,14 +195,6 @@ resource "aws_security_group_rule" "monitoring_elasticsearch_exporter" {
   security_group_id = aws_security_group.bosh.id
 }
 
-resource "aws_security_group_rule" "concourse_logsearch" {
-  type              = "ingress"
-  from_port         = 9200
-  to_port           = 9200
-  protocol          = "tcp"
-  cidr_blocks       = var.concourse_security_group_cidrs
-  security_group_id = aws_security_group.bosh.id
-}
 
 resource "aws_security_group_rule" "concourse_secureproxy" {
   type              = "ingress"

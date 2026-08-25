@@ -507,43 +507,10 @@ output "diego_elb_dns_name" {
   value = module.diego.diego_elb_dns_name
 }
 
-/* Logsearch network */
-
-output "platform_syslog_elb_name" {
-  value = module.logsearch.platform_syslog_elb_name
-}
-
-output "platform_syslog_elb_dns_name" {
-  value = module.logsearch.platform_syslog_elb_dns_name
-}
-
-output "platform_kibana_lb_target_group" {
-  value = module.logsearch.platform_kibana_lb_target_group
-}
+/* Platform OpenSearch network */
 
 output "platform_opensearch_lb_target_group" {
   value = module.platform_opensearch.platform_opensearch_lb_target_group
-}
-
-output "platform_logs_bucket_access_key_id_prev" {
-  value = module.logsearch.platform_logs_bucket_access_key_id_prev
-}
-
-output "platform_logs_bucket_secret_access_key_prev" {
-  value     = module.logsearch.platform_logs_bucket_secret_access_key_prev
-  sensitive = true
-}
-
-output "platform_logs_bucket_access_key_id_curr" {
-  value = module.logsearch.platform_logs_bucket_access_key_id_curr
-}
-
-output "platform_logs_bucket_secret_access_key_curr" {
-  value     = module.logsearch.platform_logs_bucket_secret_access_key_curr
-  sensitive = true
-}
-output "platform_logs_bucket_name" {
-  value = module.logsearch.platform_logs_bucket_name
 }
 
 output "platform_syslog_udp_nlb_name" {
@@ -574,10 +541,6 @@ output "bosh_profile" {
 
 output "bosh_compilation_profile" {
   value = module.bosh_compilation_role.profile_name
-}
-
-output "logsearch_ingestor_profile" {
-  value = module.logsearch_ingestor_role.profile_name
 }
 
 output "logs_opensearch_ingestor_profile" {

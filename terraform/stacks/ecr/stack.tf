@@ -49,6 +49,34 @@ resource "aws_ecr_lifecycle_policy" "ecr_repository_lifecycle_policy" {
             "action": {
                 "type": "expire"
             }
+        },
+        {
+            "rulePriority": 2,
+            "description": "Archive images not pulled in 2 weeks",
+            "selection": {
+                "tagStatus": "any",
+                "countType": "sinceImagePulled",
+                "countUnit": "days",
+                "countNumber": 14
+            },
+            "action": {
+                "type": "transition",
+                "targetStorageClass": "archive"
+            }
+        },
+        {
+            "rulePriority": 3,
+            "description": "Expire images archived for 90 days",
+            "selection": {
+                "tagStatus": "any",
+                "storageClass": "archive",
+                "countType": "sinceImageTransitioned",
+                "countUnit": "days",
+                "countNumber": 90
+            },
+            "action": {
+                "type": "expire"
+            }
         }
     ]
   }
