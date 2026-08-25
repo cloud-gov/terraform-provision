@@ -43,7 +43,7 @@ output "ec2_transit_gateway_route_table_id" {
   value       = aws_ec2_transit_gateway_route_table.tgw.id
 }
 
-output "ec2_transit_gateway_attachment_id" {
-  description = "The id of the ec2 tgw attachment to the ec2_transit_gateway_route_table"
+output "ec2_transit_gateway_vpc_attachment_id" {
+  description = "The id of the ec2 tgw attachment to the inspection vpc"
   value       = aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment.id
 }
