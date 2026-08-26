@@ -28,7 +28,7 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/es-log-ingestion/lambda_functions/transform_cloudwatch_lambda.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.1.1/lambda_functions/transform_cloudwatch_lambda.py"
 }
 
 data "archive_file" "lambda_zip" {
@@ -68,7 +68,7 @@ resource "aws_lambda_function" "cloudwatch_filter" {
 }
 
 data "http" "cloudwatch_lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/es-log-ingestion/lambda_functions/add_cloudwatch_subscrition.py"
+  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.1.1/lambda_functions/add_cloudwatch_subscrition.py"
 }
 
 data "archive_file" "cloudwatch_lambda_zip" {
