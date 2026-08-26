@@ -30,6 +30,7 @@ module "rds_network" {
   allowed_cidrs         = var.target_concourse_security_group_cidrs
   security_groups       = var.rds_security_groups
   security_groups_count = var.rds_security_groups_count
+  oracle_rules_enabled  = var.oracle_rules_enabled
   rds_private_cidr_1    = var.rds_private_cidr_1
   rds_private_cidr_2    = var.rds_private_cidr_2
   rds_private_cidr_3    = var.rds_private_cidr_3

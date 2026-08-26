@@ -59,3 +59,28 @@ run "oracle_sg_has_expected_rules" {
     error_message = "expected exactly one ingress + one egress rule per source SG for count=1"
   }
 }
+
+# Regression: the tooling stack has no Oracle RDS, so it passes
+# oracle_rules_enabled = false and must get NO Oracle SG rules — while the SG
+# itself still exists, because its id is an output consumed downstream
+# (rds_oracle_security_group → aws-broker manifest).
+run "oracle_rules_disabled_creates_no_rules" {
+  command = plan
+
+  variables {
+    oracle_rules_enabled = false
+  }
+
+  assert {
+    condition     = length(aws_security_group_rule.oracle_egress_default) == 0
+    error_message = "oracle_rules_enabled = false must create no egress rule (tooling must be excluded)"
+  }
+  assert {
+    condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 0
+    error_message = "oracle_rules_enabled = false must create no 2484 ingress rule"
+  }
+  assert {
+    condition     = aws_security_group.rds_oracle.vpc_id == "vpc-test"
+    error_message = "the Oracle SG itself must still be created so rds_oracle_security_group stays resolvable"
+  }
+}

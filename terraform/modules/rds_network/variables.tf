@@ -40,3 +40,13 @@ variable "security_groups_count" {
 variable "allowed_cidrs" {
   type = list(string)
 }
+
+variable "oracle_rules_enabled" {
+  description = <<-EOT
+    The Oracle SG itself is always created (its id is an output consumed
+    by the aws-broker manifest), but add the rules only in
+    development, staging and production, set to false in tooling.
+  EOT
+  type        = bool
+  default     = true
+}
