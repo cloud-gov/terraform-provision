@@ -58,7 +58,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "main_vpc" {
 resource "aws_ec2_transit_gateway_route_table_propagation" "main_vpc_to_inspection" {
   count                          = var.egress_traffic_through_inspection_vpc ? 1 : 0
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main_vpc[0].id
-  transit_gateway_route_table_id = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_route_table_id
+  transit_gateway_route_table_id = data.terraform_remote_state.firewall-inspection-vpc.outputs.ec2_transit_gateway_route_table_id
 }
 
 
@@ -71,6 +71,6 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "main_vpc_to_inspecti
 resource "aws_ec2_transit_gateway_route" "main_vpc_egress_to_inspection" {
   count                          = var.egress_traffic_through_inspection_vpc ? 1 : 0
   destination_cidr_block         = "0.0.0.0/0"
-  transit_gateway_attachment_id  = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_attachment_id
+  transit_gateway_attachment_id  = data.terraform_remote_state.firewall-inspection-vpc.outputs.ec2_transit_gateway_vpc_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.main_vpc[0].id
 }
