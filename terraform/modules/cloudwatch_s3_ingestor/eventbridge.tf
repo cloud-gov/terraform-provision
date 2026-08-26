@@ -27,10 +27,47 @@ resource "aws_cloudwatch_event_target" "rds_log_group_target" {
   target_id = resource.aws_lambda_function.cloudwatch_filter[each.key].id
 }
 
+resource "aws_cloudwatch_event_rule" "opensearch_log_group_creation_broker" {
+  for_each    = toset(var.environments)
+  name        = "opensearch-log-group-creation-broker-${each.key}"
+  description = "Triggers when a CloudWatch Log Group is created with an /aws/OpenSearchService/domains/cg-broker-<environment> prefix in the name."
+  event_pattern = jsonencode({
+    "source"      = ["aws.logs"],
+    "detail-type" = ["AWS API Call via CloudTrail"],
+    "detail" = {
+      "eventSource" = ["logs.amazonaws.com"],
+      "eventName"   = ["CreateLogGroup"],
+      "requestParameters" = {
+        "logGroupName" = [
+          {
+            prefix = "/aws/OpenSearchService/domains/cg-broker-${local.opensearch_prefixes[each.key]}-"
+          }
+        ]
+      }
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "opensearch_log_group_target" {
+  for_each  = toset(var.environments)
+  rule      = aws_cloudwatch_event_rule.opensearch_log_group_creation_broker[each.key].name
+  role_arn  = aws_iam_role.eventbridge_lambda_role[each.key].arn
+  arn       = resource.aws_lambda_function.cloudwatch_filter[each.key].arn
+  target_id = resource.aws_lambda_function.cloudwatch_filter[each.key].id
+}
+
 locals {
+  # RDS instance prefixes
   prefixes = {
     "production" : "prod",
     "staging" : "stage",
+    "development" : "dev"
+  }
+
+  # Opensearch instance prefixes
+  opensearch_prefixes = {
+    "production" : "prd",
+    "staging" : "stg",
     "development" : "dev"
   }
 }
