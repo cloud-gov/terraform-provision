@@ -121,6 +121,7 @@ module "stack" {
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
   remote_state_bucket                       = var.remote_state_bucket
+  egress_traffic_through_inspection_vpc     = var.egress_traffic_through_inspection_vpc
 }
 
 module "concourse_production" {

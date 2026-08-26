@@ -1,24 +1,25 @@
 module "vpc" {
   source = "../../bosh_vpc"
 
-  stack_description                 = var.stack_description
-  vpc_cidr                          = var.vpc_cidr
-  az1                               = var.az1
-  az2                               = var.az2
-  aws_default_region                = var.aws_default_region
-  private_cidr_1                    = var.private_cidr_1
-  private_cidr_2                    = var.private_cidr_2
-  public_cidr_1                     = var.public_cidr_1
-  public_cidr_2                     = var.public_cidr_2
-  restricted_ingress_web_cidrs      = var.restricted_ingress_web_cidrs
-  restricted_ingress_web_ipv6_cidrs = var.restricted_ingress_web_ipv6_cidrs
-  nat_gateway_instance_type         = var.nat_gateway_instance_type
-  monitoring_security_group_cidrs   = var.target_monitoring_security_group_cidrs
-  concourse_security_group_cidrs    = var.target_concourse_security_group_cidrs
-  bosh_default_ssh_public_key       = var.bosh_default_ssh_public_key
-  s3_gateway_policy_accounts        = var.s3_gateway_policy_accounts
-  cidr_blocks                       = var.cidr_blocks
-  remote_state_bucket               = var.remote_state_bucket
+  stack_description                     = var.stack_description
+  vpc_cidr                              = var.vpc_cidr
+  az1                                   = var.az1
+  az2                                   = var.az2
+  aws_default_region                    = var.aws_default_region
+  private_cidr_1                        = var.private_cidr_1
+  private_cidr_2                        = var.private_cidr_2
+  public_cidr_1                         = var.public_cidr_1
+  public_cidr_2                         = var.public_cidr_2
+  restricted_ingress_web_cidrs          = var.restricted_ingress_web_cidrs
+  restricted_ingress_web_ipv6_cidrs     = var.restricted_ingress_web_ipv6_cidrs
+  nat_gateway_instance_type             = var.nat_gateway_instance_type
+  monitoring_security_group_cidrs       = var.target_monitoring_security_group_cidrs
+  concourse_security_group_cidrs        = var.target_concourse_security_group_cidrs
+  bosh_default_ssh_public_key           = var.bosh_default_ssh_public_key
+  s3_gateway_policy_accounts            = var.s3_gateway_policy_accounts
+  cidr_blocks                           = var.cidr_blocks
+  remote_state_bucket                   = var.remote_state_bucket
+  egress_traffic_through_inspection_vpc = var.egress_traffic_through_inspection_vpc
 }
 
 module "rds_network" {

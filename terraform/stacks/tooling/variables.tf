@@ -451,3 +451,9 @@ variable "fips_stemcell_bucket" {
   type    = string
   default = "fips-stemcell"
 }
+
+variable "egress_traffic_through_inspection_vpc" {
+  type        = bool
+  default     = false
+  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC"
+}

@@ -224,3 +224,9 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
 variable "remote_state_bucket" {
   type = string
 }
+
+variable "egress_traffic_through_inspection_vpc" {
+  type        = bool
+  default     = false
+  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC"
+}
