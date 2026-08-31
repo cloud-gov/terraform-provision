@@ -2,15 +2,14 @@
  * Variables required:
  *   stack_description
  *   vpc_id
- *   security_groups        (list of source SG IDs allowed to reach Oracle)
- *   security_groups_count  (length of security_groups)
- *   oracle_rules_enabled   (false in stacks with no Oracle RDS, e.g. tooling)
+ *   security_groups           (list of source SG IDs allowed to reach Oracle)
+ *   security_groups_count     (length of security_groups)
+ *   rds_oracle_rules_enabled  (false in stacks with no Oracle RDS, e.g. tooling)
  */
 
 locals {
-  # Rule count per source SG, gated by oracle_rules_enabled so stacks without an
-  # Oracle RDS (tooling) create no Oracle rules at all.
-  oracle_rules_count = var.oracle_rules_enabled ? tonumber(var.security_groups_count) : 0
+  # Zero rules unless var.rds_oracle_rules_enabled is True (e.g. false in Tooling)
+  oracle_rules_count = var.rds_oracle_rules_enabled ? var.security_groups_count : 0
 }
 
 resource "aws_security_group" "rds_oracle" {

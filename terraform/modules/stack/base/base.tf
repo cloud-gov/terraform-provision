@@ -23,20 +23,20 @@ module "vpc" {
 module "rds_network" {
   source = "../../rds_network"
 
-  stack_description     = var.stack_description
-  az1                   = var.az1
-  az2                   = var.az2
-  vpc_id                = module.vpc.vpc_id
-  allowed_cidrs         = var.target_concourse_security_group_cidrs
-  security_groups       = var.rds_security_groups
-  security_groups_count = var.rds_security_groups_count
-  oracle_rules_enabled  = var.oracle_rules_enabled
-  rds_private_cidr_1    = var.rds_private_cidr_1
-  rds_private_cidr_2    = var.rds_private_cidr_2
-  rds_private_cidr_3    = var.rds_private_cidr_3
-  rds_private_cidr_4    = var.rds_private_cidr_4
-  az1_route_table       = module.vpc.private_route_table_az1
-  az2_route_table       = module.vpc.private_route_table_az2
+  stack_description        = var.stack_description
+  az1                      = var.az1
+  az2                      = var.az2
+  vpc_id                   = module.vpc.vpc_id
+  allowed_cidrs            = var.target_concourse_security_group_cidrs
+  security_groups          = var.rds_security_groups
+  security_groups_count    = var.rds_security_groups_count
+  rds_oracle_rules_enabled = var.rds_oracle_rules_enabled
+  rds_private_cidr_1       = var.rds_private_cidr_1
+  rds_private_cidr_2       = var.rds_private_cidr_2
+  rds_private_cidr_3       = var.rds_private_cidr_3
+  rds_private_cidr_4       = var.rds_private_cidr_4
+  az1_route_table          = module.vpc.private_route_table_az1
+  az2_route_table          = module.vpc.private_route_table_az2
 }
 
 module "rds" {
@@ -82,8 +82,3 @@ module "credhub_rds" {
   rds_shared_preload_libraries    = var.rds_shared_preload_libraries_bosh_credhub
   rds_pgaudit_log_values          = var.rds_pgaudit_log_values_bosh_credhub
 }
-
-
-
-
-

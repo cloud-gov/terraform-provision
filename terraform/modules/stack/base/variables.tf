@@ -119,10 +119,9 @@ variable "rds_security_groups_count" {
   default = "0"
 }
 
-variable "oracle_rules_enabled" {
-  description = "Create the Oracle SG ingress/egress rules. False for stacks with no Oracle RDS (tooling); true for development/staging/production."
-  type        = bool
-  default     = true
+variable "rds_oracle_rules_enabled" {
+  type    = bool
+  default = false
 }
 
 variable "target_monitoring_security_group_cidrs" {
