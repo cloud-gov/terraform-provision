@@ -24,8 +24,7 @@ data "aws_iam_policy_document" "aws_broker_policy" {
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}",
-      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*",
-      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:snapshot:cg-aws-broker-*"
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*"
     ]
   }
 
