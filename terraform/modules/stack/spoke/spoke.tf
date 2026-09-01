@@ -39,6 +39,7 @@ module "base" {
   rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
+  rds_oracle_rules_enabled                  = var.rds_oracle_rules_enabled
 
   rds_security_groups = [
     module.base.bosh_security_group,
