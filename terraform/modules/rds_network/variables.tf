@@ -48,5 +48,5 @@ variable "rds_oracle_rules_enabled" {
     development, staging and production, set to false in tooling.
   EOT
   type        = bool
-  default     = true
+  default     = false
 }
