@@ -26,13 +26,19 @@ variable "rds_db_engine" {
 }
 
 variable "rds_db_engine_version" {
+  description = <<-EOT
+    Per Cloud.gov cybersecurity, all MySQL DBs within our boundary must
+    adhere to STIG standards. Per stighub.com and stigviewer.com, only MySQL 8.0
+    has published standars as of 2026-09-02
+  EOT
   type    = string
-  default = "8.4"
+  default = "8.0"
 }
 
 variable "rds_parameter_group_family" {
+  desc
   type    = string
-  default = "mysql8.4"
+  default = "mysql8.0"
 }
 
 variable "rds_username" {
