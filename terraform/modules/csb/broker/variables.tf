@@ -27,12 +27,12 @@ variable "rds_db_engine" {
 
 variable "rds_db_engine_version" {
   type    = string
-  default = "8.0"
+  default = "8.4"
 }
 
 variable "rds_parameter_group_family" {
   type    = string
-  default = "mysql8.0"
+  default = "mysql8.4"
 }
 
 variable "rds_username" {
