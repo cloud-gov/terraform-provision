@@ -14,12 +14,9 @@ provider "aws" {
 }
 
 module "nfw_inspection_vpc" {
-  source      = "../../modules/nfw_inspection_vpc"
-  name_prefix = "nfw-inspection"
-  tags = {
-    owner  = "Steve"
-    status = "development"
-  }
+  source                          = "../../modules/nfw_inspection_vpc"
+  name_prefix                     = var.name_prefix
+  tags                            = var.tags
   inspection_vpc_cidr             = var.inspection_vpc_cidr
   availability_zones              = var.availability_zones
   firewall_subnet_cidrs           = var.firewall_subnet_cidrs
