@@ -32,12 +32,12 @@ variable "rds_db_engine_version" {
     has published standards as of 2026-09-02
   EOT
   type        = string
-  default     = "8.0"
+  default     = "8.4"
 }
 
 variable "rds_parameter_group_family" {
   type    = string
-  default = "mysql8.0"
+  default = "mysql8.4"
 }
 
 variable "rds_username" {
