@@ -20,17 +20,14 @@ module "nfw_inspection_vpc" {
     owner  = "Steve"
     status = "development"
   }
-  inspection_vpc_cidr   = "10.100.0.0/16"
-  availability_zones    = ["us-gov-west-1a", "us-gov-west-1b"]
-  firewall_subnet_cidrs = ["10.100.0.0/28", "10.100.0.16/28"]
-  tgw_subnet_cidrs      = ["10.100.1.0/28", "10.100.1.16/28"]
-  public_subnet_cidrs   = ["10.100.2.0/28", "10.100.2.16/28"]
-  firewall_managed_rule_groups = [{
-    resource_name            = "AttackInfrastructureStrictOrder"
-    priority                 = 1
-    override_action_to_count = true
-  }]
-  delete_protection  = false
-  logging_enabled    = true
-  log_retention_days = 1
+  inspection_vpc_cidr             = var.inspection_vpc_cidr
+  availability_zones              = var.availability_zones
+  firewall_subnet_cidrs           = var.firewall_subnet_cidrs
+  tgw_subnet_cidrs                = var.tgw_subnet_cidrs
+  public_subnet_cidrs             = var.public_subnet_cidrs
+  firewall_managed_rule_groups    = var.firewall_managed_rule_groups
+  firewall_rule_groups_count_only = var.firewall_rule_groups_count_only
+  delete_protection               = var.delete_protection
+  logging_enabled                 = var.logging_enabled
+  log_retention_days              = var.log_retention_days
 }

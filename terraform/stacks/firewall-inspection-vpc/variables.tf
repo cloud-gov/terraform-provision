@@ -25,6 +25,8 @@ variable "availability_zones" {
     condition     = length(var.availability_zones) == 2
     error_message = "This module is designed for exactly two AZs."
   }
+
+  default = ["us-gov-west-1a", "us-gov-west-1b"]
 }
 
 variable "firewall_subnet_cidrs" {
@@ -54,7 +56,11 @@ variable "firewall_managed_rule_groups" {
     priority                 = number
     override_action_to_count = optional(bool, true)
   }))
-  default = []
+  default = [{
+    resource_name            = "AttackInfrastructureStrictOrder"
+    priority                 = 1
+    override_action_to_count = true
+  }]
 }
 
 variable "firewall_rule_groups_count_only" {

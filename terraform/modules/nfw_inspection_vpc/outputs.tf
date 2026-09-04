@@ -38,6 +38,11 @@ output "nat_gateway_ids" {
   value       = aws_nat_gateway.ngw[*].id
 }
 
+output "nat_gateway_eips" {
+  description = "The elastic IPs of the nat gateway in the inspection vpc."
+  value       = aws_eip.ngw
+}
+
 output "ec2_transit_gateway_route_table_id" {
   description = "The id of the ec2 TGW route table"
   value       = aws_ec2_transit_gateway_route_table.tgw.id
