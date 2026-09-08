@@ -78,11 +78,11 @@ variable "rds_final_snapshot_identifier" {
 variable "rds_apply_immediately" {
   # Even though the documentation says these default to "false", `terraform
   # plan` shows otherwise.
-  default = "false"
+  default = "true"
 }
 
 variable "rds_allow_major_version_upgrade" {
-  default = "false"
+  default = "true"
 }
 
 variable "performance_insights_enabled" {
