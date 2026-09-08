@@ -58,9 +58,9 @@ variable "rds_security_groups" {
 }
 
 variable "rds_apply_immediately" {
-  default = "false"
+  default = "true"
 }
 
 variable "rds_allow_major_version_upgrade" {
-  default = "false"
+  default = "true"
 }
