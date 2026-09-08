@@ -1,7 +1,7 @@
 resource "aws_db_option_group" "option_group_mysql" {
   count = var.rds_db_engine == "mysql" ? 1 : 0
   name = var.rds_option_group_name != "" ? var.rds_option_group_name : replace(
-    "${var.stack_description}-${var.rds_db_name}",
+    "${var.stack_description}-${var.rds_db_name}-${var.rds_parameter_group_family}",
     "/[^a-zA-Z-]+/",
     "-",
   )

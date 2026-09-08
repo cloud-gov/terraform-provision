@@ -1,7 +1,7 @@
 resource "aws_db_parameter_group" "parameter_group_postgres" {
   count = var.rds_db_engine == "postgres" ? 1 : 0
   name = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : replace(
-    "${var.stack_description}-${var.rds_db_name}",
+    "${var.stack_description}-${var.rds_db_name}-${var.rds_parameter_group_family}",
     "/[^a-zA-Z-]+/",
     "-",
   )
@@ -38,7 +38,7 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
 resource "aws_db_parameter_group" "parameter_group_mysql" {
   count = var.rds_db_engine == "mysql" ? 1 : 0
   name = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : replace(
-    "${var.stack_description}-${var.rds_db_name}",
+    "${var.stack_description}-${var.rds_db_name}-${var.rds_parameter_group_family}",
     "/[^a-zA-Z-]+/",
     "-",
   )
@@ -85,7 +85,7 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = 1
   }
 
-  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880}, 
+  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880},
   # but can be as low a 80% of that value, so we use a denominator 33% higher,
   # 16777173, to provide enough headroom for some connections to remain free
   parameter {
