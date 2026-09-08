@@ -755,8 +755,8 @@ jobs:
           TF_VAR_rds_password: ((development_rds_password))
           TF_VAR_rds_db_size: ((development_rds_db_size))
           # Enable for database upgrades:
-          #TF_VAR_rds_apply_immediately: "true"
-          #TF_VAR_rds_allow_major_version_upgrade: "true"
+          TF_VAR_rds_apply_immediately: "true"
+          TF_VAR_rds_allow_major_version_upgrade: "true"
           TF_VAR_rds_multi_az: "false"
           TF_VAR_remote_state_bucket: ((aws_s3_tfstate_bucket))
           TF_VAR_vpc_cidr: ((development_vpc_cidr))
