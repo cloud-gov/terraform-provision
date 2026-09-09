@@ -1,17 +1,9 @@
 locals {
-  # Derive a name that is valid for both aws_db_parameter_group and
-  # aws_db_option_group. AWS requires: 1-255 characters, begins with a letter,
-  # contains only letters, digits and hyphens, no two consecutive hyphens, and
-  # must not end with a hyphen.
-  #
-  # The parameter group family is part of the name so that a major/minor engine
-  # upgrade (for example mysql8.0 -> mysql8.4) produces a distinct group rather
-  # than trying to mutate the family of an existing one, which AWS forbids.
-  #
-  # Digits MUST be preserved here. An earlier version of this expression used
-  # "/[^a-zA-Z-]+/", which stripped the digits out of the family and so both
-  # produced a trailing hyphen ("...-mysql-") and collapsed mysql8.0 and
-  # mysql8.4 to the same name.
+  # Parameter/option group name: lowercase letters, digits and single hyphens,
+  # no trailing hyphen. The family is included so an engine upgrade yields a
+  # distinct group, since AWS will not let an existing group change family.
+  # Keep the digits: "/[^a-zA-Z-]+/" dropped them, which both left a trailing
+  # hyphen and collapsed mysql8.0 and mysql8.4 to one name.
   rds_group_name = trim(
     lower(
       replace(
