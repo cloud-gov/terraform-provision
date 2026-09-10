@@ -1,6 +1,7 @@
 resource "aws_lb" "platform_syslog_udp_nlb" {
   name               = "${var.stack_description}-plat-syslog-udp"
   load_balancer_type = "network"
+  security_groups    = [var.bosh_security_group]
   subnets            = var.private_elb_subnets
   internal           = true
 
