@@ -168,17 +168,6 @@ resource "aws_route53_record" "cloud_gov_doomsday_fr_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_nessus_fr_cloud_gov_cname" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "nessus.fr.cloud.gov."
-  type    = "CNAME"
-  ttl     = 300
-
-  records = [
-    "dualstack.${data.terraform_remote_state.tooling.outputs.main_lb_dns_name}",
-  ]
-}
-
 resource "aws_route53_record" "cloud_gov_ops_uaa_fr_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
   name    = "opsuaa.fr.cloud.gov."
