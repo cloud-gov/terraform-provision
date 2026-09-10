@@ -1,10 +1,6 @@
 resource "aws_db_parameter_group" "parameter_group_postgres" {
   count = var.rds_db_engine == "postgres" ? 1 : 0
-  name = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : replace(
-    "${var.stack_description}-${var.rds_db_name}",
-    "/[^a-zA-Z-]+/",
-    "-",
-  )
+  name  = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : local.rds_group_name
 
   family = var.rds_parameter_group_family
 
@@ -33,15 +29,19 @@ resource "aws_db_parameter_group" "parameter_group_postgres" {
     value        = 1
     apply_method = "pending-reboot"
   }
+
+  # An engine upgrade changes both the family and the name, which forces
+  # replacement. Create the new group before destroying the old one so the DB
+  # instance always has a group to point at; AWS refuses to delete a group that
+  # is still in use.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_parameter_group" "parameter_group_mysql" {
   count = var.rds_db_engine == "mysql" ? 1 : 0
-  name = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : replace(
-    "${var.stack_description}-${var.rds_db_name}",
-    "/[^a-zA-Z-]+/",
-    "-",
-  )
+  name  = var.rds_parameter_group_name != "" ? var.rds_parameter_group_name : local.rds_group_name
 
   family = var.rds_parameter_group_family
   parameter {
@@ -85,12 +85,20 @@ resource "aws_db_parameter_group" "parameter_group_mysql" {
     value = 1
   }
 
-  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880}, 
+  # The AWS max_connections value is nominally, {DBInstanceClassMemory/12582880},
   # but can be as low a 80% of that value, so we use a denominator 33% higher,
   # 16777173, to provide enough headroom for some connections to remain free
   parameter {
     name         = "max_user_connections"
     value        = "{DBInstanceClassMemory/16777173}"
     apply_method = "pending-reboot"
+  }
+
+  # An engine upgrade changes both the family and the name, which forces
+  # replacement. Create the new group before destroying the old one so the DB
+  # instance always has a group to point at; AWS refuses to delete a group that
+  # is still in use.
+  lifecycle {
+    create_before_destroy = true
   }
 }
