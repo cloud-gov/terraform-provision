@@ -3,16 +3,29 @@ data "aws_iam_policy_document" "aws_broker_policy" {
     actions = [
       "rds:CreateDBInstance",
       "rds:ModifyDBInstance",
-      "rds:AddTagsToResource",
-      "rds:ListTagsForResource",
-      "rds:RemoveTagsFromResource",
       "rds:CreateDBInstanceReadReplica"
     ]
 
     resources = [
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
       "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:cg-aws-broker-*",
-      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}"
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}",
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "rds:AddTagsToResource",
+      "rds:ListTagsForResource",
+      "rds:RemoveTagsFromResource",
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:db:cg-aws-broker-*",
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:og:cg-aws-broker-*",
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:subgrp:${var.rds_subgroup}",
+      "arn:${var.aws_partition}:rds:${var.aws_default_region}:${var.account_id}:pg:cg-aws-broker-*"
     ]
   }
 

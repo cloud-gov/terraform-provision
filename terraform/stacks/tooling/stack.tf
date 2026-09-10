@@ -106,6 +106,7 @@ module "stack" {
   rds_multi_az                              = var.rds_multi_az
   rds_security_groups                       = [module.stack.bosh_security_group]
   rds_security_groups_count                 = "1"
+  rds_oracle_rules_enabled                  = false # tooling hosts no Oracle RDS
   rds_db_engine_version                     = var.rds_db_engine_version_bosh
   rds_parameter_group_family                = var.rds_parameter_group_family_bosh
   rds_allow_major_version_upgrade           = var.rds_allow_major_version_upgrade

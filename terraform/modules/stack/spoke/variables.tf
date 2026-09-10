@@ -1,6 +1,11 @@
 variable "stack_description" {
 }
 
+variable "rds_oracle_rules_enabled" {
+  type    = bool
+  default = false
+}
+
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
@@ -219,4 +224,3 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   type        = string
   default     = "none"
 }
-

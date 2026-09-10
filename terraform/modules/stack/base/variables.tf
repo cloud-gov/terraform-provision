@@ -119,6 +119,11 @@ variable "rds_security_groups_count" {
   default = "0"
 }
 
+variable "rds_oracle_rules_enabled" {
+  type    = bool
+  default = false
+}
+
 variable "target_monitoring_security_group_cidrs" {
   type    = list(string)
   default = []

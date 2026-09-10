@@ -25,20 +25,12 @@ variables {
 run "oracle_sg_has_expected_rules" {
   command = plan
 
-  # --- SG exists ---
+  # --- SG exists. Rules are managed ONLY by the standalone aws_security_group_rule
+  #     resources below — the SG resource declares NO inline ingress/egress (see
+  #     sg_oracle.tf), which is what keeps applies from oscillating. ---
   assert {
     condition     = aws_security_group.rds_oracle.description == "Allow access to incoming Oracle traffic"
     error_message = "rds_oracle SG must exist with the expected description"
-  }
-
-  # --- SG owns empty inline rule sets so legacy inline rules (e.g. 1521) are removed ---
-  assert {
-    condition     = length(aws_security_group.rds_oracle.ingress) == 0
-    error_message = "rds_oracle must declare an empty inline ingress set (rules are standalone; forces removal of legacy inline rules)"
-  }
-  assert {
-    condition     = length(aws_security_group.rds_oracle.egress) == 0
-    error_message = "rds_oracle must declare an empty inline egress set (rules are standalone)"
   }
 
   # --- 2484 TCPS ingress rule (the only ingress — TLS-only) ---
@@ -65,5 +57,51 @@ run "oracle_sg_has_expected_rules" {
   assert {
     condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 1 && length(aws_security_group_rule.oracle_egress_default) == 1
     error_message = "expected exactly one ingress + one egress rule per source SG for count=1"
+  }
+}
+
+# Regression: the tooling stack has no Oracle RDS, so it passes
+# rds_oracle_rules_enabled = false and must get NO Oracle SG rules — while the SG
+# itself still exists, because its id is an output consumed downstream
+# (rds_oracle_security_group → aws-broker manifest).
+run "oracle_rules_disabled_creates_no_rules" {
+  command = plan
+
+  variables {
+    rds_oracle_rules_enabled = false
+  }
+
+  assert {
+    condition     = length(aws_security_group_rule.oracle_egress_default) == 0
+    error_message = "rds_oracle_rules_enabled = false must create no egress rule (tooling must be excluded)"
+  }
+  assert {
+    condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 0
+    error_message = "rds_oracle_rules_enabled = false must create no 2484 ingress rule"
+  }
+  assert {
+    condition     = aws_security_group.rds_oracle.vpc_id == "vpc-test"
+    error_message = "the Oracle SG itself must still be created so rds_oracle_security_group stays resolvable"
+  }
+}
+
+run "oracle_rules_enabled_creates_rules" {
+  command = plan
+
+  variables {
+    rds_oracle_rules_enabled = true
+  }
+
+  assert {
+    condition     = length(aws_security_group_rule.oracle_egress_default) == 1
+    error_message = "rds_oracle_rules_enabled = false must create no egress rule (tooling must be excluded)"
+  }
+  assert {
+    condition     = length(aws_security_group_rule.oracle_ingress_tcps) == 1
+    error_message = "rds_oracle_rules_enabled = false must create no 2484 ingress rule"
+  }
+  assert {
+    condition     = aws_security_group.rds_oracle.vpc_id == "vpc-test"
+    error_message = "the Oracle SG itself must still be created so rds_oracle_security_group stays resolvable"
   }
 }
