@@ -1,21 +1,9 @@
 locals {
   # One entry per (AZ, internal CIDR) pair.
-  #
-  # internal_cidrs are remote destinations reached through the TGW, so they have
-  # no AZ affinity of their own: every CIDR must be routable from every AZ. The
-  # AZ dimension here comes from the per-AZ route tables, not from the CIDRs.
-  #
-  # az_index selects the count-indexed route table
-  # (aws_route_table.firewall / aws_route_table.public); az selects the AZ-local
-  # firewall endpoint from local.fw_endpoints, which is keyed by AZ name.
   internal_routes = merge([
-    for az_index, az in var.availability_zones : {
+    for az in var.availability_zones : {
       for cidr in var.internal_cidrs :
-      "${az}:${cidr}" => {
-        az_index = az_index
-        az       = az
-        cidr     = cidr
-      }
+      "${az}:${cidr}" => { az = az, cidr = cidr }
     }
   ]...)
 
@@ -103,13 +91,11 @@ resource "aws_route" "firewall_egress" {
 }
 
 resource "aws_route" "firewall_internal" {
-  for_each = local.internal_routes
-
-  route_table_id         = aws_route_table.firewall[each.value.az_index].id
+  for_each               = local.internal_routes
+  route_table_id         = aws_route_table.firewall[each.value.az].id
   destination_cidr_block = each.value.cidr
   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
-
-  depends_on = [aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment]
+  depends_on             = [aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment]
 }
 
 resource "aws_route_table_association" "firewall" {
