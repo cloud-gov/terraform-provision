@@ -1,3 +1,34 @@
+locals {
+  # One entry per (AZ, internal CIDR) pair.
+  #
+  # internal_cidrs are remote destinations reached through the TGW, so they have
+  # no AZ affinity of their own: every CIDR must be routable from every AZ. The
+  # AZ dimension here comes from the per-AZ route tables, not from the CIDRs.
+  #
+  # az_index selects the count-indexed route table
+  # (aws_route_table.firewall / aws_route_table.public); az selects the AZ-local
+  # firewall endpoint from local.fw_endpoints, which is keyed by AZ name.
+  internal_routes = merge([
+    for az_index, az in var.availability_zones : {
+      for cidr in var.internal_cidrs :
+      "${az}:${cidr}" => {
+        az_index = az_index
+        az       = az
+        cidr     = cidr
+      }
+    }
+  ]...)
+
+  # Map subnet CIDRs to a specific AZ for consistency.
+  azs = {
+    for idx, az in var.availability_zones : az => {
+      firewall_cidr = var.firewall_subnet_cidrs[idx]
+      tgw_cidr      = var.tgw_subnet_cidrs[idx]
+      public_cidr   = var.public_subnet_cidrs[idx]
+    }
+  }
+}
+
 resource "aws_vpc" "inspection" {
   cidr_block           = var.inspection_vpc_cidr
   enable_dns_support   = true
@@ -7,28 +38,28 @@ resource "aws_vpc" "inspection" {
 
 # Subnets
 resource "aws_subnet" "firewall" {
-  count             = length(var.availability_zones)
+  for_each          = local.azs
   vpc_id            = aws_vpc.inspection.id
-  cidr_block        = var.firewall_subnet_cidrs[count.index]
-  availability_zone = var.availability_zones[count.index]
-  tags              = merge(var.tags, { Name = "${var.name_prefix}-firewall-${var.availability_zones[count.index]}" })
+  cidr_block        = each.value.firewall_cidr
+  availability_zone = each.key
+  tags              = merge(var.tags, { Name = "${var.name_prefix}-firewall-${each.key}" })
 }
 
 resource "aws_subnet" "tgw" {
-  count             = length(var.availability_zones)
+  for_each          = local.azs
   vpc_id            = aws_vpc.inspection.id
-  cidr_block        = var.tgw_subnet_cidrs[count.index]
-  availability_zone = var.availability_zones[count.index]
-  tags              = merge(var.tags, { Name = "${var.name_prefix}-tgw-${var.availability_zones[count.index]}" })
+  cidr_block        = each.value.tgw_cidr
+  availability_zone = each.key
+  tags              = merge(var.tags, { Name = "${var.name_prefix}-tgw-${each.key}" })
 }
 
 resource "aws_subnet" "public" {
-  count                   = length(var.availability_zones)
+  count                   = local.azs
   vpc_id                  = aws_vpc.inspection.id
-  cidr_block              = var.public_subnet_cidrs[count.index]
-  availability_zone       = var.availability_zones[count.index]
+  cidr_block              = each.value.public_cidr
+  availability_zone       = each.key
   map_public_ip_on_launch = false
-  tags                    = merge(var.tags, { Name = "${var.name_prefix}-public-${var.availability_zones[count.index]}" })
+  tags                    = merge(var.tags, { Name = "${var.name_prefix}-public-${each.key}" })
 }
 
 # internet gateway
@@ -39,102 +70,106 @@ resource "aws_internet_gateway" "igw" {
 
 # nat gateways
 resource "aws_eip" "ngw" {
-  count  = length(var.availability_zones)
-  domain = "vpc"
-  tags   = merge(var.tags, { Name = "${var.name_prefix}-nat-eip-${var.availability_zones[count.index]}" })
+  for_each = local.azs
+  domain   = "vpc"
+  tags     = merge(var.tags, { Name = "${var.name_prefix}-nat-eip-${each.key}" })
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_nat_gateway" "ngw" {
-  count         = length(var.availability_zones)
-  allocation_id = aws_eip.ngw[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
-  tags          = merge(var.tags, { Name = "${var.name_prefix}-nat-${var.availability_zones[count.index]}" })
+  for_each      = local.azs
+  allocation_id = aws_eip.ngw[each.key].id
+  subnet_id     = aws_subnet.public[each.key].id
+  tags          = merge(var.tags, { Name = "${var.name_prefix}-nat-${each.key}" })
   depends_on    = [aws_internet_gateway.igw]
 }
 
-
 # Firewall Route Table
 resource "aws_route_table" "firewall" {
-  count  = length(var.availability_zones)
-  vpc_id = aws_vpc.inspection.id
+  for_each = local.azs
+  vpc_id   = aws_vpc.inspection.id
 
-  tags = merge(var.tags, { Name = "${var.name_prefix}-firewall-rt-${var.availability_zones[count.index]}" })
+  tags = merge(var.tags, { Name = "${var.name_prefix}-firewall-rt-${each.key}" })
 }
 
 # Egress firewall > ngw
 resource "aws_route" "firewall_egress" {
-  count                  = length(var.availability_zones)
-  route_table_id         = aws_route_table.firewall[count.index].id
+  for_each               = local.azs
+  route_table_id         = aws_route_table.firewall[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.ngw[count.index].id
+  nat_gateway_id         = aws_nat_gateway.ngw[each.key].id
 }
 
 resource "aws_route" "firewall_internal" {
-  count                  = length(var.availability_zones)
-  route_table_id         = aws_route_table.firewall[count.index].id
-  destination_cidr_block = "10.0.0.0/8"
+  for_each = local.internal_routes
+
+  route_table_id         = aws_route_table.firewall[each.value.az_index].id
+  destination_cidr_block = each.value.cidr
   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
 
   depends_on = [aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment]
 }
 
 resource "aws_route_table_association" "firewall" {
-  count          = length(var.availability_zones)
-  subnet_id      = aws_subnet.firewall[count.index].id
-  route_table_id = aws_route_table.firewall[count.index].id
+  for_each       = local.azs
+  subnet_id      = aws_subnet.firewall[each.key].id
+  route_table_id = aws_route_table.firewall[each.key].id
 }
 
 # TGW Route Table
 resource "aws_route_table" "tgw" {
-  count  = length(var.availability_zones)
-  vpc_id = aws_vpc.inspection.id
+  for_each = local.azs
+  vpc_id   = aws_vpc.inspection.id
 
-  tags = merge(var.tags, { Name = "${var.name_prefix}-tgw-rt-${var.availability_zones[count.index]}" })
+  tags = merge(var.tags, { Name = "${var.name_prefix}-tgw-rt-${each.key}" })
 }
 
 # Egress TGW > Firewall
 resource "aws_route" "tgw_egress" {
-  count                  = length(var.availability_zones)
-  route_table_id         = aws_route_table.tgw[count.index].id
+  for_each               = local.azs
+  route_table_id         = aws_route_table.tgw[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = local.fw_endpoints[var.availability_zones[count.index]]
+  vpc_endpoint_id        = local.fw_endpoints[each.key]
 
   depends_on = [aws_networkfirewall_firewall.firewall]
 }
 
 resource "aws_route_table_association" "tgw" {
-  count          = length(var.availability_zones)
-  subnet_id      = aws_subnet.tgw[count.index].id
-  route_table_id = aws_route_table.tgw[count.index].id
+  for_each       = local.azs
+  subnet_id      = aws_subnet.tgw[each.key].id
+  route_table_id = aws_route_table.tgw[each.key].id
 }
 
 # Public Subnet Route Table
 resource "aws_route_table" "public" {
-  count  = length(var.availability_zones)
-  vpc_id = aws_vpc.inspection.id
+  for_each = local.azs
+  vpc_id   = aws_vpc.inspection.id
 
-  tags = merge(var.tags, { Name = "${var.name_prefix}-public-rt-${var.availability_zones[count.index]}" })
+  tags = merge(var.tags, { Name = "${var.name_prefix}-public-rt-${each.key}" })
 }
 
 # Egress public subnet > IGW
 resource "aws_route" "public_egress" {
-  count                  = length(var.availability_zones)
-  route_table_id         = aws_route_table.public[count.index].id
+  for_each               = local.azs
+  route_table_id         = aws_route_table.public[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
 
 resource "aws_route" "public_ingress" {
-  count                  = length(var.availability_zones)
-  route_table_id         = aws_route_table.public[count.index].id
-  destination_cidr_block = "10.0.0.0/8"
-  vpc_endpoint_id        = local.fw_endpoints[var.availability_zones[count.index]]
+  for_each = local.internal_routes
+
+  route_table_id         = aws_route_table.public[each.value.az_index].id
+  destination_cidr_block = each.value.cidr
+  vpc_endpoint_id        = local.fw_endpoints[each.value.az]
 
   depends_on = [aws_networkfirewall_firewall.firewall]
 }
 
 resource "aws_route_table_association" "public" {
-  count          = length(var.availability_zones)
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public[count.index].id
+  for_each       = local.azs
+  subnet_id      = aws_subnet.public[each.key].id
+  route_table_id = aws_route_table.public[each.key].id
 }
