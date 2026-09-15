@@ -18,29 +18,19 @@ output "firewall_endpoints" {
   value       = local.fw_endpoints
 }
 
-# output "tgw_route_table_spoke_id" {
-#   description = "TGW route table ID for spokes."
-#   value       = aws_ec2_transit_gateway_route_table.spoke.id
-# }
-
 output "tgw_route_table_inspection_id" {
   description = "TGW route table ID for the inspection VPC."
   value       = aws_ec2_transit_gateway_route_table.tgw.id
 }
 
-# output "spoke_attachment_ids" {
-#   description = "Map of spoke logical name -> TGW attachment ID."
-#   value       = { for k, v in aws_ec2_transit_gateway_vpc_attachment.spoke : k => v.id }
-# }
-
 output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."
-  value       = aws_nat_gateway.ngw[*].id
+  value       = values(aws_nat_gateway.ngw)[*].id
 }
 
 output "nat_gateway_eips" {
   description = "The elastic IPs of the nat gateway in the inspection vpc."
-  value       = aws_eip.ngw
+  value       = values(aws_eip.ngw)[*].public_ip
 }
 
 output "ec2_transit_gateway_route_table_id" {

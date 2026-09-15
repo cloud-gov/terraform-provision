@@ -44,6 +44,14 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
         }
       }
     }
+    policy_variables {
+      rule_variables {
+        key = "HOME_NET"
+        ip_set {
+          definition = var.internal_cidrs
+        }
+      }
+    }
   }
   tags = merge(var.tags, { Name = "${var.name_prefix}-fw-policy" })
 }

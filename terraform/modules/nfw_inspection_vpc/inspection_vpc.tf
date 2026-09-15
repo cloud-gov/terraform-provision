@@ -42,7 +42,7 @@ resource "aws_subnet" "tgw" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = local.azs
+  for_each                = local.azs
   vpc_id                  = aws_vpc.inspection.id
   cidr_block              = each.value.public_cidr
   availability_zone       = each.key
@@ -147,7 +147,7 @@ resource "aws_route" "public_egress" {
 resource "aws_route" "public_ingress" {
   for_each = local.internal_routes
 
-  route_table_id         = aws_route_table.public[each.value.az_index].id
+  route_table_id         = aws_route_table.public[each.value.az].id
   destination_cidr_block = each.value.cidr
   vpc_endpoint_id        = local.fw_endpoints[each.value.az]
 

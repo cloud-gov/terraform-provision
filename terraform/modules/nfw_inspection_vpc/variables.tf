@@ -29,16 +29,57 @@ variable "availability_zones" {
 variable "firewall_subnet_cidrs" {
   description = "CIDRs for firewall endpoint subnets (one per AZ)."
   type        = list(string)
+
+  validation {
+    condition     = length(var.firewall_subnet_cidrs) == 2
+    error_message = "This module is designed for exactly two AZs."
+  }
 }
 
 variable "tgw_subnet_cidrs" {
   description = "CIDRs for TGW attachment subnets (one per AZ)."
   type        = list(string)
+
+  validation {
+    condition     = length(var.tgw_subnet_cidrs) == 2
+    error_message = "This module is designed for exactly two AZs."
+  }
 }
 
 variable "public_subnet_cidrs" {
   description = "CIDRs for public/NAT subnets (one per AZ) used for egress to the internet."
   type        = list(string)
+
+  validation {
+    condition     = length(var.public_subnet_cidrs) == 2
+    error_message = "This module is designed for exactly two AZs."
+  }
+}
+
+variable "internal_cidrs" {
+  description = "CIDR blocks considered internal. Used for the Suricata HOME_NET rule variable and for return routes from the inspection VPC back to the transit gateway. Every CIDR is routed in every AZ; these are remote destinations reached via the TGW, so they have no AZ affinity."
+  type        = list(string)
+  default     = ["10.0.0.0/8"]
+
+  validation {
+    condition     = length(var.internal_cidrs) > 0
+    error_message = "At least one internal CIDR is required."
+  }
+
+  validation {
+    condition     = alltrue([for c in var.internal_cidrs : can(cidrnetmask(c))])
+    error_message = "Each entry in internal_cidrs must be a valid IPv4 CIDR block."
+  }
+
+  validation {
+    condition     = !contains(var.internal_cidrs, "0.0.0.0/0")
+    error_message = "internal_cidrs must not contain 0.0.0.0/0; the default route is managed separately by the egress routes."
+  }
+
+  validation {
+    condition     = length(distinct(var.internal_cidrs)) == length(var.internal_cidrs)
+    error_message = "internal_cidrs must not contain duplicate entries; duplicates produce a duplicate route-key collision when fanning routes out across AZs."
+  }
 }
 
 # Network Firewall
