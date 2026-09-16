@@ -21,11 +21,13 @@ resource "aws_db_option_group" "option_group_mysql" {
   # because we don't want the option group to remain around forever.
   # Instead, we
   # - Do the major version update with TF (it will fail to delete the old option group)
-  # - Connect to the CSB to run
-  #     mysqldump -h 127.0.0.1 -u csb -p csb --set-gtid-purged=OFF > csb.sql
-  # - Use the AWS console to do a manual snapshot of the new DB instance
+  # - Make two backups in case something goes awry
+  #   1. Local SQL backups
+  #     mysqldump -h 127.0.0.1 -u <user> -p <db> --set-gtid-purged=OFF > <db>.sql
+  #   2. Use the AWS console to do a manual snapshot of the new DB instance
   # - In the console, manually set the DB retention period to 0, applying immediately
   # - Once the snapshots are deleted, run `terraform plan/apply` again to delete the option group
+  #   and restore the snapshot retention
 
   # The name changes on an engine upgrade, which forces replacement. Create the
   # new group before destroying the old one so the DB instance always has a
