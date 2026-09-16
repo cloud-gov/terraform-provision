@@ -1,6 +1,5 @@
 resource "aws_ec2_transit_gateway" "tgw" {
-  description = "${var.name_prefix}-tgw"
-  # amazon_side_asn                 = var.amazon_side_asn
+  description                     = "${var.name_prefix}-tgw"
   auto_accept_shared_attachments  = "disable"
   default_route_table_association = "disable"
   default_route_table_propagation = "disable"
@@ -10,7 +9,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
 }
 
 # Attachment - Spoke VPC attachment is in bosh_vpc module
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw-inspection-vpc-attachment" {
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_inspection_vpc_attachment" {
   transit_gateway_id                              = aws_ec2_transit_gateway.tgw.id
   vpc_id                                          = aws_vpc.inspection.id
   subnet_ids                                      = values(aws_subnet.tgw)[*].id
@@ -27,6 +26,6 @@ resource "aws_ec2_transit_gateway_route_table" "tgw" {
 }
 
 resource "aws_ec2_transit_gateway_route_table_association" "tgw" {
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment.id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw_inspection_vpc_attachment.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.tgw.id
 }

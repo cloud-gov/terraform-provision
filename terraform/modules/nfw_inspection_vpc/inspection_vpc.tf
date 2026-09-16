@@ -95,7 +95,7 @@ resource "aws_route" "firewall_internal" {
   route_table_id         = aws_route_table.firewall[each.value.az].id
   destination_cidr_block = each.value.cidr
   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
-  depends_on             = [aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment]
+  depends_on             = [aws_ec2_transit_gateway_vpc_attachment.tgw_inspection_vpc_attachment]
 }
 
 resource "aws_route_table_association" "firewall" {
@@ -118,8 +118,6 @@ resource "aws_route" "tgw_egress" {
   route_table_id         = aws_route_table.tgw[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = local.fw_endpoints[each.key]
-
-  depends_on = [aws_networkfirewall_firewall.firewall]
 }
 
 resource "aws_route_table_association" "tgw" {
@@ -144,14 +142,15 @@ resource "aws_route" "public_egress" {
   gateway_id             = aws_internet_gateway.igw.id
 }
 
-resource "aws_route" "public_ingress" {
+# Return path for inspected egress: post-NAT traffic destined for an internal
+# CIDR goes back through the AZ-local firewall endpoint rather than out the IGW.
+# Not an ingress path -- ingress inspection is out of scope for this module.
+resource "aws_route" "public_return_to_firewall" {
   for_each = local.internal_routes
 
   route_table_id         = aws_route_table.public[each.value.az].id
   destination_cidr_block = each.value.cidr
   vpc_endpoint_id        = local.fw_endpoints[each.value.az]
-
-  depends_on = [aws_networkfirewall_firewall.firewall]
 }
 
 resource "aws_route_table_association" "public" {

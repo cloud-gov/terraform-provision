@@ -22,7 +22,7 @@ variable "availability_zones" {
 
   validation {
     condition     = length(var.availability_zones) == 2
-    error_message = "This module is designed for exactly two AZs."
+    error_message = "availability_zones must contain exactly two AZs; this module is designed for two."
   }
 }
 
@@ -32,7 +32,12 @@ variable "firewall_subnet_cidrs" {
 
   validation {
     condition     = length(var.firewall_subnet_cidrs) == 2
-    error_message = "This module is designed for exactly two AZs."
+    error_message = "firewall_subnet_cidrs must contain exactly two entries, one per AZ."
+  }
+
+  validation {
+    condition     = alltrue([for c in var.firewall_subnet_cidrs : can(cidrnetmask(c))])
+    error_message = "Each entry in firewall_subnet_cidrs must be a valid IPv4 CIDR block."
   }
 }
 
@@ -42,7 +47,12 @@ variable "tgw_subnet_cidrs" {
 
   validation {
     condition     = length(var.tgw_subnet_cidrs) == 2
-    error_message = "This module is designed for exactly two AZs."
+    error_message = "tgw_subnet_cidrs must contain exactly two entries, one per AZ."
+  }
+
+  validation {
+    condition     = alltrue([for c in var.tgw_subnet_cidrs : can(cidrnetmask(c))])
+    error_message = "Each entry in tgw_subnet_cidrs must be a valid IPv4 CIDR block."
   }
 }
 
@@ -52,7 +62,12 @@ variable "public_subnet_cidrs" {
 
   validation {
     condition     = length(var.public_subnet_cidrs) == 2
-    error_message = "This module is designed for exactly two AZs."
+    error_message = "public_subnet_cidrs must contain exactly two entries, one per AZ."
+  }
+
+  validation {
+    condition     = alltrue([for c in var.public_subnet_cidrs : can(cidrnetmask(c))])
+    error_message = "Each entry in public_subnet_cidrs must be a valid IPv4 CIDR block."
   }
 }
 
@@ -97,16 +112,19 @@ variable "firewall_managed_rule_groups" {
 variable "firewall_rule_groups_count_only" {
   description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops)."
   type        = bool
+  default     = true
 }
 
 variable "delete_protection" {
   description = "Enable delete protection on the firewall."
   type        = bool
+  default     = true
 }
 
 variable "logging_enabled" {
   description = "Enable firewall flow/alert logging to CloudWatch."
   type        = bool
+  default     = true
 }
 
 variable "log_retention_days" {

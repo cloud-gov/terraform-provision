@@ -6,9 +6,6 @@ locals {
     s.availability_zone => s.attachment[0].endpoint_id
   }
 
-  # All spoke CIDRs flattened (used for return routes in the inspection VPC).
-  # all_spoke_cidrs = distinct(flatten([for k, v in var.spoke_vpcs : v.spoke_cidrs]))
-
   firewall_managed_rule_groups = [
     for rg in var.firewall_managed_rule_groups : {
       resource_name = rg.resource_name
@@ -32,8 +29,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
     dynamic "stateful_rule_group_reference" {
       for_each = local.firewall_managed_rule_groups
       content {
-        priority = stateful_rule_group_reference.value.priority
-        #deep_threat_inspection = true
+        priority     = stateful_rule_group_reference.value.priority
         resource_arn = "arn:${data.aws_partition.current.partition}:network-firewall:${data.aws_region.current.region}:aws-managed:stateful-rulegroup/${stateful_rule_group_reference.value.resource_name}"
 
         dynamic "override" {
@@ -58,7 +54,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
       }
     }
   }
-  tags = merge(var.tags, { Name = "${var.name_prefix}-fw-policy" })
+  tags = merge(var.tags, { Name = "${var.name_prefix}-firewall-policy" })
 }
 
 resource "aws_networkfirewall_firewall" "firewall" {

@@ -18,11 +18,6 @@ output "firewall_endpoints" {
   value       = local.fw_endpoints
 }
 
-output "tgw_route_table_inspection_id" {
-  description = "TGW route table ID for the inspection VPC."
-  value       = aws_ec2_transit_gateway_route_table.tgw.id
-}
-
 output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."
   value       = values(aws_nat_gateway.ngw)[*].id
@@ -40,5 +35,5 @@ output "ec2_transit_gateway_route_table_id" {
 
 output "ec2_transit_gateway_vpc_attachment_id" {
   description = "The id of the ec2 tgw attachment to the inspection vpc"
-  value       = aws_ec2_transit_gateway_vpc_attachment.tgw-inspection-vpc-attachment.id
+  value       = aws_ec2_transit_gateway_vpc_attachment.tgw_inspection_vpc_attachment.id
 }
