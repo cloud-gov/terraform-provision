@@ -29,16 +29,50 @@ Two settings produce this posture:
 
 - `firewall_rule_groups_count_only` defaults to `true`, overriding every managed
   rule group to `DROP_TO_ALERT`.
-- `stateful_default_actions` is not set, so traffic matching no rule is passed
-  (the AWS default under `STRICT_ORDER`).
+- `stateful_default_actions` defaults to `[]`, so traffic matching no rule is
+  passed (the AWS behavior under `STRICT_ORDER`).
 
-The firewall therefore logs and alerts but does not drop. Promoting to
-enforcement requires setting `firewall_rule_groups_count_only = false` and
-`override_action_to_count = false` on each rule group, after reviewing ALERT
-logs for the traffic that would have been dropped.
+The firewall therefore logs and alerts but does not drop. This is deliberate:
+the module attaches to existing VPCs carrying live traffic, and a DROP default
+risks blocking or locking out a running environment before anyone knows what
+the rules would have matched.
+
+### Promoting to Enforcement
+
+Enforcement is a per-environment decision, made after ALERT logs show what
+would have been dropped. The intended sequence:
+
+1. Deploy with the defaults. Leave it alone long enough to build a traffic
+   baseline across all attached spokes, including periodic and batch workloads.
+2. Review the ALERT log group (`/aws/network-firewall/<name_prefix>/alert`) for
+   matches. Every match is traffic that enforcement would drop.
+3. Resolve each match: fix the workload, or exclude the rule group, or accept
+   the drop.
+4. Flip the cutover switch:
+
+   ```hcl
+   firewall_rule_groups_count_only  = false
+   firewall_rule_groups_enforce_all = true
+   ```
+
+   `firewall_rule_groups_enforce_all` forces every rule group to DROP,
+   overriding each group's own `override_action_to_count`. It exists so cutover
+   is one reviewable flag per environment rather than a hand edit of every rule
+   group. The two flags are mutually exclusive and validated as such.
+5. Optionally fail closed on unmatched traffic by setting
+   `stateful_default_actions`. This is a much larger blast radius than rule
+   group enforcement -- it drops anything no rule explicitly passed -- so treat
+   it as a separate change with its own baseline review.
+
+To promote individual rule groups instead of all at once, leave both global
+flags at their defaults and set `override_action_to_count = false` on the
+specific groups in `firewall_managed_rule_groups`.
 
 ## Scope and Limitations
 
+- **The default posture does not block traffic.** See Default Firewall Behavior
+  above. Alert-only is intentional, not an oversight, and promoting to
+  enforcement is a deliberate per-environment step.
 - **Two AZs only.** `availability_zones` and the three subnet CIDR lists are
   validated to contain exactly two entries.
 - **IPv4 only.** The VPC has no IPv6 CIDR and all default routes are

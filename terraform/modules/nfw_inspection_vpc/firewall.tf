@@ -6,11 +6,18 @@ locals {
     s.availability_zone => s.attachment[0].endpoint_id
   }
 
+  # Per-group enforcement decision. The two global flags are validated as
+  # mutually exclusive, so at most one of these branches applies:
+  #   enforce_all -> every group drops, regardless of its own setting
+  #   count_only  -> every group alerts only
+  #   neither     -> each group honors its own override_action_to_count
   firewall_managed_rule_groups = [
     for rg in var.firewall_managed_rule_groups : {
       resource_name = rg.resource_name
       priority      = rg.priority
-      count_only    = var.firewall_rule_groups_count_only || rg.override_action_to_count
+      count_only = var.firewall_rule_groups_enforce_all ? false : (
+        var.firewall_rule_groups_count_only || rg.override_action_to_count
+      )
     }
   ]
 }
@@ -21,6 +28,11 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
   firewall_policy {
     stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:forward_to_sfe"]
+
+    # Empty by default: unmatched traffic is passed. Fail-open is deliberate
+    # while the firewall runs alert-only against existing VPCs. See the
+    # stateful_default_actions variable and the README.
+    stateful_default_actions = var.stateful_default_actions
 
     stateful_engine_options {
       rule_order = "STRICT_ORDER"

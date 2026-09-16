@@ -110,9 +110,38 @@ variable "firewall_managed_rule_groups" {
 }
 
 variable "firewall_rule_groups_count_only" {
-  description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops)."
+  description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops). Mutually exclusive with firewall_rule_groups_enforce_all."
   type        = bool
   default     = true
+}
+
+variable "firewall_rule_groups_enforce_all" {
+  description = "Global override: when true, ALL managed rule groups enforce (DROP), ignoring each group's override_action_to_count. This is the cutover switch for promoting the firewall from alert-only to enforcing; flip it per environment after reviewing ALERT logs. Mutually exclusive with firewall_rule_groups_count_only."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !(var.firewall_rule_groups_enforce_all && var.firewall_rule_groups_count_only)
+    error_message = "firewall_rule_groups_enforce_all and firewall_rule_groups_count_only are mutually exclusive; set at most one to true."
+  }
+}
+
+variable "stateful_default_actions" {
+  description = "Actions applied to packets matching no stateful rule. Empty (the default) leaves the AWS behavior of passing unmatched traffic, which is fail-open and intentional while the firewall runs in alert-only mode. Set to e.g. [\"aws:drop_established\", \"aws:alert_established\"] to fail closed. Requires STRICT_ORDER, which this module always sets."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for a in var.stateful_default_actions : contains([
+        "aws:drop_strict",
+        "aws:drop_established",
+        "aws:alert_strict",
+        "aws:alert_established",
+      ], a)
+    ])
+    error_message = "Each entry in stateful_default_actions must be one of: aws:drop_strict, aws:drop_established, aws:alert_strict, aws:alert_established."
+  }
 }
 
 variable "delete_protection" {
