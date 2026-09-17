@@ -174,6 +174,17 @@ variable "flow_logs_aggregation_interval" {
 }
 
 variable "log_retention_days" {
-  description = "CloudWatch log retention in days."
+  description = "CloudWatch retention, in days, for both the firewall log groups and the VPC flow log group. Must be a value CloudWatch Logs accepts; 0 means never expire. Defaults to 1096 (3 years), the repo-wide value chosen as the lowest option satisfying the M-21-31 requirement to retain network telemetry for 30 months."
   type        = number
+  default     = 1096
+
+  validation {
+    # CloudWatch Logs accepts only this fixed set. Any other value is rejected at
+    # apply time, after the firewall and log groups are already being created.
+    condition = contains(
+      [0, 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653],
+      var.log_retention_days
+    )
+    error_message = "log_retention_days must be one of the retention periods CloudWatch Logs accepts: 0 (never expire), 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653."
+  }
 }

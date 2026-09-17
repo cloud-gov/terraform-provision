@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "flow_logs_assume_role" {
       identifiers = ["vpc-flow-logs.amazonaws.com"]
     }
 
-    # Confused-deputy protection: the flow log service may only assume this role
+    # the flow log service may only assume this role
     # on behalf of this account, for a flow log in this account.
     condition {
       test     = "StringEquals"

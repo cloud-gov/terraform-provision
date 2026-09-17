@@ -84,7 +84,15 @@ is the single egress chokepoint for every attached spoke, VPC flow logs provide
 the inspection-independent record of what actually crossed the boundary.
 
 Both are controlled separately (`logging_enabled`, `flow_logs_enabled`) and
-share `log_retention_days`.
+share `log_retention_days`, which defaults to 1096 days (3 years). That is the
+repo-wide value: the lowest CloudWatch retention option that satisfies the
+M-21-31 requirement to retain network telemetry for 30 months. Lowering it below
+913 days puts the platform out of compliance with that requirement.
+
+CloudWatch Logs accepts only a fixed set of retention periods, so
+`log_retention_days` is validated against that set. Without the check, an
+unaccepted value is not caught until apply -- after the firewall and log groups
+are already being created.
 
 VPC flow logs default to a 60-second aggregation interval rather than the AWS
 default of 600. This is the platform egress boundary, so aggregation
