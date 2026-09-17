@@ -156,6 +156,23 @@ variable "logging_enabled" {
   default     = true
 }
 
+variable "flow_logs_enabled" {
+  description = "Enable VPC flow logs for the inspection VPC. These are distinct from the firewall's own FLOW logs: firewall logs only cover traffic reaching a firewall endpoint, while VPC flow logs cover every ENI in the VPC including the TGW attachment, NAT gateways, and firewall endpoints."
+  type        = bool
+  default     = true
+}
+
+variable "flow_logs_aggregation_interval" {
+  description = "Maximum seconds a flow of packets is aggregated into one VPC flow log record. AWS accepts only 60 or 600. 60 gives finer incident reconstruction at roughly 10x the record volume."
+  type        = number
+  default     = 60
+
+  validation {
+    condition     = contains([60, 600], var.flow_logs_aggregation_interval)
+    error_message = "flow_logs_aggregation_interval must be either 60 or 600 seconds."
+  }
+}
+
 variable "log_retention_days" {
   description = "CloudWatch log retention in days."
   type        = number

@@ -68,6 +68,31 @@ To promote individual rule groups instead of all at once, leave both global
 flags at their defaults and set `override_action_to_count = false` on the
 specific groups in `firewall_managed_rule_groups`.
 
+## Logging
+
+The module produces two independent log streams, both to CloudWatch:
+
+| Log | Group | Covers |
+|---|---|---|
+| Firewall FLOW / ALERT | `/aws/network-firewall/<name_prefix>/{flow,alert}` | Traffic that reached a firewall endpoint, and rule matches |
+| VPC flow logs | `/aws/vpc-flow-log/<name_prefix>` | Every ENI in the VPC: TGW attachment, NAT gateways, firewall endpoints |
+
+The two are not redundant. Firewall logs say nothing about the TGW, NAT, or IGW
+hops, so traffic that never reaches an endpoint -- whether misrouted or
+deliberately bypassing inspection -- leaves no firewall record. Since this VPC
+is the single egress chokepoint for every attached spoke, VPC flow logs provide
+the inspection-independent record of what actually crossed the boundary.
+
+Both are controlled separately (`logging_enabled`, `flow_logs_enabled`) and
+share `log_retention_days`.
+
+VPC flow logs default to a 60-second aggregation interval rather than the AWS
+default of 600. This is the platform egress boundary, so aggregation
+granularity bounds how precisely an incident can be reconstructed; it is also
+the value AWS requires if TGW-level flow logs are added later. The cost is
+roughly 10x the record volume of 600s -- set
+`flow_logs_aggregation_interval = 600` to trade precision for spend.
+
 ## Scope and Limitations
 
 - **The default posture does not block traffic.** See Default Firewall Behavior
@@ -84,6 +109,8 @@ specific groups in `firewall_managed_rule_groups`.
 - **The EIPs use `prevent_destroy`.** `terraform destroy` of this module will
   fail until the EIPs are removed from state deliberately. This protects egress
   addresses that downstream allowlists may depend on.
-- **Logging covers FLOW and ALERT.** The `TLS` log type is not configured
-  because it only produces records when a TLS inspection configuration is
-  attached to the policy, and this module does not create one.
+- **Firewall logging covers FLOW and ALERT.** The `TLS` log type is not
+  configured because it only produces records when a TLS inspection
+  configuration is attached to the policy, and this module does not create one.
+- **Log groups use AWS-managed encryption.** Neither log group sets
+  `kms_key_id`. ALERT records in particular contain payload-adjacent metadata.

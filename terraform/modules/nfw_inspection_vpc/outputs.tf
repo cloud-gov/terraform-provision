@@ -28,6 +28,11 @@ output "nat_gateway_eips" {
   value       = values(aws_eip.ngw)[*].public_ip
 }
 
+output "vpc_flow_log_group_name" {
+  description = "Name of the CloudWatch log group receiving VPC flow logs, or null when flow_logs_enabled is false."
+  value       = try(aws_cloudwatch_log_group.flow_logs[0].name, null)
+}
+
 output "ec2_transit_gateway_route_table_id" {
   description = "The id of the ec2 TGW route table"
   value       = aws_ec2_transit_gateway_route_table.tgw.id
