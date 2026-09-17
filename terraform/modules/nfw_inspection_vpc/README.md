@@ -120,5 +120,4 @@ roughly 10x the record volume of 600s -- set
 - **Firewall logging covers FLOW and ALERT.** The `TLS` log type is not
   configured because it only produces records when a TLS inspection
   configuration is attached to the policy, and this module does not create one.
-- **Log groups use AWS-managed encryption.** Neither log group sets
-  `kms_key_id`. ALERT records in particular contain payload-adjacent metadata.
+- **Log groups use AWS-managed encryption.**
