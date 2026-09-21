@@ -82,7 +82,7 @@ variable "logging_enabled" {
 }
 
 variable "log_retention_days" {
-  description = "CloudWatch log retention in days."
+  description = "CloudWatch retention, in days, for both the firewall log groups and the VPC flow log group. Must be a value CloudWatch Logs accepts (validated in the module); 0 means never expire. Defaults to 1096 (3 years), the repo-wide value chosen as the lowest option satisfying the M-21-31 requirement to retain network telemetry for 30 months. Lowering it below 913 days puts the platform out of compliance with that requirement."
   type        = number
-  default     = 90
+  default     = 1096
 }
