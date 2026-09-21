@@ -47,6 +47,12 @@ variable "public_subnet_cidrs" {
   default     = ["10.100.2.0/28", "10.100.2.16/28"]
 }
 
+variable "internal_cidrs" {
+  description = "CIDR blocks considered internal. Used for the Suricata HOME_NET rule variable and for return routes from the inspection VPC back to the transit gateway."
+  type        = list(string)
+  default     = ["10.0.0.0/8"]
+}
+
 # Network Firewall
 
 variable "firewall_managed_rule_groups" {
@@ -64,9 +70,21 @@ variable "firewall_managed_rule_groups" {
 }
 
 variable "firewall_rule_groups_count_only" {
-  description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops)."
+  description = "Global override: when true, ALL managed rule groups run in count/alert-only mode (no drops). Mutually exclusive with firewall_rule_groups_enforce_all."
   type        = bool
   default     = true
+}
+
+variable "firewall_rule_groups_enforce_all" {
+  description = "Global override: when true, ALL managed rule groups enforce (DROP), ignoring each group's override_action_to_count. This is the cutover switch for promoting the firewall from alert-only to enforcing; flip it per environment after reviewing ALERT logs. Mutually exclusive with firewall_rule_groups_count_only."
+  type        = bool
+  default     = false
+}
+
+variable "stateful_default_actions" {
+  description = "Actions applied to packets matching no stateful rule. Empty (the default) leaves the AWS behavior of passing unmatched traffic, which is fail-open and intentional while the firewall runs in alert-only mode. Set to e.g. [\"aws:drop_established\", \"aws:alert_established\"] to fail closed. Much larger blast radius than rule group enforcement -- treat as a separate change with its own baseline review."
+  type        = list(string)
+  default     = []
 }
 
 variable "delete_protection" {
@@ -79,6 +97,18 @@ variable "logging_enabled" {
   description = "Enable firewall flow/alert logging to CloudWatch."
   type        = bool
   default     = true
+}
+
+variable "flow_logs_enabled" {
+  description = "Enable VPC flow logs for the inspection VPC. These are distinct from the firewall's own FLOW logs: firewall logs only cover traffic reaching a firewall endpoint, while VPC flow logs cover every ENI in the VPC including the TGW attachment, NAT gateways, and firewall endpoints."
+  type        = bool
+  default     = true
+}
+
+variable "flow_logs_aggregation_interval" {
+  description = "Maximum seconds a flow of packets is aggregated into one VPC flow log record. AWS accepts only 60 or 600 (validated in the module). 60 gives finer incident reconstruction at roughly 10x the record volume."
+  type        = number
+  default     = 60
 }
 
 variable "log_retention_days" {
