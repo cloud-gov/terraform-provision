@@ -72,7 +72,7 @@ variable "public_subnet_cidrs" {
 }
 
 variable "internal_cidrs" {
-  description = "CIDR blocks considered internal, excluding the inspection VPC itself. Used for return routes from the inspection VPC back to the transit gateway, and combined with inspection_vpc_cidr to build the Suricata HOME_NET rule variable. Every CIDR is routed in every AZ; these are remote destinations reached via the TGW, so they have no AZ affinity."
+  description = "CIDR blocks reachable through the transit gateway that should be treated as internal. Used for return routes from the inspection VPC back to the TGW, and merged with inspection_vpc_cidr to build the Suricata HOME_NET rule variable. Every CIDR is routed in every AZ; these are remote destinations reached via the TGW, so they have no AZ affinity. No entry may fall inside inspection_vpc_cidr — that is, no entry may equal it or be a subnet of it. Entries that are supernets of the VPC CIDR, or fully disjoint from it, are both fine — the default 10.0.0.0/8 is a supernet of the default 10.100.0.0/16."
   type        = list(string)
   default     = ["10.0.0.0/8"]
 

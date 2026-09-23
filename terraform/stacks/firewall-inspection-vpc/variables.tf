@@ -48,7 +48,7 @@ variable "public_subnet_cidrs" {
 }
 
 variable "internal_cidrs" {
-  description = "CIDR blocks considered internal. Used for the Suricata HOME_NET rule variable and for return routes from the inspection VPC back to the transit gateway."
+  description = "CIDR blocks reachable via the transit gateway, treated as internal. Pass-through to the nfw_inspection_vpc module; see that module's variables.tf for the containment constraint against inspection_vpc_cidr."
   type        = list(string)
   default     = ["10.0.0.0/8"]
 }
