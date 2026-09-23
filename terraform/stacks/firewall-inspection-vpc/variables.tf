@@ -56,7 +56,7 @@ variable "internal_cidrs" {
 # Network Firewall
 
 variable "firewall_managed_rule_groups" {
-  description = "List of managed (or custom) stateful rule groups to attach to the firewall policy."
+  description = "List of managed stateful rule groups to attach to the firewall policy."
   type = list(object({
     resource_name            = string
     priority                 = number
