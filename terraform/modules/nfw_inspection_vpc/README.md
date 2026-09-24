@@ -113,7 +113,9 @@ roughly 10x the record volume of 600s -- set
 - **`internal_cidrs` must cover every attached spoke.** Return routes in the
   inspection VPC come from this variable. A spoke whose CIDR is missing has its
   return traffic fall through to `0.0.0.0/0` -> IGW and blackhole, with no error
-  from either module.
+  from either module. The variable is required and has no default, because only
+  the caller knows the spoke topology; omitting it fails the plan rather than
+  silently routing an assumed range.
 - **The EIPs use `prevent_destroy`.** `terraform destroy` of this module will
   fail until the EIPs are removed from state deliberately. This protects egress
   addresses that downstream allowlists may depend on.
