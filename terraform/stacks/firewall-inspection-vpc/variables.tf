@@ -81,3 +81,7 @@ variable "flow_logs_aggregation_interval" {
 variable "log_retention_days" {
   type = number
 }
+
+variable "prevent_ngw_eip_destroy" {
+  type = bool
+}
