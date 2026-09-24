@@ -30,14 +30,25 @@ jobs:
           TF_VAR_firewall_subnet_cidrs: ["10.100.0.0/28", "10.100.0.16/28"]
           TF_VAR_tgw_subnet_cidrs: ["10.100.1.0/28", "10.100.1.16/28"]
           TF_VAR_public_subnet_cidrs: ["10.100.2.0/28", "10.100.2.16/28"]
+          TF_VAR_internal_cidrs: ["10.0.0.0/8"]
           TF_VAR_firewall_managed_rule_groups: |
             [{
               resource_name            = "AttackInfrastructureStrictOrder"
               priority                 = 1
               override_action_to_count = true
             }]
+          # Alert-only posture, stated explicitly rather than inherited from a
+          # default. count_only forces every rule group to DROP_TO_ALERT, and an
+          # empty stateful_default_actions passes unmatched traffic, so the
+          # firewall fails open. Promoting to enforcement means enforce_all:
+          # true with count_only: false, after reviewing ALERT logs.
+          TF_VAR_firewall_rule_groups_count_only: true
+          TF_VAR_firewall_rule_groups_enforce_all: false
+          TF_VAR_stateful_default_actions: []
           TF_VAR_delete_protection: false
           TF_VAR_logging_enabled: true
+          TF_VAR_flow_logs_enabled: true
+          TF_VAR_flow_logs_aggregation_interval: 60
           TF_VAR_log_retention_days: 1
   - name: apply-inspection-vpc
     plan:
