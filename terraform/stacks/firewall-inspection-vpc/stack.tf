@@ -32,6 +32,4 @@ module "nfw_inspection_vpc" {
   flow_logs_aggregation_interval   = var.flow_logs_aggregation_interval
   log_retention_days               = var.log_retention_days
   internal_cidrs                   = var.internal_cidrs
-  prevent_ngw_eip_destroy          = var.prevent_ngw_eip_destroy
-
 }

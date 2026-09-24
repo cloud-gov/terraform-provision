@@ -50,7 +50,6 @@ jobs:
           TF_VAR_flow_logs_enabled: true
           TF_VAR_flow_logs_aggregation_interval: 60
           TF_VAR_log_retention_days: 1
-          TF_VAR_prevent_ngw_eip_destroy: false
   - name: apply-inspection-vpc
     plan:
       - in_parallel:

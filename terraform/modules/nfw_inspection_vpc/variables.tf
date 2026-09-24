@@ -187,10 +187,3 @@ variable "log_retention_days" {
     error_message = "log_retention_days must be one of the retention periods CloudWatch Logs accepts: 0 (never expire), 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653."
   }
 }
-
-
-variable "prevent_ngw_eip_destroy" {
-  description = "Prevent destruction of the nat gateway elastic IP"
-  type        = bool
-  default     = true
-}

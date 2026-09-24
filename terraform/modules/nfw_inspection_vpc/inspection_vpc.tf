@@ -62,7 +62,7 @@ resource "aws_eip" "ngw" {
   domain   = "vpc"
   tags     = merge(var.tags, { Name = "${var.name_prefix}-nat-eip-${each.key}" })
   lifecycle {
-    prevent_destroy = var.prevent_ngw_eip_destroy
+    prevent_destroy = false
   }
 }
 
