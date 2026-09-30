@@ -25,13 +25,13 @@ resource "aws_vpc" "inspection" {
 }
 
 # Subnets
-# resource "aws_subnet" "firewall" {
-#   for_each          = local.azs
-#   vpc_id            = aws_vpc.inspection.id
-#   cidr_block        = each.value.firewall_cidr
-#   availability_zone = each.key
-#   tags              = merge(var.tags, { Name = "${var.name_prefix}-firewall-${each.key}" })
-# }
+resource "aws_subnet" "firewall" {
+  for_each          = local.azs
+  vpc_id            = aws_vpc.inspection.id
+  cidr_block        = each.value.firewall_cidr
+  availability_zone = each.key
+  tags              = merge(var.tags, { Name = "${var.name_prefix}-firewall-${each.key}" })
+}
 
 resource "aws_subnet" "tgw" {
   for_each          = local.azs
@@ -75,34 +75,34 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 # Firewall Route Table
-# resource "aws_route_table" "firewall" {
-#   for_each = local.azs
-#   vpc_id   = aws_vpc.inspection.id
+resource "aws_route_table" "firewall" {
+  for_each = local.azs
+  vpc_id   = aws_vpc.inspection.id
 
-#   tags = merge(var.tags, { Name = "${var.name_prefix}-firewall-rt-${each.key}" })
-# }
+  tags = merge(var.tags, { Name = "${var.name_prefix}-firewall-rt-${each.key}" })
+}
 
 # Egress firewall > ngw
-# resource "aws_route" "firewall_egress" {
-#   for_each               = local.azs
-#   route_table_id         = aws_route_table.firewall[each.key].id
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_gateway_id         = aws_nat_gateway.ngw[each.key].id
-# }
+resource "aws_route" "firewall_egress" {
+  for_each               = local.azs
+  route_table_id         = aws_route_table.firewall[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.ngw[each.key].id
+}
 
-# resource "aws_route" "firewall_internal" {
-#   for_each               = local.internal_routes
-#   route_table_id         = aws_route_table.firewall[each.value.az].id
-#   destination_cidr_block = each.value.cidr
-#   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
-#   depends_on             = [aws_ec2_transit_gateway_vpc_attachment.tgw_inspection_vpc_attachment]
-# }
+resource "aws_route" "firewall_internal" {
+  for_each               = local.internal_routes
+  route_table_id         = aws_route_table.firewall[each.value.az].id
+  destination_cidr_block = each.value.cidr
+  transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
+  depends_on             = [aws_ec2_transit_gateway_vpc_attachment.tgw_inspection_vpc_attachment]
+}
 
-# resource "aws_route_table_association" "firewall" {
-#   for_each       = local.azs
-#   subnet_id      = aws_subnet.firewall[each.key].id
-#   route_table_id = aws_route_table.firewall[each.key].id
-# }
+resource "aws_route_table_association" "firewall" {
+  for_each       = local.azs
+  subnet_id      = aws_subnet.firewall[each.key].id
+  route_table_id = aws_route_table.firewall[each.key].id
+}
 
 # TGW Route Table
 resource "aws_route_table" "tgw" {
@@ -145,13 +145,13 @@ resource "aws_route" "public_egress" {
 # Return path for inspected egress: post-NAT traffic destined for an internal
 # CIDR goes back through the AZ-local firewall endpoint rather than out the IGW.
 # Not an ingress path -- ingress inspection is out of scope for this module.
-# resource "aws_route" "public_return_to_firewall" {
-#   for_each = local.internal_routes
+resource "aws_route" "public_return_to_firewall" {
+  for_each = local.internal_routes
 
-#   route_table_id         = aws_route_table.public[each.value.az].id
-#   destination_cidr_block = each.value.cidr
-#   vpc_endpoint_id        = local.fw_endpoints[each.value.az]
-# }
+  route_table_id         = aws_route_table.public[each.value.az].id
+  destination_cidr_block = each.value.cidr
+  vpc_endpoint_id        = local.fw_endpoints[each.value.az]
+}
 
 resource "aws_route_table_association" "public" {
   for_each       = local.azs
