@@ -8,15 +8,15 @@ output "inspection_vpc_id" {
   value       = aws_vpc.inspection.id
 }
 
-output "firewall_arn" {
-  description = "ARN of the AWS Network Firewall."
-  value       = aws_networkfirewall_firewall.firewall.arn
-}
+# output "firewall_arn" {
+#   description = "ARN of the AWS Network Firewall."
+#   value       = aws_networkfirewall_firewall.firewall.arn
+# }
 
-output "firewall_endpoints" {
-  description = "Map of AZ -> firewall VPC endpoint ID."
-  value       = local.fw_endpoints
-}
+# output "firewall_endpoints" {
+#   description = "Map of AZ -> firewall VPC endpoint ID."
+#   value       = local.fw_endpoints
+# }
 
 output "nat_gateway_ids" {
   description = "NAT gateway IDs used for inspected egress."
