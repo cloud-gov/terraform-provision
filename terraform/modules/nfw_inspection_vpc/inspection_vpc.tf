@@ -112,13 +112,13 @@ resource "aws_route_table" "tgw" {
   tags = merge(var.tags, { Name = "${var.name_prefix}-tgw-rt-${each.key}" })
 }
 
-# # Egress TGW > Firewall
-# resource "aws_route" "tgw_egress" {
-#   for_each               = local.azs
-#   route_table_id         = aws_route_table.tgw[each.key].id
-#   destination_cidr_block = "0.0.0.0/0"
-#   vpc_endpoint_id        = local.fw_endpoints[each.key]
-# }
+# Egress TGW > Firewall
+resource "aws_route" "tgw_egress" {
+  for_each               = local.azs
+  route_table_id         = aws_route_table.tgw[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = local.fw_endpoints[each.key]
+}
 
 resource "aws_route_table_association" "tgw" {
   for_each       = local.azs
