@@ -22,7 +22,7 @@ jobs:
           TF_VAR_name_prefix: "nfw-inspection"
           TF_VAR_tags: |
             {
-              owner  = "Steve"
+              owner  = "Platform"
               status = "development"
             }
           TF_VAR_inspection_vpc_cidr: "10.100.0.0/16"
