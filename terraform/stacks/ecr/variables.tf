@@ -12,6 +12,7 @@ variable "repositories" {
     "bosh-io-stemcell-resource",
     "cf-cli-resource",
     "cf-resource",
+    "cinc-audit-oracle",
     "clamav-rest",           # image for malware scanning service which has passed testing
     "clamav-rest-candidate", # image for malware scanning service which has not yet passed testing
     "cloud-service-broker",
