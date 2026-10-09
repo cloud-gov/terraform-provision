@@ -1,3 +1,12 @@
+locals {
+  # Every file packaged into the Lambda zips is fetched at this tag. All of the
+  # URLs below must move together: the handler and the shared partitioning
+  # module are deployed as one unit, so a half-bumped tag ships a handler
+  # against a mismatched org_partitioning.py.
+  lambda_source_tag      = "v0.1.2"
+  lambda_source_base_url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/${local.lambda_source_tag}/lambda_functions"
+}
+
 resource "aws_lambda_function" "transform" {
   for_each = toset(var.environments)
 
@@ -28,7 +37,14 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.1.2/lambda_functions/transform_cloudwatch_lambda.py"
+  url = "${local.lambda_source_base_url}/transform_cloudwatch_lambda.py"
+}
+
+# Shared with the metrics_s3_ingestor module's transform Lambda. The handler
+# imports it as a top-level `org_partitioning`, so it has to land at the root of
+# the zip under exactly this name.
+data "http" "org_partitioning_python" {
+  url = "${local.lambda_source_base_url}/org_partitioning.py"
 }
 
 data "archive_file" "lambda_zip" {
@@ -36,6 +52,10 @@ data "archive_file" "lambda_zip" {
   source {
     content  = data.http.lambda_python.response_body
     filename = "transform_lambda.py"
+  }
+  source {
+    content  = data.http.org_partitioning_python.response_body
+    filename = "org_partitioning.py"
   }
   output_path = "${path.module}/transform_lambda.zip"
 }
@@ -67,8 +87,10 @@ resource "aws_lambda_function" "cloudwatch_filter" {
   })
 }
 
+# The subscription manager shares no code with the transform Lambdas, so it
+# stays a single-file zip.
 data "http" "cloudwatch_lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.1.2/lambda_functions/add_cloudwatch_subscrition.py"
+  url = "${local.lambda_source_base_url}/add_cloudwatch_subscrition.py"
 }
 
 data "archive_file" "cloudwatch_lambda_zip" {
