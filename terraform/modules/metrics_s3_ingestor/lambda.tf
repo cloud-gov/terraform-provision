@@ -1,3 +1,8 @@
+locals {
+  lambda_source_tag      = "v0.1.2"
+  lambda_source_base_url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/${local.lambda_source_tag}/lambda_functions"
+}
+
 resource "aws_lambda_function" "transform" {
   for_each = toset(var.environments)
 
@@ -14,8 +19,9 @@ resource "aws_lambda_function" "transform" {
 
   environment {
     variables = {
-      ENVIRONMENT = each.key
-      ACCOUNT_ID  = var.account_id
+      ENVIRONMENT    = each.key
+      ACCOUNT_ID     = var.account_id
+      S3_BUCKET_NAME = aws_s3_bucket.opensearch_metric_buckets[each.key].bucket
     }
   }
 
@@ -25,7 +31,11 @@ resource "aws_lambda_function" "transform" {
 }
 
 data "http" "lambda_python" {
-  url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/v0.1.0/lambda_functions/transform_lambda.py"
+  url = "${local.lambda_source_base_url}/transform_lambda.py"
+}
+
+data "http" "org_partitioning_python" {
+  url = "${local.lambda_source_base_url}/org_partitioning.py"
 }
 
 data "archive_file" "lambda_zip" {
@@ -33,6 +43,10 @@ data "archive_file" "lambda_zip" {
   source {
     content  = data.http.lambda_python.response_body
     filename = "transform_lambda.py"
+  }
+  source {
+    content  = data.http.org_partitioning_python.response_body
+    filename = "org_partitioning.py"
   }
   output_path = "${path.module}/transform_lambda.zip"
 }

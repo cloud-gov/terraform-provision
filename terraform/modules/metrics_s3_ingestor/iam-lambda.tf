@@ -71,6 +71,20 @@ resource "aws_iam_role_policy" "lambda_tag_policy" {
         "Resource" : [
           "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-*"
         ]
+      },
+      {
+        "Action" : [
+          "s3:PutObject"
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+          "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}/*"
+        ],
+        "Condition" : {
+          "StringEquals" : {
+            "s3:x-amz-server-side-encryption" : "AES256"
+          }
+        }
       }
     ]
   })
