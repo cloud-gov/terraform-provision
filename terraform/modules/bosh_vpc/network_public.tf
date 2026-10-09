@@ -52,9 +52,11 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-# Do not create this route table when the nfw inspection vpc is in use
+/*
+ * The public route table keeps its default route on the internet gateway even
+ * when inspection is enabled.
+ */
 resource "aws_route_table" "public_network" {
-  count  = var.egress_traffic_through_inspection_vpc ? 0 : 1
   vpc_id = aws_vpc.main_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -65,50 +67,34 @@ resource "aws_route_table" "public_network" {
     gateway_id      = aws_internet_gateway.gw.id
   }
 
+  # Internal destinations reached through the inspection VPC. Empty, and so a
+  # no-op, unless inspection is enabled and inspection_internal_cidrs is set.
+  dynamic "route" {
+    for_each = local.inspection_enabled ? toset(var.inspection_internal_cidrs) : toset([])
+    content {
+      cidr_block         = route.value
+      transit_gateway_id = local.inspection_transit_gateway_id
+    }
+  }
+
   tags = {
     Name = "${var.stack_description} (Public Route Table)"
   }
+
+  depends_on = [
+    aws_ec2_transit_gateway_vpc_attachment.main_vpc,
+    aws_ec2_transit_gateway_route_table_association.main_vpc,
+    aws_ec2_transit_gateway_route.main_vpc_egress_to_inspection,
+    aws_ec2_transit_gateway_route_table_propagation.main_vpc_to_inspection,
+  ]
 }
 
 resource "aws_route_table_association" "az1_public_rta" {
-  count          = var.egress_traffic_through_inspection_vpc ? 0 : 1
   subnet_id      = aws_subnet.az1_public.id
-  route_table_id = aws_route_table.public_network[0].id
+  route_table_id = aws_route_table.public_network.id
 }
 
 resource "aws_route_table_association" "az2_public_rta" {
-  count          = var.egress_traffic_through_inspection_vpc ? 0 : 1
   subnet_id      = aws_subnet.az2_public.id
-  route_table_id = aws_route_table.public_network[0].id
-}
-
-# Create when nfw inspection vpc is in use
-# For egress + east-west inspection, point the default route at the TGW.
-resource "aws_route_table" "public_network_with_nfw_inspection_vpc" {
-  count  = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  vpc_id = aws_vpc.main_vpc.id
-  tags = {
-    Name = "${var.stack_description} (Public Route Table w/ NFW Inspection VPC)"
-  }
-}
-
-resource "aws_route" "public_network_egress_through_nfw_inspection_vpc" {
-  count                  = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  route_table_id         = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
-  destination_cidr_block = "0.0.0.0/0"
-  transit_gateway_id     = data.terraform_remote_state.firewall-inspection-vpc.outputs.transit_gateway_id
-
-  depends_on = [aws_ec2_transit_gateway_vpc_attachment.main_vpc]
-}
-
-resource "aws_route_table_association" "public_network_with_nfw_inspection_vpc_az1" {
-  count          = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  subnet_id      = aws_subnet.az1_public.id
-  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
-}
-
-resource "aws_route_table_association" "public_network_with_nfw_inspection_vpc_az2" {
-  count          = var.egress_traffic_through_inspection_vpc ? 1 : 0
-  subnet_id      = aws_subnet.az2_public.id
-  route_table_id = aws_route_table.public_network_with_nfw_inspection_vpc[0].id
+  route_table_id = aws_route_table.public_network.id
 }
