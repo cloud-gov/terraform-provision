@@ -121,7 +121,15 @@ module "stack" {
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
   remote_state_bucket                       = var.remote_state_bucket
+  attach_to_inspection_vpc                  = var.attach_to_inspection_vpc
   egress_traffic_through_inspection_vpc     = var.egress_traffic_through_inspection_vpc
+  inspection_internal_cidrs                 = var.inspection_internal_cidrs
+
+  # Transit gateway attachment subnets, created as soon as either inspection flag is set.
+  tgw_subnet_cidrs = [
+    cidrsubnet(var.vpc_cidr, 12, 48),
+    cidrsubnet(var.vpc_cidr, 12, 49),
+  ]
 }
 
 module "concourse_production" {

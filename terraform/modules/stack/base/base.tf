@@ -19,7 +19,11 @@ module "vpc" {
   s3_gateway_policy_accounts            = var.s3_gateway_policy_accounts
   cidr_blocks                           = var.cidr_blocks
   remote_state_bucket                   = var.remote_state_bucket
+  remote_state_key                      = var.remote_state_key
+  attach_to_inspection_vpc              = var.attach_to_inspection_vpc
   egress_traffic_through_inspection_vpc = var.egress_traffic_through_inspection_vpc
+  tgw_subnet_cidrs                      = var.tgw_subnet_cidrs
+  inspection_internal_cidrs             = var.inspection_internal_cidrs
 }
 
 module "rds_network" {

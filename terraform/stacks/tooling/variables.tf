@@ -452,8 +452,20 @@ variable "fips_stemcell_bucket" {
   default = "fips-stemcell"
 }
 
+variable "attach_to_inspection_vpc" {
+  type        = bool
+  default     = false
+  description = "Phase one of a staged cutover onto the network firewall inspection VPC: build this stack's transit gateway subnets, attachment, and TGW routing, and leave them idle. No traffic moves. Safe to apply at any time, and the point at which the TGW path should be verified -- attachment available, this VPC's CIDR present in the inspection VPC's TGW route table, firewall endpoints healthy, and inspection_nat_egress_ips added to any external allowlist that currently names nat_egress_ip_az1/az2. Implied by egress_traffic_through_inspection_vpc, so setting only that flag still cuts over in a single apply."
+}
+
 variable "egress_traffic_through_inspection_vpc" {
   type        = bool
   default     = false
-  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC"
+  description = "Phase two: route this stack's private-subnet egress through the network firewall inspection VPC instead of its own NAT gateways. Implies attach_to_inspection_vpc. This is the only step that moves traffic, and it resets established outbound TCP connections because the source address external services see changes to the inspection VPC's NAT EIPs. Schedule it."
+}
+
+variable "inspection_internal_cidrs" {
+  type        = list(string)
+  default     = []
+  description = "Internal CIDRs that this stack's public subnets should reach over the inspection VPC's transit gateway rather than the internet gateway. Read only when egress_traffic_through_inspection_vpc is true. Leave empty to inspect private-subnet egress only; the public subnets' default route stays on the internet gateway either way so inbound traffic to the main load balancer keeps its return path. Set this to the CIDRs of the environments this stack needs to reach east-west -- not to this VPC's own CIDR, which is served by the implicit local route."
 }

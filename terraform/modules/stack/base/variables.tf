@@ -225,8 +225,38 @@ variable "remote_state_bucket" {
   type = string
 }
 
+/*
+ * Network firewall inspection VPC. Pass-throughs to modules/bosh_vpc; see that
+ * module's README.md and variables.tf for the semantics. Defaults here match the
+ * defaults there.
+ */
+
+variable "attach_to_inspection_vpc" {
+  type        = bool
+  default     = false
+  description = "Phase one of a staged cutover: build the spoke side of the inspection VPC attachment and leave it idle, moving no traffic. Implied by egress_traffic_through_inspection_vpc."
+}
+
 variable "egress_traffic_through_inspection_vpc" {
   type        = bool
   default     = false
-  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC"
+  description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC. Implies attach_to_inspection_vpc. This is the flag that moves traffic and resets established outbound connections."
+}
+
+variable "remote_state_key" {
+  type        = string
+  default     = "firewall-inspection-vpc/terraform.tfstate"
+  description = "State key of the firewall-inspection-vpc stack within remote_state_bucket."
+}
+
+variable "tgw_subnet_cidrs" {
+  type        = list(string)
+  default     = []
+  description = "CIDRs for the two transit gateway attachment subnets, ordered [az1, az2]. Required when either inspection flag is true."
+}
+
+variable "inspection_internal_cidrs" {
+  type        = list(string)
+  default     = []
+  description = "Internal CIDRs the public subnets should reach over the inspection VPC's transit gateway rather than the internet gateway."
 }
