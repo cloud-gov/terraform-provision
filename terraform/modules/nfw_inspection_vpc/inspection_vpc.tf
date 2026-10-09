@@ -56,13 +56,15 @@ resource "aws_internet_gateway" "igw" {
   tags   = merge(var.tags, { Name = "${var.name_prefix}-igw" })
 }
 
-# nat gateways
+# prevent_destroy of EIPs because, once a spoke sets
+# egress_traffic_through_inspection_vpc, these EIPs are the platform's actual
+# egress addresses -- the ones external allowlists have to name.
 resource "aws_eip" "ngw" {
   for_each = local.azs
   domain   = "vpc"
   tags     = merge(var.tags, { Name = "${var.name_prefix}-nat-eip-${each.key}" })
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
