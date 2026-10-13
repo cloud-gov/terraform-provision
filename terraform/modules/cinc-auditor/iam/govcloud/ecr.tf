@@ -9,7 +9,7 @@ data "terraform_remote_state" "ecr" {
 }
 
 locals {
-  cinc_auditor_ecr_repository_arn = data.terraform_remote_state.ecr.outputs.repository_arns["cinc-auditor"]
+  cinc_auditor_ecr_repository_arn = data.terraform_remote_state.ecr.outputs.repository_arns["cg-cinc-auditor"]
 }
 
 // A user with ECR pull permissions so Cloud Foundry can pull the CSB image.
