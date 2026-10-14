@@ -1,5 +1,5 @@
 locals {
-  lambda_source_tag      = "v0.1.2"
+  lambda_source_tag      = "v0.1.1"
   lambda_source_base_url = "https://raw.githubusercontent.com/cloud-gov/aws_opensearch_preprocess_lambdas/refs/tags/${local.lambda_source_tag}/lambda_functions"
 }
 
@@ -34,19 +34,11 @@ data "http" "lambda_python" {
   url = "${local.lambda_source_base_url}/transform_lambda.py"
 }
 
-data "http" "org_partitioning_python" {
-  url = "${local.lambda_source_base_url}/org_partitioning.py"
-}
-
 data "archive_file" "lambda_zip" {
   type = "zip"
   source {
     content  = data.http.lambda_python.response_body
     filename = "transform_lambda.py"
-  }
-  source {
-    content  = data.http.org_partitioning_python.response_body
-    filename = "org_partitioning.py"
   }
   output_path = "${path.module}/transform_lambda.zip"
 }
