@@ -502,6 +502,7 @@ module "csb_iam" {
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
+
 # This will need to add "min_special = 2" for future passwords
 resource "random_password" "csb_rds_password" {
   length = 32
@@ -611,4 +612,14 @@ module "platform_snapshot" {
 
   resource_prefix = local.platform_snapshot_resource_prefix
   bucket          = module.platform_opensearch.platform-snapshot_bucket_arn
+}
+
+module "cinc_auditor_iam" {
+  source = "../../modules/cinc-auditor/iam/govcloud"
+
+  stack_description = var.stack_description
+
+  ecr_remote_state_bucket = var.remote_state_bucket
+  ecr_remote_state_region = var.aws_default_region
+  ecr_stack_name          = var.ecr_stack_name
 }
