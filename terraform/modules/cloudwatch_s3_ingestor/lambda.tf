@@ -17,7 +17,7 @@ resource "aws_lambda_function" "transform" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.13"
   architectures    = ["arm64"]
-  memory_size      = 300
+  memory_size      = 325
 
   timeout = 60
 
