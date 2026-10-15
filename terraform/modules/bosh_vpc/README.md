@@ -12,15 +12,17 @@ Egress through the inspection VPC requires multiple deployments to minimize down
 
 Moving egress to the inspection VPC changes the source address external services see, from this VPC's NAT EIPs to the inspection VPC's EIPs. **Established outbound TCP connections reset, resulting in downtime.** No amount of dependency ordering prevents this; it is a reality of changing the egress path, not of how Terraform applies it.
 
-### What does not break
+#### No impact
 
-Useful when scoping the maintenance window:
+The following are not impacted by enabling the firewall (useful when scoping the maintenance window):
 
 - **S3** `aws_vpc_endpoint.private-s3` is a gateway endpoint associated with both private route tables, and its prefix-list route is more specific than the default route. BOSH and Concourse blobstore traffic never touch the TGW.
 - **Intra-VPC traffic** — it uses the local route. BOSH director to agent keeps working.
 - **Inbound traffic.** The public route table keeps `0.0.0.0/0` on the internet gateway, so load balancers and the interface VPC endpoints are untouched.
 
-### What stays in place
+#### What stays in place
+
+The following are intentionally kept in place:
 
 - **The NAT gateways and EIPs in this VPC.** They go idle but are not destroyed so rollback is possible.
 
