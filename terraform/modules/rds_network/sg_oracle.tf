@@ -2,9 +2,15 @@
  * Variables required:
  *   stack_description
  *   vpc_id
- *   security_groups        (list of source SG IDs allowed to reach Oracle)
- *   security_groups_count  (length of security_groups)
+ *   security_groups           (list of source SG IDs allowed to reach Oracle)
+ *   security_groups_count     (length of security_groups)
+ *   rds_oracle_rules_enabled  (false in stacks with no Oracle RDS, e.g. tooling)
  */
+
+locals {
+  # Zero rules unless var.rds_oracle_rules_enabled is True (e.g. false in Tooling)
+  oracle_rules_count = var.rds_oracle_rules_enabled ? var.security_groups_count : 0
+}
 
 resource "aws_security_group" "rds_oracle" {
   description = "Allow access to incoming Oracle traffic"
@@ -25,7 +31,7 @@ resource "aws_security_group" "rds_oracle" {
 }
 
 resource "aws_security_group_rule" "oracle_ingress_tcps" {
-  count = var.security_groups_count
+  count = local.oracle_rules_count
 
   description              = "Oracle TCPS/TLS listener (2484) from allowed source SGs"
   type                     = "ingress"
@@ -37,7 +43,7 @@ resource "aws_security_group_rule" "oracle_ingress_tcps" {
 }
 
 resource "aws_security_group_rule" "oracle_egress_default" {
-  count = var.security_groups_count
+  count = local.oracle_rules_count
 
   description              = "Oracle egress to allowed source SGs"
   type                     = "egress"

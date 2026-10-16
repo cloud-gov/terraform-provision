@@ -218,6 +218,7 @@ module "stack" {
   rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
+  rds_oracle_rules_enabled                  = true # development/staging/production brokered Oracle RDS
 
   parent_account_id           = data.aws_arn.parent_role_arn.account
   target_account_id           = data.aws_caller_identity.tooling.account_id
@@ -501,6 +502,7 @@ module "csb_iam" {
   sns_platform_notification_topic_arn = module.sns.cg_platform_notifications_arn
 }
 
+
 # This will need to add "min_special = 2" for future passwords
 resource "random_password" "csb_rds_password" {
   length = 32
@@ -610,4 +612,14 @@ module "platform_snapshot" {
 
   resource_prefix = local.platform_snapshot_resource_prefix
   bucket          = module.platform_opensearch.platform-snapshot_bucket_arn
+}
+
+module "cinc_auditor_iam" {
+  source = "../../modules/cinc-auditor/iam/govcloud"
+
+  stack_description = var.stack_description
+
+  ecr_remote_state_bucket = var.remote_state_bucket
+  ecr_remote_state_region = var.aws_default_region
+  ecr_stack_name          = var.ecr_stack_name
 }

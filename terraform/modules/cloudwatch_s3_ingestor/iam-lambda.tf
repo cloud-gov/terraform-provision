@@ -40,7 +40,8 @@ data "aws_iam_policy_document" "lambda_logs_policy" {
     ]
     effect = "Allow"
     resources = [
-      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-${local.prefixes[each.key]}*"
+      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/rds/instance/cg-aws-broker-${local.prefixes[each.key]}*",
+      "arn:${var.aws_partition}:logs:${var.aws_region}:${var.account_id}:log-group:/aws/OpenSearchService/domains/cg-broker-${local.opensearch_prefixes[each.key]}-*"
     ]
   }
 
@@ -84,6 +85,16 @@ data "aws_iam_policy_document" "lambda_tag_policy" {
     effect = "Allow"
     resources = [
       "arn:${var.aws_partition}:rds:${var.aws_region}:${var.account_id}:db:cg-aws-broker-${local.prefixes[each.key]}*"
+    ]
+  }
+  statement {
+    actions = [
+      "es:ListTags",
+      "es:DescribeDomain"
+    ]
+    effect = "Allow"
+    resources = [
+      "arn:${var.aws_partition}:es:${var.aws_region}:${var.account_id}:domain/cg-broker-${local.opensearch_prefixes[each.key]}-*"
     ]
   }
   statement {
