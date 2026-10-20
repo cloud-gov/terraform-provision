@@ -48,6 +48,9 @@ groups:
       - acme-certificate-dev-wildcard-pages-sites
       - acme-certificate-wildcard-pages
       - acme-certificate-wildcard-pages-sites
+      - acme-certificate-dev2-wildcard-pages
+      - acme-certificate-dev2-pages
+      - acme-certificate-dev2-wildcard-pages-sites
       - delete-old-certificates-dev
       - delete-old-certificates-staging
       - delete-old-certificates-production
@@ -1059,7 +1062,7 @@ jobs:
           TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
           TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
-          TF_VAR_pages_cert_patterns: "[]"
+          TF_VAR_pages_cert_patterns: '["pages-dev2.cloud.gov"]'
           TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((staging_waf_drop_logs_hosts_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
@@ -2035,6 +2038,96 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
+  #adding in pages-dev2 for migration to cf staging
+  - name: acme-certificate-dev2-pages
+
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: pages-dev2.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "pages-dev2.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: pages-dev2.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for pages-dev2.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev2-wildcard-pages
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.pages-dev2.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.pages-dev2.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: star.pages-dev2.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.pages-dev2.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev2-wildcard-pages-sites
+    plan:
+      - in_parallel: *prod-certificate-resources
+      - *check-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.sites.pages-dev2.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.sites.pages-dev2.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: star.sites.pages-dev2.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.sites.pages-dev2.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+        #end pages-dev2
+
   - name: delete-old-certificates-dev
     plan:
       - in_parallel:
@@ -2079,6 +2172,9 @@ jobs:
             trigger: true
             passed:
               - acme-certificate-staging
+              - acme-certificate-dev2-pages
+              - acme-certificate-dev2-wildcard-pages
+              - acme-certificate-dev2-wildcard-pages-sites
           - get: cg-provision-repo
           - get: terraform-yaml-tooling
             resource: terraform-yaml-tooling
