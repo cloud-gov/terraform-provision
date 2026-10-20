@@ -2049,9 +2049,9 @@ jobs:
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
         params:
-          CERT_PREFIX: pages-dev2.cloud.gov
+          CERT_PREFIX: pages-dev2.fr-stage.cloud.gov
           ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-          DOMAIN: "pages-dev2.cloud.gov"
+          DOMAIN: "pages-dev2.fr-stage.cloud.gov"
           EMAIL: cloud-gov-operations@gsa.gov
       - task: upload-certificate
         image: general-task
@@ -2059,12 +2059,12 @@ jobs:
         params:
           AWS_DEFAULT_REGION: ((aws_default_region))
           CERT_PATH: /lets-encrypt/staging/
-          CERT_PREFIX: pages-dev2.cloud.gov
+          CERT_PREFIX: pages-dev2.fr-stage.cloud.gov
     on_failure:
       put: slack
       params:
         text: |
-          :x: Failed to check ACME certificates for pages-dev2.cloud.gov
+          :x: Failed to check ACME certificates for pages-dev2.fr-stage.cloud.gov
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel))
         username: ((slack-username))
@@ -2078,9 +2078,9 @@ jobs:
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
         params:
-          CERT_PREFIX: star.pages-dev2.cloud.gov
+          CERT_PREFIX: star.pages-dev2.fr-stage.cloud.gov
           ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-          DOMAIN: "*.pages-dev2.cloud.gov"
+          DOMAIN: "*.pages-dev2.fr-stage.cloud.gov"
           EMAIL: cloud-gov-operations@gsa.gov
       - task: upload-certificate
         image: general-task
@@ -2088,12 +2088,12 @@ jobs:
         params:
           AWS_DEFAULT_REGION: ((aws_default_region))
           CERT_PATH: /lets-encrypt/staging/
-          CERT_PREFIX: star.pages-dev2.cloud.gov
+          CERT_PREFIX: star.pages-dev2.fr-stage.cloud.gov
     on_failure:
       put: slack
       params:
         text: |
-          :x: Failed to check ACME certificates for *.pages-dev2.cloud.gov
+          :x: Failed to check ACME certificates for *.pages-dev2.fr-stage.cloud.gov
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel))
         username: ((slack-username))
@@ -2107,9 +2107,9 @@ jobs:
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
         params:
-          CERT_PREFIX: star.sites.pages-dev2.cloud.gov
+          CERT_PREFIX: star.sites.pages-dev2.fr-stage.cloud.gov
           ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
-          DOMAIN: "*.sites.pages-dev2.cloud.gov"
+          DOMAIN: "*.sites.pages-dev2.fr-stage.cloud.gov"
           EMAIL: cloud-gov-operations@gsa.gov
       - task: upload-certificate
         image: general-task
@@ -2117,12 +2117,12 @@ jobs:
         params:
           AWS_DEFAULT_REGION: ((aws_default_region))
           CERT_PATH: /lets-encrypt/staging/
-          CERT_PREFIX: star.sites.pages-dev2.cloud.gov
+          CERT_PREFIX: star.sites.pages-dev2.fr-stage.cloud.gov
     on_failure:
       put: slack
       params:
         text: |
-          :x: Failed to check ACME certificates for *.sites.pages-dev2.cloud.gov
+          :x: Failed to check ACME certificates for *.sites.pages-dev2.fr-stage.cloud.gov
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel))
         username: ((slack-username))
