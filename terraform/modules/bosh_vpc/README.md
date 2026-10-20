@@ -59,8 +59,8 @@ Be sure you read this carefully and completely before proceeding. The dragons li
 |---|---|---|
 | `attach_to_inspection_vpc` | — | Phase one. Defaults to `false`. |
 | `egress_traffic_through_inspection_vpc` | — | Phase two. Defaults to `false`. Implies phase one. |
-| `remote_state_bucket` | Yes | Bucket holding the `firewall-inspection-vpc` stack's state. |
-| `remote_state_key` | No | Defaults to `firewall-inspection-vpc/terraform.tfstate`. |
+| `firewall_inspection_remote_state_bucket` | Yes | Bucket holding the `firewall-inspection-vpc` stack's state. |
+| `firewall_inspection_remote_state_key` | No | Defaults to `firewall-inspection-vpc/terraform.tfstate`. |
 | `tgw_subnet_cidrs` | Yes | Two CIDRs, `[az1, az2]`, inside `vpc_cidr`, not overlapping any existing subnet. `/28` is enough. |
 | `inspection_internal_cidrs` | No | Destinations the *public* subnets should reach over the TGW. Empty routes nothing from the public subnets. |
 

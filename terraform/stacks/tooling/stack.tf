@@ -121,7 +121,7 @@ module "stack" {
   rds_pgaudit_log_values_bosh_credhub       = var.rds_pgaudit_log_values_bosh_credhub
   rds_shared_preload_libraries_bosh         = var.rds_shared_preload_libraries_bosh
   rds_pgaudit_log_values_bosh               = var.rds_pgaudit_log_values_bosh
-  remote_state_bucket                       = var.remote_state_bucket
+  firewall_inspection_remote_state_bucket   = var.firewall_inspection_remote_state_bucket
   attach_to_inspection_vpc                  = var.attach_to_inspection_vpc
   egress_traffic_through_inspection_vpc     = var.egress_traffic_through_inspection_vpc
   inspection_internal_cidrs                 = var.inspection_internal_cidrs

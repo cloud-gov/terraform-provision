@@ -33,8 +33,8 @@ data "terraform_remote_state" "firewall_inspection_vpc" {
   backend = "s3"
 
   config = {
-    bucket = var.remote_state_bucket
-    key    = var.remote_state_key
+    bucket = var.firewall_inspection_remote_state_bucket
+    key    = var.firewall_inspection_remote_state_key
 
     region = var.aws_default_region
   }
@@ -42,13 +42,13 @@ data "terraform_remote_state" "firewall_inspection_vpc" {
   # remote_state_bucket has no working default
   lifecycle {
     precondition {
-      condition     = var.remote_state_bucket != ""
-      error_message = "This VPC is attached to the inspection VPC (attach_to_inspection_vpc or egress_traffic_through_inspection_vpc is true), so remote_state_bucket must name the S3 bucket holding the firewall-inspection-vpc stack's Terraform state."
+      condition     = var.firewall_inspection_remote_state_bucket != ""
+      error_message = "This VPC is attached to the inspection VPC (attach_to_inspection_vpc or egress_traffic_through_inspection_vpc is true), so firewall_inspection_remote_state_bucket must name the S3 bucket holding the firewall-inspection-vpc stack's Terraform state."
     }
 
     precondition {
-      condition     = var.remote_state_key != ""
-      error_message = "remote_state_key must not be empty; it is the state key of the firewall-inspection-vpc stack within remote_state_bucket."
+      condition     = var.firewall_inspection_remote_state_key != ""
+      error_message = "firewall_inspection_remote_state_key must not be empty; it is the state key of the firewall-inspection-vpc stack within firewall_inspection_remote_state_bucket."
     }
   }
 }

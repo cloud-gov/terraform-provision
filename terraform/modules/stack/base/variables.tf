@@ -226,7 +226,7 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
   default     = "none"
 }
 
-variable "remote_state_bucket" {
+variable "firewall_inspection_remote_state_bucket" {
   type = string
 }
 
@@ -248,10 +248,10 @@ variable "egress_traffic_through_inspection_vpc" {
   description = "When true, egress traffic from the VPC is routed through the network firewall inspection VPC. Implies attach_to_inspection_vpc. This is the flag that moves traffic and resets established outbound connections."
 }
 
-variable "remote_state_key" {
+variable "firewall_inspection_remote_state_key" {
   type        = string
   default     = "firewall-inspection-vpc/terraform.tfstate"
-  description = "State key of the firewall-inspection-vpc stack within remote_state_bucket."
+  description = "State key of the firewall-inspection-vpc stack within firewall_inspection_remote_state_bucket."
 }
 
 variable "tgw_subnet_cidrs" {

@@ -94,13 +94,13 @@ variable "egress_traffic_through_inspection_vpc" {
   description = "When true, private-subnet egress leaves this VPC via the transit gateway published by the firewall-inspection-vpc stack instead of this VPC's own NAT gateways. Implies attach_to_inspection_vpc. This is the flag that moves traffic: expect established outbound TCP connections to reset, because the source address external services see changes from this VPC's NAT EIPs to the inspection VPC's. The NAT gateways and their EIPs are deliberately left in place so the switch is reversible without reallocating addresses."
 }
 
-variable "remote_state_bucket" {
+variable "firewall_inspection_remote_state_bucket" {
   type        = string
   default     = ""
   description = "S3 bucket holding the firewall-inspection-vpc stack's Terraform state. Read only when the VPC is attached to the inspection VPC; the remote state data source is gated so stacks that have opted out do not need this set."
 }
 
-variable "remote_state_key" {
+variable "firewall_inspection_remote_state_key" {
   type        = string
   default     = "firewall-inspection-vpc/terraform.tfstate"
   description = "State key for the firewall-inspection-vpc stack within remote_state_bucket. Overridable rather than hardcoded because the key is a property of the caller's backend layout, not of this module."
