@@ -31,11 +31,6 @@ data "aws_iam_policy_document" "firehose_policy" {
     resources = [
       "${aws_s3_bucket.opensearch_cloudwatch_buckets[each.key].arn}/*"
     ]
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["AES256"]
-    }
   }
   statement {
     effect = "Allow"

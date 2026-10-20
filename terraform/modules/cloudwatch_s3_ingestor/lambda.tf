@@ -15,9 +15,9 @@ resource "aws_lambda_function" "transform" {
   role             = aws_iam_role.lambda_role[each.key].arn
   handler          = "transform_lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  runtime          = "python3.13"
+  runtime          = "python3.14"
   architectures    = ["arm64"]
-  memory_size      = 325
+  memory_size      = 512
 
   timeout = 60
 
@@ -69,7 +69,7 @@ resource "aws_lambda_function" "cloudwatch_filter" {
   role             = aws_iam_role.cloudwatch_lambda_role[each.key].arn
   handler          = "cloudwatch_lambda.lambda_handler"
   source_code_hash = data.archive_file.cloudwatch_lambda_zip.output_base64sha256
-  runtime          = "python3.13"
+  runtime          = "python3.14"
   architectures    = ["arm64"]
 
   timeout = 60
