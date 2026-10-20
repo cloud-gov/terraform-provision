@@ -28,10 +28,22 @@ resource "aws_iam_role_policy" "firehose_policy" {
       {
         Effect = "Allow"
         Action = [
-          "s3:PutObject"
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:ListBucketMultipartUploads"
         ]
         Resource = [
-          "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}",
+          aws_s3_bucket.opensearch_metric_buckets[each.key].arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:AbortMultipartUpload"
+        ]
+        Resource = [
           "${aws_s3_bucket.opensearch_metric_buckets[each.key].arn}/*"
         ]
       },
