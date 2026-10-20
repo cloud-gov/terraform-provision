@@ -1665,7 +1665,7 @@ jobs:
 
   - name: acme-certificate-staging
     plan:
-      - in_parallel:
+      - in_parallel: &staging-certificate-resources
           - get: general-task
           - get: staging-weekly-timer
             trigger: true
@@ -1674,7 +1674,8 @@ jobs:
             resource: terraform-yaml-tooling
           - get: terraform-yaml-external
             resource: terraform-yaml-external-staging
-      - task: check-certificates
+      - &check-staging-certificates-task
+        task: check-certificates
         image: general-task
         file: cg-provision-repo/ci/check-certificates.yml
         params:
@@ -2042,8 +2043,8 @@ jobs:
   - name: acme-certificate-dev2-pages
 
     plan:
-      - in_parallel: *prod-certificate-resources
-      - *check-certificates-task
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
       - task: provision-certificate
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
@@ -2071,8 +2072,8 @@ jobs:
 
   - name: acme-certificate-dev2-wildcard-pages
     plan:
-      - in_parallel: *prod-certificate-resources
-      - *check-certificates-task
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
       - task: provision-certificate
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
@@ -2100,8 +2101,8 @@ jobs:
 
   - name: acme-certificate-dev2-wildcard-pages-sites
     plan:
-      - in_parallel: *prod-certificate-resources
-      - *check-certificates-task
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
       - task: provision-certificate
         image: general-task
         file: cg-provision-repo/ci/provision-certificate.yml
