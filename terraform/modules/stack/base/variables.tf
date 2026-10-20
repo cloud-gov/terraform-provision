@@ -227,7 +227,6 @@ variable "rds_pgaudit_log_values_bosh_credhub" {
 }
 
 variable "firewall_inspection_remote_state_bucket" {
-  type = string
 }
 
 /*
