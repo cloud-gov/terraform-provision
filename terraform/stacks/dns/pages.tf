@@ -409,49 +409,49 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_cloud_gov_aaaa" {
 
 ## Dev2 Test Site ##
 
-resource "aws_route53_record" "cloud_gov_test-site_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "test-site.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov_test-site_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-site.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["test-site.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "_acme-challenge.test-site.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-site.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["_acme-challenge.test-site.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "test-wiab.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-wiab.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["test-wiab.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "_acme-challenge.test-wiab.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-wiab.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["_acme-challenge.test-wiab.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov_test-cio-gov_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "test-cio-gov.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-cio-gov.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["test-cio-gov.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
-resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev2_cloud_gov" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "_acme-challenge.test-cio-gov.pages-dev2.cloud.gov."
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-cio-gov.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["_acme-challenge.test-cio-gov.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
