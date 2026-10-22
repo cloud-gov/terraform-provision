@@ -1062,7 +1062,7 @@ jobs:
           TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
           TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
-          TF_VAR_pages_cert_patterns: '["pages-dev2.cloud.gov"]'
+          TF_VAR_pages_cert_patterns: '["pages-dev2.fr-stage.cloud.gov"]'
           TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((staging_waf_drop_logs_hosts_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
