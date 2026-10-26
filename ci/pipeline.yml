@@ -2255,13 +2255,13 @@ jobs:
       - in_parallel:
           - get: pipeline-tasks
             params: {depth: 1}
-          - get: cg-provision-repo-development
+          - get: cg-provision-repo
             # trigger: true
             params: {depth: 1}
       - task: terraform-plan-firewall-inspection-vpc
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: cg-provision-repo-development}
+        input_mapping: {terraform-templates: cg-provision-repo}
         params: &firewall-inspection-vpc-params
           TERRAFORM_ACTION: plan
           STACK_NAME: firewall-inspection-vpc
@@ -2304,14 +2304,14 @@ jobs:
       - in_parallel:
           - get: pipeline-tasks
             params: {depth: 1}
-          - get: terraform-provision-repo
+          - get: cg-provision-repo
             # trigger: true
             params: {depth: 1}
             passed: [plan-firewall-inspection-vpc]
       - task: terraform-apply-new-firewall-inspection-vpc
         tags: [iaas]
         file: pipeline-tasks/terraform-apply.yml
-        input_mapping: {terraform-templates: terraform-provision-repo-development}
+        input_mapping: {terraform-templates: cg-provision-repo}
         params:
           <<: *firewall-inspection-vpc-params
           TERRAFORM_ACTION: apply
