@@ -360,6 +360,7 @@ jobs:
           TF_VAR_log_alerts_ses_aws_region: ((log_alerts_ses_aws_region))
           TF_VAR_platform_alerts_dmarc_email: ((platform_alerts_dmarc_email))
           TF_VAR_platform_alerts_ses_aws_region: ((platform_alerts_ses_aws_region))
+          TF_VAR_platform_notifications_ses_dkim_attribute_tokens: ((platform_notifications_ses_dkim_attribute_tokens))
       - *notify-slack
 
   - name: apply-dns

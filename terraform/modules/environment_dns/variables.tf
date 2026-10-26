@@ -101,3 +101,8 @@ variable "diego_api_bbs_lb_dns_name" {
   type        = string
   description = "DNS name for load balancer handling Diego API and BBS traffic"
 }
+
+variable "platform_notifications_ses_dkim_attribute_tokens" {
+  type        = list(string)
+  description = "Tokens to use for DKIM verification of SES identity handling platform notifications"
+}

@@ -52,3 +52,8 @@ variable "platform_alerts_ses_aws_region" {
   type        = string
   description = "Name of AWS region where log alert SES resources are deployed"
 }
+
+variable "platform_notifications_ses_dkim_attribute_tokens" {
+  type        = map(list(string))
+  description = "Tokens to use for DKIM verification of SES identity handling platform notifications"
+}
