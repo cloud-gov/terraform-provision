@@ -1,5 +1,5 @@
 locals {
-  platform_notifications_domain = "notifications.${var.admin_subdomain}"
+  platform_notifications_domain = "notifications.${var.domain}"
 }
 
 resource "aws_route53_zone" "platform_notifications_mail_zone" {
