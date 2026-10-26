@@ -1,5 +1,6 @@
 locals {
-  log_alerts_domain = "log-alerts.${var.admin_subdomain}"
+  log_alerts_domain             = "log-alerts.${var.admin_subdomain}"
+  platform_notifications_domain = "notifications.${var.admin_subdomain}"
 
   # rua=mailto:reports@dmarc.cyber.dhs.gov is required by BOD-18-01: https://cyber.dhs.gov/assets/report/bod-18-01.pdf
   dmarc_rua = join(
@@ -58,4 +59,14 @@ resource "aws_route53_record" "log_alerts_spf" {
   type    = "TXT"
   ttl     = "600"
   records = ["v=spf1 include:amazonses.com -all"]
+}
+
+resource "aws_route53_record" "platform_notifications_dkim_records" {
+  for_each = toset(var.platform_notifications_ses_dkim_attribute_tokens)
+
+  zone_id = aws_route53_zone.platform_alerts_mail_zone.zone_id
+  name    = "${each.value}._domainkey.${local.platform_notifications_domain}"
+  type    = "CNAME"
+  ttl     = "600"
+  records = ["${each.value}.dkim.amazonses.com"]
 }
