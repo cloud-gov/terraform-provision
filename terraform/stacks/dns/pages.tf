@@ -351,17 +351,17 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev_
 
 ##Pages dev-2 - moving dev from CF Prod to CF Staging
 
-resource "aws_route53_record" "cloud_gov_pages_dev2_cloud_gov_cname" {
+resource "aws_route53_record" "cloud_gov_pages_dev2_fr-stage_cloud_gov_cname" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "pages-dev2.cloud.gov."
+  name    = "pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
   records = ["dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"]
 }
 
-resource "aws_route53_record" "cloud_gov_star_pages_dev2_cloud_gov_a" {
+resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "*.pages-dev2.cloud.gov."
+  name    = "*.pages-dev2.fr-stage.cloud.gov."
   type    = "A"
 
   alias {
@@ -371,9 +371,9 @@ resource "aws_route53_record" "cloud_gov_star_pages_dev2_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_pages_dev2_cloud_gov_aaaa" {
+resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "*.pages-dev2.cloud.gov."
+  name    = "*.pages-dev2.fr-stage.cloud.gov."
   type    = "AAAA"
 
   alias {
@@ -383,9 +383,9 @@ resource "aws_route53_record" "cloud_gov_star_pages_dev2_cloud_gov_aaaa" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_cloud_gov_a" {
+resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_a" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "*.sites.pages-dev2.cloud.gov."
+  name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
   type    = "A"
 
   alias {
@@ -395,9 +395,9 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_cloud_gov_a" {
   }
 }
 
-resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_cloud_gov_aaaa" {
+resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_aaaa" {
   zone_id = aws_route53_zone.cloud_gov_zone.zone_id
-  name    = "*.sites.pages-dev2.cloud.gov."
+  name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
   type    = "AAAA"
 
   alias {
@@ -414,7 +414,7 @@ resource "aws_route53_record" "cloud_gov_test-site_pages-dev2_fr-stage_cloud_gov
   name    = "test-site.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["test-site.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["test-site.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev2_fr-stage_cloud_gov" {
@@ -422,7 +422,7 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev2_fr
   name    = "_acme-challenge.test-site.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["_acme-challenge.test-site.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["_acme-challenge.test-site.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev2_fr-stage_cloud_gov" {
@@ -430,7 +430,7 @@ resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev2_fr-stage_cloud_gov
   name    = "test-wiab.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["test-wiab.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["test-wiab.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev2_fr-stage_cloud_gov" {
@@ -438,7 +438,7 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev2_fr
   name    = "_acme-challenge.test-wiab.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["_acme-challenge.test-wiab.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["_acme-challenge.test-wiab.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 resource "aws_route53_record" "cloud_gov_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
@@ -446,7 +446,7 @@ resource "aws_route53_record" "cloud_gov_test-cio-gov_pages-dev2_fr-stage_cloud_
   name    = "test-cio-gov.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["test-cio-gov.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["test-cio-gov.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
@@ -454,7 +454,7 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev2
   name    = "_acme-challenge.test-cio-gov.pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
-  records = ["_acme-challenge.test-cio-gov.pages-dev2.cloud.gov.external-domains-staging.cloud.gov."]
+  records = ["_acme-challenge.test-cio-gov.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
 }
 
 ## End Development ##
