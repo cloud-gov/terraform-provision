@@ -7,12 +7,12 @@ resource "aws_route53_zone" "platform_notifications_mail_zone" {
   comment = "Domain used for sending alerts from platform"
 }
 
-resource "aws_route53_record" "brokered_log_alerts_zone_ns" {
+resource "aws_route53_record" "platform_notifications_zone_ns" {
   zone_id = data.aws_route53_zone.apex_domain.zone_id
   name    = local.platform_notifications_domain
   type    = "NS"
   ttl     = "30"
-  records = aws_route53_zone.log_alerts_mail_zone.name_servers
+  records = aws_route53_zone.platform_notifications_mail_zone.name_servers
 }
 
 resource "aws_route53_record" "platform_notifications_dkim_records" {
