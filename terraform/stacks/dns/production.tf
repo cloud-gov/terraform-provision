@@ -20,7 +20,7 @@ module "production_dns" {
   platform_alerts_dmarc_email               = var.platform_alerts_dmarc_email
   platform_alerts_ses_aws_region            = var.platform_alerts_ses_aws_region
 
-  platform_notifications_ses_dkim_attribute_tokens = var.platform_notifications_ses_dkim_attribute_tokens["production"]
+  platform_notifications_ses_dkim_attribute_tokens = lookup(var.platform_notifications_ses_dkim_attribute_tokens, "production", [])
 }
 
 module "test_cdn_dns_production" {
