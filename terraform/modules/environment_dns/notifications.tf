@@ -18,7 +18,7 @@ resource "aws_route53_record" "platform_notifications_zone_ns" {
 resource "aws_route53_record" "platform_notifications_dkim_records" {
   for_each = toset(var.platform_notifications_ses_dkim_attribute_tokens)
 
-  zone_id = aws_route53_zone.platform_notifications_domain.zone_id
+  zone_id = aws_route53_zone.platform_notifications_mail_zone.zone_id
   name    = "${each.value}._domainkey.${local.platform_notifications_domain}"
   type    = "CNAME"
   ttl     = "600"
