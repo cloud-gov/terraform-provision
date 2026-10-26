@@ -352,7 +352,7 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev_
 ##Pages dev-2 - moving dev from CF Prod to CF Staging
 
 resource "aws_route53_record" "cloud_gov_pages_dev2_fr-stage_cloud_gov_cname" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "pages-dev2.fr-stage.cloud.gov."
   type    = "CNAME"
   ttl     = 60
@@ -360,7 +360,7 @@ resource "aws_route53_record" "cloud_gov_pages_dev2_fr-stage_cloud_gov_cname" {
 }
 
 resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "*.pages-dev2.fr-stage.cloud.gov."
   type    = "A"
 
@@ -372,7 +372,7 @@ resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_a" {
 }
 
 resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "*.pages-dev2.fr-stage.cloud.gov."
   type    = "AAAA"
 
@@ -384,7 +384,7 @@ resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_aaaa
 }
 
 resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_a" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
   type    = "A"
 
@@ -396,7 +396,7 @@ resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_go
 }
 
 resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_aaaa" {
-  zone_id = aws_route53_zone.cloud_gov_zone.zone_id
+  zone_id = aws_route53_zone.staging_zone.zone_id
   name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
   type    = "AAAA"
 
