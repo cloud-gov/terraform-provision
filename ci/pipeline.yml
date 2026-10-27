@@ -22,6 +22,7 @@ groups:
       - plan-external-development
       - plan-external-production
       - plan-external-staging
+      - plan-firewall-inspection-vpc
       - plan-production
       - plan-staging
       - plan-tooling
@@ -65,6 +66,7 @@ groups:
       - plan-external-development
       - plan-external-production
       - plan-external-staging
+      - plan-firewall-inspection-vpc
       - plan-production
       - plan-staging
       - plan-tooling
@@ -79,6 +81,7 @@ groups:
       - apply-external-development
       - apply-external-production
       - apply-external-staging
+      - apply-firewall-inspection-vpc
       - apply-production
       - apply-staging
       - apply-tooling
@@ -2247,6 +2250,72 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
+
+  - name: plan-firewall-inspection-vpc
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+            params: {depth: 1}
+          - get: cg-provision-repo
+            # trigger: true
+            params: {depth: 1}
+      - task: terraform-plan-firewall-inspection-vpc
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: {terraform-templates: cg-provision-repo}
+        params: &firewall-inspection-vpc-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: firewall-inspection-vpc
+          TEMPLATE_SUBDIR: terraform/stacks/firewall-inspection-vpc
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_name_prefix: "nfw-inspection"
+          TF_VAR_tags: |
+            {
+              owner  = "Platform"
+              status = "development"
+            }
+          TF_VAR_inspection_vpc_cidr: "10.100.0.0/16"
+          TF_VAR_availability_zones: ["us-gov-west-1a", "us-gov-west-1b"]
+          TF_VAR_firewall_subnet_cidrs: ["10.100.0.0/28", "10.100.0.16/28"]
+          TF_VAR_tgw_subnet_cidrs: ["10.100.1.0/28", "10.100.1.16/28"]
+          TF_VAR_public_subnet_cidrs: ["10.100.2.0/28", "10.100.2.16/28"]
+          TF_VAR_internal_cidrs: ["10.0.0.0/8"]
+          TF_VAR_firewall_managed_rule_groups: |
+            [{
+              resource_name            = "AttackInfrastructureStrictOrder"
+              priority                 = 1
+              override_action_to_count = true
+            }]
+          # Alert-only posture, stated explicitly rather than inherited from a
+          # default. count_only forces every rule group to DROP_TO_ALERT, and an
+          # empty stateful_default_actions passes unmatched traffic, so the
+          # firewall fails open. Promoting to enforcement means enforce_all:
+          # true with count_only: false, after reviewing ALERT logs.
+          TF_VAR_firewall_rule_groups_count_only: true
+          TF_VAR_firewall_rule_groups_enforce_all: false
+          TF_VAR_stateful_default_actions: []
+          TF_VAR_delete_protection: false
+          TF_VAR_logging_enabled: true
+          TF_VAR_flow_logs_enabled: true
+          TF_VAR_flow_logs_aggregation_interval: 60
+          TF_VAR_log_retention_days: 1
+  - name: apply-firewall-inspection-vpc
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+            params: {depth: 1}
+          - get: cg-provision-repo
+            # trigger: true
+            params: {depth: 1}
+            passed: [plan-firewall-inspection-vpc]
+      - task: terraform-apply-new-firewall-inspection-vpc
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: {terraform-templates: cg-provision-repo}
+        params:
+          <<: *firewall-inspection-vpc-params
+          TERRAFORM_ACTION: apply
 
 resources:
   - name: pipeline-tasks

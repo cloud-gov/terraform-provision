@@ -1,0 +1,24 @@
+output "transit_gateway_id" {
+  description = "ID of the Transit Gateway."
+  value       = module.nfw_inspection_vpc.transit_gateway_id
+}
+
+output "inspection_vpc_id" {
+  description = "ID of the inspection VPC."
+  value       = module.nfw_inspection_vpc.inspection_vpc_id
+}
+
+output "ec2_transit_gateway_route_table_id" {
+  description = "The id of the ec2 TGW route table"
+  value       = module.nfw_inspection_vpc.ec2_transit_gateway_route_table_id
+}
+
+output "ec2_transit_gateway_vpc_attachment_id" {
+  description = "The id of the ec2 tgw attachment to the inspection vpc"
+  value       = module.nfw_inspection_vpc.ec2_transit_gateway_vpc_attachment_id
+}
+
+output "nat_gateway_eips" {
+  description = "The elastic IPs to the inspection VPC NAT gateways"
+  value       = module.nfw_inspection_vpc.nat_gateway_eips
+}
