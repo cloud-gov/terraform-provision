@@ -1,16 +1,8 @@
 # VPC flow logs for the inspection VPC.
 #
 # Network Firewall FLOW/ALERT logs only cover traffic that actually reaches a
-# firewall endpoint. They say nothing about the TGW attachment, NAT gateway, or
-# IGW hops, so traffic that bypasses inspection -- whether by misrouting or by
-# design -- leaves no record. This VPC is the single egress chokepoint for every
-# attached spoke, which makes that gap the most consequential one in the
-# platform.
-#
-# Flow logs capture every ENI in the VPC, including the TGW attachment, NAT
-# gateway, and firewall endpoint interfaces, giving an inspection-independent
-# record of what actually crossed the boundary.
-
+# firewall endpoint. This VPC is the single egress point for every
+# attached spoke.
 resource "aws_cloudwatch_log_group" "flow_logs" {
   count             = var.flow_logs_enabled ? 1 : 0
   name              = "/aws/vpc-flow-log/${var.name_prefix}"
@@ -91,8 +83,7 @@ resource "aws_flow_log" "inspection" {
 
   # 60s rather than the 600s default: this is the platform egress chokepoint, so
   # aggregation granularity bounds how precisely an incident can be
-  # reconstructed. Also the value AWS requires if TGW-level flow logs are added
-  # later. Costs roughly 10x the record volume of 600s.
+  # reconstructed.
   max_aggregation_interval = var.flow_logs_aggregation_interval
 
   tags = merge(var.tags, { Name = "${var.name_prefix}-vpc-flow-log" })

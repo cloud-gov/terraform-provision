@@ -349,4 +349,112 @@ resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev_
   records = ["_acme-challenge.test-cio-gov.pages-dev.cloud.gov.external-domains-production.cloud.gov."]
 }
 
+##Pages dev-2 - moving dev from CF Prod to CF Staging
+
+resource "aws_route53_record" "cloud_gov_pages_dev2_fr-stage_cloud_gov_cname" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"]
+}
+
+resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_a" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "*.pages-dev2.fr-stage.cloud.gov."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_star_pages_dev2_fr-stage_cloud_gov_aaaa" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "*.pages-dev2.fr-stage.cloud.gov."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_a" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
+  type    = "A"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cloud_gov_star_sites_pages_dev2_fr-stage_cloud_gov_aaaa" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "*.sites.pages-dev2.fr-stage.cloud.gov."
+  type    = "AAAA"
+
+  alias {
+    name                   = "dualstack.${data.terraform_remote_state.staging.outputs.cf_apps_lb_dns_name}"
+    zone_id                = var.cloudfront_zone_id
+    evaluate_target_health = false
+  }
+}
+
+## Dev2 Test Site ##
+
+resource "aws_route53_record" "cloud_gov_test-site_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-site.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["test-site.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-site_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-site.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.test-site.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov_test-wiab_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-wiab.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["test-wiab.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-wiab_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-wiab.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.test-wiab.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "test-cio-gov.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["test-cio-gov.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
+resource "aws_route53_record" "cloud_gov__acme-challenge_test-cio-gov_pages-dev2_fr-stage_cloud_gov" {
+  zone_id = aws_route53_zone.staging_zone.zone_id
+  name    = "_acme-challenge.test-cio-gov.pages-dev2.fr-stage.cloud.gov."
+  type    = "CNAME"
+  ttl     = 60
+  records = ["_acme-challenge.test-cio-gov.pages-dev2.fr-stage.cloud.gov.external-domains-staging.cloud.gov."]
+}
+
 ## End Development ##

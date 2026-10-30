@@ -58,9 +58,7 @@ resource "aws_networkfirewall_firewall_policy" "policy" {
         ip_set {
           # The inspection VPC is part of the internal address space, so it must
           # be in HOME_NET regardless of what the caller passes. internal_cidrs
-          # is scoped to remote spokes reached via the TGW and need not contain
-          # it; leaving it out silently changes the meaning of every Suricata
-          # rule keyed on $HOME_NET.
+          # is scoped to remote spokes reached via the TGW
           definition = distinct(concat(var.internal_cidrs, [var.inspection_vpc_cidr]))
         }
       }

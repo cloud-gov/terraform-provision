@@ -22,6 +22,7 @@ groups:
       - plan-external-development
       - plan-external-production
       - plan-external-staging
+      - plan-firewall-inspection-vpc
       - plan-production
       - plan-staging
       - plan-tooling
@@ -48,6 +49,9 @@ groups:
       - acme-certificate-dev-wildcard-pages-sites
       - acme-certificate-wildcard-pages
       - acme-certificate-wildcard-pages-sites
+      - acme-certificate-dev2-wildcard-pages
+      - acme-certificate-dev2-pages
+      - acme-certificate-dev2-wildcard-pages-sites
       - delete-old-certificates-dev
       - delete-old-certificates-staging
       - delete-old-certificates-production
@@ -62,6 +66,7 @@ groups:
       - plan-external-development
       - plan-external-production
       - plan-external-staging
+      - plan-firewall-inspection-vpc
       - plan-production
       - plan-staging
       - plan-tooling
@@ -76,6 +81,7 @@ groups:
       - apply-external-development
       - apply-external-production
       - apply-external-staging
+      - apply-firewall-inspection-vpc
       - apply-production
       - apply-staging
       - apply-tooling
@@ -354,6 +360,7 @@ jobs:
           TF_VAR_log_alerts_ses_aws_region: ((log_alerts_ses_aws_region))
           TF_VAR_platform_alerts_dmarc_email: ((platform_alerts_dmarc_email))
           TF_VAR_platform_alerts_ses_aws_region: ((platform_alerts_ses_aws_region))
+          TF_VAR_platform_notifications_ses_dkim_attribute_tokens: ((platform_notifications_ses_dkim_attribute_tokens))
       - *notify-slack
 
   - name: apply-dns
@@ -1059,7 +1066,7 @@ jobs:
           TF_VAR_upstream_blobstore_bucket_name: bosh-tooling-blobstore
           TF_VAR_shibboleth_hosts: '["idp.fr-stage.cloud.gov"]'
           TF_VAR_domains_broker_alb_count: "2"
-          TF_VAR_pages_cert_patterns: "[]"
+          TF_VAR_pages_cert_patterns: '["pages-dev2.fr-stage.cloud.gov"]'
           TF_VAR_waf_regular_expressions: ((staging_waf_regular_expressions))
           TF_VAR_waf_drop_logs_hosts_regular_expressions: ((staging_waf_drop_logs_hosts_regular_expressions))
           TF_VAR_s3_gateway_policy_accounts: ((staging_s3_gateway_policy_accounts))
@@ -1662,7 +1669,7 @@ jobs:
 
   - name: acme-certificate-staging
     plan:
-      - in_parallel:
+      - in_parallel: &staging-certificate-resources
           - get: general-task
           - get: staging-weekly-timer
             trigger: true
@@ -1671,7 +1678,8 @@ jobs:
             resource: terraform-yaml-tooling
           - get: terraform-yaml-external
             resource: terraform-yaml-external-staging
-      - task: check-certificates
+      - &check-staging-certificates-task
+        task: check-certificates
         image: general-task
         file: cg-provision-repo/ci/check-certificates.yml
         params:
@@ -2035,6 +2043,96 @@ jobs:
         username: ((slack-username))
         icon_url: ((slack-icon-url))
 
+  #adding in pages-dev2 for migration to cf staging
+  - name: acme-certificate-dev2-pages
+
+    plan:
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: pages-dev2.fr-stage.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "pages-dev2.fr-stage.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: pages-dev2.fr-stage.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for pages-dev2.fr-stage.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev2-wildcard-pages
+    plan:
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.pages-dev2.fr-stage.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.pages-dev2.fr-stage.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: star.pages-dev2.fr-stage.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.pages-dev2.fr-stage.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+
+  - name: acme-certificate-dev2-wildcard-pages-sites
+    plan:
+      - in_parallel: *staging-certificate-resources
+      - *check-staging-certificates-task
+      - task: provision-certificate
+        image: general-task
+        file: cg-provision-repo/ci/provision-certificate.yml
+        params:
+          CERT_PREFIX: star.sites.pages-dev2.fr-stage.cloud.gov
+          ACME_SERVER: https://acme-v02.api.letsencrypt.org/directory
+          DOMAIN: "*.sites.pages-dev2.fr-stage.cloud.gov"
+          EMAIL: cloud-gov-operations@gsa.gov
+      - task: upload-certificate
+        image: general-task
+        file: cg-provision-repo/ci/upload-certificate.yml
+        params:
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          CERT_PATH: /lets-encrypt/staging/
+          CERT_PREFIX: star.sites.pages-dev2.fr-stage.cloud.gov
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Failed to check ACME certificates for *.sites.pages-dev2.fr-stage.cloud.gov
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: ((slack-icon-url))
+        #end pages-dev2
+
   - name: delete-old-certificates-dev
     plan:
       - in_parallel:
@@ -2079,6 +2177,9 @@ jobs:
             trigger: true
             passed:
               - acme-certificate-staging
+              - acme-certificate-dev2-pages
+              - acme-certificate-dev2-wildcard-pages
+              - acme-certificate-dev2-wildcard-pages-sites
           - get: cg-provision-repo
           - get: terraform-yaml-tooling
             resource: terraform-yaml-tooling
@@ -2149,6 +2250,72 @@ jobs:
         channel: ((slack-channel))
         username: ((slack-username))
         icon_url: ((slack-icon-url))
+
+  - name: plan-firewall-inspection-vpc
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+            params: {depth: 1}
+          - get: cg-provision-repo
+            # trigger: true
+            params: {depth: 1}
+      - task: terraform-plan-firewall-inspection-vpc
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: {terraform-templates: cg-provision-repo}
+        params: &firewall-inspection-vpc-params
+          TERRAFORM_ACTION: plan
+          STACK_NAME: firewall-inspection-vpc
+          TEMPLATE_SUBDIR: terraform/stacks/firewall-inspection-vpc
+          S3_TFSTATE_BUCKET: ((aws_s3_tfstate_bucket))
+          AWS_DEFAULT_REGION: ((aws_default_region))
+          TF_VAR_name_prefix: "nfw-inspection"
+          TF_VAR_tags: |
+            {
+              owner  = "Platform"
+              status = "development"
+            }
+          TF_VAR_inspection_vpc_cidr: "10.100.0.0/16"
+          TF_VAR_availability_zones: ["us-gov-west-1a", "us-gov-west-1b"]
+          TF_VAR_firewall_subnet_cidrs: ["10.100.0.0/28", "10.100.0.16/28"]
+          TF_VAR_tgw_subnet_cidrs: ["10.100.1.0/28", "10.100.1.16/28"]
+          TF_VAR_public_subnet_cidrs: ["10.100.2.0/28", "10.100.2.16/28"]
+          TF_VAR_internal_cidrs: ["10.0.0.0/8"]
+          TF_VAR_firewall_managed_rule_groups: |
+            [{
+              resource_name            = "AttackInfrastructureStrictOrder"
+              priority                 = 1
+              override_action_to_count = true
+            }]
+          # Alert-only posture, stated explicitly rather than inherited from a
+          # default. count_only forces every rule group to DROP_TO_ALERT, and an
+          # empty stateful_default_actions passes unmatched traffic, so the
+          # firewall fails open. Promoting to enforcement means enforce_all:
+          # true with count_only: false, after reviewing ALERT logs.
+          TF_VAR_firewall_rule_groups_count_only: true
+          TF_VAR_firewall_rule_groups_enforce_all: false
+          TF_VAR_stateful_default_actions: []
+          TF_VAR_delete_protection: false
+          TF_VAR_logging_enabled: true
+          TF_VAR_flow_logs_enabled: true
+          TF_VAR_flow_logs_aggregation_interval: 60
+          TF_VAR_log_retention_days: 1
+  - name: apply-firewall-inspection-vpc
+    plan:
+      - in_parallel:
+          - get: pipeline-tasks
+            params: {depth: 1}
+          - get: cg-provision-repo
+            # trigger: true
+            params: {depth: 1}
+            passed: [plan-firewall-inspection-vpc]
+      - task: terraform-apply-new-firewall-inspection-vpc
+        tags: [iaas]
+        file: pipeline-tasks/terraform-apply.yml
+        input_mapping: {terraform-templates: cg-provision-repo}
+        params:
+          <<: *firewall-inspection-vpc-params
+          TERRAFORM_ACTION: apply
 
 resources:
   - name: pipeline-tasks
