@@ -157,6 +157,7 @@ variable "rds_pgaudit_log_values_opsuaa" {
 }
 
 variable "firewall_inspection_remote_state_bucket" {
+  default = "terraform-state"
 }
 
 variable "concourse_prod_rds_password" {
