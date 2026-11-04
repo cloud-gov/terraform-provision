@@ -157,7 +157,6 @@ variable "rds_pgaudit_log_values_opsuaa" {
 }
 
 variable "firewall_inspection_remote_state_bucket" {
-  default = ""
 }
 
 variable "concourse_prod_rds_password" {
