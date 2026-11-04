@@ -96,7 +96,7 @@ variable "egress_traffic_through_inspection_vpc" {
 
 variable "firewall_inspection_remote_state_bucket" {
   type        = string
-  default     = ""
+  default     = "terraform-state"
   description = "S3 bucket holding the firewall-inspection-vpc stack's Terraform state. Read only when the VPC is attached to the inspection VPC; the remote state data source is gated so stacks that have opted out do not need this set."
 }
 
