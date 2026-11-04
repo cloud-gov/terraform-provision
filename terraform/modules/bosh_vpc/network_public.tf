@@ -52,6 +52,10 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
+/*
+ * The public route table keeps its default route on the internet gateway even
+ * when inspection is enabled.
+ */
 resource "aws_route_table" "public_network" {
   vpc_id = aws_vpc.main_vpc.id
   route {
@@ -63,9 +67,26 @@ resource "aws_route_table" "public_network" {
     gateway_id      = aws_internet_gateway.gw.id
   }
 
+  # Internal destinations reached through the inspection VPC. Empty, and so a
+  # no-op, unless inspection is enabled and inspection_internal_cidrs is set.
+  dynamic "route" {
+    for_each = local.inspection_enabled ? toset(var.inspection_internal_cidrs) : toset([])
+    content {
+      cidr_block         = route.value
+      transit_gateway_id = local.inspection_transit_gateway_id
+    }
+  }
+
   tags = {
     Name = "${var.stack_description} (Public Route Table)"
   }
+
+  depends_on = [
+    aws_ec2_transit_gateway_vpc_attachment.main_vpc,
+    aws_ec2_transit_gateway_route_table_association.main_vpc,
+    aws_ec2_transit_gateway_route.main_vpc_egress_to_inspection,
+    aws_ec2_transit_gateway_route_table_propagation.main_vpc_to_inspection,
+  ]
 }
 
 resource "aws_route_table_association" "az1_public_rta" {

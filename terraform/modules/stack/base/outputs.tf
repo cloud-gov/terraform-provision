@@ -205,3 +205,31 @@ output "credhub_rds_password" {
 output "default_key_name" {
   value = module.vpc.default_key_name
 }
+
+/*
+ * Network firewall inspection VPC
+ */
+
+output "inspection_attached" {
+  value = module.vpc.inspection_attached
+}
+
+output "inspection_enabled" {
+  value = module.vpc.inspection_enabled
+}
+
+output "inspection_tgw_subnets" {
+  value = module.vpc.inspection_tgw_subnets
+}
+
+output "inspection_tgw_attachment_id" {
+  value = module.vpc.inspection_tgw_attachment_id
+}
+
+output "inspection_tgw_route_table_id" {
+  value = module.vpc.inspection_tgw_route_table_id
+}
+
+output "inspection_nat_egress_ips" {
+  value = module.vpc.inspection_nat_egress_ips
+}

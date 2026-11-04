@@ -1115,3 +1115,38 @@ output "cvd_sync_secret_access_key_curr" {
   value     = module.cvd_sync_user.secret_access_key_curr
   sensitive = true
 }
+
+/*
+ * Network firewall inspection VPC
+ *
+ * inspection_attached and inspection_enabled together identify which phase of a
+ * staged cutover this environment is in. Attached but not enabled means the
+ * transit gateway path exists and is idle, and nat_egress_ip_az1/az2 above are
+ * still the live egress addresses. Once enabled, inspection_nat_egress_ips holds
+ * the live addresses and the nat_egress_ip_* outputs still resolve but describe
+ * NAT gateways that no longer carry traffic.
+ */
+
+output "inspection_attached" {
+  value = module.stack.inspection_attached
+}
+
+output "inspection_enabled" {
+  value = module.stack.inspection_enabled
+}
+
+output "inspection_tgw_subnets" {
+  value = module.stack.inspection_tgw_subnets
+}
+
+output "inspection_tgw_attachment_id" {
+  value = module.stack.inspection_tgw_attachment_id
+}
+
+output "inspection_tgw_route_table_id" {
+  value = module.stack.inspection_tgw_route_table_id
+}
+
+output "inspection_nat_egress_ips" {
+  value = module.stack.inspection_nat_egress_ips
+}
