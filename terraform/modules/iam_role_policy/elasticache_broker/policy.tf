@@ -31,6 +31,7 @@ data "aws_iam_policy_document" "platform_elasticache_policy" {
     ]
 
     resources = [
+      "arn:${var.aws_partition}:elasticache:${var.aws_default_region}:${var.account_id}:replicationgroup:db-*",
       "arn:${var.aws_partition}:elasticache:${var.aws_default_region}:${var.account_id}:replicationgroup:${local.elasticache_prefix}-*"
     ]
   }
@@ -42,5 +43,10 @@ resource "aws_iam_policy" "platform_iam_policy" {
 }
 
 locals {
-  elasticache_prefix = "db"
+  elasticache_prefix_map = {
+    "production" : "prd",
+    "staging" : "stg",
+    "development" : "dev"
+  }
+  elasticache_prefix = local.elasticache_prefix_map[var.stack_description]
 }
