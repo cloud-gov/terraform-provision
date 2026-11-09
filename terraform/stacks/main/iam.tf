@@ -173,8 +173,13 @@ module "aws_broker_policy" {
 }
 
 module "elasticache_broker_policy" {
-  source      = "../../modules/iam_role_policy/elasticache_broker"
-  policy_name = "${var.stack_description}-elasticache-broker"
+  source               = "../../modules/iam_role_policy/elasticache_broker"
+  policy_name          = "${var.stack_description}-elasticache-broker"
+  platform_policy_name = "${var.stack_description}-platform_elasticache"
+  aws_partition        = data.aws_partition.current.partition
+  aws_default_region   = var.aws_default_region
+  account_id           = data.aws_caller_identity.current.account_id
+  stack_description    = var.stack_description
 }
 
 module "default_role" {
@@ -397,5 +402,13 @@ resource "aws_iam_policy_attachment" "elasticache_broker" {
   policy_arn = module.elasticache_broker_policy.arn
   roles = [
     module.elasticache_broker_role.role_name,
+  ]
+}
+
+resource "aws_iam_policy_attachment" "platform_elasticache" {
+  name       = "${var.stack_description}-platform_elasticache"
+  policy_arn = module.elasticache_broker_policy.platform_arn
+  roles = [
+    module.platform_role.role_name,
   ]
 }
