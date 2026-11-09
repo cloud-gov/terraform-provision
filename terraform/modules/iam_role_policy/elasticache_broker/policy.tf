@@ -42,10 +42,5 @@ resource "aws_iam_policy" "platform_iam_policy" {
 }
 
 locals {
-  elasticache_prefix_map = {
-    "production" : "prd",
-    "staging" : "stg",
-    "development" : "dev"
-  }
-  elasticache_prefix = local.elasticache_prefix_map[var.stack_description]
+  elasticache_prefix = "db"
 }
