@@ -28,6 +28,7 @@ data "aws_iam_policy_document" "platform_elasticache_policy" {
       "elasticache:DescribeCacheClusters",
       "elasticache:DescribeEvents",
       "elasticache:DescribeUpdateActions",
+      "elasticache:BatchApplyUpdateAction",
     ]
 
     resources = [
