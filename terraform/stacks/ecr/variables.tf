@@ -33,8 +33,6 @@ variable "repositories" {
     "pages-dind",
     "pages-dind-v25",
     "pages-nginx-v1",
-    "pages-node-v20",
-    "pages-node-v22",
     "pages-node-v24",
     "pages-postgres-v15",
     "pages-python-v3.11",
@@ -49,7 +47,6 @@ variable "repositories" {
     "semver-resource",
     "slack-notification-resource",
     "time-resource",
-    "ubuntu-hardened",
     "ubuntu-hardened-stig",
   ]
 }
