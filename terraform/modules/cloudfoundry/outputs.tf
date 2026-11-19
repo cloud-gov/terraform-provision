@@ -125,6 +125,10 @@ output "logs_opensearch_cf_audit_events_bucket_name" {
   value = module.logs-opensearch-cf-audit-events.bucket_name
 }
 
+output "logs_opensearch_cf_audit_events_sqs_queue_url" {
+  value = module.logs-opensearch-cf-audit-events.sqs_queue_url
+}
+
 output "logs_opensearch_aws_metrics_bucket_name" {
   value = module.logs-opensearch-aws-metrics.bucket_name
 }

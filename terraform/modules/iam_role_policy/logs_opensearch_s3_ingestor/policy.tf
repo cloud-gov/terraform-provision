@@ -18,6 +18,18 @@ data "aws_iam_policy_document" "logs_opensearch_s3_policy" {
       "arn:${var.aws_partition}:s3:::logs-opensearch-*"
     ]
   }
+  statement {
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl"
+    ]
+
+    resources = [
+      "arn:${var.aws_partition}:sqs:${var.aws_default_region}:${var.account_id}:logs-opensearch-*-object-created"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "iam_policy" {

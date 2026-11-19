@@ -91,3 +91,21 @@ variable "noncurrent_version_expiration_days" {
   default     = 1
   description = "How many days to wait after S3 bucket versions become noncurrent before deleting them"
 }
+
+variable "enable_sqs_notification" {
+  type        = bool
+  default     = false
+  description = "Create an SQS queue + S3 ObjectCreated notification (for Data Prepper's s3 source)"
+}
+
+variable "sqs_message_retention_seconds" {
+  type        = number
+  default     = 345600 # 4 days
+  description = "SQS message retention for the ObjectCreated notification queue"
+}
+
+variable "sqs_visibility_timeout_seconds" {
+  type        = number
+  default     = 300
+  description = "SQS visibility timeout for the ObjectCreated notification queue; must exceed per-object processing time"
+}
