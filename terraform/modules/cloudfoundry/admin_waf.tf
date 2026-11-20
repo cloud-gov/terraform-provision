@@ -241,10 +241,33 @@ resource "aws_wafv2_web_acl_rule" "admin_allow_trusted_ips" {
   }
 }
 
+resource "aws_wafv2_web_acl_rule" "admin_anti_ddos" {
+  web_acl_arn = aws_wafv2_web_acl.admin_waf.arn
+  name        = "AWS-AWSManagedRulesAntiDDoSRuleSet"
+  priority    = 80
+
+  action {
+    block {}
+  }
+
+  statement {
+    managed_rule_group_statement {
+      name        = "AWSManagedRulesAntiDDoSRuleSet"
+      vendor_name = "AWS"
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${var.stack_description}-admin-waf-AntiDDoS"
+    sampled_requests_enabled   = true
+  }
+}
+
 resource "aws_wafv2_web_acl_rule" "admin_rate_limit_challenge" {
   web_acl_arn = aws_wafv2_web_acl.admin_waf.arn
   name        = "RateLimitNonCDNBySourceIP-Challenge"
-  priority    = 80
+  priority    = 90
 
   action {
     challenge {}
