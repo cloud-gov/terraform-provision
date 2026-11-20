@@ -1,10 +1,3 @@
-locals {
-  malicious_ja3_fingerprint_rules = [
-    for idx, id in var.malicious_ja3_fingerprint_ids :
-    { priority = idx + 70, fingerprint_id = id, key = idx }
-  ]
-}
-
 // For webacl rules using AWS managed rule sets or custom rules, checkout the AWS Govcloud WAF V2 console
 // Use the console to craft a sample webacl but before you commit you can click the tab/option to show you
 // The rule in json format which will make it easier to translate to TF
@@ -509,40 +502,6 @@ resource "aws_wafv2_web_acl" "cf_uaa_waf_core" {
   }
 
   dynamic "rule" {
-    for_each = toset(local.malicious_ja3_fingerprint_rules)
-    iterator = rule
-
-    content {
-      name     = "BlockMaliciousJA3FingerprintID-${rule.value.key}"
-      priority = rule.value.priority
-      action {
-        count {}
-      }
-      statement {
-        byte_match_statement {
-          field_to_match {
-            ja3_fingerprint {
-              fallback_behavior = "NO_MATCH"
-            }
-          }
-          positional_constraint = "EXACTLY"
-          search_string         = rule.value.fingerprint_id
-          text_transformation {
-            type     = "NONE"
-            priority = 0
-          }
-        }
-      }
-      visibility_config {
-        cloudwatch_metrics_enabled = true
-        metric_name                = "${var.stack_description}-BlockMaliciousJA3FingerprintID-${rule.value.key}"
-        sampled_requests_enabled   = true
-      }
-    }
-
-  }
-
-  dynamic "rule" {
     for_each = toset([for rule in var.waf_regex_rules : rule if rule.block])
     iterator = regex_rule
 
@@ -804,9 +763,4 @@ resource "aws_wafv2_web_acl_logging_configuration" "cf_uaa_waf_core" {
       requirement = "MEETS_ANY"
     }
   }
-}
-
-resource "aws_wafv2_web_acl_association" "cf_uaa_waf_core" {
-  resource_arn = aws_lb.cf_uaa.arn
-  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
 }

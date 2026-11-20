@@ -157,6 +157,11 @@ resource "aws_lb" "main" {
   enable_deletion_protection = true
 }
 
+resource "aws_wafv2_web_acl_association" "main_waf_core" {
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = module.cf.admin_waf_arn
+}
+
 resource "aws_lb_listener" "main" {
   load_balancer_arn = aws_lb.main.arn
   port              = "443"
@@ -373,11 +378,6 @@ resource "random_string" "autoscaler_rds_password" {
   min_lower   = 5
 }
 
-
-resource "aws_wafv2_web_acl_association" "main_waf_core" {
-  resource_arn = aws_lb.main.arn
-  web_acl_arn  = module.cf.cf_uaa_waf_core_arn
-}
 
 module "diego" {
   source = "../../modules/diego"
