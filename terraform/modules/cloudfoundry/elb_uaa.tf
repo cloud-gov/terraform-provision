@@ -14,6 +14,11 @@ resource "aws_lb" "cf_uaa" {
   }
 }
 
+resource "aws_wafv2_web_acl_association" "admin_waf" {
+  resource_arn = aws_lb.cf_uaa.arn
+  web_acl_arn  = aws_wafv2_web_acl.admin_waf.arn
+}
+
 resource "aws_lb_target_group" "cf_gr_uaa_target" {
   name     = "${var.stack_description}-cf-gr-uaa"
   port     = 10443

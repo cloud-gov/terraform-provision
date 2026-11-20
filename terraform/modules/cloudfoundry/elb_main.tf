@@ -94,8 +94,5 @@ resource "aws_lb_listener" "cf_http" {
 
 resource "aws_wafv2_web_acl_association" "cf_waf_core" {
   resource_arn = aws_lb.cf.arn
-  web_acl_arn  = aws_wafv2_web_acl.cf_uaa_waf_core.arn
+  web_acl_arn  = aws_wafv2_web_acl.admin_waf_arn.arn
 }
-
-
-
